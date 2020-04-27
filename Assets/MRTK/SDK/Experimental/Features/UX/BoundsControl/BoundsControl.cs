@@ -54,9 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     isChildOfTarget = transform.IsChildOf(targetObject.transform);
                     // reparent rigroot
                     rigRoot.parent = targetObject.transform;
-                    DetermineTargetBounds();
-                    UpdateExtents();
-                    UpdateVisuals();
+                    OnTargetBoundsChanged();
                 }
             }
         }
@@ -81,9 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     {
                         prevBoundsOverride = new Bounds();
                     }
-                    DetermineTargetBounds();
-                    UpdateExtents();
-                    UpdateVisuals();
+                    OnTargetBoundsChanged();
                 }
             }
         }
@@ -103,9 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (boundsCalculationMethod != value)
                 {
                     boundsCalculationMethod = value;
-                    DetermineTargetBounds();
-                    UpdateExtents();
-                    UpdateVisuals();
+                    OnTargetBoundsChanged();
                 }
             }
         }
@@ -149,34 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (flattenAxis != value)
                 {
                     flattenAxis = value;
-                    Flatten(flattenAxis);
                     UpdateExtents();
                     UpdateVisuals();
                     ResetVisuals();
-
-                   // UpdateFlattenAxis();
                 }
-            }
-        }
-
-        private int[] flattenedHandles = null;
-        private void Flatten(FlattenModeType flattenAxis)
-        {
-            if (flattenAxis == FlattenModeType.FlattenX)
-            {
-                flattenedHandles = new int[] { 0, 4, 2, 6 };
-            }
-            else if (flattenAxis == FlattenModeType.FlattenY)
-            {
-                flattenedHandles = new int[] { 1, 3, 5, 7 };
-            }
-            else if (flattenAxis == FlattenModeType.FlattenZ)
-            {
-                flattenedHandles = new int[] { 9, 10, 8, 11 };
-            }
-            else
-            {
-                flattenedHandles = null;
             }
         }
 
@@ -195,9 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    DetermineTargetBounds();
-                    UpdateExtents();
-                    UpdateVisuals();
+                    OnTargetBoundsChanged();
                 }
             }
         }
@@ -498,8 +466,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             DetermineTargetBounds();
             UpdateExtents();
             CreateVisuals();
-            // UpdateFlattenAxis();
-           // UpdateVisuals();
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
@@ -552,7 +518,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void OnEnable()
         {
-            Flatten(flattenAxis);
             CreateRig();
             CaptureInitialState();
             SetActivationFlags();
@@ -1021,6 +986,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        private void OnTargetBoundsChanged()
+        {
+            DetermineTargetBounds();
+            UpdateExtents();
+            UpdateVisuals();
+        }
+
         #endregion Private Methods
 
         #region Used Event Handlers
@@ -1191,20 +1163,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return;
             }
 
-            // Set link visibility
-            links.ResetVisibility(active);
-            links.Flatten(ref flattenedHandles);
-
-            boxDisplay.ResetVisibility(active);
+            links.Reset(active, flattenAxis);
+            
+            boxDisplay.Reset(active);
+            boxDisplay.UpdateFlattenAxis(flattenAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
-            // Set corner visibility
-            scaleHandles.IsActive = isVisible;
-            // Set rotation handle visibility
-            rotationHandles.IsActive = isVisible;
-            rotationHandles.FlattenHandles(ref flattenedHandles);
-            scaleHandles.UpdateFlattenMode(flattenAxis != FlattenModeType.DoNotFlatten);
-            boxDisplay.UpdateFlattenAxis(flattenAxis);
+            rotationHandles.Reset(isVisible, flattenAxis);
+            scaleHandles.Reset(isVisible, flattenAxis);
         }
 
         private void CreateVisuals()

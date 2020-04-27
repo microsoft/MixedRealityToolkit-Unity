@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     handleMaterial = value;
                     TrySetDefaultMaterial();
                     handlesChanged.Invoke(HandlesChangedEventType.MATERIAL);
-                   // configurationChanged.Invoke();
                 }
             }
         }
@@ -50,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     handleGrabbedMaterial = value;
                     TrySetDefaultMaterial();
                     handlesChanged.Invoke(HandlesChangedEventType.MATERIAL_GRABBED);
-                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -71,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handlePrefab = value;
                     handlesChanged.Invoke(HandlesChangedEventType.PREFAB);
-                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -92,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleSize = value;
                     handlesChanged.Invoke(HandlesChangedEventType.COLLIDER_SIZE);
-                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -134,8 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     drawTetherWhenManipulating = value;
                     handlesChanged.Invoke(HandlesChangedEventType.MANIPULATION_TETHER);
                 }
-            }
-            
+            }   
         }
 
         [SerializeField]
@@ -158,9 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
-
-        //internal protected UnityEvent configurationChanged = new UnityEvent();
-        //internal protected UnityEvent visibilityChanged = new UnityEvent();
 
         internal enum HandlesChangedEventType
         {

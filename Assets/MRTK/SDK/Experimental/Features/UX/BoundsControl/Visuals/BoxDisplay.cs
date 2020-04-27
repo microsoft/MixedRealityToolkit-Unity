@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             boxDisplay.name = "box display";
             flattenMode = flattenAxis;
             cachedExtents = currentBoundsExtents;
-            ResetVisibility(isVisible);
+            Reset(isVisible);
             boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
             boxDisplay.transform.parent = parent;
         }
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal void ResetVisibility(bool visible)
+        internal void Reset(bool visible)
         {
             isVisible = visible;
             // Set box display visibility
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void UpdateBoxDisplayMaterial()
         {
-            ResetVisibility(isVisible);
+            Reset(isVisible);
         }
 
     }

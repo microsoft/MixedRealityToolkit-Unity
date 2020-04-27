@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private LinksConfiguration config;
         private Vector3 cachedExtents;
+        private FlattenModeType cachedFlattenAxis;
 
         internal Links(LinksConfiguration configuration)
         {
@@ -49,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             switch (changedType)
             {
                 case LinksConfiguration.WireframeChangedEventType.VISIBILITY:
-                    ResetVisibility(config.ShowWireFrame);
+                    Reset(config.ShowWireFrame, cachedFlattenAxis);
                     break;
                 case LinksConfiguration.WireframeChangedEventType.RADIUS:
                     UpdateLinkScales(cachedExtents);
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal void UpdateMaterial() // update call for wireframematerial update
+        internal void UpdateMaterial()
         {
             if (links != null && config.WireframeMaterial != null)
             {
@@ -101,13 +102,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal void ResetVisibility(bool isVisible)
+        internal void Reset(bool isVisible, FlattenModeType flattenAxis)
         {
+            cachedFlattenAxis = flattenAxis;
             if (links != null)
             {
                 for (int i = 0; i < links.Count; ++i)
                 {
                     links[i].transform.gameObject.SetActive(isVisible);
+                }
+
+                int[] flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis);
+                if (flattenedHandles != null)
+                {
+                    for (int i = 0; i < flattenedHandles.Length; ++i)
+                    {
+                        links[flattenedHandles[i]].transform.gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -157,17 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                 }
                 cachedExtents = currentBoundsExtents;
-            }
-        }
-
-        internal void Flatten(ref int[] flattenedHandles)
-        {
-            if (flattenedHandles != null)
-            {
-                for (int i = 0; i < flattenedHandles.Length; ++i)
-                {
-                    links[flattenedHandles[i]].transform.gameObject.SetActive(false);
-                }
             }
         }
 

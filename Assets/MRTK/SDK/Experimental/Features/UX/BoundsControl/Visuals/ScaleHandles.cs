@@ -170,8 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return cornerbounds;
         }
 
-        internal void UpdateFlattenMode(bool isFlattened)
+        internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
         {
+            IsActive = areHandlesActive;
+            ResetHandles();
+            bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
             if (areHandlesFlattened != isFlattened)
             {
                 areHandlesFlattened = isFlattened;

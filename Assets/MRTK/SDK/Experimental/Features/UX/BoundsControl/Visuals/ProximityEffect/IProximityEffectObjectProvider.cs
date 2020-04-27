@@ -43,6 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// </summary>
         void ForEachProximityObject(Action<Transform> action);
 
+        /// <summary>
+        /// Allow for accessing / subscribing to the changed event for objects that show a proximity effect
+        /// </summary>
         ProximityObjectsChangedEvent ProximityObjectsChanged
         {
             get;

@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
         private RotationHandlesConfiguration config;
+        private FlattenModeType cachedFlattenAxis;
 
         internal RotationHandles(RotationHandlesConfiguration configuration)
         {
@@ -35,37 +36,44 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             foreach (var handle in handles)
             {
                 // remove old colliders
+                bool shouldCreateNewCollider = false;
                 var oldBoxCollider = handle.GetComponent<BoxCollider>();
-                if (oldBoxCollider != null)
+                if (oldBoxCollider != null && config.RotationHandlePrefabColliderType == HandlePrefabCollider.Sphere)
                 {
+                    shouldCreateNewCollider = true;
                     Object.Destroy(oldBoxCollider);
                 }
 
                 var oldSphereCollider = handle.GetComponent<SphereCollider>();
-                if (oldSphereCollider != null)
+                if (oldSphereCollider != null && config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
                 {
+                    shouldCreateNewCollider = true;
                     Object.Destroy(oldSphereCollider);
                 }
 
-                // attach new collider
-                var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                var invScale = config.HandleSize / handleBounds.size.x;
-                Vector3 colliderSizeScaled = handleBounds.size * invScale;
-                Vector3 colliderCenterScaled = handleBounds.center * invScale;
-                if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
+                if (shouldCreateNewCollider)
                 {
-                    BoxCollider collider = handle.gameObject.AddComponent<BoxCollider>();
-                    collider.size = colliderSizeScaled;
-                    collider.center = colliderCenterScaled;
-                    collider.size += config.ColliderPadding;
+                    // attach new collider
+                    var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
+                    var invScale = config.HandleSize / handleBounds.size.x;
+                    Vector3 colliderSizeScaled = handleBounds.size * invScale;
+                    Vector3 colliderCenterScaled = handleBounds.center * invScale;
+                    if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
+                    {
+                        BoxCollider collider = handle.gameObject.AddComponent<BoxCollider>();
+                        collider.size = colliderSizeScaled;
+                        collider.center = colliderCenterScaled;
+                        collider.size += config.ColliderPadding;
+                    }
+                    else
+                    {
+                        SphereCollider sphere = handle.gameObject.AddComponent<SphereCollider>();
+                        sphere.center = colliderCenterScaled;
+                        sphere.radius = colliderSizeScaled.x * 0.5f;
+                        sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
+                    }
                 }
-                else
-                {
-                    SphereCollider sphere = handle.gameObject.AddComponent<SphereCollider>();
-                    sphere.center = colliderCenterScaled;
-                    sphere.radius = colliderSizeScaled.x * 0.5f;
-                    sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
-                }
+               
             }
         }
 
@@ -144,15 +152,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             edgeAxes[11] = CardinalAxisType.Z;
         }
 
-        internal void FlattenHandles(ref int[] flattenedHandles)
+        internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
         {
+            IsActive = areHandlesActive;
+            cachedFlattenAxis = flattenAxis;
             if (IsActive)
             {
-                foreach (var handle in handles)
-                {
-                    handle.gameObject.SetActive(IsVisible(handle));
-                }
-
+                ResetHandles();
+                int[] flattenedHandles = VisualUtils.GetFlattenedIndices(flattenAxis);
                 if (flattenedHandles != null)
                 {
                     for (int i = 0; i < flattenedHandles.Length; ++i)
@@ -247,12 +254,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             GameObject prefabType = config.HandlePrefab;
             if (prefabType != null)
             {
-                midpointVisual = GameObject.Instantiate(prefabType);
+                midpointVisual = Object.Instantiate(prefabType);
             }
             else
             {
                 midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                GameObject.Destroy(midpointVisual.GetComponent<SphereCollider>());
+                Object.Destroy(midpointVisual.GetComponent<SphereCollider>());
             }
 
             // Align handle with its edge assuming that the prefab is initially aligned with the up direction 

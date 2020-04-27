@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     rotationHandlePrefabColliderType = value;
                     colliderTypeChanged.Invoke();
-                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -58,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     showRotationHandleForX = value;
                     handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
-                    //visibilityChanged.Invoke();
                 }
             }
         }
@@ -82,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     showRotationHandleForY = value;
                     handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
-                    //visibilityChanged.Invoke();
                 }
             }
         }
@@ -106,7 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     showRotationHandleForZ = value;
                     handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
-                    //visibilityChanged.Invoke();
                 }
             }
         }

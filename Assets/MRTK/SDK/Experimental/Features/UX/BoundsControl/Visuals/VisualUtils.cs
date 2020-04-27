@@ -210,5 +210,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return Vector3.zero;
         }
 
+        /// <summary>
+        /// returns the flatten indices to the corresponding flattenAxis mode
+        /// </summary>
+        /// <param name="flattenAxis">flatten axis mode that should be converted to indices</param>
+        /// <returns>flattened indices</returns>
+        internal static int[] GetFlattenedIndices(FlattenModeType flattenAxis)
+        {
+            if (flattenAxis == FlattenModeType.FlattenX)
+            {
+                return new int[] { 0, 4, 2, 6 };
+            }
+            else if (flattenAxis == FlattenModeType.FlattenY)
+            {
+                return new int[] { 1, 3, 5, 7 };
+            }
+            else if (flattenAxis == FlattenModeType.FlattenZ)
+            {
+                return new int[] { 9, 10, 8, 11 };
+            }
+
+            return null;
+        }
     }
 }

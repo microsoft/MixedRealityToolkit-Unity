@@ -15,11 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
-
-        internal HandlesBase()
-        {
-
-        }
+        internal HandlesBase() { }
         protected abstract HandlesBaseConfiguration BaseConfig
         {
             get;
@@ -84,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
         protected abstract void RecreateVisuals();
 
-        private void ResetHandles()
+        protected void ResetHandles()
         {
             if (handles != null)
             {
@@ -190,25 +186,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 SetHighlighted(highlightedHandle);
             }
         }
-
-        //protected void UpdateColliderPadding(HandlePrefabCollider colliderType, Vector3 size)
-        //{
-        //    foreach (var handle in handles)
-        //    {
-        //        if (colliderType == HandlePrefabCollider.Box)
-        //        {
-        //            BoxCollider collider = handle.gameObject.GetComponent<BoxCollider>();
-        //            collider.size = size;
-        //            collider.size += BaseConfig.ColliderPadding;
-        //        }
-        //        else
-        //        {
-        //            SphereCollider sphere = handle.gameObject.GetComponent<SphereCollider>();
-        //            sphere.radius = size.x;
-        //            sphere.radius += Mathf.Max(Mathf.Max(BaseConfig.ColliderPadding.x, BaseConfig.ColliderPadding.y), BaseConfig.ColliderPadding.z);
-        //        }
-        //    }
-        //}
 
         #region IProximityScaleObjectProvider 
 

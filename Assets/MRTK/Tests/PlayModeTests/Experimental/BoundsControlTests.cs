@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
+            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
