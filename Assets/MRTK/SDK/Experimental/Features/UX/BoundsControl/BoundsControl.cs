@@ -1,4 +1,4 @@
-﻿no// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -53,8 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     targetObject = value;
                     isChildOfTarget = transform.IsChildOf(targetObject.transform);
                     // reparent rigroot
-                    rigRoot.parent = targetObject.transform;
-                    OnTargetBoundsChanged();
+                    if (rigRoot != null)
+                    {
+                        rigRoot.parent = targetObject.transform;
+                        OnTargetBoundsChanged();
+                    }
                 }
             }
         }
@@ -408,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                     if (active)
                     {
-                        proximityEffect.ResetProximityScale();
+                        proximityEffect?.ResetProximityScale();
                     }
                 }
             }
@@ -517,9 +520,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void OnEnable()
         {
+            SetActivationFlags();
             CreateRig();
             CaptureInitialState();
-            SetActivationFlags();
         }
 
         private void SetActivationFlags()

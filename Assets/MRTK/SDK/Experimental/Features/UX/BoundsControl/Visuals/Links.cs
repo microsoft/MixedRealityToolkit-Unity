@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 for (int i = 0; i < links.Count; ++i)
                 {
-                    links[i].transform.gameObject.SetActive(isVisible);
+                    links[i].transform.gameObject.SetActive(isVisible && config.ShowWireFrame);
                 }
 
                 int[] flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis);

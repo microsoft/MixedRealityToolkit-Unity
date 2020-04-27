@@ -70,13 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 boundsControl.RotateStopped = boundingBox.RotateStopped;
                 boundsControl.ScaleStarted = boundingBox.ScaleStarted;
                 boundsControl.ScaleStopped = boundingBox.ScaleStopped;
-
-                // destroy obsolete component
-                Object.DestroyImmediate(boundingBox);
             }
 
             // look in the scene for app bars and upgrade them too to point to the new component
             MigrateAppBar(boundingBox, boundsControl);
+      
+            {
+                Undo.RecordObject(gameObject, "Removing obsolete BoundingBox component");
+                // destroy obsolete component
+                Object.DestroyImmediate(boundingBox);
+            }
 #endif
         }
 
