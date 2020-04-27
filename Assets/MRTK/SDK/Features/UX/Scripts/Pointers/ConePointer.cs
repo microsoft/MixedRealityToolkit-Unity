@@ -362,20 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Collider collider = queryBuffer[i];
                         grabbable = collider.GetComponent<NearInteractionGrabbable>();
 
-                        // Check if the collider is within the activation cone
-                        Vector3 closestPointToCollider = collider.ClosestPoint(pointerPosition);
-                        Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
-                        
-                        // Leeway for objects that are right at the tip of the cone pointer
-                        float leewaySqrDistance = queryRadius * queryRadius * 0.25f;
-
-                        float coneAngle = queryAngle * Mathf.Deg2Rad;
-                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
-                        if (!(relativeColliderPosition == Vector3.zero || inAngle))
-                        {
-                            continue;
-                        }
-
                         if (grabbable != null)
                         {
                             if (ignoreCollidersNotInFOV)
@@ -385,9 +371,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                     // Additional check: is grabbable in the camera frustrum
                                     // We do this so that if grabbable is not visible it is not accidentally grabbed
                                     // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
+
                                     grabbable = null;
                                 }
                             }
+                        }
+
+                        // Check if the collider is within the activation cone
+                        Vector3 closestPointToCollider = collider.ClosestPoint(pointerPosition);
+                        Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
+
+                        // Leeway for objects that are right at the tip of the cone pointer
+                        float leewaySqrDistance = queryRadius * queryRadius * 0.25f;
+
+                        float coneAngle = queryAngle * Mathf.Deg2Rad;
+                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
+                        if (!(relativeColliderPosition == Vector3.zero || inAngle))
+                        {
+                            continue;
                         }
 
                         if (grabbable != null)
