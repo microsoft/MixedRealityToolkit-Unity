@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     selection = collection[index];
                     if (selection == "None")
                     {
-                        // The uer selected "None", return null. Unity uses this string where null
+                        // The user selected "None", return null. Unity uses this string where null
                         // is the underlying value.
                         selection = null;
                     }
