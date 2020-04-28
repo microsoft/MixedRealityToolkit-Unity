@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            string[] installedSpatializers = AudioSettings.GetSpatializerPluginNames();
+            string[] installedSpatializers = InstalledSpatializers;
 
             // Check to see if the configured spatializer is installed.
             if (!installedSpatializers.Contains(spatializerName))
