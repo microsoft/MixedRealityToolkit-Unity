@@ -269,7 +269,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (configured)
                 {
                     EditorGUILayout.LabelField(new GUIContent($"{title} {selection}", InspectorUIUtility.SuccessIcon));
-
                 }
                 else
                 {

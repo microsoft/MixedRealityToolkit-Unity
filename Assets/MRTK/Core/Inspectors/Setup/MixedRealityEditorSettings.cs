@@ -126,17 +126,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
                 }
 
-                if (!UwpRecommendedAudioSpatializers.Contains<string>(SpatializerUtilities.CurrentSpatializer))
+                if (!UwpRecommendedAudioSpatializers.Contains(SpatializerUtilities.CurrentSpatializer))
                 {
                     Debug.LogWarning($"This application is not using the recommended <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the following: {string.Join(", ", UwpRecommendedAudioSpatializers)}.");
                 }
             }
-            else
+            else if (SpatializerUtilities.CurrentSpatializer == null)
             {
-                if (SpatializerUtilities.CurrentSpatializer == null)
-                {
-                    Debug.LogWarning($"This application is not using an <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the available options.");
-                }
+                Debug.LogWarning($"This application is not using an <b>Audio Spatializer Plugin</b>. Go to <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i> and select one of the available options.");
             }
         }
 

@@ -147,7 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 return audioSpatializerCount;
             }
-            set => ProjectPreferences.Set(AUDIO_SPATIALIZER_COUNT_KEY, audioSpatializerCount = value);
+            set
+            {
+                audioSpatializerCount = value;
+                ProjectPreferences.Set(AUDIO_SPATIALIZER_COUNT_KEY, audioSpatializerCount);
+            }
         }
 
         #endregion Project configuration cache
