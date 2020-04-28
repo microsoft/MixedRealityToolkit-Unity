@@ -39,13 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Possible states for the migration tool
         /// </summary>
-        public enum MigrationState
+        public enum MigrationToolState
         {
-            PreMigration, // New object selection can be added to migration objects collection
+            PreMigration = 0, // New object selection can be added to migration objects collection
             Migrating, // Processing migration objects
             PostMigration // New objects should not be added to migration objects collection
         };
-        public MigrationState migrationState { get; private set; }
+
+        /// <summary>
+        /// Current migration process state of the tool
+        /// </summary>
+        public MigrationToolState MigrationState { get; private set; }
 
         public MigrationTool()
         {
@@ -57,16 +61,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public bool TryAddObjectForMigration(Type type, Object selectedObject)
         {
-            if(migrationState == MigrationState.Migrating)
+            if (MigrationState == MigrationToolState.Migrating)
             {
                 Debug.LogError("Objects cannot be added during migration process.");
                 return false;
             }
-            else if(migrationState == MigrationState.PostMigration)
+            else if (MigrationState == MigrationToolState.PostMigration)
             {
                 Debug.Log("Cleaning list of processed objects.");
                 ClearMigrationList();
-                migrationState = MigrationState.PreMigration;
+                MigrationState = MigrationToolState.PreMigration;
             }
 
             if (type == null)
@@ -120,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 for (int i = 0; i < objectHierarchy.Length; i++)
                 {
                     if (migrationHandlerInstance.CanMigrate(objectHierarchy[i].gameObject))
-                    { 
+                    {
                         return true;
                     }
                 }
@@ -199,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
 
-            if(!EditorUtility.DisplayDialog("Migration Window",
+            if (!EditorUtility.DisplayDialog("Migration Window",
                 "Migration operation cannot be reverted.\n\nDo you want to continue?", "Continue", "Cancel"))
             {
                 return false;
@@ -210,7 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
             var previousScenePath = EditorSceneManager.GetActiveScene().path;
-            migrationState = MigrationState.Migrating;
+            int failures = 0;
+            MigrationState = MigrationToolState.Migrating;
 
             for (int i = 0; i < migrationObjects.Count; i++)
             {
@@ -245,17 +250,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     MigrateScene(assetPath, migrationObjects.ElementAt(i).Value);
                 }
                 migrationObjects.ElementAt(i).Value.isProcessed = true;
+                failures += migrationObjects.ElementAt(i).Value.failures;
             }
             EditorUtility.ClearProgressBar();
-            //migrationObjects.Clear();
 
             if (!String.IsNullOrEmpty(previousScenePath) && previousScenePath != EditorSceneManager.GetActiveScene().path)
             {
                 EditorSceneManager.OpenScene(Path.Combine(Directory.GetCurrentDirectory(), previousScenePath));
             }
-            EditorUtility.DisplayDialog("Migration Window",
-                "Migration completed successfully!", "Close");
-            migrationState = MigrationState.PostMigration;
+
+            string msg;
+            if (failures > 0)
+            {
+                msg = $"Migration completed with {failures} errors";
+            }
+            else
+            {
+                msg = "Migration completed successfully!";
+            }
+            EditorUtility.DisplayDialog("Migration Window", msg, "Close");
+
+            MigrationState = MigrationToolState.PostMigration;
             return true;
         }
 
@@ -263,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var assetPaths = FindAllAssetsOfType(assetTypes);
             if (assetPaths != null)
-            {                               
+            {
                 for (int i = 0; i < assetPaths.Count; i++)
                 {
                     var progress = (float)i / assetPaths.Count;
@@ -361,14 +376,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         changedAnyGameObject = true;
                         migrationHandlerInstance.Migrate(child.gameObject);
 
-                        status.log += $"Successfully migrated {parent.name} object \n";
+                        status.log += $"Successfully migrated {child.gameObject.name} object \n";
                         Debug.Log(status.log);
                     }
                 }
                 catch (Exception e)
                 {
                     status.failures++;
-                    status.log += $"{e.Message}: GameObject {parent.name} could not be migrated \n";
+                    status.log += $"{e.Message}: GameObject {child.gameObject.name} could not be migrated \n";
                     Debug.LogError(status.log);
                 }
             }
@@ -406,9 +421,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public class MigrationStatus
         {
-            public bool isProcessed;
-            public int failures;
-            public String log;
+            /// <summary>
+            /// Flag to indicate if object was already processed by migration
+            /// </summary>
+            public bool isProcessed { get; set; }
+
+            /// <summary>
+            /// Keep track of the amount of issues found during migration process of every children object in the migration object hierarchy
+            /// </summary>
+            public int failures { get; set; }
+
+            /// <summary>
+            /// Keep track of recorded messages logged during  the migration process
+            /// </summary>
+            public String log { get; set; }
 
             public MigrationStatus()
             {

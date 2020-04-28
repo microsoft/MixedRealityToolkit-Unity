@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private ToolbarOption selectedToolbar = ToolbarOption.GameObjects;
         private Vector2 scrollPosition = Vector2.zero;
+        private Vector2 logScrollPosition = Vector2.zero;
 
         private const string MigrationWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
         private const string WindowTitle = "Migration Window";
@@ -229,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                     EditorGUILayout.Space();
 
-                    if (migrationTool.migrationState == MigrationTool.MigrationState.PreMigration)
+                    if (migrationTool.MigrationState == MigrationTool.MigrationToolState.PreMigration)
                     {
                         using (new GUILayout.VerticalScope(EditorStyles.helpBox))
                         {
@@ -252,13 +253,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                         EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
                                     }
                                 }
-
                             }
                         }
                     }
-                    else if (migrationTool.migrationState == MigrationTool.MigrationState.PostMigration && !String.IsNullOrEmpty(migrationLog))
+                    
+                    else if (migrationTool.MigrationState == MigrationTool.MigrationToolState.PostMigration && !String.IsNullOrEmpty(migrationLog))
                     {
-                        EditorGUILayout.LabelField(new GUIContent(migrationLog));
+                        using (var logScrollView = new EditorGUILayout.ScrollViewScope(logScrollPosition))
+                        {
+                            logScrollPosition = logScrollView.scrollPosition;
+                            GUILayout.TextArea(migrationLog);
+                        }                    
                     }
                 }
             }
