@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const float Default_Window_Height = 640.0f;
         private const float Default_Window_Width = 400.0f;
+        private const string None = "None";
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
@@ -254,8 +255,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private void PromptForAudioSpatializer()
         {
             string selectedSpatializer = MixedRealityProjectConfigurator.SelectedSpatializer;
-            List<string> spatializers = new List<string>();
-            spatializers.Add("None");
+            List<string> spatializers = new List<string>
+            {
+                None
+            };
             spatializers.AddRange(SpatializerUtilities.InstalledSpatializers);
             RenderDropDown(MRConfig.AudioSpatializer, "Audio spatializer:", spatializers.ToArray(), ref selectedSpatializer);
             MixedRealityProjectConfigurator.SelectedSpatializer = selectedSpatializer;
@@ -282,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     index = EditorGUILayout.Popup(title, index, collection, EditorStyles.popup);
 
                     selection = collection[index];
-                    if (selection == "None")
+                    if (selection == None)
                     {
                         // The user selected "None", return null. Unity uses this string where null
                         // is the underlying value.
