@@ -786,11 +786,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on hiding handles");
             Assert.IsNotNull(scaleHandle, "handle was destroyed on hide");
             Assert.IsFalse(scaleHandle.gameObject.activeSelf, "handle wasn't disabled on hide");
-            yield return new WaitForEndOfFrame();
 
             scaleHandleConfig.ShowScaleHandles = true;
             Assert.IsTrue(scaleHandle.gameObject.activeSelf, "handle wasn't enabled on show");
-            yield return new WaitForEndOfFrame();
 
             // test rotation handle behavior
             Transform rotationHandleAxisX = rigRoot.transform.Find("midpoint_0");
@@ -808,13 +806,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
-            yield return new WaitForEndOfFrame();
 
             rotationHandlesConfig.ShowRotationHandleForY = false;
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
             Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
-            yield return new WaitForEndOfFrame();
 
             rotationHandlesConfig.ShowRotationHandleForX = true;
             rotationHandlesConfig.ShowRotationHandleForY = true;
@@ -823,8 +819,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
-            yield return new WaitForEndOfFrame();
-
             // make sure handles are disabled and enabled when bounds control is deactived / activated
             boundsControl.Active = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
@@ -832,7 +826,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
             Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
-            yield return new WaitForEndOfFrame();
 
             // set active again and make sure internal states have been restored
             boundsControl.Active = true;
@@ -841,14 +834,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
-            yield return new WaitForEndOfFrame();
 
             // enable z axis again and verify
             rotationHandlesConfig.ShowRotationHandleForZ = true;
             Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
-            yield return new WaitForEndOfFrame();
 
             yield return null;
         }
