@@ -28,24 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// not the spatializer collection has changed.
         /// </summary>
         /// <returns>
-        /// True if; the selected spatializer is installed and no changes have been made to the collection of installed spatializers.
-        /// False if; There is no selected spatializer, the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
+        /// True if the selected spatializer is installed and no changes have been made to the collection of installed spatializers.
+        /// False if there is no selected spatializer, the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
         /// </returns>
         public static bool CheckSettings()
         {
             string spatializerName = CurrentSpatializer;
 
             // Check to see if an audio spatializer is configured.
-            if (string.IsNullOrWhiteSpace(spatializerName)) 
+            if (string.IsNullOrWhiteSpace(spatializerName))
             {
                 // A spatializer has not been configured.
-                return false; 
+                return false;
             }
 
             string[] installedSpatializers = AudioSettings.GetSpatializerPluginNames();
 
             // Check to see if the configured spatializer is installed.
-            if (!installedSpatializers.Contains<string>(spatializerName))
+            if (!installedSpatializers.Contains(spatializerName))
             {
                 // The current spatializer has been uninstalled.
                 return false;
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SaveSettings(string spatializer)
         {
-            if (!InstalledSpatializers.Contains<string>(spatializer))
+            if (!InstalledSpatializers.Contains(spatializer))
             {
                 Debug.LogError($"{spatializer} is not an installed spatializer.");
                 return;
