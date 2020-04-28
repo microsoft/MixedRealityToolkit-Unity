@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Migrates all objects from list of objects to be migrated using the selected IMigrationHandler implementation. 
         /// </summary>
         /// <param name="type">A type that implements IMigrationhandler</param>
-        public bool MigrateSelection(Type type, bool askToSaveCurrentScene)
+        public bool MigrateSelection(Type type, bool askForConfirmation)
         {
             if (migrationObjects.Count == 0)
             {
@@ -203,13 +203,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
 
-            if (!EditorUtility.DisplayDialog("Migration Window",
+            if (askForConfirmation && !EditorUtility.DisplayDialog("Migration Window",
                 "Migration operation cannot be reverted.\n\nDo you want to continue?", "Continue", "Cancel"))
             {
                 return false;
             }
 
-            if (askToSaveCurrentScene && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            if (askForConfirmation && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 return false;
             }
@@ -259,16 +259,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorSceneManager.OpenScene(Path.Combine(Directory.GetCurrentDirectory(), previousScenePath));
             }
 
-            string msg;
-            if (failures > 0)
+            if (askForConfirmation)
             {
-                msg = $"Migration completed with {failures} errors";
+                string msg;
+                if (failures > 0)
+                {
+                    msg = $"Migration completed with {failures} errors";
+                }
+                else
+                {
+                    msg = "Migration completed successfully!";
+                }
+                EditorUtility.DisplayDialog("Migration Window", msg, "Close");
             }
-            else
-            {
-                msg = "Migration completed successfully!";
-            }
-            EditorUtility.DisplayDialog("Migration Window", msg, "Close");
 
             MigrationState = MigrationToolState.PostMigration;
             return true;
