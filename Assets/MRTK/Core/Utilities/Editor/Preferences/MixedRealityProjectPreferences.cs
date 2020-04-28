@@ -133,8 +133,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static int audioSpatializerCount;
 
         /// <summary>
-        /// Should configuration analysis be run and warnings logged when settings don't match MRTK's recommendations?
+        /// The cached number of audio spatializers that were most recently detected.
         /// </summary>
+        /// <remarks>Used to track when the number of installed spatializers changes.</remarks>
         public static int AudioSpatializerCount
         {
             get
