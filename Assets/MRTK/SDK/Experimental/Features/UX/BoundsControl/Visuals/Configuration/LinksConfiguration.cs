@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [SerializeField]
         [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.001f; 
+        private float wireframeEdgeRadius = 0.001f;
 
         /// <summary>
         /// Radius for wireframe edges
