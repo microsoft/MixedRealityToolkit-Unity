@@ -120,15 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         links[flattenedHandles[i]].transform.gameObject.SetActive(false);
                     }
                 }
-
-                int[] flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis);
-                if (flattenedHandles != null)
-                {
-                    for (int i = 0; i < flattenedHandles.Length; ++i)
-                    {
-                        links[flattenedHandles[i]].transform.gameObject.SetActive(false);
-                    }
-                }
             }
         }
 
