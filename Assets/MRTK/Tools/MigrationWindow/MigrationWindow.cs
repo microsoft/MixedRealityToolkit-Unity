@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
 
                             var removeIcon = EditorGUIUtility.IconContent("winbtn_win_min_h");
-                            if (!migrationObject.Value.isProcessed)
+                            if (!migrationObject.Value.IsProcessed)
                             {
                                 if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
                                 {
@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                 GUIContent statusIcon;
                                 string tooltip = "";
 
-                                if (migrationObject.Value.failures > 0)
+                                if (migrationObject.Value.Failures > 0)
                                 {
                                     statusIcon = EditorGUIUtility.IconContent("vcs_delete");
                                     tooltip = "Object migration had some issues.\nClick for more details.";
@@ -217,12 +217,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                 else
                                 {
                                     statusIcon = EditorGUIUtility.IconContent("vcs_check");
-                                    tooltip = "Object migration was successfull.\nClick for more details.";
+                                    tooltip = "Object migration was successful.\nClick for more details.";
                                 }
 
                                 if (GUILayout.Button(new GUIContent(statusIcon.image, tooltip), GUILayout.Width(30), GUILayout.Height(20)))
                                 {
-                                    migrationLog = migrationObject.Value.log;
+                                    migrationLog = migrationObject.Value.Log;
                                     break;
                                 }
                             }
@@ -283,4 +283,3 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
     }
 }
-

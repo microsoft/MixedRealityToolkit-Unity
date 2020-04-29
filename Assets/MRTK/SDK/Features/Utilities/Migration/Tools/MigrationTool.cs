@@ -68,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else if (MigrationState == MigrationToolState.PostMigration)
             {
-                Debug.Log("Cleaning list of processed objects.");
                 ClearMigrationList();
                 MigrationState = MigrationToolState.PreMigration;
             }
@@ -249,8 +248,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     MigrateScene(assetPath, migrationObjects.ElementAt(i).Value);
                 }
-                migrationObjects.ElementAt(i).Value.isProcessed = true;
-                failures += migrationObjects.ElementAt(i).Value.failures;
+                migrationObjects.ElementAt(i).Value.IsProcessed = true;
+                failures += migrationObjects.ElementAt(i).Value.Failures;
+
+                Debug.Log(migrationObjects.ElementAt(i).Value.Log);
             }
             EditorUtility.ClearProgressBar();
 
@@ -379,15 +380,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         changedAnyGameObject = true;
                         migrationHandlerInstance.Migrate(child.gameObject);
 
-                        status.log += $"Successfully migrated {child.gameObject.name} object \n";
-                        Debug.Log(status.log);
+                        status.AddToLog($"Successfully migrated {child.gameObject.name} object \n");
                     }
                 }
                 catch (Exception e)
                 {
-                    status.failures++;
-                    status.log += $"{e.Message}: GameObject {child.gameObject.name} could not be migrated \n";
-                    Debug.LogError(status.log);
+                    status.Failures++;
+                    status.AddToLog($"{e.Message}: GameObject {child.gameObject.name} could not be migrated \n");
                 }
             }
 
@@ -427,26 +426,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// <summary>
             /// Flag to indicate if object was already processed by migration
             /// </summary>
-            public bool isProcessed { get; set; }
+            public bool IsProcessed { get; set; }
 
             /// <summary>
             /// Keep track of the amount of issues found during migration process of every children object in the migration object hierarchy
             /// </summary>
-            public int failures { get; set; }
+            public int Failures { get; set; }
 
             /// <summary>
-            /// Keep track of recorded messages logged during  the migration process
+            /// Keep track of recorded messages logged during the migration process
             /// </summary>
-            public String log { get; set; }
+            public String Log { get; private set; }
 
             public MigrationStatus()
             {
-                isProcessed = false;
-                failures = 0;
-                log = "";
+                IsProcessed = false;
+                Failures = 0;
+                Log = "";
+            }
+
+            /// <summary>
+            /// Add messages to status log
+            /// </summary>
+            public void AddToLog(String msg)
+            {
+                Log += msg;
             }
         }
     }
 }
 #endif
-
