@@ -51,12 +51,9 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Tests if the Unity object is null. Checks both the managed object and the underly Unity-managed native object
+        /// Tests interfaces for null even when they are implemented by a UnityEngine.Object derived class, which overrides the Equals operator
         /// </summary>
         /// <returns>True if either the managed or native object is null, false otherwise</returns>
-        public static bool IsNull(Object obj)
-        {
-            return obj == null || obj.Equals(null);
-        }
+        public static bool IsNull<T>(T obj) where T : class => obj == null || obj.Equals(null);
     }
 }
