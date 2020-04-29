@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     Collider[] colliders = handle.gameObject.GetComponents<Collider>();
                     foreach (Collider collider in colliders)
-                    { 
+                    {
                         UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider, ignore);
                     }
                 }
