@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region MonoBehaviour Implementation
 
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
         /// <summary>
         /// Initializes the UWP input pane.
         /// </summary>
