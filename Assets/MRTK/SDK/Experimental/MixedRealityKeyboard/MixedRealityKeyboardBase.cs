@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 yield return null;
             }
         }
-#endif //!UNITY_EDITOR && UNITY_WSA
+#endif // WINDOWS_UWP
 
         private void OnDisable()
         {
