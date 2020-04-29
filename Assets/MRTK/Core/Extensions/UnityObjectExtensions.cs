@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Tests interfaces for null even when they are implemented by a UnityEngine.Object derived class, which overrides the Equals operator
+        /// Tests if an interfaces is null taking potential UnityEngine.Object derived class implementers into account
         /// </summary>
         /// <returns>True if either the managed or native object is null, false otherwise</returns>
         public static bool IsNull<T>(T obj) where T : class => obj == null || obj.Equals(null);
