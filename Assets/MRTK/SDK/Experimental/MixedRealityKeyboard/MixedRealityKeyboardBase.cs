@@ -105,6 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region MonoBehaviour Implementation
 
 #if !UNITY_EDITOR && UNITY_WSA
+        /// <summary>
+        /// Initializes the UWP input pane.
+        /// </summary>
         protected virtual void Start()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
