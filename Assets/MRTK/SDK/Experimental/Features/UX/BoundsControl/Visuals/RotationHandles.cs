@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     // attach new collider
                     var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                    var invScale = config.HandleSize / handleBounds.size.x;
+                    var invScale = handleBounds.size.x == 0.0f ? 0.0f :config.HandleSize / handleBounds.size.x;
                     Vector3 colliderSizeScaled = handleBounds.size * invScale;
                     Vector3 colliderCenterScaled = handleBounds.center * invScale;
                     if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 Bounds midpointBounds = CreateVisual(i, midpoint);
                 float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
-                float invScale = config.HandleSize / maxDim;
+                float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
                 VisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
                     config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
 
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            var invScale = config.HandleSize / visualSize.x;
+            var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
             if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             Bounds midpointBounds = VisualUtils.GetMaxBounds(midpointVisual);
             float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
-            float invScale = config.HandleSize / maxDim;
+            float invScale = maxDim == 0.0f ? 0.0f : config.HandleSize / maxDim;
 
             midpointVisual.name = "visuals";
             midpointVisual.transform.parent = parent.transform;

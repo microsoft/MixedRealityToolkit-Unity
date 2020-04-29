@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showRotationHandleForX != value)
                 {
                     showRotationHandleForX = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
+                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showRotationHandleForY != value)
                 {
                     showRotationHandleForY = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
+                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showRotationHandleForZ != value)
                 {
                     showRotationHandleForZ = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
+                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
                 }
             }
         }

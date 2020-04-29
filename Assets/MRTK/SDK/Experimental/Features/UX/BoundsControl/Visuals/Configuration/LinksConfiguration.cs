@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     wireframeMaterial = value;
                     TrySetDefaultMaterial();
-                    wireFrameChanged.Invoke(WireframeChangedEventType.MATERIAL);
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Material);
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeEdgeRadius != value)
                 {
                     wireframeEdgeRadius = value;
-                    wireFrameChanged.Invoke(WireframeChangedEventType.RADIUS);
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Radius);
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeShape != value)
                 {
                     wireframeShape = value;
-                    wireFrameChanged.Invoke(WireframeChangedEventType.SHAPE);
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Shape);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showWireframe != value)
                 {
                     showWireframe = value;
-                    wireFrameChanged.Invoke(WireframeChangedEventType.VISIBILITY);
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Visibility);
                 }
             }
         }
@@ -100,10 +100,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal enum WireframeChangedEventType
         {
-            VISIBILITY,
-            RADIUS,
-            SHAPE,
-            MATERIAL
+            Visibility,
+            Radius,
+            Shape,
+            Material
         }
         internal class WireFrameEvent : UnityEvent<WireframeChangedEventType> { }
         internal WireFrameEvent wireFrameChanged = new WireFrameEvent();

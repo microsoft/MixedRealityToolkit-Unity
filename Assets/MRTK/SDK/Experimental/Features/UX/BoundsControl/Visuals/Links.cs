@@ -49,16 +49,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             switch (changedType)
             {
-                case LinksConfiguration.WireframeChangedEventType.VISIBILITY:
+                case LinksConfiguration.WireframeChangedEventType.Visibility:
                     Reset(config.ShowWireFrame, cachedFlattenAxis);
                     break;
-                case LinksConfiguration.WireframeChangedEventType.RADIUS:
+                case LinksConfiguration.WireframeChangedEventType.Radius:
                     UpdateLinkScales(cachedExtents);
                     break;
-                case LinksConfiguration.WireframeChangedEventType.SHAPE:
+                case LinksConfiguration.WireframeChangedEventType.Shape:
                     UpdateLinkPrimitive();
                     break;
-                case LinksConfiguration.WireframeChangedEventType.MATERIAL:
+                case LinksConfiguration.WireframeChangedEventType.Material:
                     UpdateMaterial();
                     break;
             }
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
 
-            Object.DestroyImmediate(sharedMeshPrimitive);
+            Object.Destroy(sharedMeshPrimitive);
             UpdateLinkScales(cachedExtents);
         }
 

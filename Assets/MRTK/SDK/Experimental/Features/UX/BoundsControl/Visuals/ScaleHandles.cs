@@ -71,8 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
 
                 Bounds visualBounds = CreateVisual(visualsScale, isFlattened);
-
-                var invScale = config.HandleSize / visualBounds.size.x;
+                var invScale = visualBounds.size.x == 0.0f ? 0.0f : config.HandleSize / visualBounds.size.x;
                 VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale), 
                     HandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
                 handles.Add(corner.transform);       
@@ -115,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            var invScale = config.HandleSize / visualSize.x;
+            var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             BoxCollider collider = handle.gameObject.GetComponent<BoxCollider>();
             Vector3 colliderSize = visualSize * invScale;
@@ -162,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             cornerbounds.size = maxDim * Vector3.one;
 
             // we need to multiply by this amount to get to desired scale handle size
-            var invScale = config.HandleSize / cornerbounds.size.x;
+            var invScale = cornerbounds.size.x == 0.0f ? 0.0f : config.HandleSize / cornerbounds.size.x;
             cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
             VisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);

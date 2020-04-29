@@ -25,29 +25,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             switch (changedType)
             {
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
+                case HandlesBaseConfiguration.HandlesChangedEventType.Material:
                     UpdateBaseMaterial();
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
+                case HandlesBaseConfiguration.HandlesChangedEventType.MaterialGrabbed:
                     UpdateGrabbedMaterial();
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
+                case HandlesBaseConfiguration.HandlesChangedEventType.Prefab:
                     RecreateVisuals();
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
+                case HandlesBaseConfiguration.HandlesChangedEventType.ColliderSize:
+                case HandlesBaseConfiguration.HandlesChangedEventType.ColliderPadding:
                     UpdateColliderBounds();
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.MANIPULATION_TETHER:
+                case HandlesBaseConfiguration.HandlesChangedEventType.ManipulationTether:
                     UpdateDrawTether();
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.IGNORE_COLLIDER_REMOVE:
+                case HandlesBaseConfiguration.HandlesChangedEventType.IgnoreColliderRemove:
                     HandlesIgnoreConfigCollider(false);
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.IGNORE_COLLIDER_ADD:
+                case HandlesBaseConfiguration.HandlesChangedEventType.IgnoreColliderAdd:
                     HandlesIgnoreConfigCollider(true);
                     break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
+                case HandlesBaseConfiguration.HandlesChangedEventType.Visibility:
                     ResetHandles();
                     break;
             }

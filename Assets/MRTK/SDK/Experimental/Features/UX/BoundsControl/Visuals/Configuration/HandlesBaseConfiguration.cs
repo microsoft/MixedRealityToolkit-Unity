@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleMaterial = value;
                     TrySetDefaultMaterial();
-                    handlesChanged.Invoke(HandlesChangedEventType.MATERIAL);
+                    handlesChanged.Invoke(HandlesChangedEventType.Material);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleGrabbedMaterial = value;
                     TrySetDefaultMaterial();
-                    handlesChanged.Invoke(HandlesChangedEventType.MATERIAL_GRABBED);
+                    handlesChanged.Invoke(HandlesChangedEventType.MaterialGrabbed);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handlePrefab != value)
                 {
                     handlePrefab = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.PREFAB);
+                    handlesChanged.Invoke(HandlesChangedEventType.Prefab);
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handleSize != value)
                 {
                     handleSize = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.COLLIDER_SIZE);
+                    handlesChanged.Invoke(HandlesChangedEventType.ColliderSize);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (colliderPadding != value)
                 {
                     colliderPadding = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.COLLIDER_PADDING);
+                    handlesChanged.Invoke(HandlesChangedEventType.ColliderPadding);
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (value != drawTetherWhenManipulating)
                 {
                     drawTetherWhenManipulating = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.MANIPULATION_TETHER);
+                    handlesChanged.Invoke(HandlesChangedEventType.ManipulationTether);
                 }
             }   
         }
@@ -147,24 +147,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 if (value != handlesIgnoreCollider)
                 {
-                    handlesChanged.Invoke(HandlesChangedEventType.IGNORE_COLLIDER_REMOVE);
+                    handlesChanged.Invoke(HandlesChangedEventType.IgnoreColliderRemove);
                     handlesIgnoreCollider = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.IGNORE_COLLIDER_ADD);
+                    handlesChanged.Invoke(HandlesChangedEventType.IgnoreColliderAdd);
                 }
             }
         }
 
         internal enum HandlesChangedEventType
         {
-            MATERIAL,
-            MATERIAL_GRABBED,
-            PREFAB,
-            COLLIDER_SIZE,
-            COLLIDER_PADDING,
-            MANIPULATION_TETHER,
-            IGNORE_COLLIDER_REMOVE,
-            IGNORE_COLLIDER_ADD,
-            VISIBILITY
+            Material,
+            MaterialGrabbed,
+            Prefab,
+            ColliderSize,
+            ColliderPadding,
+            ManipulationTether,
+            IgnoreColliderRemove,
+            IgnoreColliderAdd,
+            Visibility
         }
         internal class HandlesChangedEvent : UnityEvent<HandlesChangedEventType> { }
         internal HandlesChangedEvent handlesChanged = new HandlesChangedEvent();

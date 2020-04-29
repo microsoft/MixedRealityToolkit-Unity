@@ -46,9 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Allow for accessing / subscribing to the changed event for objects that show a proximity effect
         /// </summary>
-        ProximityObjectsChangedEvent ProximityObjectsChanged
-        {
-            get;
-        }
+        ProximityObjectsChangedEvent ProximityObjectsChanged { get; }
     }
 }
