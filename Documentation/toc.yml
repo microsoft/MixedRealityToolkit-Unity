@@ -236,7 +236,7 @@
     - name: Progress Indicator
       href: README_ProgressIndicator.md
     - name: Dialog [Experimental]
-      href: README_Dialog.md
+      href: ../Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md
     - name: Hand Coach [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
     - name: Scrolling Object Collection [Experimental]
