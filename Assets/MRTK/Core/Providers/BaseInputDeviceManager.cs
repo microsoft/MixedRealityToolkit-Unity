@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             foreach (var pointer in activePointersToConfig.Keys)
             {
                 var pointerComponent = pointer as MonoBehaviour;
-                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                if (pointerComponent != null)
                 {
                     GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                 }
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 var p = pointerCache.Pop();
                                 var pointerComponent = p as MonoBehaviour;
-                                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                                if (pointerComponent != null)
                                 {
                                     pointerComponent.gameObject.SetActive(true);
 
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         var pointer = pointers[i];
                         var pointerComponent = pointer as MonoBehaviour;
-                        if (!UnityObjectExtensions.IsNull(pointerComponent))
+                        if (pointerComponent != null)
                         {
                             // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
                             // At least if this is a controller we know about and we expect it to be destroyed, skip
@@ -329,8 +329,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var enumerator = activePointersToConfig.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var pointer = enumerator.Current.Key as MonoBehaviour;
-                    if (UnityObjectExtensions.IsNull(pointer))
+                    var pointerComponent = enumerator.Current.Key as MonoBehaviour;
+                    if (pointerComponent != null)
                     {
                         removal.Add(enumerator.Current.Key);
                     }
@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
                     var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    if (pointerComponent != null)
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }
