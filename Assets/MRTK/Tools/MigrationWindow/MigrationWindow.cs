@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private ToolbarOption selectedToolbar = ToolbarOption.GameObjects;
         private Vector2 scrollPosition = Vector2.zero;
+        private Vector2 logScrollPosition = Vector2.zero;
 
         private const string MigrationWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
         private const string WindowTitle = "Migration Window";
@@ -42,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private string[] migrationHandlerTypeNames;
         private bool isMigrationEnabled;
         private Type selectedMigrationHandlerType;
+        private string migrationLog;
 
         private readonly MigrationTool migrationTool = new MigrationTool();
 
@@ -134,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         scrollPosition = Vector2.zero;
                         migrationTool.ClearMigrationList();
+                        migrationLog = "";
                     }
                 }
             }
@@ -160,14 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                     var allowSceneObjects = selectedToolbar == ToolbarOption.GameObjects;
                     var selectionType = allowSceneObjects ? typeof(GameObject) : typeof(SceneAsset);
-                    
+
                     using (var check = new EditorGUI.ChangeCheckScope())
                     {
                         var selection = EditorGUILayout.ObjectField(null, selectionType, allowSceneObjects);
 
                         if (check.changed && selection)
                         {
-                            migrationTool.TryAddObjectForMigration(selectedMigrationHandlerType,selection);
+                            migrationTool.TryAddObjectForMigration(selectedMigrationHandlerType, selection);
                         }
                     }
                 }
@@ -189,39 +192,78 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         {
                             using (new EditorGUI.DisabledGroupScope(true))
                             {
-                                EditorGUILayout.ObjectField(migrationObject, typeof(Object), false);
+                                EditorGUILayout.ObjectField(migrationObject.Key, typeof(Object), false);
                             }
 
                             var removeIcon = EditorGUIUtility.IconContent("winbtn_win_min_h");
-                            if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
+                            if (!migrationObject.Value.IsProcessed)
                             {
-                                migrationTool.RemoveObjectForMigration(migrationObject);
-                                break;
+                                if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
+                                {
+                                    migrationTool.RemoveObjectForMigration(migrationObject.Key);
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                GUIContent statusIcon;
+                                string tooltip = "";
+
+                                if (migrationObject.Value.Failures > 0)
+                                {
+                                    statusIcon = EditorGUIUtility.IconContent("vcs_delete");
+                                    tooltip = "Object migration had some issues.\nClick for more details.";
+                                }
+                                else
+                                {
+                                    statusIcon = EditorGUIUtility.IconContent("vcs_check");
+                                    tooltip = "Object migration was successful.\nClick for more details.";
+                                }
+
+                                if (GUILayout.Button(new GUIContent(statusIcon.image, tooltip), GUILayout.Width(30), GUILayout.Height(20)))
+                                {
+                                    migrationLog = migrationObject.Value.Log;
+                                    break;
+                                }
                             }
                         }
                     }
                     EditorGUILayout.Space();
 
-                    using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+                    if (migrationTool.MigrationState == MigrationTool.MigrationToolState.PreMigration)
                     {
-                        using (new EditorGUI.DisabledGroupScope(migrationObjects.Count == 0))
+                        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
                         {
-                            if (GUILayout.Button("Migrate"))
+                            using (new EditorGUI.DisabledGroupScope(migrationObjects.Count == 0))
                             {
-                                migrationTool.MigrateSelection(selectedMigrationHandlerType, true);
-                            }
 
-                            if (migrationObjects.Count > 0)
-                            {
-                                using (new EditorGUILayout.HorizontalScope())
+                                if (GUILayout.Button("Migrate"))
                                 {
-                                    GUILayout.FlexibleSpace();
+                                    migrationTool.MigrateSelection(selectedMigrationHandlerType, true);
+                                    migrationLog = "";
+                                }
 
-                                    string tooltip = $"{migrationObjects.Count} Objects selected for migration";
-                                    EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
+                                if (migrationObjects.Count > 0)
+                                {
+                                    using (new EditorGUILayout.HorizontalScope())
+                                    {
+                                        GUILayout.FlexibleSpace();
+
+                                        string tooltip = $"{migrationObjects.Count} Objects selected for migration";
+                                        EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
+                                    }
                                 }
                             }
                         }
+                    }
+                    
+                    else if (migrationTool.MigrationState == MigrationTool.MigrationToolState.PostMigration && !String.IsNullOrEmpty(migrationLog))
+                    {
+                        using (var logScrollView = new EditorGUILayout.ScrollViewScope(logScrollPosition))
+                        {
+                            logScrollPosition = logScrollView.scrollPosition;
+                            GUILayout.TextArea(migrationLog);
+                        }                    
                     }
                 }
             }
@@ -241,4 +283,3 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
     }
 }
-
