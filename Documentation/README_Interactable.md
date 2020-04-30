@@ -102,7 +102,7 @@ Themes work a lot like materials. They are scriptable objects that contain a lis
 
 Visual themes modify various properties on a targeted GameObject, dependent on the class and type of theme engine selected. If *Reset On Destroy* is true when the Interactable component is destroyed, the component will reset all modified properties from active themes to their original values. Otherwise, when destroyed, the Interactable component will leave any modified properties as-is. In this latter case, the last state of values will persist unless altered by another external component. The default is false. 
 
-![Interactable Profiles](Images/Interactable/Profiles_Themes.png)
+<img src="../Documentation/Images/Interactable/Profiles_Themes.png" width="450">
 
 ## Events
 

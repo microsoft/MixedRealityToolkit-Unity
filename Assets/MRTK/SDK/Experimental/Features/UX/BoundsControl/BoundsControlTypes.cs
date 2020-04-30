@@ -90,9 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     }
 
     /// <summary>
-    /// This enum defines the type of collider in use when a rotation handle prefab is provided.
+    /// This enum defines the type of collider in use when no handle prefab is provided.
     /// </summary>
-    public enum RotationHandlePrefabCollider
+    public enum HandlePrefabCollider
     {
         Sphere,
         Box

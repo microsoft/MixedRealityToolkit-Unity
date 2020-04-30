@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     internal class VisualUtils
     {
 
-        internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)
+        internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles, bool ignore = true)
         {
             if (handlesIgnoreCollider != null)
             {
@@ -23,10 +23,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Collider[] colliders = handle.gameObject.GetComponents<Collider>();
                     foreach (Collider collider in colliders)
                     {
-                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider);
+                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider, ignore);
                     }
                 }
             }
+        }
+
+        internal static float GetMaxComponent(Vector3 vec)
+        {
+            return Mathf.Max(Mathf.Max(vec.x, vec.y), vec.z);
         }
 
         internal static Bounds GetMaxBounds(GameObject g)
@@ -63,12 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Add all common components to a corner or rotate affordance
+        /// Add all common components to a corner or rotate affordance.
         /// </summary>
-        internal static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, 
+        internal static void AddComponentsToAffordance(GameObject afford, Bounds bounds, HandlePrefabCollider colliderType, 
             CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding, Transform parent, bool drawTetherWhenManipulating)
         {
-            if (colliderType == RotationHandlePrefabCollider.Box)
+            if (colliderType == HandlePrefabCollider.Box)
             {
                 BoxCollider collider = afford.AddComponent<BoxCollider>();
                 collider.size = bounds.size;
@@ -80,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 SphereCollider sphere = afford.AddComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
-                sphere.radius += Mathf.Max(Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
+                sphere.radius += GetMaxComponent(colliderPadding);
             }
 
             // In order for the affordance to be grabbed using near interaction we need
@@ -94,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Creates the default material for bounds control handles
+        /// Creates the default material for bounds control handles.
         /// </summary>
         internal static Material CreateDefaultMaterial()
         {
@@ -102,10 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Calculates an array of corner points out of the given bounds
+        /// Calculates an array of corner points out of the given bounds.
         /// </summary>
-        /// <param name="bounds">bounds of the box</param>
-        /// <param name="positions">calculated corner points</param>
+        /// <param name="bounds">Bounds of the box.</param>
+        /// <param name="positions">Calculated corner points.</param>
         static internal void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
         {
             const int numCorners = 1 << 3;
@@ -127,12 +132,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Flattens the given extents according to the passed flattenAxis. The flattenAxis value will be replaced by flattenValue
+        /// Flattens the given extents according to the passed flattenAxis. The flattenAxis value will be replaced by flattenValue.
         /// </summary>
-        /// <param name="extents">The original extents (unflattened)</param>
-        /// <param name="flattenAxis">The axis to flatten</param>
-        /// <param name="flattenValue">The value to flatten the flattenAxis to</param>
-        /// <returns>new extents with flattened axis</returns>
+        /// <param name="extents">The original extents (unflattened).</param>
+        /// <param name="flattenAxis">The axis to flatten.</param>
+        /// <param name="flattenValue">The value to flatten the flattenAxis to.</param>
+        /// <returns>New extents with flattened axis.</returns>
         static internal Vector3 FlattenBounds(Vector3 extents, FlattenModeType flattenAxis, float flattenValue = 0.0f)
         {
             Vector3 boundsExtents = extents;
@@ -163,12 +168,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Util function for retrieving a position for the given edge index of a box
-        /// This method makes sure all visual components are having the same definition of edges / corners
+        /// Util function for retrieving a position for the given edge index of a box.
+        /// This method makes sure all visual components are having the same definition of edges / corners.
         /// </summary>
-        /// <param name="linkIndex">Index of the edge the position is queried for</param>
-        /// <param name="cornerPoints">Corner points array of the box</param>
-        /// <returns>center position of link</returns>
+        /// <param name="linkIndex">Index of the edge the position is queried for.</param>
+        /// <param name="cornerPoints">Corner points array of the box.</param>
+        /// <returns>Center position of link.</returns>
         static internal Vector3 GetLinkPosition(int linkIndex, ref Vector3[] cornerPoints)
         {
             Debug.Assert(cornerPoints != null && cornerPoints.Length == 8, "Invalid corner points array passed");
@@ -205,5 +210,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return Vector3.zero;
         }
 
+        static readonly int[] flattenedIndicesX = new int[] { 0, 4, 2, 6 };
+        static readonly int[] flattenedIndicesY = new int[] { 1, 3, 5, 7 };
+        static readonly int[] flattenedIndicesZ = new int[] { 9, 10, 8, 11 };
+        /// <summary>
+        /// Returns the flatten indices to the corresponding flattenAxis mode.
+        /// </summary>
+        /// <param name="flattenAxis">Flatten axis mode that should be converted to indices.</param>
+        /// <returns>Flattened indices.</returns>
+        internal static int[] GetFlattenedIndices(FlattenModeType flattenAxis)
+        {
+            if (flattenAxis == FlattenModeType.FlattenX)
+            {
+                return flattenedIndicesX;
+            }
+            else if (flattenAxis == FlattenModeType.FlattenY)
+            {
+                return flattenedIndicesY;
+            }
+            else if (flattenAxis == FlattenModeType.FlattenZ)
+            {
+                return flattenedIndicesZ;
+            }
+
+            return null;
+        }
     }
 }
