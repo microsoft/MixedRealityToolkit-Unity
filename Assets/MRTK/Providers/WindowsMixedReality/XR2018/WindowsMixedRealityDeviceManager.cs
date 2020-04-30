@@ -393,13 +393,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 GestureRecognizerEnabled = true;
             }
-
-            // Disable the simulated gaze since it is no longer controlled by the input simulation service
-            InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
-            if (inputSimulationService != null)
-            {
-                inputSimulationService.SimulateGaze = false;
-            }
         }
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");

@@ -136,10 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool SimulateEyePosition { get; set; }
 
-        /// If true then the gaze data provider is always simulated.
-        /// </summary>
-        public bool SimulateGaze { get; set; }
-
         /// <summary>
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
@@ -345,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
 
                     // HandDataGaze is only enabled if the user is simulating via mouse and keyboard
-                    if (UserInputEnabled && SimulateGaze && !(HandDataLeft.IsTracked || HandDataRight.IsTracked))
+                    if (UserInputEnabled && !XRDevice.isPresent && !(HandDataLeft.IsTracked || HandDataRight.IsTracked))
                         UpdateHandDevice(HandSimulationMode.Gestures, Handedness.None, HandDataGaze);
                     lastHandUpdateTimestamp = currentTime.Ticks;
                 }
