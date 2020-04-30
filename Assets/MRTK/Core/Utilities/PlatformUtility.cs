@@ -7,9 +7,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class PlatformUtility
     {
-        public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platforms)
+        public static bool IsPlatformSupported(SupportedPlatforms platforms)
         {
-            SupportedPlatforms target = GetSupportedPlatformMask(runtimePlatform);
+#if UNITY_EDITOR
+            SupportedPlatforms target = GetSupportedPlatformMask(UnityEditor.EditorUserBuildSettings.activeBuildTarget);
+#else
+            SupportedPlatforms target = GetSupportedPlatformMask(Application.platform);
+#endif
             return IsPlatformSupported(target, platforms);
         }
 
@@ -59,11 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
 #if UNITY_EDITOR
-        public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platforms)
-        {
-            SupportedPlatforms target = GetSupportedPlatformMask(editorBuildTarget);
-            return IsPlatformSupported(target, platforms);
-        }
 
         private static SupportedPlatforms GetSupportedPlatformMask(UnityEditor.BuildTarget editorBuildTarget)
         {
