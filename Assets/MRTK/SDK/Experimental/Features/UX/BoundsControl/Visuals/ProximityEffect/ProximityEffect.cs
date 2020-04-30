@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Runtime.CompilerServices;
 
-
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
@@ -45,15 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Container for registered object providers and their proximity infos
+        /// Dictionary that maps proximity object provider to list of objects that have proximity scaling applied
         /// </summary>
-        private class RegisteredObjects
-        {
-            public IProximityEffectObjectProvider objectProvider;
-            public List<ObjectProximityInfo> proximityInfos;
-        }
-
-        private List<RegisteredObjects> registeredObjects = new List<RegisteredObjects>();
+        
+        private Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>> registeredObjects = new Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>>();
 
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
@@ -63,18 +57,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// register objects for proximity effect via a <see cref="IProximityEffectObjectProvider"/>
         /// </summary>
-        public void AddObjects(IProximityEffectObjectProvider provider)
+        public void RegisterObjectProvider(IProximityEffectObjectProvider provider)
         {
-            RegisteredObjects registeredObject = new RegisteredObjects() { objectProvider = provider, proximityInfos = new List<ObjectProximityInfo>() };
+            registeredObjects.Add(provider, FetchObjects(provider));
+            // subscribe to object changes
+            provider.ProximityObjectsChanged.AddListener(RefreshObjects);
+        }
+
+        private List<ObjectProximityInfo> FetchObjects(IProximityEffectObjectProvider provider)
+        {
+            var registeredObjects = new List<ObjectProximityInfo>();
             provider.ForEachProximityObject(proximityObject =>
             {
-                registeredObject.proximityInfos.Add(new ObjectProximityInfo()
+                registeredObjects.Add(new ObjectProximityInfo()
                 {
                     ScaledObject = proximityObject,
                     ObjectVisualRenderer = proximityObject.gameObject.GetComponentInChildren<Renderer>()
                 });
             });
-            registeredObjects.Add(registeredObject);
+
+            return registeredObjects;
+        }
+
+        private void RefreshObjects(IProximityEffectObjectProvider provider)
+        {
+            // refetch object list
+            registeredObjects[provider] = FetchObjects(provider);
         }
 
         /// <summary>
@@ -84,6 +92,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (registeredObjects != null)
             {
+                foreach (var keyValuePair in registeredObjects)
+                {
+                    keyValuePair.Key.ProximityObjectsChanged.RemoveListener(RefreshObjects);
+                }
                 registeredObjects.Clear();
             }
         }
@@ -98,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return;
             }
 
-            foreach (var registeredObject in registeredObjects)
+            foreach (var keyValuePair in registeredObjects)
             {
-                foreach (var item in registeredObject.proximityInfos)
+                foreach (var item in keyValuePair.Value)
                 {
                     if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
@@ -108,10 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                        
                         if (item.ObjectVisualRenderer)
                         {
-                            item.ObjectVisualRenderer.material = registeredObject.objectProvider.GetBaseMaterial();
+                            item.ObjectVisualRenderer.material = keyValuePair.Key.GetBaseMaterial();
                         }
 
-                        ScaleObject(item.ProximityState, item.ScaledObject, registeredObject.objectProvider.GetObjectSize());
+                        ScaleObject(item.ProximityState, item.ScaledObject, keyValuePair.Key.GetObjectSize());
                     }
                 }
             }
@@ -176,13 +188,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             foreach (var point in proximityPoints)
             {
 
-                foreach (var provider in registeredObjects)
+                foreach (var keyValuePair in registeredObjects)
                 {
 
-                    foreach (var item in provider.proximityInfos)
+                    foreach (var item in keyValuePair.Value)
                     {
                         // If object can't be visible, skip calculations
-                        if (!provider.objectProvider.IsActive())
+                        if (!keyValuePair.Key.IsActive)
                         {
                             continue;
                         }
@@ -199,11 +211,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             // Loop through all objects and update visual state based on closest point
-            foreach (var provider in registeredObjects)
+            foreach (var keyValuePair in registeredObjects)
             {
-                foreach (var item in provider.proximityInfos)
+                foreach (var item in keyValuePair.Value)
                 {
                     ProximityState newState = (closestObject == item.ScaledObject) ? GetProximityState(closestDistanceSqr) : ProximityState.FullsizeNoProximity;
+                    IProximityEffectObjectProvider provider = keyValuePair.Key;
 
                     // Only apply updates if object is in a new state or closest object needs to lerp scaling
                     if (item.ProximityState != newState)
@@ -213,11 +226,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                         if (item.ObjectVisualRenderer)
                         {
-                            item.ObjectVisualRenderer.material = newState == ProximityState.CloseProximity ? provider.objectProvider.GetHighlightedMaterial() : provider.objectProvider.GetBaseMaterial();
+                            item.ObjectVisualRenderer.material = newState == ProximityState.CloseProximity ? provider.GetHighlightedMaterial() : provider.GetBaseMaterial();
                         }
                     }
 
-                    ScaleObject(newState, item.ScaledObject, provider.objectProvider.GetObjectSize(), true);
+                    ScaleObject(newState, item.ScaledObject, provider.GetObjectSize(), true);
                 }
             }
         }
@@ -228,9 +241,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private bool IsAnyRegisteredObjectVisible()
         {
-            foreach (var registeredObject in registeredObjects)
+            foreach (var keyValuePair in registeredObjects)
             {
-                if (registeredObject.objectProvider.IsActive())
+                if (keyValuePair.Key.IsActive)
                 {
                     return true;
                 }
