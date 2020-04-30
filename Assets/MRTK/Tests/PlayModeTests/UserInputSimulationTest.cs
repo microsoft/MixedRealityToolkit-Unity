@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(!iss.HandDataRight.IsTracked);
             Assert.True(iss.HandDataLeft.IsTracked);
 
-            //Make sure gaze cursor is not visible
+            // Make sure gaze cursor is not visible
             Assert.True(!CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
 
             // start click
