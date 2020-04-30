@@ -4,9 +4,13 @@ The MRTK Toolbox is a Unity editor window utility that makes it easy to discover
 
 ![MRTK Toolbox](/Images/Tools/MRTKToolboxWindow.png)
 
+## Installing the toolbox
+
+The toolbox is distributed via the MRTK's Tools package.
+
 ## Launch the toolbox window
 
-1. Open the Toolbox window via the **Mixed Reality Toolkit** tab > **Toolbox**. 
+1. Open the Toolbox window via the **Mixed Reality Toolkit** tab > **Toolbox**.
 
 ## See also
 
