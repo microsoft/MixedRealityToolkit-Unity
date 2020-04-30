@@ -278,6 +278,15 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                             IncludePlatforms = new string[] { "Editor" }
                         };
 
+#if !UNITY_2019_3_OR_NEWER
+                        // In Unity 2018.4, directories that contain tests need to have a test assembly.
+                        // An asmdef is added to a leap directory that contains tests for the leap core assets 4.5.0.
+                        if (leapEditorAsmDef.Name.Contains("Tests"))
+                        {
+                            leapEditorAsmDef.OptionalUnityReferences = new string[] { "TestAssemblies" };
+                        }
+#endif
+
                         leapEditorAsmDef.Save(fullLeapAsmDefFilePath);
                     }
                 }
