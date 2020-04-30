@@ -22,6 +22,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
+        [Tooltip("Amount to pull back the center of the sphere behind the hand")]
+        private float pullbackDistance = 0.08f;
+
+        /// <summary>
+        /// Amount to pull back the center of the sphere behind the hand
+        /// </summary>
+        public float PullbackDistance => pullbackDistance;
+
+        [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried")]
+        private float nearObjectSectorAngle = 360.0f;
+
+        /// <summary>
+        /// Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried
+        /// </summary>
+        public float NearObjectSectorAngle => nearObjectSectorAngle;
+
+        [SerializeField]
+        [Min(0.0f)]
         [Tooltip("Additional distance on top of sphere cast radius when pointer is considered 'near' an object and far interaction will turn off")]
         private float nearObjectMargin = 0.2f;
 
@@ -108,8 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius);
+            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, PullbackDistance, NearObjectRadius, NearObjectSectorAngle);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, PullbackDistance, SphereCastRadius, NearObjectSectorAngle);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -125,7 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 Vector3 pointerPosition;
-                if (TryGetNearGraspPoint(out pointerPosition))
+                Vector3 pointerAxis;
+                if (TryGetNearGraspPoint(out pointerPosition) && TryGetNearGraspAxis(out pointerAxis))
                 {
                     Vector3 endPoint = Vector3.forward * SphereCastRadius;
                     Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
@@ -133,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * pullbackDistance, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
@@ -141,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
@@ -190,11 +211,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
 
-        /// <inheritdoc />
+        private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNearGraspAxis");
+
+        /// <summary>
+        /// Gets the axis that the grasp happens
+        /// For the SpherePointer it's the axis from the palm to the grasp point
+        /// For any other IMixedRealityController, return just the pointer's forward orientation
+        /// </summary>
         public bool TryGetNearGraspAxis(out Vector3 result)
         {
-            result = transform.forward;
-            return false;
+            using (TryGetNearGraspAxisPerfMarker.Auto())
+            {
+                // If controller is of kind IMixedRealityHand, return average of index and thumb
+                if (Controller is IMixedRealityHand hand)
+                {
+                    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
+                    {
+                        if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                        {
+                            Vector3 palmToIndex = index.Position - palm.Position;
+                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, 0.9f);
+                            return true;
+                        }
+                    }
+
+                    // If controller is of kind IMixedRealityHand, return average of index and thumb
+                    // Other implementation for testing
+                    // Vector3 graspPosition;
+                    // TryGetNearGraspPoint(out graspPosition);
+                    // if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                    // {
+                    //     result = graspPosition - palm.Position;
+                    //     // Visualization for debuggin
+                    //     Debug.DrawRay(palm.Position, result, Color.red);
+                    //     return true;
+                    // }
+                }
+
+                result = transform.forward;
+                return false;
+            }
         }
 
         private static readonly ProfilerMarker TryGetDistanceToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetDistanceToNearestSurface");
@@ -264,15 +320,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private readonly float queryRadius;
 
             /// <summary>
+            /// Minimum required distance from the query center.
+            /// </summary>
+            private readonly float queryMinDistance;
+
+            /// <summary>
+            /// Angle in degrees that a point is allowed to be off from the query axis. Angle >= 180 means points can be anywhere in relation to the query axis
+            /// </summary>
+            private readonly float queryAngle;
+
+            
+            /// <summary>
             /// The grabbable near the QueryRadius. 
             /// </summary>
             private NearInteractionGrabbable grabbable;
 
-            public SpherePointerQueryInfo(int bufferSize, float radius)
+            /// <summary>
+            /// Constructor for a sphere overlap query
+            /// </summary>
+            /// <param name="bufferSize">Size to make the phyiscs query buffer array</param>
+            /// <param name="radius">Radius of the sphere </param>
+            /// <param name="angle">Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried</param>
+            /// <param name="minDistance">"Minimum required distance to be registered in the query"</param>
+            public SpherePointerQueryInfo(int bufferSize, float radius, float angle, float minDistance)
             {
                 numColliders = 0;
                 queryBuffer = new Collider[bufferSize];
                 queryRadius = radius;
+                queryAngle = angle * 0.5f;
+                queryMinDistance = minDistance;
             }
 
             private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
@@ -288,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call.</param>
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
-            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
+            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, Vector3 pointerAxis, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
             {
                 using (TryUpdateQueryBufferForLayerMaskPerfMarker.Auto())
                 {
@@ -324,6 +400,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                         }
 
+                        Vector3 closestPointToCollider = collider.ClosestPoint(pointerPosition);
+                        Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
+
+                        // Check if the collider is within the activation cone
+                        float queryAngleRadians = queryAngle * Mathf.Deg2Rad;
+                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(queryAngleRadians);
+
+                        // Check to ensure the object is beyond the minimum distance
+                        bool pastMinDistance = relativeColliderPosition.sqrMagnitude > queryMinDistance * queryMinDistance;
+
+                        if (!pastMinDistance || !inAngle)
+                        {
+                            continue;
+                        }
+
                         if (grabbable != null)
                         {
                             return true;
@@ -342,15 +433,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
     #if UNITY_EDITOR
         /// <summary>
-        /// When in editor, draws a cone that represents the grabbable cone area
+        /// When in editor, draws an approximation of what is the "Near Object" area
         /// </summary>
         private void OnDrawGizmos()
         {
+            TryGetNearGraspAxis(out Vector3 sectorForwardAxis);
             TryGetNearGraspPoint(out Vector3 point);
+            Vector3 centralAxis = sectorForwardAxis.normalized;
 
-            //Semi transparent green sphere
-            Gizmos.color = Color.green - Color.black * 0.5f;
-            Gizmos.DrawSphere(point, NearObjectRadius);
+            if (nearObjectSectorAngle >= 360.0f)
+            {
+                // Draw the sphere with the pullback inner sphere.
+                Gizmos.color = Color.cyan - Color.black * 0.8f;
+                Gizmos.DrawSphere(point - centralAxis * pullbackDistance, NearObjectRadius);
+
+                Gizmos.color = Color.blue - Color.black * 0.8f;
+                Gizmos.DrawSphere(point - centralAxis * pullbackDistance, pullbackDistance);
+            }
+            else
+            {
+                // Draw something approximating the sector
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - pullbackDistance));
+
+                UnityEditor.Handles.color = Color.cyan;
+                float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
+                UnityEditor.Handles.DrawWireDisc(point,
+                                                 centralAxis,
+                                                 pullbackDistance * Mathf.Sin(GizmoAngle));
+
+                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - pullbackDistance),
+                                                 centralAxis,
+                                                 NearObjectRadius * Mathf.Sin(GizmoAngle));
+            }
         }
     #endif
     }

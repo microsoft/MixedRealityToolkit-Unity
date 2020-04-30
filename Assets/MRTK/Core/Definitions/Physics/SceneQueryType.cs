@@ -26,11 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Check for colliders within a specific radius.
         /// </summary>
-        SphereOverlap,
-
-        /// <summary>
-        /// Check for colliders within a cone within a certain distance
-        /// </summary>
-        ConeOverlap
+        SphereOverlap
     }
 }

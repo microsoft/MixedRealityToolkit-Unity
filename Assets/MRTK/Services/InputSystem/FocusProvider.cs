@@ -1252,7 +1252,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                             break;
                         case SceneQueryType.SphereOverlap:
-                        case SceneQueryType.ConeOverlap:
                             // Set up our results array
                             if (colliders == null)
                             {
