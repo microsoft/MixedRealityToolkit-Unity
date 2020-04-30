@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float pullbackDistance = 0.0f;
 
         /// <summary>
-        /// Amount to pull back the center of the sphere behind the hand
+        /// Amount to pull back the center of the sphere behind the hand for detecting when to turn off far interaction.
         /// </summary>
         public float PullbackDistance
         {
@@ -64,6 +64,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get => nearObjectMargin;
             set => nearObjectMargin = value;
+        }
+
+        [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Additional distance on top of sphere cast radius when pointer is considered 'near' an object and far interaction will turn off")]
+        private float nearObjectAxisLerp = 0.9f;
+        /// <summary>
+        /// Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried
+        /// </summary>
+        public float NearObjectAxisLerp
+        {
+            get => nearObjectAxisLerp;
+            set => nearObjectAxisLerp = value;
         }
 
         /// <summary>
@@ -147,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void InitQueryParameters()
         {
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius, NearObjectSectorAngle, PullbackDistance);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, PullbackDistance);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -233,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Gets the axis that the grasp happens
-        /// For the SpherePointer it's the axis from the palm to the grasp point
+        /// For the SpherePointer it's the axis from the palm to the index tip
         /// For any other IMixedRealityController, return just the pointer's forward orientation
         /// </summary>
         public bool TryGetNearGraspAxis(out Vector3 result)
@@ -248,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
                         {
                             Vector3 palmToIndex = index.Position - palm.Position;
-                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, 0.9f);
+                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, NearObjectAxisLerp);
                             return true;
                         }
                     }
@@ -448,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryGetNearGraspPoint(out Vector3 point);
             Vector3 centralAxis = sectorForwardAxis.normalized;
 
-            if (nearObjectSectorAngle >= 360.0f)
+            if (NearObjectSectorAngle >= 360.0f)
             {
                 // Draw the sphere with the pullback inner sphere.
                 Gizmos.color = (IsNearObject ? Color.red : Color.cyan) - Color.black * 0.8f;
