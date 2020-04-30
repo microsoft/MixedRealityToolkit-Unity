@@ -23,12 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Min(0.0f)]
         [Tooltip("Amount to pull back the center of the sphere behind the hand")]
-        private float pullbackDistance = 0.08f;
+        private float pullbackDistance = 0.0f;
 
         /// <summary>
         /// Amount to pull back the center of the sphere behind the hand
         /// </summary>
-        public float PullbackDistance => pullbackDistance;
+        public float PullbackDistance
+        {
+            get => pullbackDistance;
+            set => pullbackDistance = value;
+        }
+
 
         [SerializeField]
         [Min(0.0f)]
@@ -36,9 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float nearObjectSectorAngle = 360.0f;
 
         /// <summary>
-        /// Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried
+        /// Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried
         /// </summary>
-        public float NearObjectSectorAngle => nearObjectSectorAngle;
+        public float NearObjectSectorAngle
+        {
+            get => nearObjectSectorAngle;
+            set => nearObjectSectorAngle = value;
+        }
 
         [SerializeField]
         [Min(0.0f)]
@@ -51,7 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
         /// </remarks>
-        public float NearObjectMargin => nearObjectMargin;
+        public float NearObjectMargin
+        {
+            get => nearObjectMargin;
+            set => nearObjectMargin = value;
+        }
 
         /// <summary>
         /// Distance at which the pointer is considered "near" an object.
@@ -128,8 +141,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, PullbackDistance, NearObjectRadius, NearObjectSectorAngle);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, PullbackDistance, SphereCastRadius, NearObjectSectorAngle);
+            InitQueryParameters();
+        }
+
+        public void InitQueryParameters()
+        {
+            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius, NearObjectSectorAngle, PullbackDistance);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, PullbackDistance);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -234,18 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return true;
                         }
                     }
-
-                    // If controller is of kind IMixedRealityHand, return average of index and thumb
-                    // Other implementation for testing
-                    // Vector3 graspPosition;
-                    // TryGetNearGraspPoint(out graspPosition);
-                    // if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
-                    // {
-                    //     result = graspPosition - palm.Position;
-                    //     // Visualization for debuggin
-                    //     Debug.DrawRay(palm.Position, result, Color.red);
-                    //     return true;
-                    // }
                 }
 
                 result = transform.forward;
@@ -405,16 +411,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         // Check if the collider is within the activation cone
                         float queryAngleRadians = queryAngle * Mathf.Deg2Rad;
-                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(queryAngleRadians);
+                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) >= Mathf.Cos(queryAngleRadians) || queryAngle >= 180.0f;
 
                         // Check to ensure the object is beyond the minimum distance
-                        bool pastMinDistance = relativeColliderPosition.sqrMagnitude > queryMinDistance * queryMinDistance;
+                        bool pastMinDistance = relativeColliderPosition.sqrMagnitude >= queryMinDistance * queryMinDistance;
 
                         if (!pastMinDistance || !inAngle)
                         {
+                            grabbable = null;
                             continue;
                         }
-
+                        
                         if (grabbable != null)
                         {
                             return true;
@@ -444,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (nearObjectSectorAngle >= 360.0f)
             {
                 // Draw the sphere with the pullback inner sphere.
-                Gizmos.color = Color.cyan - Color.black * 0.8f;
+                Gizmos.color = (IsNearObject ? Color.red : Color.cyan) - Color.black * 0.8f;
                 Gizmos.DrawSphere(point - centralAxis * pullbackDistance, NearObjectRadius);
 
                 Gizmos.color = Color.blue - Color.black * 0.8f;
@@ -456,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - pullbackDistance));
 
-                UnityEditor.Handles.color = Color.cyan;
+                UnityEditor.Handles.color = IsNearObject ? Color.red : Color.cyan;
                 float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
                 UnityEditor.Handles.DrawWireDisc(point,
                                                  centralAxis,
