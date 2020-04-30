@@ -14,15 +14,13 @@ A slate control is composed of the following elements:
 * **BackPlate**: The back side of the slate.
 * **ContentQuad**: Content is assigned as material. The example uses a sample material 'PanContent'.
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Structure.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_SlateStructure.jpg" width="650">
 
 ## Bounding box
 
 A slate control contains a bounding box script for scaling and rotating. For more information on bounding box, please see the [Bounding box](README_BoundingBox.md) page.
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Box.png" width="650">
-
-<img src="../Documentation/Images/Slate/MRTK_Slate_Scale.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_BB.jpg" width="650">
 
 ## Buttons
 
@@ -31,7 +29,7 @@ A standard slate offers two buttons as default on the top right of the title bar
 * **Follow Me**: Toggles an orbital solver components to make the slate object follow the user.
 * **Close**: Disables the slate object.
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.jpg" width="650">
 
 ## Scripts
 

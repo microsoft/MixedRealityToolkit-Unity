@@ -1,4 +1,6 @@
 # Progress Indicators
+![Progress Indicators](../Documentation/Images/ProgressIndicator/MRTK_ProgressIndicator_Main.png)
+
 ## Example scene
 
 Examples of how to use progress indicators can be found in the `ProgressIndicatorExamples` scene. This scene demonstrates each of the progress indicator prefabs included in the SDK.
