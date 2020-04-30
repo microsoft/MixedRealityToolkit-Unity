@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
         }
 
-        private readonly ArticulatedHandDefinition handDefinition;
+        internal ArticulatedHandDefinition handDefinition;
 
         // Set the interations for each hand to the Default interactions of the hand definition
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
@@ -76,8 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         // The leap service provider contains the joint data for a hand.  The provider's CurrentFrame.Hands is used to retrieve 
         // metacarpal joint poses each frame.
         private LeapServiceProvider leapServiceProvider = null;
-
-        private Hand trackedLeapHand;
 
         private List<TrackedHandJoint> metacarpals = new List<TrackedHandJoint>
         {
@@ -246,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             MixedRealityPose indexPose = jointPoses[TrackedHandJoint.IndexTip];
 
             // Only update the hand ray if the hand is in pointing pose
-            if (handDefinition.IsInPointingPose)
+            if (IsInPointingPose)
             {
                 HandRay.Update(pointerPose.Position, GetPalmNormal(), CameraCache.Main.transform, ControllerHandedness);
                 Ray ray = HandRay.Ray;
@@ -276,7 +274,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                     case DeviceInputType.Select:
                     case DeviceInputType.TriggerPress:
                         Interactions[i].BoolData = IsPinching;
-
                         if (Interactions[i].Changed)
                         {
                             if (Interactions[i].BoolData)

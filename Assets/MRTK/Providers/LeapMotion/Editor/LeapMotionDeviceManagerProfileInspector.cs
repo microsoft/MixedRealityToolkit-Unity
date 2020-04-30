@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected LeapMotionDeviceManagerProfile instance;
         protected SerializedProperty leapControllerOrientation;
         protected SerializedProperty leapControllerOffset;
+        protected SerializedProperty enterPinchDistance;
+        protected SerializedProperty exitPinchDistance;
 
         private const string leapDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
 
@@ -32,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
             instance = (LeapMotionDeviceManagerProfile)target;
             leapControllerOrientation = serializedObject.FindProperty("leapControllerOrientation");
             leapControllerOffset = serializedObject.FindProperty("leapControllerOffset");
+            enterPinchDistance = serializedObject.FindProperty("enterPinchDistance");
+            exitPinchDistance = serializedObject.FindProperty("exitPinchDistance");
         }
 
         /// <summary>
@@ -75,6 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                     {
                         EditorGUILayout.PropertyField(leapControllerOffset);
                     }
+
+                    EditorGUILayout.PropertyField(enterPinchDistance);
+
+                    EditorGUILayout.PropertyField(exitPinchDistance);
 
                     serializedObject.ApplyModifiedProperties();
                 }

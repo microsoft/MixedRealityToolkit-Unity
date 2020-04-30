@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(cube.transform.position);
             });
 
+            bbox.Target = cube;
             bbox.transform.localScale = boundingBoxStartScale;
             bbox.Active = true;
 
@@ -105,6 +106,68 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObject.Destroy(bbox.gameObject);
             GameObject.Destroy(newObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests to see that the handlers grow in size when a pointer is near them
+        /// </summary>
+        [UnityTest]
+        public IEnumerator BBoxHandlerUI()
+        {
+            const int numSteps = 2;
+            var bbox = InstantiateSceneAndDefaultBbox();
+            bbox.ShowRotationHandleForX = true;
+            bbox.ShowRotationHandleForY = true;
+            bbox.ShowRotationHandleForZ = true;
+            bbox.ShowScaleHandles = true;
+            bbox.ProximityEffectActive = true;
+            bbox.ScaleHandleSize = 0.1f;
+            bbox.RotationHandleSize = 0.1f;
+            bbox.FarScale = 1.0f;
+            bbox.MediumScale = 1.5f;
+            bbox.CloseScale = 1.5f;
+            yield return null;
+            var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            Assert.AreEqual(new Vector3(0, 0, 1.5f), bounds.center);
+            Assert.AreEqual(new Vector3(.5f, .5f, .5f), bounds.size);
+
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            // Definining the edge and corner handlers that will be used
+            Debug.Log(bbox.transform.Find("rigRoot/midpoint_0").GetChild(0));
+            var originalCornerHandlerScale = bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale;
+            var cornerHandlerPosition = bbox.transform.Find("rigRoot/corner_0").transform.position;
+            var originalEdgeHandlerScale = bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale;
+            var edgeHandlerPosition = bbox.transform.Find("rigRoot/midpoint_0").transform.position;
+
+            // Wait for the scaling/unscaling animation to finish
+            yield return new WaitForSeconds(0.2f);
+
+            // Move the hand to a handler on the corner 
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return rightHand.MoveTo(cornerHandlerPosition, numSteps);
+
+            // Wait for the scaling/unscaling animation to finish
+            yield return new WaitForSeconds(0.4f);
+
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale, originalEdgeHandlerScale, "The edge handler changed mistakingly");
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale.normalized, originalCornerHandlerScale.normalized, "The corner handler scale has changed");
+            Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale.x/originalCornerHandlerScale.x, bbox.MediumScale, 0.1f, "The corner handler did not grow when a pointer was near it");
+
+            // Move the hand to a handler on the edge
+            yield return rightHand.MoveTo(edgeHandlerPosition, numSteps);
+            // Wait for the scaling/unscaling animation to finish
+            yield return new WaitForSeconds(0.4f);
+
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.normalized, originalEdgeHandlerScale.normalized, "The edge handler scale has changed");
+            Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.x/originalEdgeHandlerScale.x, bbox.MediumScale, 0.1f, "The edge handler did not grow when a pointer was near it");
+
+            GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }

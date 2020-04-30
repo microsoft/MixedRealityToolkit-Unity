@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             if (textMesh != null)
             {
-                textMesh.text = $"{eventData.NewValue*90.0f:F2}";
+                textMesh.text = $"{eventData.NewValue:F2}";
             }
         }
     }

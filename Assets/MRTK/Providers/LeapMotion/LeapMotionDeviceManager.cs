@@ -63,14 +63,26 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         public LeapMotionDeviceManagerProfile SettingsProfile => ConfigurationProfile as LeapMotionDeviceManagerProfile;
 
         /// <summary>
-        /// If true, the leap motion controller is connected and detected.
-        /// </summary>
-        private bool IsLeapConnected => LeapMotionServiceProvider.IsConnected();
-
-        /// <summary>
         /// The LeapServiceProvider is added to the scene at runtime in OnEnable. 
         /// </summary>
         public LeapServiceProvider LeapMotionServiceProvider { get; protected set; }
+
+        /// <summary>
+        /// The distance between the index finger tip and the thumb tip required to enter the pinch/air tap selection gesture.
+        /// The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1. 
+        /// </summary>
+        private float enterPinchDistance => SettingsProfile.EnterPinchDistance;
+
+        /// <summary>
+        /// The distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture.
+        /// The pinch gesture exit will be registered for all values greater than the ExitPinchDistance. The default ExitPinchDistance value is 0.05 and must be between 0.015 and 0.1. 
+        /// </summary>
+        private float exitPinchDistance => SettingsProfile.ExitPinchDistance;
+
+        /// <summary>
+        /// If true, the leap motion controller is connected and detected.
+        /// </summary>
+        private bool IsLeapConnected => LeapMotionServiceProvider.IsConnected();
 
         /// <summary>
         /// The Leap attachment hands, used to determine which hand is currently tracked by leap.
@@ -189,6 +201,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 var pointers = RequestPointers(SupportedControllerType.ArticulatedHand, handedness);
                 var inputSource = CoreServices.InputSystem?.RequestNewGenericInputSource($"Leap {handedness} Controller", pointers, InputSourceType.Hand);
                 var leapHand = new LeapMotionArticulatedHand(TrackingState.Tracked, handedness, inputSource);
+
+                // Set pinch thresholds
+                leapHand.handDefinition.EnterPinchDistance = enterPinchDistance;
+                leapHand.handDefinition.ExitPinchDistance = exitPinchDistance;
 
                 // Set the leap attachment hand to the corresponding handedness
                 if (handedness == Handedness.Left)

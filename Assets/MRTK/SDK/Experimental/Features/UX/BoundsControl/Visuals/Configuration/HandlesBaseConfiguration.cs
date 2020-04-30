@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.Material);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleGrabbedMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.MaterialGrabbed);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handlePrefab != value)
                 {
                     handlePrefab = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.Prefab);
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handleSize != value)
                 {
                     handleSize = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.ColliderSize);
                 }
             }
         }
@@ -108,13 +108,66 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (colliderPadding != value)
                 {
                     colliderPadding = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.ColliderPadding);
                 }
             }
         }
 
-        internal protected UnityEvent configurationChanged = new UnityEvent();
-        internal protected UnityEvent visibilityChanged = new UnityEvent();
+        [SerializeField]
+        [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
+        private bool drawTetherWhenManipulating = true;
+
+        /// <summary>
+        /// Check to draw a tether point from the handles to the hand when manipulating.
+        /// </summary>
+        public bool DrawTetherWhenManipulating
+        {
+            get => drawTetherWhenManipulating;
+            set
+            {
+                if (value != drawTetherWhenManipulating)
+                {
+                    drawTetherWhenManipulating = value;
+                    handlesChanged.Invoke(HandlesChangedEventType.ManipulationTether);
+                }
+            }   
+        }
+
+        [SerializeField]
+        [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
+        private Collider handlesIgnoreCollider = null;
+
+        /// <summary>
+        /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
+        /// </summary>
+        public Collider HandlesIgnoreCollider
+        {
+            get => handlesIgnoreCollider;
+            set
+            {
+                if (value != handlesIgnoreCollider)
+                {
+                    handlesChanged.Invoke(HandlesChangedEventType.IgnoreColliderRemove);
+                    handlesIgnoreCollider = value;
+                    handlesChanged.Invoke(HandlesChangedEventType.IgnoreColliderAdd);
+                }
+            }
+        }
+
+        internal enum HandlesChangedEventType
+        {
+            Material,
+            MaterialGrabbed,
+            Prefab,
+            ColliderSize,
+            ColliderPadding,
+            ManipulationTether,
+            IgnoreColliderRemove,
+            IgnoreColliderAdd,
+            Visibility
+        }
+        internal class HandlesChangedEvent : UnityEvent<HandlesChangedEventType> { }
+        internal HandlesChangedEvent handlesChanged = new HandlesChangedEvent();
 
         private void Awake()
         {
