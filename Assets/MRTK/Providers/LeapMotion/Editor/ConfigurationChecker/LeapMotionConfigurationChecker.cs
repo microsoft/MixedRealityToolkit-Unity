@@ -23,14 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         // True if the Leap Motion Core Assets are in the project.
         private static bool isLeapInProject = false;
 
-        // The currently supported Leap Core Assets version number.
-        private static string leapCoreAssetsVersionNumber = "4.4.0";
+        // The current supported Leap Core Assets version numbers.
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.4.0", "4.5.0"};
+
+        // The current Leap Core Assets version in this project
+        private static string currentLeapCoreAssetsVersion = "";
 
         // The path difference between the root of assets and the root of the Leap Motion Core Assets.
         private static string pathDifference = "";
 
         // Array of paths to Leap Motion testing directories that will be removed from the project.
         // Make sure each test directory ends with '/'
+        // These paths only need to be deleted if the Leap Core Assets version is 4.4.0
         private static readonly string[] pathsToDelete = new string[]
         {
             "LeapMotion/Core/Editor/Tests/",
@@ -55,7 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             { "LeapMotion.Core.Scripts.DataStructures.Editor", new string[] { "LeapMotion" } },
             { "LeapMotion.Core.Scripts.EditorTools.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Scripts.Utils.Editor" } },
             { "LeapMotion.Core.Scripts.Utils.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
-            { "LeapMotion.Core.Scripts.XR.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } }
+            { "LeapMotion.Core.Scripts.XR.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
+            { "LeapMotion.Core.Tests.Editor", new string[] { "LeapMotion" } }
         };
 
         static LeapMotionConfigurationChecker()
@@ -85,7 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 return false;
             }
         }
-
 
         /// <summary>
         /// Configure the Leap Motion Core assets if they are in the project.  First remove testing folders, add LeapMotion.asmdef at the
@@ -120,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 }
                 else
                 {
-                    Debug.LogError("MRTK only supports the Leap Motion Core Assets Version 4.4.0, the Leap Motion Core Assets imported are not Version 4.4.0.");
+                    Debug.LogError("MRTK only supports the Leap Motion Core Assets Version 4.4.0 and 4.5.0, the Leap Motion Core Assets imported are not Version 4.4.0 or 4.5.0");
                 }
             }
             
@@ -133,9 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         }
 
         /// <summary>
-        /// Checks if the Leap Motion Core Assets are version 4.4.0.
+        /// Checks if the Leap Motion Core Assets are version 4.4.0 or 4.5.0.
         /// </summary>
-        /// <returns>True, if the Leap Motion Core Assets imported are version 4.4.0.</returns>
+        /// <returns>True, if the Leap Motion Core Assets imported are version 4.4.0 or 4.5.0.</returns>
         private static bool LeapCoreAssetsVersionSupport()
         {
             string versionLeapPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
@@ -146,9 +150,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 {
                     string line = streamReader.ReadLine();
 
-                    if (line.Contains(leapCoreAssetsVersionNumber))
+                    foreach (string versionNumberSupported in leapCoreAssetsVersionsSupported)
                     {
-                        return true;
+                        // If the leap core assets version number is 4.4.0 or 4.5.0
+                        if (line.Contains(versionNumberSupported))
+                        {
+                            currentLeapCoreAssetsVersion = versionNumberSupported;
+                            return true;
+                        }
                     }
                 }
 
@@ -251,9 +260,15 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                     string leapAsmDefFilename = string.Concat(leapAsmDef.Key, ".asmdef");
 
-                    string fullLeapAsmDefPath = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath, leapAsmDefFilename);
+                    // Path for the asmdef including the filename
+                    string fullLeapAsmDefFilePath = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath, leapAsmDefFilename);
 
-                    if (!File.Exists(fullLeapAsmDefPath))
+                    // Path for the asmdef NOT including the filename
+                    string fullLeapAsmDefDirectoryPath = Path.Combine(Application.dataPath, pathDifference, leapAsmDefPath);
+
+                    // Make sure the directory exists within the leap core assets before we add the asmdef
+                    // The leap core assets version 4.5.0 contains the LeapMotion/Core/Tests/Editor directory while 4.4.0 does not.
+                    if (!File.Exists(fullLeapAsmDefFilePath) && Directory.Exists(fullLeapAsmDefDirectoryPath))
                     {
                         // Create and save the new asmdef
                         AssemblyDefinition leapEditorAsmDef = new AssemblyDefinition
@@ -263,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                             IncludePlatforms = new string[] { "Editor" }
                         };
 
-                        leapEditorAsmDef.Save(fullLeapAsmDefPath);
+                        leapEditorAsmDef.Save(fullLeapAsmDefFilePath);
                     }
                 }
             }
