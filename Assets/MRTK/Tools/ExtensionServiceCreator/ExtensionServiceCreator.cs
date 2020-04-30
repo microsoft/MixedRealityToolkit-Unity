@@ -435,6 +435,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 
                 AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
+
+                // Setting the default folders is necessary after the asset database refresh
+                // to ensure that the extension service creator's consumers will not need
+                // to manually set the location in a separate step.
+                SetAllFolders(ExtensionsFolder);
             }
 
             return errors.Count == 0;
