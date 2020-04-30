@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 while (enumerator.MoveNext())
                 {
                     var pointerComponent = enumerator.Current.Key as MonoBehaviour;
-                    if (pointerComponent != null)
+                    if (pointerComponent == null)
                     {
                         removal.Add(enumerator.Current.Key);
                     }
