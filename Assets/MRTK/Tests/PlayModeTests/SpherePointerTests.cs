@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
-            //Rotate hand but maintain IsNearObject
+            // Rotate hand but maintain IsNearObject
             yield return rightHand.SetRotation(Quaternion.Euler(0, 90, 0), numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
