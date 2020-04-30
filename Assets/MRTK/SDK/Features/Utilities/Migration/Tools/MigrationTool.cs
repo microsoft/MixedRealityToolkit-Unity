@@ -27,14 +27,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public List<Type> MigrationHandlerTypes => new List<Type>(migrationHandlerTypes);
 
-        private List<Object> migrationObjects = new List<Object>();
+        private Dictionary<Object, MigrationStatus> migrationObjects = new Dictionary<Object, MigrationStatus>();
         /// <summary>
-        /// Returns a copy of all game objects, prefabs and scene assets selected for migration
+        /// Returns a copy of all game objects, prefabs and scene assets selected for migration and their migration status
         /// </summary>
-        public List<Object> MigrationObjects => new List<Object>(migrationObjects);
+        public Dictionary<Object, MigrationStatus> MigrationObjects => new Dictionary<Object, MigrationStatus>(migrationObjects);
 
         private IMigrationHandler migrationHandlerInstance;
         private Type migrationHandlerInstanceType;
+
+        /// <summary>
+        /// Possible states for the migration tool
+        /// </summary>
+        public enum MigrationToolState
+        {
+            PreMigration = 0, // New object selection can be added to migration objects collection
+            Migrating, // Processing migration objects
+            PostMigration // New objects should not be added to migration objects collection
+        };
+
+        /// <summary>
+        /// Current migration process state of the tool
+        /// </summary>
+        public MigrationToolState MigrationState { get; private set; }
 
         public MigrationTool()
         {
@@ -46,6 +61,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public bool TryAddObjectForMigration(Type type, Object selectedObject)
         {
+            if (MigrationState == MigrationToolState.Migrating)
+            {
+                Debug.LogError("Objects cannot be added during migration process.");
+                return false;
+            }
+            else if (MigrationState == MigrationToolState.PostMigration)
+            {
+                ClearMigrationList();
+                MigrationState = MigrationToolState.PreMigration;
+            }
+
             if (type == null)
             {
                 Debug.LogError("Migration type needs to be selected before migration.");
@@ -71,9 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (selectedObject is GameObject || selectedObject is SceneAsset)
             {
-                if (CheckIfCanMigrate(type, selectedObject) && !migrationObjects.Contains(selectedObject))
+                if (CheckIfCanMigrate(type, selectedObject) && !migrationObjects.ContainsKey(selectedObject))
                 {
-                    migrationObjects.Add(selectedObject);
+                    migrationObjects.Add(selectedObject, new MigrationStatus());
                     return true;
                 }
                 else
@@ -97,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 for (int i = 0; i < objectHierarchy.Length; i++)
                 {
                     if (migrationHandlerInstance.CanMigrate(objectHierarchy[i].gameObject))
-                    { 
+                    {
                         return true;
                     }
                 }
@@ -156,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Migrates all objects from list of objects to be migrated using the selected IMigrationHandler implementation. 
         /// </summary>
         /// <param name="type">A type that implements IMigrationhandler</param>
-        public bool MigrateSelection(Type type, bool askToSaveCurrentScene)
+        public bool MigrateSelection(Type type, bool askForConfirmation)
         {
             if (migrationObjects.Count == 0)
             {
@@ -176,11 +202,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
 
-            if (askToSaveCurrentScene && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            if (askForConfirmation && !EditorUtility.DisplayDialog("Migration Window",
+                "Migration operation cannot be reverted.\n\nDo you want to continue?", "Continue", "Cancel"))
+            {
+                return false;
+            }
+
+            if (askForConfirmation && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 return false;
             }
             var previousScenePath = EditorSceneManager.GetActiveScene().path;
+            int failures = 0;
+            MigrationState = MigrationToolState.Migrating;
 
             for (int i = 0; i < migrationObjects.Count; i++)
             {
@@ -189,15 +223,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     break;
                 }
-                string assetPath = AssetDatabase.GetAssetPath(migrationObjects[i]);
+                string assetPath = AssetDatabase.GetAssetPath(migrationObjects.ElementAt(i).Key);
 
-                if (IsSceneGameObject(migrationObjects[i]))
+                if (IsSceneGameObject(migrationObjects.ElementAt(i).Key))
                 {
-                    MigrateGameObjectHierarchy((GameObject)migrationObjects[i]);
+                    MigrateGameObjectHierarchy((GameObject)migrationObjects.ElementAt(i).Key, migrationObjects.ElementAt(i).Value);
                 }
-                else if (IsPrefabAsset(migrationObjects[i]))
+                else if (IsPrefabAsset(migrationObjects.ElementAt(i).Key))
                 {
-                    PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects[i]);
+                    PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects.ElementAt(i).Key);
                     if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
                     {
                         // there's currently 5 types of prefab asset types - we're supporting the following:
@@ -207,21 +241,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         // - Model: we can't migrate fbx or other mesh files
                         // - MissingAsset: we can't migrate missing data
                         // - NotAPrefab: we can't migrate as prefab if the given asset isn't a prefab
-                        MigratePrefab(assetPath);
+                        MigratePrefab(assetPath, migrationObjects.ElementAt(i).Value);
                     }
                 }
-                else if (IsSceneAsset(migrationObjects[i]))
+                else if (IsSceneAsset(migrationObjects.ElementAt(i).Key))
                 {
-                    MigrateScene(assetPath);
+                    MigrateScene(assetPath, migrationObjects.ElementAt(i).Value);
                 }
+                migrationObjects.ElementAt(i).Value.IsProcessed = true;
+                failures += migrationObjects.ElementAt(i).Value.Failures;
+
+                Debug.Log(migrationObjects.ElementAt(i).Value.Log);
             }
             EditorUtility.ClearProgressBar();
-            migrationObjects.Clear();
 
             if (!String.IsNullOrEmpty(previousScenePath) && previousScenePath != EditorSceneManager.GetActiveScene().path)
             {
                 EditorSceneManager.OpenScene(Path.Combine(Directory.GetCurrentDirectory(), previousScenePath));
             }
+
+            if (askForConfirmation)
+            {
+                string msg;
+                if (failures > 0)
+                {
+                    msg = $"Migration completed with {failures} errors";
+                }
+                else
+                {
+                    msg = "Migration completed successfully!";
+                }
+                EditorUtility.DisplayDialog("Migration Window", msg, "Close");
+            }
+
+            MigrationState = MigrationToolState.PostMigration;
             return true;
         }
 
@@ -229,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var assetPaths = FindAllAssetsOfType(assetTypes);
             if (assetPaths != null)
-            {                               
+            {
                 for (int i = 0; i < assetPaths.Count; i++)
                 {
                     var progress = (float)i / assetPaths.Count;
@@ -279,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 .Where(x => type.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).ToList();
         }
 
-        private void MigrateScene(String path)
+        private void MigrateScene(String path, MigrationStatus status)
         {
             if (!AssetDatabase.LoadAssetAtPath(path, typeof(SceneAsset)))
             {
@@ -290,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             bool didAnySceneObjectChange = false;
             foreach (var parent in scene.GetRootGameObjects())
             {
-                didAnySceneObjectChange |= MigrateGameObjectHierarchy(parent);
+                didAnySceneObjectChange |= MigrateGameObjectHierarchy(parent, status);
             }
 
             if (didAnySceneObjectChange)
@@ -299,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private void MigratePrefab(String path)
+        private void MigratePrefab(String path, MigrationStatus status)
         {
             if (!AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)))
             {
@@ -307,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             var parent = UnityEditor.PrefabUtility.LoadPrefabContents(path);
 
-            if (MigrateGameObjectHierarchy(parent))
+            if (MigrateGameObjectHierarchy(parent, status))
             {
                 UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
             }
@@ -315,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             PrefabUtility.UnloadPrefabContents(parent);
         }
 
-        private bool MigrateGameObjectHierarchy(GameObject parent)
+        private bool MigrateGameObjectHierarchy(GameObject parent, MigrationStatus status)
         {
             bool changedAnyGameObject = false;
             foreach (var child in parent.GetComponentsInChildren<Transform>())
@@ -326,12 +379,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         changedAnyGameObject = true;
                         migrationHandlerInstance.Migrate(child.gameObject);
-                        Debug.Log($"Successfully migrated {parent.name} object");
+
+                        status.AddToLog($"Successfully migrated {child.gameObject.name} object \n");
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{e.Message}: GameObject {parent.name} could not be migrated");
+                    status.Failures++;
+                    status.AddToLog($"{e.Message}: GameObject {child.gameObject.name} could not be migrated \n");
                 }
             }
 
@@ -362,7 +417,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             return selectedObject is SceneAsset;
         }
+
+        /// <summary>
+        /// Utility class to keep migration status of each object
+        /// </summary>
+        public class MigrationStatus
+        {
+            /// <summary>
+            /// Flag to indicate if object was already processed by migration
+            /// </summary>
+            public bool IsProcessed { get; set; }
+
+            /// <summary>
+            /// Keep track of the amount of issues found during migration process of every children object in the migration object hierarchy
+            /// </summary>
+            public int Failures { get; set; }
+
+            /// <summary>
+            /// Keep track of recorded messages logged during the migration process
+            /// </summary>
+            public String Log { get; private set; }
+
+            public MigrationStatus()
+            {
+                IsProcessed = false;
+                Failures = 0;
+                Log = "";
+            }
+
+            /// <summary>
+            /// Add messages to status log
+            /// </summary>
+            public void AddToLog(String msg)
+            {
+                Log += msg;
+            }
+        }
     }
 }
 #endif
-
