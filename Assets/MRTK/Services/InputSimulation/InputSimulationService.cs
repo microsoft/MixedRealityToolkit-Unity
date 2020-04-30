@@ -137,7 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool SimulateEyePosition { get; set; }
 
         /// <summary>
-        /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
         public bool UserInputEnabled { get; set; } = true;
