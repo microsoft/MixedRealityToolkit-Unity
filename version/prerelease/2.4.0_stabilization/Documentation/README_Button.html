@@ -119,6 +119,26 @@
 <td style="text-align: left;">Vertical HoloLens 2 button bar with shared backplate</td>
 </tr>
 <tr>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Checkbox.png" alt="PressableButtonHoloLens2ToggleCheckBox_32x32"> <strong>PressableButtonHoloLens2ToggleCheckBox_32x32</strong></td>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Switch.png" alt="PressableButtonHoloLens2ToggleSwitch_32x32"> <strong>PressableButtonHoloLens2ToggleSwitch_32x32</strong></td>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Radio.png" alt="PressableButtonHoloLens2ToggleRadio_32x32"> <strong>PressableButtonHoloLens2ToggleRadio_32x32</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">HoloLens 2's shell-style checkbox 32x32mm</td>
+<td style="text-align: left;">HoloLens 2's shell-style switch 32x32mm</td>
+<td style="text-align: left;">HoloLens 2's shell-style radio 32x32mm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Checkbox_32x96.png" alt="PressableButtonHoloLens2ToggleCheckBox_32x96"> <strong>PressableButtonHoloLens2ToggleCheckBox_32x96</strong></td>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Switch_32x96.png" alt="PressableButtonHoloLens2ToggleSwitch_32x96"> <strong>PressableButtonHoloLens2ToggleSwitch_32x96</strong></td>
+<td style="text-align: left;"><img src="Images/Button/MRTK_Button_Prefabs_HoloLens2_Radio_32x96.png" alt="PressableButtonHoloLens2ToggleRadio_32x96"> <strong>PressableButtonHoloLens2ToggleRadio_32x96</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">HoloLens 2's shell-style checkbox 32x96mm</td>
+<td style="text-align: left;">HoloLens 2's shell-style switch 32x96mm</td>
+<td style="text-align: left;">HoloLens 2's shell-style radio 32x96mm</td>
+</tr>
+<tr>
 <td style="text-align: left;"><img src="Images/Button/MRTK_Button_Radial.png" alt="Radial"> <strong>Radial</strong></td>
 <td style="text-align: left;"><img src="Images/Button/MRTK_Button_Checkbox.png" alt="Checkbox"> <strong>Checkbox</strong></td>
 <td style="text-align: left;"><img src="Images/Button/MRTK_Button_ToggleSwitch.png" alt="ToggleSwitch"> <strong>ToggleSwitch</strong></td>
@@ -157,11 +177,29 @@
 <img src="Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 <p>You can configure when the pressable button fires the <em>OnClick</em> event via the <code>PhysicalPressEventRouter</code> on the button. For example, you can set <em>OnClick</em> to fire when the button is first pressed, as opposed to being pressed and released, by setting <em>Interactable On Click</em> to <em>Event On Press</em>.</p>
 <img src="Images/Button/MRTK_Button_HowTo_Events.png" width="450">
-<p>To leverage specific articulated hand input state information, you can use pressable buttons events - <em>Touch Begin</em>, <em>Touch End</em>, <em>Button Pressed</em>, <em>Button Released</em>. These events will not fire in response to air-tap, hand-ray, or eye inputs, however.</p>
+<p>To leverage specific articulated hand input state information, you can use pressable buttons events - <em>Touch Begin</em>, <em>Touch End</em>, <em>Button Pressed</em>, <em>Button Released</em>. These events will not fire in response to air-tap, hand-ray, or eye inputs, however. <strong>To support both near and far interactions, it is recommended to use Interactable's <em>OnClick</em> event.</strong></p>
 <img src="Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 <h2 id="interaction-states">Interaction states</h2>
 <p>In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip. When the fingertip touches the surface of the front plate, it shows a subtle pulse effect to give visual feedback of the touch point.</p>
-<img src="Images/Button/MRTK_Button_InteractionStates.png" width="600">
+<p>In HoloLens 2 shell-style button, there are many visual cues and affordances to increase the user's confidence on interaction.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><img src="Images/Button/ux_button_affordance_proximitylight.jpg" alt="Proximity light"></th>
+<th style="text-align: left;"><img src="Images/Button/ux_button_affordance_focushighlight.jpg" alt="Focus highlight"></th>
+<th style="text-align: left;"><img src="Images/Button/ux_button_affordance_compression.jpg" alt="Compressing cage"></th>
+<th style="text-align: left;"><img src="Images/Button/ux_button_affordance_pulse.jpg" alt="Pulse on trigger"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Proximity light</td>
+<td style="text-align: left;">Focus highlight</td>
+<td style="text-align: left;">Compressing cage</td>
+<td style="text-align: left;">Pulse on trigger</td>
+</tr>
+</tbody>
+</table>
 <p>The subtle pulse effect is triggered by the pressable button, which looks for <em>ProximityLight(s)</em> that live on the currently interacting pointer. If any proximity lights are found, the <code>ProximityLight.Pulse</code> method is called, which automatically animates shader parameters to display a pulse.</p>
 <h2 id="inspector-properties">Inspector properties</h2>
 <p><img src="Images/Button/MRTK_Button_Structure.png" alt="Button"></p>
