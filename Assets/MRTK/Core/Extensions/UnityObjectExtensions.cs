@@ -55,6 +55,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// which require their overridden operators to be called
         /// </summary>
         /// <returns>True if either the managed or native object is null, false otherwise</returns>
-        public static bool IsNull<T>(T obj) where T : class => obj == null || obj.Equals(null);
+        public static bool IsNull<T>(this T obj) where T : class => obj == null || obj.Equals(null);
     }
 }
