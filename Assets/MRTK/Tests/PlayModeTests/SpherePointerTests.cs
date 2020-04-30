@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SpherePointerPullbackDistance()
         {
             Vector3 margin = new Vector3(0, 0, 0.001f);
-            //approximate distance covered by the pullback distance;
+            // Approximate distance covered by the pullback distance;
             Vector3 pullbackDelta = new Vector3(0, 0, 0.08f);
 
             var rightHand = new TestHand(Handedness.Right);
