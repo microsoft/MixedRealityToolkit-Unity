@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {

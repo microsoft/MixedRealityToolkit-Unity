@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsNearInteraction {get; set; }
 
         /// <summary>
-        /// Center of the <see cref="ManipulationHandler"/>'s Pointer in world space
+        /// Center of the <see cref="ObjectManipulator"/>'s Pointer in world space
         /// </summary>
         public Vector3 PointerCentroid { get; set; }
 
