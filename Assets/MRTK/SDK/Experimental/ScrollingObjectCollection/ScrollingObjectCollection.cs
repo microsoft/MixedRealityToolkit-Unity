@@ -374,7 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public UnityEvent ListMomentumEnded = new UnityEvent();
 
         /// <summary>
-        /// Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity
+        /// Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
         public UnityEvent ListMomentumBegin = new UnityEvent();
