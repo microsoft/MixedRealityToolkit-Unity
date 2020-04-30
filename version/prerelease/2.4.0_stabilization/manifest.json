@@ -11738,7 +11738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.html",
-          "hash": "TGiIij+qmuL81Ljfn0Re5Q=="
+          "hash": "V+OYW92FucogXP2c41oH4w=="
         }
       },
       "is_incremental": false,
@@ -11750,7 +11750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoxDisplay.html",
-          "hash": "DwLCe4/aGsSlJh8s/pKX6g=="
+          "hash": "0VjRr1C1aJYXq7LpDDf0jw=="
         }
       },
       "is_incremental": false,
@@ -11762,7 +11762,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoxDisplayConfiguration.html",
-          "hash": "FXXalTG+rJoUGMprYCzNFg=="
+          "hash": "3yGt4gchysp07lZyjUntug=="
         }
       },
       "is_incremental": false,
@@ -11774,7 +11774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html",
-          "hash": "lnKv5MLhtrqLTlrIUX3Yww=="
+          "hash": "zve9CSdwX4Eh4Uxxw7akKw=="
         }
       },
       "is_incremental": false,
@@ -11786,7 +11786,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBaseConfiguration.html",
-          "hash": "M4jBCIyQXEaYT80rIoffuA=="
+          "hash": "2EsRjMDeKURyd/17SfL0MQ=="
         }
       },
       "is_incremental": false,
@@ -11798,7 +11798,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.IProximityEffectObjectProvider.html",
-          "hash": "YBkVKv5g3IOvNSeGcRmlwQ=="
+          "hash": "ibdzuF182c+TILlZGSGyog=="
         }
       },
       "is_incremental": false,
@@ -11810,7 +11810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.Links.html",
-          "hash": "pzJMN6Oh0Mc09KwZ6pK+1g=="
+          "hash": "hTk7inh8VESLrdzx6SLV+w=="
         }
       },
       "is_incremental": false,
@@ -11822,7 +11822,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.LinksConfiguration.html",
-          "hash": "i7KabGCzoACalkANMpmUXA=="
+          "hash": "jfKFNzyAym9Cgpp09FDJuw=="
         }
       },
       "is_incremental": false,
@@ -11834,7 +11834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ProximityEffect.html",
-          "hash": "JBv92LeoHhhwG3eVcFJdXA=="
+          "hash": "4S+K0FosXQHxitL/8lUMAA=="
         }
       },
       "is_incremental": false,
@@ -11854,11 +11854,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ProximityObjectsChangedEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ProximityObjectsChangedEvent.html",
+          "hash": "5lxsGpwtpOxH7bLXpfcTPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.html",
-          "hash": "V9LVKRjX+ikQA0W9NmImnA=="
+          "hash": "o3C2ySMOfGIlkWHVBqoNMw=="
         }
       },
       "is_incremental": false,
@@ -11870,7 +11882,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandlesConfiguration.html",
-          "hash": "huB7SGYoozuhMVZWT1oZOA=="
+          "hash": "SyEP8/xkrtQsMBAc4Qszng=="
         }
       },
       "is_incremental": false,
@@ -11882,7 +11894,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ScaleHandles.html",
-          "hash": "Jqtj0qqF/5606kULRGigeA=="
+          "hash": "YoPFHXjI97ESFJKjzJSZZg=="
         }
       },
       "is_incremental": false,
@@ -11894,7 +11906,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ScaleHandlesConfiguration.html",
-          "hash": "bmb03b+QP6P1NqQpIlacHg=="
+          "hash": "XBdexs/ibhxFq3Se3m78lQ=="
         }
       },
       "is_incremental": false,
@@ -11906,7 +11918,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.html",
-          "hash": "sWTE73tMv3ZnlxBMuBfBzw=="
+          "hash": "XOSF2N2soWVN8vPrga/TFg=="
         }
       },
       "is_incremental": false,
@@ -11950,11 +11962,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandleType.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandlePrefabCollider.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandleType.html",
-          "hash": "g7urvvAHDhrzilnhVYpxqQ=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandlePrefabCollider.html",
+          "hash": "MzkciyrhzppdMH/siiYajA=="
         }
       },
       "is_incremental": false,
@@ -11962,11 +11974,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.RotationHandlePrefabCollider.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandleType.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.RotationHandlePrefabCollider.html",
-          "hash": "C3oAqAu/KkH1PmavKZo8LQ=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.HandleType.html",
+          "hash": "g7urvvAHDhrzilnhVYpxqQ=="
         }
       },
       "is_incremental": false,
@@ -11990,7 +12002,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes.html",
-          "hash": "zo0/Lmt1GIsBjfhM91eTgg=="
+          "hash": "aCJVGp/X79XICs1AuogtKg=="
         }
       },
       "is_incremental": false,
@@ -20774,7 +20786,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Experimental.BoundsControlTests.html",
-          "hash": "b5vbOL2Es5+OqwmCit5h5g=="
+          "hash": "x0aHDGZI98YCvOenNLSTWA=="
         }
       },
       "is_incremental": false,
@@ -27206,7 +27218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "anIUsmzL6brFMLOauUgTmw=="
+          "hash": "2P/NFRZ3+t0K9s3TJAABlQ=="
         }
       },
       "is_incremental": false,
@@ -27258,28 +27270,28 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1605,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 159,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1604,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
