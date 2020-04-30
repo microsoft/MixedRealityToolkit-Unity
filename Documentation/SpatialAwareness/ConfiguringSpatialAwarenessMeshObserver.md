@@ -97,7 +97,10 @@ Specifies how spatial meshes are to be displayed by the observer. Supported valu
 
 * *None* - Observer will not render the mesh
 * *Visible* - Mesh data will be visible using the *Visible Material*
-* *Occlusion* - Mesh data will be occlude items in scene using teh *Occlusion Material*
+* *Occlusion* - Mesh data will be occlude items in scene using the *Occlusion Material*
+
+![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_DisplayOptions.jpg)
+
 
 Spatial Observers can be [resumed/suspended at runtime via code.](UsageGuide.md#starting-and-stopping-mesh-observation)
 
