@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 while (enumerator.MoveNext())
                 {
                     var pointer = enumerator.Current.Key;
-                    if (!pointer.IsNull())
+                    if (pointer.IsNull())
                     {
                         removal.Add(pointer);
                     }
