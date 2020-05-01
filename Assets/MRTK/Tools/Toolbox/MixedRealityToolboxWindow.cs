@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             {
                                 wordWrap = true
                             };
-                            GUILayout.TextField("These MRTK components require an MRTK Canvas Utility on one of the Unity UI Canvases in the scene.\nNone were detected. Press refresh if you recently added any.", CanvasWarningStyle);
+                            GUILayout.TextField("These MRTK components require an MRTK Canvas Utility on one of the Unity UI Canvases in the scene.\nNone were detected. Press refresh if you recently added any \n To create a MRTK Canvas: GameObject > UI > Canvas, and under the Canvas component in the inspector, select Convert to MRTK Canvas.", CanvasWarningStyle);
                         }
                     }
 
