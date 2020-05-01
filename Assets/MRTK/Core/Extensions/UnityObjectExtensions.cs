@@ -61,6 +61,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Properly checks an interface for null and returns the MonoBehaviour implementing it
         /// </summary>
         /// <returns> True if the implementer of the interface is not a MonoBehaviour or the MonoBehaviour is null</returns>
-        public static bool IsNull<T>(this T @interface, out MonoBehaviour monoBehaviour) where T : class => (monoBehaviour = @interface as MonoBehaviour) == null;
+        public static bool TryGetMonoBehaviour<T>(this T @interface, out MonoBehaviour monoBehaviour) where T : class => (monoBehaviour = @interface as MonoBehaviour) != null;
     }
 }

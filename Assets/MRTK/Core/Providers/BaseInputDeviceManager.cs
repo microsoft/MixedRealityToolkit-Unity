@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
             foreach (var pointer in activePointersToConfig.Keys)
             {
-                if (!pointer.IsNull(out MonoBehaviour pointerComponent))
+                if (pointer.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                 {
                     GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                 }
@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             while (pointerCache.Count > 0)
                             {
                                 var p = pointerCache.Pop();
-                                if (!p.IsNull(out MonoBehaviour pointerComponent))
+                                if (p.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                                 {
                                     pointerComponent.gameObject.SetActive(true);
 
@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     for (int i = 0; i < pointers.Length; i++)
                     {
                         var pointer = pointers[i];
-                        if (!pointers[i].IsNull(out MonoBehaviour pointerComponent))
+                        if (pointers[i].TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                         {
                             // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
                             // At least if this is a controller we know about and we expect it to be destroyed, skip
@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
-                    if (!pointerConfigurations[i].cache.Pop().IsNull(out MonoBehaviour pointerComponent))
+                    if (pointerConfigurations[i].cache.Pop().TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }
