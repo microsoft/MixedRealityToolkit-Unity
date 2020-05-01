@@ -4,19 +4,26 @@ A [Leap Motion Controller](https://www.ultraleap.com/product/leap-motion-control
 
 The Leap Motion Data Provider enables articulated hand tracking for VR and could be useful for rapid prototyping in the editor.  The data provider can be configured to use the leap motion controller mounted on a headset or placed on a desk face up.
 
+![LeapMotionIntroGif](../Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif)
+
 ## Using Leap Motion tracking in MRTK
 1. Prepare MRTK project for Leap Motion
 
-    - **This step only applies if the source of MRTK is cloned from the git repo and NOT the from the Unity packages. If the MRTK source is from the Unity packages, go to step 2.**
+    - **This step only applies for the Leap Motion Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Leap Motion Core Assets version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at step 2.**
 
     - Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion**. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked [here](https://github.com/leapmotion/UnityModules/issues/1082).
 
     ![LeapMotionUpdateCSCFile](../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png)
 
-1. Importing the Leap Motion Core Assets
-    - Import the **Microsoft.MixedReality.Toolkit.Foundation** package into the unity project.
+1. Importing MRTK and the Leap Motion Core Assets
+    - Import the **Microsoft.MixedReality.Toolkit.Foundation** package into the Unity project.
+    > [!NOTE]
+    > The Leap Motion Data Provider is supported in both Unity 2018.4.x and 2019.3.x, but 2019.3.x is preferred.
+
     - Install the [Leap Motion SDK 4.0.0](https://developer.leapmotion.com/releases/?category=orion)
-    - Download and import the [Leap Motion Core Assets 4.4.0](https://developer.leapmotion.com/unity#5436356)
+    - Download and import the [Leap Motion Core Assets for Unity](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0)
+        - Leap Motion Core Assets version [4.4.0](https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0) and [4.5.0](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0) are supported, but version 4.5.0 is preferred.
+        - If using version 4.5.0, import the **Core** package into the Unity project.
     > [!NOTE]
     > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
     - If using Unity 2018.4.x
@@ -43,51 +50,87 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 
     ![LeapAddDataProvider](../Images/CrossPlatform/LeapMotion/LeapAddDataProvider.png)
 
-    - The Leap Motion Data Provider contains the `LeapControllerOrientation` property which is the location of the leap motion controller. `LeapControllerOrientation.Headset` indicates the controller is mounted on a headset. `LeapControllerOrientation.Desk` indicates the controller is placed flat on desk. The default value is set to `LeapControllerOrientation.Headset`.  If the orientation is the desk, an extra property `LeapControllerOffset` will appear.  `LeapControllerOffset` is the anchor for the position of the desk leap hands.  The offset is calculated relative to the main camera position and the default value is (0,-0.2, 0.2) to make sure the hands appear in front and in view of the camera.
+    - Select **Clone** to change the default Leap Motion settings.
 
-    
+    ![LeapDataProviderPreClone](../Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png)
+
+
+    - The Leap Motion Data Provider contains the `LeapControllerOrientation` property which is the location of the leap motion controller. `LeapControllerOrientation.Headset` indicates the controller is mounted on a headset. `LeapControllerOrientation.Desk` indicates the controller is placed flat on desk. The default value is set to `LeapControllerOrientation.Headset`.  If the orientation is the desk, an extra property `LeapControllerOffset` will appear.  `LeapControllerOffset` is the anchor for the position of the desk leap hands.  The offset is calculated relative to the main camera position and the default value is (0,-0.2, 0.2) to make sure the hands appear in front and in view of the camera.
+    - `EnterPinchDistance` and `ExitPinchDistance` are the distance thresholds for pinch/air tap gesture detection.  The pinch gesture is calculated by measuring the distance between the index finger tip and the thumb tip.  To raise an on input down event, the default `EnterPinchDistance` is set to 0.02.  To raise an on input up event (exiting the pinch), the default distance between the index finger tip and the thumb tip is 0.05.
+
     `LeapControllerOrientation`: Headset (Default) |  `LeapControllerOrientation`: Desk 
     :-------------------------:|:-------------------------:
     ![LeapHeadsetGif](../Images/CrossPlatform/LeapMotion/LeapHeadsetOrientationExampleMetacarpals.gif)  |  ![LeapDeskGif](../Images/CrossPlatform/LeapMotion/LeapDeskOrientationExampleMetacarpals.gif)
-    ![LeapHeadsetGif](../Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png) |     ![LeapHeadsetGif](../Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png)
+    ![LeapHeadsetInspector](../Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png) |     ![LeapDeskInspector](../Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png)
 
+    
 1. Testing the Leap Motion Data Provider
     - After Leap Motion Data Provider has been added to the input system profile, press play, move your hand in front of the Leap Motion Controller and you should see the joint representation of the hand.
 
 1. Building your project 
     - Navigate to **File > Build Settings**
     - Only Standalone builds are supported if using the Leap Motion Data Provider.
+    - For instructions on how to use a Windows Mixed Reality headset for Standalone builds, see [Build and Deploy](../BuildAndDeploy#building-and-deploying-mrtk-to-a-windows-mixed-reality-headset).
 
 ## Getting the hand joints 
 
 Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see [Hand Tracking](../Input/HandTracking.md#polling-joint-pose-from-handjointutils).
 
-The following is a simple example of how to retrieve the pose of the palm joint and adds a sphere to follow the hand joint.
+With MRTK in a unity scene and the Leap Motion Data Provider added as an Input Data Provider in the Input System profile, create an empty game object and attach the following example script.
+
+This script is a simple example of how to retrieve the pose of the palm joint in a Leap Motion Hand.  A sphere follows the left Leap hand while a cube follows the right Leap hand.
+
 ```
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class HandJointsLeap : MonoBehaviour
+public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
 {
-    private GameObject sphere;
+    private GameObject leftHandSphere;
+    private GameObject rightHandCube;
 
     private void Start()
     {
-        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.localScale = Vector3.one * 0.03f;
+        // Register the HandJointHandler as a global listener
+        CoreServices.InputSystem.RegisterHandler<IMixedRealityHandJointHandler>(this);
+
+        // Create a sphere to follow the left hand palm position
+        leftHandSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        leftHandSphere.transform.localScale = Vector3.one * 0.03f;
+
+        // Create a cube to follow the right hand palm position 
+        rightHandCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        rightHandCube.transform.localScale = Vector3.one * 0.03f;
     }
 
-    private void Update()
+    public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
     {
-        // If the hand joint pose is available set the position of the sphere to the palm of the right hand
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out MixedRealityPose index))
+        if (eventData.InputSource.SourceName == "Leap Left Controller")
         {
-            sphere.transform.position = index.Position;
+            Vector3 leftHandPalmPosition = eventData.InputData[TrackedHandJoint.Palm].Position;
+            leftHandSphere.transform.position = leftHandPalmPosition;
+        }
+
+        if (eventData.InputSource.SourceName == "Leap Right Controller")
+        {
+            Vector3 rightHandPalmPosition = eventData.InputData[TrackedHandJoint.Palm].Position;
+            rightHandCube.transform.position = rightHandPalmPosition;
         }
     }
-}
 ```
+
+## Unity editor workflow tip
+
+Using the Leap Motion Data Provider does not require a VR headset.  Changes to an MRTK app can be tested in the editor with the Leap hands without a headset. 
+
+The Leap Motion Hands will show up in the editor, without a VR headset plugged in.  If the `LeapControllerOrientation` is set to **Headset**, then the Leap Motion controller will need to be held up by one hand with the camera facing forward. 
+
+> [!NOTE]
+> If the camera is moved using WASD keys in the editor and the `LeapControllerOrientation` is **Headset**, the hands will not follow the camera. The hands will only follow camera movement if a VR headset is plugged in while the `LeapControllerOrientation` is set **Headset**.  The Leap hands will follow the camera movement in the editor if the `LeapControllerOrientation` is set to **Desk**.
+
 
 ## Removing Leap Motion from the Project
 
@@ -99,6 +142,7 @@ public class HandJointsLeap : MonoBehaviour
     - Delete the **UnityProjectName/Assets/LeapMotion.meta** file
 - Reopen Unity
 
+In Unity 2018.4, you might notice that errors still remain in the console after deleting the Library and the Leap Motion Core Assets.
 If errors are logged after reopening, restart Unity again.
 
 ## Common Errors
@@ -139,6 +183,19 @@ If the Leap Motion Core Assets are in your project and you see a red message on 
 #### Solution
 - Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure Leap Motion**
     - This will force Leap Motion integration if the configuration process was not started after the Leap Motion Core Assets import.
+
+
+
+### Copying assembly Multiplayer HLAPI failed
+
+On import of the Leap Motion Core Assets this error might be logged: 
+
+```
+Copying assembly from 'Temp/com.unity.multiplayer-hlapi.Runtime.dll' to 'Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll' failed
+```
+
+#### Solution
+- A short term solution is to restart Unity. See [Issue 7761](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7761) for more information.
 
 ## Leap Motion Example Scene
 
