@@ -50,7 +50,7 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 
 **MRTK Toolbox**
 
-<img src="https://user-images.githubusercontent.com/25975362/75413690-1ca6d880-58db-11ea-9b1f-f8237063d747.png" width="300" />
+![MRTK Toolbox](Images/Tools/MRTKToolboxWindow.png)
 
 The [MRTK Toolbox](README_Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
 
