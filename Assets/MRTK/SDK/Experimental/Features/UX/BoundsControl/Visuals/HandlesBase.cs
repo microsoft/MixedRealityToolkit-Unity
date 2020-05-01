@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,27 +15,96 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
+        internal HandlesBase() { }
         protected abstract HandlesBaseConfiguration BaseConfig
         {
             get;
         }
 
-        internal void ResetHandleVisibility(bool isVisible)
+        internal void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
+        {
+            switch (changedType)
+            {
+                case HandlesBaseConfiguration.HandlesChangedEventType.Material:
+                    UpdateBaseMaterial();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.MaterialGrabbed:
+                    UpdateGrabbedMaterial();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.Prefab:
+                    RecreateVisuals();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.ColliderSize:
+                case HandlesBaseConfiguration.HandlesChangedEventType.ColliderPadding:
+                    UpdateColliderBounds();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.ManipulationTether:
+                    UpdateDrawTether();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.IgnoreColliderRemove:
+                    HandlesIgnoreConfigCollider(false);
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.IgnoreColliderAdd:
+                    HandlesIgnoreConfigCollider(true);
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.Visibility:
+                    ResetHandles();
+                    break;
+            }
+        }
+
+        private void HandlesIgnoreConfigCollider(bool ignore)
+        {
+            VisualUtils.HandleIgnoreCollider(BaseConfig.HandlesIgnoreCollider, handles, ignore);
+        }
+
+        private void UpdateDrawTether()
+        {
+            // enable / disable tether in near interaction grabbable of handle
+            foreach (var handle in handles)
+            {
+                var grabbable = handle.gameObject.EnsureComponent<NearInteractionGrabbable>();
+                grabbable.ShowTetherWhenManipulating = BaseConfig.DrawTetherWhenManipulating;
+            }
+        }
+
+        protected void UpdateColliderBounds()
+        {
+            foreach (var handle in handles)
+            {
+                var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
+                UpdateColliderBounds(handle, handleBounds.size);
+            }
+        }
+
+        protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
+        protected abstract void RecreateVisuals();
+
+        protected void ResetHandles()
         {
             if (handles != null)
             {
                 for (int i = 0; i < handles.Count; ++i)
                 {
-                    handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    bool isVisible = IsVisible(handles[i]);
+                    handles[i].gameObject.SetActive(isVisible);
+                    if (isVisible)
+                    {
+                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    }
                 }
             }
+            highlightedHandle = null;
         }
 
         internal abstract bool IsVisible(Transform handle);
         
 
         internal protected List<Transform> handles = new List<Transform>();
+        private Transform highlightedHandle = null;
+
+        ProximityObjectsChangedEvent IProximityEffectObjectProvider.ProximityObjectsChanged => objectsChangedEvent;
+        protected ProximityObjectsChangedEvent objectsChangedEvent = new ProximityObjectsChangedEvent();
 
         public IReadOnlyList<Transform> Handles
         {
@@ -55,14 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     else
                     {
                         VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
+                        highlightedHandle = handleToHighlight;
                     }
                 }
             }
-        }
-
-        internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
-        {
-            VisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
         }
 
         internal void DestroyHandles()
@@ -99,9 +165,43 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected abstract Transform GetVisual(Transform handle);
 
+        protected void UpdateBaseMaterial()
+        {
+            if (handles != null)
+            {
+                for (int i = 0; i < handles.Count; ++i)
+                {
+                    if (handles[i] != highlightedHandle)
+                    {
+                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    }
+                }
+            }
+        }
+
+        protected void UpdateGrabbedMaterial()
+        {
+            if (highlightedHandle)
+            {
+                SetHighlighted(highlightedHandle);
+            }
+        }
 
         #region IProximityScaleObjectProvider 
-        public abstract bool IsActive();
+
+        private bool isActive = true;
+        public virtual bool IsActive
+        {
+            get => isActive;
+            set
+            {
+                if (isActive != value)
+                {
+                    isActive = value;
+                    ResetHandles();
+                }
+            }
+        }
 
         public void ForEachProximityObject(Action<Transform> action)
         {

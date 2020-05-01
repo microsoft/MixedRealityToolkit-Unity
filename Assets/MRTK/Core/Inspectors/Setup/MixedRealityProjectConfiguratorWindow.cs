@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { MRConfig.EnableMSBuildForUnity, true },
 #endif // !UNITY_2019_3_OR_NEWER
+            { MRConfig.AudioSpatializer, true },
+
             // UWP Capabilities
             { MRConfig.MicrophoneCapability, true },
             { MRConfig.InternetClientCapability, true },
@@ -43,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const float Default_Window_Height = 640.0f;
         private const float Default_Window_Width = 400.0f;
+        private const string None = "None";
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
@@ -79,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Instance = this;
 
             CompilationPipeline.assemblyCompilationStarted += CompilationPipeline_assemblyCompilationStarted;
+            MixedRealityProjectConfigurator.SelectedSpatializer = SpatializerUtilities.CurrentSpatializer;
         }
 
         private void CompilationPipeline_assemblyCompilationStarted(string obj)
@@ -183,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+                PromptForAudioSpatializer();
                 EditorGUILayout.Space();
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
@@ -242,6 +247,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             MixedRealityProjectConfigurator.ConfigureProject(configurationFilter);
+        }
+
+        /// <summary>
+        /// Provide the user with the list of spatializers that can be selected.
+        /// </summary>
+        private void PromptForAudioSpatializer()
+        {
+            string selectedSpatializer = MixedRealityProjectConfigurator.SelectedSpatializer;
+            List<string> spatializers = new List<string>
+            {
+                None
+            };
+            spatializers.AddRange(SpatializerUtilities.InstalledSpatializers);
+            RenderDropDown(MRConfig.AudioSpatializer, "Audio spatializer:", spatializers.ToArray(), ref selectedSpatializer);
+            MixedRealityProjectConfigurator.SelectedSpatializer = selectedSpatializer;
+        }
+
+        private void RenderDropDown(MRConfig configKey, string title, string[] collection, ref string selection)
+        {
+            bool configured = MixedRealityProjectConfigurator.IsConfigured(configKey);
+            using (new EditorGUI.DisabledGroupScope(configured))
+            {
+                if (configured)
+                {
+                    EditorGUILayout.LabelField(new GUIContent($"{title} {selection}", InspectorUIUtility.SuccessIcon));
+                }
+                else
+                {
+                    int index = 0;
+                    for (int i = 0; i < collection.Length; i++)
+                    {
+                        if (collection[i] != selection) { continue; }
+
+                        index = i;
+                    }
+                    index = EditorGUILayout.Popup(title, index, collection, EditorStyles.popup);
+
+                    selection = collection[index];
+                    if (selection == None)
+                    {
+                        // The user selected "None", return null. Unity uses this string where null
+                        // is the underlying value.
+                        selection = null;
+                    }
+                }
+            }
         }
 
         private void RenderToggle(MRConfig configKey, string title)

@@ -104,22 +104,40 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region MonoBehaviour Implementation
 
+#if WINDOWS_UWP
         /// <summary>
         /// Initializes the UWP input pane.
         /// </summary>
         protected virtual void Start()
         {
- #if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 inputPane = InputPane.GetForCurrentView();
-                inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
-                inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
+                inputPane.Hiding += OnInputPaneHiding;
+                inputPane.Showing += OnInputPaneShowing;
             }, false);
-#endif
         }
 
-#if WINDOWS_UWP
+        private void OnInputPaneHiding(InputPane inputPane, InputPaneVisibilityEventArgs args)
+        {
+            OnKeyboardHiding();
+        }
+
+        private void OnInputPaneShowing(InputPane inputPane, InputPaneVisibilityEventArgs args)
+        {
+            OnKeyboardShowing();
+        }
+
+        void OnDestroy()
+        {
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                inputPane = InputPane.GetForCurrentView();
+                inputPane.Hiding -= OnInputPaneHiding;
+                inputPane.Showing -= OnInputPaneShowing;
+            }, false);
+        }
+
         private IEnumerator UpdateState()
         {
             while (true)
@@ -142,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 yield return null;
             }
         }
-#endif
+#endif // WINDOWS_UWP
 
         private void OnDisable()
         {

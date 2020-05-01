@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     wireframeMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Material);
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeEdgeRadius != value)
                 {
                     wireframeEdgeRadius = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Radius);
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeShape != value)
                 {
                     wireframeShape = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Shape);
                 }
             }
         }
@@ -91,14 +91,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showWireframe != value)
                 {
                     showWireframe = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.Visibility);
                 }
             }
         }
 
         #endregion Serialized Properties
 
-        internal protected UnityEvent configurationChanged = new UnityEvent();
+        internal enum WireframeChangedEventType
+        {
+            Visibility,
+            Radius,
+            Shape,
+            Material
+        }
+        internal class WireFrameEvent : UnityEvent<WireframeChangedEventType> { }
+        internal WireFrameEvent wireFrameChanged = new WireFrameEvent();
 
         public void Awake()
         {
