@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const float ToolboxItemButtonWidth = 100f;
         private const float ToolboxItemHeight = 64f;
 
+        private const string RequiresCanvas = "(Requires Canvas)";
+        private const float ReloadButtonWidth = 60f;
+        private static readonly GUIContent CanvasDropdownContent = new GUIContent("MRTK canvases", "Canvases in the scene with an MRTK Canvas Utility attached.\nComponent will be placed under the selected canvas in the hierarchy.");
+        private static readonly GUIContent RefreshButtonContent = new GUIContent("Refresh");
+
         /// <summary>
         /// Represents a collection of categories, each containing specific prefabs to be displayed in the Toolbox.
         /// </summary>
@@ -174,6 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void OnEnable()
         {
             searchString = SessionState.GetString(SearchDisplaySearchFieldKey, string.Empty);
+            FindAllMRTKCanvases();
         }
 
         private void OnGUI()
@@ -213,6 +219,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        private Input.Utilities.CanvasUtility[] canvasUtilities = Array.Empty<Input.Utilities.CanvasUtility>();
+        private string[] dropdownValues = Array.Empty<string>();
+        private int dropdownIndex = 0;
+
         private void RenderSection(ToolboxCategory bucket)
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
@@ -235,6 +245,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                     }
 
+                    bool requiresCanvas = bucket.CategoryName.Contains(RequiresCanvas);
+                    if (requiresCanvas)
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            dropdownIndex = EditorGUILayout.Popup(CanvasDropdownContent, dropdownIndex, dropdownValues);
+
+                            if (GUILayout.Button(RefreshButtonContent, EditorStyles.miniButton, GUILayout.Width(ReloadButtonWidth)))
+                            {
+                                FindAllMRTKCanvases();
+                            }
+                        }
+
+                        if (canvasUtilities.Length == 0)
+                        {
+                            GUIStyle CanvasWarningStyle = new GUIStyle(EditorStyles.textField)
+                            {
+                                wordWrap = true
+                            };
+                            GUILayout.TextField("These MRTK components require an MRTK Canvas Utility on one of the Unity UI Canvases in the scene.\nNone were detected. Press refresh if you recently added any.", CanvasWarningStyle);
+                        }
+                    }
+
+                    EditorGUILayout.Space();
+
                     // Render grid of toolbox items
                     int itemsPerRow = Mathf.Max((int)(position.width / ToolboxItemWidth), 1);
 
@@ -246,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             for (int col = 0; col < itemsPerRow && startIndex + col < validItems.Count; col++)
                             {
                                 var item = validItems[startIndex + col];
-                                RenderToolboxItem(item);
+                                RenderToolboxItem(item, requiresCanvas);
                             }
                         }
                     }
@@ -254,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private void RenderToolboxItem(ToolboxItem item)
+        private void RenderToolboxItem(ToolboxItem item, bool requiresCanvas = false)
         {
             if (item == null || item.Prefab == null)
             {
@@ -273,11 +308,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    using (new EditorGUI.DisabledGroupScope(false))
+                    // If this component requires an MRTK canvas but none are present, disable the button.
+                    using (new EditorGUI.DisabledGroupScope(requiresCanvas && canvasUtilities.Length == 0))
                     {
                         if (GUILayout.Button(buttonContent, GUILayout.MaxHeight(ToolboxItemHeight), GUILayout.Width(ToolboxItemButtonWidth)))
                         {
-                            Selection.activeObject = Instantiate(item.Prefab);
+                            Selection.activeObject = !requiresCanvas ? Instantiate(item.Prefab) : Instantiate(item.Prefab, canvasUtilities[dropdownIndex].transform);
                         }
                     }
                     GUILayout.FlexibleSpace();
@@ -312,6 +348,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool IsSearchMatch(string field, string searchContent)
         {
             return field.IndexOf(searchContent, 0, StringComparison.CurrentCultureIgnoreCase) >= 0;
+        }
+
+        private void FindAllMRTKCanvases()
+        {
+            canvasUtilities = FindObjectsOfType<Input.Utilities.CanvasUtility>();
+            dropdownValues = new string[canvasUtilities.Length];
+
+            for (int i = 0; i < canvasUtilities.Length; i++)
+            {
+                dropdownValues[i] = canvasUtilities[i].name;
+            }
         }
     }
 }
