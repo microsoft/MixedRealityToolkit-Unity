@@ -338,7 +338,8 @@ function IsNamespace {
         [string]$Line
     )
     process {
-        if ($Line -match "^namespace\s[a-zA-Z.]+") {
+        if (($Line -match "^namespace\sMicrosoft\.MixedReality\.Toolkit") -or
+            ($Line -match "^namespace\sMicrosoft\.Windows\.MixedReality")) {
             $true;
         }
         $false;
