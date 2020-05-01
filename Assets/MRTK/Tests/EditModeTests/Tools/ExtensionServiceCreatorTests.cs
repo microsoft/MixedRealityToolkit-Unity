@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -65,8 +66,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Editor
         {
             string resolvedFolder = Path.Combine(Application.dataPath, folder);
             string resolvedFolderMeta = resolvedFolder + ".meta";
-            Directory.Delete(resolvedFolder, true);
-            File.Delete(resolvedFolderMeta);
+            try
+            {
+                Directory.Delete(resolvedFolder, true);
+                File.Delete(resolvedFolderMeta);
+            }
+            catch (Exception)
+            {
+                // It's possible that these things could have been deleted outside of the test
+                // process, so don't fail the test if that happened.
+            }
         }
     }
 }
