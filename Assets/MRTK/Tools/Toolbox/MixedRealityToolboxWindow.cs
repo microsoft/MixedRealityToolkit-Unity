@@ -314,6 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         if (GUILayout.Button(buttonContent, GUILayout.MaxHeight(ToolboxItemHeight), GUILayout.Width(ToolboxItemButtonWidth)))
                         {
                             Selection.activeObject = !requiresCanvas ? Instantiate(item.Prefab) : Instantiate(item.Prefab, canvasUtilities[dropdownIndex].transform);
+                            Undo.RegisterCreatedObjectUndo(Selection.activeObject, $"Create {item.Name} Object");
                         }
                     }
                     GUILayout.FlexibleSpace();
