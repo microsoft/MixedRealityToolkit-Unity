@@ -8,9 +8,15 @@ The MRTK Toolbox is a Unity editor window utility that makes it easy to discover
 
 The toolbox is distributed via the MRTK's Tools package.
 
-## Launch the toolbox window
+## Using the toolbox window
 
 1. Open the Toolbox window via the **Mixed Reality Toolkit** tab > **Toolbox**.
+
+    ![Open the Toolbox](https://user-images.githubusercontent.com/25975362/73321589-ccfbc100-41f7-11ea-8f1a-89c4f68e12f7.gif)
+
+1. Click on any UX component to add it to the current scene.
+
+    ![Add a component to the scene](https://user-images.githubusercontent.com/25975362/73321582-c9683a00-41f7-11ea-8bac-bf8efdb2fbe3.gif)
 
 ## See also
 
