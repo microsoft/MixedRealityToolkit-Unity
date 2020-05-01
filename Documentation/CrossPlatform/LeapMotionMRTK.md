@@ -9,7 +9,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 ## Using Leap Motion tracking in MRTK
 1. Prepare MRTK project for Leap Motion
 
-    - **This step only applies for the Leap Motion Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Leap Motion Core Assets version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at step 2.**
+    - **This step only applies for the Leap Motion Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Leap Motion Core Assets version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at the next step**
 
     - Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion**. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked [here](https://github.com/leapmotion/UnityModules/issues/1082).
 
@@ -17,9 +17,6 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 
 1. Importing MRTK and the Leap Motion Core Assets
     - Import the **Microsoft.MixedReality.Toolkit.Foundation** package into the Unity project.
-    > [!NOTE]
-    > The Leap Motion Data Provider is supported in both Unity 2018.4.x and 2019.3.x, but 2019.3.x is preferred.
-
     - Install the [Leap Motion SDK 4.0.0](https://developer.leapmotion.com/releases/?category=orion)
     - Download and import the [Leap Motion Core Assets for Unity](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0)
         - Leap Motion Core Assets version [4.4.0](https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0) and [4.5.0](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0) are supported, but version 4.5.0 is preferred.
@@ -27,9 +24,9 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     > [!NOTE]
     > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
     - If using Unity 2018.4.x
-        - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the [Leap Motion Common Errors](#leap-motion-has-not-integrated-with-mrtk). If the file is present, go to step 3.
+        - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the [Leap Motion Common Errors](#leap-motion-has-not-integrated-with-mrtk). If the file is present, go to the next step.
         
-    - If using Unity 2019.3.x, go to step 3.
+    - If using Unity 2019.3.x, go to the next step
 
 1. Adding the Leap Motion Data Provider
     - Create a new Unity scene
@@ -70,7 +67,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 1. Building your project 
     - Navigate to **File > Build Settings**
     - Only Standalone builds are supported if using the Leap Motion Data Provider.
-    - For instructions on how to use a Windows Mixed Reality headset for Standalone builds, see [Build and Deploy](../BuildAndDeploy#building-and-deploying-mrtk-to-a-windows-mixed-reality-headset).
+    - For instructions on how to use a Windows Mixed Reality headset for Standalone builds, see [Build and Deploy](../BuildAndDeploy.md#building-and-deploying-mrtk-to-a-windows-mixed-reality-headset).
 
 ## Getting the hand joints 
 
@@ -108,13 +105,13 @@ public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
 
     public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
     {
-        if (eventData.InputSource.SourceName == "Leap Left Controller")
+        if (eventData.Handedness == Handedness.Left)
         {
             Vector3 leftHandPalmPosition = eventData.InputData[TrackedHandJoint.Palm].Position;
             leftHandSphere.transform.position = leftHandPalmPosition;
         }
 
-        if (eventData.InputSource.SourceName == "Leap Right Controller")
+        if (eventData.Handedness == Handedness.Right)
         {
             Vector3 rightHandPalmPosition = eventData.InputData[TrackedHandJoint.Palm].Position;
             rightHandCube.transform.position = rightHandPalmPosition;
