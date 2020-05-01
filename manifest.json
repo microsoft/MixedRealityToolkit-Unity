@@ -20827,6 +20827,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem.MixedRealityControllerMappingProfileTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem.MixedRealityControllerMappingProfileTests.html",
+          "hash": "jmq6ovxuzcb7SZTn4+WHug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem.TestPointer.yml",
       "output": {
         ".html": {
@@ -20855,7 +20867,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem.html",
-          "hash": "ttmqQ33Ls+fKXJtclGVhww=="
+          "hash": "UcovpDQfDrPVwRS1qRHFvw=="
         }
       },
       "is_incremental": false,
@@ -27395,7 +27407,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "2P/NFRZ3+t0K9s3TJAABlQ=="
+          "hash": "nQA2NNe5i77EvMXebbMbSQ=="
         }
       },
       "is_incremental": false,
@@ -27470,7 +27482,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1605,
+          "total_file_count": 1606,
           "skipped_file_count": 0
         }
       }
