@@ -148,7 +148,7 @@ To try the hand interaction scene, do the following steps.
 
 1. Uncheck or shrink the size of the 3d icons under the Gizmos tab in the Scene view to make the scene easier to look at
 
-  [Insert image here]
+  ![Gizmos](https://user-images.githubusercontent.com/39840334/80771381-2978c000-8b08-11ea-8fd0-149b0c06fc6a.png)
 
 1. Press the Play button.
 
