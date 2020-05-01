@@ -137,9 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         }
 
         /// <summary>
-        /// Checks if the Leap Motion Core Assets are version 4.4.0 or 4.5.0.
+        /// Checks if the Leap Motion Core Assets version is supported.
         /// </summary>
-        /// <returns>True, if the Leap Motion Core Assets imported are version 4.4.0 or 4.5.0.</returns>
+        /// <returns>True, if the Leap Motion Core Assets version imported is supported</returns>
         private static bool LeapCoreAssetsVersionSupport()
         {
             string versionLeapPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                     foreach (string versionNumberSupported in leapCoreAssetsVersionsSupported)
                     {
-                        // If the leap core assets version number is 4.4.0 or 4.5.0
+                        // If the leap core assets version number is supported
                         if (line.Contains(versionNumberSupported))
                         {
                             currentLeapCoreAssetsVersion = versionNumberSupported;
