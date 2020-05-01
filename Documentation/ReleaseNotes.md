@@ -48,6 +48,12 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 > [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
+**MRTK Toolbox**
+
+<img src="https://user-images.githubusercontent.com/25975362/75413690-1ca6d880-58db-11ea-9b1f-f8237063d747.png" width="300" />
+
+The [MRTK Toolbox](Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
+
 **Unity Profiler markers**
 
 This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
