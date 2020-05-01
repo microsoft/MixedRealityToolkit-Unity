@@ -35,10 +35,10 @@ The `Button` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/Button.prefab) is
 
 `PressableButtonHoloLens2` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) is HoloLens 2's shell style button that supports the precise movement of the button for the direct hand tracking input. It combines `Interactable` script with `PressableButton` script.
 
-For HoloLens 2, it is recommended to use buttons with a opaque backplate. Transparent buttons are not recommended because of these usability and stability issues:
-- Icon and text are difficult to read with physical environment
+For HoloLens 2, it is recommended to use buttons with an opaque backplate. Transparent buttons are not recommended because of these usability and stability issues:
+- Icon and text are difficult to read with the physical environment
 - It is hard to understand when the event triggers
-- Holograms that are displayed through transparent plane can be unstable with HoloLens 2's Depth LSR stabilization
+- Holograms that are displayed through a transparent plane can be unstable with HoloLens 2's Depth LSR stabilization
 
 ![Button](../Documentation/Images/Button/MRTK_Button_UsePlated.png)
 
