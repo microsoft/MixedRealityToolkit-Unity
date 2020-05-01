@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
-        [Tooltip("Amount to pull back the center of the sphere behind the hand")]
+        [Tooltip("Amount to pull back the center of the sphere behind the hand for detecting when to turn off far interaction.")]
         private float pullbackDistance = 0.0f;
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float nearObjectSectorAngle = 360.0f;
 
         /// <summary>
-        /// Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried
+        /// Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried.
         /// </summary>
         public float NearObjectSectorAngle
         {
@@ -68,10 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
-        [Tooltip("Additional distance on top of sphere cast radius when pointer is considered 'near' an object and far interaction will turn off")]
+        [Tooltip("Lerp factor between the palm direction and the index finger direction used to build the cone direction.")]
         private float nearObjectAxisLerp = 0.9f;
         /// <summary>
-        /// Angle range of the forward axis to query in degrees. Angle >= 360 means the entire sphere is queried
+        /// Lerp factor between the palm direction and the index finger direction used to build the cone direction.
         /// </summary>
         public float NearObjectAxisLerp
         {
@@ -185,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * pullbackDistance, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition - pointerAxis * PullbackDistance, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV, true))
                         {
                             break;
                         }
@@ -253,7 +253,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (TryGetNearGraspAxisPerfMarker.Auto())
             {
-                // If controller is of kind IMixedRealityHand, return average of index and thumb
                 if (Controller is IMixedRealityHand hand)
                 {
                     if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
@@ -261,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
                         {
                             Vector3 palmToIndex = index.Position - palm.Position;
-                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, NearObjectAxisLerp);
+                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, NearObjectAxisLerp).normalized;
                             return true;
                         }
                     }
@@ -463,29 +462,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (NearObjectSectorAngle >= 360.0f)
             {
-                // Draw the sphere with the pullback inner sphere.
+                // Draw the sphere and the inner near interaction deadzone (governed by the pullback distance)
                 Gizmos.color = (IsNearObject ? Color.red : Color.cyan) - Color.black * 0.8f;
-                Gizmos.DrawSphere(point - centralAxis * pullbackDistance, NearObjectRadius);
+                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, NearObjectRadius);
 
                 Gizmos.color = Color.blue - Color.black * 0.8f;
-                Gizmos.DrawSphere(point - centralAxis * pullbackDistance, pullbackDistance);
+                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, PullbackDistance);
             }
             else
             {
-                // Draw something approximating the sector
+                // Draw something approximating the sphere's sector
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - pullbackDistance));
+                Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - PullbackDistance));
 
                 UnityEditor.Handles.color = IsNearObject ? Color.red : Color.cyan;
                 float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
                 UnityEditor.Handles.DrawWireDisc(point,
                                                  centralAxis,
-                                                 pullbackDistance * Mathf.Sin(GizmoAngle));
+                                                 PullbackDistance * Mathf.Sin(GizmoAngle));
 
-                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - pullbackDistance),
+                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
                                                  centralAxis,
                                                  NearObjectRadius * Mathf.Sin(GizmoAngle));
             }
+
+            // Draw the sphere representing the grabable area
+            Gizmos.color = Color.green - Color.black * (IsInteractionEnabled ? 0.3f : 0.8f);
+            Gizmos.DrawSphere(point, SphereCastRadius);
         }
     #endif
     }

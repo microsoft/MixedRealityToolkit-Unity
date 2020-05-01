@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// 
         /// For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).
         ///
-        /// This method provides a mechanism to get this forward axis.
+        /// This method provides a mechanism to get this forward axis. It should be normalized.
         /// </summary>
         /// <param name="axis">Out parameter filled with the grasp's forward axis if available, otherwise returns the forward axis of the transform.</param>
         /// <returns>True if a grasp's forward axis was retrieved, false if not.</returns>
