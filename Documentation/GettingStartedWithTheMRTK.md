@@ -146,6 +146,10 @@ To try the hand interaction scene, do the following steps.
 
 1. Close the TMP dialog. After this you need to reload the scene. You can do this by double-clicking the scene in the Project tab.
 
+1. Uncheck or shrink the size of the 3d icons under the Gizmos tab in the Scene view to make the scene easier to look at
+
+  [Insert image here]
+
 1. Press the Play button.
 
 ## Using the in-editor hand input simulation to test a scene
