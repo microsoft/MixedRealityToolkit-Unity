@@ -63,17 +63,6 @@ public class PrefabSpawner :
         await UpdateSpawnable(focusEnterTime, tappedTime);
     }
 
-    protected void TryCreateSpawnable()
-    {
-        if (spawnable == null)
-        {
-            spawnable = Instantiate(prefab);
-            spawnable.gameObject.SetActive(false);
-            spawnable.transform.position = transform.position;
-            spawnable.transform.parent = transform;
-        }
-    }
-
     private async Task UpdateSpawnable(float focusEnterTimeOnStart, float tappedTimeOnStart)
     {
         if (appearType == AppearType.AppearOnFocusEnter)
