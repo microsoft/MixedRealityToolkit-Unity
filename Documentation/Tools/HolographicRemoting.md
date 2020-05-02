@@ -131,7 +131,7 @@ Once the project has been configured, a connection can be established to the Hol
 
 ## Connecting to the HoloLens with USB cable
 
-USB cable connection gives better rendering quality and stability. To use USB cable connection, disconnect from Wi-Fi in HoloLens' Settings and launch Holographic Remoting Player app. It will display an IP address starts with 169. Use this IP address in Unity's Holographic Emulation setting to connect. Once you identified the IP address for USB cable, you can connect to Wi-Fi again. 
+USB cable connection gives better rendering quality and stability. To use USB cable connection, disconnect from the HoloLens from Wi-Fi in HoloLens's Settings and launch Holographic Remoting Player app. It will display an IP address that starts with 169. Use this IP address in Unity's Holographic Emulation setting to connect. Once the IP address for USB cable has been identified, it is safe to connect the HoloLens to Wi-Fi again. 
 
 ## Starting a remoting session
 
