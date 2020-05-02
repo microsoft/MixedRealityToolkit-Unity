@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -14,6 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 #else
             SupportedPlatforms target = GetSupportedPlatformMask(Application.platform);
 #endif
+            return IsPlatformSupported(target, platforms);
+        }
+
+        [Obsolete("Use PlatformUtility.IsPlatformSupported(SupportedPlatforms platforms) instead, which accounts for both the in-editor and runtime case.")]
+        public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platforms)
+        {
+            SupportedPlatforms target = GetSupportedPlatformMask(runtimePlatform);
             return IsPlatformSupported(target, platforms);
         }
 
@@ -63,6 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
 #if UNITY_EDITOR
+        [Obsolete("Use PlatformUtility.IsPlatformSupported(SupportedPlatforms platforms) instead, which accounts for both the in-editor and runtime case.")]
+        public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platforms)
+        {
+            SupportedPlatforms target = GetSupportedPlatformMask(editorBuildTarget);
+            return IsPlatformSupported(target, platforms);
+        }
 
         private static SupportedPlatforms GetSupportedPlatformMask(UnityEditor.BuildTarget editorBuildTarget)
         {
