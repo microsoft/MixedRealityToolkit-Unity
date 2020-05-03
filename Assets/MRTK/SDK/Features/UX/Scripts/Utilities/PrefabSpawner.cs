@@ -42,6 +42,7 @@ public class PrefabSpawner :
     private VanishType vanishType = VanishType.VanishOnFocusExit;
     [SerializeField]
     private RemainType remainType = RemainType.Timeout;
+    [Header("Timing")]
     [SerializeField]
     [Range(0f, 5f)]
     private float appearDelay = 0.0f;
@@ -51,6 +52,9 @@ public class PrefabSpawner :
     [SerializeField]
     [Range(0.5f, 10.0f)]
     private float lifetime = 1.0f;
+    [Header("Orientation")]
+    [SerializeField]
+    private bool keepWorldRotation = true;
 
     private float focusEnterTime = 0f;
     private float focusExitTime = 0f;
@@ -69,10 +73,13 @@ public class PrefabSpawner :
         {
             if (spawnable == null)
             {
-                spawnable = Instantiate(prefab);
+                spawnable = Instantiate(prefab, transform, false);
+                spawnable.transform.localPosition = Vector3.zero;
+                if (!keepWorldRotation)
+                {
+                    spawnable.transform.localRotation = Quaternion.identity;
+                }
                 spawnable.gameObject.SetActive(false);
-                spawnable.transform.position = transform.position;
-                spawnable.transform.parent = transform;
             }
             // Wait for the appear delay
             await new WaitForSeconds(appearDelay);
