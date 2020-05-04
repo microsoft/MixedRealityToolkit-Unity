@@ -35,6 +35,15 @@ The `Button` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/Button.prefab) is
 
 `PressableButtonHoloLens2` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) is HoloLens 2's shell style button that supports the precise movement of the button for the direct hand tracking input. It combines `Interactable` script with `PressableButton` script.
 
+For HoloLens 2, it is recommended to use buttons with an opaque backplate. Transparent buttons are not recommended because of these usability and stability issues:
+- Icon and text are difficult to read with the physical environment
+- It is hard to understand when the event triggers
+- Holograms that are displayed through a transparent plane can be unstable with HoloLens 2's Depth LSR stabilization
+
+![Button](Images/Button/MRTK_Button_UsePlated.png)
+
+
+
 ## How to use pressable buttons
 
 ### Unity UI based buttons
@@ -148,6 +157,27 @@ public void SetButtonToAdjust()
 To use your Icon Set select a button, expand the Icons dropdown in the `ButtonConfigHelper` and assign it to the *Icon Set* field.
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Icon_Set_Assign.png)
+
+## How to change the size of a button
+
+HoloLens 2's shell-style button's size is 32x32mm. To customize the dimension, change the size of these objects in the button prefab:
+1. **FrontPlate**
+2. **Quad** under BackPlate
+3. **Box Collider** on the root
+
+Then, click **Fix Bounds** button in the NearInteractionTouchble script which is in the root of the button. 
+
+Update the size of the FrontPlate
+![Button](Images/Button/MRTK_Button_SizeCustomization1.png)
+
+Update the size of the Quad
+![Button](Images/Button/MRTK_Button_SizeCustomization2.png)
+
+Update the size of the Box Collider
+![Button](Images/Button/MRTK_Button_SizeCustomization3.png)
+
+Click 'Fix Bounds'
+![Button](Images/Button/MRTK_Button_SizeCustomization4.png)
 
 ## Voice command ('see-it, say-it')
 

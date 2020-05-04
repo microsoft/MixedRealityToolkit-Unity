@@ -1,10 +1,10 @@
-# Hand Menu
+# Hand menu
 
 ![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
 
 Hand menus allow users to quickly bring up hand-attached UI for frequently used functions. To prevent false activation while interacting with other objects, hand menu provides options such as 'Require Flat Hand' and 'Use Gaze Activation'. It is recommended to use these options to prevent unwanted activation.
 
-## Hand Menu Examples
+## Hand menu examples
 **HandMenuExamples.unity** scene is under ``MRTK/Examples/Demos/HandTracking/Scenes`` folder. When it is running, the scene will only activate currently selected menu type. 
 <br/><img src="Images/HandMenu/MRTK_HandMenu_ExampleScene.png" width="600px">
 
