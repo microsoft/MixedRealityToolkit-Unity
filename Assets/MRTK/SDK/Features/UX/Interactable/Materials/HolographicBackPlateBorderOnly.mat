@@ -9,14 +9,14 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: HolographicBackPlateBorderOnly
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_OPAQUE _BORDER_LIGHT_REPLACES_ALBEDO
-    _DISABLE_ALBEDO_MAP _METALLIC_TEXTURE_ALBEDO_CHANNEL_A _NEAR_PLANE_FADE _ROUND_CORNERS
+  m_ShaderKeywords: _BORDER_LIGHT _BORDER_LIGHT_OPAQUE _BORDER_LIGHT_REPLACES_ALBEDO
+    _DISABLE_ALBEDO_MAP _METALLIC_TEXTURE_ALBEDO_CHANNEL_A _ROUND_CORNERS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2000
   stringTagMap:
-    RenderType: Transparent
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -98,11 +98,11 @@ Material:
     - _ClippingSphere: 0
     - _ColorWriteMask: 15
     - _CullMode: 0
-    - _CustomMode: 2
+    - _CustomMode: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _EdgeSmoothingValue: 0.0002
     - _EnableChannelMap: 0
     - _EnableEmission: 0
@@ -126,6 +126,7 @@ Material:
     - _HoverLight: 0
     - _HoverLightOpaque: 0
     - _IgnoreZScale: 0
+    - _IndependentCorners: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -134,9 +135,9 @@ Material:
     - _IridescenceIntensity: 0.75
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
-    - _Mode: 2
+    - _Mode: 0
     - _NearLightFade: 0
-    - _NearPlaneFade: 1
+    - _NearPlaneFade: 0
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -156,7 +157,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
     - _SphericalHarmonics: 0
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
@@ -170,7 +171,7 @@ Material:
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
@@ -189,3 +190,4 @@ Material:
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.497}
+    - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

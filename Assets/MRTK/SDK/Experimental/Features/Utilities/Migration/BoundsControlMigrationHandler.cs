@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
@@ -51,8 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 // migrate visuals
-                boundsControl.DrawTetherWhenManipulating = boundingBox.DrawTetherWhenManipulating;
-                boundsControl.HandlesIgnoreCollider = boundingBox.HandlesIgnoreCollider;
                 boundsControl.FlattenAxis = MigrateFlattenAxis(boundingBox.FlattenAxis);
                 boundsControl.BoxPadding = boundingBox.BoxPadding;
                 string configDir = GetBoundsControlConfigDirectory(boundingBox);
@@ -71,13 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 boundsControl.RotateStopped = boundingBox.RotateStopped;
                 boundsControl.ScaleStarted = boundingBox.ScaleStarted;
                 boundsControl.ScaleStopped = boundingBox.ScaleStopped;
-
-                // destroy obsolete component
-                Object.DestroyImmediate(boundingBox);
             }
 
             // look in the scene for app bars and upgrade them too to point to the new component
             MigrateAppBar(boundingBox, boundsControl);
+      
+            {
+                Undo.RecordObject(gameObject, "Removing obsolete BoundingBox component");
+                // destroy obsolete component
+                Object.DestroyImmediate(boundingBox);
+            }
 #endif
         }
 
@@ -191,18 +193,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return WireframeType.Cubic;
         }
 
-        private RotationHandlePrefabCollider MigrateRotationHandleColliderType(BoundingBox.RotationHandlePrefabCollider rotationHandlePrefabColliderType)
+        private HandlePrefabCollider MigrateRotationHandleColliderType(BoundingBox.RotationHandlePrefabCollider rotationHandlePrefabColliderType)
         {
             switch (rotationHandlePrefabColliderType)
             {
                 case BoundingBox.RotationHandlePrefabCollider.Sphere:
-                    return RotationHandlePrefabCollider.Sphere;
+                    return HandlePrefabCollider.Sphere;
                 case BoundingBox.RotationHandlePrefabCollider.Box:
-                    return RotationHandlePrefabCollider.Box;
+                    return HandlePrefabCollider.Box;
             }
 
             Debug.Assert(false, "Tried to migrate unsupported rotation handle collider type in bounding box / bounds control");
-            return RotationHandlePrefabCollider.Sphere;
+            return HandlePrefabCollider.Sphere;
         }
 
         #endregion Flags Migration
@@ -217,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.FlattenAxisDisplayScale = box.FlattenAxisDisplayScale;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "BoxDisplayConfiguration"));
 
-            control.BoxDisplayConfiguration = config;
+            control.BoxDisplayConfig = config;
         }
 
         private void MigrateLinks(BoundsControl control, BoundingBox box, string configAssetDirectory)
@@ -229,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.ShowWireFrame = box.ShowWireFrame;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "LinksConfiguration"));
 
-            control.LinksConfiguration = config;
+            control.LinksConfig = config;
 
         }
 
@@ -242,10 +244,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandleGrabbedMaterial = box.HandleGrabbedMaterial;
             config.HandlePrefab = box.ScaleHandlePrefab;
             config.HandleSize = box.ScaleHandleSize;
-            config.ColliderPadding = box.ScaleHandleColliderPadding;            
+            config.ColliderPadding = box.ScaleHandleColliderPadding;
+            config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
+            config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
 
-            control.ScaleHandlesConfiguration = config;
+            control.ScaleHandlesConfig = config;
         }
 
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
@@ -260,9 +264,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandlePrefab = box.RotationHandlePrefab;
             config.HandleSize = box.RotationHandleSize;
             config.ColliderPadding = box.RotateHandleColliderPadding;
+            config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
+            config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
 
-            control.RotationHandles = config;
+            control.RotationHandlesConfig = config;
         }
 
         private void MigrateProximityEffect(BoundsControl control, BoundingBox box, string configAssetDirectory)
@@ -279,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.CloseGrowRate = box.CloseGrowRate;            
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
 
-            control.HandleProximityEffectConfiguration = config;
+            control.HandleProximityEffectConfig = config;
         }
 
         #endregion Visuals Configuration Migration

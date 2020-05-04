@@ -55,6 +55,12 @@ This release addresses issues related to changing the `MixedRealityToolkit.Activ
 >[!NOTE]
 > Changing `MixedRealityToolkit.ActiveProfile` causes all running services to be destroyed and new instances of those specified in the incoming profile to be instantiated.
 
+**MRTK Toolbox**
+
+![MRTK Toolbox](Images/Tools/MRTKToolboxWindow.png)
+
+The [MRTK Toolbox](README_Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
+
 **Unity Profiler markers**
 
 This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
@@ -76,6 +82,27 @@ We have introduced two helper components, [`UI_KeyboardInputField`](xref:Microso
 
 For more information, see - [Mixed Reality Keyboard Helpers](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md).
 
+**Grid Object Collection Alignment Options**
+
+<img src="https://user-images.githubusercontent.com/39840334/79289136-5c228780-7e7d-11ea-82b4-07959e42c3ed.gif" width="300" />
+
+We have added the ability to choose how the elements in the grid are aligned, whether they are aligned in the center or along the left/right axis (top/bottom axis when doing row then column layout)
+
+**Grid Object Collection Anchor Changes**
+
+<img src="https://user-images.githubusercontent.com/39840334/79516745-17bff480-8001-11ea-8492-cfa953c451da.gif" width="300" />
+
+We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the `AnchorAlongAxis` field.
+
+**Adjusted input simulation camera control**
+
+Camera control speed using in-editor input simulation is slower for a smoother experience and is now untied from framerate. Fast camera control now activated with Right Shift instead of Right Ctrl
+
+**Hands-free GGV input simulation**
+
+<img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300"/>
+
+We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
 
 ### Breaking changes in 2.4.0
 

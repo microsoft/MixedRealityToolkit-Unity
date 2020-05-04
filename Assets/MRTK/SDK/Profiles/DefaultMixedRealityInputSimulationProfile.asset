@@ -18,6 +18,9 @@ MonoBehaviour:
   mouseX: Mouse X
   mouseY: Mouse Y
   mouseScroll: Mouse ScrollWheel
+  interactionButton:
+    bindingType: 1
+    code: 0
   doublePressTime: 0.4
   isCameraControlEnabled: 1
   mouseLookSpeed: 3
@@ -29,9 +32,9 @@ MonoBehaviour:
   currentControlMode: 0
   fastControlKey:
     bindingType: 2
-    code: 305
-  controlSlowSpeed: 0.1
-  controlFastSpeed: 1
+    code: 303
+  controlSlowSpeed: 1
+  controlFastSpeed: 5
   moveHorizontal: Horizontal
   moveVertical: Vertical
   moveUpDown: UpDown

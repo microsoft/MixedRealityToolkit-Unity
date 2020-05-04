@@ -4,9 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
+
+#if !UNITY_2019_3_OR_NEWER
+using System.IO;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -22,6 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string iOSCameraUsageDescription = "Required for augmented reality support.";
 
         /// <summary>
+        /// Property used to indicate the currently selected audio spatializer when
+        /// preparing to configure a Mixed Reality Toolkit project.
+        /// </summary>
+        public static string SelectedSpatializer { get; set; }
+
+        /// <summary>
         /// List of available configurations to check and configure with this utility
         /// </summary>
         public enum Configurations
@@ -35,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
+            AudioSpatializer,
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -107,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(PackageManifestUpdater.IsMSBuildForUnityEnabled, BuildTarget.WSAPlayer) },
 #endif // !UNITY_2019_3_OR_NEWER
+            { Configurations.AudioSpatializer, new ConfigGetter(SpatializerUtilities.CheckSettings) },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.SpatialPerception), BuildTarget.WSAPlayer) },
@@ -129,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         // The configure functions for each type of setting
         private static readonly Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
         {
-            { Configurations.LatestScriptingRuntime,SetLatestScriptingRuntime },
+            { Configurations.LatestScriptingRuntime, SetLatestScriptingRuntime },
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
             { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
@@ -138,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, PackageManifestUpdater.EnsureMSBuildForUnity },
 #endif // !UNITY_2019_3_OR_NEWER
+            { Configurations.AudioSpatializer, SetAudioSpatializer },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true) },
@@ -243,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
 #else
-        return true;
+            return true;
 #endif // UNITY_2019_3_OR_NEWER
         }
 
@@ -296,6 +308,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool HasSpatialAwarenessLayer()
         {
             return !string.IsNullOrEmpty(LayerMask.LayerToName(SpatialAwarenessDefaultLayer));
+        }
+
+        /// <summary>
+        /// Configures current Unity project to use the audio spatializer specified by the <see cref="SelectedSpatializer"/> property.
+        /// </summary>
+        public static void SetAudioSpatializer()
+        {
+            SpatializerUtilities.SaveSettings(SelectedSpatializer);
         }
 
         /// <summary>

@@ -29,6 +29,11 @@ If HoloLens 2 hand joints and eye tracking aren't working over remoting, there a
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
+> [!Note]
+> There is a known issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. To avoid this issue, the MRTK does not support MSBuild for Unity on Unity 2019.3.
+> 
+> To acquire the required NuGet package when running on Unity 2019.3, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
+
 The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
@@ -62,6 +67,29 @@ Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csp
 The solution to this is to ensure that the [.NET Core CLI tools are installed](https://docs.microsoft.com/dotnet/core/tools/?tabs=netcore2x) and reboot the system to force all apps to get a refreshed system path.
 
 If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
+
+#### Manual DotNetAdapter installation
+
+In the event that the installation of the DotNetAdapter cannot be performed via MSBuild for Unity, the following steps can be performed.
+
+> [!Important]
+> Using both MSBuild for Unity and another NuGet client within the same project is not supported and can result in potential dependency resolution issues.
+
+1. Install a NuGet client
+
+    > [!Note]
+    > The following instructions presume use of [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
+
+1. Navigate to the NuGet client UI
+
+    ![Launch NuGet UI](../Images/Tools/Remoting/LaunchNuGetForUnity.png)
+
+1. Locate the `Microsoft.Windows.MixedReality.DotNetWinRT` package
+
+    ![Locate Package](../Images/Tools/Remoting/LocateDotNetWinRT.png)
+
+1. Select Install
+
 
 ### Removing HoloLens 2-specific remoting support
 

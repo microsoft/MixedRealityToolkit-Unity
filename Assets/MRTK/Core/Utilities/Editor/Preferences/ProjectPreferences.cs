@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         if (!string.IsNullOrEmpty(modulePath))
                         {
                             filePath = Path.Combine(modulePath, DEFAULT_FILE_NAME);
-                            _instance = ScriptableObject.CreateInstance<ProjectPreferences>();
+                            _instance = CreateInstance<ProjectPreferences>();
                             AssetDatabase.CreateAsset(_instance, filePath);
                             AssetDatabase.SaveAssets();
                         }
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
         /// </remarks>
-        public static void Set(string key, bool value, bool forceSave = true) => Set<bool>(key, value, Instance?.boolPreferences, forceSave);
+        public static void Set(string key, bool value, bool forceSave = true) => Set(key, value, Instance != null ? Instance.boolPreferences : null, forceSave);
 
         /// <summary>
         /// Save float to preferences and save to ScriptableObject with key given.
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
         /// </remarks>
-        public static void Set(string key, float value, bool forceSave = true) => Set<float>(key, value, Instance?.floatPreferences, forceSave);
+        public static void Set(string key, float value, bool forceSave = true) => Set(key, value, Instance != null ? Instance.floatPreferences : null, forceSave);
 
         /// <summary>
         /// Save int to preferences and save to ScriptableObject with key given.
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
         /// </remarks>
-        public static void Set(string key, int value, bool forceSave = true) => Set<int>(key, value, Instance?.intPreferences, forceSave);
+        public static void Set(string key, int value, bool forceSave = true) => Set(key, value, Instance != null ? Instance.intPreferences : null, forceSave);
 
         /// <summary>
         /// Save string to preferences and save to ScriptableObject with key given.
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
         /// </remarks>
-        public static void Set(string key, string value, bool forceSave = true) => Set<string>(key, value, Instance?.stringPreferences, forceSave);
+        public static void Set(string key, string value, bool forceSave = true) => Set(key, value, Instance != null ? Instance.stringPreferences : null, forceSave);
 
         #endregion
 
@@ -116,22 +116,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Get bool from Project Preferences. If no entry found, then create new entry with provided defaultValue
         /// </summary>
-        public static bool Get(string key, bool defaultValue) => Get<bool>(key, defaultValue, Instance?.boolPreferences);
+        public static bool Get(string key, bool defaultValue) => Get(key, defaultValue, Instance != null ? Instance.boolPreferences : null);
 
         /// <summary>
         /// Get float from Project Preferences. If no entry found, then create new entry with provided defaultValue
         /// </summary>
-        public static float Get(string key, float defaultValue) => Get<float>(key, defaultValue, Instance?.floatPreferences);
+        public static float Get(string key, float defaultValue) => Get(key, defaultValue, Instance != null ? Instance.floatPreferences : null);
 
         /// <summary>
         /// Get int from Project Preferences. If no entry found, then create new entry with provided defaultValue
         /// </summary>
-        public static int Get(string key, int defaultValue) => Get<int>(key, defaultValue, Instance?.intPreferences);
+        public static int Get(string key, int defaultValue) => Get(key, defaultValue, Instance != null ? Instance.intPreferences : null);
 
         /// <summary>
         /// Get string from Project Preferences. If no entry found, then create new entry with provided defaultValue
         /// </summary>
-        public static string Get(string key, string defaultValue) => Get<string>(key, defaultValue, Instance?.stringPreferences);
+        public static string Get(string key, string defaultValue) => Get(key, defaultValue, Instance != null ? Instance.stringPreferences : null);
 
         #endregion
 
@@ -140,22 +140,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Remove key item from preferences if applicable
         /// </summary>
-        public static void RemoveBool(string key) => Remove(key, Instance?.boolPreferences);
+        public static void RemoveBool(string key) => Remove(key, Instance != null ? Instance.boolPreferences : null);
 
         /// <summary>
         /// Remove key item from preferences if applicable
         /// </summary>
-        public static void RemoveFloat(string key) => Remove<float>(key, Instance?.floatPreferences);
+        public static void RemoveFloat(string key) => Remove(key, Instance != null ? Instance.floatPreferences : null);
 
         /// <summary>
         /// Remove key item from preferences if applicable
         /// </summary>
-        public static void RemoveInt(string key) => Remove<int>(key, Instance?.intPreferences);
+        public static void RemoveInt(string key) => Remove(key, Instance != null ? Instance.intPreferences : null);
 
         /// <summary>
         /// Remove key item from preferences if applicable
         /// </summary>
-        public static void RemoveString(string key) => Remove<string>(key, Instance?.stringPreferences);
+        public static void RemoveString(string key) => Remove(key, Instance != null ? Instance.stringPreferences : null);
 
         #endregion
 

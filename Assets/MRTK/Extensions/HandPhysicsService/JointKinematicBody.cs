@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
@@ -37,29 +38,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         /// </summary>
         public Action<JointKinematicBody> OnDisableAction { get; set; }
 
+        private static readonly ProfilerMarker UpdateStatePerfMarker = new ProfilerMarker("[MRTK] JointKinematicBody.UpdateState");
+
         /// <summary>
         /// Updates the position of the <see cref="JointKinematicBody"/> based on <see cref="JointType"/>.
         /// </summary>
         public void UpdateState(bool active)
         {
-            bool previousActiveState = gameObject.activeSelf;
-            gameObject.SetActive(active);
-
-            if (active)
+            using (UpdateStatePerfMarker.Auto())
             {
-                transform.position = Joint.position;
-                transform.rotation = Joint.rotation;
-            }
+                bool previousActiveState = gameObject.activeSelf;
+                gameObject.SetActive(active);
 
-            if (previousActiveState != active)
-            {
                 if (active)
                 {
-                    OnEnableAction?.Invoke(this);
+                    transform.position = Joint.position;
+                    transform.rotation = Joint.rotation;
                 }
-                else
+
+                if (previousActiveState != active)
                 {
-                    OnDisableAction?.Invoke(this);
+                    if (active)
+                    {
+                        OnEnableAction?.Invoke(this);
+                    }
+                    else
+                    {
+                        OnDisableAction?.Invoke(this);
+                    }
                 }
             }
         }

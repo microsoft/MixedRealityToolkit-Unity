@@ -63,6 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
         /// <inheritdoc />
         public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
+        /// <inheritdoc />
+        private SimulatedHandData HandDataGaze { get; } = new SimulatedHandData();
 
         /// <inheritdoc />
         public bool IsSimulatingHandLeft => (handDataProvider != null ? handDataProvider.IsSimulatingLeft : false);
@@ -295,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (handDataProvider != null)
                 {
-                    handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
+                    handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, HandDataGaze, mouseDelta);
                 }
 
                 if (cameraControl != null && CameraCache.Main)
@@ -337,6 +339,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UpdateHandDevice(HandSimulationMode, Handedness.Left, HandDataLeft);
                     UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
 
+                    // HandDataGaze is only enabled if the user is simulating via mouse and keyboard
+                    if (UserInputEnabled && !XRDevice.isPresent && !(HandDataLeft.IsTracked || HandDataRight.IsTracked))
+                        UpdateHandDevice(HandSimulationMode.Gestures, Handedness.None, HandDataGaze);
                     lastHandUpdateTimestamp = currentTime.Ticks;
                 }
             }

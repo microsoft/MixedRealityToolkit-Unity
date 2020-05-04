@@ -146,6 +146,10 @@ To try the hand interaction scene, do the following steps.
 
 1. Close the TMP dialog. After this you need to reload the scene. You can do this by double-clicking the scene in the Project tab.
 
+1. Uncheck or shrink the size of the 3d icons under the Gizmos tab in the Scene view to reduce scene clutter
+
+     ![Gizmos](https://user-images.githubusercontent.com/13754172/80819866-a8aed800-8b8a-11ea-8d7b-a3822fdfc907.png)
+
 1. Press the Play button.
 
 ## Using the in-editor hand input simulation to test a scene
@@ -176,7 +180,7 @@ Congratulations, you just used your first MRTK scene. Now onto creating your own
 Here are some suggested next steps:
 
 * Check out [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions](https://docs.microsoft.com/windows/mixed-reality/mrtk-101) to learn about how to achieve common spatial interactions such as grab, move, scale, and rotate.
-* Learn about the UX controls available in MRTK in [UI and interaction building blocks](../README.md#ui-and-interaction-building-blocks).
+* Learn about the UX controls available in MRTK in [UI and interaction building blocks](../README.md#ux-building-blocks).
 * Try [MRTK Examples Hub](README_ExampleHub.md) (pre-built app packages are included in the release page for your convenience)
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
 * Learn about the [MRTK's Architecture](../Documentation/Architecture/Overview.md)

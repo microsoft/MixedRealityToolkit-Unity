@@ -328,6 +328,24 @@ function CheckForAssemblyInfo {
     }
 }
 
+<#
+.SYNOPSIS
+    Returns true if the given line is a namespace declaration
+#>
+function IsNamespace {
+    [CmdletBinding()]
+    param(
+        [string]$Line
+    )
+    process {
+        if (($Line -match "^namespace\sMicrosoft\.MixedReality\.Toolkit") -or
+            ($Line -match "^namespace\sMicrosoft\.Windows\.MixedReality")) {
+            $true;
+        }
+        $false;
+    }
+}
+
 function CheckScript {
     [CmdletBinding()]
     param(
@@ -339,6 +357,7 @@ function CheckScript {
         # repeatedly running this script, discovering a single issue, fixing it, and then
         # re-running the script
         $containsIssue = $false
+        $containsNamespaceDeclaration = $false;
         $fileContent = Get-Content $FileName
         for ($i = 0; $i -lt $fileContent.Length; $i++) {
             if (CheckBooLang $FileName $fileContent $i) {
@@ -353,6 +372,15 @@ function CheckScript {
             if (CheckSpacelessComments $FileName $fileContent $i) {
                 $containsIssue = $true
             }
+            $containsNamespaceDeclaration = $containsNamespaceDeclaration -or (IsNamespace $fileContent[$i])
+        }
+
+        # Only validate that there is a namespace declaration if it's not an AssemblyInfo.cs file.
+        # These do not contain namespace declarations.
+        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$"))
+        {
+            Write-Warning "$FileName is missing a namespace declaration (i.e. missing namespace Microsoft.MixedReality.Toolkit.*)"
+            $containsIssue = $true;
         }
 
         if (CheckHardcodedPath $FileName) {

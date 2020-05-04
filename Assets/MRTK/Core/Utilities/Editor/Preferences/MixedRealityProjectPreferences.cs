@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         #region Lock Profile Preferences
 
-        private static readonly GUIContent LockContent = new GUIContent("Lock SDK profiles", "Locks the SDK profiles from being edited.\n\nThis setting only applies to the currently running project.");
+        private static readonly GUIContent LockContent = new GUIContent("Lock SDK profiles", "Locks the SDK profiles from being edited.");
         private const string LOCK_KEY = "_MixedRealityToolkit_Editor_LockProfiles";
         private static bool lockPrefLoaded;
         private static bool lockProfiles;
@@ -42,13 +42,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Ignore startup settings prompt
 
-        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore settings prompt on startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore MRTK project configurator", "Prevents settings dialog popup from showing.");
         private const string IGNORE_KEY = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private static bool ignorePrefLoaded;
         private static bool ignoreSettingsPrompt;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should the project configurator show when the project isn't configured according to MRTK's recommendations?
         /// </summary>
         public static bool IgnoreSettingsPrompt
         {
@@ -69,14 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Auto-Enable UWP Capabilities
 
-        private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-Enable UWP Capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
+        private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-enable UWP capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
         private const string AUTO_ENABLE_CAPABILITIES_KEY = "_MixedRealityToolkit_Editor_AutoEnableUWPCapabilities";
         private static bool autoEnabledCapabilitiesPrefLoaded;
         private static bool autoEnabledCapabilitiesSettingsPrompt;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should the UWP capabilities required by MRTK services be auto-enabled in Publishing Settings?
         /// </summary>
+        /// <remarks>Only valid for UWP Build Target projects. UWP Capabilities can be viewed under Player Settings > Publishing Settings.</remarks>
         public static bool AutoEnableUWPCapabilities
         {
             get
@@ -96,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Run optimal configuration analysis on Play
 
-        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis", "Run optimal configuration analysis for current project and log warnings on entering play mode or building.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis", "Run optimal configuration analysis for current project and log warnings on entering play mode or building.");
         private const string RUN_OPTIMAL_CONFIG_KEY = "MixedRealityToolkit_Editor_RunOptimalConfig";
         private static bool runOptimalConfigPrefLoaded;
         private static bool runOptimalConfig;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should configuration analysis be run and warnings logged when settings don't match MRTK's recommendations?
         /// </summary>
         public static bool RunOptimalConfiguration
         {
@@ -121,6 +122,41 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Run optimal configuration analysis on Play
 
+        #region Project configuration cache
+
+        // This section contains data that gets cached for future reference to help detect configuration
+        // changes that may result in a need to alert the application developer (ex: count of installed
+        // plugins of a specific type). There is no UI in the project settings dialog for these properties.
+
+        private const string AUDIO_SPATIALIZER_COUNT_KEY = "MixedRealityToolkit_Editor_AudioSpatializerCount";
+        private static bool audioSpatializerCountLoaded;
+        private static int audioSpatializerCount;
+
+        /// <summary>
+        /// The cached number of audio spatializers that were most recently detected.
+        /// </summary>
+        /// <remarks>Used to track when the number of installed spatializers changes.</remarks>
+        public static int AudioSpatializerCount
+        {
+            get
+            {
+                if (!audioSpatializerCountLoaded)
+                {
+                    audioSpatializerCount = ProjectPreferences.Get(AUDIO_SPATIALIZER_COUNT_KEY, 0);
+                    audioSpatializerCountLoaded = true;
+                }
+
+                return audioSpatializerCount;
+            }
+            set
+            {
+                audioSpatializerCount = value;
+                ProjectPreferences.Set(AUDIO_SPATIALIZER_COUNT_KEY, audioSpatializerCount);
+            }
+        }
+
+        #endregion Project configuration cache
+
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
@@ -133,6 +169,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             void GUIHandler(string searchContext)
             {
+                EditorGUILayout.HelpBox("These settings are serialized into ProjectPreferences.asset in the MixedRealityToolkit-Generated folder.\nThis file can be checked into source control to maintain consistent settings across collaborators.", MessageType.Info);
+
                 var prevLabelWidth = EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 250f;
 
