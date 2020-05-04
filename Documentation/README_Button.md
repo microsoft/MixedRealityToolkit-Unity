@@ -40,7 +40,7 @@ For HoloLens 2, it is recommended to use buttons with an opaque backplate. Trans
 - It is hard to understand when the event triggers
 - Holograms that are displayed through a transparent plane can be unstable with HoloLens 2's Depth LSR stabilization
 
-![Button](../Documentation/Images/Button/MRTK_Button_UsePlated.png)
+![Button](Images/Button/MRTK_Button_UsePlated.png)
 
 
 
@@ -168,17 +168,16 @@ HoloLens 2's shell-style button's size is 32x32mm. To customize the dimension, c
 Then, click **Fix Bounds** button in the NearInteractionTouchble script which is in the root of the button. 
 
 Update the size of the FrontPlate
-![Button](../Documentation/Images/Button/MRTK_Button_SizeCustomization1.png)
+![Button](Images/Button/MRTK_Button_SizeCustomization1.png)
 
 Update the size of the Quad
-![Button](../Documentation/Images/Button/MRTK_Button_SizeCustomization2.png)
+![Button](Images/Button/MRTK_Button_SizeCustomization2.png)
 
 Update the size of the Box Collider
-![Button](../Documentation/Images/Button/MRTK_Button_SizeCustomization3.png)
+![Button](Images/Button/MRTK_Button_SizeCustomization3.png)
 
 Click 'Fix Bounds'
-![Button](../Documentation/Images/Button/MRTK_Button_SizeCustomization4.png)
-
+![Button](Images/Button/MRTK_Button_SizeCustomization4.png)
 
 ## Voice command ('see-it, say-it')
 
