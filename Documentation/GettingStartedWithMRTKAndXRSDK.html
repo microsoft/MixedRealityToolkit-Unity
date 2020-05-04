@@ -91,51 +91,42 @@
 <ol>
 <li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following all successfully installed:
 <ol>
-<li>XR Management</li>
+<li>XR Plugin Management</li>
 <li>Windows XR Plugin</li>
 <li>XR Legacy Input Helpers</li>
 </ol>
 </li>
 <li>Go to Edit &gt; Project Settings.</li>
-<li>Click on the XR Plugin Management tab in the Project Settings window.</li>
-<li>Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.</li>
-<li>Ensure that Initialize on Startup is checked.</li>
-<li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.</li>
+<li>Click on the XR Plug-in Management tab in the Project Settings window.</li>
+<li>Go to the Universal Windows Platform settings and ensure Windows Mixed Reality is checked under Plug-in Providers.</li>
+<li>Ensure that Initialize XR on Startup is checked.</li>
+<li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.</li>
 </ol>
 <p><img src="Images/XRSDK/PluginManagement.png" alt="Plugin management"></p>
 <h3 id="required-in-mrtk">Required in MRTK</h3>
-<p>Choose the &quot;DefaultXRSDKConfigurationProfile&quot; as the active profile or clone it to make customizations. This profile is set up with MRTK's XR SDK systems and providers, where needed. If you want to migrate an existing profile to XR SDK, the following services and data providers should be updated:</p>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Legacy XR pipeline</th>
-<th>XR SDK</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Camera</td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a></td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html"><code>GenericXRSDKCameraSettings</code></a></td>
-</tr>
-<tr>
-<td>Input</td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html"><code>WindowsMixedReality.Input.WindowsMixedRealityDeviceManager</code></a></td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager</code></a></td>
-</tr>
-<tr>
-<td>Boundary</td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html"><code>MixedRealityBoundarySystem</code></a></td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html"><code>XRSDKBoundarySystem</code></a></td>
-</tr>
-<tr>
-<td>Spatial awareness</td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html"><code>WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver</code></a></td>
-<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver</code></a></td>
-</tr>
-</tbody>
-</table>
+<p>Choose the &quot;DefaultXRSDKConfigurationProfile&quot; as the active profile or clone it to make customizations. This profile is set up with MRTK's XR SDK systems and providers, where needed.</p>
+<p>To migrate an existing profile to XR SDK, the following services and data providers should be updated:</p>
+<h4 id="camera">Camera</h4>
+<p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a></p>
+<p><img src="Images/XRSDK/CameraSystemLegacy.png" alt="Legacy camera settings"></p>
+<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a> <strong>and</strong> <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html"><code>GenericXRSDKCameraSettings</code></a></p>
+<p><img src="Images/XRSDK/CameraSystemXRSDK.png" alt="XR SDK camera settings"></p>
+<h4 id="input">Input</h4>
+<p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html"><code>WindowsMixedReality.Input.WindowsMixedRealityDeviceManager</code></a></p>
+<p><img src="Images/XRSDK/InputSystemWMRLegacy.png" alt="Legacy input settings"></p>
+<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager</code></a></p>
+<p><img src="Images/XRSDK/InputSystemWMRXRSDK.png" alt="XR SDK input settings"></p>
+<h4 id="boundary">Boundary</h4>
+<p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html"><code>MixedRealityBoundarySystem</code></a></p>
+<p><img src="Images/XRSDK/BoundarySystemLegacy.png" alt="Legacy boundary settings"></p>
+<p>to  <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html"><code>XRSDKBoundarySystem</code></a></p>
+<p><img src="Images/XRSDK/BoundarySystemXRSDK.png" alt="XR SDK boundary settings"></p>
+<h4 id="spatial-awareness">Spatial awareness</h4>
+<p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html"><code>WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver</code></a></p>
+<p><img src="Images/XRSDK/SpatialAwarenessLegacy.png" alt="Legacy spatial awareness settings"></p>
+<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver</code></a></p>
+<p><img src="Images/XRSDK/SpatialAwarenessXRSDK.png" alt="XR SDK spatial awareness settings"></p>
+<h4 id="controller-mappings">Controller mappings</h4>
 <p>If using custom controller mapping profiles, open one of them and run the Mixed Reality Toolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles menu item to ensure the new XR SDK controller types are defined.</p>
 <h2 id="see-also">See also</h2>
 <ul>

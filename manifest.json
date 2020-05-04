@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.html",
-          "hash": "Mr3XCPHpryLXhy21qHKDXA=="
+          "hash": "C54PHo8p2d5NV1bnbdgI4g=="
         }
       },
       "is_incremental": false,
@@ -270,7 +270,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Features/UX/Interactable/README.html",
-          "hash": "0q0TQuVb4vyYwAnaPdLFnQ=="
+          "hash": "7g4iQ2HNdi2y95JDRycuww=="
         }
       },
       "is_incremental": false,
@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "NaRE/WMHEpxqOAf2DkNiYw=="
+          "hash": "e2RmHa1rvNmZaOmo8/VKPQ=="
         }
       },
       "is_incremental": false,
@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "MDcqP5mcNaKZpWs3HRdOTw=="
+          "hash": "tZ7UYa4Cn/QcfEqORSTucg=="
         }
       },
       "is_incremental": false,
@@ -1002,7 +1002,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
-          "hash": "xg03EfO/DlsDP6Mf+JnQOw=="
+          "hash": "NaC4/Hi6AjgYbp78eBynog=="
         }
       },
       "is_incremental": false,
@@ -2387,10 +2387,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png"
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png"
         }
       },
       "is_incremental": false,
@@ -2398,10 +2398,32 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png"
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif"
         }
       },
       "is_incremental": false,
@@ -7018,10 +7040,98 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/BoundarySystemLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/BoundarySystemLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/BoundarySystemXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/BoundarySystemXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/CameraSystemLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/CameraSystemLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/CameraSystemXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/CameraSystemXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/InputSystemWMRLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/InputSystemWMRLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/InputSystemWMRXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/InputSystemWMRXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/XRSDK/PluginManagement.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/XRSDK/PluginManagement.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/SpatialAwarenessLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/SpatialAwarenessLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/SpatialAwarenessXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/SpatialAwarenessXRSDK.png"
         }
       },
       "is_incremental": false,
