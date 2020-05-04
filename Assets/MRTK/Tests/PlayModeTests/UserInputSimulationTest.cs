@@ -88,8 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // No hands, default cursor should be visible
             Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Head gaze cursor should be visible");
-            //KeyInputSystem.StopKeyInputSimulation();
-            //yield return PlayModeTestUtilities.WaitForEnterKey();
 
             // Begin right hand manipulation
             KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightHandKey);
@@ -100,8 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             // Make sure right hand is tracked
             Assert.True(iss.HandDataRight.IsTracked);
 
+            TestHand hand = new TestHand(Handedness.Right);
+
             // Head cursor invisible when hand is tracked
             Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
+            // Hand ray visible
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+            Assert.True(handRayPointer.IsActive, "Hand ray not active");
 
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -110,14 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return null;
 
             // Grab pointer is near grabbable
-            TestHand hand = new TestHand(Handedness.Right);
             var grabPointer = hand.GetPointer<SpherePointer>();
+            Assert.IsTrue(grabPointer.isActiveAndEnabled, "grab pointer is enabled");
             Assert.IsTrue(grabPointer.IsNearObject, "Grab pointer should be near a grabbable");
 
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Head cursor invisible when grab pointer is near grabbable
             Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
+            // Hand ray invisible when grab pointer is near grabbable
+            Assert.True(!handRayPointer.IsActive, "Hand ray not active");
         }
 
         [UnityTest]
