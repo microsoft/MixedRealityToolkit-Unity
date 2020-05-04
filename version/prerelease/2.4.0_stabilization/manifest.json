@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "MDcqP5mcNaKZpWs3HRdOTw=="
+          "hash": "tZ7UYa4Cn/QcfEqORSTucg=="
         }
       },
       "is_incremental": false,
@@ -2387,10 +2387,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png"
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png"
         }
       },
       "is_incremental": false,
@@ -2398,10 +2398,32 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png"
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif"
         }
       },
       "is_incremental": false,
@@ -27585,16 +27607,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 161,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1610,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -27604,11 +27627,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1610,
           "skipped_file_count": 0
         }
       }
