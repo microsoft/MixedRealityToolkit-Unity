@@ -1155,7 +1155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var pointerData in pointers.Values)
                 {
-                    if (pointerData.Pointer is IMixedRealityNearPointer)
+                    if (pointerData.Pointer is IMixedRealityNearPointer nearPointer)
                     {
                         var nearPointer = (IMixedRealityNearPointer)pointerData.Pointer;
                         if (nearPointer.IsInteractionEnabled || nearPointer.IsNearObject)
