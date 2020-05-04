@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public bool RenderFromPVCameraForMixedRealityCapture => renderFromPVCameraForMixedRealityCapture;
 
         [SerializeField]
-        [Tooltip("Specifies the default depth reprojection method for HoloLens 2. Note: AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.")]
+        [Tooltip("Specifies the default reprojection method for HoloLens 2. Note: AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.")]
         private HolographicDepthReprojectionMethod reprojectionMethod = HolographicDepthReprojectionMethod.DepthReprojection;
 
         /// <summary>
-        /// Specifies the default depth reprojection method for HoloLens 2.
+        /// Specifies the default reprojection method for HoloLens 2.
         /// </summary>
         /// <remarks>AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.</remarks>
         public HolographicDepthReprojectionMethod ReprojectionMethod => reprojectionMethod;
