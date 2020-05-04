@@ -1,11 +1,20 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit;
 
-public class PrefabSpawner :
+namespace Microsoft.MixedReality.Toolkit.UI
+{
+    /// <summary>
+    /// Add to any Object to spawn a prefab to it, according to preference
+    /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/PrefabSpawner")]
+    public class PrefabSpawner :
     BaseFocusHandler,
     IMixedRealityInputHandler,
     IMixedRealityInputHandler<float>
@@ -24,46 +33,46 @@ public class PrefabSpawner :
         AppearOnGazeEnter
     }
 
-    public enum RemainType
-    {
-        Indefinite = 0,
-        Timeout,
-    }
+        public enum RemainType
+        {
+            Indefinite = 0,
+            Timeout,
+        }
 
-    [SerializeField, FormerlySerializedAs("toolTipPrefab")]
-    protected GameObject prefab = null;
+        [SerializeField, FormerlySerializedAs("toolTipPrefab")]
+        protected GameObject prefab = null;
 
-    [Header("Input Settings")]
-    [SerializeField]
-    [Tooltip("The action that will be used for when to spawn or toggle the tooltip.")]
-    private MixedRealityInputAction tooltipToggleAction = MixedRealityInputAction.None;
+        [Header("Input Settings")]
+        [SerializeField]
+        [Tooltip("The action that will be used for when to spawn or toggle the tooltip.")]
+        private MixedRealityInputAction tooltipToggleAction = MixedRealityInputAction.None;
 
-    [Header("Appear / Vanish Behavior Settings")]
-    [SerializeField]
-    private AppearType appearType = AppearType.AppearOnFocusEnter;
-    [SerializeField]
-    private VanishType vanishType = VanishType.VanishOnFocusExit;
-    [SerializeField]
-    private RemainType remainType = RemainType.Timeout;
-    [Header("Timing")]
-    [SerializeField]
-    [Range(0f, 5f)]
-    private float appearDelay = 0.0f;
-    [SerializeField]
-    [Range(0f, 5f)]
-    private float vanishDelay = 2.0f;
-    [SerializeField]
-    [Range(0.5f, 10.0f)]
-    private float lifetime = 1.0f;
-    [Header("Orientation")]
-    [SerializeField]
-    private bool keepWorldRotation = true;
+        [Header("Appear / Vanish Behavior Settings")]
+        [SerializeField]
+        private AppearType appearType = AppearType.AppearOnFocusEnter;
+        [SerializeField]
+        private VanishType vanishType = VanishType.VanishOnFocusExit;
+        [SerializeField]
+        private RemainType remainType = RemainType.Timeout;
+        [Header("Timing")]
+        [SerializeField]
+        [Range(0f, 5f)]
+        private float appearDelay = 0.0f;
+        [SerializeField]
+        [Range(0f, 5f)]
+        private float vanishDelay = 2.0f;
+        [SerializeField]
+        [Range(0.5f, 10.0f)]
+        private float lifetime = 1.0f;
+        [Header("Orientation")]
+        [SerializeField]
+        private bool keepWorldRotation = true;
 
-    private float focusEnterTime = 0f;
-    private float focusExitTime = 0f;
-    private float tappedTime = 0f;
+        private float focusEnterTime = 0f;
+        private float focusExitTime = 0f;
+        private float tappedTime = 0f;
 
-    private GameObject spawnable;
+        private GameObject spawnable;
 
     private void Update()
     {
@@ -109,22 +118,22 @@ public class PrefabSpawner :
             }
         }
 
-        spawnable.gameObject.SetActive(true);
+            spawnable.gameObject.SetActive(true);
 
-        SpawnableActivated(spawnable);
+            SpawnableActivated(spawnable);
 
-        while (spawnable.gameObject.activeSelf)
-        {
-            if (remainType == RemainType.Timeout)
+            while (spawnable.gameObject.activeSelf)
             {
-                switch (appearType)
+                if (remainType == RemainType.Timeout)
                 {
-                    case AppearType.AppearOnTap:
-                        if (Time.unscaledTime - tappedTime >= lifetime)
-                        {
-                            spawnable.gameObject.SetActive(false);
-                            return;
-                        }
+                    switch (appearType)
+                    {
+                        case AppearType.AppearOnTap:
+                            if (Time.unscaledTime - tappedTime >= lifetime)
+                            {
+                                spawnable.gameObject.SetActive(false);
+                                return;
+                            }
 
                         break;
                     case AppearType.AppearOnFocusEnter:
@@ -135,26 +144,26 @@ public class PrefabSpawner :
                             return;
                         }
 
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            //check whether we're suppose to disappear
-            switch (vanishType)
-            {
-                case VanishType.VanishOnFocusExit:
-                    if (!HasFocus)
-                    {
-                        spawnable.gameObject.SetActive(false);
-                    }
+                //check whether we're suppose to disappear
+                switch (vanishType)
+                {
+                    case VanishType.VanishOnFocusExit:
+                        if (!HasFocus)
+                        {
+                            spawnable.gameObject.SetActive(false);
+                        }
 
-                    break;
+                        break;
 
-                case VanishType.VanishOnTap:
-                    if (!tappedTime.Equals(tappedTimeOnStart))
-                    {
-                        spawnable.gameObject.SetActive(false);
-                    }
+                    case VanishType.VanishOnTap:
+                        if (!tappedTime.Equals(tappedTimeOnStart))
+                        {
+                            spawnable.gameObject.SetActive(false);
+                        }
 
                     break;
                 case VanishType.VanishOnGazeExit:
@@ -165,22 +174,22 @@ public class PrefabSpawner :
 
                     break;
 
-                default:
-                    if (!HasFocus)
-                    {
-                        if (Time.time - focusExitTime > vanishDelay)
+                    default:
+                        if (!HasFocus)
                         {
-                            spawnable.gameObject.SetActive(false);
+                            if (Time.time - focusExitTime > vanishDelay)
+                            {
+                                spawnable.gameObject.SetActive(false);
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
+
+                await new WaitForUpdate();
             }
-
-            await new WaitForUpdate();
         }
-    }
 
-    protected virtual void SpawnableActivated(GameObject spawnable) { }
+        protected virtual void SpawnableActivated(GameObject spawnable) { }
 
     private bool HasGaze => CoreServices.InputSystem.GazeProvider.GazeTarget == gameObject;
 
@@ -189,65 +198,65 @@ public class PrefabSpawner :
     {
         base.OnFocusEnter(eventData);
 
-        HandleFocusEnter();
-    }
-
-    /// <inheritdoc />
-    public override void OnFocusExit(FocusEventData eventData)
-    {
-        base.OnFocusExit(eventData);
-
-        HandleFocusExit();
-    }
-
-    /// <inheritdoc />
-    void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
-    {
-        if (eventData.InputData > .95f)
-        {
-            HandleTap();
+            HandleFocusEnter();
         }
-    }
 
-    /// <inheritdoc />
-    void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
-    {
-        if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
+        /// <inheritdoc />
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            HandleTap();
+            base.OnFocusExit(eventData);
+
+            HandleFocusExit();
         }
-    }
 
-    /// <inheritdoc />
-    void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
-
-    protected virtual void HandleTap()
-    {
-        tappedTime = Time.unscaledTime;
-
-        if (spawnable == null || !spawnable.gameObject.activeSelf)
+        /// <inheritdoc />
+        void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
-            switch (appearType)
+            if (eventData.InputData > .95f)
             {
-                case AppearType.AppearOnTap:
-                    ShowSpawnable();
-                    break;
+                HandleTap();
             }
         }
-        else
+
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
         {
-            switch (vanishType)
+            if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
             {
-                case VanishType.VanishOnTap:
-                    spawnable.gameObject.SetActive(false);
-                    break;
+                HandleTap();
             }
         }
-    }
 
-    private void HandleFocusEnter()
-    {
-        focusEnterTime = Time.unscaledTime;
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
+
+        protected virtual void HandleTap()
+        {
+            tappedTime = Time.unscaledTime;
+
+            if (spawnable == null || !spawnable.gameObject.activeSelf)
+            {
+                switch (appearType)
+                {
+                    case AppearType.AppearOnTap:
+                        ShowSpawnable();
+                        break;
+                }
+            }
+            else
+            {
+                switch (vanishType)
+                {
+                    case VanishType.VanishOnTap:
+                        spawnable.gameObject.SetActive(false);
+                        break;
+                }
+            }
+        }
+
+        private void HandleFocusEnter()
+        {
+            focusEnterTime = Time.unscaledTime;
 
         if (spawnable == null || !spawnable.gameObject.activeSelf)
         {
@@ -258,8 +267,9 @@ public class PrefabSpawner :
         }
     }
 
-    private void HandleFocusExit()
-    {
-        focusExitTime = Time.unscaledTime;
+        private void HandleFocusExit()
+        {
+            focusExitTime = Time.unscaledTime;
+        }
     }
 }
