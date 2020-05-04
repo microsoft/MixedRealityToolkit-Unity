@@ -235,6 +235,8 @@
       href: README_Sliders.md
     - name: Hand Menu
       href: README_HandMenu.md
+    - name: Near Menu
+      href: README_NearMenu.md
     - name: App Bar
       href: README_AppBar.md
     - name: Fingertip Visualization

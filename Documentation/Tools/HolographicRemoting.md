@@ -1,6 +1,6 @@
-# Getting started with Holographic Remoting
+# Holographic Remoting
 
-Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi connection. This feature can significantly increase developer productivity when developing mixed reality applications.
+Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi or USB cable connection. This feature can significantly increase developer productivity when developing mixed reality applications.
 
 ## Initial setup
 
@@ -102,7 +102,7 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 1. (Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
-## Connecting to the HoloLens
+## Connecting to the HoloLens with Wi-Fi
 
 Once the project has been configured, a connection can be established to the HoloLens.
 
@@ -120,7 +120,7 @@ Once the project has been configured, a connection can be established to the Hol
 
     ![Select Device Version](../Images/Tools/Remoting/SelectDeviceVersion.png)
 
-1. Using the IP Address displayed by the Holographic Remoting application, set the **Remote Machine** field.
+1. Using the IP Address displayed by the Holographic Remoting Player application, set the **Remote Machine** field.
 
     ![Enter IP Address](../Images/Tools/Remoting/EnterIPAddress.png)
 
@@ -128,6 +128,10 @@ Once the project has been configured, a connection can be established to the Hol
 
 > [!NOTE]
 > If you cannot connect, make sure your HoloLens 2 is not plugged in to your PC and restart Unity.
+
+## Connecting to the HoloLens with USB cable
+
+USB cable connection gives better rendering quality and stability. To use USB cable connection, disconnect from the HoloLens from Wi-Fi in HoloLens's Settings and launch Holographic Remoting Player app. It will display an IP address that starts with 169. Use this IP address in Unity's Holographic Emulation setting to connect. Once the IP address for USB cable has been identified, it is safe to connect the HoloLens to Wi-Fi again. 
 
 ## Starting a remoting session
 
