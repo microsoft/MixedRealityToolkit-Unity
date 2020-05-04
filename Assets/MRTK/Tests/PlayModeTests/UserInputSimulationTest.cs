@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         }
 
         [UnityTest]
-        public IEnumerator InputSimulationArtictulatedHandNearGrabbable()
+        public IEnumerator InputSimulationArticulatedHandNearGrabbable()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             TestUtilities.PlayspaceToOriginLookingForward();
