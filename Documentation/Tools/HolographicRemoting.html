@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Getting started with Holographic Remoting | Mixed Reality Toolkit Documentation </title>
+    <title>Holographic Remoting | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Getting started with Holographic Remoting | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Holographic Remoting | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,9 +80,9 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="getting-started-with-holographic-remoting">Getting started with Holographic Remoting</h1>
+<h1 id="holographic-remoting">Holographic Remoting</h1>
 
-<p>Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi connection. This feature can significantly increase developer productivity when developing mixed reality applications.</p>
+<p>Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi or USB cable connection. This feature can significantly increase developer productivity when developing mixed reality applications.</p>
 <h2 id="initial-setup">Initial setup</h2>
 <p>To enable remoting to a HoloLens, it is important to ensure that the project is using the latest remoting components.</p>
 <ol>
@@ -164,7 +164,7 @@ true, this error may manifest in the Unity console:</p>
 <li>(Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the <code>.bin</code> and <code>.obj</code> folders. This removes the local cache of NuGet restored packages for DotNetWinRT.</li>
 <li>If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.</li>
 </ol>
-<h2 id="connecting-to-the-hololens">Connecting to the HoloLens</h2>
+<h2 id="connecting-to-the-hololens-with-wi-fi">Connecting to the HoloLens with Wi-Fi</h2>
 <p>Once the project has been configured, a connection can be established to the HoloLens.</p>
 <ol>
 <li><p>In <strong>File &gt; Build Settings</strong>, ensure that the project build type is set to <strong>Universal Windows Platform</strong></p>
@@ -180,7 +180,7 @@ true, this error may manifest in the Unity console:</p>
 <li><p>Select the <strong>Device Version</strong>.</p>
 <p><img src="../Images/Tools/Remoting/SelectDeviceVersion.png" alt="Select Device Version"></p>
 </li>
-<li><p>Using the IP Address displayed by the Holographic Remoting application, set the <strong>Remote Machine</strong> field.</p>
+<li><p>Using the IP Address displayed by the Holographic Remoting Player application, set the <strong>Remote Machine</strong> field.</p>
 <p><img src="../Images/Tools/Remoting/EnterIPAddress.png" alt="Enter IP Address"></p>
 </li>
 <li><p>Click <strong>Connect</strong>.</p>
@@ -190,6 +190,8 @@ true, this error may manifest in the Unity console:</p>
 <h5>Note</h5>
 <p>If you cannot connect, make sure your HoloLens 2 is not plugged in to your PC and restart Unity.</p>
 </div>
+<h2 id="connecting-to-the-hololens-with-usb-cable">Connecting to the HoloLens with USB cable</h2>
+<p>USB cable connection gives better rendering quality and stability. To use USB cable connection, disconnect from the HoloLens from Wi-Fi in HoloLens's Settings and launch Holographic Remoting Player app. It will display an IP address that starts with 169. Use this IP address in Unity's Holographic Emulation setting to connect. Once the IP address for USB cable has been identified, it is safe to connect the HoloLens to Wi-Fi again.</p>
 <h2 id="starting-a-remoting-session">Starting a remoting session</h2>
 <p>With Unity connected to the HoloLens, enter play mode in the editor.</p>
 <p>When the session is complete, exit play mode.</p>

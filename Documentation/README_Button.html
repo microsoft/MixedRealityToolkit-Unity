@@ -162,6 +162,13 @@
 </table>
 <p>The <code>Button</code> (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/Button.prefab) is based on the <a href="README_Interactable.html">Interactable</a> concept to provide easy UI controls for buttons or other types of interactive surfaces. The baseline button supports all available input methods, including articulated hand input for the near interactions as well as gaze + air-tap for the far interactions. You can also use voice command to trigger the button.</p>
 <p><code>PressableButtonHoloLens2</code> (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) is HoloLens 2's shell style button that supports the precise movement of the button for the direct hand tracking input. It combines <code>Interactable</code> script with <code>PressableButton</code> script.</p>
+<p>For HoloLens 2, it is recommended to use buttons with an opaque backplate. Transparent buttons are not recommended because of these usability and stability issues:</p>
+<ul>
+<li>Icon and text are difficult to read with the physical environment</li>
+<li>It is hard to understand when the event triggers</li>
+<li>Holograms that are displayed through a transparent plane can be unstable with HoloLens 2's Depth LSR stabilization</li>
+</ul>
+<p><img src="Images/Button/MRTK_Button_UsePlated.png" alt="Button"></p>
 <h2 id="how-to-use-pressable-buttons">How to use pressable buttons</h2>
 <h3 id="unity-ui-based-buttons">Unity UI based buttons</h3>
 <p>Create a Canvas in your scene (GameObject -&gt; UI -&gt; Canvas). In the Inspector panel for your Canvas:</p>
@@ -247,6 +254,22 @@ Required to make any object touchable with articulated hand input.</p>
 </code></pre>
 <p>To use your Icon Set select a button, expand the Icons dropdown in the <code>ButtonConfigHelper</code> and assign it to the <em>Icon Set</em> field.</p>
 <p><img src="Images/Button/MRTK_Button_Icon_Set_Assign.png" alt="Button"></p>
+<h2 id="how-to-change-the-size-of-a-button">How to change the size of a button</h2>
+<p>HoloLens 2's shell-style button's size is 32x32mm. To customize the dimension, change the size of these objects in the button prefab:</p>
+<ol>
+<li><strong>FrontPlate</strong></li>
+<li><strong>Quad</strong> under BackPlate</li>
+<li><strong>Box Collider</strong> on the root</li>
+</ol>
+<p>Then, click <strong>Fix Bounds</strong> button in the NearInteractionTouchble script which is in the root of the button.</p>
+<p>Update the size of the FrontPlate
+<img src="Images/Button/MRTK_Button_SizeCustomization1.png" alt="Button"></p>
+<p>Update the size of the Quad
+<img src="Images/Button/MRTK_Button_SizeCustomization2.png" alt="Button"></p>
+<p>Update the size of the Box Collider
+<img src="Images/Button/MRTK_Button_SizeCustomization3.png" alt="Button"></p>
+<p>Click 'Fix Bounds'
+<img src="Images/Button/MRTK_Button_SizeCustomization4.png" alt="Button"></p>
 <h2 id="voice-command-see-it-say-it">Voice command ('see-it, say-it')</h2>
 <p><strong>Speech Input Handler</strong>
 The <a href="README_Interactable.html">Interactable</a> script in Pressable Button already implements <code>IMixedRealitySpeechHandler</code>. A voice command keyword can be set here.</p>

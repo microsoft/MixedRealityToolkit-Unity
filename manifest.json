@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/Extensions/HandPhysicsService/README.html",
-          "hash": "RAnb7uI+cX9cr4bnx2+/xA=="
+          "hash": "Yvn5JQDM3vYNH5o7XC/auA=="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.html",
-          "hash": "/r1s4cYwdxnnGEVXQ4W1tA=="
+          "hash": "C1LieTL0jZH4g7XxovbRIw=="
         }
       },
       "is_incremental": false,
@@ -198,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/Dock/README_Dock.html",
-          "hash": "sibxLi27sObKX5MMSnILkg=="
+          "hash": "NvAVUVXcIlyMHQku9w+EDw=="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.html",
-          "hash": "lDgfnGtSdFlIK0cZw6yFUQ=="
+          "hash": "Mr3XCPHpryLXhy21qHKDXA=="
         }
       },
       "is_incremental": false,
@@ -246,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.html",
-          "hash": "DybntHjppKXbY5cn5rgN9Q=="
+          "hash": "pNiIRPnFTg3dVp7NlrJ9Hg=="
         }
       },
       "is_incremental": false,
@@ -906,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "GDobhYnYjsKzBQZDy7naBg=="
+          "hash": "aAOmgG0izjzknbGy6ahZVA=="
         }
       },
       "is_incremental": false,
@@ -1694,6 +1694,50 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization4.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_SizeCustomization4.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Button/MRTK_Button_Speech1.png",
       "output": {
         "resource": {
@@ -1742,6 +1786,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_Button_ToggleSwitch.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_UsePlated.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_UsePlated.png"
         }
       },
       "is_incremental": false,
@@ -7523,7 +7578,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "LRnU+m/p6A2wqdwrRBrdow=="
+          "hash": "VpCKq6ai4gOTzeJUEy5NvQ=="
         }
       },
       "is_incremental": false,
@@ -7583,7 +7638,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandMenu.html",
-          "hash": "UzqsOI9oNMFSEBlXtehioQ=="
+          "hash": "ppHFfenp7S+Qw7VDGDctqQ=="
         }
       },
       "is_incremental": false,
@@ -8027,7 +8082,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "Mr8bdrReFyjzY2ituWdQHg=="
+          "hash": "zFkJs/kewms7TQGUr9aMCw=="
         }
       },
       "is_incremental": false,
@@ -8111,7 +8166,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "/8XQK5hyzS0qFwhQqaX/WA=="
+          "hash": "IoW0kKMfSH1XlYsMBH/n7g=="
         }
       },
       "is_incremental": false,
@@ -27542,11 +27597,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 161,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -27555,15 +27609,16 @@
           "total_file_count": 1611,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 161,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
