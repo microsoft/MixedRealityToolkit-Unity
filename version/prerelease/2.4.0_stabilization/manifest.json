@@ -1002,7 +1002,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
-          "hash": "xg03EfO/DlsDP6Mf+JnQOw=="
+          "hash": "NaC4/Hi6AjgYbp78eBynog=="
         }
       },
       "is_incremental": false,
@@ -7040,10 +7040,98 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/BoundarySystemLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/BoundarySystemLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/BoundarySystemXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/BoundarySystemXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/CameraSystemLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/CameraSystemLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/CameraSystemXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/CameraSystemXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/InputSystemWMRLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/InputSystemWMRLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/InputSystemWMRXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/InputSystemWMRXRSDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/XRSDK/PluginManagement.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/XRSDK/PluginManagement.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/SpatialAwarenessLegacy.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/SpatialAwarenessLegacy.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/SpatialAwarenessXRSDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/SpatialAwarenessXRSDK.png"
         }
       },
       "is_incremental": false,
@@ -27607,9 +27695,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -27620,17 +27708,17 @@
           "total_file_count": 161,
           "skipped_file_count": 0
         },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1610,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
