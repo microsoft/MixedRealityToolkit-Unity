@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
-        private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // Guid, FileName
+        private static readonly Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // Guid, FileName
 
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
