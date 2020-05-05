@@ -642,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/WindowsMixedRealityCameraSettings.html",
-          "hash": "SXrUx8UAUgE7AYOTTi+kDg=="
+          "hash": "1EwYf8c6Mnujz/FXp5eFUg=="
         }
       },
       "is_incremental": false,
@@ -27391,7 +27391,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettingsProfile.html",
-          "hash": "G6VMM1OAY7pNVDafvpEySQ=="
+          "hash": "3Zubyy/2LEaPT+1swaheIQ=="
         }
       },
       "is_incremental": false,
@@ -27719,11 +27719,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1612,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -27739,10 +27738,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1612,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
