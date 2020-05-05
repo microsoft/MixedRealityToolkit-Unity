@@ -67,10 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SaveSettings(string spatializer)
         {
-            if (!InstalledSpatializers.Contains(spatializer))
+            if ((spatializer != null) &&
+                !InstalledSpatializers.Contains(spatializer))
             {
                 Debug.LogError($"{spatializer} is not an installed spatializer.");
                 return;
+            }
+
+            if (spatializer == null)
+            {
+                Debug.LogWarning("No spatializer was specified. The application will not support Spatial Sound.");
             }
 
             SerializedObject audioMgrSettings = MixedRealityOptimizeUtils.GetSettingsObject("AudioManager");
