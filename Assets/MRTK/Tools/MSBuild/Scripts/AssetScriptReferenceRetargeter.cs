@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private const string OculusProfileGUID = "4f726b4cb3605994fac74d508110ec62";
 
-        [MenuItem("Mixed Reality Toolkit/MSBuild/Assets/Retarget To DLL")]
+        [Obsolete("Obsolete and removed after deprecation of the NuGet distribution. Use RetargetAssetsToScript() to retarget to script GUIDs.")]
         public static void RetargetAssets()
         {
             try
