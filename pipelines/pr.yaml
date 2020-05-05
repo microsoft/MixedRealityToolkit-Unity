@@ -34,7 +34,7 @@ jobs:
       # check unchanged files for code style/doc style violations.
       scopedValidation: true
       # This particular job shouldn't run tests (they happen in PRValidationTest)
-      runTests: false
+      runTests: true
       UnityVersion: $(Unity2018Version)
 
   - template: templates/end.yml

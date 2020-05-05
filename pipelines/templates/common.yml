@@ -32,6 +32,13 @@ steps:
       scopedValidation: ${{ parameters.scopedValidation }}
       changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
 
+# Tests should run earlier in the process, so that engineers can get test failure
+# notifications earlier in the CI process.
+- ${{ if eq(parameters.runTests, true) }}:
+  - template: tests.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
+
 # Build Standalone x86.
 # This must happen before tests run, because if the build fails and tests attempt
 # to get run, Unity will hang showing a dialog (even when in batch mode).
@@ -41,13 +48,6 @@ steps:
     parameters:
       Arch: 'x86'
       Platform: 'Standalone'
-      UnityVersion: ${{ parameters.UnityVersion }}
-
-# Tests should run earlier in the process, so that engineers can get test failure
-# notifications earlier in the CI process.
-- ${{ if eq(parameters.runTests, true) }}:
-  - template: tests.yml
-    parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP x86
