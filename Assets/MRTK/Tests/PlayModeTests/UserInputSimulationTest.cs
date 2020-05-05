@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.IsNotNull(iss, "InputSimulationService is null!");
             iss.UserInputEnabled = true;
 
-
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         }
         
         [UnityTest]
-        public IEnumerator HandsFreeInteractionTest()
+        public IEnumerator InputSimulationHandsFreeInteraction()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -81,7 +80,53 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         }
 
         [UnityTest]
-        public IEnumerator ArticulatedHandGestureTest()
+        public IEnumerator InputSimulationArticulatedHandNearGrabbable()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
+
+            // No hands, default cursor should be visible
+            Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Head gaze cursor should be visible");
+
+            // Begin right hand manipulation
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightHandKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure right hand is tracked
+            Assert.True(iss.HandDataRight.IsTracked);
+
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Head cursor invisible when hand is tracked
+            Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
+            // Hand ray visible
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+            Assert.True(handRayPointer.IsActive, "Hand ray not active");
+
+            // Create grabbable cube
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionGrabbable>();
+            cube.transform.position = new Vector3(0, 0, 1.2f);
+            yield return null;
+
+            // Grab pointer is near grabbable
+            var grabPointer = hand.GetPointer<SpherePointer>();
+            Assert.IsTrue(grabPointer.isActiveAndEnabled, "grab pointer is enabled");
+            Assert.IsTrue(grabPointer.IsNearObject, "Grab pointer should be near a grabbable");
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Head cursor invisible when grab pointer is near grabbable
+            Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
+            // Hand ray invisible when grab pointer is near grabbable
+            Assert.True(!handRayPointer.IsActive, "Hand ray not active");
+        }
+
+        [UnityTest]
+        public IEnumerator InputSimulationArticulatedHandGesture()
         {
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             TestUtilities.PlayspaceToOriginLookingForward();
