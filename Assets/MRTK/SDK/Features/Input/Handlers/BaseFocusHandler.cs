@@ -30,6 +30,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public virtual bool HasFocus => FocusEnabled && Focusers.Count > 0;
 
+        [SerializeField]
+        [Tooltip("Is gaze enabled for this component?")]
+        private bool gazeEnabled = false;
+
+        /// <summary>
+        /// Is gaze enabled for this <see href="https://docs.unity3d.com/ScriptReference/Component.html">Component</see>?
+        /// </summary>
+        public virtual bool GazeEnabled
+        {
+            get { return gazeEnabled; }
+            set { gazeEnabled = value; }
+        }
+
+        /// <summary>
+        /// Does this object currently have gaze by any <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>?
+        /// </summary>
+        public virtual bool HasGaze => GazeEnabled && CoreServices.InputSystem?.GazeProvider.GazeTarget == gameObject;
+
         /// <summary>
         /// The list of <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>s that are currently focused on this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>

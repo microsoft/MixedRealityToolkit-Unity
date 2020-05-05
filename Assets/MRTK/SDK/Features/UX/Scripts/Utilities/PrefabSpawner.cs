@@ -191,8 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void SpawnableActivated(GameObject spawnable) { }
 
-    private bool HasGaze => CoreServices.InputSystem.GazeProvider.GazeTarget == gameObject;
-
     /// <inheritdoc />
     public override void OnFocusEnter(FocusEventData eventData)
     {
