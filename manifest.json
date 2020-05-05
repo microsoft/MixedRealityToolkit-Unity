@@ -23115,6 +23115,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.RemainType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.RemainType.html",
+          "hash": "isct1pjvr1TKOdRc07ZHnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.html",
+          "hash": "uhATHv57ZA2SHKX3hPNqeQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.yml",
       "output": {
         ".html": {
@@ -23571,23 +23595,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.RemainType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.RemainType.html",
-          "hash": "gKdefx5X8mI/N833V7bmww=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.html",
-          "hash": "0gtgSlRoUQC8xSevjE311w=="
+          "hash": "O3fay2oYal6m+VYahyPCIg=="
         }
       },
       "is_incremental": false,
@@ -23659,7 +23671,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "ka74WigtFGywnVt8LQcjbg=="
+          "hash": "iMNfzEgLlZ89s76gJeyhLw=="
         }
       },
       "is_incremental": false,
@@ -27655,7 +27667,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FWs8RyFWRRmcCPPyP5QXjA=="
+          "hash": "q3qcmywmMoOgn8SubLGmsw=="
         }
       },
       "is_incremental": false,
@@ -27730,7 +27742,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1611,
+          "total_file_count": 1612,
           "skipped_file_count": 0
         }
       }
