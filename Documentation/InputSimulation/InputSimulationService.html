@@ -154,7 +154,7 @@
 </ul>
 <h3 id="controlling-hand-movement">Controlling hand movement</h3>
 <p>Press and hold the <strong>Left/Right Hand Control Key</strong> (default: <em>Left Shift</em> for left hand and <em>Space</em> for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released, the hands will disappear after a short <strong>Hand Hide Timeout</strong>.</p>
-<p>Hands can be toggled on permanently in the <a href="#input-simulation-tools-window">input simulation tools window</a> or by pressing the <strong>Toggle Left/Right Hand Key</strong> (default: <em>T</em> for left and <em>Y</em> for right). Press the toggle key again to hide the hands again.</p>
+<p>Hands can be toggled on and frozen relative to the camera in the <a href="#input-simulation-tools-window">input simulation tools window</a> or by pressing the <strong>Toggle Left/Right Hand Key</strong> (default: <em>T</em> for left and <em>Y</em> for right). Press the toggle key again to hide the hands again. To manipulate the hands, the <strong>Left/Right Hand Control Key</strong> needs to be held. Double tapping the <strong>Left/Right Hand Control Key</strong> can also toggle the hands on/off.</p>
 <p>Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the <strong>mouse wheel</strong>.</p>
 <p>To rotate hands using the mouse, hold both the <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>) <em>and</em> the <strong>Hand Rotate Button</strong> (default: <em>cntrl</em> button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the <strong>Mouse Hand Rotation Speed</strong> setting in the input simulation profile.</p>
 <p>All hand placement can also changed in the <a href="#input-simulation-tools-window">input simulation tools window</a>, including resetting hands to default.</p>
@@ -169,7 +169,6 @@
 <p>Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.</p>
 <ol>
 <li><p>Enable hand control using the <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>)</p>
-<p>Alternatively, toggle the hands on/off using the toggle keys (<em>T</em> or <em>Y</em>).</p>
 </li>
 <li><p>While manipulating, press and hold a mouse button to perform a hand gesture.</p>
 </li>
@@ -196,7 +195,8 @@
 <ol>
 <li>Hold <strong>Space</strong> to control the right hand</li>
 <li>Move the hand to where you want to grab the object</li>
-<li>Press the <strong>left mouse button</strong> to activate the <em>Pinch</em> gesture. In persistent mode the gesture will remain active when you release the mouse button.</li>
+<li>Press the <strong>left mouse button</strong> to activate the <em>Pinch</em> gesture.</li>
+<li>Release <strong>Space</strong> to stop controlling the right hand. The hand will be frozen in place and be locked into the <em>Pinch</em> gesture since it is no longer being manipulated.</li>
 </ol>
 </li>
 <li>Repeat the process with the other hand, grabbing the same object in a second spot.</li>
