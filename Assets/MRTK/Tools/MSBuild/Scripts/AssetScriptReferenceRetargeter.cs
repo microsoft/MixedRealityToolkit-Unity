@@ -84,7 +84,65 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             }
         }
 
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Retarget assets to scripts")]
+        public static void RetargetAssetsToScript()
+        {
+            try
+            {
+                Debug.Log("Starting to retarget assets.");
+                RunRetargetToScript();
+                Debug.Log("Completed asset retargeting.");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Failed to retarget assets.");
+                Debug.LogException(ex);
+
+                throw ex;
+            }
+        }
+
         private static void RunRetargetToDLL()
+        {
+            string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
+
+            Dictionary<string, ClassInformation> scriptFilesReferences = ProcessScripts(allFilesUnderAssets);
+            Debug.Log($"Found {scriptFilesReferences.Count} script file references.");
+
+            // DLL name to Guid
+            Dictionary<string, string> asmDefMappings = RetrieveAsmDefGuids(allFilesUnderAssets);
+
+            Dictionary<string, AssemblyInformation> compiledClassReferences = ProcessCompiledDLLs("PackagedAssemblies", Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer"), asmDefMappings);
+            Debug.Log($"Found {compiledClassReferences.Select(t => t.Value.CompiledClasses.Count).Sum()} compiled class references.");
+
+            Dictionary<string, Tuple<string, long>> remapDictionary = new Dictionary<string, Tuple<string, long>>();
+
+            foreach (KeyValuePair<string, AssemblyInformation> pair in compiledClassReferences)
+            {
+                foreach (KeyValuePair<string, ClassInformation> compiledClass in pair.Value.CompiledClasses)
+                {
+                    ClassInformation compiledClassInfo = compiledClass.Value;
+                    if (scriptFilesReferences.TryGetValue(compiledClass.Key, out ClassInformation scriptClassInfo))
+                    {
+                        if (scriptClassInfo.ExecutionOrder != 0)
+                        {
+                            pair.Value.ExecutionOrderEntries.Add($"{scriptClassInfo.Namespace}.{scriptClassInfo.Name}", scriptClassInfo.ExecutionOrder);
+                        }
+
+                        remapDictionary.Add(scriptClassInfo.Guid, new Tuple<string, long>(compiledClassInfo.Guid, compiledClassInfo.FileId));
+                        scriptFilesReferences.Remove(compiledClass.Key);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Can't find a script version of the compiled class: {compiledClass.Key}; {pair.Key}.dll. This generally means the compiled class is second or later in a script file, and Unity doesn't parse it as two different assets.");
+                    }
+                }
+            }
+
+            ProcessYAMLAssets(allFilesUnderAssets, Application.dataPath.Replace("Assets", "NuGet/Content"), remapDictionary, compiledClassReferences);
+        }
+
+        private static void RunRetargetToScript()
         {
             string[] allFilesUnderAssets = Directory.GetFiles(Application.dataPath, "*", SearchOption.AllDirectories);
 
