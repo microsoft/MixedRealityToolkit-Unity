@@ -54,6 +54,34 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 
 The [MRTK Toolbox](README_Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
 
+**Button Config Helper added to Pressable Buttons**
+![Button Config Helper](https://user-images.githubusercontent.com/9789716/70167111-e3175600-167a-11ea-9c52-444509c06105.gif)
+This new feature makes it easy to change the icon and text of the buttons. Icon supports quad, sprite, and TextMesh Pro's SDF font texture. See MRTK's [Button documentation](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text) for the details.
+
+
+**Hand Menu Improvements**
+
+Hand menu has been adapted in many applications. One of the biggest issue we found is the accidental false activation while manipulating objects or interacting with other content, etc. New 'Gaze Activation' option added to HandConstraintPalmUp.cs to prevent false activations. With this option, the menu does not accidentally show up, until the user look at the hand.<br/>
+![0416_HandMenu_02](https://user-images.githubusercontent.com/13754172/79507261-4aabbd80-7fec-11ea-95c4-6e3f4bd18c11.gif)
+
+**Hand Menu Examples update**
+
+[New] Large menu interaction example 1: Grab & Pull menu to world-lock<br/>
+![0416_HandMenu_03](https://user-images.githubusercontent.com/13754172/79507983-90b55100-7fed-11ea-9062-630c892950cb.gif)
+
+[New] Large menu interaction example 2 - Auto world-lock on hand drop<br/>
+![0416_HandMenu_04](https://user-images.githubusercontent.com/13754172/79508227-f9043280-7fed-11ea-995f-ac3cfe42fe65.gif)
+
+**Dialog (Experimental)**
+<br/><img src="Images/Dialog/MRTK_UX_Dialog_Main.png" width="450">
+
+Dialog UI has been ported over from HoloToolkit with new HoloLens 2 shell-style design updates.
+
+**Dock (Experimental)**
+<br/><img src="https://user-images.githubusercontent.com/621574/76669327-65e86080-6548-11ea-85a3-f84f6b367f97.gif" width="450">
+
+This control enables moving objects in and out of predetermined positions, to create palettes, shelves and navigation bars.
+
 **Unity Profiler markers**
 
 This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
