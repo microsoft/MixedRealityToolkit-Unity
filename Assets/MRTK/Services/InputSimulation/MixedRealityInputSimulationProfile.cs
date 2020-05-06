@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Enable hands free input")]
         private bool isHandsFreeInputEnabled = true;
         /// <summary>
-        /// Enable manual camera control
+        /// Enable hands free input
         /// </summary>
         public bool IsHandsFreeInputEnabled => isHandsFreeInputEnabled;
 
