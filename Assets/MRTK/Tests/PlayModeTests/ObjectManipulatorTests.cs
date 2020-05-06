@@ -272,7 +272,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.IsNotNull(pointer);
 
                 yield return hand.MoveTo(initialGrabPosition, numHandSteps);
+
+                Vector3 initialPosition = testObject.transform.position;
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+                // Ensure the object didn't move after pinching
+                TestUtilities.AssertAboutEqual(initialPosition, testObject.transform.position, "object shifted during pinch", 0.001f);
 
                 // save relative pos grab point to object
                 Vector3 initialGrabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
@@ -364,8 +371,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 yield return hand.Show(initialHandPosition);
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-               
+
+                Vector3 initialPosition = testObject.transform.position;
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+                // Ensure the object didn't move after pinching
+                TestUtilities.AssertAboutEqual(initialPosition, testObject.transform.position, "object shifted during pinch", 0.0001f);
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
                 InputSimulationService simulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -883,7 +896,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Grab the object
             yield return hand.Show(new Vector3(0, 0, 0.5f));
+            Vector3 initialPosition = testObject.transform.position;
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Ensure the object didn't move after pinching
+            TestUtilities.AssertAboutEqual(initialPosition, testObject.transform.position, "object shifted during pinch", 0.001f);
             yield return null;
 
             yield return hand.Move(Vector3.right * moveBy, numHandSteps);
