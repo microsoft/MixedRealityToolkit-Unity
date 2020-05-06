@@ -94,7 +94,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the **Han
 
 Press and hold the **Left/Right Hand Control Key** (default: *Left Shift* for left hand and *Space* for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released, the hands will disappear after a short **Hand Hide Timeout**.
 
-Hands can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Hand Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again. To manipulate the hands, the **Left/Right Hand Control Key** needs to be held.
+Hands can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Hand Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again. To manipulate the hands, the **Left/Right Hand Control Key** needs to be held. Double tapping the **Left/Right Hand Control Key** can also toggle the hands on/off.
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the **mouse wheel**.
 
