@@ -22,7 +22,7 @@ MonoBehaviour:
     bindingType: 1
     code: 0
   doublePressTime: 0.4
-  isHandsFreeInputEnabled: 0
+  isHandsFreeInputEnabled: 1
   isCameraControlEnabled: 1
   mouseLookSpeed: 3
   mouseLookButton:
