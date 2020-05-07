@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Render Title
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
             }
 
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     RenderOptimalRenderingSection();
