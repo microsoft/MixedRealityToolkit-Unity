@@ -842,7 +842,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (DetectedInputSources.Contains(source)) 
                 { 
-                    Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!");
+                    Debug.LogWarning($"[MRTK Issue] {source.SourceName} has already been registered with the Input Manager!");
                     return;
                 }
 
@@ -879,7 +879,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!DetectedInputSources.Contains(source)) 
                 { 
-                    Debug.LogError($"{source.SourceName} was never registered with the Input Manager!");
+                    Debug.LogWarning($"[MRTK Issue] {source.SourceName} was never registered with the Input Manager!");
                     return;
                 }
 
