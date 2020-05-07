@@ -1101,6 +1101,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
 
+        // Set true to prevent CreateRig. When you need set multiple properties and do not want to CreateRig every time, use it.
+        // Use function SetPreventCreateRig
+        private bool preventCreateRig = false;
+
         #endregion
 
         #region public Properties
@@ -1192,10 +1196,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        // Set true to prevent CreateRig. When you need set multiple properties and do not want to CreateRig every time, use it.
+        /// </summary>
+        /// <param name="b"></param>
+        public void SetPreventCreateRig(bool b)
+        {
+            preventCreateRig = b;
+        }
+
+        /// <summary>
         /// Destroys and re-creates the rig around the bounding box
         /// </summary>
         public void CreateRig()
         {
+            if (preventCreateRig)
+            {
+                return;
+            }
+
             DestroyRig();
             SetMaterials();
             InitializeRigRoot();
