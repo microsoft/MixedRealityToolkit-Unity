@@ -92,7 +92,7 @@ the MRTK input system that can be used to help optimize applications.
 
 Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
 
-_example image coming soon_
+![Profiler Markers](Images/ReleaseNotes/ProfilerMarkers.png)
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
@@ -127,6 +127,12 @@ Camera control speed using in-editor input simulation is slower for a smoother e
 <img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300"/>
 
 We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
+
+**Audio Spatializer Selection in MRTK configuration dialog**
+
+The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the [Microsoft Spatializer](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/), will re-prompt to allow for easy selection.
+
+![MRTK Configuration Select Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
 
 ### Breaking changes in 2.4.0
 
