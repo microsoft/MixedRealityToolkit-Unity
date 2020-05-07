@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.Extensions;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
@@ -126,5 +127,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// Importers should run on the main thread; all other loading scenarios should likely use the background thread
         /// </summary>
         internal bool UseBackgroundThread { get; set; } = true;
+
+        public GltfAccessor GetAccessor(int index)
+        {
+            if (index < 0) return null;
+            
+            var accessor = accessors[index];
+            accessor.BufferView = bufferViews[accessor.bufferView];
+            accessor.BufferView.Buffer = buffers[accessor.BufferView.buffer];
+            return accessor;
+        }
     }
 }
