@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(Canvas))]
     public class MixedRealityCanvasInspector : UnityEditor.Editor
     {
-        private static readonly GUIContent makeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
-        private static readonly GUIContent removeMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
+        private static readonly GUIContent MakeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
+        private static readonly GUIContent RemoveMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
 
         private MethodInfo sortingLayerField;
         private MethodInfo getDisplayNames;
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 EditorGUILayout.PropertyField(m_PixelPerfect);
                 EditorGUILayout.PropertyField(m_SortingOrder, Styles.sortingOrder);
-                GUIContent[] displayNames = (GUIContent[]) getDisplayNames.Invoke(null, System.Array.Empty<object>());
+                GUIContent[] displayNames = (GUIContent[])getDisplayNames.Invoke(null, System.Array.Empty<object>());
                 EditorGUILayout.IntPopup(m_TargetDisplay, displayNames, (int[])getDisplayIndices.Invoke(null, new object[] { }), Styles.targetDisplay);
             }
             EditorGUILayout.EndFadeGroup();
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isMRTKCanvas)
             {
-                if (GUILayout.Button(removeMRTKCanvas))
+                if (GUILayout.Button(RemoveMRTKCanvas))
                 {
                     EditorApplication.delayCall += () =>
                     {
@@ -308,12 +308,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (GUILayout.Button(makeMRTKCanvas))
+                if (GUILayout.Button(MakeMRTKCanvas))
                 {
                     if (canvas.GetComponent<GraphicRaycaster>() == null)
+                    {
                         Undo.AddComponent<GraphicRaycaster>(canvas.gameObject);
+                    }
+
                     if (canvas.GetComponent<CanvasUtility>() == null)
+                    {
                         Undo.AddComponent<CanvasUtility>(canvas.gameObject);
+                    }
+
                     canvas.renderMode = RenderMode.WorldSpace;
                     canvas.worldCamera = null;
                     isMRTKCanvas = true;
