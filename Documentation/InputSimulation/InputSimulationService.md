@@ -150,9 +150,13 @@ For manipulating objects with two hands at the same time, the persistent hand mo
 
 ### GGV (Gaze, Gesture, and Voice) interaction
 
+By default, GGV interaction is enabled in-editor while there are no articulated hands present in the scene.
+
 1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
 1. Click and hold **left mouse button** to interact
 1. Rotate the camera again to manipulate the object
+
+You can turn this off by toggling the *Is Hand Free Input Enabled* option inside the Input Simulation Profile.
 
 In addition, you can use simulated hands for GGV interaction
 

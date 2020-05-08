@@ -1,9 +1,8 @@
 # Microsoft Mixed Reality Toolkit release notes
 
 - [What's new](#whats-new-in-240)
-- [Known issues](#known-issues-in-240)
 - [Breaking changes](#breaking-changes-in-240)
-- [Updating guidance](Updating.md#updating-230-to-240)
+- [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -92,7 +91,7 @@ the MRTK input system that can be used to help optimize applications.
 
 Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
 
-_example image coming soon_
+![Profiler Markers](Images/ReleaseNotes/ProfilerMarkers.png)
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
@@ -128,6 +127,22 @@ Camera control speed using in-editor input simulation is slower for a smoother e
 
 We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
 
+**Button Config Helper**
+
+<img src="https://user-images.githubusercontent.com/168492/81211778-bb5d4e80-8f88-11ea-94c7-33cf265586df.png" width="300" />
+
+The Button Config Helper is an editor feature that makes it easier to customize MRTK buttons. It's now much easier to:
+
+- Update the button label text
+- Add a button click event listener
+- Change the button icon
+
+**Audio Spatializer Selection in MRTK configuration dialog**
+
+The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the [Microsoft Spatializer](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/), will re-prompt to allow for easy selection.
+
+![MRTK Configuration Select Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
+
 ### Breaking changes in 2.4.0
 
 **Eye gaze setup change**
@@ -135,7 +150,3 @@ We've enabled the ability to interact with objects without bringing hands within
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
-
-### Known issues in 2.4.0
-
-*Coming soon*
