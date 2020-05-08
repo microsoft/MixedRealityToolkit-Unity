@@ -1,7 +1,6 @@
 # Microsoft Mixed Reality Toolkit release notes
 
 - [What's new](#whats-new-in-240)
-- [Known issues](#known-issues-in-240)
 - [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#updating-230-to-240)
 
