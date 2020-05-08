@@ -1,7 +1,6 @@
 # Microsoft Mixed Reality Toolkit release notes
 
 - [What's new](#whats-new-in-240)
-- [Known issues](#known-issues-in-240)
 - [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#updating-230-to-240)
 
@@ -92,7 +91,7 @@ the MRTK input system that can be used to help optimize applications.
 
 Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
 
-_example image coming soon_
+![Profiler Markers](Images/ReleaseNotes/ProfilerMarkers.png)
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
@@ -138,6 +137,12 @@ The Button Config Helper is an editor feature that makes it easier to customize 
 - Add a button click event listener
 - Change the button icon
 
+**Audio Spatializer Selection in MRTK configuration dialog**
+
+The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the [Microsoft Spatializer](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/), will re-prompt to allow for easy selection.
+
+![MRTK Configuration Select Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
+
 ### Breaking changes in 2.4.0
 
 **Eye gaze setup change**
@@ -145,7 +150,3 @@ The Button Config Helper is an editor feature that makes it easier to customize 
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
-
-### Known issues in 2.4.0
-
-*Coming soon*
