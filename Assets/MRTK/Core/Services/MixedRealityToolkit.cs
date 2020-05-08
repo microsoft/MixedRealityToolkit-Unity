@@ -1463,7 +1463,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// Used to register newly created instances in edit mode.
         /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
         /// </summary>
-        private void OnValidate()
+        [UnityEditor.Callbacks.DidReloadScripts] // This is workaround for a known unity issue when calling refresh assetdatabase from inside a on validate scope.
+        private static void OnDidReloadScripts()
         {
             // This check is only necessary in edit mode. This can also get called during player builds as well,
             // and shouldn't be run during that time.
@@ -1474,7 +1475,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            RegisterInstance(this);
+            RegisterInstance(Instance);
         }
 #endif // UNITY_EDITOR
 
