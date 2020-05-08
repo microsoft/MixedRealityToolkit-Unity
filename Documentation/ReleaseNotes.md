@@ -127,6 +127,16 @@ Camera control speed using in-editor input simulation is slower for a smoother e
 
 We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
 
+**Button Config Helper**
+
+<img src="https://user-images.githubusercontent.com/168492/81211778-bb5d4e80-8f88-11ea-94c7-33cf265586df.png" width="300" />
+
+The Button Config Helper is an editor feature that makes it easier to customize MRTK buttons. It's now much easier to:
+
+- Update the button label text
+- Add a button click event listener
+- Change the button icon
+
 **Audio Spatializer Selection in MRTK configuration dialog**
 
 The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the [Microsoft Spatializer](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/), will re-prompt to allow for easy selection.
