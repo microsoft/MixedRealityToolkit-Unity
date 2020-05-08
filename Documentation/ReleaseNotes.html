@@ -84,9 +84,8 @@
 
 <ul>
 <li><a href="#whats-new-in-240">What's new</a></li>
-<li><a href="#known-issues-in-240">Known issues</a></li>
 <li><a href="#breaking-changes-in-240">Breaking changes</a></li>
-<li><a href="Updating.html#updating-230-to-240">Updating guidance</a></li>
+<li><a href="Updating.html#upgrading-to-a-new-version-of-mrtk">Updating guidance</a></li>
 </ul>
 <p>This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.</p>
 <ul>
@@ -189,7 +188,7 @@ This new feature makes it easy to change the icon and text of the buttons. Icon 
 <p>This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
 the MRTK input system that can be used to help optimize applications.</p>
 <p>Markers take the format of &quot;[MRTK] ClassWithoutNamespace.Method&quot;.</p>
-<p><em>example image coming soon</em></p>
+<p><img src="Images/ReleaseNotes/ProfilerMarkers.png" alt="Profiler Markers"></p>
 <p><strong>WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()</strong></p>
 <p>This version of MRTK adds three new methods to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html"><code>WindowsApiChecker</code></a> class: <code>IsMethodAvailable</code>, <code>IsPropertyAvailable</code> and <code>IsTypeAvailable</code>. These methods allow for checking for feature support on Windows 10 and are prefered over using the <code>UniversalApiContractV#_IsAvailable</code> properties.</p>
 <p><strong>Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)</strong></p>
@@ -207,12 +206,21 @@ the MRTK input system that can be used to help optimize applications.</p>
 <p><strong>Hands-free GGV input simulation</strong></p>
 <img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300">
 <p>We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.</p>
+<p><strong>Button Config Helper</strong></p>
+<img src="https://user-images.githubusercontent.com/168492/81211778-bb5d4e80-8f88-11ea-94c7-33cf265586df.png" width="300">
+<p>The Button Config Helper is an editor feature that makes it easier to customize MRTK buttons. It's now much easier to:</p>
+<ul>
+<li>Update the button label text</li>
+<li>Add a button click event listener</li>
+<li>Change the button icon</li>
+</ul>
+<p><strong>Audio Spatializer Selection in MRTK configuration dialog</strong></p>
+<p>The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the <a href="https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/">Microsoft Spatializer</a>, will re-prompt to allow for easy selection.</p>
+<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="MRTK Configuration Select Spatializer"></p>
 <h3 id="breaking-changes-in-240">Breaking changes in 2.4.0</h3>
 <p><strong>Eye gaze setup change</strong></p>
 <p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>
 <p>For more information on these changes and complete instructions for eye tracking setup, please see the <a href="EyeTracking/EyeTracking_BasicSetup.html">eye tracking</a> article.</p>
-<h3 id="known-issues-in-240">Known issues in 2.4.0</h3>
-<p><em>Coming soon</em></p>
 </article>
           </div>
           
