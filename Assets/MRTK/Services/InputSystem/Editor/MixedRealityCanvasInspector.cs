@@ -25,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly GUIContent MakeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
         private static readonly GUIContent RemoveMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
 
+        private readonly List<Graphic> graphicsWhichRequireScaleMeshEffect = new List<Graphic>();
+
         private MethodInfo sortingLayerField;
         private MethodInfo getDisplayNames;
         private MethodInfo getDisplayIndices;
@@ -366,9 +368,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static IEnumerable<Graphic> GetGraphicsWhichRequireScaleMeshEffect(Object[] targets)
+        private IEnumerable<Graphic> GetGraphicsWhichRequireScaleMeshEffect(Object[] targets)
         {
-            var output = new List<Graphic>();
+            graphicsWhichRequireScaleMeshEffect.Clear();
 
             foreach (var target in targets)
             {
@@ -379,12 +381,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (StandardShaderUtility.IsUsingMrtkStandardShader(graphic.material) &&
                         graphic.GetComponent<ScaleMeshEffect>() == null)
                     {
-                        output.Add(graphic);
+                        graphicsWhichRequireScaleMeshEffect.Add(graphic);
                     }
                 }
             }
 
-            return output;
+            return graphicsWhichRequireScaleMeshEffect;
         }
     }
 }
