@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
