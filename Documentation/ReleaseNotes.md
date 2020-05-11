@@ -159,7 +159,7 @@ We extensively increased test coverage for bounds control this version and addre
 ![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
 
 MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities > Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl. 
-Note that BoundsControl is still in experimental phase and therefor api or properties might still change in the next version.
+Note that BoundsControl is still in experimental phase and therefore api or properties might still change in the next version.
 
 ### Breaking changes in 2.4.0
 
