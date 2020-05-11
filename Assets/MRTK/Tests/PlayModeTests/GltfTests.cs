@@ -126,6 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
         #endregion
         
-    } 
+    }
 }
 #endif
