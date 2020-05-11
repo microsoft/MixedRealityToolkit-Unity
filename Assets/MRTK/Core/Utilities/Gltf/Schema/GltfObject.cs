@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.Extensions;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
@@ -128,6 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         internal bool UseBackgroundThread { get; set; } = true;
 
+        /// <summary>
+        /// Get an accessor from an accessor index
+        /// </summary>
         public GltfAccessor GetAccessor(int index)
         {
             if (index < 0) return null;
