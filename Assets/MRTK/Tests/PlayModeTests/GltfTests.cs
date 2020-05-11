@@ -102,7 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
         
         [UnityTest]
-        public IEnumerator TestGltfCustomAttributesData() {
+        public IEnumerator TestGltfCustomAttributesData()
+        {
             // Load glTF
             string path = AssetDatabase.GUIDToAssetPath(CubeCustomAttrGuid);
             var task = GltfUtility.ImportGltfObjectFromPathAsync(path);
