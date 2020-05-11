@@ -163,7 +163,25 @@ Note that BoundsControl is still in experimental phase and therefore API or prop
 
 ### Breaking changes in 2.4.0
 
-**Eye gaze setup change**
+**Eye Gaze API**
+
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider`  was renamed to `IsEyeTrackingEnabled`.
+
+If you did this previously...
+
+```csharp
+GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
+gazeProvider.UseEyeTracking = true;
+```
+
+Do this now...
+
+```csharp
+GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
+gazeProvider.IsEyeTrackingEnabled = true;
+```
+
+**Eye gaze setup**
 
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
