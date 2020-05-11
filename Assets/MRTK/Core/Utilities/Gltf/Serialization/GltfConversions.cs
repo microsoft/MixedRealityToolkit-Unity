@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
+    /// <summary>
+    /// Provides data accessors and conversions useful while reading and using glTF objects.
+    /// </summary>
     public static class GltfConversions
     {
         // glTF matrix: column vectors, column-major storage, +Y up, +Z forward, -X right, right-handed
