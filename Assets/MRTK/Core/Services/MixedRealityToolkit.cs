@@ -1481,7 +1481,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            RegisterInstance(Instance);
+            RegisterInstance(this);
         }
 #endif // UNITY_EDITOR
 
