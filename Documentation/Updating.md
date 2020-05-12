@@ -89,11 +89,39 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 > [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
+### Eye gaze setup in 2.4.0
+
+This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
+
+For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
+
 ### API changes in 2.4.0
 
 **Custom controller classes**
 
 Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
+
+**Eye Gaze properties**
+
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider` was renamed to `IsEyeTrackingEnabled`.
+
+If you did this previously...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
+```
+
+Do this now...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
+```
 
 **WindowsApiChecker properties**
 

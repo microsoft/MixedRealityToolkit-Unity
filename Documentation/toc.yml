@@ -206,6 +206,8 @@
         href: Tools/ControllerMappingTool.md 
   - name: UX Building Blocks
     items:
+    - name: Toolbox Window
+      href: README_Toolbox.md
     - name: Button
       href: README_Button.md
     - name: Bounding Box
@@ -233,6 +235,8 @@
       href: README_Sliders.md
     - name: Hand Menu
       href: README_HandMenu.md
+    - name: Near Menu
+      href: README_NearMenu.md
     - name: App Bar
       href: README_AppBar.md
     - name: Fingertip Visualization

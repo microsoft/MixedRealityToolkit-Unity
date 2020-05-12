@@ -1,5 +1,5 @@
 # Hand coach
-![](/Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
+![](../../../../../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
 
 Hand coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand coach could be used to represent pressing a button or picking up a hologram.
 
@@ -26,7 +26,7 @@ You can find the assets under:
 ## Quality
 If you notice distortions on the skinned mesh, you need to make sure your project is using the proper amount of joints. 
 Go to Unity's Edit > Project Settings > Quality > Other > Blend Weights. Make sure "4 bones" are selected to see Smooth Joints. 
-![](/Documentation/Images/HandCoach/MRTK_ProjectSettings.png)
+![](../../../../../Documentation/Images/HandCoach/MRTK_ProjectSettings.png)
 
 
 

@@ -51,6 +51,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test that the Hands Free Input simulation is enabled in editor in the default profile when user input is enabled
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestEditorProfile()
+        {
+            PlayModeTestUtilities.Setup();
+
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            inputSimulationService.UserInputEnabled = true;
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            var allPointers = GetAllPointers();
+            // https://nunit.org/docs/2.5.5/collectionConstraints.html
+            Assert.That(allPointers, Has.Some.InstanceOf(typeof(GGVPointer)));
+            Assert.That(allPointers, Has.No.InstanceOf(typeof(ShellHandRayPointer)));
+        }
+
+
+        /// <summary>
         /// Test that HoloLens 1 profile acts as expected (e.g. when hands are up there are no hand rays)
         /// </summary>
         [UnityTest]

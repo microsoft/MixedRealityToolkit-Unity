@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(GetDeviceOsInfoQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(GetMachineNameQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(GetBatteryQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(GetPowerStateQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return false; }
 
-            var response = await Rest.PostAsync(string.Format(RestartDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+            var response = await Rest.PostAsync(string.Format(RestartDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization, readResponseData: true);
 
             if (response.Successful)
             {
@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
                 while (!hasRestarted)
                 {
-                    response = await Rest.GetAsync(query, targetDevice.Authorization);
+                    response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
                     if (!response.Successful)
                     {
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return false; }
 
-            var response = await Rest.PostAsync(string.Format(ShutdownDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+            var response = await Rest.PostAsync(string.Format(ShutdownDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 return false;
             }
 
-            var response = await Rest.GetAsync(string.Format(ProcessQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+            var response = await Rest.GetAsync(string.Format(ProcessQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization, readResponseData: true);
 
             if (response.Successful)
             {
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return null; }
 
-            var response = await Rest.GetAsync(string.Format(PackagesQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+            var response = await Rest.GetAsync(string.Format(PackagesQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
         private static async Task<AppInstallStatus> GetInstallStatusAsync(DeviceInfo targetDevice)
         {
-            var response = await Rest.GetAsync(string.Format(InstallStatusQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+            var response = await Rest.GetAsync(string.Format(InstallStatusQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization, readResponseData: true);
 
             if (response.Successful)
             {
@@ -494,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.ToString()}...");
 
             string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
-            var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
+            var response = await Rest.DeleteAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (response.Successful)
             {
@@ -537,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             }
 
             string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={UnityWebRequest.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
-            var response = await Rest.PostAsync(query, targetDevice.Authorization);
+            var response = await Rest.PostAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -579,7 +579,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             }
 
             string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
-            Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
+            Response response = await Rest.DeleteAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -621,7 +621,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             }
 
             string logFile = $"{Application.temporaryCachePath}/{targetDevice.MachineName}_{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}_player.txt";
-            var response = await Rest.GetAsync(string.Format(FileQuery, FinalizeUrl(targetDevice.IP), appInfo.PackageFullName), targetDevice.Authorization);
+            var response = await Rest.GetAsync(string.Format(FileQuery, FinalizeUrl(targetDevice.IP), appInfo.PackageFullName), targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -649,7 +649,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(IpConfigQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -676,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(WiFiNetworkQuery, FinalizeUrl(targetDevice.IP), $"s?interface={interfaceInfo.GUID}");
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             string query = string.Format(WiFiInterfacesQuery, FinalizeUrl(targetDevice.IP));
-            var response = await Rest.GetAsync(query, targetDevice.Authorization);
+            var response = await Rest.GetAsync(query, targetDevice.Authorization, readResponseData: true);
 
             if (!response.Successful)
             {
@@ -843,7 +843,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
             await webRequest.SendWebRequest();
 
+#if UNITY_2020_1_OR_NEWER
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+#else
             if (webRequest.isNetworkError || webRequest.isHttpError)
+#endif // UNITY_2020_1_OR_NEWER
             {
                 if (webRequest.responseCode == 401)
                 {

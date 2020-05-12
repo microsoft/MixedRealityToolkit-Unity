@@ -65,6 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum time interval for double press
         /// </summary>
         public float DoublePressTime => doublePressTime;
+        [SerializeField]
+        [Tooltip("Enable hands free input")]
+        private bool isHandsFreeInputEnabled = true;
+        /// <summary>
+        /// Enable hands free input
+        /// </summary>
+        public bool IsHandsFreeInputEnabled => isHandsFreeInputEnabled;
 
         [Header("Camera Control")]
         [SerializeField]

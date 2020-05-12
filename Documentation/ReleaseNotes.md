@@ -1,9 +1,8 @@
 # Microsoft Mixed Reality Toolkit release notes
 
 - [What's new](#whats-new-in-240)
-- [Known issues](#known-issues-in-240)
 - [Breaking changes](#breaking-changes-in-240)
-- [Updating guidance](Updating.md#updating-230-to-240)
+- [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -48,6 +47,43 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 > [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
+**MRTK Toolbox**
+
+![MRTK Toolbox](Images/Tools/MRTKToolboxWindow.png)
+
+The [MRTK Toolbox](README_Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
+
+**Button Config Helper added to Pressable Buttons**
+![Button Config Helper](https://user-images.githubusercontent.com/9789716/70167111-e3175600-167a-11ea-9c52-444509c06105.gif)
+This new feature makes it easy to change the icon and text of the buttons. Icon supports quad, sprite, and TextMesh Pro's SDF font texture. See MRTK's [Button documentation](README_Button.md#how-to-change-the-icon-and-text) for the details.
+
+**New HoloLens 2-style Toggle Buttons - Checkbox, Switch, Radio**
+<br/><img src="https://user-images.githubusercontent.com/13754172/75299797-df631d80-57ea-11ea-8857-8ef647df0aca.gif" width="450">
+<br/><img src="https://user-images.githubusercontent.com/13754172/75299783-d6724c00-57ea-11ea-88b1-85e4a585212f.gif" width="450">
+
+**Hand Menu Improvements**
+
+Hand menu has been adapted in many applications. One of the biggest issue we found is the accidental false activation while manipulating objects or interacting with other content, etc. New 'Gaze Activation' option added to HandConstraintPalmUp.cs to prevent false activations. With this option, the menu does not accidentally show up, until the user look at the hand.<br/>
+![0416_HandMenu_02](https://user-images.githubusercontent.com/13754172/79507261-4aabbd80-7fec-11ea-95c4-6e3f4bd18c11.gif)
+
+**Hand Menu Examples update**
+
+[New] Large menu interaction example 1: Grab & Pull menu to world-lock<br/>
+![0416_HandMenu_03](https://user-images.githubusercontent.com/13754172/79507983-90b55100-7fed-11ea-9062-630c892950cb.gif)
+
+[New] Large menu interaction example 2 - Auto world-lock on hand drop<br/>
+![0416_HandMenu_04](https://user-images.githubusercontent.com/13754172/79508227-f9043280-7fed-11ea-995f-ac3cfe42fe65.gif)
+
+**Dialog (Experimental)**
+<br/><img src="Images/Dialog/MRTK_UX_Dialog_Main.png" width="450">
+
+Dialog UI has been ported over from HoloToolkit with new HoloLens 2 shell-style design updates.
+
+**Dock (Experimental)**
+<br/><img src="https://user-images.githubusercontent.com/621574/76669327-65e86080-6548-11ea-85a3-f84f6b367f97.gif" width="450">
+
+This control enables moving objects in and out of predetermined positions, to create palettes, shelves and navigation bars.
+
 **Unity Profiler markers**
 
 This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
@@ -55,7 +91,7 @@ the MRTK input system that can be used to help optimize applications.
 
 Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
 
-_example image coming soon_
+![Profiler Markers](Images/ReleaseNotes/ProfilerMarkers.png)
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
@@ -91,14 +127,66 @@ Camera control speed using in-editor input simulation is slower for a smoother e
 
 We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
 
+**Button Config Helper**
+
+<img src="https://user-images.githubusercontent.com/168492/81211778-bb5d4e80-8f88-11ea-94c7-33cf265586df.png" width="300" />
+
+The Button Config Helper is an editor feature that makes it easier to customize MRTK buttons. It's now much easier to:
+
+- Update the button label text
+- Add a button click event listener
+- Change the button icon
+
+**Audio Spatializer Selection in MRTK configuration dialog**
+
+The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the [Microsoft Spatializer](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/), will re-prompt to allow for easy selection.
+
+![MRTK Configuration Select Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
+
+**Object manipulator graduated to SDK**
+
+![Object manipulator](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
+
+ObjectManipulator now graduated to SDK and is no longer an experimental feature. This control is replacing the existing ManipulationHandler class which is now deprecated. ObjectManipulator comes with a new more flexible constraint system and correctly responds to physics. A full feature list and guide how to set up can be found in [object manipulator documentation](README_ObjectManipulator.md).
+Users can take advantage of the new [migration window](Tools/MigrationWindow.md) to upgrade their existing gameobject using ManipulationHandler to ObjectManipulator
+
+**Bounds control improvements**
+
+We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type. 
+
+**Migration window**
+
+![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
+
+MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities > Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl. 
+Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
+
 ### Breaking changes in 2.4.0
 
-**Eye gaze setup change**
+**Eye Gaze API**
+
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider` was renamed to `IsEyeTrackingEnabled`.
+
+If you did this previously...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
+```
+
+Do this now...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
+```
+
+**Eye gaze setup**
 
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
-
-### Known issues in 2.4.0
-
-*Coming soon*
