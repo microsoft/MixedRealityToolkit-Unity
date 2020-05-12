@@ -29,7 +29,7 @@ When using **Unity 2019.3** and later the **Enable MSBuild for Unity** is not av
 1. Set the target platform in **File > Build Settings** to **Universal Windows Platform**
 1. Click **Apply**
 1. Open **Window > Package Manager**
-    - Ensure that the **Windows XR Plugin** is not installed, as the legacy **Windows Mixed Reality** package will not function alongside it
+    - Ensure that the **Windows XR Plugin** is not installed if the project isn't using [XR SDK](../GettingStartedWithMRTKAndXRSDK.md), as the legacy **Windows Mixed Reality** package will not function alongside it
 1. Open **Edit > Project Settings > Player**
     
     ![Windows Mixed Reality SDK](../Images/Tools/Remoting/WindowsMixedRealitySDK.png)
