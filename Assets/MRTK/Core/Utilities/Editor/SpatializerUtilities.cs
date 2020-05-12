@@ -33,6 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </returns>
         public static bool CheckSettings()
         {
+            // Check to see if the count of installed spatializers has changed
+            if (!CheckSpatializerCount())
+            {
+                // A spatializer has been added or removed.
+                return false;
+            }
+
             string spatializerName = CurrentSpatializer;
 
             // Check to see if an audio spatializer is configured.
@@ -48,13 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!installedSpatializers.Contains(spatializerName))
             {
                 // The current spatializer has been uninstalled.
-                return false;
-            }
-
-            // Next, check to see if the count of installed spatializers has changed
-            if (!CheckSpatializerCount())
-            {
-                // A spatializer has been added or removed.
                 return false;
             }
 
