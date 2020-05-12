@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <returns>
         /// True if the selected spatializer is installed and no changes have been made to the collection of installed spatializers.
-        /// False if there is no selected spatializer, the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
+        /// False if the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
         /// </returns>
         public static bool CheckSettings()
         {
@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Check to see if an audio spatializer is configured.
             if (string.IsNullOrWhiteSpace(spatializerName))
             {
-                // A spatializer has not been configured.
-                return false;
+                // The user chose to not initialize a spatializer so we are set correctly
+                return true;
             }
 
             string[] installedSpatializers = InstalledSpatializers;
