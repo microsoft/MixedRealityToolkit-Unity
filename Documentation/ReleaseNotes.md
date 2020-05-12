@@ -143,9 +143,49 @@ The audio spatializer can now be specified in the MRTK configuration dialog. Ins
 
 ![MRTK Configuration Select Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
 
+**Object manipulator graduated to SDK**
+
+![Object manipulator](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
+
+ObjectManipulator now graduated to SDK and is no longer an experimental feature. This control is replacing the existing ManipulationHandler class which is now deprecated. ObjectManipulator comes with a new more flexible constraint system and correctly responds to physics. A full feature list and guide how to set up can be found in [object manipulator documentation](README_ObjectManipulator.md).
+Users can take advantage of the new [migration window](Tools/MigrationWindow.md) to upgrade their existing gameobject using ManipulationHandler to ObjectManipulator
+
+**Bounds control improvements**
+
+We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type. 
+
+**Migration window**
+
+![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
+
+MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities > Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl. 
+Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
+
 ### Breaking changes in 2.4.0
 
-**Eye gaze setup change**
+**Eye Gaze API**
+
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider` was renamed to `IsEyeTrackingEnabled`.
+
+If you did this previously...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
+```
+
+Do this now...
+
+```csharp
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
+```
+
+**Eye gaze setup**
 
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
