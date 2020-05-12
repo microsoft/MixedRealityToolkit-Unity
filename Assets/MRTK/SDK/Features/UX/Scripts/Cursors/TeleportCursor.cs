@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                              value.GetType() == typeof(ParabolicTeleportPointer),
                     "Teleport Cursor's Pointer must derive from a TeleportPointer type.");
 
-                pointer = (TeleportPointer)value;
+                pointer = value as TeleportPointer;
                 pointer.BaseCursor = this;
                 RegisterManagers();
             }
