@@ -7007,6 +7007,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/WindowsMixedRealitySDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/WindowsMixedRealitySDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png",
       "output": {
         "resource": {
@@ -8214,7 +8225,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "zFkJs/kewms7TQGUr9aMCw=="
+          "hash": "sxMcB6ZsryyLQB5W0r7M0g=="
         }
       },
       "is_incremental": false,
