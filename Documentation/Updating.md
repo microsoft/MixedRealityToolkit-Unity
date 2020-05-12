@@ -103,20 +103,24 @@ Custom controller classes previously had to define `SetupDefaultInteractions(Han
 
 **Eye Gaze properties**
 
-The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider`  was renamed to `IsEyeTrackingEnabled`.
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider` was renamed to `IsEyeTrackingEnabled`.
 
 If you did this previously...
 
 ```csharp
-GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
-gazeProvider.UseEyeTracking = true;
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
 ```
 
 Do this now...
 
 ```csharp
-GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
-gazeProvider.IsEyeTrackingEnabled = true;
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
 ```
 
 **WindowsApiChecker properties**

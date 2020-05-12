@@ -165,20 +165,24 @@ Note that BoundsControl is still in experimental phase and therefore API or prop
 
 **Eye Gaze API**
 
-The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider`  was renamed to `IsEyeTrackingEnabled`.
+The `UseEyeTracking` property from `GazeProvider` implementation of `IMixedRealityEyeGazeProvider` was renamed to `IsEyeTrackingEnabled`.
 
 If you did this previously...
 
 ```csharp
-GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
-gazeProvider.UseEyeTracking = true;
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
 ```
 
 Do this now...
 
 ```csharp
-GazeProvider gazeProvider = FindObjectOfType<GazeProvider>();
-gazeProvider.IsEyeTrackingEnabled = true;
+if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
 ```
 
 **Eye gaze setup**

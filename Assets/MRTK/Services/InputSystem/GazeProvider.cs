@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -591,15 +590,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public Ray LatestEyeGaze { get; private set; } = default(Ray);
 
-        [FormerlySerializedAs("useEyeTracking")]
-        private bool isEyeTrackingEnabled;
-
         /// <inheritdoc />
-        public bool IsEyeTrackingEnabled 
-        {
-            get => isEyeTrackingEnabled;
-            set => isEyeTrackingEnabled = value;
-        }
+        public bool IsEyeTrackingEnabled { get; set; }
 
         /// <inheritdoc />
         public DateTime Timestamp { get; private set; }
