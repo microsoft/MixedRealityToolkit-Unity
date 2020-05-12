@@ -217,8 +217,32 @@ the MRTK input system that can be used to help optimize applications.</p>
 <p><strong>Audio Spatializer Selection in MRTK configuration dialog</strong></p>
 <p>The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the <a href="https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/">Microsoft Spatializer</a>, will re-prompt to allow for easy selection.</p>
 <p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="MRTK Configuration Select Spatializer"></p>
+<p><strong>Object manipulator graduated to SDK</strong></p>
+<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Object manipulator"></p>
+<p>ObjectManipulator now graduated to SDK and is no longer an experimental feature. This control is replacing the existing ManipulationHandler class which is now deprecated. ObjectManipulator comes with a new more flexible constraint system and correctly responds to physics. A full feature list and guide how to set up can be found in <a href="README_ObjectManipulator.html">object manipulator documentation</a>.
+Users can take advantage of the new <a href="Tools/MigrationWindow.html">migration window</a> to upgrade their existing gameobject using ManipulationHandler to ObjectManipulator</p>
+<p><strong>Bounds control improvements</strong></p>
+<p>We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.</p>
+<p><strong>Migration window</strong></p>
+<p><img src="Images/MigrationWindow/MRTK_Migration_Window.png" alt="Migration window"></p>
+<p>MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The <a href="Tools/MigrationWindow.html">migration window</a> can be found in 'Mixed Reality Toolkit &gt; Utilities &gt; Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.
+Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.</p>
 <h3 id="breaking-changes-in-240">Breaking changes in 2.4.0</h3>
-<p><strong>Eye gaze setup change</strong></p>
+<p><strong>Eye Gaze API</strong></p>
+<p>The <code>UseEyeTracking</code> property from <code>GazeProvider</code> implementation of <code>IMixedRealityEyeGazeProvider</code> was renamed to <code>IsEyeTrackingEnabled</code>.</p>
+<p>If you did this previously...</p>
+<pre><code class="lang-csharp">if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.UseEyeTracking = true;
+}
+</code></pre>
+<p>Do this now...</p>
+<pre><code class="lang-csharp">if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
+{
+    gazeProvider.IsEyeTrackingEnabled = true;
+}
+</code></pre>
+<p><strong>Eye gaze setup</strong></p>
 <p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>
 <p>For more information on these changes and complete instructions for eye tracking setup, please see the <a href="EyeTracking/EyeTracking_BasicSetup.html">eye tracking</a> article.</p>
 </article>
