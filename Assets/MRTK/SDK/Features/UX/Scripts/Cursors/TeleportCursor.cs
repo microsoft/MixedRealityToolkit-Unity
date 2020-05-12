@@ -26,9 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             get { return pointer; }
             set
             {
-                Debug.Assert(value.GetType() == typeof(TeleportPointer) ||
-                             value.GetType() == typeof(ParabolicTeleportPointer),
-                    "Teleport Cursor's Pointer must derive from a TeleportPointer type.");
+                Debug.Assert(value is TeleportPointer,
+                    "Teleport Cursor's Pointer must derive from TeleportPointer.");
 
                 pointer = value as TeleportPointer;
                 pointer.BaseCursor = this;
