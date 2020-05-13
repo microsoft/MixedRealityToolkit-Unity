@@ -840,10 +840,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (RaiseSourceDetectedPerfMarker.Auto())
             {
+                if (DetectedInputSources.Contains(source)) 
+                { 
+                    Debug.LogWarning($"[MRTK Issue] {source.SourceName} has already been registered with the Input Manager!");
+                    return;
+                }
+
                 // Create input event
                 sourceStateEventData.Initialize(source, controller);
-
-                if (DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); }
 
                 DetectedInputSources.Add(source);
 
@@ -873,10 +877,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (RaiseSourceLostPerfMarker.Auto())
             {
+                if (!DetectedInputSources.Contains(source)) 
+                { 
+                    Debug.LogWarning($"[MRTK Issue] {source.SourceName} was never registered with the Input Manager!");
+                    return;
+                }
+
                 // Create input event
                 sourceStateEventData.Initialize(source, controller);
-
-                if (!DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} was never registered with the Input Manager!"); }
 
                 DetectedInputSources.Remove(source);
 
