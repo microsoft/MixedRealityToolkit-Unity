@@ -129,7 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                 Vector3 position = Vector3.zero;
                                 Quaternion rotation = Quaternion.identity;
 
-                                if (bone.TryGetPosition(out position) || bone.TryGetRotation(out rotation))
+                                bool positionAvailable = bone.TryGetPosition(out position);
+                                bool rotationAvailable = bone.TryGetRotation(out rotation);
+
+                                if (positionAvailable || rotationAvailable)
                                 {
                                     // We want input sources to follow the playspace, so fold in the playspace transform here to
                                     // put the controller pose into world space.
