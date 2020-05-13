@@ -53,8 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Sprite[] spriteIcons = new Sprite[0];
         [SerializeField]
         private TMP_FontAsset charIconFont = null;
-        [SerializeField]
-        [Tooltip("See TextMeshPro font assets for available unicode characters. Default characters are drawn from the HoloSymMDL2 font.")]
+        [SerializeField, Tooltip("See TextMeshPro font assets for available unicode characters. Default characters are drawn from the HoloSymMDL2 font.")]
         private CharIcon[] charIcons = new CharIcon[]
         {
             new CharIcon{ Character = ConvertCharStringToUInt32("\uEBD2"), Name = "AppBarAdjust" },
@@ -191,9 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 #if UNITY_EDITOR
-
         private const int maxButtonSize = 75;
-        private const int charIconFontSize = 30;
         private const int maxButtonsPerColumn = 6;
 
         private Texture[] spriteIconTextures = null;
@@ -446,6 +443,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 EditorGUILayout.LabelField("Couldn't draw character icon. Character may not be available in the font asset.");
             }
+        }
+
+        /// <summary>
+        /// Adds a custom quad icon to the quadIcons array. If quad icon already exists in set no action will be taken.
+        /// </summary>
+        public void EditorAddCustomQuadIcon(Texture customQuadIcon)
+        {
+            foreach (Texture quadIcon in quadIcons)
+            {
+                if (quadIcon == customQuadIcon)
+                {   // Already exists!
+                    return;
+                }
+            }
+
+            SerializedObject serializedObject = new SerializedObject(this);
+            SerializedProperty quadIconProp = serializedObject.FindProperty("quadIcons");
+            quadIconProp.InsertArrayElementAtIndex(0);
+            SerializedProperty quadIconElement = quadIconProp.GetArrayElementAtIndex(0);
+            quadIconElement.objectReferenceValue = customQuadIcon;
+            serializedObject.ApplyModifiedProperties();
         }
 
         [CustomEditor(typeof(ButtonIconSet))]
