@@ -1,4 +1,4 @@
-![Mixed Reality Toolkit](Documentation/Images/MRTK_Logo_Rev.png)
+![Mixed Reality Toolkit](Documentation/Images/MRTK_Logo_Rev_2020.png)
 
 # What is the Mixed Reality Toolkit
 
@@ -122,3 +122,7 @@ You can find our planning material on [our wiki](https://github.com/Microsoft/Mi
 Learn how you can contribute to MRTK at [Contributing](Documentation/Contributing/CONTRIBUTING.md).
 
 **For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).**
+
+# MRTK for Unreal
+Check out [The Mixed Reality Toolkit for Unreal (MRTK-Unreal)](https://github.com/Microsoft/MixedRealityToolkit-Unreal). <br/>
+![MRTK-Unreal](https://github.com/microsoft/MixedRealityToolkit-Unreal/blob/master/Documentation/Images/MRTK_Unreal_Badge_Rounded.png)
