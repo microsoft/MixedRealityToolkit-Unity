@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Finds the first Renderer type component on the selected GameObject in scene and returns it's world space bounds size.
         /// </summary>
-        [MenuItem("GameObject/MRTK/Renderer Size", false, 0)]
         public static void RendererSize()
         {
             if (Selection.activeGameObject == null)
@@ -37,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Finds all Collider type components on the selected GameObject in scene and returns their world space bounds size.
         /// </summary>
-        [MenuItem("GameObject/MRTK/Collider Size", false, 0)]
         public static void ColliderSize()
         {
             if (Selection.activeGameObject == null)
