@@ -29,6 +29,14 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### What's new in 2.4.0
 
+**Leap Motion Hand Tracking Support**
+
+The [Leap Motion Data Provider](CrossPlatform/LeapMotionMRTK.md) enables articulated hand tracking for VR applications and is also useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.
+
+A [Leap Motion Controller](https://www.ultraleap.com/product/leap-motion-controller/) is required to use this data provider.
+
+![LeapMotionIntroGif](Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif)
+
 **MRTK folder layout changes**
 
 This version of MRTK modifies the layout of the MRTK folder structure. This change encapsulates all MRTK code into a single folder hierarchy and reduces the total path length of all MRTK files.
@@ -52,6 +60,12 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 ![MRTK Toolbox](Images/Tools/MRTKToolboxWindow.png)
 
 The [MRTK Toolbox](README_Toolbox.md) is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.
+
+**Tap to Place**
+
+[Tap to Place](README_TapToPlace.md) is a far interaction component used to easily place a game object on surface. Tap to Place uses a combination of two clicks and head movement to place an object.
+
+![TapToPlace](Images/Solver/TapToPlace/TapToPlaceIntroGif.gif)
 
 **Button Config Helper added to Pressable Buttons**
 ![Button Config Helper](https://user-images.githubusercontent.com/9789716/70167111-e3175600-167a-11ea-9c52-444509c06105.gif)
