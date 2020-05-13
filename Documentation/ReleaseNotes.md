@@ -190,3 +190,11 @@ if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
+
+### Known issues in 2.4.0
+
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3** 
+
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)). 
+
+As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
