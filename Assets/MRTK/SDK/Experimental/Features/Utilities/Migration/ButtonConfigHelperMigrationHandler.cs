@@ -3,9 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Migration handler for migrating buttons with custom icons to the button config helper.
@@ -24,7 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         public void Migrate(GameObject gameObject)
         {
-            throw new System.NotImplementedException();
+#if UNITY_EDITOR
+            ButtonConfigHelper bch = gameObject.GetComponent<ButtonConfigHelper>();
+            bch.EditorUpgradeCustomIcon();
+#endif
         }
     }
 }

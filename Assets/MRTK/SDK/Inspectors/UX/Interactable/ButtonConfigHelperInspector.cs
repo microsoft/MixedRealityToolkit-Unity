@@ -4,6 +4,9 @@
 using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
+using System.Threading.Tasks;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -17,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private const string generatedIconSetName = "CustomIconSet";
         private const string customIconSetsFolderName = "CustomIconSets";
-        private const string customIconUpgradeMessage = "This button appears to use a custom icon material.\n" +
-            "You will need to upgrade this button for your icon to be visible. (If this button is nested in a prefab, you may need to upgrade inside that prefab to remove this message.)\n" +
-            "To upgrade all buttons with custom icons, open the migration tool.";
+        private const string customIconUpgradeMessage = "This button appears to use a custom icon material.\n\n" +
+            "You must upgrade this button for your custom icon to be visible. If this button is nested in a prefab, you may need to upgrade within that prefab to remove this message.\n\n" +
+            "You can upgrade ALL your buttons at once by using the Migration Tool and selecting the ButtonConfigHelperMigrationHandler type.";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
 
         private SerializedProperty mainLabelTextProp;
@@ -78,15 +81,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (cb.EditorCheckForCustomIcon())
             {
-                EditorGUILayout.HelpBox(customIconUpgradeMessage, MessageType.Warning);
-                if (GUILayout.Button("Upgrade this button"))
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
-                    cb.EditorUpgradeCustomIcon();
-                }
+                    EditorGUILayout.LabelField("Custom Icon Migration", EditorStyles.boldLabel);
+                    EditorGUILayout.HelpBox(customIconUpgradeMessage, MessageType.Error);
 
-                if (GUILayout.Button("Upgrade all buttons with migration tool"))
-                {
-                    EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window");
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Upgrade this button"))
+                        {
+                            cb.EditorUpgradeCustomIcon();
+                        }
+
+                        if (GUILayout.Button("Use migration tool to upgrade all buttons"))
+                        {
+                            EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window");
+                        }
+                    }
                 }
             }
 
