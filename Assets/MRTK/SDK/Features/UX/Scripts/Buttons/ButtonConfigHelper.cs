@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 #if UNITY_EDITOR
+using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 #endif
 
