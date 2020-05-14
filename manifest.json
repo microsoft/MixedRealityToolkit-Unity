@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.html",
-          "hash": "C1LieTL0jZH4g7XxovbRIw=="
+          "hash": "bBIxg4+2LvRJqjgS6mQStw=="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.html",
-          "hash": "C54PHo8p2d5NV1bnbdgI4g=="
+          "hash": "Jp6iIrWrKjvcd/BKrsTq+g=="
         }
       },
       "is_incremental": false,
@@ -2233,6 +2233,61 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogAndroidSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogAndroidSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogCommonSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogCommonSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogHeader.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogHeader.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogUWPSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogUWPSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogiOSSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ConfigurationDialog/ConfigurationDialogiOSSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Contributing/SelectIssueType.png",
       "output": {
         "resource": {
@@ -2457,6 +2512,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif"
         }
       },
       "is_incremental": false,
@@ -7007,6 +7073,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/WindowsMixedRealitySDK.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/WindowsMixedRealitySDK.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png",
       "output": {
         "resource": {
@@ -7598,6 +7675,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/MRTK_Configuration_Dialog.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/MRTK_Configuration_Dialog.html",
+          "hash": "pA3OsmzS646OBfIxLw2Z9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/MRTK_PackageContents.md",
       "output": {
         ".html": {
@@ -7806,7 +7895,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "sYkOWLbwgr+gcETrnpq5Ng=="
+          "hash": "LKXK9HnTFNHGsjGmGt0pNA=="
         }
       },
       "is_incremental": false,
@@ -7938,7 +8027,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_TextPrefab.html",
-          "hash": "FwA6tRDqaESjVHq3W2skcw=="
+          "hash": "0FBKQ1pAES/S3iyu2UEb0w=="
         }
       },
       "is_incremental": false,
@@ -7974,7 +8063,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "Q5AdondYnNlC7vbO1s08VQ=="
+          "hash": "V+zR1k984Jvu0oEZZkxyCA=="
         }
       },
       "is_incremental": false,
@@ -8214,7 +8303,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "zFkJs/kewms7TQGUr9aMCw=="
+          "hash": "sxMcB6ZsryyLQB5W0r7M0g=="
         }
       },
       "is_incremental": false,
@@ -21137,7 +21226,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.html",
-          "hash": "cUkvfFt1D6vlyNQnlb/A3w=="
+          "hash": "Wb1xpD2h6yswOCVuxogtQg=="
         }
       },
       "is_incremental": false,
@@ -24797,7 +24886,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.SpatializerUtilities.html",
-          "hash": "Swn0q68NnVBFP1QkgSftag=="
+          "hash": "aIxJJhERKThgS9AfdJ70aA=="
         }
       },
       "is_incremental": false,
@@ -27816,7 +27905,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 161,
+          "total_file_count": 162,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

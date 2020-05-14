@@ -107,8 +107,29 @@ configure the project using the following steps.</p>
 <li><p>Click <strong>Apply</strong></p>
 </li>
 </ol>
+<p>When using <strong>Unity 2019.3</strong> and later the <strong>Enable MSBuild for Unity</strong> is not available. please follow the below procedures to enable holographic remoting.</p>
+<ol>
+<li><p>Run the MRTK Configurator Utility (<strong>Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity Project</strong>)</p>
+</li>
+<li><p>Set the target platform in <strong>File &gt; Build Settings</strong> to <strong>Universal Windows Platform</strong></p>
+</li>
+<li><p>Click <strong>Apply</strong></p>
+</li>
+<li><p>Open <strong>Window &gt; Package Manager</strong></p>
+<ul>
+<li>Ensure that the <strong>Windows XR Plugin</strong> is not installed if the project isn't using <a href="../GettingStartedWithMRTKAndXRSDK.html">XR SDK</a>, as the legacy <strong>Windows Mixed Reality</strong> package will not function alongside it</li>
+</ul>
+</li>
+<li><p>Open <strong>Edit &gt; Project Settings &gt; Player</strong></p>
+<p><img src="../Images/Tools/Remoting/WindowsMixedRealitySDK.png" alt="Windows Mixed Reality SDK"></p>
+</li>
+<li><p>Ensure that <strong>Virtual Reality Supported</strong> is selected and that <strong>Windows Mixed Reality</strong> is added to the <strong>Virtual Reality SDKs</strong></p>
+</li>
+</ol>
+<p>To enable tracking of hand joints and eye tracking, follow the steps in the <strong>Debugging HoloLens 2 remoting via Unity package import</strong> and related sections.</p>
 <h3 id="debugging-hololens-2-remoting-via-unity-package-import">Debugging HoloLens 2 remoting via Unity package import</h3>
 <p>If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are a few common points of potential issues. They're listed below in the order they should be checked.</p>
+<p>These issues are particularly relevant when running on <strong>Unity 2019.3</strong> or later.</p>
 <h4 id="msbuildforunity-package-import-via-writing-into-the-packagemanifest">MSBuildForUnity package import via writing into the package.manifest</h4>
 <div class="NOTE">
 <h5>Note</h5>
