@@ -25,6 +25,8 @@ All build targets share a collection of common options.
 
 ### Enable VR supported
 
+**Unity 2018**
+
 << >>
 
 ### Set Single Pass Instanced rendering path
@@ -39,17 +41,42 @@ All build targets share a collection of common options.
 
 << >>
 
-## Windows Mixed Reality settings
+## Universal Windows Platform settings
 
-<< image >>
+![UWP Settings](Images/ConfigurationDialog/ConfigurationDialogUWPSettings.png)
+
+### Enable MSBuild for Unity
+
+**Unity 2019.2 and earlier**
+
+<< >>
+
+### Enable Microphone Capability
+
+<< >>
+
+### Enable Internet Client Capability
+
+<< >>
+
+### Enable Spatial Perception Capability
+
+<< >>
+
+### Enable Eye Gaze Capability
+
+**Unity 2019 and newer**
+
 << >>
 
 ## Android settings
 
-<< image >>
+![Android Settings](Images/ConfigurationDialog/ConfigurationDialogAndroidSettings.png)
+
 << >>
 
 ## iOS settings
 
-<< image >>
+![iOS Settings](Images/ConfigurationDialog/ConfigurationDialogiOSSettings.png)
+
 << >>
