@@ -101,12 +101,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InitializeLookups()
         {
+#if UNITY_EDITOR
             if (quadIconLookup.Count != quadIcons.Length ||
                 spriteIconLookup.Count != spriteIcons.Length ||
                 charIconLookup.Count != charIcons.Length)
             {   // Our lookups are stale
                 EditorResetCharIconLookups();
             }
+#endif
 
             if (lookupsInitialized)
                 return;
