@@ -86,10 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool TryGetQuadIcon(string iconName, out Texture2D quadIcon)
         {
             InitializeLookups();
-
-            foreach (KeyValuePair<string, Texture2D> quad in quadIconLookup)
-                Debug.Log(quad.Key + " - " + quad.Value.name);
-
             return quadIconLookup.TryGetValue(iconName, out quadIcon);
         }
 
