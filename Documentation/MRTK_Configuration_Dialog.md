@@ -31,7 +31,7 @@ Configures the **Player Settings** > **XR Settings** > **Stereo Rendering Mode**
 
 ### Set default Spatial Awareness layer 
 
-Registeres Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
+Registers Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
 
 ### Audio spatializer
 
