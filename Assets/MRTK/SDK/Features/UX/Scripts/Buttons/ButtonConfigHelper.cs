@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+#else
+// Disable 'assigned but never used' errors to avoid errors related to editor-only fields.
+#pragma warning disable CS0414
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -411,6 +414,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void OnEnable()
         {
             ForceRefresh();
+
+#if !UNITY_EDITOR
+            // Set these to null to avoid build errors.
+            defaultIconSet = null;
+            defaultButtonQuadMaterial = null;
+#endif
         }
 
 #if UNITY_EDITOR
