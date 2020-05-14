@@ -102,16 +102,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             using (UpdateHandDataPerfMarker.Auto())
             {
 #if WINDOWS_UWP && WMR_ENABLED
-            XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+                XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
-            foreach (SpatialInteractionSourceState sourceState in states)
-            {
-                if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                foreach (SpatialInteractionSourceState sourceState in states)
                 {
-                    handDefinition?.UpdateHandMesh(sourceState);
-                    break;
+                    if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                    {
+                        handDefinition?.UpdateHandMesh(sourceState);
+                        break;
+                    }
                 }
-            }
 #endif // WINDOWS_UWP && WMR_ENABLED
 
                 Hand hand;
