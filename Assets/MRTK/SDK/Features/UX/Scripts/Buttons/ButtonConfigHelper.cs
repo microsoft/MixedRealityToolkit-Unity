@@ -410,13 +410,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-#if UNITY_EDITOR
-            // If we're in the editor, check for custom button icons.
-            CheckForLegacyCustomIcons();
-#else
-            // If we're in the player, set this to null so we don't get a compile error.
-            defaultIconSet = null;
-#endif
             ForceRefresh();
         }
 
@@ -425,14 +418,50 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static readonly string generatedIconSetName = "CustomIconSet";
         private static readonly string customIconSetsFolderName = "CustomIconSets";
         private static readonly string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
-        private static readonly string customIconReplacementMessage = "Custom icon material detected on the {0} button.\n" +
-            "{1} icon will be added to {2} and the original icon material will be restored.\n" +
-            "The material {3} can be deleted.";
-
-        private async void CheckForLegacyCustomIcons()
+        private static readonly string customIconReplacementMessage = "Custom icon material detected on the {0} button. Updating with button confi      /// <summary>
+        /// Returns true if the button is using a custom icon material.
+        /// </summary>
+        public bool EditorCheckForCustomIcon()
         {
-            if (Application.isPlaying || iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
+            if (iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
             {   // Nothing to do here.
+                return false;
+            }
+
+            if (iconQuadRenderer.sharedMaterial == defaultButtonQuadMaterial)
+            {   // This button is using the default material, so it's not a customized button.
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Upgrades a button using a custom icon material.
+        /// </summary>
+        public async void EditorUpgradeCustomIcon()
+        {
+            if (iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
+            {   // Nothing to do here.
+                return;
+            }
+
+            SerializedObject configObject = new SerializedObject(this);
+            SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
+
+            if (iconQuadRenderer.gameObject.activeSelf && !iconQuadRenderer.enabled)
+            {   // If the quad renderer is disabled, enable it and disable the quad renderer game object instead.
+                // Disabling the quad renderer used to be the preferred way to disable icons but it's no longer consistent with our icon style.
+                iconQuadRenderer.enabled = true;
+                iconQuadRenderer.gameObject.SetActive(false);
+                EditorUtility.SetDirty(gameObject);
+            }
+
+            if (!iconQuadRenderer.gameObject.activeSelf && !iconSpriteRenderer.gameObject.activeSelf && !iconCharLabel.gameObject.activeSelf)
+            {   // If all the icon objects are disabled, set the icon style to none and do nothing else.
+                iconStyleProp.enumValueIndex = (int)ButtonIconStyle.None;
+                configObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(gameObject);
                 return;
             }
 
@@ -482,17 +511,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 customIconSet = iconSet;
             }
 
+            Debug.Log(string.Format(customIconReplacementMessage, name));
+
             bool selectIconSet = false;
             if (createdIconSet)
             {
                 selectIconSet = EditorUtility.DisplayDialog("Custom Icon Set Created", string.Format(customIconSetCreatedMessage, generatedIconSetFolder), "View Asset", "OK");
             }
 
-            Debug.Log(string.Format(customIconReplacementMessage, name, customQuadIcon.name, customIconSet.name, customQuadMaterial.name));
-
             try
             {
-                SerializedObject configObject = new SerializedObject(this);
                 SerializedProperty iconSetProp = configObject.FindProperty("iconSet");
                 SerializedProperty iconQuadTextureProp = configObject.FindProperty("iconQuadTexture");
 
@@ -504,9 +532,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 iconQuadTextureProp.objectReferenceValue = customQuadIcon;
                 configObject.ApplyModifiedProperties();
 
-                SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
-                SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
-                PrefabUtility.RevertPropertyOverride(materialsProp, InteractionMode.AutomatedAction);
+                // If the custom material shader is different from the default material, don't alter the material
+                if (customQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name)
+                {   // If the custom material shader is the same, revert any prefab overrides
+                    SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
+                    SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
+                    PrefabUtility.RevertPropertyOverride(materialsProp, InteractionMode.AutomatedAction);
+                }
             }
             catch (System.Exception e)
             {
