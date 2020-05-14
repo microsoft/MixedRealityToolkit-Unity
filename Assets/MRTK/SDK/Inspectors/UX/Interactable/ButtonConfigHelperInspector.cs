@@ -10,10 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(ButtonConfigHelper))]
     public class ButtonConfigHelperInspector : UnityEditor.Editor
     {
-        const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";
-        const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
-        const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
-        const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
+        private const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";
+        private const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
+        private const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
+        private const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
+
+        private const string generatedIconSetName = "CustomIconSet";
+        private const string customIconSetsFolderName = "CustomIconSets";
+        private const string customIconUpgradeMessage = "A custom icon material has been detected on this button. You will need to upgrade this button for your icon to be visible . If this button is nested in a prefab, you may need to upgrade inside that prefab to remove this message.";
+        private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
@@ -35,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty iconQuadTextureNameIDProp;
         private SerializedProperty iconQuadTextureProp;
 
-        private ButtonConfigHelper cb;
+        private ButtonConfigHelper cb = null;
 
         private void OnEnable()
         {
@@ -68,6 +73,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             bool basicEventsFoldout = SessionState.GetBool(BasicEventsFoldoutKey, true);
             bool iconFoldout = SessionState.GetBool(IconFoldoutKey, true);
             bool showComponents = SessionState.GetBool(ShowComponentsKey, false);
+
+            if (cb.EditorCheckForCustomIcon())
+            {
+                EditorGUILayout.HelpBox(customIconUpgradeMessage, MessageType.Warning);
+                if (GUILayout.Button("Upgrade Button"))
+                {
+                    cb.EditorUpgradeCustomIcon();
+                }
+
+                if (GUILayout.Button("Upgrade All Buttons"))
+                {
+
+                }
+            }
 
             showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine.TextCore;
 using System;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -448,13 +449,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Adds a custom quad icon to the quadIcons array. If quad icon already exists in set no action will be taken.
         /// </summary>
-        public void EditorAddCustomQuadIcon(Texture customQuadIcon)
+        public bool EditorAddCustomQuadIcon(Texture customQuadIcon)
         {
             foreach (Texture quadIcon in quadIcons)
             {
                 if (quadIcon == customQuadIcon)
                 {   // Already exists!
-                    return;
+                    return false;
                 }
             }
 
@@ -464,6 +465,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty quadIconElement = quadIconProp.GetArrayElementAtIndex(0);
             quadIconElement.objectReferenceValue = customQuadIcon;
             serializedObject.ApplyModifiedProperties();
+
+            EditorResetCharIconLookups();
+            InitializeLookups();
+            return true;
         }
 
         [CustomEditor(typeof(ButtonIconSet))]
