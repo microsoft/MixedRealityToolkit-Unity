@@ -129,7 +129,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_GameObjectCanBeMigrated_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.GameObjectCanBeMigrated*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_GameObjectCanBeMigrated" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.GameObjectCanBeMigrated">GameObjectCanBeMigrated()</h4>
-  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a game object containing a deprecated ManipulationHandler component.</p>
+  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a game object containing a deprecated component with a compatible migration handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -138,9 +138,21 @@
   </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_MigrationKeepObjectAndComponentActiveState_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.MigrationKeepObjectAndComponentActiveState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_MigrationKeepObjectAndComponentActiveState" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.MigrationKeepObjectAndComponentActiveState">MigrationKeepObjectAndComponentActiveState()</h4>
+  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a inactive scene root game object that contains an inactive deprecated component with a compatible migration handler.
+Active state of both game object and component must be kept.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MigrationKeepObjectAndComponentActiveState()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_PrefabCanBeMigrated_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.PrefabCanBeMigrated*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_PrefabCanBeMigrated" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.PrefabCanBeMigrated">PrefabCanBeMigrated()</h4>
-  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a prefab containing a deprecated ManipulationHandler component.</p>
+  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a prefab containing a deprecated component with a compatible migration handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -151,7 +163,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_SceneCanBeMigrated_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.SceneCanBeMigrated*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_MigrationToolTests_SceneCanBeMigrated" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.SceneCanBeMigrated">SceneCanBeMigrated()</h4>
-  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a scene root game object that contains a deprecated ManipulationHandler component.</p>
+  <div class="markdown level1 summary"><p>Checks if MigrationTool can process migration on a scene root game object that contains a deprecated component with a compatible migration handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
