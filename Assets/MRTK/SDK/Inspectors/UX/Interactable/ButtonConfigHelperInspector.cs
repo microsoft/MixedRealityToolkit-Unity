@@ -4,13 +4,10 @@
 using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
-    [CustomEditor(typeof(ButtonConfigHelper))]
+    [CustomEditor(typeof(ButtonConfigHelper)), CanEditMultipleObjects]
     public class ButtonConfigHelperInspector : UnityEditor.Editor
     {
         private const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";

@@ -429,6 +429,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
+            if (iconSet != defaultIconSet)
+            {   // This button is using a custom icon set, so we can't assume material differences mean it needs an upgrade.
+                return false;
+            }
+
             if (iconQuadRenderer.sharedMaterial == defaultButtonQuadMaterial)
             {   // This button is using the default material, so it's not a customized button.
                 return false;
@@ -463,6 +468,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 iconStyleProp.enumValueIndex = (int)ButtonIconStyle.None;
                 configObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(gameObject);
+                return;
+            }
+
+            if (iconSet != defaultIconSet)
+            {  // This button is using a custom icon set, so we can't assume material differences mean it needs an upgrade.
                 return;
             }
 
