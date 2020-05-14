@@ -132,6 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                 bool positionAvailable = bone.TryGetPosition(out position);
                                 bool rotationAvailable = bone.TryGetRotation(out rotation);
 
+                                // If either position or rotation is available, use both pieces of data given.
+                                // This might result in using a zeroed out position or rotation. Most likely,
+                                // either both are available or both are unavailable.
                                 if (positionAvailable || rotationAvailable)
                                 {
                                     // We want input sources to follow the playspace, so fold in the playspace transform here to
