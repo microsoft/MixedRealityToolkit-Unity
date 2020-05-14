@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (IsSceneGameObject(selectedObject))
             {
-                var objectHierarchy = ((GameObject)selectedObject).GetComponentsInChildren<Transform>();
+                var objectHierarchy = ((GameObject)selectedObject).GetComponentsInChildren<Transform>(true);
                 for (int i = 0; i < objectHierarchy.Length; i++)
                 {
                     if (migrationHandlerInstance.CanMigrate(objectHierarchy[i].gameObject))
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private bool MigrateGameObjectHierarchy(GameObject parent, MigrationStatus status)
         {
             bool changedAnyGameObject = false;
-            foreach (var child in parent.GetComponentsInChildren<Transform>())
+            foreach (var child in parent.GetComponentsInChildren<Transform>(true))
             {
                 try
                 {

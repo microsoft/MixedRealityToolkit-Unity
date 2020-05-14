@@ -25,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             var manipHandler = gameObject.GetComponent<ManipulationHandler>();
             var objManip = gameObject.AddComponent<ObjectManipulator>();
 
+            objManip.enabled = manipHandler.enabled;
+
             objManip.HostTransform = manipHandler.HostTransform;
 
             switch (manipHandler.ManipulationType)
