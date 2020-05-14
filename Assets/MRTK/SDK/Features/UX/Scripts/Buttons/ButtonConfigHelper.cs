@@ -418,7 +418,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static readonly string generatedIconSetName = "CustomIconSet";
         private static readonly string customIconSetsFolderName = "CustomIconSets";
         private static readonly string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
-        private static readonly string customIconReplacementMessage = "Custom icon material detected on the {0} button. Updating with button confi      /// <summary>
+        
+        /// <summary>
         /// Returns true if the button is using a custom icon material.
         /// </summary>
         public bool EditorCheckForCustomIcon()
@@ -510,8 +511,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 customIconSet = iconSet;
             }
-
-            Debug.Log(string.Format(customIconReplacementMessage, name));
 
             bool selectIconSet = false;
             if (createdIconSet)
