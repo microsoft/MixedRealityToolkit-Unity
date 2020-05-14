@@ -52,7 +52,7 @@ More details on Microsoft Spatializer can be found in the [Spatial Sound documen
 
 - MS HRTF Spatializer
 
-Microsoft Windows spatializer the is provided by Unity as part of the Windows Mixed Reality and Windows XR Platform packages.
+Microsoft Windows spatializer that is provided by Unity as part of the Windows Mixed Reality and Windows XR Platform packages.
 
 - Resonance Audio
 
