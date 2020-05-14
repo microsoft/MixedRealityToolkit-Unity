@@ -17,7 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private const string generatedIconSetName = "CustomIconSet";
         private const string customIconSetsFolderName = "CustomIconSets";
-        private const string customIconUpgradeMessage = "A custom icon material has been detected on this button. You will need to upgrade this button for your icon to be visible . If this button is nested in a prefab, you may need to upgrade inside that prefab to remove this message.";
+        private const string customIconUpgradeMessage = "This button appears to use a custom icon material.\n" +
+            "You will need to upgrade this button for your icon to be visible. (If this button is nested in a prefab, you may need to upgrade inside that prefab to remove this message.)\n" +
+            "To upgrade all buttons with custom icons, open the migration tool.";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
 
         private SerializedProperty mainLabelTextProp;
@@ -77,14 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (cb.EditorCheckForCustomIcon())
             {
                 EditorGUILayout.HelpBox(customIconUpgradeMessage, MessageType.Warning);
-                if (GUILayout.Button("Upgrade Button"))
+                if (GUILayout.Button("Upgrade this button"))
                 {
                     cb.EditorUpgradeCustomIcon();
                 }
 
-                if (GUILayout.Button("Upgrade All Buttons"))
+                if (GUILayout.Button("Upgrade all buttons with migration tool"))
                 {
-
+                    EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window");
                 }
             }
 
