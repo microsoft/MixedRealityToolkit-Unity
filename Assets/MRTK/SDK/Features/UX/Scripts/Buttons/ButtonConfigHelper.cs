@@ -447,6 +447,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
+            string assetPath = AssetDatabase.GetAssetPath(iconQuadRenderer.sharedMaterial);
+            if (string.IsNullOrEmpty(assetPath))
+            {   // If the asset path is null, this material instance exists only in memory.
+                return false;
+            }
+
             return true;
         }
 
