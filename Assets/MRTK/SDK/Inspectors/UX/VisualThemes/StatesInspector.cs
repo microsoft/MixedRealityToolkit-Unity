@@ -8,8 +8,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Editor
+namespace Microsoft.MixedReality.Toolkit.UI
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(States))]
     public class StatesInspector : UnityEditor.Editor
     {
@@ -35,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             EditorGUILayout.HelpBox("Manage state configurations to drive Interactables or Transitions", MessageType.None);
 
             SerializedProperty stateModelClassName = serializedObject.FindProperty("StateModelClassName");
-            SerializedProperty assemblyQualifiedName = serializedObject.FindProperty("AssemblyQualifiedName");
+            SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
 
             var stateModelTypes = TypeCacheUtility.GetSubClasses<BaseStateModel>();
             var stateModelClassNames = stateModelTypes.Select(t => t?.Name).ToArray();
@@ -102,4 +103,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             serializedObject.ApplyModifiedProperties();
         }
     }
+#endif
 }

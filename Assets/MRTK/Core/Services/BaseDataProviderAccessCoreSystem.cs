@@ -1,11 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
+using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
 using Unity.Profiling;
-using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -20,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Reset();
 
-            foreach (var provider in dataProviders)
+            foreach(var provider in dataProviders)
             {
                 provider.Reset();
             }
@@ -171,7 +175,11 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
-            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
+#if !UNITY_EDITOR
+            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
+#else
+            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
+#endif
             {
                 return false;
             }

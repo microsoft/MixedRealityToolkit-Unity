@@ -51,8 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             get { return fingerTipKinematicBodyPrefab; }
             set
             {
-                fingerTipKinematicBodyPrefab = value;
-                if (fingerTipKinematicBodyPrefab != null)
+                if (value != null)
                 {
                     CreateKinematicBodies();
                 }
@@ -60,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
                 {
                     DestroyKinematicBodies();
                 }
+                fingerTipKinematicBodyPrefab = value;
             }
         }
 
@@ -71,8 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             get { return palmKinematicBodyPrefab; }
             set
             {
-                palmKinematicBodyPrefab = value;
-                if (palmKinematicBodyPrefab != null)
+                if(value != null)
                 {
                     CreateKinematicBodies();
                 }
@@ -80,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
                 {
                     DestroyKinematicBodies();
                 }
+
+                palmKinematicBodyPrefab = value;
             }
         }
 
@@ -166,14 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         {
             DestroyKinematicBodies();
 
-            if (HandPhysicsServiceRoot == null) { return; }
-
             // Create joint kinematic bodies.
             for (int i = 0; i < handednessTypes.Length; ++i)
             {
                 for (int j = 0; j < fingerTipTypes.Length; ++j)
                 {
-                    if (FingerTipKinematicBodyPrefab == null) { continue; }
+                    if(FingerTipKinematicBodyPrefab == null) { continue; }
                     if (TryCreateJointKinematicBody(FingerTipKinematicBodyPrefab, HandPhysicsLayer, handednessTypes[i], fingerTipTypes[j], HandPhysicsServiceRoot.transform, out JointKinematicBody jointKinematicBody))
                     {
                         jointKinematicBodies.Add(jointKinematicBody);
@@ -196,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         /// </summary>
         private void DestroyKinematicBodies()
         {
-            if (jointKinematicBodies.Count > 0)
+            if(jointKinematicBodies.Count > 0)
             {
                 // Tear down the old kinematicBodies
                 foreach (JointKinematicBody jointKinematicBody in jointKinematicBodies)
@@ -265,5 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         }
 
         #endregion HandPhysicsService Implementation
+
     }
 }

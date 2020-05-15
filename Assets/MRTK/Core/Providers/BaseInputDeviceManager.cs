@@ -161,7 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
             foreach (var pointer in activePointersToConfig.Keys)
             {
-                if (pointer.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
+                var pointerComponent = pointer as MonoBehaviour;
+                if (!UnityObjectExtensions.IsNull(pointerComponent))
                 {
                     GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                 }
@@ -202,7 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             while (pointerCache.Count > 0)
                             {
                                 var p = pointerCache.Pop();
-                                if (p.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
+                                var pointerComponent = p as MonoBehaviour;
+                                if (!UnityObjectExtensions.IsNull(pointerComponent))
                                 {
                                     pointerComponent.gameObject.SetActive(true);
 
@@ -251,7 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     for (int i = 0; i < pointers.Length; i++)
                     {
                         var pointer = pointers[i];
-                        if (pointers[i].TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
+                        var pointerComponent = pointer as MonoBehaviour;
+                        if (!UnityObjectExtensions.IsNull(pointerComponent))
                         {
                             // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
                             // At least if this is a controller we know about and we expect it to be destroyed, skip
@@ -326,10 +329,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var enumerator = activePointersToConfig.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var pointer = enumerator.Current.Key;
-                    if (pointer.IsNull())
+                    var pointer = enumerator.Current.Key as MonoBehaviour;
+                    if (UnityObjectExtensions.IsNull(pointer))
                     {
-                        removal.Add(pointer);
+                        removal.Add(enumerator.Current.Key);
                     }
                 }
 
@@ -349,7 +352,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
-                    if (pointerConfigurations[i].cache.Pop().TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
+                    var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
+                    if (!UnityObjectExtensions.IsNull(pointerComponent))
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }

@@ -7,10 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
-    /// <summary>
-    /// Provides data accessors and conversions useful while reading and using glTF objects.
-    /// </summary>
-    public static class GltfConversions
+    internal static class GltfConversions
     {
         // glTF matrix: column vectors, column-major storage, +Y up, +Z forward, -X right, right-handed
         // unity matrix: column vectors, column-major storage, +Y up, +Z forward, +X right, left-handed
@@ -24,10 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         private static readonly string vec3 = GltfAccessorAttributeType.VEC3.ToString();
         private static readonly string vec4 = GltfAccessorAttributeType.VEC4.ToString();
 
-        /// <summary>
-        /// Get TRS properties from GltfNode
-        /// </summary>
-        public static Matrix4x4 GetTrsProperties(this GltfNode node, out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        internal static Matrix4x4 GetTrsProperties(this GltfNode node, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
             Matrix4x4 matrix = node.matrix.GetMatrix4X4Value();
 
@@ -45,10 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return matrix;
         }
 
-        /// <summary>
-        /// Get Color from float array
-        /// </summary>
-        public static Color GetColorValue(this float[] colorArray)
+        internal static Color GetColorValue(this float[] colorArray)
         {
             if (colorArray != null && (colorArray.Length == 3 || colorArray.Length == 4))
             {
@@ -66,10 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return new[] { color.r, color.g, color.b, color.a };
         }
 
-        /// <summary>
-        /// Get Vector2 from float array
-        /// </summary>
-        public static Vector2 GetVector2Value(this float[] vector2Array)
+        internal static Vector2 GetVector2Value(this float[] vector2Array)
         {
             if (vector2Array != null && vector2Array.Length == 2)
             {
@@ -87,10 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return new[] { vector.x, vector.y };
         }
 
-        /// <summary>
-        /// Get Vector3 from float array
-        /// </summary>
-        public static Vector3 GetVector3Value(this float[] vector3Array, bool convert = true)
+        internal static Vector3 GetVector3Value(this float[] vector3Array, bool convert = true)
         {
             if (vector3Array != null && vector3Array.Length == 3)
             {
@@ -114,10 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return new[] { vector.x, vector.y, vector.z };
         }
 
-        /// <summary>
-        /// Get Quaternion from float array
-        /// </summary>
-        public static Quaternion GetQuaternionValue(this float[] quaternionArray, bool convert = true)
+        internal static Quaternion GetQuaternionValue(this float[] quaternionArray, bool convert = true)
         {
             if (quaternionArray != null && quaternionArray.Length == 4)
             {
@@ -150,10 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return new[] { axes.x, axes.y, axes.z, quaternion.w };
         }
 
-        /// <summary>
-        /// Get Matrix from double array
-        /// </summary>
-        public static Matrix4x4 GetMatrix4X4Value(this double[] matrixArray)
+        internal static Matrix4x4 GetMatrix4X4Value(this double[] matrixArray)
         {
             if (matrixArray != null && matrixArray.Length == 16)
             {
@@ -185,10 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             };
         }
 
-        /// <summary>
-        /// Get TRS properties from matrix
-        /// </summary>
-        public static void GetTrsProperties(this Matrix4x4 matrix, out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        internal static void GetTrsProperties(this Matrix4x4 matrix, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
             position = matrix.GetColumn(3);
 
@@ -206,10 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             rotation = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
         }
 
-        /// <summary>
-        /// Get Int array from accessor
-        /// </summary>
-        public static int[] GetIntArray(this GltfAccessor accessor, bool flipFaces = true)
+        internal static int[] GetIntArray(this GltfAccessor accessor, bool flipFaces = true)
         {
             if (accessor.type != scalar)
             {
@@ -253,10 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return array;
         }
 
-        /// <summary>
-        /// Get Vector2 array from accessor
-        /// </summary>
-        public static Vector2[] GetVector2Array(this GltfAccessor accessor, bool flip = true)
+        internal static Vector2[] GetVector2Array(this GltfAccessor accessor, bool flip = true)
         {
             if (accessor.type != vec2 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
@@ -299,10 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return array;
         }
 
-        /// <summary>
-        /// Get Vector3 array from accessor
-        /// </summary>
-        public static Vector3[] GetVector3Array(this GltfAccessor accessor, bool convert = true)
+        internal static Vector3[] GetVector3Array(this GltfAccessor accessor, bool convert = true)
         {
             if (accessor.type != vec3 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
@@ -349,10 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return array;
         }
 
-        /// <summary>
-        /// Get Vector4 array from accessor
-        /// </summary>
-        public static Vector4[] GetVector4Array(this GltfAccessor accessor, bool convert = true)
+        internal static Vector4[] GetVector4Array(this GltfAccessor accessor, bool convert = true)
         {
             if (accessor.type != vec4 || accessor.componentType == GltfComponentType.UnsignedInt)
             {
@@ -402,10 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             return array;
         }
 
-        /// <summary>
-        /// Get Color array from accessor
-        /// </summary>
-        public static Color[] GetColorArray(this GltfAccessor accessor)
+        internal static Color[] GetColorArray(this GltfAccessor accessor)
         {
             if (accessor.type != vec3 && accessor.type != vec4 || accessor.componentType == GltfComponentType.UnsignedInt)
             {

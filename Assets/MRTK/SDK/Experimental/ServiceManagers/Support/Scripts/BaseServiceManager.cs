@@ -195,7 +195,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         {
             if (concreteType == null) { return default(T); }
 
-            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
+#if UNITY_EDITOR
+            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
+#else
+            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
+#endif
             {
                 return default(T);
             }

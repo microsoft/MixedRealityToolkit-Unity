@@ -14,11 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
     [CustomEditor(typeof(TestGltfLoading))]
     public class TestGltfLoadingEditor : UnityEditor.Editor
     {
-        private static readonly string GLTFModelsPath = $"Demos{Path.DirectorySeparatorChar}Gltf{Path.DirectorySeparatorChar}Models";
+        private string GLTFModelsPath = $"Demos{Path.DirectorySeparatorChar}Gltf{Path.DirectorySeparatorChar}Models";
 
         public override void OnInspectorGUI()
         {
-            var testGltfLoading = target as TestGltfLoading;
+            var testGltfLoading = this.target as TestGltfLoading;
 
             base.OnInspectorGUI();
 
@@ -33,7 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
             {
                 string modelPath = MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType.Examples, GLTFModelsPath);
                 DirectoryCopy(modelPath, Path.Combine(Application.streamingAssetsPath, "GltfModels"));
-                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+#if UNITY_EDITOR
+                UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate);
+#endif
                 Debug.Log("Copied glTF model files to Streaming Assets folder");
             }
         }

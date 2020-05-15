@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
+#if UNITY_EDITOR
     /// <summary>
     /// Inspector for themes, and used by Interactable
     /// </summary>
@@ -627,4 +628,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return results;
         }
     }
+#endif
 }

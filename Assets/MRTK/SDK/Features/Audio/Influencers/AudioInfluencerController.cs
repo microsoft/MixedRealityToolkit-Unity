@@ -191,17 +191,15 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                 List<IAudioInfluencer> influencersToRemove = new List<IAudioInfluencer>();
                 for (int i = 0; i < previousInfluencers.Count; i++)
                 {
-                    var audioInfluencer = previousInfluencers[i];
+                    MonoBehaviour mbPrev = previousInfluencers[i] as MonoBehaviour;
 
-                    // Remove influencers that are
-                    // no longer in line of sight,
-                    // have been destroyed,
-                    // or have been disabled
-                    if (!influencers.Contains(audioInfluencer) ||
-                        !audioInfluencer.TryGetMonoBehaviour(out MonoBehaviour mbPrev) ||
-                        !mbPrev.isActiveAndEnabled)
+                    // Remove influencers that are no longer in line of sight
+                    // OR
+                    // Have been disabled
+                    if (!influencers.Contains(previousInfluencers[i]) ||
+                        ((mbPrev != null) && !mbPrev.isActiveAndEnabled))
                     {
-                        influencersToRemove.Add(audioInfluencer);
+                        influencersToRemove.Add(previousInfluencers[i]);
                     }
                 }
                 RemoveInfluencers(influencersToRemove);

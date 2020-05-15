@@ -843,11 +843,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
             await webRequest.SendWebRequest();
 
-#if UNITY_2020_1_OR_NEWER
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-#else
             if (webRequest.isNetworkError || webRequest.isHttpError)
-#endif // UNITY_2020_1_OR_NEWER
             {
                 if (webRequest.responseCode == 401)
                 {

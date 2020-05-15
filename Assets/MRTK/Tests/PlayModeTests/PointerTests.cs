@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
 
             Assert.IsTrue(wasClicked);
-            Assert.IsTrue(rightPokePointer == null);
+            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
             Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
 
             wasClicked = false;
@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
 
             Assert.IsTrue(wasClicked);
-            Assert.IsTrue(rightPokePointer == null);
+            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
             Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
 
             wasClicked = false;
