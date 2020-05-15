@@ -4,7 +4,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -454,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Upgrades a button using a custom icon material.
         /// </summary>
-        public async void EditorUpgradeCustomIcon()
+        public void EditorUpgradeCustomIcon()
         {
             if (iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
             {   // Nothing to do here.
@@ -526,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                         AssetDatabase.CreateAsset(duplicateIconSet, generatedIconSetPath);
                         AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+                        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
 
                         targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
                         createdIconSet = true;
@@ -570,8 +569,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ForceRefresh();
 
             if (selectIconSet)
-            {   // Wait for a moment to ensure the asset database has had a chance to refresh
-                await Task.Delay(100);
+            {
                 Selection.activeObject = targetIconSet;
                 EditorGUIUtility.PingObject(targetIconSet);
             }
