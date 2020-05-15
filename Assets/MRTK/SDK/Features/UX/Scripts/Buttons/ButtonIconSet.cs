@@ -366,10 +366,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, quadIcons, maxButtonsPerColumn, maxHeight, maxWidth);
 #endif
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newTexture = quadIcons[newSelection];
                     foundTexture = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newTexture = quadIcons[newSelection];
+                    }
                 }
             }
 
