@@ -137,7 +137,7 @@ Bounding box provides the following events. This example uses these events to pl
 
 * **Rotate Started**: Fired when rotation starts.
 * **Rotate Ended**: Fired when rotation ends.
-* **Scale Started**: Fires when scaling ends.
+* **Scale Started**: Fires when scaling starts.
 * **Scale Ended**: Fires when scaling ends.
 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
