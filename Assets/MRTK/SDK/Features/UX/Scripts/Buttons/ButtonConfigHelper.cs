@@ -16,7 +16,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Helper component that gathers the most commonly modified button elemtents in one place.
+    /// Helper component that gathers the most commonly modified button elements in one place.
     /// </summary>
     [ExecuteAlways]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text")]
