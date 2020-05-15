@@ -4,6 +4,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -18,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Helper component that gathers the most commonly modified button elemtents in one place.
     /// </summary>
     [ExecuteAlways]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text")]
     public partial class ButtonConfigHelper : MonoBehaviour
     {
         /// <summary>
@@ -412,13 +414,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            ForceRefresh();
-
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
+            if (EditorCheckForCustomIcon())
+            {   // If we're using a custom icon, preserve it so it doesn't vanish
+                EditorPreserveCustomIcon();
+            }
+#else
             // Set these to null to avoid build errors.
             defaultIconSet = null;
             defaultButtonQuadMaterial = null;
 #endif
+
+            ForceRefresh();
         }
 
 #if UNITY_EDITOR
@@ -455,6 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return true;
         }
+
 
         /// <summary>
         /// Upgrades a button using a custom icon material.
@@ -494,6 +502,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (iconQuadRenderer.sharedMaterial == defaultButtonQuadMaterial) 
             {   // This button is using the default material, so it's not a customized button.
+                return;
+            }
+
+            string assetPath = AssetDatabase.GetAssetPath(iconQuadRenderer.sharedMaterial);
+            if (string.IsNullOrEmpty(assetPath))
+            {   // If the asset path is null, this material instance exists only in memory.
                 return;
             }
 
@@ -577,6 +591,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Selection.activeObject = targetIconSet;
                 EditorGUIUtility.PingObject(targetIconSet);
             }
+        }
+
+        private void EditorPreserveCustomIcon()
+        {
+            SerializedObject configObject = new SerializedObject(this);
+            SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
+            SerializedProperty iconQuadTextureProp = configObject.FindProperty("iconQuadTexture");
+
+            iconQuadTextureProp.objectReferenceValue = iconQuadRenderer.sharedMaterial.mainTexture;
+            configObject.ApplyModifiedProperties();
         }
 #endif
     }

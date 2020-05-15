@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
@@ -17,10 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private const string generatedIconSetName = "CustomIconSet";
         private const string customIconSetsFolderName = "CustomIconSets";
-        private const string customIconUpgradeMessage = "This button appears to use a custom icon material.\n\n" +
-            "You must upgrade this button for your custom icon to be visible. If this button is nested in a prefab, you may need to upgrade within that prefab to remove this message.\n\n" +
-            "You can upgrade ALL your buttons at once by using the Migration Tool and selecting the ButtonConfigHelperMigrationHandler type.";
+        private const string customIconUpgradeMessage = "This button appears to have a custom icon material. This is no longer required for custom icons.\n\n" +
+            "We recommend upgrading the buttons in your project using the Migration Tool.";
+        private const string missingIconWarningMessage = "The icon used by this button's custom material was not found in the icon set.";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
+        private const string upgradeDocUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text";
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
@@ -85,15 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        if (GUILayout.Button("Upgrade this button"))
-                        {
-                            cb.EditorUpgradeCustomIcon();
-                        }
-
-                        if (GUILayout.Button("Use migration tool to upgrade all buttons"))
+                        if (GUILayout.Button("Use migration tool to upgrade buttons"))
                         {
                             EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window");
                         }
+
+                        InspectorUIUtility.RenderDocumentationButton(upgradeDocUrl);
                     }
                 }
             }
@@ -325,10 +324,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (iconSet != null)
             {
                 Texture newIconTexture;
-                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out newIconTexture, 1))
+                bool foundTexture;
+                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out foundTexture, out newIconTexture, 1))
                 {
                     iconQuadTextureProp.objectReferenceValue = newIconTexture;
                     cb.SetQuadIcon(newIconTexture);
+                }
+
+                if (!foundTexture)
+                {
+                    EditorGUILayout.HelpBox(missingIconWarningMessage, MessageType.Warning);
                 }
             }
             else
