@@ -596,7 +596,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void EditorPreserveCustomIcon()
         {
             SerializedObject configObject = new SerializedObject(this);
-            SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
             SerializedProperty iconQuadTextureProp = configObject.FindProperty("iconQuadTexture");
 
             iconQuadTextureProp.objectReferenceValue = iconQuadRenderer.sharedMaterial.mainTexture;
