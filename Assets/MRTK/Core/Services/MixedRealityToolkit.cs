@@ -186,11 +186,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
                 return false;
             }
