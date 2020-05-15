@@ -7,7 +7,7 @@ The MRTK configuration dialog is displayed when Unity loads a project and it is 
 To apply the changes, click the **Apply** button. The **Later** button will defer the changes until the project is reloaded at a future time.
 
 > [!NOTE]
-> The configuration dialog will reappear if one or more of the reccomended settings is left unchecked. To prevent this from occurring, apply the desired options, then relaunch the dialog via  **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** and click **Ignore**. This will prevent the configuration dialog from reappearing automatically.
+> The configuration dialog will reappear if one or more of the recommended settings is left unchecked. To prevent this from occurring, apply the desired options, then relaunch the dialog via  **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** and click **Ignore**. This will prevent the configuration dialog from reappearing automatically.
 
 ## Common settings
 
@@ -31,7 +31,7 @@ Configures the **Player Settings** > **XR Settings** > **Stereo Rendering Mode**
 
 ### Set default Spatial Awareness layer 
 
-Registeres Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
+Registers Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
 
 ### Audio spatializer
 
@@ -52,7 +52,7 @@ More details on Microsoft Spatializer can be found in the [Spatial Sound documen
 
 - MS HRTF Spatializer
 
-Microsoft Windows spatializer the is provided by Unity as part of the Windows Mixed Reality and Windows XR Platform packages.
+Microsoft Windows spatializer that is provided by Unity as part of the Windows Mixed Reality and Windows XR Platform packages.
 
 - Resonance Audio
 
