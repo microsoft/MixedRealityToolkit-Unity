@@ -147,7 +147,7 @@ Previously custom button icons required assigning a new material to the button's
 To upgrade all buttons assets in the project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
 (Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
 
-[Screenshot goes here]
+![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
 
 If an icon is not found in the default icon set during migration, a custom icon set will be created in MixedRealityToolkit.Generated/CustomIconSets. A dialog lets people know this has taken place.
 
