@@ -499,8 +499,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            Debug.Log("Existing quad icon is " + targetQuadIcon.name);
-
             ButtonIconSet targetIconSet = iconSet;
             bool createdIconSet = false;
             string generatedIconSetFolder = System.IO.Path.Combine(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
