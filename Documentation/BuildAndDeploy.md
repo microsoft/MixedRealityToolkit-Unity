@@ -9,7 +9,7 @@ Instructions on how to build and deploy for HoloLens 1 and HoloLens 2 (UWP) can 
 >[!IMPORTANT]
 > If using Unity 2019.3.x, select **ARM64** and not **ARM** as the build architecture in Visual Studio. By defalut in Unity 2019.3.x, a MRTK app will not deploy to a HoloLens if ARM is selected.  
 >
-> If the ARM architecture is required, navigate to **File > Player Settings**, under the **Other Settings** menu disable **Graphics Jobs**.  Disabling **Graphics Jobs** will allow the app to deploy using the ARM build architecture for Unity 2019.3.x, but ARM64 is reccomended.
+> If the ARM architecture is required, navigate to **Edit > Project Settings, Player**, under the **Other Settings** menu disable **Graphics Jobs**.  Disabling **Graphics Jobs** will allow the app to deploy using the ARM build architecture for Unity 2019.3.x, but ARM64 is reccomended.
 
 **Tip:** When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that the build settings "Target SDK Version"
 and "Minimum Platform Version" look like they do in the picture below:
