@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        [MenuItem("GameObject/MRTK Debug Utilities/Print Renderer Size", true, 41)]
+        [MenuItem("GameObject/MRTK Debug Utilities/Print Renderer Size", true, 40)]
         private static bool ValidateRendererSize()
         {
             if (Selection.activeGameObject == null)
