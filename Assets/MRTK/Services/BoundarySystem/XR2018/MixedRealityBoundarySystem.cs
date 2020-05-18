@@ -35,8 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             if (!Application.isPlaying || !XRDevice.isPresent) { return; }
 
             base.Initialize();
-
-            UnityBoundary.visible = true;
         }
 
         #endregion IMixedRealityService Implementation
