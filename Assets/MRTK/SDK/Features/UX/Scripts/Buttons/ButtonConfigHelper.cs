@@ -8,9 +8,6 @@ using System;
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-#else
-// Disable 'assigned but never used' errors to avoid errors related to editor-only fields.
-#pragma warning disable CS0414
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -161,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private string iconQuadTextureNameID = defaultIconTextureNameID;
         [SerializeField, Tooltip("Optional texture used for texture icon. This will be set by configuration actions.")]
         private Texture iconQuadTexture = null;
+        // Disable 'assigned but never used' errors to avoid errors related to editor-only fields.
+        #pragma warning disable CS0414
         [SerializeField, Tooltip("The default material used by quad button icons. Used to detect legacy custom buttons.")]
         private Material defaultButtonQuadMaterial = null;
 
@@ -169,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ButtonIconSet iconSet = null;
         [SerializeField, Tooltip("The default icon set.")]
         private ButtonIconSet defaultIconSet = null;
+        #pragma warning restore CS0414
 
         private MaterialPropertyBlock iconTexturePropertyBlock;
 
@@ -468,11 +468,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void EditorUpgradeCustomIcon()
         {
-            if (iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
-            {   // Nothing to do here.
-                return;
-            }
-
             SerializedObject configObject = new SerializedObject(this);
             SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
             SerializedProperty iconSetProp = configObject.FindProperty("iconSet");
@@ -491,16 +486,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 iconStyleProp.enumValueIndex = (int)ButtonIconStyle.None;
                 configObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(gameObject);
-                return;
-            }
-
-            if (iconSet != defaultIconSet)
-            {  // This button is using a custom icon set, so we can't assume material differences mean it needs an upgrade.
-                return;
-            }
-
-            if (iconQuadRenderer.sharedMaterial == defaultButtonQuadMaterial) 
-            {   // This button is using the default material, so it's not a customized button.
                 return;
             }
 
@@ -523,30 +508,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             string generatedIconSetFolder = System.IO.Path.Combine(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
 
             // If this icon set doesn't have our icon in it, we need to either add it or create a new icon set
-            if (!iconSet.TryGetQuadIcon(targetQuadIcon.name, out Texture2D quadIcon))
-            {
-                if (iconSet == defaultIconSet)
-                {   // If we're using the default icon set, we have to create a new set to add the icon
-                    if (!AssetDatabase.IsValidFolder(generatedIconSetFolder))
-                    {   // Create the folder if it doesn't exist
-                        AssetDatabase.CreateFolder(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
-                    }
+            if (!iconSet.TryGetQuadIcon(targetQuadIcon.name, out Texture2D quadIcon) && iconSet == defaultIconSet)
+            {   // If we're using the default icon set, we have to create a new set to add the icon
+                if (!AssetDatabase.IsValidFolder(generatedIconSetFolder))
+                {   // Create the folder if it doesn't exist
+                    AssetDatabase.CreateFolder(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
+                }
 
-                    string generatedIconSetPath = System.IO.Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
+                string generatedIconSetPath = System.IO.Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
+                targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
+
+                if (targetIconSet == null)
+                {   // If the icon set doesn't already exist, duplicate the default
+                    ScriptableObject duplicateIconSet = Instantiate<ButtonIconSet>(defaultIconSet);
+                    duplicateIconSet.name = generatedIconSetName;
+
+                    AssetDatabase.CreateAsset(duplicateIconSet, generatedIconSetPath);
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
                     targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
-
-                    if (targetIconSet == null)
-                    {   // If the icon set doesn't already exist, duplicate the default
-                        ScriptableObject duplicateIconSet = Instantiate<ButtonIconSet>(defaultIconSet);
-                        duplicateIconSet.name = generatedIconSetName;
-
-                        AssetDatabase.CreateAsset(duplicateIconSet, generatedIconSetPath);
-                        AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-
-                        targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
-                        createdIconSet = true;
-                    }
+                    createdIconSet = true;
                 }
             }
 
@@ -556,29 +538,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 selectIconSet = EditorUtility.DisplayDialog("Custom Icon Set Created", string.Format(customIconSetCreatedMessage, generatedIconSetFolder), "View Asset", "OK");
             }
 
-            try
-            {
-                // Set the icon set to the custom generated icon set
-                iconSetProp.objectReferenceValue = targetIconSet;
-                // Add the custom icon to the custom set
-                targetIconSet.EditorAddCustomQuadIcon(targetQuadIcon);
-                // Reset changes to the quad renderer
-                iconQuadTextureProp.objectReferenceValue = targetQuadIcon;
-                configObject.ApplyModifiedProperties();
+            // Set the icon set to the custom generated icon set
+            iconSetProp.objectReferenceValue = targetIconSet;
+            // Add the custom icon to the custom set
+            targetIconSet.EditorAddCustomQuadIcon(targetQuadIcon);
+            // Reset changes to the quad renderer
+            iconQuadTextureProp.objectReferenceValue = targetQuadIcon;
+            configObject.ApplyModifiedProperties();
 
-                // If the custom material shader is different from the default material, don't alter the material
-                if (targetQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name)
-                {   // If the custom material shader is the same, revert any prefab overrides
-                    SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
-                    SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
-                    PrefabUtility.RevertPropertyOverride(materialsProp, InteractionMode.AutomatedAction);
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("There was an error when converting your custom button icon.");
-                Debug.LogError(e);
-                return;
+            // If the custom material shader is different from the default material, don't alter the material
+            if (targetQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name)
+            {   // If the custom material shader is the same, revert any prefab overrides
+                SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
+                SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
+                PrefabUtility.RevertPropertyOverride(materialsProp, InteractionMode.AutomatedAction);
             }
 
             EditorUtility.SetDirty(gameObject);
