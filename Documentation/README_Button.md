@@ -131,7 +131,7 @@ To change which style your button uses, expand the *Icons* dropdown in the Butto
 You can create a new button icon set with the asset menu: **Create > Mixed Reality Toolkit > Icon Set.** To add quad and sprite icons, simply drag them into their respective arrays. To add Char icons, you must first create and assign a font asset.
 
 In MRTK 2.4 and beyond, we recommend custom icon textures be moved into an IconSet. 
-To upgrade all buttons assets in a project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
+To upgrade the assets on all buttons in a project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
 (Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
 
 ![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
