@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Finds the first Renderer type component on the selected GameObject in scene and returns it's world space bounds size.
         /// </summary>
-        [MenuItem("GameObject/MRTK/Renderer Size", false, 0)]
+        [MenuItem("GameObject/MRTK Debug Utilities/Print Renderer Size", false, 40)]
         public static void RendererSize()
         {
             if (Selection.activeGameObject == null)
@@ -34,10 +34,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
+        [MenuItem("GameObject/MRTK Debug Utilities/Print Renderer Size", true, 40)]
+        private static bool ValidateRendererSize()
+        {
+            if (Selection.activeGameObject == null)
+            {
+                return false;
+            }
+
+            var renderers = Selection.activeGameObject.GetComponent<Renderer>();
+            return (renderers != null);
+        }
+
         /// <summary>
         /// Finds all Collider type components on the selected GameObject in scene and returns their world space bounds size.
         /// </summary>
-        [MenuItem("GameObject/MRTK/Collider Size", false, 0)]
+        [MenuItem("GameObject/MRTK Debug Utilities/Print Collider Size", false, 41)]
         public static void ColliderSize()
         {
             if (Selection.activeGameObject == null)
@@ -47,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             var colliders = Selection.activeGameObject.GetComponents<Collider>();
-            if (colliders != null)
+            if (colliders != null && colliders.Length != 0)
             {
                 Debug.Log($"Following Collider components found on \"{Selection.activeGameObject}\"");
                 foreach (var c in colliders)
@@ -59,6 +71,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 Debug.Log($"No Collider components found on {Selection.activeGameObject}");
             }
+        }
+
+        [MenuItem("GameObject/MRTK Debug Utilities/Print Collider Size", true, 41)]
+        private static bool ValidateColliderSize()
+        {
+            if (Selection.activeGameObject == null)
+            {
+                return false;
+            }
+
+            var colliders = Selection.activeGameObject.GetComponents<Collider>();
+            return (colliders != null && colliders.Length != 0);
         }
     }
 }
