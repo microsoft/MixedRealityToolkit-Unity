@@ -325,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// the MRTK source is from the repo, warnings are converted to errors. Warnings are not converted to errors if the MRTK source is from the unity packages.
         /// Warning 618 and 649 are logged when the Leap Motion Core Assets are imported into the project, 618 is the obsolete warning and 649 is a null on start warning.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure CSC File for Leap Motion", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure CSC File for Leap Motion")]
         static void UpdateCSC()
         {
             // The csc file will always be in the root of assets
@@ -401,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// Leap Motion Core Assets import, this case only occurs if the MRTK source is from the unity packages. If the integration of leap and MRTK has not occurred, users can 
         /// select the Configure Leap Motion menu option to force integration. 
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure Leap Motion", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure Leap Motion")]
         static void ForceLeapMotionConfiguration()
         {
             // Check if leap core is in the project

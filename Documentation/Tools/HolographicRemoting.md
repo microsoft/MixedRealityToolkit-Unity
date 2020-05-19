@@ -23,9 +23,26 @@ configure the project using the following steps.
 1. Ensure that **Enable MSBuild for Unity** is selected
 1. Click **Apply**
 
+When using **Unity 2019.3** and later the **Enable MSBuild for Unity** is not available. please follow the below procedures to enable holographic remoting. 
+
+1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
+1. Set the target platform in **File > Build Settings** to **Universal Windows Platform**
+1. Click **Apply**
+1. Open **Window > Package Manager**
+    - Ensure that the **Windows XR Plugin** is not installed if the project isn't using [XR SDK](../GettingStartedWithMRTKAndXRSDK.md), as the legacy **Windows Mixed Reality** package will not function alongside it
+1. Open **Edit > Project Settings > Player**
+    
+    ![Windows Mixed Reality SDK](../Images/Tools/Remoting/WindowsMixedRealitySDK.png)
+
+1. Ensure that **Virtual Reality Supported** is selected and that **Windows Mixed Reality** is added to the **Virtual Reality SDKs**
+
+To enable tracking of hand joints and eye tracking, follow the steps in the **Debugging HoloLens 2 remoting via Unity package import** and related sections.
+
 ### Debugging HoloLens 2 remoting via Unity package import
 
 If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are a few common points of potential issues. They're listed below in the order they should be checked.
+
+These issues are particularly relevant when running on **Unity 2019.3** or later.
 
 #### MSBuildForUnity package import via writing into the package.manifest
 

@@ -177,9 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // In order to update the vertices when the array sizes change, the mesh
                 // must be cleared per instructions here:
                 // https://docs.unity3d.com/ScriptReference/Mesh.html
-                if (lastHandMeshVertices != null &&
+                if ((lastHandMeshVertices == null && eventData.InputData.vertices != null) ||
+                    (lastHandMeshVertices != null &&
                     lastHandMeshVertices.Length != 0 &&
-                    lastHandMeshVertices.Length != eventData.InputData.vertices?.Length)
+                    lastHandMeshVertices.Length != eventData.InputData.vertices?.Length))
                 {
                     meshChanged = true;
                     mesh.Clear();

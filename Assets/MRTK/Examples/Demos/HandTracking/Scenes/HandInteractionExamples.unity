@@ -16784,7 +16784,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Examples of using ManipulationHandler.cs for the near/far and one/two-handed
+  m_text: Examples of using ObjectManipulator.cs for the near/far and one/two-handed
     manipulation
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -29513,7 +29513,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Standard UI for resizing and rotating an object
 
-    BoundingBox.cs + ManipulationHandler.cs'
+    BoundingBox.cs + ObjectManipulator.cs'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,

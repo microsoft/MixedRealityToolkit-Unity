@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
 
-        private async void GetOrAddController(InteractionSourceState interactionSourceState)
+        private void GetOrAddController(InteractionSourceState interactionSourceState)
         {
             using (GetOrAddControllerPerfMarker.Auto())
             {
@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                     if (mrtkController != null)
                     {
-                        await mrtkController.EnsureControllerModel(interactionSourceState.source);
+                        mrtkController.EnsureControllerModel(interactionSourceState.source);
                     }
 
                     // Does the controller still exist after we loaded the controller model?

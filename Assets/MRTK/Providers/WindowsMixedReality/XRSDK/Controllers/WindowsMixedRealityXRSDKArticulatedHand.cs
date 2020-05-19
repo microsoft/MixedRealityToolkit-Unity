@@ -102,16 +102,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             using (UpdateHandDataPerfMarker.Auto())
             {
 #if WINDOWS_UWP && WMR_ENABLED
-            XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+                XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
-            foreach (SpatialInteractionSourceState sourceState in states)
-            {
-                if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                foreach (SpatialInteractionSourceState sourceState in states)
                 {
-                    handDefinition?.UpdateHandMesh(sourceState);
-                    break;
+                    if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                    {
+                        handDefinition?.UpdateHandMesh(sourceState);
+                        break;
+                    }
                 }
-            }
 #endif // WINDOWS_UWP && WMR_ENABLED
 
                 Hand hand;
@@ -129,7 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                                 Vector3 position = Vector3.zero;
                                 Quaternion rotation = Quaternion.identity;
 
-                                if (bone.TryGetPosition(out position) || bone.TryGetRotation(out rotation))
+                                bool positionAvailable = bone.TryGetPosition(out position);
+                                bool rotationAvailable = bone.TryGetRotation(out rotation);
+
+                                // If either position or rotation is available, use both pieces of data given.
+                                // This might result in using a zeroed out position or rotation. Most likely,
+                                // either both are available or both are unavailable.
+                                if (positionAvailable || rotationAvailable)
                                 {
                                     // We want input sources to follow the playspace, so fold in the playspace transform here to
                                     // put the controller pose into world space.

@@ -13,6 +13,8 @@
     href: BuildAndDeploy.md
   - name: NuGet Packages
     href: MRTKNuGetPackage.md
+  - name: MRTK configuration dialog
+    href: MRTK_Configuration_Dialog.md
   - name: Getting started with MRTK and XR SDK
     href: GettingStartedWithMRTKAndXRSDK.md
   - name: Performance

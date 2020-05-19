@@ -677,7 +677,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance, bool setAsActiveInstance = false)
         {
-            if (MixedRealityToolkit.isApplicationQuitting)
+            if (MixedRealityToolkit.isApplicationQuitting || toolkitInstance == null)
             {   // Don't register instances while application is quitting
                 return;
             }

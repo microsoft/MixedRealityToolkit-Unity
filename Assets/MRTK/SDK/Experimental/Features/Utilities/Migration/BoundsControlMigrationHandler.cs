@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             var boundingBox = gameObject.GetComponent<BoundingBox>();
             var boundsControl = gameObject.AddComponent<BoundsControl>();
 
+            boundsControl.enabled = boundingBox.enabled;
+
             {
                 Undo.RecordObject(gameObject, "BoundsControl migration: swapping BoundingBox with BoundsControl.");
                 
