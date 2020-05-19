@@ -456,39 +456,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void OnDrawGizmos()
         {
-            TryGetNearGraspAxis(out Vector3 sectorForwardAxis);
-            TryGetNearGraspPoint(out Vector3 point);
-            Vector3 centralAxis = sectorForwardAxis.normalized;
-
-            if (NearObjectSectorAngle >= 360.0f)
+            if(queryBufferNearObjectRadius != null && queryBufferInteractionRadius != null)
             {
-                // Draw the sphere and the inner near interaction deadzone (governed by the pullback distance)
-                Gizmos.color = (IsNearObject ? Color.red : Color.cyan) - Color.black * 0.8f;
-                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, NearObjectRadius);
+                TryGetNearGraspAxis(out Vector3 sectorForwardAxis);
+                TryGetNearGraspPoint(out Vector3 point);
+                Vector3 centralAxis = sectorForwardAxis.normalized;
 
-                Gizmos.color = Color.blue - Color.black * 0.8f;
-                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, PullbackDistance);
+                if (NearObjectSectorAngle >= 360.0f)
+                {
+                    // Draw the sphere and the inner near interaction deadzone (governed by the pullback distance)
+                    Gizmos.color = (IsNearObject ? Color.red : Color.cyan) - Color.black * 0.8f;
+                    Gizmos.DrawSphere(point - centralAxis * PullbackDistance, NearObjectRadius);
+
+                    Gizmos.color = Color.blue - Color.black * 0.8f;
+                    Gizmos.DrawSphere(point - centralAxis * PullbackDistance, PullbackDistance);
+                }
+                else
+                {
+                    // Draw something approximating the sphere's sector
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - PullbackDistance));
+
+                    UnityEditor.Handles.color = IsNearObject ? Color.red : Color.cyan;
+                    float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
+                    UnityEditor.Handles.DrawWireDisc(point,
+                                                     centralAxis,
+                                                     PullbackDistance * Mathf.Sin(GizmoAngle));
+
+                    UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
+                                                     centralAxis,
+                                                     NearObjectRadius * Mathf.Sin(GizmoAngle));
+                }
+
+                // Draw the sphere representing the grabable area
+                Gizmos.color = Color.green - Color.black * (IsInteractionEnabled ? 0.3f : 0.8f);
+                Gizmos.DrawSphere(point, SphereCastRadius);
             }
-            else
-            {
-                // Draw something approximating the sphere's sector
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - PullbackDistance));
-
-                UnityEditor.Handles.color = IsNearObject ? Color.red : Color.cyan;
-                float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
-                UnityEditor.Handles.DrawWireDisc(point,
-                                                 centralAxis,
-                                                 PullbackDistance * Mathf.Sin(GizmoAngle));
-
-                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
-                                                 centralAxis,
-                                                 NearObjectRadius * Mathf.Sin(GizmoAngle));
-            }
-
-            // Draw the sphere representing the grabable area
-            Gizmos.color = Color.green - Color.black * (IsInteractionEnabled ? 0.3f : 0.8f);
-            Gizmos.DrawSphere(point, SphereCastRadius);
         }
     #endif
     }
