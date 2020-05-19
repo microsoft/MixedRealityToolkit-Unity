@@ -128,6 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
                 AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated.Test");
             }
             buttonConfig.EditorUpgradeCustomIcon(null, testCustomIconSetFolder, true);
+
+            AssetDatabase.Refresh();
+            ButtonIconSet generatedIconSet = AssetDatabase.LoadAssetAtPath<ButtonIconSet>(System.IO.Path.Combine("Assets", "MixedRealityToolkit.Generated.Test", "CustomIconSets", "CustomIconSet.asset"));
+            Assert.IsNotNull(generatedIconSet);
+            Assert.IsTrue(generatedIconSet.QuadIcons.Length == 1);
             AssetDatabase.DeleteAsset(testCustomIconSetFolder);
         }
 
