@@ -89,32 +89,32 @@
 <ol>
 <li><p>Prepare MRTK project for Leap Motion</p>
 <ul>
-<li><p><strong>This step only applies for the Leap Motion Unity Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Leap Motion Unity Modules version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at the next step</strong></p>
+<li><p><strong>This step only applies for the Leap Motion Unity Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Core Assets from Leap Motion Unity Modules version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at the next step</strong></p>
 </li>
 <li><p>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong>. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Unity Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked <a href="https://github.com/leapmotion/UnityModules/issues/1082">here</a>.</p>
 </li>
 </ul>
 <p><img src="../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png" alt="LeapMotionUpdateCSCFile"></p>
 </li>
-<li><p>Importing MRTK and the Leap Motion Unity Modules</p>
+<li><p>Importing MRTK and the Core Assets from Leap Motion Unity Modules version 4.5.0</p>
 <ul>
 <li>Import the <strong>Microsoft.MixedReality.Toolkit.Foundation</strong> package into the Unity project.</li>
 <li>Install the <a href="https://developer.leapmotion.com/releases/?category=orion">Leap Motion SDK 4.0.0</a></li>
-<li>Download and import the <a href="https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0">Leap Motion Unity Modules</a>
+<li>Download and import the <a href="https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0">Core Assets Modules</a>
 <ul>
-<li>Leap Motion Unity Core Assets version <a href="https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0">4.4.0</a> and the Unity Modules <a href="https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0">4.5.0</a> are supported, but Unity Modules version 4.5.0 is preferred.</li>
-<li>If using Unity Modules version 4.5.0, import the <strong>Core</strong> package into the Unity project.</li>
+<li>Leap Motion Unity Core Assets version <a href="https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0">4.4.0</a> and the Core Assets from Leap Motion Unity Modules version <a href="https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0">4.5.0</a> are supported, but Core Assets from Leap Motion Unity Modules version 4.5.0 are preferred.</li>
+<li>If using Core Assets from Leap Motion Unity Modules version 4.5.0, import the <strong>Core</strong> package into the Unity project.</li>
 </ul>
 </li>
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
-<p>On import of the Leap Motion Unity Modules, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.</p>
+<p>On import of the Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.</p>
 </div>
 <ul>
 <li><p>If using Unity 2018.4.x</p>
 <ul>
-<li>After the Leap Motion Unity Modules import, navigate to <strong>Assets/LeapMotion/</strong>, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the <a href="#leap-motion-has-not-integrated-with-mrtk">Leap Motion Common Errors</a>. If the file is present, go to the next step.</li>
+<li>After the Core Assets import, navigate to <strong>Assets/LeapMotion/</strong>, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the <a href="#leap-motion-has-not-integrated-with-mrtk">Leap Motion Common Errors</a>. If the file is present, go to the next step.</li>
 </ul>
 </li>
 <li><p>If using Unity 2019.3.x, go to the next step</p>
