@@ -22,6 +22,6 @@ MonoBehaviour:
   levelOfDetail: 0
   trianglesPerCubicMeter: 0
   recalculateNormals: 1
-  displayOption: 2
-  visibleMaterial: {fileID: 2100000, guid: 47c3d3b0d8143e3489351498fceed55d, type: 2}
+  displayOption: 0
+  visibleMaterial: {fileID: 2100000, guid: 3a3a03a9e0a1eb24eb192533df212c4c, type: 2}
   occlusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435, type: 2}
