@@ -73,7 +73,7 @@ MonoBehaviour:
   sphereCastRadius: 0.05
   pullbackDistance: 0.08
   nearObjectSectorAngle: 66
-  nearObjectMargin: 0.35
+  nearObjectMargin: 0.2
   nearObjectAxisLerp: 0.9
   grabLayerMasks:
   - serializedVersion: 2

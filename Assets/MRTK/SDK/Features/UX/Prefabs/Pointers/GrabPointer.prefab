@@ -74,6 +74,7 @@ MonoBehaviour:
   pullbackDistance: 0
   nearObjectSectorAngle: 360
   nearObjectMargin: 0.2
+  nearObjectAxisLerp: 0.9
   grabLayerMasks:
   - serializedVersion: 2
     m_Bits: 563
