@@ -123,16 +123,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
             migrationTool.TryAddObjectForMigration(migrationHandlerType, buttonGameObject);
 
             string testCustomIconSetFolder = System.IO.Path.Combine("Assets", "MixedRealityToolkit.Generated.Test");
-            if (!AssetDatabase.IsValidFolder(testCustomIconSetFolder))
-            {   // Create the folder if it doesn't exist
-                AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated.Test");
-            }
+            AssetDatabase.DeleteAsset(testCustomIconSetFolder);
+            AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated.Test");
+
             buttonConfig.EditorUpgradeCustomIcon(null, testCustomIconSetFolder, true);
 
             AssetDatabase.Refresh();
             ButtonIconSet generatedIconSet = AssetDatabase.LoadAssetAtPath<ButtonIconSet>(System.IO.Path.Combine("Assets", "MixedRealityToolkit.Generated.Test", "CustomIconSets", "CustomIconSet.asset"));
             Assert.IsNotNull(generatedIconSet);
             Assert.IsTrue(generatedIconSet.QuadIcons.Length == 1);
+
             AssetDatabase.DeleteAsset(testCustomIconSetFolder);
         }
 
