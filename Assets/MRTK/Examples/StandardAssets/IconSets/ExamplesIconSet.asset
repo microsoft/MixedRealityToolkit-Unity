@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb41c8335e2ca96449f3991db5fa5702, type: 3}
-  m_Name: CustomIconSet
+  m_Name: ExamplesIconSet
   m_EditorClassIdentifier: 
   quadIcons:
   - {fileID: 2800000, guid: e6bc0a5f42065e44e800663201b609ab, type: 3}
