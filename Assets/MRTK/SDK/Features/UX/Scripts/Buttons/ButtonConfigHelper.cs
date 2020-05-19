@@ -466,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Upgrades a button using a custom icon material.
         /// </summary>
-        public void EditorUpgradeCustomIcon(ButtonIconSet defaultIconSet = null, string customIconsFolder = null)
+        public void EditorUpgradeCustomIcon(ButtonIconSet defaultIconSet = null, string customIconsFolder = null, bool hideAlert = false)
         {
             if (string.IsNullOrEmpty(customIconsFolder))
             {
@@ -543,7 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             bool selectIconSet = false;
-            if (createdIconSet)
+            if (createdIconSet && !hideAlert)
             {
                 selectIconSet = EditorUtility.DisplayDialog("Custom Icon Set Created", string.Format(customIconSetCreatedMessage, generatedIconSetFolder), "View Asset", "OK");
             }
@@ -557,7 +557,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             configObject.ApplyModifiedProperties();
 
             // If the custom material shader is different from the default material, don't alter the material
-            if (targetQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name)
+            if (targetQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name && PrefabUtility.IsPartOfPrefabInstance(iconQuadRenderer))
             {   // If the custom material shader is the same, revert any prefab overrides
                 SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
                 SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
@@ -582,6 +582,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             iconQuadTextureProp.objectReferenceValue = iconQuadRenderer.sharedMaterial.mainTexture;
             configObject.ApplyModifiedProperties();
+        }
+
+
+        public void EditorSetDefaultIconSet(ButtonIconSet iconSet)
+        {
+            defaultIconSet = iconSet;
+        }
+
+        public void EditorSetDefaultQuadMaterial(Material mat)
+        {
+            defaultButtonQuadMaterial = mat;
+        }
+
+        public void EditorSetIconQuadRenderer(MeshRenderer renderer)
+        {
+            iconQuadRenderer = renderer;
         }
 #endif
     }
