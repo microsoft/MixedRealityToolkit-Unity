@@ -14,6 +14,7 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Mobile AR via Unity AR Foundation
   - Android
   - iOS
+- Ultraleap Hand Tracking
 
 The following software is required.
 
@@ -29,7 +30,7 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### What's new in 2.4.0
 
-**Leap Motion Hand Tracking Support**
+**Ultraleap Hand Tracking Support**
 
 The [Leap Motion Data Provider](CrossPlatform/LeapMotionMRTK.md) enables articulated hand tracking for VR applications and is also useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.
 
