@@ -466,8 +466,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Upgrades a button using a custom icon material.
         /// </summary>
-        public void EditorUpgradeCustomIcon()
+        public void EditorUpgradeCustomIcon(ButtonIconSet defaultIconSet = null, string customIconsFolder = null)
         {
+            if (string.IsNullOrEmpty(customIconsFolder))
+            {
+                customIconsFolder = MixedRealityToolkitFiles.GetGeneratedFolder;
+            }
+
+            if (defaultIconSet == null)
+            {
+                defaultIconSet = this.defaultIconSet;
+            }
+
             SerializedObject configObject = new SerializedObject(this);
             SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
             SerializedProperty iconSetProp = configObject.FindProperty("iconSet");
@@ -505,14 +515,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             ButtonIconSet targetIconSet = iconSet;
             bool createdIconSet = false;
-            string generatedIconSetFolder = System.IO.Path.Combine(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
+            string generatedIconSetFolder = System.IO.Path.Combine(customIconsFolder, customIconSetsFolderName);
 
             // If this icon set doesn't have our icon in it, we need to either add it or create a new icon set
             if (!iconSet.TryGetQuadIcon(targetQuadIcon.name, out Texture2D quadIcon) && iconSet == defaultIconSet)
             {   // If we're using the default icon set, we have to create a new set to add the icon
                 if (!AssetDatabase.IsValidFolder(generatedIconSetFolder))
                 {   // Create the folder if it doesn't exist
-                    AssetDatabase.CreateFolder(MixedRealityToolkitFiles.GetGeneratedFolder, customIconSetsFolderName);
+                    AssetDatabase.CreateFolder(customIconsFolder, customIconSetsFolderName);
                 }
 
                 string generatedIconSetPath = System.IO.Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
