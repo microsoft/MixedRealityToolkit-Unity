@@ -82,11 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             if (files.Length > 0)
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
                 return true;
             }
             else
             {
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
                 return false;
             }
         }
