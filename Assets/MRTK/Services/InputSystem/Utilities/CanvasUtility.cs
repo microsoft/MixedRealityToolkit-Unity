@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
         private bool oldIsTargetPositionLockedOnFocusLock = false;
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {

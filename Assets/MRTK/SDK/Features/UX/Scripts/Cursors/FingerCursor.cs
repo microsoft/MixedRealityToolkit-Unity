@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Override base behavior to align the cursor with the finger, else perform normal cursor transformations.
         /// </summary>
-        protected override void UpdateCursorTransform() 
+        protected override void UpdateCursorTransform()
         {
             IMixedRealityNearPointer nearPointer = (IMixedRealityNearPointer)Pointer;
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     indexKnucklePosition = transform.position;
                 }
-                
+
                 if (!nearPointer.IsInteractionEnabled)
                 {
                     // If the pointer is disabled, make sure to turn the ring cursor off

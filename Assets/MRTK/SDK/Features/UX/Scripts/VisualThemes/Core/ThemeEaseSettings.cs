@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Ease settings and functionality for themes
     /// </summary>
-    
+
     [System.Serializable]
     public class ThemeEaseSettings
     {

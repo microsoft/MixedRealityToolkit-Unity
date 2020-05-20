@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected virtual void Update()
         {
-            if(isFocusRequiredRuntime != isFocusRequired)
+            if (isFocusRequiredRuntime != isFocusRequired)
             {
                 isFocusRequiredRuntime = isFocusRequired;
 

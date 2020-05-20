@@ -52,11 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var grabbable = cube.AddComponent<NearInteractionGrabbable>();
             Assert.IsNotNull(grabbable);
-            
+
             float overlapCenterZ = centerZ;
             overlapRect = GameObject.CreatePrimitive(PrimitiveType.Cube);
             overlapRect.transform.localPosition = new Vector3(0, 0, overlapCenterZ);
-            overlapRect.transform.localScale = new Vector3(1.5f,1.5f,1f) * scale;
+            overlapRect.transform.localScale = new Vector3(1.5f, 1.5f, 1f) * scale;
             overlapRect.SetActive(false);
 
             var overlapCollider = overlapRect.GetComponentInChildren<Collider>();

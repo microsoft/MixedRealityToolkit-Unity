@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             UpdateGestureLabels();
 
-            if (!IsProfileInActiveInstance() 
+            if (!IsProfileInActiveInstance()
                 || MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;

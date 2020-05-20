@@ -21,9 +21,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="profile">The configuration profile for the service.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         protected BaseExtensionService(
-            IMixedRealityServiceRegistrar registrar, 
-            string name = null, 
-            uint priority = DefaultPriority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name = null,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : this(name, priority, profile)
         {
             Registrar = registrar;

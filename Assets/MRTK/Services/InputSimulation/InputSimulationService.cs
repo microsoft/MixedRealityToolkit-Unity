@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -469,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Viewport delta x and y can be computed from screen x/y.
                 // Note that the conversion functions do not change Z, it is expected to always be in world space units.
                 Vector3 viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta);
-                
+
                 // Compute viewport-scale z delta
                 viewportDelta.z = WorldToViewport(worldDepthDelta).x;
 

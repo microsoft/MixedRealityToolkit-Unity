@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         public BoundaryEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(
-            IMixedRealityBoundarySystem boundarySystem, 
+            IMixedRealityBoundarySystem boundarySystem,
             bool isFloorVisualized,
             bool isPlayAreaVisualized,
             bool isTrackedAreaVisualized,

@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            
+
             switch (connectorFollowType)
             {
                 case ConnectorFollowType.AnchorOnly:

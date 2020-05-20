@@ -89,8 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 ViewportPosition.x += mouseDelta.viewportDelta.x;
-				ViewportPosition.y += mouseDelta.viewportDelta.y;
-				viewportPositionZTarget += mouseDelta.viewportDelta.z;
+                ViewportPosition.y += mouseDelta.viewportDelta.y;
+                viewportPositionZTarget += mouseDelta.viewportDelta.z;
             }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     isSimulatingRight = false;
                 }
-                if(isSimulatingGaze)
+                if (isSimulatingGaze)
                     lastSimulationGaze = time;
             }
 

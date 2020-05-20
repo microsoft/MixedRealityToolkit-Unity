@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var kvp in eventData.InputData)
                 {
-                    if (kvp.Key == TrackedHandJoint.None || 
+                    if (kvp.Key == TrackedHandJoint.None ||
                         kvp.Key == TrackedHandJoint.Palm)
                     {
                         continue;

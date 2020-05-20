@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
                     if (!CheckForStandardShader(nodeTransform.GetComponentsInChildren<Renderer>()))
                     {
-                        Debug.LogWarning(nodeTransform.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
+                        Debug.LogWarning(nodeTransform.name + " has a renderer that is not using " + StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
                 }
             }
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 DisplayTouchPlane(scrollContainer);
 
                 // Display the item number on the list items
-                for (int i = 0; i <= nodeList.arraySize-1; i++)
+                for (int i = 0; i <= nodeList.arraySize - 1; i++)
                 {
                     var node = nodeList.GetArrayElementAtIndex(i);
                     Transform nodeTransform = node.FindPropertyRelative("Transform").objectReferenceValue as Transform;
@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private bool CheckForStandardShader(Renderer[] rends)
         {
             foreach (Renderer rend in rends)
-            {                
+            {
                 if (!StandardShaderUtility.IsUsingMrtkStandardShader(rend.sharedMaterial) && rend.sharedMaterial.shader != MRTKtmp)
                 {
                     return false;

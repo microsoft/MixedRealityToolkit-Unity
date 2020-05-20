@@ -11,16 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [Flags]
     public enum SupportedPlatforms
     {
-        WindowsStandalone   = 1 << 0,
-        MacStandalone       = 1 << 1,
-        LinuxStandalone     = 1 << 2,
-        WindowsUniversal    = 1 << 3,
-        WindowsEditor       = 1 << 4,
-        Android             = 1 << 5,
-        MacEditor           = 1 << 6,
-        LinuxEditor         = 1 << 7,
-        IOS                 = 1 << 8,
-        Web                 = 1 << 9,
-        Lumin               = 1 << 10
+        WindowsStandalone = 1 << 0,
+        MacStandalone = 1 << 1,
+        LinuxStandalone = 1 << 2,
+        WindowsUniversal = 1 << 3,
+        WindowsEditor = 1 << 4,
+        Android = 1 << 5,
+        MacEditor = 1 << 6,
+        LinuxEditor = 1 << 7,
+        IOS = 1 << 8,
+        Web = 1 << 9,
+        Lumin = 1 << 10
     }
 }

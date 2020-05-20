@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             isDwellEnabled = !isDwellEnabled;
             dwellStatus.text = isDwellEnabled ? "On" : "Off";
-            
+
             // swap the button background and dwell visuals overlay color
             buttonBackground.color = isDwellEnabled ? this.dwellOnColor : this.dwellOffColor;
             dwellVisualImage.color = isDwellEnabled ? this.dwellOffColor : this.dwellOnColor;

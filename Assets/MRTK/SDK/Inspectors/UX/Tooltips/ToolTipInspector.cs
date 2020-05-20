@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (basicSettingsFoldout)
             {
-                EditorGUI.indentLevel++; 
+                EditorGUI.indentLevel++;
 
                 EditorGUILayout.PropertyField(showBackground);
                 EditorGUILayout.PropertyField(showConnector);
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (DrawAttachPoints)
             {
-                Handles.color = Color.Lerp (Color.clear, Color.red, 0.5f);
+                Handles.color = Color.Lerp(Color.clear, Color.red, 0.5f);
                 float scale = toolTip.ContentScale * 0.01f;
 
                 ToolTipUtility.GetAttachPointPositions(ref localAttachPointPositions, toolTip.LocalContentSize);

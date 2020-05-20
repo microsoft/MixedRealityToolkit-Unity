@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             grid.CellWidth = 0.15f;
             grid.CellHeight = 0.15f;
 
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var child = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 child.transform.parent = go.transform;
@@ -93,18 +93,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Testing non-axis aligned anchors
             grid.AnchorAlongAxis = false;
             expectedIdx = 0;
-            foreach(LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
+            foreach (LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
             {
                 grid.Anchor = et;
                 grid.UpdateCollection();
-                foreach(Transform childTransform in go.transform)
+                foreach (Transform childTransform in go.transform)
                 {
                     var expected = freeAnchorTestExpected[expectedIdx];
                     var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
-                        actual, 
-                        expected, 
-                        "Child object not in expected position, layout " + et, 
+                        actual,
+                        expected,
+                        "Child object not in expected position, layout " + et,
                         0.01f);
                     expectedIdx++;
                 }
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             yield return null;
         }
-        
+
         /// <summary>
         /// Tests that grid lays out object correctly for all different alignment options
         /// </summary>
@@ -270,9 +270,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             new Vector3(-0.075f, -0.150f, 0.75f), // Middle Vertical 1
             new Vector3(0.075f, -0.150f, 0.75f), // Top Vertical 2
         };
-    #endregion
-    
-    #endregion
+        #endregion
+
+        #endregion
     }
 }
 #endif

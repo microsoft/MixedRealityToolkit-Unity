@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Creates a receiver that raises grab start and end events.
         /// </summary>
-        public InteractableOnGrabReceiver() : this( new UnityEvent()) { }
+        public InteractableOnGrabReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

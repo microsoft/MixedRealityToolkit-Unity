@@ -296,10 +296,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                return ResolveTipState(masterTipState, groupTipState, tipState, HasFocus);              
+                return ResolveTipState(masterTipState, groupTipState, tipState, HasFocus);
             }
         }
-        
+
         public static bool ResolveTipState(DisplayMode masterTipState, DisplayMode groupTipState, DisplayMode tipState, bool hasFocus)
         {
             switch (masterTipState)

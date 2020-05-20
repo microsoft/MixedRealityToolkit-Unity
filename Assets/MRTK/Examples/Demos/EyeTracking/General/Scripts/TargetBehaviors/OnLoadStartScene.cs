@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         [Tooltip("Name of the scene to be loaded when the button is selected.")]
         private string SceneToBeLoaded = "";
-        
+
         public void Start()
         {
             LoadNewScene();

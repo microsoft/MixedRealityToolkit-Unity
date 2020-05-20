@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private KeyCode toggleOrbsKey = KeyCode.Alpha3;
 
         [SerializeField, Header("Settings")]
-        private string[] loadingMessages = new string[] { 
+        private string[] loadingMessages = new string[] {
             "First Loading Message",
-            "Loading Message 1", 
-            "Loading Message 2", 
-            "Loading Message 3", 
+            "Loading Message 1",
+            "Loading Message 2",
+            "Loading Message 3",
             "Final Loading Message" };
 
         [SerializeField, Range(1f, 10f)]

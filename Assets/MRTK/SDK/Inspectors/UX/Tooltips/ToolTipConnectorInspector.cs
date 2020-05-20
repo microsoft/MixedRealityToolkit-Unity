@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             editorSettingsFoldout = SessionState.GetBool(EditorSettingsFoldoutKey, editorSettingsFoldout);
 
             connector = (ToolTipConnector)target;
-         
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             {
                                 manualPivotDirection = serializedObject.FindProperty("manualPivotDirection");
                                 manualPivotDirection.vector3Value = (newPivotPosition - targetPosition).normalized;
-                                
+
                                 serializedObject.ApplyModifiedProperties();
                             }
                             break;

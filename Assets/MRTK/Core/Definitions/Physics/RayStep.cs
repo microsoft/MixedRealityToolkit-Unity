@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         public Vector3 Origin { get; private set; }
         public Vector3 Terminus { get; private set; }
         public Vector3 Direction { get; private set; }
-        
+
         public float Length { get; private set; }
 
         private readonly float epsilon;

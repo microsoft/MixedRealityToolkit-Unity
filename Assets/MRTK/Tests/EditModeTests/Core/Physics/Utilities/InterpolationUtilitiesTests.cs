@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Physics
             Assert.That(InterpolationUtilities.ExpDecay(from, to, 2.0f /*hLife*/, 6.0f /*dTime*/),
                 Is.EqualTo(new Vector3(137.5f, 237.5f, 337.5f)));
 
-            Assert.That(InterpolationUtilities.ExpDecay(from, to, 2.0f /*hLife*/, 20.0f /*dTime*/), 
+            Assert.That(InterpolationUtilities.ExpDecay(from, to, 2.0f /*hLife*/, 20.0f /*dTime*/),
                 Is.EqualTo(new Vector3(149.90234f, 249.90234f, 349.90234f)));
         }
 

@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get { return tetherAngleSteps; }
             set
             {
-                tetherAngleSteps =  Mathf.Clamp(value, 2, 24);
+                tetherAngleSteps = Mathf.Clamp(value, 2, 24);
             }
         }
 

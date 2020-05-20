@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            for (var iter = PlayModeTestUtilities.MoveHand(oldPosition, newPosition, gestureId, handedness, simulationService, numSteps); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(oldPosition, newPosition, gestureId, handedness, simulationService, numSteps); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </param>
         public IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
         {
-            for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext(); )
+            for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
-            for (var iter = PlayModeTestUtilities.MoveHand(position, position, gestureId, handedness, simulationService, 1); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(position, position, gestureId, handedness, simulationService, 1); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -170,15 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="numSteps">Number of steps of the hand movement</param>
         public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, bool waitForFinalFixedUpdate, int numSteps = 30)
         {
-            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Pinch); iter.MoveNext(); )
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Pinch); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
-            for (var iter = MoveTo(positionToRelease, numSteps); iter.MoveNext(); )
+            for (var iter = MoveTo(positionToRelease, numSteps); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
-            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Open, waitForFinalFixedUpdate); iter.MoveNext(); )
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Open, waitForFinalFixedUpdate); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
