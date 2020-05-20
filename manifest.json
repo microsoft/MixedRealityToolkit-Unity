@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "tZ7UYa4Cn/QcfEqORSTucg=="
+          "hash": "JmgqFBPto86y7ZrBFHpKXQ=="
         }
       },
       "is_incremental": false,
@@ -7799,7 +7799,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "VpCKq6ai4gOTzeJUEy5NvQ=="
+          "hash": "hnfBlteWbT6Uj0s9xtK+ZA=="
         }
       },
       "is_incremental": false,
@@ -8063,7 +8063,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "V+zR1k984Jvu0oEZZkxyCA=="
+          "hash": "wAYuFODMY0WLBk5cpWl5Hg=="
         }
       },
       "is_incremental": false,
@@ -8351,7 +8351,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "9PSI16lhSBhzHXbh6t+itA=="
+          "hash": "1BNOeyEoySFjlPRj8K8qIQ=="
         }
       },
       "is_incremental": false,
@@ -8411,7 +8411,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "dY92odsslkcbexBwZJ4LZw=="
+          "hash": "XMlGocp894qeStqTYBAQmw=="
         }
       },
       "is_incremental": false,
@@ -21226,7 +21226,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.MigrationToolTests.html",
-          "hash": "Wb1xpD2h6yswOCVuxogtQg=="
+          "hash": "qRlMXDwrkPKe801YBhaXCQ=="
         }
       },
       "is_incremental": false,
@@ -22186,7 +22186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonConfigHelper.html",
-          "hash": "uyN4IWmi1U0h6Wzw9XJn4Q=="
+          "hash": "Pd7sIQYj/j0sPuhELh2GKg=="
         }
       },
       "is_incremental": false,
@@ -23842,7 +23842,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "iMNfzEgLlZ89s76gJeyhLw=="
+          "hash": "18d3wVh9drxOmMkzwGEePA=="
         }
       },
       "is_incremental": false,
@@ -24035,6 +24035,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.BezierInertia.html",
           "hash": "2u94xq6X/9pmzlxKYhLftQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler.html",
+          "hash": "g/oaKT1gVrwWu06/kVF7yA=="
         }
       },
       "is_incremental": false,
@@ -26938,7 +26950,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "LzOHJqY5d11SD6+3l4lc7w=="
+          "hash": "rMf1BAB2+zi9AT5Ztsc3Rw=="
         }
       },
       "is_incremental": false,
@@ -27850,7 +27862,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4+1LIFWIYM4EjO1Iq+lMuA=="
+          "hash": "GW+tGBJtuFizrGSHqXVA4g=="
         }
       },
       "is_incremental": false,
@@ -27902,13 +27914,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -27918,12 +27923,19 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1618,
+          "total_file_count": 1619,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
