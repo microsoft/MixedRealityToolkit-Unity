@@ -425,8 +425,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// 
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
-        {
-            float distance = (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance;
+        {   
+            // We clamp the calculated local distance to the maxPushDistance,
+            // because LocalToWorldScale may return NaNs when object scale is zero.
+            float distance = Mathf.Clamp(0f, maxPushDistance, (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance);
             return InitialPosition + WorldSpacePressDirection.normalized * distance;
         }
 
