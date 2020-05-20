@@ -4,13 +4,19 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
+#if UNITY_EDITOR
+using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Helper component that gathers the most commonly modified button elemtents in one place.
+    /// Helper component that gathers the most commonly modified button elements in one place.
     /// </summary>
     [ExecuteAlways]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text")]
     public partial class ButtonConfigHelper : MonoBehaviour
     {
         /// <summary>
@@ -120,55 +126,49 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uEBD2");
         private const string defaultIconTextureNameID = "_MainTex";
 
-        [SerializeField]
-        [Tooltip("Optional main label used by the button.")]
+        [SerializeField, Tooltip("Optional main label used by the button.")]
         private TextMeshPro mainLabelText = null;
-        [SerializeField]
-        [Tooltip("Optional interactable component used by the button. Used for its OnClick event.")]
+        [SerializeField, Tooltip("Optional interactable component used by the button. Used for its OnClick event.")]
         private Interactable interactable = null;
-        [SerializeField]
-        [Tooltip("Optional see it / say it object.")]
+        [SerializeField, Tooltip("Optional see it / say it object.")]
         private GameObject seeItSayItLabel = null;
-        [SerializeField]
-        [Tooltip("Optional see it / say it label used by the button. Should be subsumed under the seeItSayItLabel object.")]
+        [SerializeField, Tooltip("Optional see it / say it label used by the button. Should be subsumed under the seeItSayItLabel object.")]
         private TextMeshPro seeItSatItLabelText = null;
         [SerializeField, Tooltip("How the button icon should be rendered.")]
         private ButtonIconStyle iconStyle = ButtonIconStyle.Quad;
 
         [Header("Font Icon")]
-        [SerializeField]
-        [Tooltip("Optional label used for font icon.")]
+        [SerializeField, Tooltip("Optional label used for font icon.")]
         private TextMeshPro iconCharLabel = null;
-        [SerializeField]
-        [Tooltip("Optional font used for font icon. This will be set by configuration actions using the icon set.")]
+        [SerializeField, Tooltip("Optional font used for font icon. This will be set by configuration actions using the icon set.")]
         private TMP_FontAsset iconCharFont = null;
-        [SerializeField]
-        [Tooltip("Optional unicode code for font icon. See Text Mesh Pro font asset for available unicode characters. This will be set by configuration actions.")]
+        [SerializeField, Tooltip("Optional unicode code for font icon. See Text Mesh Pro font asset for available unicode characters. This will be set by configuration actions.")]
         private uint iconChar = 0;
 
         [Header("Sprite Icon")]
-        [SerializeField]
-        [Tooltip("Optional sprite renderer used for sprite icon.")]
+        [SerializeField, Tooltip("Optional sprite renderer used for sprite icon.")]
         private SpriteRenderer iconSpriteRenderer = null;
-        [SerializeField]
-        [Tooltip("Optional sprite used for sprite icon. This will be set by configuration actions.")]
+        [SerializeField, Tooltip("Optional sprite used for sprite icon. This will be set by configuration actions.")]
         private Sprite iconSprite = null;
 
         [Header("Quad Icon")]
-        [SerializeField]
-        [Tooltip("Optional quad renderer used for texture icon.")]
+        [SerializeField, Tooltip("Optional quad renderer used for texture icon.")]
         private MeshRenderer iconQuadRenderer = null;
-        [SerializeField]
-        [Tooltip("The texture name ID. Set to " + defaultIconTextureNameID + " by default.")]
+        [SerializeField, Tooltip("The texture name ID. Set to " + defaultIconTextureNameID + " by default.")]
         private string iconQuadTextureNameID = defaultIconTextureNameID;
-        [SerializeField]
-        [Tooltip("Optional texture used for texture icon. This will be set by configuration actions.")]
+        [SerializeField, Tooltip("Optional texture used for texture icon. This will be set by configuration actions.")]
         private Texture iconQuadTexture = null;
+        // Disable 'assigned but never used' errors to avoid errors related to editor-only fields.
+        #pragma warning disable CS0414
+        [SerializeField, Tooltip("The default material used by quad button icons. Used to detect legacy custom buttons.")]
+        private Material defaultButtonQuadMaterial = null;
 
         [Header("Icon Set")]
-        [SerializeField]
-        [Tooltip("Optional icon set used to configure icon objects.")]
+        [SerializeField, Tooltip("Optional icon set used to configure icon objects.")]
         private ButtonIconSet iconSet = null;
+        [SerializeField, Tooltip("The default icon set.")]
+        private ButtonIconSet defaultIconSet = null;
+        #pragma warning restore CS0414
 
         private MaterialPropertyBlock iconTexturePropertyBlock;
 
@@ -414,7 +414,191 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
+#if UNITY_EDITOR
+            if (EditorCheckForCustomIcon())
+            {   // If we're using a custom icon, preserve it so it doesn't vanish
+                EditorPreserveCustomIcon();
+            }
+#else
+            // Set these to null to avoid build errors.
+            defaultIconSet = null;
+            defaultButtonQuadMaterial = null;
+#endif
+
             ForceRefresh();
         }
+
+#if UNITY_EDITOR
+
+        private static readonly string generatedIconSetName = "CustomIconSet";
+        private static readonly string customIconSetsFolderName = "CustomIconSets";
+        private static readonly string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. This icon set will be used by your button's ButtonConfigHelper component. It has been saved to:\n\n{0}";
+        
+        /// <summary>
+        /// Returns true if the button is using a custom icon material.
+        /// </summary>
+        public bool EditorCheckForCustomIcon()
+        {
+            if (iconSet == null || iconQuadRenderer == null || iconStyle != ButtonIconStyle.Quad)
+            {   // Nothing to do here.
+                return false;
+            }
+
+            if (iconSet != defaultIconSet)
+            {   // This button is using a custom icon set, so we can't assume material differences mean it needs an upgrade.
+                return false;
+            }
+
+            if (iconQuadRenderer.sharedMaterial == defaultButtonQuadMaterial)
+            {   // This button is using the default material, so it's not a customized button.
+                return false;
+            }
+
+            string assetPath = AssetDatabase.GetAssetPath(iconQuadRenderer.sharedMaterial);
+            if (string.IsNullOrEmpty(assetPath))
+            {   // If the asset path is null, this material instance exists only in memory.
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Upgrades a button using a custom icon material.
+        /// </summary>
+        public void EditorUpgradeCustomIcon(ButtonIconSet defaultIconSet = null, string customIconsFolder = null, bool hideAlert = false)
+        {
+            if (string.IsNullOrEmpty(customIconsFolder))
+            {
+                customIconsFolder = MixedRealityToolkitFiles.GetGeneratedFolder;
+            }
+
+            if (defaultIconSet == null)
+            {
+                defaultIconSet = this.defaultIconSet;
+            }
+
+            SerializedObject configObject = new SerializedObject(this);
+            SerializedProperty iconStyleProp = configObject.FindProperty("iconStyle");
+            SerializedProperty iconSetProp = configObject.FindProperty("iconSet");
+            SerializedProperty iconQuadTextureProp = configObject.FindProperty("iconQuadTexture");
+
+            if (iconQuadRenderer.gameObject.activeSelf && !iconQuadRenderer.enabled)
+            {   // If the quad renderer is disabled, enable it and disable the quad renderer game object instead.
+                // Disabling the quad renderer used to be the preferred way to disable icons but it's no longer consistent with our icon style.
+                iconQuadRenderer.enabled = true;
+                iconQuadRenderer.gameObject.SetActive(false);
+                EditorUtility.SetDirty(gameObject);
+            }
+
+            if (!iconQuadRenderer.gameObject.activeSelf && !iconSpriteRenderer.gameObject.activeSelf && !iconCharLabel.gameObject.activeSelf)
+            {   // If all the icon objects are disabled, set the icon style to none and do nothing else.
+                iconStyleProp.enumValueIndex = (int)ButtonIconStyle.None;
+                configObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(gameObject);
+                return;
+            }
+
+            string assetPath = AssetDatabase.GetAssetPath(iconQuadRenderer.sharedMaterial);
+            if (string.IsNullOrEmpty(assetPath))
+            {   // If the asset path is null, this material instance exists only in memory.
+                return;
+            }
+
+            Material targetQuadMaterial = iconQuadRenderer.sharedMaterial;
+            Texture targetQuadIcon = targetQuadMaterial.mainTexture;
+
+            if (targetQuadIcon == null)
+            {   // There is no icon to copy.
+                return;
+            }
+
+            ButtonIconSet targetIconSet = iconSet;
+            bool createdIconSet = false;
+            string generatedIconSetFolder = System.IO.Path.Combine(customIconsFolder, customIconSetsFolderName);
+
+            // If this icon set doesn't have our icon in it, we need to either add it or create a new icon set
+            if (!iconSet.TryGetQuadIcon(targetQuadIcon.name, out Texture2D quadIcon) && iconSet == defaultIconSet)
+            {   // If we're using the default icon set, we have to create a new set to add the icon
+                if (!AssetDatabase.IsValidFolder(generatedIconSetFolder))
+                {   // Create the folder if it doesn't exist
+                    AssetDatabase.CreateFolder(customIconsFolder, customIconSetsFolderName);
+                }
+
+                string generatedIconSetPath = System.IO.Path.Combine(generatedIconSetFolder, generatedIconSetName + ".asset");
+                targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
+
+                if (targetIconSet == null)
+                {   // If the icon set doesn't already exist, duplicate the default
+                    ScriptableObject duplicateIconSet = Instantiate<ButtonIconSet>(defaultIconSet);
+                    duplicateIconSet.name = generatedIconSetName;
+
+                    AssetDatabase.CreateAsset(duplicateIconSet, generatedIconSetPath);
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+                    targetIconSet = (ButtonIconSet)AssetDatabase.LoadAssetAtPath(generatedIconSetPath, typeof(ButtonIconSet));
+                    createdIconSet = true;
+                }
+            }
+
+            bool selectIconSet = false;
+            if (createdIconSet && !hideAlert)
+            {
+                selectIconSet = EditorUtility.DisplayDialog("Custom Icon Set Created", string.Format(customIconSetCreatedMessage, generatedIconSetFolder), "View Asset", "OK");
+            }
+
+            // Set the icon set to the custom generated icon set
+            iconSetProp.objectReferenceValue = targetIconSet;
+            // Add the custom icon to the custom set
+            targetIconSet.EditorAddCustomQuadIcon(targetQuadIcon);
+            // Reset changes to the quad renderer
+            iconQuadTextureProp.objectReferenceValue = targetQuadIcon;
+            configObject.ApplyModifiedProperties();
+
+            // If the custom material shader is different from the default material, don't alter the material
+            if (targetQuadMaterial.shader.name == defaultButtonQuadMaterial.shader.name && PrefabUtility.IsPartOfPrefabInstance(iconQuadRenderer))
+            {   // If the custom material shader is the same, revert any prefab overrides
+                SerializedObject iconQuadRendererObject = new SerializedObject(iconQuadRenderer);
+                SerializedProperty materialsProp = iconQuadRendererObject.FindProperty("m_Materials");
+                PrefabUtility.RevertPropertyOverride(materialsProp, InteractionMode.AutomatedAction);
+            }
+
+            EditorUtility.SetDirty(gameObject);
+
+            ForceRefresh();
+
+            if (selectIconSet)
+            {
+                Selection.activeObject = targetIconSet;
+                EditorGUIUtility.PingObject(targetIconSet);
+            }
+        }
+
+        private void EditorPreserveCustomIcon()
+        {
+            SerializedObject configObject = new SerializedObject(this);
+            SerializedProperty iconQuadTextureProp = configObject.FindProperty("iconQuadTexture");
+
+            iconQuadTextureProp.objectReferenceValue = iconQuadRenderer.sharedMaterial.mainTexture;
+            configObject.ApplyModifiedProperties();
+        }
+
+
+        public void EditorSetDefaultIconSet(ButtonIconSet iconSet)
+        {
+            defaultIconSet = iconSet;
+        }
+
+        public void EditorSetDefaultQuadMaterial(Material mat)
+        {
+            defaultButtonQuadMaterial = mat;
+        }
+
+        public void EditorSetIconQuadRenderer(MeshRenderer renderer)
+        {
+            iconQuadRenderer = renderer;
+        }
+#endif
     }
 }
