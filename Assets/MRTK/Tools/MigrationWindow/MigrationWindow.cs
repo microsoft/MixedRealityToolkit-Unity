@@ -45,13 +45,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Type selectedMigrationHandlerType;
         private string migrationLog;
 
+        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabDark.png
+        private const string darkTabIconGUID = "b2681195a786ce54e97b2126f1164e1f";
+        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationTabLight.png
+        private const string lightTabIconGUID = "2064c6a354f93c74397e7795dfbfc111";
+        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationPass.png
+        private const string passIconGUID = "f3b1d57b0d86d29419b5737244fed8a9";
+        // Assets/MRTK/Tools/MigrationWindow/Icons/IconMigrationFail.png
+        private const string failIconGUID = "5f1c0a610cc7c1841a1e9b43045c3f05";
+
+        private static Texture passIcon;
+        private static Texture failIcon;
+        private static Texture lightTabIcon;
+        private static Texture darkTabIcon;
+
+        private static bool isEditorProSkin;
+
         private readonly MigrationTool migrationTool = new MigrationTool();
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Migration Window", false, 4)]
         private static void ShowWindow()
         {
             var window = GetWindow<MigrationWindow>(typeof(SceneView));
-            window.titleContent = new GUIContent(WindowTitle, EditorGUIUtility.IconContent("d_TimelineEditModeRippleOFF").image);
+
+            isEditorProSkin = EditorGUIUtility.isProSkin;
+            var windowIcon = isEditorProSkin ? lightTabIcon : darkTabIcon;
+
+            window.titleContent = new GUIContent(WindowTitle, windowIcon);
             window.minSize = new Vector2(400.0f, 300.0f);
             window.Show();
         }
@@ -69,10 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             migrationHandlerTypeNames = migrationTypeNamesList.ToArray();
 
             selectedMigrationHandlerIndex = 0;
+            
+            failIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(failIconGUID), typeof(Texture));
+            passIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(passIconGUID), typeof(Texture));
+            lightTabIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(lightTabIconGUID), typeof(Texture));
+            darkTabIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(darkTabIconGUID), typeof(Texture));
         }
 
         private void OnGUI()
         {
+            CheckEditorSkinChange();
+
             using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying || EditorApplication.isPaused))
             {
                 DrawHeader();
@@ -196,9 +223,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
 
                             var removeIcon = EditorGUIUtility.IconContent("winbtn_win_min_h");
+                            var removeTooltip = "Remove object.";
                             if (!migrationObject.Value.IsProcessed)
                             {
-                                if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
+                                if (GUILayout.Button(new GUIContent(removeIcon.image, removeTooltip), GUILayout.Width(20), GUILayout.Height(15)))
                                 {
                                     migrationTool.RemoveObjectForMigration(migrationObject.Key);
                                     break;
@@ -206,21 +234,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                             else
                             {
-                                GUIContent statusIcon;
+                                Texture statusIcon;
                                 string tooltip = "";
 
                                 if (migrationObject.Value.Failures > 0)
                                 {
-                                    statusIcon = EditorGUIUtility.IconContent("vcs_delete");
+                                    statusIcon = failIcon;
                                     tooltip = "Object migration had some issues.\nClick for more details.";
                                 }
                                 else
                                 {
-                                    statusIcon = EditorGUIUtility.IconContent("vcs_check");
+                                    statusIcon = passIcon;
                                     tooltip = "Object migration was successful.\nClick for more details.";
                                 }
 
-                                if (GUILayout.Button(new GUIContent(statusIcon.image, tooltip), GUILayout.Width(30), GUILayout.Height(20)))
+                                if (GUILayout.Button(new GUIContent(statusIcon, tooltip), GUILayout.Width(20), GUILayout.Height(15)))
                                 {
                                     migrationLog = migrationObject.Value.Log;
                                     break;
@@ -280,6 +308,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 isMigrationEnabled = false;
             }
             isMigrationEnabled = true;
+        }
+
+        private void CheckEditorSkinChange()
+        {
+            if (isEditorProSkin != EditorGUIUtility.isProSkin)
+            {
+                isEditorProSkin = EditorGUIUtility.isProSkin;
+
+                var window = GetWindow<MigrationWindow>(typeof(SceneView));
+                window.titleContent.image = isEditorProSkin ? lightTabIcon : darkTabIcon;
+            }
         }
     }
 }
