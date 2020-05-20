@@ -8,13 +8,11 @@ using System.Collections.Generic;
 using Unity.Profiling;
 using System;
 
-#if !WINDOWS_UWP || UNITY_EDITOR
 #if LEAPMOTIONCORE_PRESENT
 using Leap;
 using Leap.Unity;
 using Leap.Unity.Attachments;
-#endif // LEAPMOTIONCORE_PRESENT
-#endif //!WINDOWS_UWP || UNITY_EDITOR
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 {
@@ -56,8 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
 
 #endregion IMixedRealityCapabilityCheck Implementation
-
-#if !WINDOWS_UWP || UNITY_EDITOR
 #if LEAPMOTIONCORE_PRESENT
 
         /// <summary>
@@ -301,8 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 }
             }
         }
-#endif // LEAPMOTIONCORE_PRESENT
-#endif // !WINDOWS_UWP || UNITY_EDITOR
+#endif
     }
 
 }
