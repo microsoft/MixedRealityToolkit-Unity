@@ -106,6 +106,8 @@ The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* u
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
+- *Near Object Margin*: The distance to query for detecting of an object is near the pointer.
+- *Near Object Sector Angle*: The angle around the forward axis of the pointer for querying for nearby objects. Makes the `IsNearObject` query function like a cone. 
 - *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
     > [!NOTE]
     > The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
