@@ -15,10 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         void Start()
         {
             var text = gameObject.GetComponent<Text>();
-#if !WINDOWS_UWP || UNITY_EDITOR
 #if LEAPMOTIONCORE_PRESENT
+#if UNITY_WSA && !UNITY_EDITOR
+            text.text = "The Leap Data Provider can only be used when running a UWP project in the editor.";
+            text.color = Color.yellow;
+#else
             text.text = "The Leap Data Provider can be used in this project";
             text.color = Color.green;
+#endif // UNITY_WSA && !UNITY_EDITOR
 #else
         }
     }
