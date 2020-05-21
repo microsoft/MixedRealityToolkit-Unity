@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7376459786343609486}
   - component: {fileID: 7543848034581082309}
   m_Layer: 0
-  m_Name: GrabPointer
+  m_Name: ConicalGrabPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,8 +71,8 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.05
-  pullbackDistance: 0
-  nearObjectSectorAngle: 360
+  pullbackDistance: 0.08
+  nearObjectSectorAngle: 66
   nearObjectMargin: 0.2
   nearObjectAxisLerp: 0.9
   grabLayerMasks:
