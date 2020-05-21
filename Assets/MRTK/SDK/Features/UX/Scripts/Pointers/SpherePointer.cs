@@ -31,7 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float PullbackDistance
         {
             get => pullbackDistance;
-            set => pullbackDistance = value;
+            set
+            {
+                pullbackDistance = value;
+                queryBufferNearObjectRadius.queryMinDistance = pullbackDistance;
+            }
         }
 
 
@@ -46,7 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectSectorAngle
         {
             get => nearObjectSectorAngle;
-            set => nearObjectSectorAngle = value;
+            set
+            {
+                nearObjectSectorAngle = value;
+                queryBufferNearObjectRadius.queryAngle = NearObjectSectorAngle;
+            }
         }
 
         [SerializeField]
@@ -63,7 +71,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectMargin
         {
             get => nearObjectMargin;
-            set => nearObjectMargin = value;
+            set
+            {
+                nearObjectMargin = value;
+                queryBufferNearObjectRadius.queryRadius = NearObjectRadius;
+            }
         }
 
         [SerializeField]
@@ -153,11 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool IsInteractionEnabled => IsFocusLocked || (base.IsInteractionEnabled && queryBufferInteractionRadius.ContainsGrabbable);
 
         private void Awake()
-        {
-            InitQueryParameters();
-        }
-
-        public void InitQueryParameters()
         {
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance);
             queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f);
@@ -249,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// For the SpherePointer it's the axis from the palm to the index tip
         /// For any other IMixedRealityController, return just the pointer's forward orientation
         /// </summary>
-        public bool TryGetNearGraspAxis(out Vector3 result)
+        public bool TryGetNearGraspAxis(out Vector3 axis)
         {
             using (TryGetNearGraspAxisPerfMarker.Auto())
             {
@@ -260,13 +267,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
                         {
                             Vector3 palmToIndex = index.Position - palm.Position;
-                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, NearObjectAxisLerp).normalized;
+                            axis = Vector3.Lerp(palm.Forward, palmToIndex.normalized, NearObjectAxisLerp).normalized;
                             return true;
                         }
                     }
                 }
 
-                result = transform.forward;
+                axis = transform.forward;
                 return false;
             }
         }
@@ -335,17 +342,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Distance for performing queries.
             /// </summary>
-            private readonly float queryRadius;
+            public float queryRadius;
 
             /// <summary>
             /// Minimum required distance from the query center.
             /// </summary>
-            private readonly float queryMinDistance;
+            public float queryMinDistance;
 
             /// <summary>
             /// Angle in degrees that a point is allowed to be off from the query axis. Angle >= 180 means points can be anywhere in relation to the query axis
             /// </summary>
-            private readonly float queryAngle;
+            public float queryAngle;
 
             
             /// <summary>
@@ -365,8 +372,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 numColliders = 0;
                 queryBuffer = new Collider[bufferSize];
                 queryRadius = radius;
-                queryAngle = angle * 0.5f;
                 queryMinDistance = minDistance;
+                queryAngle = angle * 0.5f;
             }
 
             private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
