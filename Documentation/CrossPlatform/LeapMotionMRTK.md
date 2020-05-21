@@ -18,7 +18,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 1. Importing MRTK and the Core Assets from Leap Motion Unity Modules version 4.5.0
     - Import the **Microsoft.MixedReality.Toolkit.Foundation** package into the Unity project.
     - Install the [Leap Motion SDK 4.0.0](https://developer.leapmotion.com/releases/?category=orion)
-    - Download and import the [Core Assets Modules](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0)
+    - Download and import the [Core Assets from Leap Motion Unity Modules version 4.5.0](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0)
         - Leap Motion Unity Core Assets version [4.4.0](https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0) and the Core Assets from Leap Motion Unity Modules version [4.5.0](https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0) are supported, but Core Assets from Leap Motion Unity Modules version 4.5.0 are preferred.
         - If using Core Assets from Leap Motion Unity Modules version 4.5.0, import the **Core** package into the Unity project.
     > [!NOTE]
