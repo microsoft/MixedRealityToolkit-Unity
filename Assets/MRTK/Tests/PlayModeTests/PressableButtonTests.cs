@@ -576,7 +576,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-            yield return null;
 
             PressableButton button = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(button);
@@ -591,18 +590,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create an empty GameObject for our parent.
             GameObject emptyParent = new GameObject();
             emptyParent.transform.position = testButton.transform.position;
-
+            // This should not cause any NaN errors, as per resolution to #7874
+            emptyParent.transform.localScale = Vector3.zero; 
             // Parent our button to the empty object.
             testButton.transform.parent = emptyParent.transform;
             yield return null;
 
-            // This should not cause any NaN errors, as per resolution to #7874
-            testButton.transform.localScale = Vector3.zero; 
+            // Scale up the parent. Should not throw NaN exceptions.
+            emptyParent.transform.localScale = Vector3.one;
             yield return null;
 
             Object.Destroy(testButton);
-            yield return null;
-
             Object.Destroy(emptyParent);
             // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
