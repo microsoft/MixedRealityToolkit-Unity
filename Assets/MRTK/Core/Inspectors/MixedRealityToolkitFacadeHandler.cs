@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             // These are core systems that are likely out-of-box services and known to have register DataProviders
             // Search for any dataproviders that service facades can be created for
-            var dataProviderManagers = new IMixedRealityService[]{CoreServices.InputSystem, CoreServices.SpatialAwarenessSystem};
+            var dataProviderManagers = new IMixedRealityService[] { CoreServices.InputSystem, CoreServices.SpatialAwarenessSystem };
             foreach (var system in dataProviderManagers)
             {
                 var dataProviderAccess = system as IMixedRealityDataProviderAccess;

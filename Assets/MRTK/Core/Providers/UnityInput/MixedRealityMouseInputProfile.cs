@@ -9,8 +9,8 @@ using UnityEngine.Serialization;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(
-        menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Mouse Input Profile", 
-        fileName = "MixedRealityMouseInputProfile", 
+        menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Mouse Input Profile",
+        fileName = "MixedRealityMouseInputProfile",
         order = (int)CreateProfileMenuItemIndices.MouseInput)]
     [MixedRealityServiceProfile(typeof(MouseDeviceManager))]
     public class MixedRealityMouseInputProfile : BaseMixedRealityProfile

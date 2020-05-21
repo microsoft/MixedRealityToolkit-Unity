@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
 
-#region IMixedRealityCapabilityCheck Implementation
+        #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 
 
-#endregion IMixedRealityCapabilityCheck Implementation
+        #endregion IMixedRealityCapabilityCheck Implementation
 #if LEAPMOTIONCORE_PRESENT
 
         /// <summary>

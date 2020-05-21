@@ -119,19 +119,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // * (currentVersion == minVersion && minPrerelease != 0 && currentPrerelease >= minPrerelease)   return true;
             // * all other combinations                                                                       return false;
             if (currentVersion > minVersion)
-            { 
-                return true; 
+            {
+                return true;
             }
             else if (currentVersion == minVersion)
             {
                 // The current and minimum versions are the same, check the prerelease portion
-                if (currentPrerelease == minPrerelease) 
-                { 
-                    return true; 
+                if (currentPrerelease == minPrerelease)
+                {
+                    return true;
                 }
-                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease)) 
-                { 
-                    return true; 
+                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease))
+                {
+                    return true;
                 };
             }
 

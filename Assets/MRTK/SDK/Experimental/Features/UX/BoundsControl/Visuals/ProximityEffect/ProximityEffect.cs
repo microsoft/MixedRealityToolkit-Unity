@@ -39,14 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private class ObjectProximityInfo
         {
             public Transform ScaledObject;
-            public Renderer ObjectVisualRenderer; 
+            public Renderer ObjectVisualRenderer;
             public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
         /// <summary>
         /// Dictionary that maps proximity object provider to list of objects that have proximity scaling applied
         /// </summary>
-        
+
         private Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>> registeredObjects = new Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>>();
 
 
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
                         item.ProximityState = ProximityState.FullsizeNoProximity;
-                       
+
                         if (item.ObjectVisualRenderer)
                         {
                             item.ObjectVisualRenderer.material = keyValuePair.Key.GetBaseMaterial();
@@ -171,9 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     proximityPoints.Add(pointer.Position);
                 }
-                
+
                 if (pointer.Result?.CurrentPointerTarget != null)
-                { 
+                {
                     Vector3? point = pointer.Result?.Details.Point;
                     if (point.HasValue && IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, squareMaxLength))
                     {

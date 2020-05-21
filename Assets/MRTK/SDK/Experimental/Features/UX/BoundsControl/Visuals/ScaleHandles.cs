@@ -72,9 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 Bounds visualBounds = CreateVisual(visualsScale, isFlattened);
                 var invScale = visualBounds.size.x == 0.0f ? 0.0f : config.HandleSize / visualBounds.size.x;
-                VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale), 
+                VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale),
                     HandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
-                handles.Add(corner.transform);       
+                handles.Add(corner.transform);
             }
 
             VisualUtils.HandleIgnoreCollider(config.HandlesIgnoreCollider, handles);

@@ -203,13 +203,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Obsolete
 
-        #pragma warning disable 0414
+#pragma warning disable 0414
         [SerializeField]
         [HideInInspector]
         [System.Obsolete("Use the Handedness property instead to get current handedness which is set by Controller attached")]
         [Tooltip("Use the Handedness property instead to get current handedness which is set by Controller attached")]
         private Handedness handedness = Handedness.Left;
-        #pragma warning restore 0414
+#pragma warning restore 0414
 
         #endregion
 

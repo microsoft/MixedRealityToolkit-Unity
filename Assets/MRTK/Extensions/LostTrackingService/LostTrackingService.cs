@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <param name="profile">The service's configuration profile.</param>
         [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public LostTrackingService(
-            IMixedRealityServiceRegistrar registrar, 
-            string name, 
-            uint priority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : this(name, priority, profile)
         {
             Registrar = registrar;
@@ -62,8 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public LostTrackingService(
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : base(name, priority, profile)
         {
             this.profile = profile as LostTrackingServiceProfile;

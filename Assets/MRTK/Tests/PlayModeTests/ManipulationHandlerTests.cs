@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This particular test is sensitive to the number of steps that a hand is moving,
             // so it's set to 30 to override the default amount.
             int numSteps = 30;
-            
+
             Vector3 handOffset = new Vector3(0, 0, 0.1f);
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             Vector3 rightPosition = new Vector3(1f, 0f, 1f);
@@ -418,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Hand pointing at middle of cube
             Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
-            TestHand hand = new TestHand(Handedness.Right);     
+            TestHand hand = new TestHand(Handedness.Right);
 
             // do this test for every one hand rotation mode
             foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
@@ -437,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 yield return hand.Show(initialHandPosition);
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-               
+
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
@@ -700,7 +700,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     p.LookAt(rotatedFwd);
                 });
                 yield return null;
-                
+
                 Vector3 newHandPosition = Quaternion.AngleAxis(testRotation, Vector3.up) * rightHandFarPos;
                 yield return rightHand.MoveTo(newHandPosition, numSteps);
                 RecordTransform(testObject.transform, "one hand rotate far");
@@ -803,7 +803,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ManipulationHandlerMinMaxScale()
         {
-            float initialScale =  0.2f;
+            float initialScale = 0.2f;
             float minScale = 0.5f;
             float maxScale = 2f;
 
@@ -886,11 +886,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            
+
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
-            
+
             // Grab cube
             yield return hand.Show(originalHandPosition);
 
@@ -946,12 +946,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            
+
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
-            
+
             float expectedDist = Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position);
-            
+
             yield return hand.Show(CameraCache.Main.transform.position);
             yield return null;
 
@@ -1124,7 +1124,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int manipulationEndedCount = 0;
             manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
             manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
-            
+
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
@@ -1151,7 +1151,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
         }
-        
+
         /// <summary>
         /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
         /// for Two Handed Only.

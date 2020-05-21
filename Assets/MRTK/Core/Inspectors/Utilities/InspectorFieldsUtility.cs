@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
         }
-        
+
         /// <summary>
         /// Update a property value in a serialized PropertySettings
         /// </summary>

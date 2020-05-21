@@ -339,9 +339,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Vector3 currentBoundsExtents;
 
         private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
-      
+
         private List<IMixedRealityController> sourcesDetected;
-      
+
         // Current axis of rotation about the center of the rig root
         private Vector3 currentRotationAxis;
 
@@ -548,8 +548,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 Active = false;
             }
 
-            
-            
+
+
         }
 
         private void OnDisable()
@@ -796,7 +796,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
         }
-       
+
 
         private Vector3 CalculateBoundsExtents()
         {
@@ -1166,7 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             links.Reset(active, flattenAxis);
-            
+
             boxDisplay.Reset(active);
             boxDisplay.UpdateFlattenAxis(flattenAxis);
 

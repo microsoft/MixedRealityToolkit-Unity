@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Interactable[] ToggleList
         {
             get => toggleList;
-            set 
+            set
             {
                 if (value != null && toggleList != value)
                 {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int CurrentIndex
         {
             get => currentIndex;
-            set => SetSelection(value, true, true);    
+            set => SetSelection(value, true, true);
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     AddSelectionListeners();
 
                     SetSelection(CurrentIndex, true, true);
-                }  
+                }
             }
         }
 

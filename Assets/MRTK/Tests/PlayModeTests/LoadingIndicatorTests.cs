@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab
         private const string progressIndicatorRotatingObjectPrefabGuid = "274fde8ad8cd85a4a88acb4c2c892028";
         private static readonly string progressIndicatorRotatingObjectPrefabPath = AssetDatabase.GUIDToAssetPath(progressIndicatorRotatingObjectPrefabGuid);
-        
+
         // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab
         private const string progressIndicatorRotatingOrbsPrefabGuid = "65fa42bb01c733c42b05a4e91628f494";
         private static readonly string progressIndicatorRotatingOrbsPrefabPath = AssetDatabase.GUIDToAssetPath(progressIndicatorRotatingOrbsPrefabGuid);

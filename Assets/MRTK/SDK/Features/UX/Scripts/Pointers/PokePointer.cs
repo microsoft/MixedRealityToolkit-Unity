@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             "touchable but cannot see it. Visual FOV is defined by cone centered about display center, " +
             "radius equal to half display height.")]
         private bool ignoreCollidersNotInFOV = true;
-       
+
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
         /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near 

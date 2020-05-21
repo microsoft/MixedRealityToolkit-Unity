@@ -22,9 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (CoreServices.InputSystem != null && !lateInitialize)
             {
-            #pragma warning disable 0618
+#pragma warning disable 0618
                 CoreServices.InputSystem.Register(gameObject);
-            #pragma warning restore 0618
+#pragma warning restore 0618
             }
         }
 
@@ -41,17 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 lateInitialize = false;
-            #pragma warning disable 0618
+#pragma warning disable 0618
                 CoreServices.InputSystem.Register(gameObject);
-            #pragma warning restore 0618
+#pragma warning restore 0618
             }
         }
 
         protected virtual void OnDisable()
         {
-        #pragma warning disable 0618
+#pragma warning disable 0618
             CoreServices.InputSystem?.Unregister(gameObject);
-        #pragma warning restore 0618
+#pragma warning restore 0618
         }
 
         /// <summary>

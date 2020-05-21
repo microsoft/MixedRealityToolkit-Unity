@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
         }
-        
+
         /// <summary>
         /// Searches through a class for InspectorField tags creates properties that can be serialized and
         /// automatically rendered in a custom inspector

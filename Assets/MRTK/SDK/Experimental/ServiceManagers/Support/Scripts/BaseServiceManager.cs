@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             Type interfaceType = typeof(T);
             List<T> matchingServices = new List<T>();
 
-            foreach(IMixedRealityService service in registeredServices.Values)
+            foreach (IMixedRealityService service in registeredServices.Values)
             {
                 if (!interfaceType.IsAssignableFrom(service.GetType())) { continue; }
 
@@ -264,9 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             Type interfaceType = typeof(T);
             IMixedRealityService serviceInstance;
 
-            if (!registeredServices.TryGetValue(interfaceType, out serviceInstance)) { return default(T);  }
+            if (!registeredServices.TryGetValue(interfaceType, out serviceInstance)) { return default(T); }
 
             return (T)serviceInstance;
-         }
+        }
     }
 }

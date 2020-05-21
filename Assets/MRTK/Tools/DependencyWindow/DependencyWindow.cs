@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 excludeUnityScenes = EditorGUILayout.Toggle("Exclude Unity Scenes", excludeUnityScenes);
 
                 string tooltip = "Although certain asset types may not be directly referenced by other assets as tracked via Unity meta files, these assets may be utilized and/or necessary to a project in other ways.\n\nThus, this list of asset extensions are ignored and always excluded in the list below.\n\n";
-                foreach(string extension in assetsWhichCanBeUnreferenced)
+                foreach (string extension in assetsWhichCanBeUnreferenced)
                 {
                     tooltip += extension + "\n";
                 }

@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [ObsoleteAttribute("The MouseInputProfile property has been deprecated and will be removed in a future version of MRTK.")]
         MixedRealityMouseInputProfile MouseInputProfile { get; }
-        
+
         /// <summary>
         /// Gets or sets a multiplier value used to adjust the speed of the mouse cursor.
         /// </summary>

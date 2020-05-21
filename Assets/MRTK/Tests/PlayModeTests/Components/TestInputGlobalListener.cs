@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // For InputSystemGlobalListener
 #pragma warning disable 0618
     [AddComponentMenu("Scripts/MRTK/Tests/TestInputGlobalListener")]
-    internal class TestInputGlobalListener: InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
+    internal class TestInputGlobalListener : InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         // Parameters, which are set by child classes
         protected bool useObjectBasedRegistration = false;
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 base.OnDisable();
             }
-            else if(CoreServices.InputSystem != null)
+            else if (CoreServices.InputSystem != null)
             {
                 if (registerSpeechOnly)
                 {

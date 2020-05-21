@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             MeshReference meshReference;
             var sharedMesh = meshFilter.sharedMesh;
 
-            if (sharedMesh != null && 
+            if (sharedMesh != null &&
                 processedMeshes.TryGetValue(sharedMesh, out meshReference))
             {
                 meshReference.Decrement();
