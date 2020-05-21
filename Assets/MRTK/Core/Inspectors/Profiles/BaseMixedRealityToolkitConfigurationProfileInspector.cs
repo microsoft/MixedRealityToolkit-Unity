@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             Selection.activeObject = selectionObject;
                         }
                     }
-                    else if(!MixedRealityToolkit.Instance.HasActiveProfile)
+                    else if (!MixedRealityToolkit.Instance.HasActiveProfile)
                     {
                         EditorGUILayout.HelpBox("There is no active profile assigned in the current MRTK instance. Some properties may not be editable.", MessageType.Error);
                     }

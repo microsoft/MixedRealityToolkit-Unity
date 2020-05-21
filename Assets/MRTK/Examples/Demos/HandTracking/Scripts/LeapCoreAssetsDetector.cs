@@ -20,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             text.text = "The Leap Data Provider can be used in this project";
             text.color = Color.green;
 #else
-        text.text = "This project has not met the requirements to use the Leap Data Provider. For more information, visit the MRTK Leap Motion Documentation";
-        text.color = Color.red;
+            text.text = "This project has not met the requirements to use the Leap Data Provider. For more information, visit the MRTK Leap Motion Documentation";
+            text.color = Color.red;
 #endif
         }
     }

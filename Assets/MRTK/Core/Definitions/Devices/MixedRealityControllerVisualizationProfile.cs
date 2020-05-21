@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool RenderMotionControllers
         {
-            get =>  renderMotionControllers;
+            get => renderMotionControllers;
             private set => renderMotionControllers = value;
         }
 

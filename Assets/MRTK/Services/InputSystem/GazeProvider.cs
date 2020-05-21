@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <inheritdoc />
             public override Quaternion Rotation => gazeTransform.rotation;
-            
+
             /// <inheritdoc />
             public override void Reset()
             {

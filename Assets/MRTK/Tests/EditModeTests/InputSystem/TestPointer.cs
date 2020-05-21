@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         public int GetHashCode(object obj)
         {
             var pointer = obj as TestPointer;
-            return (int) pointer.PointerId;
+            return (int)pointer.PointerId;
         }
 
         /// <inheritdoc />

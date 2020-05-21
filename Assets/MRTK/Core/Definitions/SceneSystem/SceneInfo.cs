@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return IsInBuildSettings & BuildIndex >= 0;
             }
         }
-        
+
         /// <summary>
         /// Name of the scene. Set by the property drawer.
         /// </summary>

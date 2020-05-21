@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     bitCount += bit;
                 }
             }
-            
+
             return bitCount;
         }
     }

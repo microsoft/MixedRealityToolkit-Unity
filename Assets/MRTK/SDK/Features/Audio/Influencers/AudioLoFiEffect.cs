@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         public AudioLoFiSourceQuality SourceQuality
         {
             get { return sourceQuality; }
-            set { sourceQuality = value;  }
+            set { sourceQuality = value; }
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             /// </summary>
             /// <returns>True if equivalent, false otherwise.</returns>
             public override bool Equals(object obj)
-            {               
+            {
                 if (obj == null)
                 {
                     return false;

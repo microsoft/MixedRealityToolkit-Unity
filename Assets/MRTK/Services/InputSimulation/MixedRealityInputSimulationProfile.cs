@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
         [Tooltip("Mouse Movement X-axis")]
-        private string mouseX = "Mouse X"; 
+        private string mouseX = "Mouse X";
         /// <summary>
         /// Mouse Movement X-axis
         /// </summary>

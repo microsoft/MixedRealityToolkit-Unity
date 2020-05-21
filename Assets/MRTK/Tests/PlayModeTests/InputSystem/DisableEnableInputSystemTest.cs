@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         {
             PlayModeTestUtilities.TearDown();
         }
-        
+
         [UnityTest]
         public IEnumerator DisableEnableInputSystem()
         {

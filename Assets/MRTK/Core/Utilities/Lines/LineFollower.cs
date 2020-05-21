@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private BaseMixedRealityLineDataProvider source = null;
 
         #region MonoBehaviour Implementation
-        
+
         private void OnEnable() => EnsureSetup();
 
         private void Update()

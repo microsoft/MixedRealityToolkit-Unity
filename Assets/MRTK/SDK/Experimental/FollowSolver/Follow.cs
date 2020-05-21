@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// </summary> 
     [AddComponentMenu("Scripts/MRTK/Experimental/Solver/Follow")]
     public class Follow : Solver
-    {        
+    {
         [SerializeField]
         [Tooltip("The desired orientation of this object")]
         private SolverOrientationType orientationType = SolverOrientationType.FaceTrackedObject;
@@ -664,7 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 defaultOrientationType = SolverOrientationType.FaceTrackedObject;
             }
-            
+
             switch (defaultOrientationType)
             {
                 case SolverOrientationType.YawOnly:

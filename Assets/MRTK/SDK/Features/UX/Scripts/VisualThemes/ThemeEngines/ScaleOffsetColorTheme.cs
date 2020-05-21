@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             hostTransform.localPosition = originalPosition;
             hostTransform.localScale = originalScale;
-            
+
             base.Reset();
         }
 

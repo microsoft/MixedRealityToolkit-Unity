@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit
         public static Quaternion Rotation
         {
             get { return Transform.rotation; }
-            set { Transform.rotation = value;  }
+            set { Transform.rotation = value; }
         }
 
         /// <summary>

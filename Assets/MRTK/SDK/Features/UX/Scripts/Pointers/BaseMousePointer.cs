@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void OnInputUp(InputEventData eventData)
         {
             using (OnInputUpPerfMarker.Auto())
-            { 
+            {
                 if (!cursorWasDisabledOnDown)
                 {
                     base.OnInputUp(eventData);

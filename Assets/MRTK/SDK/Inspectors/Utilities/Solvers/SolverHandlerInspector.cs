@@ -53,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
             {
-                InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
-                    + Enum.GetName(typeof(TrackedObjectType), solverHandler.TrackedTargetType) 
+                InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \""
+                    + Enum.GetName(typeof(TrackedObjectType), solverHandler.TrackedTargetType)
                     + "\" is obsolete. Select MotionController or HandJoint values instead");
             }
 

@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion

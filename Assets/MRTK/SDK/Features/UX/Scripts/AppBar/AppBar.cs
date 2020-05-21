@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => backgroundBar;
             set => backgroundBar = value;
         }
-        
+
         [Header("States")]
 
         [Tooltip("The AppBar's display type; default is Manipulation")]

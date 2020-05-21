@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             pointerRefDistance = GetDistanceToBody(pointerCentroidPose);
 
             pointerPosIndependentOfHead = pointerRefDistance != 0;
-            
+
             Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
             pointerLocalGrabPoint = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
 

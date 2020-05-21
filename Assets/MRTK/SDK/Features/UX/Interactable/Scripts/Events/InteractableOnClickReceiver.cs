@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Creates receiver for raising OnClick events
         /// </summary>
-        public InteractableOnClickReceiver(UnityEvent ev): base(ev, "OnClick") { }
+        public InteractableOnClickReceiver(UnityEvent ev) : base(ev, "OnClick") { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

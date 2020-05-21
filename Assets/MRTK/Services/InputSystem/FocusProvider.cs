@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseCoreSystem, 
-        IMixedRealityFocusProvider, 
+    public class FocusProvider : BaseCoreSystem,
+        IMixedRealityFocusProvider,
         IPointerPreferences
     {
         /// <summary>
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 raycastHit = hit;
                 graphicsRaycastResult = default(RaycastResult);
 
-                hitObject = focusIndividualCompoundCollider? hit.collider.gameObject : hit.transform.gameObject;
+                hitObject = focusIndividualCompoundCollider ? hit.collider.gameObject : hit.transform.gameObject;
                 hitPointOnObject = hit.point;
                 hitNormalOnObject = hit.normal;
 
@@ -1594,7 +1594,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             return GetPointerBehavior(
-                pointer.GetType(), 
+                pointer.GetType(),
                 pointer.Controller.ControllerHandedness,
                 pointer.InputSourceParent.SourceType);
         }
@@ -1682,7 +1682,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return PointerBehavior.Default;
             }
             public void SetBehaviorForHandedness(
-                Handedness h, 
+                Handedness h,
                 PointerBehavior b)
             {
                 if ((h & Handedness.Right) != 0)

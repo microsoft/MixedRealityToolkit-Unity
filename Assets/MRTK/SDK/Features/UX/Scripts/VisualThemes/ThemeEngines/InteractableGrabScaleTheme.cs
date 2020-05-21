@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region Obsolete
-        
+
         [System.Obsolete("startScaleValue is no longer supported. Use originalLocalScale instead.")]
         protected ThemePropertyValue startScaleValue = new ThemePropertyValue();
 

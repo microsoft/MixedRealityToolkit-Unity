@@ -141,6 +141,18 @@ There are no plans to add properties to WindowsApiChecker for future API contrac
 The gltf mesh primitive attributes used to be settable, they are now read-only. Their values
 will be set once when deserialized.
 
+### Custom Button Icon Migration 
+
+Previously custom button icons required assigning a new material to the button's quad renderer. This is no longer necessary and we recommend moving custom icon textures into an IconSet. Existing custom materials and icons are preserved. However they will be less optimal until upgraded.
+To upgrade the assets on all buttons in the project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
+(Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
+
+![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
+
+If an icon is not found in the default icon set during migration, a custom icon set will be created in MixedRealityToolkit.Generated/CustomIconSets. A dialog will indicate that this has taken place.
+
+![Custom icon notification](https://user-images.githubusercontent.com/9789716/82093856-c57dfc00-96b0-11ea-83ab-4df57446d661.PNG)
+
 ## Updating 2.2.0 to 2.3.0
 
 - [API changes](#api-changes-in-230)

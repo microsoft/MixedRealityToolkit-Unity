@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Specify whether press event is for near or far interaction
         /// </summary>
-        [InspectorField(Label = "Interaction Filter", 
-            Tooltip = "Specify whether press event is for near or far interaction", 
+        [InspectorField(Label = "Interaction Filter",
+            Tooltip = "Specify whether press event is for near or far interaction",
             Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Near and Far", "Near Only", "Far Only" })]
         public int InteractionFilter = (int)InteractionType.NearAndFar;
 

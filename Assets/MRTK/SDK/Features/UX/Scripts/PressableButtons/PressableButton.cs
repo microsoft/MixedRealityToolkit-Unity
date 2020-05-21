@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float maxPushDistance = 0.2f;
-        
+
         /// <summary>
         /// Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.
         /// </summary>
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("minPressDepth")]
         [Tooltip("Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.")]
         private float pressDistance = 0.02f;
-        
+
         /// <summary>
         /// Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("withdrawActivationAmount")]
         [Tooltip("Withdraw amount needed to transition from Pressed to Released.")]
         private float releaseDistanceDelta = 0.01f;
-        
+
         /// <summary>
         ///  Withdraw amount needed to transition from Pressed to Released.
         /// </summary>
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Button will send the release event on touch end after successful press even if release plane hasn't been passed.")]
         private bool releaseOnTouchEnd = true;
-        
+
         /// <summary>
         ///  Button will send the release event on touch end after successful press even if release plane hasn't been passed.
         /// </summary>
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.")]
         private bool enforceFrontPush = true;
-        
+
         /// <summary>
         /// Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.
         /// </summary>
@@ -203,14 +203,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return nearInteractionTouchable.transform.TransformDirection(nearInteractionTouchable.LocalPressDirection);
                 }
-                
+
                 return transform.forward;
             }
         }
 
         private Transform PushSpaceSourceTransform
         {
-            get => movingButtonVisuals != null ? movingButtonVisuals.transform : transform; 
+            get => movingButtonVisuals != null ? movingButtonVisuals.transform : transform;
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Multiply world scale positions by this value to convert to local space
         /// </summary>
         private float WorldToLocalScale => transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
-        
+
         /// <summary>
         /// Initial offset from moving visuals to button
         /// </summary>

@@ -50,4 +50,3 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Quaternion rotation;
     }
 }
- 

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Configuration base class for any <see cref="BoundsControl"/> handle type deriving from <see cref="HandlesBase"/>
     /// </summary>
     public abstract class HandlesBaseConfiguration : ScriptableObject
-    { 
+    {
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
         private Material handleMaterial;
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     drawTetherWhenManipulating = value;
                     handlesChanged.Invoke(HandlesChangedEventType.ManipulationTether);
                 }
-            }   
+            }
         }
 
         [SerializeField]

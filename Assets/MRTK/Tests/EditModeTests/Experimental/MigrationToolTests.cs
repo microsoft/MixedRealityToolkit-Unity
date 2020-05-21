@@ -96,6 +96,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
         }
 
         /// <summary>
+        /// Tests that the Button Migration tool works properly
+        /// </summary>
+        [Test]
+        public void ButtonMigrationTest()
+        {
+            Type migrationHandlerType = typeof(ButtonConfigHelperMigrationHandler);
+            Material testMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/MRTK/SDK/Features/UX/Interactable/Materials/HolographicButtonIconHome.mat");
+            Material testDefaultMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/MRTK/SDK/Features/UX/Interactable/Materials/HolographicButtonIconStar.mat");
+
+            GameObject buttonGameObject = SetUpGameObjectWithComponentOfType(typeof(ButtonConfigHelper));
+            GameObject buttonQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            buttonQuad.transform.parent = buttonGameObject.transform;
+
+            MeshRenderer quadRenderer = buttonQuad.GetComponent<MeshRenderer>();
+            quadRenderer.sharedMaterial = testMat;
+
+            ButtonConfigHelper buttonConfig = buttonGameObject.GetComponent<ButtonConfigHelper>();
+            ButtonIconSet testIconSet = new ButtonIconSet();
+            buttonConfig.IconStyle = ButtonIconStyle.Quad;
+            buttonConfig.IconSet = testIconSet;
+            buttonConfig.EditorSetDefaultIconSet(testIconSet);
+            buttonConfig.EditorSetIconQuadRenderer(quadRenderer);
+            buttonConfig.EditorSetDefaultQuadMaterial(testDefaultMat);
+
+            migrationTool.TryAddObjectForMigration(migrationHandlerType, buttonGameObject);
+
+            string testCustomIconSetFolder = System.IO.Path.Combine("Assets", "MixedRealityToolkit.Generated.Test");
+            AssetDatabase.DeleteAsset(testCustomIconSetFolder);
+            AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated.Test");
+
+            buttonConfig.EditorUpgradeCustomIcon(null, testCustomIconSetFolder, true);
+
+            AssetDatabase.Refresh();
+            ButtonIconSet generatedIconSet = AssetDatabase.LoadAssetAtPath<ButtonIconSet>(System.IO.Path.Combine("Assets", "MixedRealityToolkit.Generated.Test", "CustomIconSets", "CustomIconSet.asset"));
+            Assert.IsNotNull(generatedIconSet);
+            Assert.IsTrue(generatedIconSet.QuadIcons.Length == 1);
+
+            AssetDatabase.DeleteAsset(testCustomIconSetFolder);
+        }
+
+        /// <summary>
         /// Checks if MigrationTool can process migration on a game object containing a deprecated component with a compatible migration handler.
         /// </summary>
         [Test]
