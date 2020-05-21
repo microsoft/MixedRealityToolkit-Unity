@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return nearInteractionTouchable.transform.TransformDirection(nearInteractionTouchable.LocalPressDirection);
                 }
                 
-                return -transform.forward;
+                return transform.forward;
             }
         }
 
@@ -216,7 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                GetComponent<NearInteractionTouchableSurface>();
                 var nearInteractionTouchable = GetComponent<NearInteractionTouchableSurface>();
                 if (nearInteractionTouchable != null)
                 {
@@ -499,7 +498,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 // Always move relative to startPushDistance
                 movingButtonVisuals.transform.localPosition = GetLocalPositionAlongPushDirection(currentPushDistance - startPushDistance);
-                //movingButtonVisuals.transform.position = GetWorldPositionAlongPushDirection(currentPushDistance - startPushDistance);
             }
         }
 
