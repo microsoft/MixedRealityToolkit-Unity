@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IMixedRealityNearPointer.TryGetNearGraspAxis(out Vector3 axis)
         {
             axis = transform.forward;
-            return false;
+            return true;
         }
 
         /// <inheritdoc />
