@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7376459786343609486}
   - component: {fileID: 7543848034581082309}
   m_Layer: 0
-  m_Name: Hololens2ShellGrabPointer
+  m_Name: ConicalGrabPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
