@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 nearObjectSectorAngle = value;
-                queryBufferNearObjectRadius.queryAngle = NearObjectSectorAngle;
+                queryBufferNearObjectRadius.queryAngle = NearObjectSectorAngle * 0.5f;
             }
         }
 
