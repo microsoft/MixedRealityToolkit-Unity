@@ -24,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             text.color = Color.green;
 #endif // UNITY_WSA && !UNITY_EDITOR
 #else
+            text.text = "This project has not met the requirements to use the Leap Data Provider. For more information, visit the MRTK Leap Motion Documentation";
+            text.color = Color.red;
+#endif
         }
     }
 }
