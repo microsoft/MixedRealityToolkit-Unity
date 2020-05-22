@@ -127,6 +127,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void OnEnable()
         {
             StartCoroutine(BlinkCaret());
+        }
+
+        private void Start()
+        {
             ApplyShellSolverParameters();
         }
 
