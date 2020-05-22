@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             if (!EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window"))
                             {
                                 EditorUtility.DisplayDialog("Package Required", "You need to install the MRTK tools (Microsoft.MixedRealityToolkit.Unity.Tools) package to use this button", "OK");
+                            }
                         }
 
                         InspectorUIUtility.RenderDocumentationButton(upgradeDocUrl);
