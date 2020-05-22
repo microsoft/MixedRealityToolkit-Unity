@@ -74,13 +74,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 
+        /// <inheritdoc />
         public bool SmoothEyeTracking { get; set; } = false;
 
+        /// <inheritdoc />
         public IMixedRealityEyeSaccadeProvider SaccadeProvider => this;
 
+        /// <inheritdoc />
         public event Action OnSaccade;
+
+        /// <inheritdoc />
         public event Action OnSaccadeX;
+
+        /// <inheritdoc />
         public event Action OnSaccadeY;
+
         private readonly bool eyesApiAvailable = false;
         private readonly float smoothFactorNormalized = 0.96f;
         private readonly float saccadeThreshInDegree = 2.5f; // In degrees (not radians)
