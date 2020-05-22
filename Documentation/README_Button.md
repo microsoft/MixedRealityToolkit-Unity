@@ -134,6 +134,8 @@ In MRTK 2.4 and beyond, we recommend custom icon textures be moved into an IconS
 To upgrade the assets on all buttons in a project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
 (Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
 
+Importing the Microsoft.MixedRealityToolkit.Unity.Tools package required to upgrade the buttons.
+
 ![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
 
 If an icon is not found in the default icon set during migration, a custom icon set will be created in MixedRealityToolkit.Generated/CustomIconSets. A dialog will indicate that this has taken place.
