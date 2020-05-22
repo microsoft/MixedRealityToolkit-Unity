@@ -258,6 +258,14 @@ Note that BoundsControl is still in experimental phase and therefore API or prop
 <p><strong>MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3</strong></p>
 <p>An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239">#7239</a>).</p>
 <p>As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity</a>.</p>
+<p><strong>Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4</strong></p>
+<p>If the platform is switched from Standalone to UWP and then back to Standalone in Unity 2018.4, the following errors might be in the console:</p>
+<pre><code>PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Microsoft.Windows.MixedReality.DotNetWinRT.dll included for the current platform. Only one assembly with the same name is allowed per platform. Assembly paths
+</code></pre>
+<pre><code>Assets\MRTK\Examples\Demos\HandTracking\Scenes\Utilities\InspectorFields\AssemblyInfo.cs(6,12): error CS0579: Duplicate 'AssemblyVersion' attribute
+</code></pre>
+<p>These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.</p>
+<p>For a more details see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948">Issue 7948</a>.</p>
 </article>
           </div>
           
