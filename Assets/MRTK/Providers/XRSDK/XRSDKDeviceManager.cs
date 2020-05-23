@@ -141,9 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 Type controllerType = GetControllerType(currentControllerType);
                 InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
                 IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-                IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
                 GenericXRSDKController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
 
                 if (detectedController == null || !detectedController.Enabled)
