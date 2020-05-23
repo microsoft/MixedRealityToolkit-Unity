@@ -85,11 +85,6 @@
 <p>To run an app on device as a standalone app (for HoloLens, Android, iOS, etc.), the build and deploy step needs to be executed in the unity project. Building and deploying an app that uses MRTK is just like building and deploying any other Unity app. There are no MRTK-specific instructions. Read below for detailed steps on how to build and deploy a Unity app for HoloLens.  Learn more about building for other platforms at <a href="https://docs.unity3d.com/Manual/PublishingBuilds.html">Publishing Builds</a>.</p>
 <h2 id="building-and-deploying-mrtk-to-hololens-1-and-hololens-2-uwp">Building and deploying MRTK to HoloLens 1 and HoloLens 2 (UWP)</h2>
 <p>Instructions on how to build and deploy for HoloLens 1 and HoloLens 2 (UWP) can be found at <a href="https://docs.microsoft.com/windows/mixed-reality/mrlearning-base-ch1#build-your-application-to-your-device">building your application to device</a>.</p>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>If using Unity 2019.3.x, select <strong>ARM64</strong> and not <strong>ARM</strong> as the build architecture in Visual Studio. With the default Unity settings in Unity 2019.3.x, a Unity app will not deploy to a HoloLens if ARM is selected due to a Unity bug. This can be tracked on <a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">Unity's issue tracker</a>.</p>
-<p>If the ARM architecture is required, navigate to <strong>Edit &gt; Project Settings, Player</strong>, and under the <strong>Other Settings</strong> menu disable <strong>Graphics Jobs</strong>. Disabling <strong>Graphics Jobs</strong> will allow the app to deploy using the ARM build architecture for Unity 2019.3.x, but ARM64 is recommended.</p>
-</div>
 <p><strong>Tip:</strong> When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that the build settings &quot;Target SDK Version&quot;
 and &quot;Minimum Platform Version&quot; look like they do in the picture below:</p>
 <p><img src="Images/getting_started/BuildWindow.png" alt="Build window"></p>
@@ -97,6 +92,26 @@ and &quot;Minimum Platform Version&quot; look like they do in the picture below:
 be changed inside the Visual Studio solution).</p>
 <p>Make sure that the &quot;Target SDK Version&quot; dropdown includes the option &quot;10.0.18362.0&quot; - if this is missing,
 <a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">the latest Windows SDK</a> needs to be installed.</p>
+<h3 id="unity-20193-and-hololens">Unity 2019.3 and HoloLens</h3>
+<p>If a HoloLens app appears as a 2D panel on device, make sure the following settings have been configured in Unity 2019.3.x before deploying your UWP app:</p>
+<p>If using the legacy XR:</p>
+<ol>
+<li>Navigate to Edit &gt; Project Settings, Player</li>
+<li>Under <strong>XR Settings</strong> in the UWP tab, make sure <strong>Virtual Reality Supported</strong> is enabled and the <strong>Windows Mixed Reality</strong> SDK has been added to SDKs.</li>
+<li>Build and deploy in Visual Studio</li>
+</ol>
+<p>If using the XR-Plugin:</p>
+<ol>
+<li>Follow the steps found in <a href="GettingStartedWithMRTKAndXRSDK.html">Getting Started with XRSDK</a></li>
+<li>Make sure the configuration profile is the <strong>DefaultXRSDKConfigurationProfile</strong></li>
+<li>Navigate to <strong>Edit &gt; Project Settings, XR-Plugin Management</strong> and make sure <strong>Windows Mixed Reality</strong> is enabled.</li>
+<li>Build and deploy in Visual Studio</li>
+</ol>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If using Unity 2019.3.x, select <strong>ARM64</strong> and not <strong>ARM</strong> as the build architecture in Visual Studio. With the default Unity settings in Unity 2019.3.x, a Unity app will not deploy to a HoloLens if ARM is selected due to a Unity bug. This can be tracked on <a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">Unity's issue tracker</a>.</p>
+<p>If the ARM architecture is required, navigate to <strong>Edit &gt; Project Settings, Player</strong>, and under the <strong>Other Settings</strong> menu disable <strong>Graphics Jobs</strong>. Disabling <strong>Graphics Jobs</strong> will allow the app to deploy using the ARM build architecture for Unity 2019.3.x, but ARM64 is recommended.</p>
+</div>
 <h2 id="building-and-deploying-mrtk-to-a-windows-mixed-reality-headset">Building and deploying MRTK to a Windows Mixed Reality Headset</h2>
 <p>The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platform (UWP) and Standalone builds.  A Standalone build for a WMR headset requires the following extra steps:</p>
 <div class="NOTE">
