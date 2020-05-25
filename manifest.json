@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/BuildAndDeploy.html",
-          "hash": "oLJIQDUlQnxgzH0a8UNNxw=="
+          "hash": "xQW/7alL+Li52ut8rqUKCw=="
         }
       },
       "is_incremental": false,
@@ -1014,7 +1014,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "l0FYH9Nmbuz+sgj6BjXsCA=="
+          "hash": "lyq19NQ/llLPvIoWJGt6PA=="
         }
       },
       "is_incremental": false,
@@ -7799,7 +7799,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "hnfBlteWbT6Uj0s9xtK+ZA=="
+          "hash": "MPURpGVvN4//LJhUD5F71w=="
         }
       },
       "is_incremental": false,
@@ -8063,7 +8063,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "wAYuFODMY0WLBk5cpWl5Hg=="
+          "hash": "6Y0ycgWyUaR6Rp7pEi5YOQ=="
         }
       },
       "is_incremental": false,
@@ -27927,17 +27927,17 @@
           "total_file_count": 162,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1619,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1619,
           "skipped_file_count": 0
         }
       }
