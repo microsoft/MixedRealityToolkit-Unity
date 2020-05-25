@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (requestedPointer == null)
                         {
                             // We couldn't obtain a pointer from our cache, resort to creating a new one
-                            requestedPointer = CreatePointer(in option);
+                            requestedPointer = CreatePointer(ref option);
                         }
 
                         if (requestedPointer != null)
@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// PointerOption is passed by ref to reduce copy overhead of struct
         /// </remarks>
-        private IMixedRealityPointer CreatePointer(in PointerOption option)
+        private IMixedRealityPointer CreatePointer(ref PointerOption option)
         {
             using (CreatePointerPerfMarker.Auto())
             {
