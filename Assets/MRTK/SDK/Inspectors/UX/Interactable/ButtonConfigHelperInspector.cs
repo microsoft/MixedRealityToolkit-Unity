@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private const string generatedIconSetName = "CustomIconSet";
         private const string customIconSetsFolderName = "CustomIconSets";
         private const string customIconUpgradeMessage = "This button appears to have a custom icon material. This is no longer required for custom icons.\n\n" +
-            "We recommend upgrading the buttons in your project using the Migration Tool.";
+            "We recommend upgrading the buttons in your project by installing the Microsoft.MixedRealityToolkit.Unity.Tools package and using the Migration Tool.";
         private const string missingIconWarningMessage = "The icon used by this button's custom material was not found in the icon set.";
         private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
         private const string upgradeDocUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text";
@@ -89,7 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         if (GUILayout.Button("Use migration tool to upgrade buttons"))
                         {
-                            EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window");
+                            if (!EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window"))
+                            {
+                                EditorUtility.DisplayDialog("Package Required", "You need to install the MRTK tools (Microsoft.MixedRealityToolkit.Unity.Tools) package to use the Migration Tool", "OK");
+                            }
                         }
 
                         InspectorUIUtility.RenderDocumentationButton(upgradeDocUrl);

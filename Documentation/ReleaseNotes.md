@@ -3,6 +3,7 @@
 - [What's new](#whats-new-in-240)
 - [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
+- [Known issues](#known-issues-in-240)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -213,3 +214,19 @@ For more information on these changes and complete instructions for eye tracking
 An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)). 
 
 As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
+
+**Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4** 
+
+If the platform is switched from Standalone to UWP and then back to Standalone in Unity 2018.4, the following errors might be in the console:
+
+```
+PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Microsoft.Windows.MixedReality.DotNetWinRT.dll included for the current platform. Only one assembly with the same name is allowed per platform. Assembly paths
+```
+
+```
+Assets\MRTK\Examples\Demos\HandTracking\Scenes\Utilities\InspectorFields\AssemblyInfo.cs(6,12): error CS0579: Duplicate 'AssemblyVersion' attribute
+```
+
+These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.
+
+For a more details see [Issue 7948](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948).
