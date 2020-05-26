@@ -241,7 +241,7 @@ There is a [known issue](https://issuetracker.unity3d.com/issues/enabling-graphi
 
 **Runtime profile swapping**
 
-MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues 4289, 5465 and 5466 for more information.
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289), [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
 
 **Unity 2018: .NET Backend and AR Foundation**
 
