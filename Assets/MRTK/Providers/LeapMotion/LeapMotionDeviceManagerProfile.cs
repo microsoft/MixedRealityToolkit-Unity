@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         public LeapControllerOrientation LeapControllerOrientation => leapControllerOrientation;
 
         [SerializeField]
-        [Tooltip("Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation" +
+        [Tooltip("Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation " +
         "is LeapControllerOrientation.Desk and is necessary for the hand to appear in front of the main camera. If the leap controller is on the " +
-        "desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the hands is the position of the" + 
+        "desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the hands is the position of the " + 
         "game object with the LeapServiceProvider attached.")]
         private Vector3 leapControllerOffset = new Vector3(0, -0.2f, 0.2f);
 
@@ -61,12 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         [SerializeField]
         [Tooltip("The minimum distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture to deselect.  The distance between the thumb and  " +
-            "the index tip must be greater than than the ExitPinchDistance to raise the OnInputUp event")]
+            "the index tip must be greater than the ExitPinchDistance to raise the OnInputUp event")]
         private float exitPinchDistance = 0.05f;
 
         /// <summary>
         /// The minimum distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture to deselect.  The distance between the thumb and 
-        /// the index tip must be greater than than the ExitPinchDistance to raise the OnInputUp event
+        /// the index tip must be greater than the ExitPinchDistance to raise the OnInputUp event
         /// </summary>
         public float ExitPinchDistance
         {        

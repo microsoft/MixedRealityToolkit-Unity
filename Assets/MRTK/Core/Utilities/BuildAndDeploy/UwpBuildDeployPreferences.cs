@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Gets the build configuraition type as a WSABuildType enum
+        /// Gets the build configuration type as a WSABuildType enum
         /// </summary>
         public static WSABuildType BuildConfigType
         {

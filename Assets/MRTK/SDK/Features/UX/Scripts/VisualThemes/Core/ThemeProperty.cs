@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ThemeProperty
     {
         /// <summary>
-        /// Dispalyed as Label in Inspector
+        /// Displayed as Label in Inspector
         /// </summary>
         public string Name;
 
