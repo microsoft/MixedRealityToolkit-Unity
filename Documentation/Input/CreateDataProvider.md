@@ -190,7 +190,7 @@ It is recommended to implement the pattern utilized by the MRTK when instrumenti
 
 > [!Note]
 > The name used to identify the profiler marker is arbitrary. The MRTK uses the following pattern.
-> 
+>
 > "[product] className.methodName - optional note"
 >
 > It is recommended that custom data providers follow a similar pattern to help simplify identification of specific components and methods when analyzing traces.

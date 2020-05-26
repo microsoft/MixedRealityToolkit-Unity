@@ -6,7 +6,7 @@ MRTK Standard shading system utilizes a single, flexible shader that can achieve
 
 ## Example scenes
 
-You can find the shader material examples in the **MaterialGallery** scene under 
+You can find the shader material examples in the **MaterialGallery** scene under
 `MRTK/Examples/Demos/StandardShader/Scenes/`. All materials in this scene are using the MRTK/Standard shader.
 
 ![Material Gallery](../Documentation/Images/MRTKStandardShader/MRTK_MaterialGallery.jpg)
