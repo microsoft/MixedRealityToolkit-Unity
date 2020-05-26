@@ -23,16 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         GameObject JoystickVisual = null;
 
         [SerializeField]
-        float Speed = 3;
+        float Rebound_Speed = 3;
 
         [SerializeField]
-        float Sensitivity = 13;
+        float Sensitivity_LeftRight = 100;
 
+        [SerializeField]
+        float Sensitivity_ForwardBack = 150;
+
+        [SerializeField]
         float Multiplier_Move = 0.03f;
+
         float Multiplier_Rotate = 1.1f;
         float Multiplier_Scale = 0.4f;
-        // (Push / Pull gets multiplied for ergonomics)
-        float Multiplier_PushPull = 18;
 
         Vector3 startPosition;
         Vector3 draggingObjectPosition;
@@ -52,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 // when dragging stops, move joystick back to idle
                 if(Grabber != null)
                 {
-                    Grabber.transform.position = Vector3.Lerp(Grabber.transform.position, startPosition, Time.deltaTime * Speed);
+                    Grabber.transform.position = Vector3.Lerp(Grabber.transform.position, startPosition, Time.deltaTime * Rebound_Speed);
                 }
             }
             calculateJoystickRotation();
@@ -62,12 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             draggingObjectPosition = Grabber.transform.position - startPosition;
             // Left Right
-            joystickRotation.z = -draggingObjectPosition.x;
+            joystickRotation.z = -draggingObjectPosition.x * Sensitivity_LeftRight;
             // Forward Back
-            joystickRotation.x = draggingObjectPosition.z * Multiplier_PushPull;
+            joystickRotation.x = draggingObjectPosition.z * Sensitivity_ForwardBack;
             if(JoystickVisual != null)
             {
-                JoystickVisual.transform.localRotation = Quaternion.Euler(joystickRotation * Sensitivity);
+                JoystickVisual.transform.localRotation = Quaternion.Euler(joystickRotation);
             }
         }
         void applyJoystickValues()
@@ -94,7 +97,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                     ObjectToManipulate.transform.localScale += newScale;
                 }
             }
-            DebugText.text = draggingObjectPosition.ToString();
+            if(DebugText != null)
+            {
+                DebugText.text = draggingObjectPosition.ToString();
+            }
         }
         public void StartDrag()
         {
