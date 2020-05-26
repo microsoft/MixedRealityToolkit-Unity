@@ -253,8 +253,9 @@ GameObject:
   - component: {fileID: 5706572166712672370}
   - component: {fileID: 5706572166712672369}
   - component: {fileID: 9101763540981274649}
-  - component: {fileID: 2050906356467104871}
   - component: {fileID: 3816039547157159901}
+  - component: {fileID: 2050906356467104871}
+  - component: {fileID: 1964729684629225087}
   m_Layer: 0
   m_Name: Grabber
   m_TagString: Untagged
@@ -420,23 +421,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2050906356467104871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5706572166712672382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 149fa3ae453128b41940b5caa905f8ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTransform: {fileID: 0}
-  handType: 3
-  proximityType: 3
-  constraintOnMovement: 2
-  useLocalSpaceForConstraint: 0
 --- !u!114 &3816039547157159901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,6 +434,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
+--- !u!114 &2050906356467104871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706572166712672382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149fa3ae453128b41940b5caa905f8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
+  handType: -1
+  proximityType: 3
+  constraintOnMovement: 2
+  useLocalSpaceForConstraint: 0
+--- !u!114 &1964729684629225087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706572166712672382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
+  handType: -1
+  proximityType: -1
+  constraintOnRotation: -1
+  useLocalSpaceForConstraint: 1
 --- !u!1 &5706572167046604150
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +753,12 @@ MonoBehaviour:
   DebugText: {fileID: 5706572166273258445}
   Grabber: {fileID: 5706572166712672382}
   JoystickVisual: {fileID: 5706572167046604150}
+  Rebound_Speed: 3
+  Sensitivity_LeftRight: 100
+  Sensitivity_ForwardBack: 150
+  Multiplier_Move: 0.03
+  Multiplier_Rotate: 1.1
+  Multiplier_Scale: 0.4
 --- !u!1 &5706572168053269082
 GameObject:
   m_ObjectHideFlags: 0
