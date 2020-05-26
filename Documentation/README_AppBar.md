@@ -6,7 +6,7 @@ App bar is a UI component that is used together with the [bounding box](README_B
 
 ## How to use app bar
 
-Drag and drop [AppBar.prefab](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/AppBar/AppBar.prefab) into the scene hierarchy. In the inspector panel of the component, assign any object with a bounding box as the *Target Bounding Box* to add the app bar to it.
+Drag and drop `AppBar` (Assets/MRTK/SDK/Features/UX/Prefabs/AppBar/AppBar.prefab) into the scene hierarchy. In the inspector panel of the component, assign any object with a bounding box as the *Target Bounding Box* to add the app bar to it.
 
 **Important:** The bounding box activation option for the target object should be 'Activate Manually'.
 

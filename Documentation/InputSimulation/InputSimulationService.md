@@ -94,7 +94,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the **Han
 
 Press and hold the **Left/Right Hand Control Key** (default: *Left Shift* for left hand and *Space* for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released, the hands will disappear after a short **Hand Hide Timeout**.
 
-Hands can be toggled on permanently in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Hand Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again.
+Hands can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Hand Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again. To manipulate the hands, the **Left/Right Hand Control Key** needs to be held. Double tapping the **Left/Right Hand Control Key** can also toggle the hands on/off.
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the **mouse wheel**.
 
@@ -115,8 +115,6 @@ All hand placement can also changed in the [input simulation tools window](#inpu
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
 1. Enable hand control using the **Left/Right Hand Control Key** (*Left Shift* or *Space*)
-
-   Alternatively, toggle the hands on/off using the toggle keys (*T* or *Y*).
 
 2. While manipulating, press and hold a mouse button to perform a hand gesture.
 
@@ -143,25 +141,37 @@ For manipulating objects with two hands at the same time, the persistent hand mo
 1. Manipulate one hand at a time:
     1. Hold **Space** to control the right hand
     1. Move the hand to where you want to grab the object
-    1. Press the **left mouse button** to activate the *Pinch* gesture. In persistent mode the gesture will remain active when you release the mouse button.
+    1. Press the **left mouse button** to activate the *Pinch* gesture. 
+    1. Release **Space** to stop controlling the right hand. The hand will be frozen in place and be locked into the *Pinch* gesture since it is no longer being manipulated.
 1. Repeat the process with the other hand, grabbing the same object in a second spot.
 1. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-### GGV interaction
+### GGV (Gaze, Gesture, and Voice) interaction
+
+By default, GGV interaction is enabled in-editor while there are no articulated hands present in the scene.
+
+1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
+1. Click and hold **left mouse button** to interact
+1. Rotate the camera again to manipulate the object
+
+You can turn this off by toggling the *Is Hand Free Input Enabled* option inside the Input Simulation Profile.
+
+In addition, you can use simulated hands for GGV interaction
 
 1. Enable GGV simulation by switching **Hand Simulation Mode** to *Gestures* in the [Input Simulation Profile](#enabling-the-input-simulation-service)
 1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
 1. Hold **Space** to control the right hand
 1. Click and hold **left mouse button** to interact
-1. Rotate the camera again to manipulate the object
+1. Use your mouse to move the object
+1. Release the mouse button to stop interaction
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ### Eye tracking
 
-[Eye tracking simulation](../EyeTracking/EyeTracking*BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the **Simulate Eye Position** option in the
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the **Simulate Eye Position** option in the
 [Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
 style interactions (so ensure that **Hand Simulation Mode** is set to *Articulated*).
 
