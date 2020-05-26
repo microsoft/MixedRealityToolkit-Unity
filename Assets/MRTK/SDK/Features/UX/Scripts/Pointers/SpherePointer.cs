@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 axis = transform.forward;
-                return false;
+                return true;
             }
         }
 
