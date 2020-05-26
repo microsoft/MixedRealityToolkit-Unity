@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public static bool ConfirmInitialized()
         {
-            // Assigning the Instance to access is used Implicitly.
+            // Calling the Instance property performs important initialization work.
             _ = Instance;
             return IsInitialized;
         }
