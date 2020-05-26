@@ -34,12 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         [SerializeField]
         float Multiplier_Move = 0.03f;
 
+        [SerializeField]
         float Multiplier_Rotate = 1.1f;
+
+        [SerializeField]
         float Multiplier_Scale = 0.4f;
 
         Vector3 startPosition;
-        Vector3 draggingObjectPosition;
-        Vector3 joystickRotation;
+        Vector3 joystickGrabberPosition;
+        Vector3 joystickVisualRotation;
         bool isDragging = false;
 
         string JoystickMode = "Move";
@@ -63,14 +66,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         }
         void calculateJoystickRotation()
         {
-            draggingObjectPosition = Grabber.transform.position - startPosition;
+            joystickGrabberPosition = Grabber.transform.position - startPosition;
             // Left Right
-            joystickRotation.z = -draggingObjectPosition.x * Sensitivity_LeftRight;
+            joystickVisualRotation.z = -joystickGrabberPosition.x * Sensitivity_LeftRight;
             // Forward Back
-            joystickRotation.x = draggingObjectPosition.z * Sensitivity_ForwardBack;
+            joystickVisualRotation.x = joystickGrabberPosition.z * Sensitivity_ForwardBack;
             if(JoystickVisual != null)
             {
-                JoystickVisual.transform.localRotation = Quaternion.Euler(joystickRotation);
+                JoystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
             }
         }
         void applyJoystickValues()
@@ -79,27 +82,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             {
                 if (JoystickMode == "Move")
                 {
-                    ObjectToManipulate.transform.position += (draggingObjectPosition * Multiplier_Move);
+                    ObjectToManipulate.transform.position += (joystickGrabberPosition * Multiplier_Move);
                 }
                 else if (JoystickMode == "Rotate")
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
-                    newRotation.y += (draggingObjectPosition.x * Multiplier_Rotate);
+                    newRotation.y += (joystickGrabberPosition.x * Multiplier_Rotate);
                     newRotation.x = 0;
                     newRotation.z = 0;
                     ObjectToManipulate.transform.rotation = Quaternion.Euler(newRotation);
                 }
                 else if (JoystickMode == "Scale")
                 {
-                    Vector3 newScale = new Vector3(draggingObjectPosition.x, draggingObjectPosition.x, draggingObjectPosition.x) * Multiplier_Scale;
+                    Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * Multiplier_Scale;
                     //TODO: Clamp above Minimum_Scale
                     ObjectToManipulate.transform.localScale += newScale;
                 }
             }
             if(DebugText != null)
             {
-                DebugText.text = draggingObjectPosition.ToString();
+                DebugText.text = joystickGrabberPosition.ToString();
             }
         }
         public void StartDrag()
