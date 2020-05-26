@@ -155,17 +155,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
             foreach (Hand hand in leapHandsInCurrentFrame)
             {
-                if (hand.IsLeft && ControllerHandedness == Handedness.Left)
+                if ((hand.IsLeft && ControllerHandedness == Handedness.Left) ||
+                    (hand.IsRight && ControllerHandedness == Handedness.Right))
                 {
-                    Vector3 position = hand.Fingers[metacarpalIndex].bones[0].PrevJoint.ToVector3();
-                    Quaternion rotation = hand.Fingers[metacarpalIndex].bones[0].Rotation.ToQuaternion();
-
-                    return new MixedRealityPose(position, rotation);
-                }
-                else if (hand.IsRight && ControllerHandedness == Handedness.Right)
-                {
-                    Vector3 position = hand.Fingers[metacarpalIndex].bones[0].PrevJoint.ToVector3();
-                    Quaternion rotation = hand.Fingers[metacarpalIndex].bones[0].Rotation.ToQuaternion();
+                    // Leapmotion thumb metacarpal is stored at index 1
+                    int boneIndex = (metacarpalJoint == TrackedHandJoint.ThumbMetacarpalJoint) ? 1 : 0;
+                    Vector3 position = hand.Fingers[metacarpalIndex].bones[boneIndex].PrevJoint.ToVector3();
+                    Quaternion rotation = hand.Fingers[metacarpalIndex].bones[boneIndex].Rotation.ToQuaternion();
 
                     return new MixedRealityPose(position, rotation);
                 }
