@@ -39,6 +39,26 @@ A [Leap Motion Controller](https://www.ultraleap.com/product/leap-motion-control
 
 ![LeapMotionIntroGif](Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif)
 
+**Migration window**
+
+![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
+
+MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer
+versions and to keep existing code working even as MRTK makes breaking changes.
+
+**It is generally recommended to run the migration tool after pulling a new version of MRTK** to
+ensure that as much of your project will be auto-adjusted to the latest MRTK code.
+
+The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities >
+Migration Window'. It it part of the **Tools** package.
+
+It currently supports:
+
+- Upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.
+- Updating custom button icons to work correctly with the new Button Config Helper.
+
+Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
+
 **MRTK folder layout changes**
 
 This version of MRTK modifies the layout of the MRTK folder structure. This change encapsulates all MRTK code into a single folder hierarchy and reduces the total path length of all MRTK files.
@@ -169,13 +189,6 @@ Users can take advantage of the new [migration window](Tools/MigrationWindow.md)
 **Bounds control improvements**
 
 We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type. 
-
-**Migration window**
-
-![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
-
-MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities > Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl. 
-Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
 
 ### Breaking changes in 2.4.0
 
