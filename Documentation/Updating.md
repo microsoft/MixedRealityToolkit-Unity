@@ -14,10 +14,15 @@ The 2.4.0 release has some changes that may impact application projects. Breakin
 > [!NOTE]
 > At this time, it is not supported to switch between using .unitypackage files and NuGet.
 
+*Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
+after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
+breaking changes.
+
 ### Unity asset (.unitypackage) files
 
 For the smoothest upgrade path, please use the following steps.
 
+1. Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.
 1. Close Unity
 1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
@@ -38,7 +43,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Re-open the project in Unity
 1. Import the new unity packages
     - Foundation - _Import this package first_
-    - (Optional) Tools
+    - Tools
     - (Optional) Extensions
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
@@ -50,6 +55,7 @@ For the smoothest upgrade path, please use the following steps.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
+1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
 
 ### NuGet packages
 
