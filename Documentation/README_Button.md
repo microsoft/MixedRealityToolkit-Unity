@@ -178,7 +178,7 @@ HoloLens 2's shell-style button's size is 32x32mm. To customize the dimension, c
 2. **Quad** under BackPlate
 3. **Box Collider** on the root
 
-Then, click **Fix Bounds** button in the NearInteractionTouchble script which is in the root of the button. 
+Then, click **Fix Bounds** button in the NearInteractionTouchable script which is in the root of the button.
 
 Update the size of the FrontPlate
 ![Button](Images/Button/MRTK_Button_SizeCustomization1.png)

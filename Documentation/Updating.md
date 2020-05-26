@@ -131,7 +131,7 @@ if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
 
 **WindowsApiChecker properties**
 
-The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvailable`, `IsPropertyAvailable` or `IsTypeAvailable`.
 
 - UniversalApiContractV8_IsAvailable
 - UniversalApiContractV7_IsAvailable
@@ -188,7 +188,7 @@ The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPoi
 
 Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.
 
-**Spatial observer StarupBehavior**
+**Spatial observer StartupBehavior**
 
 Spatial observers built upon the `BaseSpatialObserver` class now honor the value of StartupBehavior when re-enabled ([#6919](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919)).
 
