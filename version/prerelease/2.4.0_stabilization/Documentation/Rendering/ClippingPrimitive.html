@@ -97,7 +97,7 @@
 <h2 id="examples">Examples</h2>
 <p>The <strong>ClippingExamples</strong> and <strong>MaterialGallery</strong> scenes demonstrate usage of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> behaviors, and can be found at: MRTK/Examples/Demos/StandardShader/Scenes/</p>
 <h2 id="advanced-usage">Advanced Usage</h2>
-<p>By default only one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> can clip a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a> at a time. If your project requires more than one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a>  the sample code below demonstrates how to achive this.</p>
+<p>By default only one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> can clip a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a> at a time. If your project requires more than one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a>  the sample code below demonstrates how to achieve this.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Having multiple <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> clip a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a> will increase pixel shader instructions and will impact performance. Please profile these changes within your project.</p>
@@ -115,7 +115,7 @@
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>The above change will inccur additional shader compilation time.</p>
+<p>The above change will incur additional shader compilation time.</p>
 </div>
 <p><em>How to have two of the same <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> clip a render. For example two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBoxes</code></a> at the same time:</em></p>
 <pre><code class="lang-C#">// 1) Add the below MonoBehaviour to your project:

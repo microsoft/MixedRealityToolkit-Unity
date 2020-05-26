@@ -91,12 +91,12 @@
 <h2 id="examples">Examples</h2>
 <p>Most scenes within the MRTK utilize a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLight</code></a>. The most common use case can be found on the MRTK/SDK/Features/UX/Prefabs/Cursors/DefaultCursor.prefab</p>
 <h2 id="advanced-usage">Advanced Usage</h2>
-<p>By default only two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> can illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> at a time. If your project requires more than two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> the sample code below demonstrates how to achive this.</p>
+<p>By default only two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> can illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> at a time. If your project requires more than two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> the sample code below demonstrates how to achieve this.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Having many <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> will increase pixel shader instructions and will impact performance. Please profile these changes within your project.</p>
 </div>
-<p><em>How to increase the number of avalible <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a>
+<p><em>How to increase the number of available <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a>
 from two to four.</em></p>
 <pre><code class="lang-C#">// 1) Within MRTK/Core/StandardAssets/Shaders/MixedRealityStandard.shader change:
 
@@ -116,9 +116,8 @@ private const int hoverLightCount = 4;
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>If Unity logs a warning simular to below then you must restart Unity before your changes will take effect.</p>
-<pre><code>Property (_HoverLightData) exceeds previous array size (8 vs 4). Cap to previous &gt;size.
-</code></pre>
+<p>If Unity logs a warning similar to below then you must restart Unity before your changes will take effect.</p>
+<p><code>Property (_HoverLightData) exceeds previous array size (8 vs 4). Cap to previous &gt;size.</code></p>
 </div>
 <h2 id="see-also">See also</h2>
 <ul>

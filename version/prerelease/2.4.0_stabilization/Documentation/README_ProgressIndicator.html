@@ -97,7 +97,7 @@ private void Start()
     indicator = indicatorObject.GetComponent&lt;IProgressIndicator&gt;();
 }
 </code></pre>
-<p>The <code>IProgressIndicator.OpenAsnyc()</code> and <code>IProgressIndicator.CloseAsync()</code> methods return <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Tasks</a>. We recommend awaiting these Tasks in an aync method.</p>
+<p>The <code>IProgressIndicator.OpenAsync()</code> and <code>IProgressIndicator.CloseAsync()</code> methods return <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Tasks</a>. We recommend awaiting these Tasks in an async method.</p>
 <p>Set the indicator's <code>Progress</code> property to a value from 0-1 to update its displayed progress. Set its <code>Message</code> property to update its displayed message. Different implementations may display this content in different ways.</p>
 <pre><code class="lang-c#">private async void OpenProgressIndicator()
 {
@@ -147,7 +147,7 @@ private void Start()
 <pre><code class="lang-c#">private async void ToggleIndicator(IProgressIndicator indicator)
 {
     await indicator.AwaitTransitionAsync();
-    
+
     switch (indicator.State)
     {
         case ProgressIndicatorState.Closed:
