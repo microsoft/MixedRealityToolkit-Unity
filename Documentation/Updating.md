@@ -16,7 +16,7 @@ The 2.4.0 release has some changes that may impact application projects. Breakin
 
 *Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
 after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
-breaking changes.
+breaking changes. The migration tool is part of the **Tools** package.
 
 ### Unity asset (.unitypackage) files
 
