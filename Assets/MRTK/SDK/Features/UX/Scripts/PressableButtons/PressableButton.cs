@@ -55,6 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     distanceSpaceMode = value;
                     float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
+
+                    // If our global-relative scale is extremely small (or zero), this scale calculation
+                    // will blow up. In this case, we'd rather just set these distances to zero.
+                    if (transform.lossyScale.magnitude <= float.Epsilon)
+                    {
+                        scale = 0.0f;
+                    }
+
                     startPushDistance *= scale;
                     maxPushDistance *= scale;
                     pressDistance *= scale;
@@ -468,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Returns world space position along the push direction for the given local distance
+        /// Returns local position along the push direction for the given local distance
         /// </summary>
         /// 
         public Vector3 GetLocalPositionAlongPushDirection(float localDistance)
