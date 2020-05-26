@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
-            // Definining the edge and corner handlers that will be used
+            // Defining the edge and corner handlers that will be used
             Debug.Log(bbox.transform.Find("rigRoot/midpoint_0").GetChild(0));
             var originalCornerHandlerScale = bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale;
             var cornerHandlerPosition = bbox.transform.Find("rigRoot/corner_0").transform.position;

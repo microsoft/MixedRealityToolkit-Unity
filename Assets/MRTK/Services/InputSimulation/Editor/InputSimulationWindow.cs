@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             EditorGUILayout.Space();
 
 // XXX Reloading the scene is currently not supported,
-// due to the life cycle of the MRTK "instance" object (see see #4530).
+// due to the life cycle of the MRTK "instance" object (see #4530).
 // Enable the button below once scene reloading is supported!
 #if false
             using (new GUIEnabledWrapper(Application.isPlaying))

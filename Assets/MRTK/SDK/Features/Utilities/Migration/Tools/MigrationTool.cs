@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             catch (Exception)
             {
-                Debug.LogError("Selected MigrationHandler implementation could not be instanciated.");
+                Debug.LogError("Selected MigrationHandler implementation could not be instantiated.");
                 return false;
             }
             return true;

@@ -521,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 // Platform Toolset
                 int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
-                int newPlatformToolsetIndex = EditorGUILayout.Popup("Plaform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
+                int newPlatformToolsetIndex = EditorGUILayout.Popup("Platform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
 
                 // Force rebuild
                 bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
@@ -675,7 +675,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     {
                         using (new EditorGUI.DisabledGroupScope(!AreCredentialsValid(localConnection)))
                         {
-                            if (GUILayout.Button("Discover Hololens Wifi IP", GUILayout.Width(HALF_WIDTH)))
+                            if (GUILayout.Button("Discover HoloLens WiFi IP", GUILayout.Width(HALF_WIDTH)))
                             {
                                 EditorApplication.delayCall += () =>
                                 {
@@ -1064,7 +1064,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             if (IsValidIpAddress(ipAddress) 
                                 && !portalConnections.Connections.Any(connection => connection.IP == ipAddress))
                             {
-                                Debug.Log($"Adding new IP {ipAddress} for local hololens {machineName.ComputerName} to remote connection list");
+                                Debug.Log($"Adding new IP {ipAddress} for local HoloLens {machineName.ComputerName} to remote connection list");
 
                                 AddRemoteConnection(new DeviceInfo(ipAddress,
                                     localConnection.User,
@@ -1077,7 +1077,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
                 }
 
-                Debug.Log($"No new or valid Wifi IP Addresses found for local hololens {machineName.ComputerName}");
+                Debug.Log($"No new or valid WiFi IP Addresses found for local HoloLens {machineName.ComputerName}");
             }
         }
 
