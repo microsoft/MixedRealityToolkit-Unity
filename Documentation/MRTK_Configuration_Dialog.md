@@ -29,7 +29,7 @@ Configures the Virtual Reality Supported and Virtual Reality SDK options in **Pl
 
 Configures the **Player Settings** > **XR Settings** > **Stereo Rendering Mode** to **Single Pass Instanced**.
 
-### Set default Spatial Awareness layer 
+### Set default Spatial Awareness layer
 
 Registers Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
 
@@ -48,7 +48,7 @@ Microsoft provided spatializer that supports utilization of hardware acceleratio
 
 This spatializer is available via [NuGet](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/) and [GitHub](https://github.com/microsoft/spatialaudio-unity).
 
-More details on Microsoft Spatializer can be found in the [Spatial Sound documentation](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-sound-in-unity).
+More details on Microsoft Spatializer can be found in the [Spatial Sound documentation](https://docs.microsoft.com/windows/mixed-reality/spatial-sound-in-unity).
 
 - MS HRTF Spatializer
 
@@ -58,7 +58,7 @@ Microsoft Windows spatializer that is provided by Unity as part of the Windows M
 
 A cross platform spatializer from Google that is provided by Unity.
 
-More information can be found on the [Resonance Audio documentation](https://resonance-audio.github.io/resonance-audio/develop/unity/getting-started) site. 
+More information can be found on the [Resonance Audio documentation](https://resonance-audio.github.io/resonance-audio/develop/unity/getting-started) site.
 
 ## Universal Windows Platform settings
 
@@ -76,7 +76,7 @@ Enables specific application capabilities for Universal Windows Platform applica
 
 - Microphone
 
-  Enables capturing sound via the microphone. 
+  Enables capturing sound via the microphone.
 
 - Internet Client
 

@@ -101,7 +101,6 @@ Specifies how spatial meshes are to be displayed by the observer. Supported valu
 
 ![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_DisplayOptions.jpg)
 
-
 Spatial Observers can be [resumed/suspended at runtime via code.](UsageGuide.md#starting-and-stopping-mesh-observation)
 
 > [!WARNING]

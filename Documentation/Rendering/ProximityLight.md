@@ -1,6 +1,6 @@
 # Proximity Light
 
-A [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) is a [Fluent Design System](https://www.microsoft.com/design/fluent/) paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near interactions, the application can control the properties of a Proximity Light via the [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) component. 
+A [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) is a [Fluent Design System](https://www.microsoft.com/design/fluent/) paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near interactions, the application can control the properties of a Proximity Light via the [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) component.
 
 For a material to be influenced by a [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) the *Mixed Reality Toolkit/Standard* shader must be used and the *Proximity Light* property must be enabled.
 
@@ -10,7 +10,6 @@ For a material to be influenced by a [`ProximityLight`](xref:Microsoft.MixedReal
 ## Examples
 
 Most scenes within the MRTK utilize a [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). The most common use case can be found on the MRTK/SDK/Features/UX/Prefabs/Cursors/FingerCursor.prefab
-
 
 ## Advanced Usage
 
@@ -41,11 +40,9 @@ private const int proximityLightCount = 4;
 ```
 
 > [!NOTE]
-> If Unity logs a warning simular to below then you must restart Unity before your changes will take effect.
+> If Unity logs a warning similar to below then you must restart Unity before your changes will take effect.
 >
->```
->Property (_ProximityLightData) exceeds previous array size (24 vs 12). Cap to previous size.
->```
+>`Property (_ProximityLightData) exceeds previous array size (24 vs 12). Cap to previous size.`
 
 ## See also
 

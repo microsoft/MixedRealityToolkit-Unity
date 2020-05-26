@@ -1,4 +1,5 @@
 # Progress Indicators
+
 ![Progress Indicators](../Documentation/Images/ProgressIndicator/MRTK_ProgressIndicator_Main.png)
 
 ## Example scene
@@ -22,9 +23,10 @@ private void Start()
 }
 ```
 
-The `IProgressIndicator.OpenAsnyc()` and `IProgressIndicator.CloseAsync()` methods return [Tasks](xref:System.Threading.Tasks.Task). We recommend awaiting these Tasks in an aync method.
+The `IProgressIndicator.OpenAsync()` and `IProgressIndicator.CloseAsync()` methods return [Tasks](xref:System.Threading.Tasks.Task). We recommend awaiting these Tasks in an async method.
 
 Set the indicator's `Progress` property to a value from 0-1 to update its displayed progress. Set its `Message` property to update its displayed message. Different implementations may display this content in different ways.
+
 ```c#
 private async void OpenProgressIndicator()
 {
@@ -55,11 +57,12 @@ State | Valid Operations
 `ProgressIndicatorState.Closed` | `OpenAsync()`
 
 `AwaitTransitionAsync()` can be used to be sure an indicator is fully opened or closed before using it.
+
 ```c#
 private async void ToggleIndicator(IProgressIndicator indicator)
 {
     await indicator.AwaitTransitionAsync();
-    
+
     switch (indicator.State)
     {
         case ProgressIndicatorState.Closed:

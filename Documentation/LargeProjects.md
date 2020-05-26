@@ -105,7 +105,7 @@ Nuget.config*
 
 # DotNetAdapter specific
 # This section covers files that are deployed by the imported DotNetWinRT NuGet package
-# This is primarily used for Unity Editor to HoloLens 2 in-editor remoting 
+# This is primarily used for Unity Editor to HoloLens 2 in-editor remoting
 !/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/Shared/DotNetAdapter/DotNetAdapter.csproj
 Assets/MixedRealityToolkit.Providers/WindowsMixedReality/Shared/DotNetAdapter/.bin/
 Assets/MixedRealityToolkit.Providers/WindowsMixedReality/Shared/DotNetAdapter/.obj/

@@ -188,7 +188,7 @@ Users can take advantage of the new [migration window](Tools/MigrationWindow.md)
 
 **Bounds control improvements**
 
-We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type. 
+We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.
 
 ### Breaking changes in 2.4.0
 
@@ -222,13 +222,13 @@ For more information on these changes and complete instructions for eye tracking
 
 ### Known issues in 2.4.0
 
-**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3** 
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
 
-An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)). 
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)).
 
 As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
 
-**Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4** 
+**Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4**
 
 If the platform is switched from Standalone to UWP and then back to Standalone in Unity 2018.4, the following errors might be in the console:
 
