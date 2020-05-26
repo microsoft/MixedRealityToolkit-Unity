@@ -276,6 +276,19 @@ Users can take advantage of the new <a href="Tools/MigrationWindow.html">migrati
 </code></pre>
 <p>These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.</p>
 <p>For a more details see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948">Issue 7948</a>.</p>
+<p><strong>Applications appearing as a 2D slate on Unity 2019.3</strong></p>
+<p>When using Unity 2019.3, enabling XR support does not configure a default SDK (legacy) or plugin (XR Mangement). This results in applications being constrained to a 2D slate. Details on resolving this can be found in the <a href="BuildAndDeploy.html#unity-20193-and-hololens">Building and Deploying MRTK article</a>.</p>
+<p><strong>Unity 2019.3: ARM build architecture</strong></p>
+<p>There is a <a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">known issue</a> in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable <strong>Graphics Jobs</strong> in <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong> &gt; <strong>Other Settings</strong>. For more information see <a href="BuildAndDeploy.html#unity-20193-and-hololens">Building and Deploying</a>.</p>
+<p><strong>Runtime profile swapping</strong></p>
+<p>MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>, <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465">5465</a> and <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466">5466</a> for more information.</p>
+<p><strong>Unity 2018: .NET Backend and AR Foundation</strong></p>
+<p>There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.</p>
+<p>To work around this issue, please perform one of the following steps:</p>
+<ul>
+<li>Switch the scripting backend to IL2CPP</li>
+<li>In the Build Settings window, uncheck **Unity C# Projects&quot;</li>
+</ul>
 </article>
           </div>
           
