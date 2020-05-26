@@ -119,6 +119,20 @@
 <p>The <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Data Provider</a> enables articulated hand tracking for VR applications and is also useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.</p>
 <p>A <a href="https://www.ultraleap.com/product/leap-motion-controller/">Leap Motion Controller</a> is required to use this data provider.</p>
 <p><img src="Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif" alt="LeapMotionIntroGif"></p>
+<p><strong>Migration window</strong></p>
+<p><img src="Images/MigrationWindow/MRTK_Migration_Window.png" alt="Migration window"></p>
+<p>MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer
+versions and to keep existing code working even as MRTK makes breaking changes.</p>
+<p><strong>It is generally recommended to run the migration tool after pulling a new version of MRTK</strong> to
+ensure that as much of your project will be auto-adjusted to the latest MRTK code.</p>
+<p>The <a href="Tools/MigrationWindow.html">migration window</a> can be found in 'Mixed Reality Toolkit &gt; Utilities &gt;
+Migration Window'. It it part of the <strong>Tools</strong> package.</p>
+<p>It currently supports:</p>
+<ul>
+<li>Upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.</li>
+<li>Updating custom button icons to work correctly with the new Button Config Helper.</li>
+</ul>
+<p>Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.</p>
 <p><strong>MRTK folder layout changes</strong></p>
 <p>This version of MRTK modifies the layout of the MRTK folder structure. This change encapsulates all MRTK code into a single folder hierarchy and reduces the total path length of all MRTK files.</p>
 <table>
@@ -232,10 +246,6 @@ the MRTK input system that can be used to help optimize applications.</p>
 Users can take advantage of the new <a href="Tools/MigrationWindow.html">migration window</a> to upgrade their existing gameobject using ManipulationHandler to ObjectManipulator</p>
 <p><strong>Bounds control improvements</strong></p>
 <p>We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.</p>
-<p><strong>Migration window</strong></p>
-<p><img src="Images/MigrationWindow/MRTK_Migration_Window.png" alt="Migration window"></p>
-<p>MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The <a href="Tools/MigrationWindow.html">migration window</a> can be found in 'Mixed Reality Toolkit &gt; Utilities &gt; Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.
-Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.</p>
 <h3 id="breaking-changes-in-240">Breaking changes in 2.4.0</h3>
 <p><strong>Eye Gaze API</strong></p>
 <p>The <code>UseEyeTracking</code> property from <code>GazeProvider</code> implementation of <code>IMixedRealityEyeGazeProvider</code> was renamed to <code>IsEyeTrackingEnabled</code>.</p>
