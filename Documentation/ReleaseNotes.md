@@ -243,3 +243,24 @@ Assets\MRTK\Examples\Demos\HandTracking\Scenes\Utilities\InspectorFields\Assembl
 These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.
 
 For a more details see [Issue 7948](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948).
+
+**Applications appearing as a 2D slate on Unity 2019.3**
+
+When using Unity 2019.3, enabling XR support does not configure a default SDK (legacy) or plugin (XR Mangement). This results in applications being constrained to a 2D slate. Details on resolving this can be found in the [Building and Deploying MRTK article](BuildAndDeploy.md#unity-20193-and-hololens).
+
+**Unity 2019.3: ARM build architecture**
+
+There is a [known issue](https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2) in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable **Graphics Jobs** in **Edit** > **Project Settings** > **Player** > **Other Settings**. For more information see [Building and Deploying](BuildAndDeploy.md#unity-20193-and-hololens).
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289), [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2018: .NET Backend and AR Foundation**
+
+There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.
+
+To work around this issue, please perform one of the following steps:
+
+- Switch the scripting backend to IL2CPP
+- In the Build Settings window, uncheck **Unity C# Projects"
