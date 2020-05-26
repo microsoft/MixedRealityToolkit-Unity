@@ -237,7 +237,7 @@ When using Unity 2019.3, enabling XR support does not configure a default SDK (l
 
 **Unity 2019.3: ARM build architecture**
 
-There is a [known issue](https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2) in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable **Graphics Jobs** in **Edit** > **Project Settings** > **Player** > **Other Settings**.
+There is a [known issue](https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2) in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable **Graphics Jobs** in **Edit** > **Project Settings** > **Player** > **Other Settings**. For more information see [Building and Deploying](BuildAndDeploy.md#unity-20193-and-hololens).
 
 **Runtime profile swapping**
 
