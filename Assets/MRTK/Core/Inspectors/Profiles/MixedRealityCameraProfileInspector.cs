@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty transparentQualityLevel;
 
         private const string DataProviderErrorMsg = "The Mixed Reality Camera System will use default settings.\nAdd a settings provider to customize the camera.";
-        private static readonly GUIContent AddProviderTitle  = new GUIContent("+ Add Camera Settings Provider", "Add Camera Settings Provider");
+        private static readonly GUIContent AddProviderTitle = new GUIContent("+ Add Camera Settings Provider", "Add Camera Settings Provider");
         private static readonly GUIContent RemoveProviderTitle = new GUIContent("-", "Remove Camera Settings Provider");
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");

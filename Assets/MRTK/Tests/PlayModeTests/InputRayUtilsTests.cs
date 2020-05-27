@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestContext.Out.WriteLine($"origin: {ray.origin}");
             Assert.True(ray.origin == Vector3.zero);
             TestContext.Out.WriteLine($"direction: {ray.direction}");
-            Assert.True(ray.direction == new Vector3(0.0f, 0.0f, -1.0f)); 
+            Assert.True(ray.direction == new Vector3(0.0f, 0.0f, -1.0f));
         }
 
         [UnityTest]

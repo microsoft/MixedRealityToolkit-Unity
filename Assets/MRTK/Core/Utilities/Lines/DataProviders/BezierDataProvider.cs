@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
-        
+
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {

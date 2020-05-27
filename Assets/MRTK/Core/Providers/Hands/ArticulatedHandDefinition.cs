@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The distance between the index finger tip and the thumb tip required to enter the pinch/air tap selection gesture.
         /// The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1. 
         /// </summary>
-        public float EnterPinchDistance 
+        public float EnterPinchDistance
         {
             get => enterPinchDistance;
             set

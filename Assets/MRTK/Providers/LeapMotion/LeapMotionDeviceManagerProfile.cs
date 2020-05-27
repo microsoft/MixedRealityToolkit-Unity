@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// the index tip must be greater than the ExitPinchDistance to raise the OnInputUp event
         /// </summary>
         public float ExitPinchDistance
-        {        
+        {
             get => exitPinchDistance;
             set => exitPinchDistance = value;
         }

@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cube.transform.localScale = boundsControlStartScale;
             BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
             TestUtilities.PlayspaceToOriginLookingForward();
-            boundsControl.Active = true; 
+            boundsControl.Active = true;
 
             return boundsControl;
         }
@@ -716,7 +716,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsFalse(boundsControl.WireframeOnly, "wireframeonly should be disabled");
-            
+
             yield return hand.MoveTo(pointOnCube);
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsTrue(boundsControl.WireframeOnly, "wireframeonly should be enabled");
@@ -901,7 +901,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var defaultPadding = boundsControl.BoxPadding;
             var targetBoundsOriginal = boundsControl.TargetBounds; // this has the default padding already applied
             var targetBoundsSize = targetBoundsOriginal.size;
-            Vector3 targetBoundsScaleInv = new Vector3(1.0f/ targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
+            Vector3 targetBoundsScaleInv = new Vector3(1.0f / targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
 
             // set padding
             boundsControl.BoxPadding = Vector3.one * 0.5f;
@@ -996,7 +996,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// </summary>
         [UnityTest]
         public IEnumerator LinksRadiusTest()
-        { 
+        {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
@@ -1330,7 +1330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // check if new mesh filter was applied
             Assert.IsTrue(cornerMeshFilter.mesh.name.StartsWith(sharedMeshFilter.mesh.name), "sphere scale handle wasn't applied");
-            yield return null; 
+            yield return null;
         }
 
         /// <summary>
@@ -1360,7 +1360,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         private IEnumerator HandleMaterialTest(string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
+        {
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
@@ -1450,7 +1450,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleColliderPaddingTest("corner_3","corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
+            yield return HandleColliderPaddingTest("corner_3", "corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
         }
 
         /// <summary>
@@ -1467,7 +1467,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         private IEnumerator HandleColliderPaddingTest(string handleName, string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
+        {
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
@@ -1500,7 +1500,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             // now adjust collider bounds and try grabbing the handle again
-            handleConfig.ColliderPadding = handleConfig.ColliderPadding  + newColliderPadding;
+            handleConfig.ColliderPadding = handleConfig.ColliderPadding + newColliderPadding;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(cornerVisual, "corner visual got destroyed when setting material");

@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
             cursorPrefab = serializedObject.FindProperty("cursorPrefab");
             disableCursorOnStart = serializedObject.FindProperty("disableCursorOnStart");
             setCursorVisibilityOnSourceDetected = serializedObject.FindProperty("setCursorVisibilityOnSourceDetected");

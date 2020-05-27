@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             public ReverseComparer(IComparer<TElement> originalComparer)
             {
-                 Debug.Assert(originalComparer != null, "originalComparer cannot be null.");
+                Debug.Assert(originalComparer != null, "originalComparer cannot be null.");
 
                 this.originalComparer = originalComparer;
             }

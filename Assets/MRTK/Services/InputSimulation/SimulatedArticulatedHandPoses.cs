@@ -953,7 +953,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_Open JSON
@@ -1395,7 +1395,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_OpenSteadyGrabPoint JSON
@@ -1837,7 +1837,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_Pinch JSON
@@ -2025,15 +2025,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
               ""joint"": ""IndexTip"",
               ""pose"": {
                 ""position"": {
-                  ""x"": 0.00054007698781788349,
-                  ""y"": 0.0076306506525725126,
-                  ""z"": 0.0031634948682039976
+                  ""x"": 0.0011067038867622614,
+                  ""y"": 0.0017288230592384935,
+                  ""z"": -0.0008905145805329084
                 },
                 ""rotation"": {
-                  ""x"": -0.18848013877868652,
-                  ""y"": 0.1752738356590271,
-                  ""z"": -0.23216751217842102,
-                  ""w"": -0.938201367855072
+                  ""x"": -0.4986042380332947,
+                  ""y"": -0.10437075048685074,
+                  ""z"": 0.07316453754901886,
+                  ""w"": 0.8577484488487244
                 }
               }
             },
@@ -2726,7 +2726,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region ArticulatedHandPose_Poke JSON
 
-        private const string ArticulatedHandPose_Poke= @"
+        private const string ArticulatedHandPose_Poke = @"
         {
           ""items"": [
             {

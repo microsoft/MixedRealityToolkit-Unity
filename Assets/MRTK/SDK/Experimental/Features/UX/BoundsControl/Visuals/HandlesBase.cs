@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         internal abstract bool IsVisible(Transform handle);
-        
+
 
         internal protected List<Transform> handles = new List<Transform>();
         private Transform highlightedHandle = null;

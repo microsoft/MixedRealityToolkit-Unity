@@ -186,11 +186,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
                 return false;
             }
@@ -1468,7 +1464,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Used to register newly created instances in edit mode.
         /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
         /// </summary>
-        private void DelayOnValidate() 
+        private void DelayOnValidate()
         {
             EditorApplication.delayCall -= DelayOnValidate;
 

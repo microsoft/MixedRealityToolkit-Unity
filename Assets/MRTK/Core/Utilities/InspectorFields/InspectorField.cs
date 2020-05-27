@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// A string list of options for a pop-up list
         /// </summary>
         public string[] Options { get; set; }
-        
+
         /// <summary>
         /// An object to hold the actual value
         /// </summary>
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             return setting;
         }
-        
+
         /// <summary>
         /// Get the propertySettings value
         /// </summary>
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             return value;
         }
-        
+
         /// <summary>
         /// Get the index from a list of strings using string comparison
         /// </summary>

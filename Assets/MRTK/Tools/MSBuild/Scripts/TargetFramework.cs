@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         Net20,
         Net46
     }
-    
+
     /// <summary>
     /// Helper extensions for the <see cref="TargetFramework"/> enum.
     /// </summary>

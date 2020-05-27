@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-            
+
             // Target frame rate is set to 50 to match the physics
             // tick rate. The rest of the test code needs to wait on a frame to have
             // passed, and this is a rough way of ensuring that each WaitForFixedUpdate()
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void VerifyCursorStateFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorStateEnum state)
         {
             Assert.NotZero(pointers.ToReadOnlyCollection().Count);
-            foreach(var pointer in pointers)
+            foreach (var pointer in pointers)
             {
                 VerifyCursorState(pointer.BaseCursor, state);
             }

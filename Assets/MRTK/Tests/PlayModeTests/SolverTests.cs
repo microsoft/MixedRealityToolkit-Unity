@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             testObjects.handler.TrackedHandness = Handedness.Both;
 
-            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
             handConstraintSolver.UseGazeActivation = false;
 
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Place hand 1 meter in front of user, 50 cm below eye level
             var handTestPos = cameraTransform.position + cameraTransform.forward - (Vector3.up * 0.5f);
-            
+
             var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
 
             // Generate hand rotation with hand palm facing camera
@@ -358,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
         }
-        
+
         /// <summary>
         /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the Ulnar safe zone
         /// </summary>
@@ -450,21 +450,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return leftHand.SetRotation(handRotation);
 
-            TestHand rightHand = new TestHand(Handedness.Right);            
+            TestHand rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
             yield return null;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             yield return rightHand.Move(testObjects.target.transform.position);
             yield return null;
-            
+
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return new WaitForFixedUpdate();
             yield return null;
 
 
             var delta = new Vector3(0.5f, 0.5f, 0f);
-            yield return rightHand.Move(delta);            
+            yield return rightHand.Move(delta);
 
             // Grab the menu position to compare it later on
             Vector3 menuPosition = testObjects.target.transform.position;
@@ -481,7 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Before the right hand opens, make sure that the transform of the attached menu is farther than it would if attached
             Assert.IsTrue((testObjects.target.transform.position - movedLeftHand).sqrMagnitude > .1f);
-            
+
             // Then move the left hand back to the point of activation
             yield return leftHand.Move(handTestPos);
             yield return leftHand.SetRotation(handRotation);
@@ -516,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handPosition);
             yield return leftHand.SetRotation(handRotation);
-            
+
             yield return WaitForFrames(2);
             var hand = PlayModeTestUtilities.GetInputSimulationService().GetHandDevice(Handedness.Left);
             Assert.IsNotNull(hand);
@@ -713,7 +713,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
             tapToPlaceObj.target.transform.position = Vector3.forward;
             TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
-            
+
             // Start Placing the object immediately
             tapToPlace.AutoStart = true;
 
@@ -823,7 +823,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const float ANGLE_THRESHOLD = 30.0f;
 
             var directionTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            directionTarget.transform.position = 10.0f * Vector3.right; 
+            directionTarget.transform.position = 10.0f * Vector3.right;
 
             // Instantiate our test gameobject with solver.
             var testObjects = InstantiateTestSolver<DirectionalIndicator>();
@@ -961,7 +961,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForFixedUpdate();
             yield return null;
-            
+
             Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
 
             MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
@@ -1015,7 +1015,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForFixedUpdate();
             yield return null;
-            
+
             Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
 
@@ -1026,7 +1026,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
-            
+
             // Test x axis rotation
             MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.right, 45));
             yield return new WaitForFixedUpdate();
@@ -1099,7 +1099,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestHandSolver(SetupData testData, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
-            Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay 
+            Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay
                 || testData.handler.TrackedTargetType == TrackedObjectType.HandJoint, "TestHandSolver supports on ControllerRay and HandJoint tracked target types");
 
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
@@ -1123,7 +1123,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreEqual(testData.handler.CurrentTrackedHandedness, hand);
             Assert.IsNotNull(expectedTransform);
-            
+
             // SolverHandler creates a dummy GameObject to provide a transform for tracking so it can be managed (allocated/deleted)
             // Look at the parent to compare transform equality for what we should be tracking against
             Assert.AreEqual(testData.handler.TransformTarget.parent, expectedTransform);
@@ -1133,7 +1133,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
         }
 
-        private SetupData InstantiateTestSolver<T>() where T: Solver
+        private SetupData InstantiateTestSolver<T>() where T : Solver
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.name = typeof(T).Name;
@@ -1144,7 +1144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
 
-           var setupData =  new SetupData()
+            var setupData = new SetupData()
             {
                 handler = handler,
                 solver = solver,
@@ -1190,7 +1190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             testObjects.handler.TrackedHandness = Handedness.Both;
 
-            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
             handConstraintSolver.UseGazeActivation = true;
 
@@ -1237,8 +1237,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns>The Vector3 representing where the hand should be positioned to during the test to trigger the activation</returns>
         private Vector3 DetermineHandOriginPositionOffset(HandConstraint.SolverSafeZone safeZone, Handedness targetHandedness)
         {
-            switch(safeZone)
-            {   
+            switch (safeZone)
+            {
                 case HandConstraint.SolverSafeZone.RadialSide:
                     if (targetHandedness == Handedness.Left)
                     {
@@ -1268,7 +1268,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-#endregion
+        #endregion
     }
 }
 #endif

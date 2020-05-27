@@ -219,9 +219,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         #endregion Helpers
-        
+
         #region Obsolete
-        
+
         /// <summary>
         /// Constructor.
         /// </summary>

@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
             }
             EditorGUI.indentLevel--;
 
-            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellIntended"),  true);
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellIntended"), true);
             EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellStarted"), true);
             EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellCompleted"), true);
             EditorGUILayout.PropertyField(this.serializedObject.FindProperty("DwellCanceled"), true);

@@ -432,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     AssetDatabase.CreateFolder("Assets", DefaultGeneratedFolderName);
                 }
-                
+
                 AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
 
@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 errors.Add("Name must end with 'Service' suffix.");
             }
-            
+
             if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
             {
                 errors.Add("Name must not contain illegal characters.");

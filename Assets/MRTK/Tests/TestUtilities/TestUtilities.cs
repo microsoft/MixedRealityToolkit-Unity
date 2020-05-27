@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Debug.Log("Couldn't find test icon.");
                 return;
             }
-            
+
             IEnumerable<string> testDirectories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
 
             foreach (string directory in testDirectories)

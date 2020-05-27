@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Grab pointer is near grabbable
             Assert.IsTrue(grabPointer.IsNearObject, "Grab pointer should be near a grabbable");
-          
+
             // Head cursor invisible when grab pointer is near grabbable
             Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
 

@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary
         /// </remarks>
         private static void AssertWithinTolerance(double expected, double actual)
         {
-            Assert.IsTrue(Math.Abs((expected - actual)/expected) < TolerancePercent);
+            Assert.IsTrue(Math.Abs((expected - actual) / expected) < TolerancePercent);
         }
     }
 }

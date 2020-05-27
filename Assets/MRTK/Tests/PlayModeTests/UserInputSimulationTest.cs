@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
 
             interactable = cube.AddComponent<Interactable>();
-            
+
             KeyInputSystem.StartKeyInputStimulation();
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.StopKeyInputSimulation();
             PlayModeTestUtilities.TearDown();
         }
-        
+
         [UnityTest]
         public IEnumerator InputSimulationHandsFreeInteraction()
         {

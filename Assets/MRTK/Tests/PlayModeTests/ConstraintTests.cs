@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForFixedUpdate();
             yield return null;
-            
+
             const int numHandSteps = 1;
 
             // Hand pointing at middle of cube
@@ -646,7 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             const int numHandSteps = 10;
-            
+
             TestHand leftHand = new TestHand(Handedness.Left);
             TestHand rightHand = new TestHand(Handedness.Right);
             yield return leftHand.Show(new Vector3(-0.05f, -0.1f, 0.45f));
@@ -685,7 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator CombinedConstraintFarNear()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
-            
+
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 originalPosition = Vector3.forward;
@@ -760,7 +760,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ConstrainRotationFaceUser()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
-            
+
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = Vector3.forward;

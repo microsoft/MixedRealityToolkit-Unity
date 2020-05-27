@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// structure elements of a grid layout
         /// </summary>
-        public enum GridDivisions { Rows, Columns};
+        public enum GridDivisions { Rows, Columns };
 
         /// <summary>
         /// How many columns should the grid have
@@ -115,11 +115,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             int row = Columns > 0 ? Mathf.FloorToInt(index / Columns) : index;
 
             Vector3 size = Vector3.Scale(TileSize + Gutters, LayoutDireciton);
-            
+
             float xPos = size.x * column;
             float yPos = size.y * row;
             float zPos = DepthCalculatedBy == GridDivisions.Rows ? size.z * row : size.z * column;
-            
+
             return new Vector3(xPos, yPos, zPos);
         }
 

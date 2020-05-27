@@ -34,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityEyeGazeProvider eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             if ((eyeGazeProvider == null) ||
                 !eyeGazeProvider.IsEyeTrackingDataValid)
-            { 
-                return false; 
+            {
+                return false;
             }
-          
+
             ray = eyeGazeProvider.LatestEyeGaze;
-            
+
             return true;
         }
 

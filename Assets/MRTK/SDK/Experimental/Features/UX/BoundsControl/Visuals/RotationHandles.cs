@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     // attach new collider
                     var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                    var invScale = handleBounds.size.x == 0.0f ? 0.0f :config.HandleSize / handleBounds.size.x;
+                    var invScale = handleBounds.size.x == 0.0f ? 0.0f : config.HandleSize / handleBounds.size.x;
                     Vector3 colliderSizeScaled = handleBounds.size * invScale;
                     Vector3 colliderCenterScaled = handleBounds.center * invScale;
                     if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
                     }
                 }
-               
+
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         internal void InitEdgeAxis()
-        { 
+        {
             edgeAxes = new CardinalAxisType[NumEdges];
             edgeAxes[0] = CardinalAxisType.X;
             edgeAxes[1] = CardinalAxisType.Y;
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             InitEdgeAxis();
             CreateHandles(parent);
         }
-        
+
         private void CreateHandles(Transform parent)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         internal override bool IsVisible(Transform handle)
         {
             CardinalAxisType axisType = GetAxisType(handle);
-            return IsActive && 
+            return IsActive &&
                 ((axisType == CardinalAxisType.X && config.ShowRotationHandleForX) ||
                 (axisType == CardinalAxisType.Y && config.ShowRotationHandleForY) ||
                 (axisType == CardinalAxisType.Z && config.ShowRotationHandleForZ));

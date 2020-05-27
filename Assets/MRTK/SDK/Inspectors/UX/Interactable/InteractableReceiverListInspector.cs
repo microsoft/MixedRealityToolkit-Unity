@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [CustomEditor(typeof(InteractableReceiverList))]
     public class InteractableReceiverListInspector : UnityEditor.Editor
     {
-        private static readonly GUIContent InteractableLabel = new GUIContent("Interactable","The Interactable that will be monitored");
+        private static readonly GUIContent InteractableLabel = new GUIContent("Interactable", "The Interactable that will be monitored");
         private static readonly GUIContent SearchScopeLabel = new GUIContent("Search Scope", "Where to look for an Interactable if one is not assigned");
 
         public override void OnInspectorGUI()
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             SerializedProperty events = serializedObject.FindProperty("Events");
 
-            if(events.arraySize < 1)
+            if (events.arraySize < 1)
             {
                 AddEvent(0);
             }

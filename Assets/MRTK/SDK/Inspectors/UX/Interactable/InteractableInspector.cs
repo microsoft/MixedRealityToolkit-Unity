@@ -331,9 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 using (new EditorGUI.PropertyScope(position, selectionModeLabel, dimensions))
                 {
                     // Show enum popup for selection mode, hide option to select SelectionModes.Invalid
-                    selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel, 
-                        Interactable.ConvertToSelectionMode(dimensions.intValue), 
-                        (value) => { return (SelectionModes)value != SelectionModes.Invalid; } );
+                    selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel,
+                        Interactable.ConvertToSelectionMode(dimensions.intValue),
+                        (value) => { return (SelectionModes)value != SelectionModes.Invalid; });
 
                     switch (selectionMode)
                     {

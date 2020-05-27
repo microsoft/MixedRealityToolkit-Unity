@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="hitChildObject">The child object that was hit or the canvas itself if it has no active children that were within the hit range.</param>
         public static bool Raycast(this Canvas canvas, Vector3 rayOrigin, Vector3 rayDirection, out float distance, out Vector3 hitPoint, out GameObject hitChildObject)
         {
-            hitChildObject =null;
+            hitChildObject = null;
             Plane plane = canvas.GetPlane();
             Ray ray = new Ray(rayOrigin, rayDirection);
 
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         hitChildObject = canvas.gameObject;
                     }
-                    
+
                     return true;
                 }
             }
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit
             RectTransform rectTransform;
             bool shouldRaycast = false;
 
-            for (int i=rectTransformParent.childCount-1; i >= 0; i--)
+            for (int i = rectTransformParent.childCount - 1; i >= 0; i--)
             {
                 rectTransform = rectTransformParent.GetChild(i).GetComponent<RectTransform>();
                 Graphic graphic = rectTransform.GetComponent<Graphic>();
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     rectTransform.GetLocalCorners(localCorners);
                     childLocalPoint = rectTransform.InverseTransformPoint(worldPoint);
-                    
+
                     if (recursive)
                     {
                         RectTransform childRect = GetChildRectTransformAtPoint(rectTransform, worldPoint, recursive, shouldReturnActive, shouldReturnRaycastable);

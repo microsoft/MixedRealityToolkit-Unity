@@ -253,19 +253,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float distanceToHandPlane;
 
                 // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
-                if (TryGenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
+                if (TryGenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) &&
                     handPlane.Raycast(gazeRay, out distanceToHandPlane))
                 {
-                        // Now that we know the dist to the plane, create a vector at that point
-                        Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
-                        Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
-                        float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
-                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold; 
-                        gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
+                    // Now that we know the dist to the plane, create a vector at that point
+                    Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
+                    Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                    float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
+                    float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
+                    gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
 
-                        return gazeActivationAlreadyTriggered;
-                    }
+                    return gazeActivationAlreadyTriggered;
                 }
+            }
 
             return false;
         }

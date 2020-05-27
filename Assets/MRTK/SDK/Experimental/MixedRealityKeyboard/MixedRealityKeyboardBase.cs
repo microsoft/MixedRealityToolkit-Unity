@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             HideKeyboard();
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         public abstract string Text { get; protected set; }
 

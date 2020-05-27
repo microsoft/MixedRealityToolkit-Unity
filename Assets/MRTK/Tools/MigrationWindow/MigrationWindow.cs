@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             migrationHandlerTypeNames = migrationTypeNamesList.ToArray();
 
             selectedMigrationHandlerIndex = 0;
-            
+
             failIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(failIconGUID), typeof(Texture));
             passIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(passIconGUID), typeof(Texture));
             lightTabIcon = (Texture)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(lightTabIconGUID), typeof(Texture));
@@ -284,14 +284,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                         }
                     }
-                    
+
                     else if (migrationTool.MigrationState == MigrationTool.MigrationToolState.PostMigration && !String.IsNullOrEmpty(migrationLog))
                     {
                         using (var logScrollView = new EditorGUILayout.ScrollViewScope(logScrollPosition))
                         {
                             logScrollPosition = logScrollView.scrollPosition;
                             GUILayout.TextArea(migrationLog);
-                        }                    
+                        }
                     }
                 }
             }

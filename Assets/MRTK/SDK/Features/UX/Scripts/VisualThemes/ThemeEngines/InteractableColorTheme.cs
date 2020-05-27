@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic)};
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic) };
             Name = "Color Theme";
         }
 
@@ -335,6 +335,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 host.GetComponent<TextMesh>() != null ||
                 host.GetComponent<Text>() != null);
         }
-        
+
     }
 }
