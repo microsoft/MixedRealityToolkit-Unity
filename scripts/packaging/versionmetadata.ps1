@@ -16,6 +16,8 @@
       This is primarily useful for binary distribution (so that the generated DLLs
       will be appropriately marked with version numbers and company/origin
       information)
+      If AssemblyInfo.cs already exists, this will instead just add the version
+      information to the file.
 
     This will also validate that some project specific versioning to ensure that
     it matches the passed in version (i.e. the version values in
@@ -110,6 +112,9 @@ function AddVersionTxt {
 .SYNOPSIS
     Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
     have an .asmdef file.
+
+    If AssemblyInfo.cs already exists, this will instead just add the version
+    information to the file.
 
     Returns true if an issue is found.
 #>
