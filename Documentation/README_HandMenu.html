@@ -95,7 +95,7 @@
 <h3 id="handmenu_large_worldlock_on_grabandpull">HandMenu_Large_WorldLock_On_GrabAndPull</h3>
 <p>For more complex menus that require longer interaction time, it is recommended to world-lock the menu. In this example, the user can grab and pull to world-lock the menu, in addition to activating and deactivating the MenuContent on <strong>OnFirstHandDetected()</strong> and <strong>OnLastHandLost()</strong> events.
 <br><img src="Images/HandMenu/MRTK_HandMenu_Example3.png" width="600"></p>
-<p>Backplate's <code>ManipulationHanlder</code> makes it grabbable and movable. <strong>On Manipulation Started</strong> event, <strong>SolverHandler.UpdateSolvers</strong> is deactivated to world-lock the menu. Additionally, it shows the <strong>Close button</strong> to allow the user to close the menu when the task is finished. <strong>On Manipulation Ended</strong> event, it calls <strong>HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine</strong> to allow the user bring the menu back to hand by raising and looking at the palm.
+<p>Backplate's <code>ManipulationHandler</code> makes it grabbable and movable. <strong>On Manipulation Started</strong> event, <strong>SolverHandler.UpdateSolvers</strong> is deactivated to world-lock the menu. Additionally, it shows the <strong>Close button</strong> to allow the user to close the menu when the task is finished. <strong>On Manipulation Ended</strong> event, it calls <strong>HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine</strong> to allow the user bring the menu back to hand by raising and looking at the palm.
 <br><img src="Images/HandMenu/MRTK_HandMenu_Example4.png" width="600"></p>
 <p><strong>Close</strong> button reactivates <strong>SolverHandler.UpdateSolvers</strong> and hide the <strong>MenuContent</strong>.
 <br><img src="Images/HandMenu/MRTK_HandMenu_Example5.png"></p>
@@ -123,16 +123,15 @@
 </li>
 <li><p><strong>Solver Activation/Deactivation Logic</strong>: Currently the recommendation for activating and deactivating <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> logic is to do so through the use of the SolverHandler's UpdateSolver value, rather than by disabling/enabling the object. This can be seen in the example scene through the editor-based hooks triggered after the attached menu's ManipulationHandler &quot;OnManipulationStarted/Ended&quot; events.</p>
 <ul>
-<li><p><em>Stopping the hand-constraint logic</em>: When trying to set the hand constrained object to stop (as well as not run the activation/deactivation logic), set UpdateSolver to False rather than disabling HandConstraintPalmUp.</p>
+<li><em>Stopping the hand-constraint logic</em>: When trying to set the hand constrained object to stop (as well as not run the activation/deactivation logic), set UpdateSolver to False rather than disabling HandConstraintPalmUp.
 <ul>
-<li>If you want to enable the gaze-based (or even non-gaze-based) Reattach logic, this is then followed by calling the HandConstraintPalmUp.StartWorldLockReattachCheckCorotine() function. This will trigger a coroutine that then continues to check if the &quot;IsValidController&quot; criteria is met and will set UpdateSolver to True once it is (or the object is disabled)</li>
+<li>If you want to enable the gaze-based (or even non-gaze-based) Reattach logic, this is then followed by calling the HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine() function. This will trigger a coroutine that then continues to check if the &quot;IsValidController&quot; criteria is met and will set UpdateSolver to True once it is (or the object is disabled)</li>
 </ul>
 </li>
-<li><p><em>Starting the hand-constraint logic</em>: When trying to set the hand constrained object to start following your hand again (based on whether it meets the activation criteria), set the SolverHandler's UpdateSolver to true.</p>
-</li>
+<li><em>Starting the hand-constraint logic</em>: When trying to set the hand constrained object to start following your hand again (based on whether it meets the activation criteria), set the SolverHandler's UpdateSolver to true.</li>
 </ul>
 </li>
-<li><p><strong>Reattach Logic</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is able to automatically reattach the target object to the tracked point, regardless of whether the SolverHandler's UpdateSolver is True or not. This is done through calling the HandConstraintPalmUp's StartWorldLockReattachCheckCorotine() function, after it's been world-locked (which in this case, is effectively setting the SolverHandler's UpdateSolver to False).</p>
+<li><p><strong>Reattach Logic</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is able to automatically reattach the target object to the tracked point, regardless of whether the SolverHandler's UpdateSolver is True or not. This is done through calling the HandConstraintPalmUp's StartWorldLockReattachCheckCoroutine() function, after it's been world-locked (which in this case, is effectively setting the SolverHandler's UpdateSolver to False).</p>
 </li>
 </ul>
 <h2 id="see-also">See also</h2>

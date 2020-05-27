@@ -96,9 +96,13 @@
 <h5>Note</h5>
 <p>At this time, it is not supported to switch between using .unitypackage files and NuGet.</p>
 </div>
+<p><em>Starting with 2.4.0, it is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a>
+after getting the MRTK update</em>* to auto-fix and upgrade from deprecated components and adjust to
+breaking changes. The migration tool is part of the <strong>Tools</strong> package.</p>
 <h3 id="unity-asset-unitypackage-files">Unity asset (.unitypackage) files</h3>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
+<li>Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.</li>
 <li>Close Unity</li>
 <li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
@@ -133,7 +137,7 @@
 <li>Import the new unity packages
 <ul>
 <li>Foundation - <em>Import this package first</em></li>
-<li>(Optional) Tools</li>
+<li>Tools</li>
 <li>(Optional) Extensions</li>
 </ul>
 <div class="NOTE">
@@ -154,6 +158,7 @@ asset database and reconcile existing custom profiles.</li>
 - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
 </ul>
 </li>
+<li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.</li>
 </ol>
 <h3 id="nuget-packages">NuGet packages</h3>
 <p>If your project was created using the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, please use the following steps.</p>
@@ -244,7 +249,7 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 }
 </code></pre>
 <p><strong>WindowsApiChecker properties</strong></p>
-<p>The following WindowsApiChecker properties have been marked as obsolete. Please use <code>IsMethodAvilable</code>, <code>IsPropertyAvailable</code> or <code>IsTypeAvailable</code>.</p>
+<p>The following WindowsApiChecker properties have been marked as obsolete. Please use <code>IsMethodAvailable</code>, <code>IsPropertyAvailable</code> or <code>IsTypeAvailable</code>.</p>
 <ul>
 <li>UniversalApiContractV8_IsAvailable</li>
 <li>UniversalApiContractV7_IsAvailable</li>
@@ -281,7 +286,7 @@ manifest, the configuration dialog will appear, with the Enable MSBuild for Unit
 <p><strong>ShellHandRayPointer</strong></p>
 <p>The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863">#6863</a>).</p>
 <p>Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.</p>
-<p><strong>Spatial observer StarupBehavior</strong></p>
+<p><strong>Spatial observer StartupBehavior</strong></p>
 <p>Spatial observers built upon the <code>BaseSpatialObserver</code> class now honor the value of StartupBehavior when re-enabled (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919">#6919</a>).</p>
 <p>No changes are required to take advantage of this fix.</p>
 <p><strong>UX control prefabs updated to use PressableButton</strong></p>

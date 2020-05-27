@@ -184,7 +184,7 @@
 <p>Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see <a href="../Input/HandTracking.html#polling-joint-pose-from-handjointutils">Hand Tracking</a>.</p>
 <p>With MRTK in a unity scene and the Leap Motion Data Provider added as an Input Data Provider in the Input System profile, create an empty game object and attach the following example script.</p>
 <p>This script is a simple example of how to retrieve the pose of the palm joint in a Leap Motion Hand.  A sphere follows the left Leap hand while a cube follows the right Leap hand.</p>
-<pre><code>using Microsoft.MixedReality.Toolkit;
+<pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -204,7 +204,7 @@ public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
         leftHandSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         leftHandSphere.transform.localScale = Vector3.one * 0.03f;
 
-        // Create a cube to follow the right hand palm position 
+        // Create a cube to follow the right hand palm position
         rightHandCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         rightHandCube.transform.localScale = Vector3.one * 0.03f;
     }
@@ -242,10 +242,8 @@ public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
 <li>Delete the <strong>UnityProjectName/Assets/LeapMotion.meta</strong> file</li>
 </ul>
 </li>
-</ol>
-<ul>
 <li>Reopen Unity</li>
-</ul>
+</ol>
 <p>In Unity 2018.4, you might notice that errors still remain in the console after deleting the Library and the Leap Motion Core Assets.
 If errors are logged after reopening, restart Unity again.</p>
 <h2 id="common-errors">Common Errors</h2>

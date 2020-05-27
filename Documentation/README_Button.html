@@ -253,7 +253,7 @@ To upgrade the assets on all buttons in a project to the new recommended format,
 <p>Once the font asset is generated, save it to your project and assign it to your Icon Set's <em>Char Icon Font</em> field. The <em>Available Icons</em> dropdown will now be populated. To make an icon available for use by a button, click it. It will be added to the <em>Selected Icons</em> dropdown and will now show up in the <code>ButtonConfigHelper.</code> You can optionally give the icon a tag. This enables setting the icon at runtime.</p>
 <p><img src="Images/Button/MRTK_Font_Asset_Creation_3.png" alt="Button"></p>
 <p><img src="Images/Button/MRTK_Font_Asset_Creation_2.png" alt="Button"></p>
-<pre><code class="lang-c#">public void SetButtonToAdjust() 
+<pre><code class="lang-c#">public void SetButtonToAdjust()
 {
     ButtonConfigHelper buttonConfigHelper = gameObject.GetComponent&lt;ButtonConfigHelper&gt;();
     buttonConfigHelper.SetCharIconByName(&quot;AppBarAdjust&quot;);
@@ -268,7 +268,7 @@ To upgrade the assets on all buttons in a project to the new recommended format,
 <li><strong>Quad</strong> under BackPlate</li>
 <li><strong>Box Collider</strong> on the root</li>
 </ol>
-<p>Then, click <strong>Fix Bounds</strong> button in the NearInteractionTouchble script which is in the root of the button.</p>
+<p>Then, click <strong>Fix Bounds</strong> button in the NearInteractionTouchable script which is in the root of the button.</p>
 <p>Update the size of the FrontPlate
 <img src="Images/Button/MRTK_Button_SizeCustomization1.png" alt="Button"></p>
 <p>Update the size of the Quad
