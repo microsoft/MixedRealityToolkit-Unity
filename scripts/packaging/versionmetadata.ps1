@@ -35,7 +35,6 @@ param(
     [string]$Version
 )
 
-
 <#
 .SYNOPSIS
     Adds Version.txt files to specific sub-folders within the Assets/ folder.
@@ -67,4 +66,90 @@ function AddVersionTxt {
     }
 }
 
+<#
+.SYNOPSIS
+    Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
+    have an .asmdef file.
+#>
+function AddVersionTxt {
+    [CmdletBinding()]
+    param(
+        [string]$Directory,
+        [string]$Version
+    )
+    process {
+        $locations = @(
+            "Assets/MRTK/Core",
+            "Assets/MRTK/Examples",
+            "Assets/MRTK/Extensions",
+            "Assets/MRTK/Providers",
+            "Assets/MRTK/SDK",
+            "Assets/MRTK/Services",
+            "Assets/MRTK/Tests",
+            "Assets/MRTK/Tools"
+        )
+
+        $content = "Microsoft Mixed Reality Toolkit $Version"
+        foreach ($location in $locations) {
+            $filename = Join-Path -Path $location -ChildPath "Version.txt"
+            Set-Content -Path $filename -Value $content
+            Write-Output "Added Version.txt at $filename"
+        }
+    }
+}
+
+
+<#
+.SYNOPSIS
+    Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
+    have an .asmdef file.
+#>
+function AddVersionTxt {
+    [CmdletBinding()]
+    param(
+        [string]$Directory,
+        [string]$Version
+    )
+    process {
+        $assets = Join-Path -Path $Directory -ChildPath "Assets"
+        $mrtkFolder = Join-Path -Path $assets -ChildPath "MRTK"
+        $asmdefs = Get-ChildItem $assets *.asmdef -Recurse | Select-Object FullName
+        foreach ($asmdef in $asmdefs) {
+            # The AssemblyInfo.cs file will be added as a sibling of the .asmdef location,
+            # so we need to trim off the filename.
+            $folder = Split-Path -Path $asmdef.FullName
+            $filename = Join-Path -Path $folder -ChildPath "AssemblyInfo.cs"
+
+            # We also need to parse out the MRTK subfolder (i.e. Core, SDK, Examples)
+            # which goes into the AssemblyProduct metadata.
+            $projectFolder = $filename.Replace($mrtkFolder, "")
+            $split = $projectFolder.Split([IO.Path]::DirectorySeparatorChar)
+
+            # Since $projectFolder has the form "/Core/Path/Thing"
+            # we use index 1 to get the value "Core"
+            $project = $split[1]
+
+            # Note that this is left-indent adjusted so that the file output
+            # ends up looking reasonable.
+            $content = 
+@"
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Reflection;
+
+[assembly: AssemblyVersion("$Version.0")]
+[assembly: AssemblyFileVersion("$Version.0")]
+
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit $project")]
+[assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
+"@
+        
+            Write-Output "Added AssemblyInfo.cs at $filename"
+        }
+    }
+}
+
+
+AddVersionTxt $Directory $Version
 AddVersionTxt $Directory $Version
