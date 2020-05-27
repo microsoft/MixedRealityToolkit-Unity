@@ -69,7 +69,7 @@ function AddVersionTxt {
         foreach ($location in $locations) {
             $filename = Join-Path -Path $location -ChildPath "Version.txt"
             Set-Content -Path $filename -Value $content
-            Write-Output "Added Version.txt at $filename"
+            Write-Host "Added Version.txt at $filename"
         }
     }
 }
@@ -101,7 +101,7 @@ function AddVersionTxt {
         foreach ($location in $locations) {
             $filename = Join-Path -Path $location -ChildPath "Version.txt"
             Set-Content -Path $filename -Value $content
-            Write-Output "Added Version.txt at $filename"
+            Write-Host "Added Version.txt at $filename"
         }
     }
 }
@@ -110,6 +110,8 @@ function AddVersionTxt {
 .SYNOPSIS
     Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
     have an .asmdef file.
+
+    Returns true if an issue is found.
 #>
 function AddAssemblyInfo {
     [CmdletBinding()]
@@ -118,6 +120,7 @@ function AddAssemblyInfo {
         [string]$Version
     )
     process {
+        $containsIssue = $false
         $assets = Join-Path -Path $Directory -ChildPath "Assets"
         $mrtkFolder = Join-Path -Path $assets -ChildPath "MRTK"
         $asmdefs = Get-ChildItem $assets *.asmdef -Recurse | Select-Object FullName
@@ -145,30 +148,47 @@ function AddAssemblyInfo {
 
             # Note that this is left-indent adjusted so that the file output
             # ends up looking reasonable.
-            $content = 
+            $copyright = 
 @"
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+@"
 
-using System.Reflection;
+            $content =
+@"
+[assembly: System.Reflection.AssemblyVersion("$Version.0")]
+[assembly: System.Reflection.AssemblyFileVersion("$Version.0")]
 
-[assembly: AssemblyVersion("$Version.0")]
-[assembly: AssemblyFileVersion("$Version.0")]
-
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit$project")]
-[assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
+[assembly: System.Reflection.AssemblyProduct("Microsoft® Mixed Reality Toolkit$project")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright © Microsoft Corporation")]
 "@
 
-            Set-Content -Path $filename -Value $content
-            Write-Output "Added AssemblyInfo.cs at $filename"
+            # If the AssemblyInfo already exists, then we should check that it doesn't already contain
+            # a version - this would be bad as we'd duply-define the version
+            if (Test-Path -Path $filename) {
+                if (Get-Content $filename | Select-String "AssemblyVersion") {
+                    $containsIssue = $true
+                    Write-Host "$filename should not have an AssemblyVersion declaration, this is added at CI time"
+                }
+                else {
+                    Add-Content -Path $filename -Value $content
+                    Write-Host "Updated AssemblyInfo.cs at $filename"
+                }
+            } else {
+                Set-Content -Path $filename -Value $copyright
+                Set-Content -Path $filename -Value $content
+                Write-Host "Added AssemblyInfo.cs at $filename"
+            }
         }
+        $containsIssue
     }
 }
-
 
 <#
 .SYNOPSIS
     Checks that the ProjectSettings file has correct matching version information.
+
+    Returns true if an issue is found.
 #>
 function CheckProjectSettings {
     [CmdletBinding()]
@@ -178,7 +198,7 @@ function CheckProjectSettings {
     )
     process {
         $projectSettings = Join-Path -Path $Directory -ChildPath "ProjectSettings/ProjectSettings.asset"
-        $hasMatchingVersions = $true
+        $containsIssue = $false
         $fileContent = Get-Content $ProjectSettings
         foreach ($line in $fileContent) {
             if (($line -match " bundleVersion") -or ($line -match " metroPackageVersion")) {
@@ -193,19 +213,18 @@ function CheckProjectSettings {
                 }
 
                 if ($expected -ne $version) {
-                    $hasMatchingVersions = $false
+                    $containsIssue = $true
                     Write-Host "Mismatched version on line: $line. Expected version: $expected"
                 }
             }
         }
-        $hasMatchingVersions
+        $containsIssue
     }
 }
 
 AddVersionTxt $Directory $Version
-AddAssemblyInfo $Directory $Version
-$containsIssue = CheckProjectSettings $Directory $Version
-if ($containsIssue) {
+if (AddAssemblyInfo $Directory $Version -or
+        CheckProjectSettings $Directory $Version) {
     Write-Output "Issues found, please see above for details"
     exit 1;
 }
