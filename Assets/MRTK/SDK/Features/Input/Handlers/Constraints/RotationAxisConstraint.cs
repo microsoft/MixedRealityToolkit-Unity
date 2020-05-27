@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eulers.z = 0;
             }
 
-            transform.Rotation = useLocalSpaceForConstraint 
+            transform.Rotation = useLocalSpaceForConstraint
                 ? worldPoseOnManipulationStart.Rotation * Quaternion.Euler(eulers)
                 : Quaternion.Euler(eulers) * worldPoseOnManipulationStart.Rotation;
         }

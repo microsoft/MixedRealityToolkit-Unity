@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         private static readonly ProfilerMarker RaycastPerfMarker = new ProfilerMarker("[MRTK] EventSystemExtensions.Raycast");
-        
+
         /// <summary>
         /// Executes a raycast all and returns the closest element.
         /// Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.

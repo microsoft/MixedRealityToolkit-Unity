@@ -42,9 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// 
         /// </summary>
         public MixedRealityControllerAttribute(
-            SupportedControllerType supportedControllerType, 
+            SupportedControllerType supportedControllerType,
             Handedness[] supportedHandedness,
-            string texturePath = "", 
+            string texturePath = "",
             MixedRealityControllerConfigurationFlags flags = 0)
         {
             SupportedControllerType = supportedControllerType;

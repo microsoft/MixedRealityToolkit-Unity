@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Destroys a Unity object appropriately depending if running in in edit or play mode.
+        /// Destroys a Unity object appropriately depending if running in edit or play mode.
         /// </summary>
         /// <param name="obj">Unity object to destroy</param>
         /// <param name="t">Time in seconds at which to destroy the object, if applicable.</param>
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
                 // Must use DestroyImmediate in edit mode but it is not allowed when called from 
                 // trigger/contact, animation event callbacks or OnValidate. Must use Destroy instead.
                 // Delay call to counter this issue in editor
@@ -44,9 +44,9 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     Object.DestroyImmediate(obj);
                 };
-            #else
+#else
                 Object.DestroyImmediate(obj);
-            #endif
+#endif
             }
         }
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <returns>True if either the managed or native object is null, false otherwise</returns>
         public static bool IsNull<T>(this T @interface) where T : class => @interface == null || @interface.Equals(null);
-        
+
         /// <summary>
         /// Properly checks an interface for null and returns the MonoBehaviour implementing it
         /// </summary>

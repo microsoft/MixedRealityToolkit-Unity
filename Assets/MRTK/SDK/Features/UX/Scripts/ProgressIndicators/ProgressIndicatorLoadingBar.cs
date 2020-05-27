@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Whether to display the percentage as text in addition to the loading bar.")]
         [SerializeField]
         private bool displayPercentage = true;
-        
+
         private float smoothProgress = 0f;
         private float lastSmoothProgress = -1;
         private ProgressIndicatorState state = ProgressIndicatorState.Closed;

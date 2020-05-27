@@ -9,6 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
         public TestExtensionService3(
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base( name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(name, priority, profile) { }
     }
 }

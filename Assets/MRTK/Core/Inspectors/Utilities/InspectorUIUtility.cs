@@ -506,15 +506,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return show;
         }
 
-    /// <summary>
-    /// Draws a popup UI with PropertyField type features.
-    /// Displays prefab pending updates
-    /// </summary>
-    /// <param name="prop">serialized property corresponding to Enum</param>
-    /// <param name="label">label for property</param>
-    /// <param name="propValue">Current enum value for property</param>
-    /// <returns>New enum value after draw</returns>
-    public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
             return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
         }

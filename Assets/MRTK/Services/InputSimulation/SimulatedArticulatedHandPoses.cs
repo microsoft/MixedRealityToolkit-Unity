@@ -953,7 +953,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_Open JSON
@@ -1395,7 +1395,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_OpenSteadyGrabPoint JSON
@@ -1837,7 +1837,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
-        
+
         #endregion
 
         #region ArticulatedHandPose_Pinch JSON
@@ -2726,7 +2726,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region ArticulatedHandPose_Poke JSON
 
-        private const string ArticulatedHandPose_Poke= @"
+        private const string ArticulatedHandPose_Poke = @"
         {
           ""items"": [
             {

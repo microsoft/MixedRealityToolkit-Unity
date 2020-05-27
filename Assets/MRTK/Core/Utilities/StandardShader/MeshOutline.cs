@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (outlineMaterial != null && meshRenderer != null)
             {
-                Debug.AssertFormat(outlineMaterial.IsKeywordEnabled(vertexExtrusionKeyword), 
+                Debug.AssertFormat(outlineMaterial.IsKeywordEnabled(vertexExtrusionKeyword),
                                    "The material \"{0}\" does not have vertex extrusion enabled, no outline will be rendered.", outlineMaterial.name);
 
                 // Ensure that the outline material always renders before the default materials.

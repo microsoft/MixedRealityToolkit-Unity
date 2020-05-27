@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         public virtual void DwellIntended(IMixedRealityPointer pointer) { }
 
         public virtual void DwellCanceled(IMixedRealityPointer pointer) { isDwelling = false; }
-        
+
         public virtual void DwellCompleted(IMixedRealityPointer pointer)
         {
             isDwelling = false;

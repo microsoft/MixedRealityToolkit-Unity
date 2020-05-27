@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Debug.Log($"Exiting build...");
             EditorApplication.Exit(success ? 0 : 1);
         }
-        
+
         public static async Task<bool> BuildUnityPlayerSimplified()
         {
             // We don't need stack traces on all our logs. Makes things a lot easier to read.

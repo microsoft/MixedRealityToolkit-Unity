@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cube.transform.localScale = boundsControlStartScale;
             BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
             TestUtilities.PlayspaceToOriginLookingForward();
-            boundsControl.Active = true; 
+            boundsControl.Active = true;
 
             return boundsControl;
         }
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -538,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -716,7 +716,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsFalse(boundsControl.WireframeOnly, "wireframeonly should be disabled");
-            
+
             yield return hand.MoveTo(pointOnCube);
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsTrue(boundsControl.WireframeOnly, "wireframeonly should be enabled");
@@ -819,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
-            // make sure handles are disabled and enabled when bounds control is deactived / activated
+            // make sure handles are disabled and enabled when bounds control is deactivated / activated
             boundsControl.Active = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
             Assert.IsFalse(scaleHandle.gameObject.activeSelf, "scale handle not disabled");
@@ -901,7 +901,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var defaultPadding = boundsControl.BoxPadding;
             var targetBoundsOriginal = boundsControl.TargetBounds; // this has the default padding already applied
             var targetBoundsSize = targetBoundsOriginal.size;
-            Vector3 targetBoundsScaleInv = new Vector3(1.0f/ targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
+            Vector3 targetBoundsScaleInv = new Vector3(1.0f / targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
 
             // set padding
             boundsControl.BoxPadding = Vector3.one * 0.5f;
@@ -996,7 +996,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// </summary>
         [UnityTest]
         public IEnumerator LinksRadiusTest()
-        { 
+        {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
@@ -1211,7 +1211,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// and making sure the the entire rig won't be recreated
+        /// and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator RotationHandlePrefabTest()
@@ -1258,7 +1258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// in regular and flatten mode and making sure the the entire rig won't be recreated
+        /// in regular and flatten mode and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleHandlePrefabTest()
@@ -1330,7 +1330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // check if new mesh filter was applied
             Assert.IsTrue(cornerMeshFilter.mesh.name.StartsWith(sharedMeshFilter.mesh.name), "sphere scale handle wasn't applied");
-            yield return null; 
+            yield return null;
         }
 
         /// <summary>
@@ -1360,7 +1360,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         private IEnumerator HandleMaterialTest(string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
+        {
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
@@ -1450,7 +1450,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleColliderPaddingTest("corner_3","corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
+            yield return HandleColliderPaddingTest("corner_3", "corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
         }
 
         /// <summary>
@@ -1467,7 +1467,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         private IEnumerator HandleColliderPaddingTest(string handleName, string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
+        {
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
@@ -1500,7 +1500,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             // now adjust collider bounds and try grabbing the handle again
-            handleConfig.ColliderPadding = handleConfig.ColliderPadding  + newColliderPadding;
+            handleConfig.ColliderPadding = handleConfig.ColliderPadding + newColliderPadding;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(cornerVisual, "corner visual got destroyed when setting material");

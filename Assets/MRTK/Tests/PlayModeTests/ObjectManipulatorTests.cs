@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Hand pointing at middle of cube
             Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
-            TestHand hand = new TestHand(Handedness.Right);  
+            TestHand hand = new TestHand(Handedness.Right);
 
             // do this test for every one hand rotation mode
             foreach (ObjectManipulator.RotateInOneHandType type in Enum.GetValues(typeof(ObjectManipulator.RotateInOneHandType)))
@@ -436,17 +436,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // set up cube with manipulation handler
             GameObject parentObject = new GameObject("Test Object Parent");
-            
+
             // In case of error, this object won't be cleaned up, so clean up at the end of the test
             cleanupAction.Add(() => { if (parentObject != null) UnityEngine.Object.Destroy(parentObject); });
-            
+
             GameObject testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.parent = parentObject.transform;
 
             // Rotate the parent object, as we differ when constraining on local vs world
             Quaternion initialQuaternion = Quaternion.Euler(30f, 30f, 30f);
             parentObject.transform.rotation = initialQuaternion;
-            
+
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
@@ -562,7 +562,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.Hide();
-            
+
             UnityEngine.Object.Destroy(parentObject);
         }
 
@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     p.LookAt(rotatedFwd);
                 });
                 yield return null;
-                
+
                 Vector3 newHandPosition = Quaternion.AngleAxis(testRotation, Vector3.up) * rightHandFarPos;
                 yield return rightHand.MoveTo(newHandPosition);
                 RecordTransform(testObject.transform, "one hand rotate far");
@@ -760,7 +760,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            
+
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
@@ -968,8 +968,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestUtilities.AssertAboutEqual(originalObjectPos, testObject.transform.position, "Object moved after it was disabled");
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
         /// for various One Handed Only.
         /// </summary>
@@ -993,7 +993,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int manipulationEndedCount = 0;
             manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
             manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
-            
+
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
@@ -1020,8 +1020,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
         /// for Two Handed Only.
         /// </summary>
@@ -1045,7 +1045,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int manipulationEndedCount = 0;
             manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
             manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
-            
+
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
@@ -1072,8 +1072,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
         /// for One Handed and Two Handed.
         /// </summary>
@@ -1097,7 +1097,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int manipulationEndedCount = 0;
             manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
             manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
-            
+
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
@@ -1165,7 +1165,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
             backgroundmaterial.color = Color.green;
             backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
-            
+
             const int numHandSteps = 10;
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));

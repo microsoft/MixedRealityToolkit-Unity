@@ -26,4 +26,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
     }
-} 
+}

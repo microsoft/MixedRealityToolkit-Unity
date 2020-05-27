@@ -33,9 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            string name = null, 
-            uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -148,9 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            InputSource = inputSystem?.RequestNewGenericInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
+            InputSource = Service?.RequestNewGenericInputSource("Windows Speech Input Source", sourceType: InputSourceType.Voice);
 
             var newKeywords = new string[Commands.Length];
 
@@ -229,13 +227,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (OnPhraseRecognizedPerfMarker.Auto())
             {
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
                 for (int i = 0; i < Commands?.Length; i++)
                 {
                     if (Commands[i].LocalizedKeyword == text)
                     {
-                        inputSystem?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
+                        Service?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
                         break;
                     }
                 }

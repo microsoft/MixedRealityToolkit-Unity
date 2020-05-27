@@ -144,9 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityEngine.Cursor.visible = wasCursorVisible;
                 }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.EditorGUIUtility.SetWantsMouseJumping(wantsJumping ? 1 : 0);
-    #endif
+#endif
             }
         }
     }

@@ -106,6 +106,11 @@ The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* u
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
+- *Near Object Margin*: The distance to query for detecting of an object is near the pointer.
+- *Near Object Sector Angle*: The angle around the forward axis of the pointer for querying for nearby objects. Makes the `IsNearObject` query function like a cone. 
+
+![Sphere pointer modified to only query for objects in the forward direction](https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png)
+
 - *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
     > [!NOTE]
     > The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
@@ -114,6 +119,8 @@ This can prevent accidental grabs, and will allow hand rays to turn on when you 
 a grabbable but cannot see it. The *Visual FOV* is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV).
 
 <img src="../../Documentation/Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
+
+
 
 #### Teleport pointers
 

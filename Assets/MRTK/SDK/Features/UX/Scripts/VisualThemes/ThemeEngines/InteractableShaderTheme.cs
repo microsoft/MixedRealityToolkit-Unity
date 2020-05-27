@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         ShaderPropertyName = DefaultShaderProperty,
                     },
                 },
-                CustomProperties =  new List<ThemeProperty>(),
+                CustomProperties = new List<ThemeProperty>(),
             };
         }
 

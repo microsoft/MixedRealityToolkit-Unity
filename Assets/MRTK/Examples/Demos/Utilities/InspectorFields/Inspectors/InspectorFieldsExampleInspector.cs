@@ -7,7 +7,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Utilities.InspectorFields.Inspectors
 {
     [CustomEditor(typeof(InspectorFieldsExample))]
-    public class InspectorFieldsExampleInspector : UnityEditor.Editor 
+    public class InspectorFieldsExampleInspector : UnityEditor.Editor
     {
         private SerializedProperty settings;
         private InspectorFieldsExample example;

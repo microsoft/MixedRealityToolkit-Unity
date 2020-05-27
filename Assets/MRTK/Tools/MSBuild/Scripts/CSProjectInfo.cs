@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     }
 
     /// <summary>
-    /// A class representing a CSProject to be outputed.
+    /// A class representing a CSProject to be outputted.
     /// </summary>
     public class CSProjectInfo : ReferenceItemInfo
     {

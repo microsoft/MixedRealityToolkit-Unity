@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Now that NuGet packages have been restored, we can run the actual build process.
-            exitCode = await Run(msBuildPath, 
+            exitCode = await Run(msBuildPath,
                 $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var rootNode = XElement.Load(projectFilePath);
             var defaultNamespace = rootNode.GetDefaultNamespace();
             var propertyGroupNode = rootNode.Element(defaultNamespace + "PropertyGroup");
-            
+
             if (propertyGroupNode == null)
             {
                 propertyGroupNode = new XElement(defaultNamespace + "PropertyGroup", new XAttribute("Label", "Globals"));

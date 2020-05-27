@@ -107,10 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 {
                     MixedRealityCameraSettingsConfiguration configuration = profile.SettingsConfigurations[i];
 
-                    if (configuration.ComponentType?.Type == null) 
-                    { 
+                    if (configuration.ComponentType?.Type == null)
+                    {
                         // Incomplete configuration, do not try to register until a type is set in the profile.
-                        continue; 
+                        continue;
                     }
 
                     object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };

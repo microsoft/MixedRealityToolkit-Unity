@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// True will release all managed resources, unmanaged resources are always released.
         /// </param>
         protected virtual void Dispose(bool disposing) { }
-    
+
         #endregion IDisposable Implementation
     }
 }

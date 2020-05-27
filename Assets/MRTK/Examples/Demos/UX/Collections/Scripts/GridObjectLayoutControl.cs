@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Use this to run mock tests in grid object collection tests
         /// and print the resulting positions of child objects to a file.
         /// Used to get expected values for GridObjectCollectionTests.
-        /// When you run the comand, look in the Debug log for where the file is output,
+        /// When you run the command, look in the Debug log for where the file is output,
         /// it will be of form "printgrid-yyMMdd-HHmmss.txt"
         /// </summary>
         public void RunTest()

@@ -55,10 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Toggle the profiler visualization off.
             var gazeInputSource = CoreServices.InputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
             CoreServices.InputSystem.RaiseSpeechCommandRecognized(
-                gazeInputSource, 
-                RecognitionConfidenceLevel.High, 
-                new TimeSpan(), 
-                DateTime.Now, 
+                gazeInputSource,
+                RecognitionConfidenceLevel.High,
+                new TimeSpan(),
+                DateTime.Now,
                 new SpeechCommands("toggle profiler", KeyCode.Alpha9, MixedRealityInputAction.None));
             // It may take a few frames before the event is handled and the system responds to the state change.
             for (int i = 0; i < frameDelay; i++) { yield return null; }

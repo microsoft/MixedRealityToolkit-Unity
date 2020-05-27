@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Implementation for default hand ray pointers shipped with MRTK. Primariliy used with hands and motion controllers
+    /// Implementation for default hand ray pointers shipped with MRTK. Primarily used with hands and motion controllers
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ShellHandRayPointer")]
     public class ShellHandRayPointer : LinePointer

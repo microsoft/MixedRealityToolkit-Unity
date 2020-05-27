@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     public class WindowsMixedRealityUtilitiesProvider : IWindowsMixedRealityUtilitiesProvider
     {
         /// <inheritdoc />
-        IntPtr IWindowsMixedRealityUtilitiesProvider.ISpatialCoordinateSystemPtr => 
+        IntPtr IWindowsMixedRealityUtilitiesProvider.ISpatialCoordinateSystemPtr =>
 #if UNITY_WSA
             WorldManager.GetNativeISpatialCoordinateSystemPtr();
 #else

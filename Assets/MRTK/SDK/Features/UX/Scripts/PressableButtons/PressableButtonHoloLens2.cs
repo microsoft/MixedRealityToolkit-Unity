@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             while (blendTime > 0.0f)
             {
-                float t =  1.0f - (blendTime / time);
+                float t = 1.0f - (blendTime / time);
                 UpdateHightlightPlateVisuals(fadeIn ? t : 1.0f - t);
                 blendTime -= Time.deltaTime;
 

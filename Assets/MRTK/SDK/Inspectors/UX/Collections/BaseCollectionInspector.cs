@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    [CustomEditor( typeof(BaseObjectCollection), true )]
+    [CustomEditor(typeof(BaseObjectCollection), true)]
     public class BaseCollectionInspector : UnityEditor.Editor
     {
         private SerializedProperty ignoreInactiveTransforms;

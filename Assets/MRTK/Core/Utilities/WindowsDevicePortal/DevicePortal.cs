@@ -338,9 +338,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         {
             Debug.Assert(!string.IsNullOrEmpty(appFullPath));
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
-            if (!isAuth) 
-            { 
-                return false; 
+            if (!isAuth)
+            {
+                return false;
             }
 
             Debug.Log($"Starting app install on {targetDevice.ToString()}...");

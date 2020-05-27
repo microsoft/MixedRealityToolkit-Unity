@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             hitObject.transform.position = new Vector3(0.0f, -0.8f, 2.0f);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-            // Confirm the teleport poitner is collding with the cube which is in front but down
+            // Confirm the teleport pointer is colliding with the cube which is in front but down
             Assert.IsTrue(hitObject == curvePointer.Result.CurrentPointerTarget);
             Assert.IsNull(linePointer.Result.CurrentPointerTarget);
 

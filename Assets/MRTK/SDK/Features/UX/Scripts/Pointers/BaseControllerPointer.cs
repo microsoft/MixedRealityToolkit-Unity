@@ -72,18 +72,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void SetCursor(GameObject newCursor = null)
         {
             using (SetCursorPerfMarker.Auto())
-            { 
+            {
                 if (cursorInstance != null)
                 {
                     DestroyCursorInstance();
                     cursorInstance = newCursor;
                 }
 
-            if (cursorInstance == null && cursorPrefab != null)
-            {
-                cursorInstance = Instantiate(cursorPrefab, transform);
-                isCursorInstantiatedFromPrefab = true;
-            }
+                if (cursorInstance == null && cursorPrefab != null)
+                {
+                    cursorInstance = Instantiate(cursorPrefab, transform);
+                    isCursorInstantiatedFromPrefab = true;
+                }
 
                 if (cursorInstance != null)
                 {

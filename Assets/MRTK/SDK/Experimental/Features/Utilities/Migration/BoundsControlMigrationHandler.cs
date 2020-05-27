@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             {
                 Undo.RecordObject(gameObject, "BoundsControl migration: swapping BoundingBox with BoundsControl.");
-                
+
                 // migrate logic settings
                 boundsControl.Target = boundingBox.Target;
                 boundsControl.BoundsOverride = boundingBox.BoundsOverride;
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             // look in the scene for app bars and upgrade them too to point to the new component
             MigrateAppBar(boundingBox, boundsControl);
-      
+
             {
                 Undo.RecordObject(gameObject, "Removing obsolete BoundingBox component");
                 // destroy obsolete component
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             var scene = boundingBox.gameObject.scene;
             if (scene != null)
             {
-                string scenePath = scene.path;             
+                string scenePath = scene.path;
                 string sceneDir = System.IO.Path.GetDirectoryName(scenePath);
                 // if empty we're creating the folder in the asset root.
                 // This should only happen if we're trying to migrate a dynamically created
@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.CloseScale = box.CloseScale;
             config.FarGrowRate = box.FarGrowRate;
             config.MediumGrowRate = box.MediumGrowRate;
-            config.CloseGrowRate = box.CloseGrowRate;            
+            config.CloseGrowRate = box.CloseGrowRate;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
 
             control.HandleProximityEffectConfig = config;
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             // note: this might be expensive for larger scenes but we don't know where the appbar is 
             // placed in the hierarchy so we have to search the scene for it
-            AppBar[] appBars = Object.FindObjectsOfType<AppBar>(); 
+            AppBar[] appBars = Object.FindObjectsOfType<AppBar>();
             for (int i = 0; i < appBars.Length; ++i)
             {
                 AppBar appBar = appBars[i];

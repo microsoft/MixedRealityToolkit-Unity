@@ -881,7 +881,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 try
                 {
                     foreach (string sceneName in sceneNames)
-                    {  
+                    {
                         // Announce scenes individually regardless of type
                         OnWillUnloadScene?.Invoke(sceneName);
                     }
@@ -940,7 +940,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                             break;
 
                         default:
-                            // Don't announce other types of scenes invidually
+                            // Don't announce other types of scenes individually
                             break;
                     }
                 }
