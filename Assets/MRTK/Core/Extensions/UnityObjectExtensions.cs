@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Destroys a Unity object appropriately depending if running in in edit or play mode.
+        /// Destroys a Unity object appropriately depending if running in edit or play mode.
         /// </summary>
         /// <param name="obj">Unity object to destroy</param>
         /// <param name="t">Time in seconds at which to destroy the object, if applicable.</param>

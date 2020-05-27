@@ -17,20 +17,20 @@ be changed inside the Visual Studio solution).
 Make sure that the "Target SDK Version" dropdown includes the option "10.0.18362.0" - if this is missing,
 [the latest Windows SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) needs to be installed.
 
-
 ### Unity 2019.3 and HoloLens
 
 If a HoloLens app appears as a 2D panel on device, make sure the following settings have been configured in Unity 2019.3.x before deploying your UWP app:
 
 If using the legacy XR:
-1. Navigate to Edit > Project Settings, Player 
+
+1. Navigate to Edit > Project Settings, Player
 1. Under **XR Settings** in the UWP tab, make sure **Virtual Reality Supported** is enabled and the **Windows Mixed Reality** SDK has been added to SDKs.
 1. Build and deploy in Visual Studio
 
 If using the XR-Plugin:
 
 1. Follow the steps found in [Getting Started with XRSDK](GettingStartedWithMRTKAndXRSDK.md)
-1. Make sure the configuration profile is the **DefaultXRSDKConfigurationProfile** 
+1. Make sure the configuration profile is the **DefaultXRSDKConfigurationProfile**
 1. Navigate to **Edit > Project Settings, XR-Plugin Management** and make sure **Windows Mixed Reality** is enabled.
 1. Build and deploy in Visual Studio
 
@@ -46,7 +46,7 @@ The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platfo
 > [!NOTE]
 > Unity's XR SDK also supports native WMR in Standalone builds, but does not require SteamVR or WMR plugin. These steps are required for Unity's legacy XR.
 
-1. Install [Steam](https://store.steampowered.com/about/) 
+1. Install [Steam](https://store.steampowered.com/about/)
 1. Install [SteamVR](https://store.steampowered.com/app/250820/SteamVR/)
 1. Install the [WMR Plugin](https://store.steampowered.com/app/719950/Windows_Mixed_Reality_for_SteamVR/)
 
@@ -58,13 +58,12 @@ The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platfo
 
     ![WMR Plugin Search](Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png)
 
-
 1. Select **Launch** for the Windows Mixed Reality for SteamVR Plugin.
 
     ![WMR Plugin](Images/BuildDeploy/WMR/WMRPlugin.png)
 
-    -  SteamVR and the WMR plugin will launch and a new tracking status window for the WMR headset will appear.
-    - For more information visit the [Windows Mixed Reality Steam Documentation](https://support.microsoft.com/en-us/help/4053622/windows-10-play-steamvr-games-in-windows-mixed-reality)
+    - SteamVR and the WMR plugin will launch and a new tracking status window for the WMR headset will appear.
+    - For more information visit the [Windows Mixed Reality Steam Documentation](https://support.microsoft.com/help/4053622/windows-10-play-steamvr-games-in-windows-mixed-reality)
 
         ![WMR Launch Appearance](Images/BuildDeploy/WMR/WMRPluginActive.png)
 
@@ -78,13 +77,12 @@ The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platfo
 
     ![Build Settings for Standalone](Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png)
 
-
 1. A new Unity executable will be created, to launch your app select the Unity executable in File Explorer.
 
     ![File Explorer Unity](Images/BuildDeploy/WMR/FileExplorerUnityExe.png)
 
-
 ## See also
+
 - [Android and iOS Support](CrossPlatform/UsingARFoundation.md)
 - [Leap Motion Support](CrossPlatform/LeapMotionMRTK.md)
 - [Detecting Platform Capabilities](DetectingPlatformCapabilities.md)

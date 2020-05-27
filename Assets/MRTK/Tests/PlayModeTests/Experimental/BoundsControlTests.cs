@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -538,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -819,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
-            // make sure handles are disabled and enabled when bounds control is deactived / activated
+            // make sure handles are disabled and enabled when bounds control is deactivated / activated
             boundsControl.Active = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
             Assert.IsFalse(scaleHandle.gameObject.activeSelf, "scale handle not disabled");
@@ -1211,7 +1211,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// and making sure the the entire rig won't be recreated
+        /// and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator RotationHandlePrefabTest()
@@ -1258,7 +1258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// in regular and flatten mode and making sure the the entire rig won't be recreated
+        /// in regular and flatten mode and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleHandlePrefabTest()

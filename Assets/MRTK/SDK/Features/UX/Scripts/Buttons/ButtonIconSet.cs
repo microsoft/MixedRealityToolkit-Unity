@@ -714,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             else
                             {
-                                EditorGUILayout.HelpBox("No icons added yet. Click avaialable icons to add.", MessageType.Info);
+                                EditorGUILayout.HelpBox("No icons added yet. Click available icons to add.", MessageType.Info);
                             }
 
                             if (removeIndex >= 0)

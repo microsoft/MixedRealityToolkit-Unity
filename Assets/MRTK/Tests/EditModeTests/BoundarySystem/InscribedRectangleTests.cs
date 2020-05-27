@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary
         public void TestDegenerateSailboat()
         {
             // A set of edges that represents the fancy art above. Note that in this test case
-            // the width/height is a bit lengtened to really ensure that the top rectangle is
+            // the width/height is a bit lengthened to really ensure that the top rectangle is
             // much bigger.
             Edge[] edges = new Edge[]
             {
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary
         }
 
         /// <summary>
-        /// Asserts that the expected and actual values are within 'tolernace' percent.
+        /// Asserts that the expected and actual values are within 'tolerance' percent.
         /// </summary>
         /// <remarks>
         /// Assumes that expected isn't zero (none of our test cases should lead to an empty sized

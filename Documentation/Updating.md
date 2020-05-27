@@ -14,10 +14,15 @@ The 2.4.0 release has some changes that may impact application projects. Breakin
 > [!NOTE]
 > At this time, it is not supported to switch between using .unitypackage files and NuGet.
 
+*Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
+after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
+breaking changes. The migration tool is part of the **Tools** package.
+
 ### Unity asset (.unitypackage) files
 
 For the smoothest upgrade path, please use the following steps.
 
+1. Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.
 1. Close Unity
 1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
@@ -38,7 +43,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Re-open the project in Unity
 1. Import the new unity packages
     - Foundation - _Import this package first_
-    - (Optional) Tools
+    - Tools
     - (Optional) Extensions
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
@@ -50,6 +55,7 @@ For the smoothest upgrade path, please use the following steps.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
+1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
 
 ### NuGet packages
 
@@ -125,7 +131,7 @@ if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
 
 **WindowsApiChecker properties**
 
-The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvailable`, `IsPropertyAvailable` or `IsTypeAvailable`.
 
 - UniversalApiContractV8_IsAvailable
 - UniversalApiContractV7_IsAvailable
@@ -141,10 +147,10 @@ There are no plans to add properties to WindowsApiChecker for future API contrac
 The gltf mesh primitive attributes used to be settable, they are now read-only. Their values
 will be set once when deserialized.
 
-### Custom Button Icon Migration 
+### Custom Button Icon Migration
 
 Previously custom button icons required assigning a new material to the button's quad renderer. This is no longer necessary and we recommend moving custom icon textures into an IconSet. Existing custom materials and icons are preserved. However they will be less optimal until upgraded.
-To upgrade the assets on all buttons in the project to the new recommended format, use the ButtonConfigHelperMigrationHandler. 
+To upgrade the assets on all buttons in the project to the new recommended format, use the ButtonConfigHelperMigrationHandler.
 (Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
 
 ![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
@@ -163,7 +169,7 @@ If an icon is not found in the default icon set during migration, a custom icon 
 
 The private ControllerPoseSynchronizer.handedness field has been marked as obsolete. This should have minimal impact on applications as the field is not visible outside of its class.
 
-The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)). 
+The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)).
 
 **MSBuild for Unity**
 
@@ -182,7 +188,7 @@ The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPoi
 
 Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.
 
-**Spatial observer StarupBehavior**
+**Spatial observer StartupBehavior**
 
 Spatial observers built upon the `BaseSpatialObserver` class now honor the value of StartupBehavior when re-enabled ([#6919](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919)).
 

@@ -812,7 +812,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Experimental
 
         /// <summary>
-        /// Tests that the DirectionalIndicator can be instatiated through code.
+        /// Tests that the DirectionalIndicator can be instantiated through code.
         /// </summary>
         [UnityTest]
         public IEnumerator TestDirectionalIndicator()
@@ -1222,7 +1222,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Move(delta, 5);
             yield return null;
 
-            // Ensure Activation occured by making sure the testObjects position isn't still Vector3.zero
+            // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
             yield return hand.Hide();
