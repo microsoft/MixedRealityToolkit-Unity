@@ -97,6 +97,41 @@ function CheckEmptyDoccomment {
 
 <#
 .SYNOPSIS
+    Checks if the given file (at the given line number) contains a comment of the type:
+    //This comment doesn't have a space between // and This.
+    There should be a space between // and the comment.
+#>
+function CheckSpacelessComments {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+
+        # This regex looks for any non doccomment (i.e. //, not ///) where there isn't
+        # a space after the //.
+        # Explanation of the stuff inside the regex:
+        # \s      - matches a space, to ensure that we don't capture cases like https://
+        # //      - matches '//'
+        # [^\s//] - matches a single character that is not a whitespace character and also
+        #           not the '/' character (because doccomments like /// <summary> would
+        #           otherwise get matched).
+        $matcher = "\s//[^\s//]"
+        if ($FileContent[$LineNumber] -match $matcher) {
+            Write-Host "Comment in $FileName at line $LineNumber is missing a space after '//'"
+            Write-Host $FileContent[$LineNumber]
+            $hasIssue = $true
+        }
+        
+        $hasIssue
+    }
+}
+
+<#
+.SYNOPSIS
     Checks if the given file (at the given line number) contains a reference to Camera.main
     Returns true if such a reference exists.
 #>
@@ -174,31 +209,31 @@ $HardcodedPathExceptions = @{
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHub.unity" = @(
-        'Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHubMainMenu.unity" = @(
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slate/SlateExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
     );
 }
 
 <#
 .SYNOPSIS
-    Checks if the line contains a hardcoded path i.e. "Assets/MixedRealityToolkit.Examples"
+    Checks if the line contains a hardcoded path i.e. "Assets/MRTK/Examples"
     Hardcoded paths are generally not allowed, except in certain cases such as:
 
     - Tests cases (tests are not run by consumers of the toolkit)
@@ -313,6 +348,9 @@ function CheckScript {
                 $containsIssue = $true
             }
             if (CheckMainCamera $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            if (CheckSpacelessComments $FileName $fileContent $i) {
                 $containsIssue = $true
             }
         }

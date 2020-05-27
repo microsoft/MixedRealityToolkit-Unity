@@ -2,7 +2,7 @@
 
 ![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
-The [HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) example scene contains various types of interactions and UI controls that highlight articulated hand input.
+The `HandInteractionExamples` (Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) example scene contains various types of interactions and UI controls that highlight articulated hand input.
 
 > [!NOTE]
 > This example scene uses *TextMesh Pro*. To open the scene, click *'Import TMP Essentials'* when the respective prompt is shown during the import of the scene. Unity will then import TextMesh Pro packages.
