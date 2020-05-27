@@ -256,7 +256,7 @@ MonoBehaviour:
   DebugText: {fileID: 5706572166273258445}
   Grabber: {fileID: 5706572166712672382}
   JoystickVisual: {fileID: 5706572167046604150}
-  Rebound_Speed: 3
+  Rebound_Speed: 5
   Sensitivity_LeftRight: 100
   Sensitivity_ForwardBack: 150
   Multiplier_Move: 0.03

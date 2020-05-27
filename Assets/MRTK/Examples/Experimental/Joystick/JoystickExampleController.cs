@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         GameObject JoystickVisual = null;
 
         [SerializeField]
-        float Rebound_Speed = 3;
+        float Rebound_Speed = 5;
 
         [SerializeField]
         float Sensitivity_LeftRight = 100;
@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         Vector3 startPosition;
         Vector3 joystickGrabberPosition;
         Vector3 joystickVisualRotation;
+        const int joystickVisualMaxRotation = 80;
         bool isDragging = false;
 
         string JoystickMode = "Move";
@@ -68,10 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             joystickGrabberPosition = Grabber.transform.position - startPosition;
             // Left Right
-            joystickVisualRotation.z = -joystickGrabberPosition.x * Sensitivity_LeftRight;
+            joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * Sensitivity_LeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
             // Forward Back
-            joystickVisualRotation.x = joystickGrabberPosition.z * Sensitivity_ForwardBack;
-            if(JoystickVisual != null)
+            joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * Sensitivity_ForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            if (JoystickVisual != null)
             {
                 JoystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
             }
@@ -100,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                     ObjectToManipulate.transform.localScale += newScale;
                 }
             }
-            if(DebugText != null)
+            if (DebugText != null)
             {
                 DebugText.text = joystickGrabberPosition.ToString();
             }
