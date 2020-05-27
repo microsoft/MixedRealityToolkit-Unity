@@ -15,7 +15,7 @@ Tap to Place is a far interaction component that is used to place a game object 
 1. Attach [Tap to Place](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.TapToPlace) to a game object with a collider
 
     ![TapToPlaceInspector](Images/Solver/TapToPlace/TapToPlaceInspector2.png)
-    
+
     - When the Tap to Place component is added, a Solver Handler will also be attached. Tap to Place derives from the [Solver](README_Solver.md) class which requires a Solver Handler. The position of a Tap to Place object is calculated relative to the `TrackedTargetType` within the Solver Handler. By default the Head is the `TrackedTargetType`, i.e. when the head moves, the object follows if it is selected.  The `TrackedTargetType` can also be set to Controller Ray which has the object follow the controller. The first group of properties in the Tap to Place inspector are the [Common Solver Properties](README_Solver.md#common-solver-properties).  
     > [!IMPORTANT]
     > Tap to Place is a stand alone Solver and cannot be chained with other Solvers. It cannot be chained because SolverHandler.UpdateSolvers is used to update the object's position while it is being placed.
@@ -31,26 +31,25 @@ Tap to Place is a far interaction component that is used to place a game object 
         - `On Placing Started`: This event is triggered once when the game object to place is selected.
         - `On Placing Stopped`: This event is triggered once when the game object to place is unselected, placed.
 
-1.  Testing Tap to Place behavior in editor
+1. Testing Tap to Place behavior in editor
     - Press play and hold the space bar to show an input simulation hand.
     - Move the hand until the cube is in focus and simulate a click with the input simulation hand by clicking with the left mouse.
         - If colliders are not present in the scene, the object will follow the `TrackedTargetType` at the defined `Default Placement Distance`.
     - The object will follow the movement of the `TrackedTargetType` after selection. To simulate head movement in editor, press the WASD keys. Change head rotation by clicking and holding the right mouse.
     - To stop placing the object, click again.  The object does not need to be in focus for the stop placement click. Focus is only required for the initial click that starts the placement process.
 
-    `TrackedTargetType`: Head (Default) |  `TrackedTargetType`: Controller Ray 
+    `TrackedTargetType`: Head (Default) |  `TrackedTargetType`: Controller Ray
     :-------------------------:|:-------------------------:
     ![TapToPlaceInputSimulationHead](Images/Solver/TapToPlace/TapToPlaceInputSimulationHead.gif)  |  ![TapToPlaceInputSimulationControllerRay](Images/Solver/TapToPlace/TapToPlaceInputSimulationControllerRay.gif)
 
+## Tap to Place Code Configurability
 
-## Tap to Place Code Configurability 
-
-Tap to Place object selection timing can also be controlled via `StartPlacement()` and `StopPlacement()` instead of requiring a click event. This capability is useful for writing tests and provides an alternative method to place an object in editor without using the MRTK Input System. 
+Tap to Place object selection timing can also be controlled via `StartPlacement()` and `StopPlacement()` instead of requiring a click event. This capability is useful for writing tests and provides an alternative method to place an object in editor without using the MRTK Input System.
 
 1. Create an empty game object
 1. Create and attach the following example script to the empty game object
 
-    ```
+    ```c#
     using UnityEngine;
     using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 
@@ -81,6 +80,7 @@ Tap to Place object selection timing can also be controlled via `StartPlacement(
         }
     }
     ```
+
 1. In play mode, press the *U key* to start placing the cube
 1. Press the *I key* to stop the placement
 

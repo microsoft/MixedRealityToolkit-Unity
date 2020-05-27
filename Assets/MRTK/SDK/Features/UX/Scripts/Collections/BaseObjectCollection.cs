@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Check if a node exists in the NodeList.
         /// </summary>
-        /// <param name="node">The Transfrom belonging to the <see cref="ObjectCollectionNode"/></param>
+        /// <param name="node">The Transform belonging to the <see cref="ObjectCollectionNode"/></param>
         /// <returns>true when <paramref name="node"/> belongs to an element of the list.</returns>
         protected bool ContainsNode(Transform node)
         {

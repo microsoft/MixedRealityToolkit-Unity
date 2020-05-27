@@ -39,4 +39,5 @@ private void Update()
 You can see a simple example of how to bring up system keyboard in `MixedRealityKeyboard.cs` (Assets/MRTK/SDK/Experimental/Features/UX/MixedRealityKeyboard.cs)
 
 ## See Also
-- [Mixed Reality Keyboard Helper Classes](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md) 
+
+- [Mixed Reality Keyboard Helper Classes](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md)

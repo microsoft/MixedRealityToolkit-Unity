@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    Debug.LogError("EnterPinchDistance must be be between 0.015 and 0.1, please change Enter Pinch Distance in the Leap Motion Device Manager Profile");
+                    Debug.LogError("EnterPinchDistance must be between 0.015 and 0.1, please change Enter Pinch Distance in the Leap Motion Device Manager Profile");
                 }   
             }
         }
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    Debug.LogError("ExitPinchDistance must be be between 0.015 and 0.1, please change Exit Pinch Distance in the Leap Motion Device Manager Profile");
+                    Debug.LogError("ExitPinchDistance must be between 0.015 and 0.1, please change Exit Pinch Distance in the Leap Motion Device Manager Profile");
                 }
             }
         }
