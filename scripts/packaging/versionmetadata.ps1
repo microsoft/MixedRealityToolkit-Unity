@@ -21,6 +21,14 @@
     it matches the passed in version (i.e. the version values in
     ProjectSettings/ProjectSettings.asset, which are ultimately not consumed by
     consumers, but should stay in sync for consistency's sake)
+
+    A generaly note on how to update the version values:
+    There are three locations to update:
+    pipelines/config/settings.yml (MRTKVersion)
+    ProjectSettings/ProjectSettings.asset (bundleVersion, metroPackageVersion)
+
+    They should have the same value (except metroPackageVersion which will contain
+    one more trailing .0 value)
 .EXAMPLE
     .\versiondata.ps1 -Directory c:\path\to\mrtkroot -Version 2.5.0
 #>
@@ -98,13 +106,12 @@ function AddVersionTxt {
     }
 }
 
-
 <#
 .SYNOPSIS
     Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
     have an .asmdef file.
 #>
-function AddVersionTxt {
+function AddAssemblyInfo {
     [CmdletBinding()]
     param(
         [string]$Directory,
@@ -125,9 +132,16 @@ function AddVersionTxt {
             $projectFolder = $filename.Replace($mrtkFolder, "")
             $split = $projectFolder.Split([IO.Path]::DirectorySeparatorChar)
 
-            # Since $projectFolder has the form "/Core/Path/Thing"
-            # we use index 1 to get the value "Core"
-            $project = $split[1]
+            # Since $projectFolder has the form "/SDK/Path/Thing"
+            # we use index 1 to get the value "SDK"
+            # Also note that there's a space ahead of the value which is intentional
+            # to ensure that resolved product looks like:
+            # "Microsoft® Mixed Reality Toolkit SDK" when in a non-Core folder
+            # and "Microsoft® Mixed Reality Toolkit" when in the Core folder.
+            $project = " " + $split[1]
+            if ($project -eq " Core") {
+                $project = ""
+            }
 
             # Note that this is left-indent adjusted so that the file output
             # ends up looking reasonable.
@@ -141,15 +155,61 @@ using System.Reflection;
 [assembly: AssemblyVersion("$Version.0")]
 [assembly: AssemblyFileVersion("$Version.0")]
 
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit $project")]
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit$project")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 "@
-        
+
+            Set-Content -Path $filename -Value $content
             Write-Output "Added AssemblyInfo.cs at $filename"
         }
     }
 }
 
 
+<#
+.SYNOPSIS
+    Checks that the ProjectSettings file has correct matching version information.
+#>
+function CheckProjectSettings {
+    [CmdletBinding()]
+    param(
+        [string]$Directory,
+        [string]$Version
+    )
+    process {
+        $projectSettings = Join-Path -Path $Directory -ChildPath "ProjectSettings/ProjectSettings.asset"
+        $hasMatchingVersions = $true
+        $fileContent = Get-Content $ProjectSettings
+        foreach ($line in $fileContent) {
+            if (($line -match " bundleVersion") -or ($line -match " metroPackageVersion")) {
+                $expected = "$Version"
+                $split = $line.Split(":")
+                $version = $split[1].Trim()
+
+                # For the metroPackageVersion (which is used to generate the MRTK project
+                # AppX versions, they need to have an additional .0 tacked onto the end)
+                if ($line -match " metroPackageVersion") {
+                    $expected = "$expected.0" 
+                }
+
+                if ($expected -ne $version) {
+                    $hasMatchingVersions = $false
+                    Write-Host "Mismatched version on line: $line. Expected version: $expected"
+                }
+            }
+        }
+        $hasMatchingVersions
+    }
+}
+
 AddVersionTxt $Directory $Version
-AddVersionTxt $Directory $Version
+AddAssemblyInfo $Directory $Version
+$containsIssue = CheckProjectSettings $Directory $Version
+if ($containsIssue) {
+    Write-Output "Issues found, please see above for details"
+    exit 1;
+}
+else {
+    Write-Output "No issues found"
+    exit 0;
+}
