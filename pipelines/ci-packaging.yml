@@ -18,3 +18,4 @@ jobs:
       packagingEnabled: true
       packagePublishing: true
       UnityVersion: $(Unity2018Version)
+      MRTKVersion: $(MRTKVersion)
