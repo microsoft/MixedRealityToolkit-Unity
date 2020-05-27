@@ -213,6 +213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5706572166333173925}
+  - component: {fileID: 2568946665719251854}
   m_Layer: 0
   m_Name: JoystickPrefab
   m_TagString: Untagged
@@ -236,10 +237,31 @@ Transform:
   - {fileID: 5706572167046604139}
   - {fileID: 5706572166712672372}
   - {fileID: 5706572166273258433}
-  - {fileID: 5706572167825818659}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2568946665719251854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706572166333173924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a33aa7eb795c8408ba365c819215ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToManipulate: {fileID: 0}
+  DebugText: {fileID: 5706572166273258445}
+  Grabber: {fileID: 5706572166712672382}
+  JoystickVisual: {fileID: 5706572167046604150}
+  Rebound_Speed: 3
+  Sensitivity_LeftRight: 100
+  Sensitivity_ForwardBack: 150
+  Multiplier_Move: 0.03
+  Multiplier_Rotate: 1.1
+  Multiplier_Scale: 0.4
 --- !u!1 &5706572166712672382
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +661,7 @@ GameObject:
   - component: {fileID: 5706572167734576078}
   - component: {fileID: 5706572167734576077}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -706,59 +728,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &5706572167825818658
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5706572167825818659}
-  - component: {fileID: 6223591963691532864}
-  m_Layer: 0
-  m_Name: Manager (Joystick)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5706572167825818659
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5706572167825818658}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5706572166333173925}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6223591963691532864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5706572167825818658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7a33aa7eb795c8408ba365c819215ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectToManipulate: {fileID: 0}
-  DebugText: {fileID: 5706572166273258445}
-  Grabber: {fileID: 5706572166712672382}
-  JoystickVisual: {fileID: 5706572167046604150}
-  Rebound_Speed: 3
-  Sensitivity_LeftRight: 100
-  Sensitivity_ForwardBack: 150
-  Multiplier_Move: 0.03
-  Multiplier_Rotate: 1.1
-  Multiplier_Scale: 0.4
 --- !u!1 &5706572168053269082
 GameObject:
   m_ObjectHideFlags: 0
