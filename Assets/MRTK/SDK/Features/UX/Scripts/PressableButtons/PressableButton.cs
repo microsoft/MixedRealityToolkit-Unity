@@ -56,13 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     distanceSpaceMode = value;
                     float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
 
-                    // If our global-relative scale is extremely small (or zero), this scale calculation
-                    // will blow up. In this case, we'd rather just set these distances to zero.
-                    if (transform.lossyScale.magnitude <= float.Epsilon)
-                    {
-                        scale = 0.0f;
-                    }
-
                     startPushDistance *= scale;
                     maxPushDistance *= scale;
                     pressDistance *= scale;
@@ -197,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Transform for local to world space in the world direction of a press
         /// Multiply local scale positions by this value to convert to world space
         /// </summary>
-        public float LocalToWorldScale => 1.0f / WorldToLocalScale;
+        public float LocalToWorldScale => (WorldToLocalScale != 0) ? 1.0f / WorldToLocalScale : 0.0f;
 
         /// <summary>
         /// The press direction of the button as defined by a NearInteractionTouchableSurface.
@@ -491,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 localPosition = positionWorldSpace - InitialWorldPosition;
             float distance = Vector3.Dot(localPosition, WorldSpacePressDirection.normalized);
-            return (distanceSpaceMode == SpaceMode.Local) ? distance / LocalToWorldScale : distance;
+            return (distanceSpaceMode == SpaceMode.Local) ? distance * WorldToLocalScale : distance;
         }
 
         #endregion

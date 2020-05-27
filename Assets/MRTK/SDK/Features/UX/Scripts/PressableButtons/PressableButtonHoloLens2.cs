@@ -116,7 +116,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 // Compress the button visuals by the push amount.
                 Vector3 scale = compressableButtonVisuals.transform.localScale;
-                float pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (CurrentPushDistance - startPushDistance) / MaxPushDistance));
+                float pressPercentage;
+
+                // Prevent divide by zero when calculating pressPercentage.
+                if (MaxPushDistance <= float.Epsilon)
+                {
+                    pressPercentage = 0.0f;
+                }
+                else
+                {
+                    pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (CurrentPushDistance - startPushDistance) / MaxPushDistance));
+                }
+
                 scale.z = initialCompressableButtonVisualsLocalScale.z * pressPercentage;
                 compressableButtonVisuals.transform.localScale = scale;
             }
