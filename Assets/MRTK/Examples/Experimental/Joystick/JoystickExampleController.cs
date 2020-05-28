@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         float MultiplierRotate = 1.1f;
 
         [SerializeField]
-        [Range(0.01f, 1.0f)]
-        float MultiplierScale = 0.05f;
+        [Range(0.001f, 0.1f)]
+        float MultiplierScale = 0.01f;
 
         Vector3 startPosition;
         Vector3 joystickGrabberPosition;
@@ -119,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 }
                 else if (mode == JoystickMode.Scale)
                 {
+                    //TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * MultiplierScale;
-                    //TODO: Clamp above Minimum_Scale
                     ObjectToManipulate.transform.localScale += newScale;
                     if (DebugText != null)
                     {
