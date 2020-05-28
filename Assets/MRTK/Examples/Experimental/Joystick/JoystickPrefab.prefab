@@ -256,14 +256,14 @@ MonoBehaviour:
   DebugText: {fileID: 5706572166273258445}
   JoystickVisual: {fileID: 5706572167046604150}
   GrabberVisual: {fileID: 5706572166712672382}
-  ShowGrabberVisual: 1
+  ShowGrabberVisual: 0
   ReboundSpeed: 5
   SensitivityLeftRight: 100
   SensitivityForwardBack: 150
   mode: 0
   MultiplierMove: 0.03
   MultiplierRotate: 1.1
-  MultiplierScale: 0.05
+  MultiplierScale: 0.01
 --- !u!1 &5706572166712672382
 GameObject:
   m_ObjectHideFlags: 0
