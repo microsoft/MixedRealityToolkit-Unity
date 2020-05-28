@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             RenderTexture renderTexture = new RenderTexture(textureWidth, textureHeight, 0);
 
             postProcessMaterial.SetTexture("_DepthTex", depthTexture);
-       
+
             cam.depthTextureMode = DepthTextureMode.Depth;
             cam.SetTargetBuffers(renderTexture.colorBuffer, depthTexture.depthBuffer);
         }

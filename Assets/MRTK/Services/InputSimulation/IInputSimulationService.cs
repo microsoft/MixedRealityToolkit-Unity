@@ -4,7 +4,7 @@
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
-{ 
+{
     public interface IInputSimulationService : IMixedRealityInputDeviceManager
     {
         /// <summary>

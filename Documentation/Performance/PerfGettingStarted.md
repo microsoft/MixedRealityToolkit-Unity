@@ -39,7 +39,7 @@ To maintain comfortable frame rates (typically 60 frames per second), applicatio
 [MRTK] className.methodName
 ```
 
-> [!Note] 
+> [!Note]
 > There may be additional data following the method name. This is used to identify conditionally executed, potentially expensive functionality that may be avoided by small changes to application code.
 
 ![Example Unity Profiler Hierarchy](../../Documentation/Images/Performance/UnityProfilerHierarchy.png)

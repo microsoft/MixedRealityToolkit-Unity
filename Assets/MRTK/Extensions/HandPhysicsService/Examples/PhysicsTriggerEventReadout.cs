@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
         [SerializeField]
         [Tooltip("TextMeshPro object that will write the events")]
         private TextMeshPro textField;
-    
+
         /// <summary>
         /// TextMeshPro object that will write the events 
         /// </summary>
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
             JointKinematicBody joint = other.GetComponent<JointKinematicBody>();
             if (joint == null) { return; }
 
-            if(currentJoints.Contains(joint))
+            if (currentJoints.Contains(joint))
             {
                 currentJoints.Remove(joint);
             }
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
                 WriteText();
                 currentJoints.Remove(joint);
             }
-            if(currentJoints.Count <= 0)
+            if (currentJoints.Count <= 0)
             {
                 WriteText(true);
             }

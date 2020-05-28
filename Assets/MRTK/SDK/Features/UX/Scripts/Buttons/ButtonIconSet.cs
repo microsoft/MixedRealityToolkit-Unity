@@ -53,8 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Sprite[] spriteIcons = new Sprite[0];
         [SerializeField]
         private TMP_FontAsset charIconFont = null;
-        [SerializeField]
-        [Tooltip("See TextMeshPro font assets for available unicode characters. Default characters are drawn from the HoloSymMDL2 font.")]
+        [SerializeField, Tooltip("See TextMeshPro font assets for available unicode characters. Default characters are drawn from the HoloSymMDL2 font.")]
         private CharIcon[] charIcons = new CharIcon[]
         {
             new CharIcon{ Character = ConvertCharStringToUInt32("\uEBD2"), Name = "AppBarAdjust" },
@@ -102,6 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InitializeLookups()
         {
+#if UNITY_EDITOR
+            if (quadIconLookup.Count != quadIcons.Length ||
+                spriteIconLookup.Count != spriteIcons.Length ||
+                charIconLookup.Count != charIcons.Length)
+            {   // Our lookups are stale
+                EditorResetCharIconLookups();
+            }
+#endif
+
             if (lookupsInitialized)
                 return;
 
@@ -191,9 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 #if UNITY_EDITOR
-
         private const int maxButtonSize = 75;
-        private const int charIconFontSize = 30;
         private const int maxButtonsPerColumn = 6;
 
         private Texture[] spriteIconTextures = null;
@@ -335,10 +341,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Draws a selectable grid of texture icons.
         /// </summary>
         /// <returns>True if a new icon was selected.</returns>
-        public bool EditorDrawQuadIconSelector(Texture currentTexture, out Texture newTexture, int indentLevel = 0)
+        public bool EditorDrawQuadIconSelector(Texture currentTexture, out bool foundTexture, out Texture newTexture, int indentLevel = 0)
         {
             newTexture = null;
             int currentSelection = -1;
+            foundTexture = false;
 
             for (int i = 0; i < quadIcons.Length; i++)
             {
@@ -359,9 +366,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, quadIcons, maxButtonsPerColumn, maxHeight, maxWidth);
 #endif
-                if (newSelection >= 0 && newSelection != currentSelection)
+                if (newSelection >= 0)
                 {
-                    newTexture = quadIcons[newSelection];
+                    foundTexture = true;
+                    if (newSelection != currentSelection)
+                    {
+                        newTexture = quadIcons[newSelection];
+                    }
                 }
             }
 
@@ -446,6 +457,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 EditorGUILayout.LabelField("Couldn't draw character icon. Character may not be available in the font asset.");
             }
+        }
+
+        /// <summary>
+        /// Adds a custom quad icon to the quadIcons array. If quad icon already exists in set no action will be taken.
+        /// </summary>
+        public bool EditorAddCustomQuadIcon(Texture customQuadIcon)
+        {
+            foreach (Texture quadIcon in quadIcons)
+            {
+                if (quadIcon == customQuadIcon)
+                {   // Already exists!
+                    return false;
+                }
+            }
+
+            SerializedObject serializedObject = new SerializedObject(this);
+            SerializedProperty quadIconProp = serializedObject.FindProperty("quadIcons");
+            quadIconProp.InsertArrayElementAtIndex(0);
+            SerializedProperty quadIconElement = quadIconProp.GetArrayElementAtIndex(0);
+            quadIconElement.objectReferenceValue = customQuadIcon;
+            serializedObject.ApplyModifiedProperties();
+
+            EditorResetCharIconLookups();
+            InitializeLookups();
+            return true;
         }
 
         [CustomEditor(typeof(ButtonIconSet))]
@@ -678,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             else
                             {
-                                EditorGUILayout.HelpBox("No icons added yet. Click avaialable icons to add.", MessageType.Info);
+                                EditorGUILayout.HelpBox("No icons added yet. Click available icons to add.", MessageType.Info);
                             }
 
                             if (removeIndex >= 0)

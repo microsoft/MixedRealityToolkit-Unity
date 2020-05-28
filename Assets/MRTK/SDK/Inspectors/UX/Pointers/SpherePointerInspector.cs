@@ -10,7 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(SpherePointer))]
     public class SpherePointerInspector : BaseControllerPointerInspector
     {
+        private SerializedProperty nearObjectSectorAngle;
         private SerializedProperty sphereCastRadius;
+        private SerializedProperty pullbackDistance;
         private SerializedProperty nearObjectMargin;
         private SerializedProperty grabLayerMasks;
         private SerializedProperty triggerInteraction;
@@ -25,7 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
 
             sphereCastRadius = serializedObject.FindProperty("sphereCastRadius");
+            pullbackDistance = serializedObject.FindProperty("pullbackDistance");
             sceneQueryBufferSize = serializedObject.FindProperty("sceneQueryBufferSize");
+            nearObjectSectorAngle = serializedObject.FindProperty("nearObjectSectorAngle");
             nearObjectMargin = serializedObject.FindProperty("nearObjectMargin");
             grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
             triggerInteraction = serializedObject.FindProperty("triggerInteraction");
@@ -44,7 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.PropertyField(nearObjectSectorAngle);
                     EditorGUILayout.PropertyField(sphereCastRadius);
+                    EditorGUILayout.PropertyField(pullbackDistance);
                     EditorGUILayout.PropertyField(sceneQueryBufferSize);
                     EditorGUILayout.PropertyField(nearObjectMargin);
                     EditorGUILayout.PropertyField(triggerInteraction);

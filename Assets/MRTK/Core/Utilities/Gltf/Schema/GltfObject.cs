@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         public GltfAccessor GetAccessor(int index)
         {
             if (index < 0) return null;
-            
+
             var accessor = accessors[index];
             accessor.BufferView = bufferViews[accessor.bufferView];
             accessor.BufferView.Buffer = buffers[accessor.BufferView.buffer];

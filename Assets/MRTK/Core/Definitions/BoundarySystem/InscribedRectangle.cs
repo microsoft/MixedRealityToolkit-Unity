@@ -163,12 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     // Note, we are ignoring the return value as we are checking each point's validity
                     // individually.
                     FindSurroundingCollisionPoints(
-                        geometryEdges, 
-                        startingPoints[pointIndex], 
+                        geometryEdges,
+                        startingPoints[pointIndex],
                         angleRadians,
-                        out topCollisionPoint, 
-                        out bottomCollisionPoint, 
-                        out leftCollisionPoint, 
+                        out topCollisionPoint,
+                        out bottomCollisionPoint,
+                        out leftCollisionPoint,
                         out rightCollisionPoint);
 
                     float newWidth;
@@ -332,9 +332,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
 
             // Each corner of the rectangle must intersect with the geometry.
-            if (!EdgeUtilities.IsValidPoint(topCollisionPoint) || 
+            if (!EdgeUtilities.IsValidPoint(topCollisionPoint) ||
                 !EdgeUtilities.IsValidPoint(bottomCollisionPoint) ||
-                !EdgeUtilities.IsValidPoint(leftCollisionPoint) || 
+                !EdgeUtilities.IsValidPoint(leftCollisionPoint) ||
                 !EdgeUtilities.IsValidPoint(rightCollisionPoint))
             {
                 return false;
@@ -521,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
                 // If the lowest value needed to outperform the previous best is greater than our max, 
                 // this aspect ratio can't outperform what we've already calculated.
-                if ((searchHeightLowerBound > searchHeightUpperBound) || 
+                if ((searchHeightLowerBound > searchHeightUpperBound) ||
                     (searchHeightLowerBound * aspectRatios[i] > maxWidth))
                 {
                     continue;
@@ -533,10 +533,10 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 // Perform the binary search until continuing to search will not give us a significant win.
                 do
                 {
-                    if (CheckRectangleFit(geometryEdges, 
-                        centerPoint, 
-                        angleRadians, 
-                        aspectRatios[i] * currentTestingHeight, 
+                    if (CheckRectangleFit(geometryEdges,
+                        centerPoint,
+                        angleRadians,
+                        aspectRatios[i] * currentTestingHeight,
                         currentTestingHeight))
                     {
                         // Binary search up-ward

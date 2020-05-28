@@ -49,9 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 }
             }
 
-            if (!synchronizationSettingsFoldout) 
-            { 
-                return; 
+            if (!synchronizationSettingsFoldout)
+            {
+                return;
             }
 
             using (new EditorGUI.IndentLevelScope())

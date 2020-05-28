@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         private static bool isLeapInProject = false;
 
         // The current supported Leap Core Assets version numbers.
-        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.4.0", "4.5.0"};
+        private static string[] leapCoreAssetsVersionsSupported = new string[] { "4.4.0", "4.5.0" };
 
         // The current Leap Core Assets version in this project
         private static string currentLeapCoreAssetsVersion = "";
@@ -82,11 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             if (files.Length > 0)
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
                 return true;
             }
             else
             {
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, Definitions);
                 return false;
             }
         }
@@ -127,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                     Debug.LogError("MRTK only supports the Leap Motion Core Assets Version 4.4.0 and 4.5.0, the Leap Motion Core Assets imported are not Version 4.4.0 or 4.5.0");
                 }
             }
-            
+
             if (!isLeapInProject && references.Contains("LeapMotion"))
             {
                 references.Remove("LeapMotion");
@@ -222,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                     Name = "LeapMotion",
                     AllowUnsafeCode = true,
                     References = new string[] { },
-                    IncludePlatforms = new string[] { "Editor", "WindowsStandalone32", "WindowsStandalone64"}
+                    IncludePlatforms = new string[] { "Editor", "WindowsStandalone32", "WindowsStandalone64" }
                 };
 
                 leapAsmDef.Save(leapCoreAsmDefPath);
@@ -234,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 AssemblyDefinition leapDataProviderAsmDef = AssemblyDefinition.Load(leapDataProviderAsmDefFile[0].FullName);
 
                 List<string> references = leapDataProviderAsmDef.References.ToList();
-                
+
                 if (!references.Contains("LeapMotion"))
                 {
                     references.Add("LeapMotion");
@@ -388,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                     else
                     {
                         streamWriter.WriteLine(cscLine);
-                    } 
+                    }
                 }
             }
 

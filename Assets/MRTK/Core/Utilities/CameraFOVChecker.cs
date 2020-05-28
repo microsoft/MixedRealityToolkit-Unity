@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class CameraFOVChecker
     {
-        
+
         // Help to clear caches when new frame runs
         static private int inFOVLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame

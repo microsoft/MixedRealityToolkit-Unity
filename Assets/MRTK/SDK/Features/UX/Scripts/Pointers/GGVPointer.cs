@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public bool IsInteractionEnabled => IsActive;
-        
+
         /// <inheritdoc />
         public bool IsActive { get; set; }
 

@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
-        
+
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }
 

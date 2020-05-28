@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     changed = true;
                 }
 
-                
+
                 // The method is using scenes by path is not reliable (code included
                 // commented out here for reference).
                 // Cached scenes are used instead (see CachedScenes).

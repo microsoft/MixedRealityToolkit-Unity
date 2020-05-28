@@ -41,9 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor.
         /// </summary>
         public SimulatedGestureHand(
-            TrackingState trackingState, 
-            Handedness controllerHandedness, 
-            IMixedRealityInputSource inputSource = null, 
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {

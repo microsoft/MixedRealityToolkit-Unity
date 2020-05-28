@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         internal ArticulatedHandDefinition handDefinition;
 
-        // Set the interations for each hand to the Default interactions of the hand definition
+        // Set the interactions for each hand to the Default interactions of the hand definition
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         private static readonly ProfilerMarker UpdateStatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionArticulatedHand.UpdateState");

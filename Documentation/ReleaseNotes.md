@@ -3,6 +3,7 @@
 - [What's new](#whats-new-in-240)
 - [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
+- [Known issues](#known-issues-in-240)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -14,6 +15,7 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Mobile AR via Unity AR Foundation
   - Android
   - iOS
+- Ultraleap Hand Tracking
 
 The following software is required.
 
@@ -29,13 +31,33 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### What's new in 2.4.0
 
-**Leap Motion Hand Tracking Support**
+**Ultraleap Hand Tracking Support**
 
 The [Leap Motion Data Provider](CrossPlatform/LeapMotionMRTK.md) enables articulated hand tracking for VR applications and is also useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.
 
 A [Leap Motion Controller](https://www.ultraleap.com/product/leap-motion-controller/) is required to use this data provider.
 
 ![LeapMotionIntroGif](Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif)
+
+**Migration window**
+
+![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
+
+MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer
+versions and to keep existing code working even as MRTK makes breaking changes.
+
+**It is generally recommended to run the migration tool after pulling a new version of MRTK** to
+ensure that as much of your project will be auto-adjusted to the latest MRTK code.
+
+The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities >
+Migration Window'. It it part of the **Tools** package.
+
+It currently supports:
+
+- Upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.
+- Updating custom button icons to work correctly with the new Button Config Helper.
+
+Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
 
 **MRTK folder layout changes**
 
@@ -109,7 +131,7 @@ Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
-This version of MRTK adds three new methods to the [`WindowsApiChecker`](xref:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker) class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+This version of MRTK adds three new methods to the [`WindowsApiChecker`](xref:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker) class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are preferred over using the `UniversalApiContractV#_IsAvailable` properties.
 
 **Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)**
 
@@ -166,14 +188,7 @@ Users can take advantage of the new [migration window](Tools/MigrationWindow.md)
 
 **Bounds control improvements**
 
-We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type. 
-
-**Migration window**
-
-![Migration window](Images/MigrationWindow/MRTK_Migration_Window.png)
-
-MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer versions. The [migration window](Tools/MigrationWindow.md) can be found in 'Mixed Reality Toolkit > Utilities > Migration Window'. It currently supports upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl. 
-Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.
+We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.
 
 ### Breaking changes in 2.4.0
 
@@ -207,8 +222,45 @@ For more information on these changes and complete instructions for eye tracking
 
 ### Known issues in 2.4.0
 
-**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3** 
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
 
-An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)). 
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)).
 
 As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
+
+**Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4**
+
+If the platform is switched from Standalone to UWP and then back to Standalone in Unity 2018.4, the following errors might be in the console:
+
+```
+PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Microsoft.Windows.MixedReality.DotNetWinRT.dll included for the current platform. Only one assembly with the same name is allowed per platform. Assembly paths
+```
+
+```
+Assets\MRTK\Examples\Demos\HandTracking\Scenes\Utilities\InspectorFields\AssemblyInfo.cs(6,12): error CS0579: Duplicate 'AssemblyVersion' attribute
+```
+
+These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.
+
+For a more details see [Issue 7948](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948).
+
+**Applications appearing as a 2D slate on Unity 2019.3**
+
+When using Unity 2019.3, enabling XR support does not configure a default SDK (legacy) or plugin (XR Mangement). This results in applications being constrained to a 2D slate. Details on resolving this can be found in the [Building and Deploying MRTK article](BuildAndDeploy.md#unity-20193-and-hololens).
+
+**Unity 2019.3: ARM build architecture**
+
+There is a [known issue](https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2) in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable **Graphics Jobs** in **Edit** > **Project Settings** > **Player** > **Other Settings**. For more information see [Building and Deploying](BuildAndDeploy.md#unity-20193-and-hololens).
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289), [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2018: .NET Backend and AR Foundation**
+
+There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.
+
+To work around this issue, please perform one of the following steps:
+
+- Switch the scripting backend to IL2CPP
+- In the Build Settings window, uncheck **Unity C# Projects"

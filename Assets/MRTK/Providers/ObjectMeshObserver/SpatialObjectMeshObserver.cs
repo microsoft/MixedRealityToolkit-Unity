@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Update()
         {
-            if (!IsRunning) 
+            if (!IsRunning)
             {
                 return;
             }
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         #endregion IMixedRealitySpatialAwarenessObserver Implementation
 
         #region Helpers
-        
+
         private int currentMeshId = 0;
 
         private static readonly ProfilerMarker SendMeshObjectsPerfMarker = new ProfilerMarker("[MRTK] SpatialObjectMeshObserver.SendMeshObjects");

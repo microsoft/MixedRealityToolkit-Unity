@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private const string AvocadoCustomAttrGuid = "fea29429b97dbb14b97820f56c74060a";
         private const string CubeCustomAttrGuid = "f0bb9fb635c69be4e8526b0fb6b48f39";
-        
+
         private AsyncCoroutineRunner asyncCoroutineRunner;
         [SetUp]
         public void Setup()
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
             GameObject.Destroy(asyncCoroutineRunner.gameObject);
         }
-        
+
         private IEnumerator WaitForTask(Task task)
         {
             while (!task.IsCompleted) { yield return null; }
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int temperature = gltfObject.accessors[temperatureIdx].count;
             Assert.AreEqual(100, temperature);
         }
-        
+
         [UnityTest]
         public IEnumerator TestGltfCustomAttributesData()
         {
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
         #endregion
-        
+
     }
 }
 #endif

@@ -2248,7 +2248,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                     }
                 }
-                
+
                 // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects. This is done by adjusting the original bounds to include the ObjectMediumProximity range in x, y and z axis
                 float maxRadius = currentBoundsExtents.sqrMagnitude + (3 * handleMediumProximity * handleMediumProximity);
 

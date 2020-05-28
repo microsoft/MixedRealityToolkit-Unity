@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RemoveResponse(string keyword, UnityAction action)
         {
             string lowerKeyword = keyword.ToLower();
-            if(responses.ContainsKey(lowerKeyword))
+            if (responses.ContainsKey(lowerKeyword))
             {
                 responses[lowerKeyword].RemoveListener(action);
             }

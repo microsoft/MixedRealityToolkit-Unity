@@ -4,16 +4,25 @@
 using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
-    [CustomEditor(typeof(ButtonConfigHelper))]
+    [CustomEditor(typeof(ButtonConfigHelper)), CanEditMultipleObjects]
     public class ButtonConfigHelperInspector : UnityEditor.Editor
     {
-        const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";
-        const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
-        const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
-        const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
+        private const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";
+        private const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
+        private const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
+        private const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
+
+        private const string generatedIconSetName = "CustomIconSet";
+        private const string customIconSetsFolderName = "CustomIconSets";
+        private const string customIconUpgradeMessage = "This button appears to have a custom icon material. This is no longer required for custom icons.\n\n" +
+            "We recommend upgrading the buttons in your project by installing the Microsoft.MixedRealityToolkit.Unity.Tools package and using the Migration Tool.";
+        private const string missingIconWarningMessage = "The icon used by this button's custom material was not found in the icon set.";
+        private const string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. It has been saved to:\n\n{0}";
+        private const string upgradeDocUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html#how-to-change-the-icon-and-text";
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
@@ -35,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty iconQuadTextureNameIDProp;
         private SerializedProperty iconQuadTextureProp;
 
-        private ButtonConfigHelper cb;
+        private ButtonConfigHelper cb = null;
 
         private void OnEnable()
         {
@@ -68,6 +77,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             bool basicEventsFoldout = SessionState.GetBool(BasicEventsFoldoutKey, true);
             bool iconFoldout = SessionState.GetBool(IconFoldoutKey, true);
             bool showComponents = SessionState.GetBool(ShowComponentsKey, false);
+
+            if (cb.EditorCheckForCustomIcon())
+            {
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    EditorGUILayout.LabelField("Custom Icon Migration", EditorStyles.boldLabel);
+                    EditorGUILayout.HelpBox(customIconUpgradeMessage, MessageType.Error);
+
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Use migration tool to upgrade buttons"))
+                        {
+                            if (!EditorApplication.ExecuteMenuItem("Mixed Reality Toolkit/Utilities/Migration Window"))
+                            {
+                                EditorUtility.DisplayDialog("Package Required", "You need to install the MRTK tools (Microsoft.MixedRealityToolkit.Unity.Tools) package to use the Migration Tool", "OK");
+                            }
+                        }
+
+                        InspectorUIUtility.RenderDocumentationButton(upgradeDocUrl);
+                    }
+                }
+            }
 
             showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 
@@ -296,10 +327,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (iconSet != null)
             {
                 Texture newIconTexture;
-                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out newIconTexture, 1))
+                bool foundTexture;
+                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out foundTexture, out newIconTexture, 1))
                 {
                     iconQuadTextureProp.objectReferenceValue = newIconTexture;
                     cb.SetQuadIcon(newIconTexture);
+                }
+
+                if (!foundTexture)
+                {
+                    EditorGUILayout.HelpBox(missingIconWarningMessage, MessageType.Warning);
                 }
             }
             else

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         /// <summary>
         /// Combines Streaming Assets folder path with RelativePath
         /// </summary>
-        public string AbsolutePath => Path.Combine(Path.GetFullPath(Application.streamingAssetsPath),RelativePath);
+        public string AbsolutePath => Path.Combine(Path.GetFullPath(Application.streamingAssetsPath), RelativePath);
 
         [SerializeField]
         [Tooltip("Scale factor to apply on load")]
@@ -74,6 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
                 Debug.Log("Import successful");
             }
         }
-        
+
     }
 }

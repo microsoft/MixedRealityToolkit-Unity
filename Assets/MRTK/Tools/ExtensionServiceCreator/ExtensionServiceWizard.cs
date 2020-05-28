@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!registered)
             {
                 EditorGUILayout.LabelField("Would you like to register this service in your current MixedRealityToolkit profile?", EditorStyles.miniLabel);
-                
+
                 // Check to see whether it's possible to register the profile
                 bool canRegisterProfile = true;
                 if (MixedRealityToolkit.Instance == null || !MixedRealityToolkit.Instance.HasActiveProfile)

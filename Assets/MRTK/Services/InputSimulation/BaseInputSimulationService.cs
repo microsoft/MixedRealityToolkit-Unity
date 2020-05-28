@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
-            
+
             if (controller == null || !controller.Enabled)
             {
                 // Controller failed to be setup correctly.

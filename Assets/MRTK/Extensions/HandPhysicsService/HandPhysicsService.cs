@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             handPhysicsServiceProfile = (HandPhysicsServiceProfile)profile;
         }
 
-        private IMixedRealityHandJointService HandJointService 
+        private IMixedRealityHandJointService HandJointService
             => handJointService ?? CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
 
         /// <inheritdoc />
@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 
             if (currentGameObject.GetComponent<Collider>() == null)
             {
-                Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Collder component.");
+                Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Collider component.");
                 UnityEngine.Object.Destroy(currentGameObject);
                 return false;
             }

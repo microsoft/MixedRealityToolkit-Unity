@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Physics
         {
             Vector3 from = new Vector3(10, 10, 10);
             Vector3 to = new Vector3(100, 100, 100);
-            
+
             // Regardless of the time delta, a zero speed will always snap to the final location.
             Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 0.0f /*deltaTime*/, 0.0f /*speed*/), Is.EqualTo(to));
             Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 100.0f /*deltaTime*/, 0.0f /*speed*/), Is.EqualTo(to));
@@ -36,12 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Physics
             Vector3 to = new Vector3(100, 100, 100);
 
             Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 1.0f /*deltaTime*/, 0.5f /*speed*/),
-                Is.EqualTo(new Vector3(50, 50 , 50)));
+                Is.EqualTo(new Vector3(50, 50, 50)));
 
             Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 2.0f /*deltaTime*/, 0.5f /*speed*/),
                 Is.EqualTo(new Vector3(100, 100, 100)));
 
-            Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 3.0f /*deltaTime*/, 0.5f /*speed*/), 
+            Assert.That(Interpolator.NonLinearInterpolateTo(from, to, 3.0f /*deltaTime*/, 0.5f /*speed*/),
                 Is.EqualTo(new Vector3(100, 100, 100)));
         }
     }
