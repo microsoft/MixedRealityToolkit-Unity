@@ -17,28 +17,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public TextMeshPro DebugText;
 
         [SerializeField]
-        GameObject Grabber = null;
-
-        [SerializeField]
         GameObject JoystickVisual = null;
 
         [SerializeField]
-        float Rebound_Speed = 5;
+        GameObject GrabberVisual = null;
 
         [SerializeField]
-        float Sensitivity_LeftRight = 100;
+        bool ShowGrabberVisual = true;
 
         [SerializeField]
-        float Sensitivity_ForwardBack = 150;
+        [Range(1, 20)]
+        int ReboundSpeed = 5;
 
         [SerializeField]
-        float Multiplier_Move = 0.03f;
+        [Range(50, 300)]
+        int SensitivityLeftRight = 100;
 
         [SerializeField]
-        float Multiplier_Rotate = 1.1f;
+        [Range(50, 300)]
+        int SensitivityForwardBack = 150;
 
         [SerializeField]
-        float Multiplier_Scale = 0.4f;
+        [Range(0.01f, 1f)]
+        float MultiplierMove = 0.03f;
+
+        [SerializeField]
+        [Range(0.1f, 3.0f)]
+        float MultiplierRotate = 1.1f;
+
+        [SerializeField]
+        [Range(0.1f, 3.0f)]
+        float MultiplierScale = 0.4f;
 
         Vector3 startPosition;
         Vector3 joystickGrabberPosition;
@@ -50,16 +59,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void Start()
         {
-            startPosition = Grabber.transform.position;
+            startPosition = GrabberVisual.transform.position;
+            if(GrabberVisual != null)
+            {
+                GrabberVisual.GetComponent<MeshRenderer>().enabled = ShowGrabberVisual;
+            }
         }
         void Update()
         {
             if (!isDragging)
             {
                 // when dragging stops, move joystick back to idle
-                if(Grabber != null)
+                if(GrabberVisual != null)
                 {
-                    Grabber.transform.position = Vector3.Lerp(Grabber.transform.position, startPosition, Time.deltaTime * Rebound_Speed);
+                    GrabberVisual.transform.position = Vector3.Lerp(GrabberVisual.transform.position, startPosition, Time.deltaTime * ReboundSpeed);
                 }
             }
             calculateJoystickRotation();
@@ -67,11 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         }
         void calculateJoystickRotation()
         {
-            joystickGrabberPosition = Grabber.transform.position - startPosition;
+            joystickGrabberPosition = GrabberVisual.transform.position - startPosition;
             // Left Right
-            joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * Sensitivity_LeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * SensitivityLeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
             // Forward Back
-            joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * Sensitivity_ForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * SensitivityForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
             if (JoystickVisual != null)
             {
                 JoystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
@@ -83,20 +96,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             {
                 if (JoystickMode == "Move")
                 {
-                    ObjectToManipulate.transform.position += (joystickGrabberPosition * Multiplier_Move);
+                    ObjectToManipulate.transform.position += (joystickGrabberPosition * MultiplierMove);
                 }
                 else if (JoystickMode == "Rotate")
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
-                    newRotation.y += (joystickGrabberPosition.x * Multiplier_Rotate);
+                    newRotation.y += (joystickGrabberPosition.x * MultiplierRotate);
                     newRotation.x = 0;
                     newRotation.z = 0;
                     ObjectToManipulate.transform.rotation = Quaternion.Euler(newRotation);
                 }
                 else if (JoystickMode == "Scale")
                 {
-                    Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * Multiplier_Scale;
+                    Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * MultiplierScale;
                     //TODO: Clamp above Minimum_Scale
                     ObjectToManipulate.transform.localScale += newScale;
                 }

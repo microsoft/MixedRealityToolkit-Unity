@@ -254,7 +254,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectToManipulate: {fileID: 0}
   DebugText: {fileID: 5706572166273258445}
-  Grabber: {fileID: 5706572166712672382}
+  GrabberVisual: {fileID: 5706572166712672382}
+  ShowGrabberVisual: 1
   JoystickVisual: {fileID: 5706572167046604150}
   Rebound_Speed: 5
   Sensitivity_LeftRight: 100
@@ -410,6 +411,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2568946665719251854}
+        m_MethodName: StartDrag
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onManipulationEnded:
     m_PersistentCalls:
       m_Calls:
@@ -437,6 +449,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2568946665719251854}
+        m_MethodName: StopDrag
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -455,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 1
+  ShowTetherWhenManipulating: 0
 --- !u!114 &2050906356467104871
 MonoBehaviour:
   m_ObjectHideFlags: 0
