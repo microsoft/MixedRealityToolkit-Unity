@@ -254,15 +254,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectToManipulate: {fileID: 0}
   DebugText: {fileID: 5706572166273258445}
+  JoystickVisual: {fileID: 5706572167046604150}
   GrabberVisual: {fileID: 5706572166712672382}
   ShowGrabberVisual: 1
-  JoystickVisual: {fileID: 5706572167046604150}
-  Rebound_Speed: 5
-  Sensitivity_LeftRight: 100
-  Sensitivity_ForwardBack: 150
-  Multiplier_Move: 0.03
-  Multiplier_Rotate: 1.1
-  Multiplier_Scale: 0.4
+  ReboundSpeed: 5
+  SensitivityLeftRight: 100
+  SensitivityForwardBack: 150
+  mode: 0
+  MultiplierMove: 0.03
+  MultiplierRotate: 1.1
+  MultiplierScale: 0.05
 --- !u!1 &5706572166712672382
 GameObject:
   m_ObjectHideFlags: 0

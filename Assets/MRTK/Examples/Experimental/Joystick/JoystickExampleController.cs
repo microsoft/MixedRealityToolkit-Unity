@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         [Range(50, 300)]
         int SensitivityForwardBack = 150;
 
+        public enum JoystickMode { Move, Rotate, Scale }
+        public JoystickMode mode = JoystickMode.Move;
+
         [SerializeField]
         [Range(0.01f, 1f)]
         float MultiplierMove = 0.03f;
@@ -46,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         float MultiplierRotate = 1.1f;
 
         [SerializeField]
-        [Range(0.1f, 3.0f)]
-        float MultiplierScale = 0.4f;
+        [Range(0.01f, 1.0f)]
+        float MultiplierScale = 0.05f;
 
         Vector3 startPosition;
         Vector3 joystickGrabberPosition;
@@ -55,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         const int joystickVisualMaxRotation = 80;
         bool isDragging = false;
 
-        string JoystickMode = "Move";
 
         private void Start()
         {
@@ -94,11 +96,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             if(ObjectToManipulate != null)
             {
-                if (JoystickMode == "Move")
+                if (mode == JoystickMode.Move)
                 {
                     ObjectToManipulate.transform.position += (joystickGrabberPosition * MultiplierMove);
+                    if (DebugText != null)
+                    {
+                        DebugText.text = ObjectToManipulate.transform.position.ToString();
+                    }
                 }
-                else if (JoystickMode == "Rotate")
+                else if (mode == JoystickMode.Rotate)
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
@@ -106,17 +112,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                     newRotation.x = 0;
                     newRotation.z = 0;
                     ObjectToManipulate.transform.rotation = Quaternion.Euler(newRotation);
+                    if (DebugText != null)
+                    {
+                        DebugText.text = ObjectToManipulate.transform.rotation.eulerAngles.ToString();
+                    }
                 }
-                else if (JoystickMode == "Scale")
+                else if (mode == JoystickMode.Scale)
                 {
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * MultiplierScale;
                     //TODO: Clamp above Minimum_Scale
                     ObjectToManipulate.transform.localScale += newScale;
+                    if (DebugText != null)
+                    {
+                        DebugText.text = ObjectToManipulate.transform.localScale.ToString();
+                    }
                 }
-            }
-            if (DebugText != null)
-            {
-                DebugText.text = joystickGrabberPosition.ToString();
             }
         }
         public void StartDrag()
@@ -129,15 +139,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         }
         public void JoystickMode_Move()
         {
-            JoystickMode = "Move";
+            mode = JoystickMode.Move;
         }
         public void JoystickMode_Rotate()
         {
-            JoystickMode = "Rotate";
+            mode = JoystickMode.Rotate;
         }
         public void JoystickMode_Scale()
         {
-            JoystickMode = "Scale";
+            mode = JoystickMode.Scale;
         }
     }
 }
