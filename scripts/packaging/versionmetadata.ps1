@@ -157,7 +157,7 @@ function AddAssemblyInfo {
 @"
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-@"
+"@
 
             $content =
 @"
@@ -181,7 +181,7 @@ function AddAssemblyInfo {
                 }
             } else {
                 Set-Content -Path $filename -Value $copyright
-                Set-Content -Path $filename -Value $content
+                Add-Content -Path $filename -Value $content
                 Write-Host "Added AssemblyInfo.cs at $filename"
             }
         }
@@ -228,8 +228,7 @@ function CheckProjectSettings {
 }
 
 AddVersionTxt $Directory $Version
-if (AddAssemblyInfo $Directory $Version -or
-        CheckProjectSettings $Directory $Version) {
+if ((AddAssemblyInfo $Directory $Version) -Or (CheckProjectSettings $Directory $Version)) {
     Write-Output "Issues found, please see above for details"
     exit 1;
 }
