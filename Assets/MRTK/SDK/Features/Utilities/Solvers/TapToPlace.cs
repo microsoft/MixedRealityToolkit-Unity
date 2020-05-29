@@ -66,11 +66,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public bool IsBeingPlaced { get; protected set; }
 
         [SerializeField]
-        [Tooltip("The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface")]
+        [Tooltip("The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface. Assigned value is used only if the object has no collider attached. Otherwise collider's bounds' Z extent is used to calculate the offset.")]
         private float surfaceNormalOffset = 0.0f;
 
         /// <summary>
         /// The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface.
+        /// Assigned value is used only if the object has no collider attached. Otherwise collider's bounds' Z extent is used to calculate the offset. 
         /// </summary>
         public float SurfaceNormalOffset
         {
@@ -190,14 +191,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             base.Start();
 
-            Debug.Assert(IsColliderPresent, $"The game object {gameObject.name} does not have a collider attached, please attach a collider to use Tap to Place");
+            if (IsColliderPresent)
+            {
+                // When a game object is created via script, the bounds of the collider remain at the default size 
+                // of (1, 1, 1) which always returns a 0.5 SurfaceNormalOffset.  Adding SyncTransforms updates the
+                // size of the collider to match the game object before we calculate the SurfaceNormalOffset.
+                UnityPhysics.SyncTransforms();
 
-            // When a game object is created via script, the bounds of the collider remain at the default size 
-            // of (1, 1, 1) which always returns a 0.5 SurfaceNormalOffset.  Adding SyncTransforms updates the
-            // size of the collider to match the game object before we calculate the SurfaceNormalOffset.
-            UnityPhysics.SyncTransforms();
-
-            SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
+                SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
+            }
 
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
