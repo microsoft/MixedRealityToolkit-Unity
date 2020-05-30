@@ -10,14 +10,17 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Joystick;
 using NUnit.Framework;
 using System.Collections;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.TestTools;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    internal class JoystickTests
+    public class JoystickTests
     {
         [SetUp]
         public void Setup()
@@ -33,21 +36,93 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Tests
         [UnityTest]
-        public IEnumerator StubTest1()
+        public IEnumerator TestJoystickTranslation()
         {
             yield return null;
 
-            Assert.IsTrue(true);
+            Assert.IsTrue(false);
         }
 
         [UnityTest]
-        public IEnumerator StubTest2()
+        public IEnumerator TestJoystickRotation()
+        {
+            InstantiateJoystick(out JoystickExampleController joystick, out Transform grabber);
+            Assert.IsNotNull(joystick);
+            Assert.IsNotNull(grabber);
+
+            yield return null;
+
+            // Switch the joystick mode to 'rotate'.
+            joystick.mode = JoystickExampleController.JoystickMode.Rotate;
+
+            // Instantiate large object and set as target.
+            var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            targetObject.transform.localScale = 7.0f * Vector3.one;
+            joystick.ObjectToManipulate = targetObject;
+
+            Quaternion startRotation, endRotation;
+
+            // Capture the starting rotation of the target object.
+            startRotation = targetObject.transform.rotation;
+
+            // Tilt the joystick to the right.
+            joystick.StartDrag();
+            grabber.localPosition += 2.5f * Vector3.right;
+
+            // Wait a short while, then capture once again the rotation of the target object.
+            yield return new WaitForSecondsRealtime(1.5f);
+            endRotation = targetObject.transform.rotation;
+
+            // Untilt the joystick.
+            grabber.localPosition += 2.5f * Vector3.left;
+            joystick.StopDrag();
+
+            Assert.IsTrue(Quaternion.Angle(startRotation, endRotation) > 0.0f);
+        }
+
+        [UnityTest]
+        public IEnumerator TestJoystickScale()
         {
             yield return null;
 
-            Assert.IsTrue(true);
+            Assert.IsTrue(false);
         }
         #endregion Tests
+
+        #region Utilities
+        public readonly string JoystickPrefabAssetPath = AssetDatabase.GUIDToAssetPath(JoystickPrefabGuid);
+
+        // Examples/Experimental/Joystick/JoystickPrefab.prefab
+        private const string JoystickPrefabGuid = "8bdd451919f46a94ba6d151b6d0cdffd";
+
+        private const string TargetGrabberPath = "Grabber";
+
+        private void InstantiateJoystick(out JoystickExampleController joystick, out Transform grabber)
+        {
+            InstantiateJoystickPrefab(JoystickPrefabAssetPath, TargetGrabberPath, out joystick, out grabber);
+        }
+
+        private void InstantiateJoystickPrefab(string prefabPath, string grabberPath, out JoystickExampleController joystick, out Transform grabber)
+        {
+            // Load joystick prefab.
+            var joystickObject = InstantiatePrefabFromPath(prefabPath);
+            joystick = joystickObject.GetComponent<JoystickExampleController>();
+            Assert.IsNotNull(joystick);
+
+            // Find grabber object.
+            grabber = joystickObject.transform.Find(grabberPath);
+            Assert.IsNotNull(grabber);
+        }
+
+        private GameObject InstantiatePrefabFromPath(string path)
+        {
+            // Load joystick prefab.
+            Object joystickPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            GameObject joystick = Object.Instantiate(joystickPrefab) as GameObject;
+            Assert.IsNotNull(joystick);
+            return joystick;
+        }
+        #endregion Utilities
     }
 }
 #endif
