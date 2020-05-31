@@ -12,9 +12,12 @@ Three key steps are required to listen for touch and/or grab input events on a p
 
 1. Ensure a [SpherePointer](Pointers.md#spherepointer) is registered in the *MRTK Pointer profile*.
 
-    The default MRTK profile and the default HoloLens 2 profile already contain a *SpherePointer*. One can confirm a SpherePointer will be created by selecting the MRTK Configuration Profile and navigating to **Input** > **Pointers** > **Pointer Options**. The default [GrabPointer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/GrabPointer.prefab) prefab, under *MRTK.SDK/Features/UX/Prefabs/Pointers/*, should be listed with a *Controller Type* of *Articulated Hand*. A custom prefab can be utilized as long as it implements the [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer) class.
+    The default MRTK profile and the default HoloLens 2 profile already contain a *SpherePointer*. One can confirm a SpherePointer will be created by selecting the MRTK Configuration Profile and navigating to **Input** > **Pointers** > **Pointer Options**. The default `GrabPointer` prefab (Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) should be listed with a *Controller Type* of *Articulated Hand*. A custom prefab can be utilized as long as it implements the [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer) class.
 
     ![Grab Pointer Profile Example](../Images/Input/Pointers/GrabPointer_MRTKProfile.png)
+
+    The default grab point will query for nearby objects in a sphere around the grab point. By replacing the prefab with the `ConicalGrabPointer` prefab
+    (Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) , you can change the behavior to more closely resemble the default Hololens 2 interface, which queries for nearby objects using a cone.
 
 1. On the GameObject that should be grabbable, add a [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable), as well as a collider.
 
@@ -53,7 +56,7 @@ The process for adding touch interactions on UnityUI elements is different than 
 
 For **both** types of UX elements though, ensure a [PokePointer](Pointers.md#pokepointer) is registered in the *MRTK Pointer profile*.
 
-The default MRTK profile and the default HoloLens 2 profile already contain a *PokePointer*. One can confirm a PokePointer will be created by selecting the MRTK Configuration Profile and navigate to **Input** > **Pointers** > **Pointer Options**. The default [PokePointer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/PokePointer.prefab) prefab, under *MRTK.SDK/Features/UX/Prefabs/Pointers/*, should be listed with a *Controller Type* of *Articulated Hand*. A custom prefab can be utilized as long as it implements the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) class.
+The default MRTK profile and the default HoloLens 2 profile already contain a *PokePointer*. One can confirm a PokePointer will be created by selecting the MRTK Configuration Profile and navigate to **Input** > **Pointers** > **Pointer Options**. The default `PokePointer` (Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) prefab should be listed with a *Controller Type* of *Articulated Hand*. A custom prefab can be utilized as long as it implements the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) class.
 
 ![Poke Pointer Profile Example](../Images/Input/Pointers/PokePointer_MRTKProfile.png)
 

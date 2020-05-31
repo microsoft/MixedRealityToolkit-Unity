@@ -30,7 +30,7 @@ in the *Pointer* section of the input system profile:
 
 Like other sources of input, the gaze provider interacts with objects in the scene
 through use of a pointer [(see this document for information on pointers)](../Architecture/InputSystem/ControllersPointersAndFocus.md).
-In the case of the gaze provider, its pointer is an implemented via `InternalGazePointer`
+In the case of the gaze provider, its pointer is implemented via `InternalGazePointer`
 and is not configured through a profile.
 
 It is possible to replace the stock GazeProvider with an alternate implementation by changing
@@ -39,6 +39,10 @@ It is possible to replace the stock GazeProvider with an alternate implementatio
 and [IMixedRealityEyeGazeProvider](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider).
 It's generally recommended to use the stock GazeProvider (and filing issues in when finding
 bugs) as re-implementing the GazeProvider is non-trivial.
+
+### Alternative platform-provided gaze poses
+
+By default, the MRTK GazeProvider uses the center of the camera's frame as the gaze origin. Some platforms, like Windows Mixed Reality on HoloLens 2, provide an alternatively defined gaze pose. This is managed via the `Use Head Gaze Override` setting in the gaze settings. When enabled, the alternative gaze override will be used. When disabled, the default frame center origin will be used. Specifically, for HoloLens 2, the gaze angle will be raised several degrees to account for user comfort in using their head for targeting.
 
 ## Usage
 
