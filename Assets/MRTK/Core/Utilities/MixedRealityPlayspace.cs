@@ -27,7 +27,10 @@ namespace Microsoft.MixedReality.Toolkit
             // Playspace makes main camera dependent on it (see Transform initialization),
             // so here it needs to restore camera's initial position. 
             // Without second parameter camera will not move to its original position.
-            CameraCache.Main.transform.SetParent(null, false);
+            if (CameraCache.Main.transform.parent == mixedRealityPlayspace)
+            {
+                CameraCache.Main.transform.SetParent(null, false);
+            }
             UnityEngine.Object.Destroy(mixedRealityPlayspace.gameObject);
             mixedRealityPlayspace = null;
         }
@@ -65,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit
                 // space 0,0,0), we should compensate for that here.
                 return mixedRealityPlayspace;
             }
+            set => mixedRealityPlayspace = value;
         }
 
         /// <summary>
