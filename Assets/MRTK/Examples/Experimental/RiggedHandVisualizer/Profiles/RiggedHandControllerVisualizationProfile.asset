@@ -24,9 +24,9 @@ MonoBehaviour:
     type: 3}
   globalRightControllerModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
     type: 3}
-  globalLeftHandVisualizer: {fileID: 7875516959334205548, guid: 4c6fa6f118812434ab9436d580066176,
+  globalLeftHandVisualizer: {fileID: 458850017089407416, guid: e3fd99b80b26747489adef28f4cbb920,
     type: 3}
-  globalRightHandVisualizer: {fileID: 2248754549737146356, guid: b1523b0de349c9c4ca63ea40ce7bf8d1,
+  globalRightHandVisualizer: {fileID: 8217792958413709182, guid: 6a2832e82f14a9e4ab3c909fcd732b1b,
     type: 3}
   controllerVisualizationSettings:
   - description: Windows Mixed Reality Controller
