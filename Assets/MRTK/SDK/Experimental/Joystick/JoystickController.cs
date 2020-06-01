@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
     /// <summary>
     /// Example script to demonstrate joystick control in sample scene
     /// </summary>
-    public class JoystickExampleController : MonoBehaviour
+    public class JoystickController : MonoBehaviour
     {
         public GameObject ObjectToManipulate;
         public TextMeshPro DebugText;

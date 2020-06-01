@@ -38,22 +38,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestJoystickTranslation()
         {
+            InstantiateJoystick(out JoystickController joystick, out Transform grabber);
+            Assert.IsNotNull(joystick);
+            Assert.IsNotNull(grabber);
+
             yield return null;
 
-            Assert.IsTrue(false);
+            // Switch the joystick mode to 'Move'.
+            joystick.mode = JoystickController.JoystickMode.Move;
+
+            // Instantiate large object and set as target.
+            var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            targetObject.transform.localScale = 7.0f * Vector3.one;
+            joystick.ObjectToManipulate = targetObject;
+
+            Vector3 startPosition, endPosition;
+
+            // Capture the starting rotation of the target object.
+            startPosition = targetObject.transform.position;
+
+            // Tilt the joystick to the right.
+            joystick.StartDrag();
+            grabber.localPosition += 2.5f * Vector3.right;
+
+            // Wait a short while, then capture once again the rotation of the target object.
+            yield return new WaitForSecondsRealtime(1.5f);
+            endPosition = targetObject.transform.position;
+
+            // Untilt the joystick.
+            grabber.localPosition += 2.5f * Vector3.left;
+            joystick.StopDrag();
+
+            Assert.IsTrue(startPosition != endPosition);
         }
 
         [UnityTest]
         public IEnumerator TestJoystickRotation()
         {
-            InstantiateJoystick(out JoystickExampleController joystick, out Transform grabber);
+            InstantiateJoystick(out JoystickController joystick, out Transform grabber);
             Assert.IsNotNull(joystick);
             Assert.IsNotNull(grabber);
 
             yield return null;
 
             // Switch the joystick mode to 'rotate'.
-            joystick.mode = JoystickExampleController.JoystickMode.Rotate;
+            joystick.mode = JoystickController.JoystickMode.Rotate;
 
             // Instantiate large object and set as target.
             var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -83,9 +112,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestJoystickScale()
         {
+            InstantiateJoystick(out JoystickController joystick, out Transform grabber);
+            Assert.IsNotNull(joystick);
+            Assert.IsNotNull(grabber);
+
             yield return null;
 
-            Assert.IsTrue(false);
+            // Switch the joystick mode to 'Scale'.
+            joystick.mode = JoystickController.JoystickMode.Scale;
+
+            // Instantiate large object and set as target.
+            var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            targetObject.transform.localScale = 7.0f * Vector3.one;
+            joystick.ObjectToManipulate = targetObject;
+
+            Vector3 startScale, endScale;
+
+            // Capture the starting rotation of the target object.
+            startScale = targetObject.transform.localScale;
+
+            // Tilt the joystick to the right.
+            joystick.StartDrag();
+            grabber.localPosition += 2.5f * Vector3.right;
+
+            // Wait a short while, then capture once again the rotation of the target object.
+            yield return new WaitForSecondsRealtime(1.5f);
+            endScale = targetObject.transform.position;
+
+            // Untilt the joystick.
+            grabber.localPosition += 2.5f * Vector3.left;
+            joystick.StopDrag();
+
+            Assert.IsTrue(startScale != endScale);
         }
         #endregion Tests
 
@@ -97,16 +155,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private const string TargetGrabberPath = "Grabber";
 
-        private void InstantiateJoystick(out JoystickExampleController joystick, out Transform grabber)
+        private void InstantiateJoystick(out JoystickController joystick, out Transform grabber)
         {
             InstantiateJoystickPrefab(JoystickPrefabAssetPath, TargetGrabberPath, out joystick, out grabber);
         }
 
-        private void InstantiateJoystickPrefab(string prefabPath, string grabberPath, out JoystickExampleController joystick, out Transform grabber)
+        private void InstantiateJoystickPrefab(string prefabPath, string grabberPath, out JoystickController joystick, out Transform grabber)
         {
             // Load joystick prefab.
             var joystickObject = InstantiatePrefabFromPath(prefabPath);
-            joystick = joystickObject.GetComponent<JoystickExampleController>();
+            joystick = joystickObject.GetComponent<JoystickController>();
             Assert.IsNotNull(joystick);
 
             // Find grabber object.
