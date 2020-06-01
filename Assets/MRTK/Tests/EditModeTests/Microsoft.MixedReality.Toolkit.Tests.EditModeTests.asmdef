@@ -9,6 +9,7 @@
         "Microsoft.MixedReality.Toolkit.Providers.OpenVR",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
+        "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor",
         "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",

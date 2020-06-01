@@ -2,11 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
-using Microsoft.MixedReality.Toolkit.UI;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
-using UnityEditor;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <inheritdoc />
         public void Migrate(GameObject gameObject)
         {
-#if UNITY_EDITOR
             var boundingBox = gameObject.GetComponent<BoundingBox>();
             var boundsControl = gameObject.AddComponent<BoundsControl>();
 
@@ -82,10 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 // destroy obsolete component
                 Object.DestroyImmediate(boundingBox);
             }
-#endif
         }
 
-#if UNITY_EDITOR
         virtual protected string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
         {
             var scene = boundingBox.gameObject.scene;
@@ -291,6 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         #endregion Visuals Configuration Migration
+
         private void MigrateAppBar(BoundingBox boundingBox, BoundsControl boundsControl)
         {
             // note: this might be expensive for larger scenes but we don't know where the appbar is 
@@ -307,7 +305,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
             }
         }
-#endif
-
     }
 }
