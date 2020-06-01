@@ -13,20 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         public bool CanMigrate(GameObject gameObject)
         {
-#if UNITY_EDITOR
             ButtonConfigHelper bch = gameObject.GetComponent<ButtonConfigHelper>();
             return bch != null && bch.EditorCheckForCustomIcon();
-#else
-            return false;
-#endif
         }
 
         public void Migrate(GameObject gameObject)
         {
-#if UNITY_EDITOR
             ButtonConfigHelper bch = gameObject.GetComponent<ButtonConfigHelper>();
             bch.EditorUpgradeCustomIcon();
-#endif
         }
     }
 }
