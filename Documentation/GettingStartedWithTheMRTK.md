@@ -46,6 +46,8 @@ To get started with the Mixed Reality Toolkit, you will need:
 For information on package contents, see [MRTK Package Contents](MRTK_PackageContents.md).
 
 The Mixed Reality Toolkit is also available for download on NuGet.org; for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
+>[!NOTE]
+> As of MRTK 2.4.0, NuGet packages are no longer supported.
 
 ### Import MRTK packages into your Unity project
 
