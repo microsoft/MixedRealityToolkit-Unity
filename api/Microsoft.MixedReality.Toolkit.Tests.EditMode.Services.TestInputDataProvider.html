@@ -101,7 +101,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
-    <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
     <div><span class="xref">IMixedRealityInputDeviceManager</span></div>
   </div>
   <div class="inheritedMembers">
@@ -186,7 +186,8 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealityInputDeviceManager</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Test Input Data Provider&quot;)]
+public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealityInputDeviceManager</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -267,7 +268,7 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
   <div>
       <span class="xref">IMixedRealityInputDeviceManager</span>
