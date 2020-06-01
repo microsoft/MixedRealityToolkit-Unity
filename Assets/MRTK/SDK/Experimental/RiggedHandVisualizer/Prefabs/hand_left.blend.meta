@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 3fb6c3e1142898c42af3c0347d4e3ac4
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: //RootNode
+    100004: L_index_a
+    100006: L_index_b
+    100008: L_index_c
+    100010: L_index_end
+    100012: L_index_end_end
+    100014: L_index_meta
+    100016: L_middle_a
+    100018: L_middle_b
+    100020: L_middle_c
+    100022: L_middle_end
+    100024: L_middle_end_end
+    100026: L_middle_meta
+    100028: L_Palm
+    100030: L_pinky_a
+    100032: L_pinky_b
+    100034: L_pinky_c
+    100036: L_pinky_end
+    100038: L_pinky_end_end
+    100040: L_pinky_meta
+    100042: L_ring_a
+    100044: L_ring_b
+    100046: L_ring_c
+    100048: L_ring_end
+    100050: L_ring_end_end
+    100052: L_ring_meta
+    100054: L_thumb_a
+    100056: L_thumb_b
+    100058: L_thumb_end
+    100060: L_thumb_end_end
+    100062: L_thumb_meta
+    100064: L_Wrist
+    100066: LoPoly_Hand_Mesh_Left
+    400000: Armature
+    400002: //RootNode
+    400004: L_index_a
+    400006: L_index_b
+    400008: L_index_c
+    400010: L_index_end
+    400012: L_index_end_end
+    400014: L_index_meta
+    400016: L_middle_a
+    400018: L_middle_b
+    400020: L_middle_c
+    400022: L_middle_end
+    400024: L_middle_end_end
+    400026: L_middle_meta
+    400028: L_Palm
+    400030: L_pinky_a
+    400032: L_pinky_b
+    400034: L_pinky_c
+    400036: L_pinky_end
+    400038: L_pinky_end_end
+    400040: L_pinky_meta
+    400042: L_ring_a
+    400044: L_ring_b
+    400046: L_ring_c
+    400048: L_ring_end
+    400050: L_ring_end_end
+    400052: L_ring_meta
+    400054: L_thumb_a
+    400056: L_thumb_b
+    400058: L_thumb_end
+    400060: L_thumb_end_end
+    400062: L_thumb_meta
+    400064: L_Wrist
+    400066: LoPoly_Hand_Mesh_Left
+    2100000: Lamb_LoPolyHand1
+    4300000: LoPoly_Hand_Mesh_Left
+    9500000: //RootNode
+    13700000: LoPoly_Hand_Mesh_Left
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
