@@ -138,9 +138,6 @@
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Destroy">IMixedRealityService.Destroy()</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Microsoft.MixedReality.Toolkit.SpatialAwareness</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
@@ -348,8 +345,7 @@ is used to enable observations to be grouped by observer.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider instead&quot;)]
-IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -397,8 +393,7 @@ IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver&lt;T&gt; will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider&lt;T&gt; instead&quot;)]
-T GetObserver&lt;T&gt;(string name = null)
+    <pre><code class="lang-csharp hljs">T GetObserver&lt;T&gt;(string name = null)
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -463,8 +458,7 @@ T GetObserver&lt;T&gt;(string name = null)
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders instead&quot;)]
-IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code></pre>
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -491,8 +485,7 @@ IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers&lt;T&gt; will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders&lt;T&gt; instead&quot;)]
-IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
