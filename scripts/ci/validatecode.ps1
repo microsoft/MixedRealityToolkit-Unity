@@ -311,6 +311,25 @@ function CheckForActualFile {
 
 <#
 .SYNOPSIS
+    Checks if all assembly definitions have a corresponding AssemblyInfo.cs checked in.
+    Returns true if the AssemblyInfo is missing.
+#>
+function CheckForAssemblyInfo {
+    [CmdletBinding()]
+    param(
+        [string]$FileName
+    )
+    process {
+        if (-not (Test-Path (Join-Path -Path (Split-Path $FileName) -ChildPath "AssemblyInfo.cs"))) {
+            Write-Warning "AssemblyInfo.cs missing for $FileName. Please be sure to check it in alongside this asmdef."
+            $true;
+        }
+        $false;
+    }
+}
+
+<#
+.SYNOPSIS
     Returns true if the given line is a namespace declaration
 #>
 function IsNamespace {
@@ -435,6 +454,22 @@ function CheckUnityScene {
     }
 }
 
+function CheckAssemblyDefinition {
+    [CmdletBinding()]
+    param(
+        [string]$FileName
+    )
+    process {
+        $containsIssue = $false
+
+        if (CheckForAssemblyInfo $FileName) {
+            $containsIssue = $true
+        }
+
+        $containsIssue
+    }
+}
+
 # If the file containing the list of changes was provided and actually exists,
 # this validation should scope to only those changed files.
 if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
@@ -449,7 +484,8 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
         if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
             ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile))) {
+            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or 
+            ((IsAsmDef -Filename $changedFile) -and (CheckAssemblyDefinition $changedFile))) {
             $containsIssue = $true;
         }
     }
@@ -483,6 +519,13 @@ else {
     $metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
     foreach ($meta in $metas) {
         if (CheckForActualFile $meta.FullName) {
+            $containsIssue = $true
+        }
+    }
+
+    $asmdefs = Get-ChildItem $Directory *.asmdef -File -Recurse | Select-Object FullName
+    foreach ($asmdef in $asmdefs) {
+        if (CheckAssemblyDefinition $asmdef.FullName) {
             $containsIssue = $true
         }
     }
