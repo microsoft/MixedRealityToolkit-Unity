@@ -1,80 +1,80 @@
 fileFormatVersion: 2
-guid: 3fb6c3e1142898c42af3c0347d4e3ac4
+guid: 98d3ad8c5b4fec64cb171f61dd33d345
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: Armature
     100002: //RootNode
-    100004: L_index_a
-    100006: L_index_b
-    100008: L_index_c
-    100010: L_index_end
-    100012: L_index_end_end
-    100014: L_index_meta
-    100016: L_middle_a
-    100018: L_middle_b
-    100020: L_middle_c
-    100022: L_middle_end
-    100024: L_middle_end_end
-    100026: L_middle_meta
-    100028: L_Palm
-    100030: L_pinky_a
-    100032: L_pinky_b
-    100034: L_pinky_c
-    100036: L_pinky_end
-    100038: L_pinky_end_end
-    100040: L_pinky_meta
-    100042: L_ring_a
-    100044: L_ring_b
-    100046: L_ring_c
-    100048: L_ring_end
-    100050: L_ring_end_end
-    100052: L_ring_meta
-    100054: L_thumb_a
-    100056: L_thumb_b
-    100058: L_thumb_end
-    100060: L_thumb_end_end
-    100062: L_thumb_meta
-    100064: L_Wrist
-    100066: LoPoly_Hand_Mesh_Left
+    100004: LoPoly_Hand_Mesh_Right
+    100006: R_index_a
+    100008: R_index_b
+    100010: R_index_c
+    100012: R_index_end
+    100014: R_index_end_end
+    100016: R_index_meta
+    100018: R_middle_a
+    100020: R_middle_b
+    100022: R_middle_c
+    100024: R_middle_end
+    100026: R_middle_end_end
+    100028: R_middle_meta
+    100030: R_Palm
+    100032: R_pinky_a
+    100034: R_pinky_b
+    100036: R_pinky_c
+    100038: R_pinky_end
+    100040: R_pinky_end_end
+    100042: R_pinky_meta
+    100044: R_ring_a
+    100046: R_ring_b
+    100048: R_ring_c
+    100050: R_ring_end
+    100052: R_ring_end_end
+    100054: R_ring_meta
+    100056: R_thumb_a
+    100058: R_thumb_b
+    100060: R_thumb_end
+    100062: R_thumb_end_end
+    100064: R_thumb_meta
+    100066: R_Wrist
     400000: Armature
     400002: //RootNode
-    400004: L_index_a
-    400006: L_index_b
-    400008: L_index_c
-    400010: L_index_end
-    400012: L_index_end_end
-    400014: L_index_meta
-    400016: L_middle_a
-    400018: L_middle_b
-    400020: L_middle_c
-    400022: L_middle_end
-    400024: L_middle_end_end
-    400026: L_middle_meta
-    400028: L_Palm
-    400030: L_pinky_a
-    400032: L_pinky_b
-    400034: L_pinky_c
-    400036: L_pinky_end
-    400038: L_pinky_end_end
-    400040: L_pinky_meta
-    400042: L_ring_a
-    400044: L_ring_b
-    400046: L_ring_c
-    400048: L_ring_end
-    400050: L_ring_end_end
-    400052: L_ring_meta
-    400054: L_thumb_a
-    400056: L_thumb_b
-    400058: L_thumb_end
-    400060: L_thumb_end_end
-    400062: L_thumb_meta
-    400064: L_Wrist
-    400066: LoPoly_Hand_Mesh_Left
-    2100000: Lamb_LoPolyHand1
-    4300000: LoPoly_Hand_Mesh_Left
+    400004: LoPoly_Hand_Mesh_Right
+    400006: R_index_a
+    400008: R_index_b
+    400010: R_index_c
+    400012: R_index_end
+    400014: R_index_end_end
+    400016: R_index_meta
+    400018: R_middle_a
+    400020: R_middle_b
+    400022: R_middle_c
+    400024: R_middle_end
+    400026: R_middle_end_end
+    400028: R_middle_meta
+    400030: R_Palm
+    400032: R_pinky_a
+    400034: R_pinky_b
+    400036: R_pinky_c
+    400038: R_pinky_end
+    400040: R_pinky_end_end
+    400042: R_pinky_meta
+    400044: R_ring_a
+    400046: R_ring_b
+    400048: R_ring_c
+    400050: R_ring_end
+    400052: R_ring_end_end
+    400054: R_ring_meta
+    400056: R_thumb_a
+    400058: R_thumb_b
+    400060: R_thumb_end
+    400062: R_thumb_end_end
+    400064: R_thumb_meta
+    400066: R_Wrist
+    2100000: Lamb_LoPolyHand
+    4300000: LoPoly_Hand_Mesh_Right
     9500000: //RootNode
-    13700000: LoPoly_Hand_Mesh_Left
+    13700000: LoPoly_Hand_Mesh_Right
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -127,7 +127,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
+    previousCalculatedGlobalScale: 0.01
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
