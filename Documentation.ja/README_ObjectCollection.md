@@ -5,9 +5,9 @@
 Object collection はオブジェクトの列を事前定義された三次元形状にレイアウトすることを助けるスクリプトです。これは、平面、円柱、球、放射状を含む、さまざまな面タイプをサポートしています。Unity のすべてのオブジェクトをサポートしているため、2D オブジェクトと 3D オブジェクトの両方のレイアウトに利用可能です。
 
 ## Object collection のスクリプト
-- [`GridObjectCollection`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/GridObjectCollection.cs) は、円柱、平面、球、放射状の面タイプをサポートしています。
-- [`ScatterObjectCollection`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/ScatterObjectCollection.cs) は、点在するスタイルのコレクションをサポートしています。
-- [`TileGridObjectCollection`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/TileGridObjectCollection.cs) は、GridObjectCollection にいくつかの追加オプションを提供しています。 **注意:** TileGridObjectCollection は [`GridObjectCollection`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/GridObjectCollection.cs) を拡張しておらず、いくつかのバグがあります ([issue 6237](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6237) をご覧ください)。そのため、[`GridObjectCollection`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/GridObjectCollection.cs) を使うことが推奨されます。
+- [`GridObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection) は、円柱、平面、球、放射状の面タイプをサポートしています。
+- [`ScatterObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.ScatterObjectCollection) は、点在するスタイルのコレクションをサポートしています。
+- [`TileGridObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.TileGridObjectCollection) は、GridObjectCollection にいくつかの追加オプションを提供しています。 **注意:** TileGridObjectCollection は  [`GridObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection) を拡張しておらず、いくつかのバグがあります ([issue 6237](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6237) をご覧ください)。そのため、[`GridObjectCollection`](xref:Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection) を使うことが推奨されます。
 
 |![Grid Object Collection - Cylinder](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png) Grid Object Collection - Cylinder | ![Grid Object Collection - Sphere](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png) Grid Object Collection - Sphere |
 |:--- | :--- |
@@ -44,7 +44,7 @@ GridObjectCollection の中身はアラインすることができ、親オブ�
 
 ## Object collection のサンプル
 
-[ObjectCollectionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Collections/Scenes/ObjectCollectionExamples.unity) のサンプル シーンには、Object collection のさまざまなタイプの例が含まれています。
+`ObjectCollectionExamples` (Assets/MRTK/Examples/Demos/UX/Collections/Scenes/ObjectCollectionExamples.unity) のサンプル シーンには、Object collection のさまざまなタイプの例が含まれています。
 
 [Periodic table of the elements](https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable) は、Object collection がどのように動くかをデモンストレーションするサンプル アプリです。
 3D の原子の箱を異なる形状にレイアウトするために、Object collection を使っています。

@@ -1,22 +1,21 @@
 
-# Dependency Window （依存関係ウィンドウ）
+# Dependency window
 
-Unity ではよく、どのアセットが利用されていて、何がそのアセットを参照しているのかを明らかにするのが難しいことがあります。「Find References in Scene」オプションは、現在のシーンのみに関心がある場合にはうまく動作しますが、Unity プロジェクト全体についてはどうでしょうか？ このような場合に、[Dependency Window（依存関係ウィンドウ）](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Tools/DependencyWindow) が役に立ちます。
+In Unity, it is often difficult to gleam which assets are being used, and what is referencing them. The "Find References in Scene" option works great when you are only concerned with the current scene, but what about your entire Unity project? This is where the **Dependency Window** (Assets/MRTK/Tools/DependencyWindow) can be useful.
 
-Dependency Window は、どのようにアセットが参照され、お互いにどう依存しているかを表示します。依存関係はプロジェクトの YAML ファイルにある GUID をパースすることで計算されます。（ただし、スクリプトからスクリプトへの依存は考慮されません）
+The Dependency Window displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files (note, script to script dependencies are not considered).
 
+## Usage
 
-## 使い方
-
-Dependency Window を開くには、 *Mixed Reality Toolkit->Utilities->Dependency Window* を選択します。これによってウィンドウが開き、自動的にプロジェクトの依存関係グラフが作られ始めます。依存関係グラフができると、プロジェクト タブ内で、依存関係を見るためにアセットを選択できるようになります。
+To open the window, select *Mixed Reality Toolkit->Utilities->Dependency Window* which will open the window and automatically begin building your project's dependency graph. Once the dependency graph is built, you can select assets in the project tab to inspect their dependencies.
 
 ![Dependency window](../../Documentation/Images/DependencyWindow/MRTK_Dependency_Window.png)
 
-ウィンドウには、現在選択しているアセットが依存しているアセットのリストと、選択しているアセットに依存しているアセットの階層的なリストが表示されます。もし、現在選択しているアセットに依存しているものが何もなければ、そのアセットをプロジェクトから削除することを検討できます。（ただし、いくつかのアセットは、Shader.Find() のような API を通じてプログラムでロードされるので、依存関係が追跡されないかもしれません）
+The window displays a list of assets that the currently selected asset depends on, and a hierarchical list of assets that depend on it. If nothing depends on the currently selected asset, you can consider deleting it from your project (note that some assets are loaded programmatically via APIs like Shader.Find() and may not be caught by the dependency tracker).
 
-Dependency Window では、どのアセットからも参照されておらず、削除することを検討できるすべてのアセットのリストも表示できます。
+The window can also display just a list of all assets which are not referenced by any other assets and could be considered for deletion:
 
 ![Dependency window showing unreferenced assets](../../Documentation/Images/DependencyWindow/MRTK_Dependency_Window_Unreferenced.png)
 
 > [!NOTE]
-> Dependency Window を使用中に、アセットの変更、追加、削除があった場合は、最新の結果になるよう依存関係グラフをリフレッシュすることをおすすめします。
+> If assets are modified, added, or removed while the dependency window is in use, it is advised to refresh the dependency graph for the most "up to date" results.

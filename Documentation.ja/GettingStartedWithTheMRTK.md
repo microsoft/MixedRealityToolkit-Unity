@@ -41,8 +41,8 @@ Mixed Reality Toolkit を始めるには、次のものが必要です。
 1. Assets の下から、以下をダウンロードします。
     * **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage**
     * (**_オプション_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
-    * (**_オプション_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
     * (**_オプション_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
+    * (**_バージョンのアップグレードに必要、そうでなければオプション_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
 
 パッケージの内容の情報については、[MRTK Package Contents](MRTK_PackageContents.md) をご覧ください。
 
@@ -54,9 +54,9 @@ Mixed Reality Toolkit は、Nuget.org からもダウンロードできます。
 
 1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレート タイプに 「3D」 が選択されていることを確認してください。
 1. ダウンロードした **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage** をインポートします。「Asset -> Import Package -> Custom Package」から、 .unitypackage ファイルを選択し、 インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します。
-1. (**_オプション_**) **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** を上記と同様の手順でインポートします。Examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモ シーンが含まれています。
-1. (**_オプション_**) **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** を Foundation パッケージと同様にインポートします。Tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
 1. (**_オプション_**) **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** を Foundation パッケージと同様にインポートします。 Extensions パッケージは、オプションで、 MRTK の便利なオプション コンポーネントのセットを提供します。
+1. (**_オプション_**) **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** を上記と同様の手順でインポートします。Examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモ シーンが含まれています。**Examples パッケージは Extensions パッケージが必要であることにご注意ください**
+1. (**_バージョンのアップグレードに必要、そうでなければオプション_**) **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** を Foundation パッケージと同様にインポートします。Tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
 
 > [!Note]
 > Android と iOS の開発には、追加のパッケージ インストールが必要です。より多くの情報については、[MRTK を iOS と Android 向けに設定する方法](CrossPlatform/UsingARFoundation.md)をご覧ください。
@@ -106,6 +106,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
     インスペクターには現在アクティブな MRTK の設定プロファイルとプロファイル選択のドロップダウンが表示され、デフォルトのプロファイルがあらかじめ選択されています。プロファイルは MRTK のコアコンポーネントの振る舞いを設定します。より詳しくは[プロファイル](Profiles/Profiles.md)の記事に記載されています。
 
     > [!NOTE]
+    >
     > * もし Unity 2019.3 またはそれ以降で Unity の XR SDK を使っている場合、「DefaultXRSDKConfigurationProfile」 を選ぶべきです。このプロファイルは、MRTK の XR SDK のシステムとプロバイダーを必要な箇所に設定しています。  
     > * HoloLens または HoloLens 2 で始める場合は、「DefaultHoloLens1ConfigurationProfile」または「DefaultHoloLens2ConfigurationProfile」をかわりに選択すべきです。  
     > * DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、[プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
@@ -149,7 +150,7 @@ MRTK、または MR 開発が初めての場合は、MRTK v2 を使った [チ�
 
 ハンド インタラクション シーンを試すには、以下のステップを実行してください。
 
-1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の中の  **HandInteractionExamples** シーンを開きます。
+1. `Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples` の中の  **HandInteractionExamples** シーンを開きます。
 
 1. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
 
@@ -158,6 +159,10 @@ MRTK、または MR 開発が初めての場合は、MRTK v2 を使った [チ�
     このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プラグインを指し、MRTK のサンプルの一部はテキスト レンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/windows/mixed-reality/text-in-unity)を参照してください。)
 
 1. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクト タブでシーンをダブルクリックします。
+
+1. シーンの乱雑さを抑えるため、Scene ビューの Gizmos タブの 3d Icons のチェックを外すかサイズを小さくします。
+
+     ![Gizmos](https://user-images.githubusercontent.com/13754172/80819866-a8aed800-8b8a-11ea-8d7b-a3822fdfc907.png)
 
 1. Play ボタンを押します。
 
@@ -189,7 +194,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 お勧めの次のステップを紹介します。
 
 * [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions](https://docs.microsoft.com/windows/mixed-reality/mrtk-101) で、グラブ、移動、スケール、回転などの一般的な空間的インタラクションの実現方法について学ぶ。
-* [UI とインタラクションのビルディング ブロック](../README.md#ui-and-interaction-building-blocks) で UX コントロール について学ぶ。
+* [UI とインタラクションのビルディング ブロック](../README.md#ux-building-blocks) で UX コントロール について学ぶ。
 * [MRTK Examples Hub](README_ExampleHub.md) を試す(事前にビルドされたアプリケーション パッケージはリリース ページに含まれています)。
 * [Mixed Reality Toolkit プロファイル設定ガイド](MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 * [MRTK のアーキテクチャ](./Architecture/Overview.md) を、学ぶ。

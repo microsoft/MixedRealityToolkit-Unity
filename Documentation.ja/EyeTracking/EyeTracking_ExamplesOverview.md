@@ -1,11 +1,11 @@
-# MRTK におけるアイ トラッキング サンプル
-このトピックでは、[MRTK eye tracking examples](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) を基に、MRTK で Eye Tracking (アイ トラッキング) を素早く使用する方法を説明します。
+# Eye Tracking (アイ トラッキング) サンプル
+このトピックでは、MRTK アイ トラッキング サンプル (Assets/MRTK/Examples/Demos/EyeTracking) を基に、MRTK でアイ トラッキングを素早く使用する方法を説明します。
 これらのサンプルでは、新しいマジカルな入力機能の1つである **アイ トラッキング** を体験できます！
 このデモには、視線による暗黙的なアクティブ化から、見ているものに関する情報を **音声** および **ハンド** 入力とシームレスに組み合わせる方法まで、さまざまな使用例が含まれています。 
 これにより、ターゲットを見て _「選択」_ と発話するか、ハンド ジェスチャを実行するだけで、ビュー内のホログラフィック コンテンツをすばやく簡単に選択して移動することができます。 
 デモには、Slate (スレート) に表示されたテキストや画像に対して、視線によるスクロール、パン、ズームを行う例も含まれています。 
 最後に、2D スレート上でユーザーの注視点を記録し可視化する例が提供されています。
-次のセクションでは、[MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) に含まれている各サンプルの詳細がわかります。
+次のセクションでは、MRTK アイ トラッキング サンプル パッケージ (Assets/MRTK/Examples/Demos/EyeTracking) に含まれている各サンプルの詳細がわかります。
 
 ![List of eye tracking scenes](../../Documentation/Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 

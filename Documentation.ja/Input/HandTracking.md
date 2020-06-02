@@ -104,16 +104,7 @@ if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, 
 [`IMixedRealityHandJointService`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) は、トラッキングしているジョイントの [GameObject](https://docs.unity3d.com/ScriptReference/GameObject.html) の永続的なセットを保持します。
 
 ```c#
-IMixedRealityHandJointService handJointService = null;
-if (CoreServices.InputSystem != null)
-{
-    var dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-    if (dataProviderAccess != null)
-    {
-        handJointService = dataProviderAccess.GetDataProvider<IMixedRealityHandJointService>();
-    }
-}
-
+var handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
 if (handJointService != null)
 {
     Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);

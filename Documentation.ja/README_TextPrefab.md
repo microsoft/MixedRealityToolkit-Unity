@@ -4,17 +4,17 @@
 
 ## Prefab (プレハブ)
 
-### [3DTextPrefab.prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text)
+### 3DTextPrefab
 
-2 メートルの距離で最適化されたスケーリング係数を持つ 3D Text Mesh プレハブ (以下の手順をお読みください)。
+2 メートルの距離で最適化されたスケーリング係数を持つ 3D Text Mesh プレハブ (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) (以下の手順をお読みください)。
 
-### [UITextPrefab.prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text)
+### UITextPrefab
 
-2 メートルの距離で最適化されたスケーリング係数を持つ UI Text Mesh プレハブ (以下の手順をお読みください)。
+2 メートルの距離で最適化されたスケーリング係数を持つ UI Text Mesh プレハブ (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) (以下の手順をお読みください)。
 
-### [Fonts](/Assets/MixedRealityToolkit/StandardAssets/Fonts)
+### Fonts
 
-Mixed Reality Toolkit に含まれるオープンソースフォント。
+Mixed Reality Toolkit に含まれるオープンソース フォント (Assets/MRTK/Core/StandardAssets/Fonts)。
 
 > [!IMPORTANT]
 > テキスト プレハブはオープン ソース フォント 'Selawik' を使用しています。別のフォントでテキスト プレハブを使用するには、フォント ファイルをインポートして、以下の手順に従ってください。以下の例は、Text Prefab で 'Segoe UI' フォントを使用する方法を示しています。
@@ -53,12 +53,12 @@ UI またはキャンバス ベースの Text 要素をシーンに追加する�
 
 ![Font size with scaling factors](../Documentation/Images/TextPrefab/TextPrefabInstructions07.png)
 
-### [Text3DSelawik.mat](/Assets/MixedRealityToolkit/StandardAssets/Materials/)
+### [Text3DSelawik.mat](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Core/StandardAssets/Materials)
 
 オクルージョンをサポートする 3DTextPrefab のマテリアル。3DTextShader.shader が必要です。
 
 ![Default Font material vs 3DTextSegoeUI material](../Documentation/Images/TextPrefab/TextPrefabInstructions06.png)
 
-### [Text3DShader.shader](/Assets/MixedRealityToolkit/StandardAssets/Shaders/)
+### [Text3DShader.shader](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Core/StandardAssets/Shaders)
 
 オクルージョンをサポートする 3DTextPrefab 用シェーダー。

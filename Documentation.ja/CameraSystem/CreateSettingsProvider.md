@@ -3,7 +3,7 @@
 The Camera system is an extensible system for providing support for platform specific camera configurations. To add support for a new camera configuration, a custom settings provider may be required.
 
 > [!NOTE]
-> The complete source code used in this example can be found in the **MixedRealityToolkit.Extensions\Providers\Experimental\UnityAR** folder after importing the **Microsoft.MixedReality.Toolkit.Unity.Extensions** package.
+> The complete source code used in this example can be found in the **MRTK/Providers/UnityAR** folder.
 
 ## Namespace and folder structure
 
@@ -43,7 +43,7 @@ Microsoft.MixedReality.Toolkit (ex: *Microsoft.MixedReality.Toolkit.CameraSystem
 
 **Folder structure**
 
-All code must be located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\UnityAR).
+All code must be located in a folder beneath MRTK/Providers (ex: MRTK/Providers/UnityAR).
 
 ## Define the camera settings object
 

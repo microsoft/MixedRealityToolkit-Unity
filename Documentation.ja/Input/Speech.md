@@ -1,5 +1,7 @@
 # Speech (音声)
 
+![Near Menu](../../Documentation/Images/Input/MRTK_Input_Speech.png)
+
 *Windows Speech Input* などの音声入力プロバイダーは、コントローラーを作成しませんが、代わりに認識時に音声入力イベントを発生させるキーワードを定義することができます。*Input System Profile* の **Speech Commands Profile** は、認識するキーワードを設定する場所です。各コマンドでは次のこともできます：
 
 - マップする **input action** を選択します。この方法では、たとえば、キーワード *Select* を使用して、マウスの左クリックと同じアクションにマップすることにより、左クリックと同じ効果を得ることができます。
@@ -22,6 +24,6 @@
 
 ## サンプルシーン
 
-`MixedRealityToolkit.Examples\Demos\Input\Scenes\Speech` の **SpeechInputExample** シーンでは、音声を扱う方法を見ることができます。また、[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) を実装することにより、自分のスクリプトで直接音声コマンドを聞き取ることができます([event handlers](InputEvents.md) の表を参照してください)。
+`MRTK/Examples/Demos/Input/Scenes/Speech` の **SpeechInputExample** シーンでは、音声を扱う方法を見ることができます。また、[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) を実装することにより、自分のスクリプトで直接音声コマンドを聞き取ることができます([event handlers](InputEvents.md) の表を参照してください)。
 
 <img src="../../Documentation/Images/Input/SpeechExampleScene.png" width="750px">

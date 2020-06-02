@@ -23,9 +23,9 @@ Mixed Reality Toolkit には、いくつかのデフォルトの事前設定プ�
 
 | プロファイル | デフォルトの有効/無効設定 |
 | --- | --- |
-| [DefaultHoloLens1ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens1/DefaultHoloLens1ConfigurationProfile.asset) | False |
-| [DefaultHoloLens2ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset) | False |
-| [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) | True |
+| `DefaultHoloLens1ConfigurationProfile` (Assets/MRTK/SDK/Profiles/HoloLens1) | False |
+| `DefaultHoloLens2ConfigurationProfile` (Assets/MRTK/SDK/Profiles/HoloLens2) | False |
+| `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) | True |
 
 1. [Inspector] (インスペクター) パネルを開くために [Hierarchy] (ヒエラルキー) から MixedRealityToolkit オブジェクトを選択する
 
@@ -57,7 +57,7 @@ Mixed Reality Toolkit のサービスには、プラットフォーム固有の�
 1. 必要に応じて[オブザーバーの構成プロパティを変更](ConfiguringSpatialAwarenessMeshObserver.md)する
 
 > [!NOTE]
-> [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) のユーザーは、[`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) クラスを使用する Windows Mixed Reality プラットフォーム用に事前設定された Spatial Awareness システムを使用します
+> `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) のユーザーは、[`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) クラスを使用する Windows Mixed Reality プラットフォーム用に事前設定された Spatial Awareness システムを使用します
 
 ### ビルドとデプロイ
 

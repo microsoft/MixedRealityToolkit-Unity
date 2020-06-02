@@ -25,6 +25,10 @@ GazeProvider の場合、ポインターは `InternalGazePointer` によって�
 *Gaze Provider Type* を [IMixedRealityGazeProvider](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider) と [IMixedRealityEyeGazeProvider](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider) を実装する別のクラスを参照するように変更することで、標準の GazeProvider を別の実装に置き換えることができます。
 GazeProvider の再実装は簡単ではないので、通常は標準の GazeProvider を使う (バグを発見した場合は問題を報告する) ことをお勧めします。
 
+### プラットフォームが提供する代替のゲイズ姿勢
+
+デフォルトでは、MRTK GazeProvider はカメラのフレームの中心をゲイズの原点として使います。HoloLens 2 上の Windows Mixed Reality のようないくつかのプラットフォームは、代わりとして定義されたゲイズの姿勢を提供します。これはゲイズの設定の  `Use Head Gaze Override` 設定によって管理されます。これが有効な場合、代わりのゲイズが使われます。無効な場合、デフォルトであるフレーム中心の原点が使用されます。特に、HoloLens 2 では、頭を使って狙いをつけるのに快適になるよう、ゲイズの角度は数度上を向けられています。
+
 ## 使用方法
 
 ### 現在の gaze target (ゲイズ ターゲット) を取得する方法

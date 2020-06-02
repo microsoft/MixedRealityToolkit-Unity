@@ -2,7 +2,7 @@
 
 ![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
-[HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) のサンプル シーンには、関節式の手 (articulated hand) の入力をハイライトした様々なタイプのインタラクションと UI コントロールが含まれています。
+`HandInteractionExamples` (Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) のサンプル シーンには、関節式の手 (articulated hand) の入力をハイライトした様々なタイプのインタラクションと UI コントロールが含まれています。
 
 > [!NOTE]
 > このサンプル シーンは、*TextMesh Pro* を使用しています。シーンのインポート中にプロンプトが表示された場合、シーンを開くために *「Import TMP Essentials」* をクリックしてください。 Unity は TextMesh Pro のパッケージをインポートします。

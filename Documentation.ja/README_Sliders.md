@@ -6,8 +6,7 @@
 
 ## サンプルシーン
 
-以下の場所の **SliderExample** シーンにサンプルがあります:
-[MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
+`MRTK/Examples/Demos/UX/Slider/Scenes` 以下の **SliderExample** シーンにサンプルがあります。
 
 ## スライダの使用方法
 

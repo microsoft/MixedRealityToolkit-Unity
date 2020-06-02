@@ -13,14 +13,12 @@
 * **BackPlate**: スレートの裏側。
 * **ContentQuad**: コンテンツはマテリアルとして割り当てられます。この例では、サンプル マテリアル 'PanContent' を使用しています。
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Structure.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_SlateStructure.jpg" width="650">
 
 ## Bounding Box (バウンディング ボックス)
 スレート コントロールには、スケーリングと回転用のバウンディング ボックス スクリプトが含まれています。バウンディング ボックスの詳細については、[バウンディング ボックス](README_BoundingBox.md) ページを参照してください。
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Box.png" width="650">
-
-<img src="../Documentation/Images/Slate/MRTK_Slate_Scale.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_BB.jpg" width="650">
 
 ## ボタン
 標準スレートには、デフォルトでタイトル バーの右上に 2 つのボタンがあります。
@@ -28,7 +26,7 @@
 * **Follow Me**: スレート オブジェクトがユーザーを追いかけるようにするための orbital solver コンポーネントをトグルする。
 * **Close**: スレート オブジェクトを無効にする。
 
-<img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.png" width="650">
+<img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.jpg" width="650">
 
 ## スクリプト
 一般的に、`NearInteractionTouchable.cs` スクリプトは `IMixedRealityTouchHandler` からのタッチ イベントを受け取りたいすべてのオブジェクトにアタッチする必要があります。

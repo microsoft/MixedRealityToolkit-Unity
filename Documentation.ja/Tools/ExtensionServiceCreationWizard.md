@@ -9,7 +9,7 @@ Launch the wizard from the main menu: **MixedRealityToolkit/Utilities/Create Ext
 
 ## Editing your service script
 
-By default, your new script assets will be generated in the MixedRealityToolkit.Extensions folder. Once you've completed the wizard, navigate here and open your new service script.
+By default, your new script assets will be generated in the `MixedRealityToolkit.Generated/Extensions` folder. Once you've completed the wizard, navigate here and open your new service script.
 
 Generated service scripts include some prompts similar to new MonoBehaviour scripts. They will let you know where to initialize and update your service.
 

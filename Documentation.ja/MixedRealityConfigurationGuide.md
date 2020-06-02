@@ -1,10 +1,13 @@
 ﻿# Mixed Reality Toolkit プロファイル設定ガイド
+<a name="mixed-reality-toolkit-profile-configuration-guide"></a>
 
 ![MRTK logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
 Mixed Reality Toolkit は、ツールキットを管理するために必要な設定を可能な限り集中化しています (ランタイムの「モノ」は除く)。
 
-> **このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
+このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。
+
+<a name="the-main-mixed-reality-toolkit-configuration-profile"></a>
 
 ## Mixed Reality Toolkit の主な設定プロファイル (Congifuration Profile)
 
@@ -15,7 +18,7 @@ Mixed Reality Toolkit は、ツールキットを管理するために必要な�
 
 ![MRTK configuration profile](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
-Mixed Reality Toolkit のすべての「デフォルト」プロファイルは、Assets\MixedRealityToolkit.SDK\Profiles フォルダ内の SDK プロジェクトにあります。
+Mixed Reality Toolkit のすべての「デフォルト」プロファイルは、Assets/MRTK/SDK/Profiles フォルダ内の SDK プロジェクトにあります。
 
 > [!IMPORTANT]
 > デフォルトの HoloLens 2 の設定プロファイルは、HoloLens 2 用に最適化されています。 [Profiles](Profiles/Profiles.md) をご確認ください。
@@ -28,42 +31,46 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 
 これにより、プロジェクトの現在アクティブなランタイム設定が保存されます。
 
-> [!NOTE]
-> ほとんどのプロファイルは、InputActions 設定を除き、実行時に変更できます（後述）。プロファイルは、新しい設定/ランタイム環境に自動的に適応します。
-
 ここから、MRTK のすべての設定プロファイルに移動できます。
 
-* [Experience settings（エクスペリエンスの設定）](#experience)
-* [Camera settings（カメラの設定）](#camera)
-* [Input system settings（入力システムの設定）](#inputsystem)
-* [Boundary visualization settings（境界可視化の設定）](#boundary)
-* [Teleportation system selection（テレポーテーション システムの選択）](#teleportation)
-* [Spatial awareness settings（空間認識の設定）](#spatialawareness)
-* [Diagnostics settings（診断の設定）](#diagnostic)
-* [Scene system settings（シーン システムの設定）](#scenesystem)
-* [追加サービスの設定](#services)
-* [Input actions settings（入力アクションの設定）](#inputactions)
-* [Input action rules （入力アクション ルール）](#inputactionrules)
-* [Pointer configuration（ポインターの設定）](#pointer)
-* [Gestures configuration（ジェスチャの設定）](#gestures)
-* [Speech commands（音声コマンド）](#speech)
-* [Controller mapping configuration（コントローラー マッピングの設定）](#mapping)
-* [Controller visualization settings（コントローラーの可視化の設定）](#visualization)
-* [Editor Utilities](#editor-utilities)
+- [Mixed Reality Toolkit プロファイル設定ガイド](#mixed-reality-toolkit-profile-configuration-guide)
+  - [Mixed Reality Toolkit の主な設定プロファイル](#the-main-mixed-reality-toolkit-configuration-profile)
+  - [Experience settings（エクスペリエンスの設定）](#experience-settings)
+  - [Camera settings（カメラの設定）](#camera-settings)
+  - [Input system settings（入力システムの設定）](#input-system-settings)
+  - [Boundary visualization settings（境界可視化の設定）](#boundary-visualization-settings)
+  - [Teleportation system selection（テレポーテーション システムの選択）](#teleportation-system-selection)
+  - [Spatial awareness settings（空間認識の設定）](#spatial-awareness-settings)
+  - [Diagnostics settings（診断の設定）](#diagnostics-settings)
+  - [Scene system settings（シーン システムの設定）](#scene-system-settings)
+  - [追加サービスの設定](#additional-services-settings)
+  - [Input actions settings（入力アクションの設定）](#input-actions-settings)
+  - [Input action rules （入力アクション ルール）](#input-actions-rules)
+  - [Pointer configuration（ポインターの設定）](#pointer-configuration)
+  - [Gestures configuration（ジェスチャの設定）](#gestures-configuration)
+  - [Speech commands（音声コマンド）](#speech-commands)
+  - [Controller mapping configuration（コントローラー マッピングの設定）](#controller-mapping-configuration)
+  - [Controller visualization settings（コントローラーの可視化の設定）](#controller-visualization-settings)
+  - [Editor Utilities](#editor-utilities)
+    - [Service inspectors（サービス インスペクター）](#service-inspectors)
+    - [Depth buffer renderer（デプス バッファー レンダラー）](#depth-buffer-renderer)
+  - [実行時のプロファイル変更](#changing-profiles-at-runtime)
+  - [MRTK 初期化前にプロファイルを差し替える](#swapping-profiles-prior-to-mrtk-initialization)
+  - [関連項目](#see-also)
 
 これらの設定プロファイルについては、以下の関連セクションで詳しく説明します。
 
 ---
-<a name="experience"></a>
+<a name="experience-settings"></a>
 
 ## Experience settings（エクスペリエンスの設定）
 
-Mixed Reality Toolkit のメイン設定ページにあるこの項目では、プロジェクトの Mixed Reality 環境のデフォルトの操作が定義されます。
+Mixed Reality Toolkit のメイン設定ページにあるこの項目では、プロジェクトの [Mixed Reality 環境のスケール](https://docs.microsoft.com/en-us/windows/mixed-reality/coordinate-systems-in-unity) のデフォルトの操作が定義されます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 
 ---
-<a name="camera"></a>
+<a name="camera-settings"></a>
 
 ## Camera settings（カメラの設定）
 
@@ -72,7 +79,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="inputsystem"></a>
+<a name="input-system-settings"></a>
 
 ## Input system settings（入力システムの設定）
 
@@ -87,16 +94,16 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 個々のプロファイルの詳細は以下のとおりです。
 
 * Focus Settings（フォーカスの設定）
-* [Input actions settings（入力アクションの設定）](#inputactions)
-* [Input action rules （入力アクション ルール）](#inputactionrules)
-* [Pointer configuration（ポインターの設定）](#pointer)
-* [Gestures configuration（ジェスチャの設定）](#gestures)
-* [Speech commands（音声コマンド）](#speech)
-* [Controller mapping configuration（コントローラー マッピングの設定）](#mapping)
-* [Controller visualization settings（コントローラーの可視化の設定）](#visualization)
+* [Input actions settings（入力アクションの設定）](#input-actions-settings)
+* [Input action rules （入力アクション ルール）](#input-actions-rules)
+* [Pointer configuration（ポインターの設定）](#pointer-configuration)
+* [Gestures configuration（ジェスチャの設定）](#gestures-configuration)
+* [Speech commands（音声コマンド）](#speech-commands)
+* [Controller mapping configuration（コントローラー マッピングの設定）](#controller-mapping-configuration)
+* [Controller visualization settings（コントローラーの可視化の設定）](#controller-visualization-settings)
 
 ---
-<a name="boundary"></a>
+<a name="boundary-visualization-settings"></a>
 
 ## Boundary visualization settings（境界可視化の設定）
 
@@ -105,7 +112,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="teleportation"></a>
+<a name="teleportation-system-selection"></a>
 
 ## Teleportation system selection（テレポーテーション システムの選択）
 
@@ -114,7 +121,7 @@ Mixed Reality プロジェクトは、プロジェクトでのテレポーテー
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
 
 ---
-<a name="spatialawareness"></a>
+<a name="spatial-awareness-settings"></a>
 
 ## Spatial awareness settings（空間認識の設定）
 
@@ -131,7 +138,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、どのように�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="diagnostic"></a>
+<a name="diagnostics-settings"></a>
 
 ## Diagnostics settings（診断の設定）
 
@@ -144,7 +151,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、どのように�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="scenesystem"></a>
+<a name="scene-system-settings"></a>
 
 ## Scene system settings（シーン システムの設定）
 
@@ -153,7 +160,7 @@ MRTK は、複雑なシーンのロード/アンロードの管理に役立つ�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="services"></a>
+<a name="additional-services-settings"></a>
 
 ## 追加サービスの設定
 
@@ -162,10 +169,10 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 登録済みのサービスは、MonoBehaviour または不格好なシングルトン パターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセスの両方で、シーン オーバーヘッドのない純粋な C# コンポーネントを使用できます。例えば、スポーン システム、ランタイム ゲーム ロジックなど、実質的には全てのもので利用できます。
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProvidersProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="inputactions"></a>
+<a name="input-actions-settings"></a>
 
 ## Input actions settings（入力アクションの設定）
 
@@ -192,7 +199,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="inputactionrules"></a>
+<a name="input-actions-rules"></a>
 
 ## Input action rules （入力アクション ルール）
 
@@ -207,7 +214,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 ![Input action rules profile](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 ---
-<a name="pointer"></a>
+<a name="pointer-configuration"></a>
 
 ## Pointer configuration（ポインターの設定）
 
@@ -226,7 +233,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 必要に応じて Gaze のなにか特定の値をオーバーライドするために、Gaze Provider にすばやくジャンプするための追加のヘルパーボタンがあります。
 
 ---
-<a name="gestures"></a>
+<a name="gestures-configuration"></a>
 
 ## Gestures configuration（ジェスチャの設定）
 
@@ -238,7 +245,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="speech"></a>
+<a name="speech-commands"></a>
 
 ## Speech Commands（音声コマンド）
 
@@ -254,7 +261,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 
 
 ---
-<a name="mapping"></a>
+<a name="controller-mapping-configuration"></a>
 
 ## Controller mapping configuration（コントローラー マッピングの設定）
 
@@ -283,7 +290,7 @@ MRTK は、以下のコントローラー / システムのデフォルト設定
 上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
 ---
-<a name="visualization"></a>
+<a name="controller-visualization-settings"></a>
 
 ## Controller visualization settings（コントローラーの可視化の設定）
 
@@ -305,6 +312,8 @@ MRTK はまた、 Windows Mixed Reality と OpenVR に関してネイティブ S
 
 ![MRTK Editor Configuration Utilities](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png)
 
+<a name="service-inspectors"></a>
+
 ### Service Inspectors（サービス インスペクター）
 
 サービス インスペクターは、アクティブなサービスを表すシーン内オブジェクトを生成する、エディター上のみの機能です。これらのオブジェクトを選択すると、\[Inspector]（インスペクター）にドキュメントへのリンク、エディターでの可視化のコントロール、サービスの状態に関する情報が表示されます。
@@ -312,6 +321,8 @@ MRTK はまた、 Windows Mixed Reality と OpenVR に関してネイティブ S
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
 
 Configuration Profile の *Editor Settings* の *Use Service Inspectors* をチェックすると、サービス インスペクターを有効にできます。
+
+<a name="depth-buffer-renderer"></a>
 
 ### Depth Buffer Renderer (デプス バッファー レンダラー)
 
@@ -321,6 +332,55 @@ Configuration Profile の *Editor Settings* の *Use Service Inspectors* をチ�
 
 ![Render Depth Buffer Utility](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
 <sup>シーン内の青い円柱は ZWrite off のマテリアルを持っているため、デプス データは書き込まれません</sup>
+
+<a name="changing-profiles-at-runtime"></a>
+
+## 実行時のプロファイル変更
+
+プロファイルを実行時に更新することも可能で、一般に2つのシナリオとタイミングでこれは有用です。
+
+1. 起動時、MRTK が初期化される前にプロファイルを差し替え、デバイスの機能に基づいてさまざまな機能を有効/無効にします。
+   例えば、もし空間マッピングのハードウェアを持っていない VR で実行されている場合は、おそらく空間マッピング コンポーネントが有効になっている意味はないでしょう。
+1. 起動後、MRTK が初期化された後にプロファイルを差し替え、特定の機能のふるまい変更します。
+   例えば、アプリケーション内にファー ハンド ポインターを完全に取り除きたいような特定のサブコンテンツがあるかもしれません。
+   このタイプの変更は、現在は次の issue のために機能しないことに**ご注意ください**。
+   https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289
+
+<a name="swapping-profiles-prior-to-mrtk-initialization"></a>
+
+## MRTK 初期化前にプロファイルを差し替える
+
+これは MRTK 初期化前に動作する以下のような MonoBehaviour をアタッチすることで実現できます。
+
+```csharp
+using Microsoft.MixedReality.Toolkit;
+using UnityEditor;
+using UnityEngine;
+
+/// <summary>
+/// MixedRealityToolkit オブジェクトの前に動作し、プロファイルを変更するサンプルの MonoBehaviour です。
+/// MRTK はシーンに保存されたプロファイルではなく、以下で指定したプロファイルを使って初期化します。
+/// </summary>
+/// <remarks>
+/// このスクリプトは、MixedRealityToolkit.cs よりも実行順で高い優先度でなければなりません。スクリプトの実行順序についての
+// より多くの情報は https://docs.unity3d.com/Manual/class-MonoManager.html をご覧ください。
+/// </remarks>
+public class ProfileSwapper : MonoBehaviour
+{
+    void Start()
+    {
+        // ここで任意の MixedRealityToolkitConfigurationProfile を選択できます。
+        // 例えば、どのプロファイルをロードするかを決定するためにプラットフォームをチェックするコードを追加することもできます。
+        var profile = AssetDatabase.LoadAssetAtPath<MixedRealityToolkitConfigurationProfile>("Assets/MixedRealityToolkit.Generated/CustomProfiles/RuntimeSwapparoo.asset");
+        MixedRealityToolkit.Instance.ActiveProfile = profile;
+    }
+}
+```
+
+"RuntimeSwapparoo.asset" の代わりに、特定のプラットフォームに適用する任意のプロファイル セット（例えば、HoloLens 用プロファイル、VR 用, HoloLens2 用など）を持つことも可能です。
+さまざまな他の指標 (すなわち、https://docs.unity3d.com/ScriptReference/SystemInfo.html やカメラが不透明/透明かどうかなど) を使ってどのプロファイルをロードするか決めることも可能です。
+
+<a name="see-also"></a>
 
 ## 関連項目
 

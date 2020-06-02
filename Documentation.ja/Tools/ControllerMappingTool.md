@@ -8,7 +8,7 @@ This tool is very useful when developing support for a new hardware controller. 
 
 ## Using the controller mapping tool
 
-To get started with the controller mapping tool, navigate to **MixedRealityToolkit.Tools\RuntimeTools\Tools\ControllerMappingTool** and open the **ControllerMappingTool** scene. Once the scene has been loaded, the project can either be run in the editor, using play mode, or built and run on a device.
+To get started with the controller mapping tool, navigate to **MRTK/Tools/RuntimeTools/Tools/ControllerMappingTool** and open the **ControllerMappingTool** scene. Once the scene has been loaded, the project can either be run in the editor, using play mode, or built and run on a device.
 
 To examine Unity's mappings for a controller:
 

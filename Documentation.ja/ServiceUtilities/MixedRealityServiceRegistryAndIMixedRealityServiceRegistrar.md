@@ -34,7 +34,7 @@ if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inp
 IMixedRealityServiceRegistrar を実装したコンポーネントは、MixedRealityServiceRegistry 内のデータの追加と削除を行う責務があります。
 [MixedRealityToolkit](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit) オブジェクトはそのようなコンポーネントの一つです。
 
-その他の registrars は MixedRealityToolkit.SDK.Experimental.Features フォルダーにて見つけることができます。
+その他の registrars は MRTK/SDK/Experimental/Features フォルダーにて見つけることができます。
 これらのコンポーネントは、単一のサービス（例えば、Spatial Awareness）のサポートをアプリケーションに追加するのに使うことができます。
 これらの、単一サービスのマネージャーは以下の通りです。
 

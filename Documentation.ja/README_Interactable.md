@@ -20,7 +20,7 @@
 
 *States* は [Interactable プロファイル](#interactable-プロファイル)と[ビジュアル テーマ](VisualThemes.md)で利用する、押された、見られている、といったインタラクションのフェーズを定義する [ScriptableObject](https://docs.unity3d.com/Manual/class-ScriptableObject.html) パラメータです。
 
-[**DefaultInteractableStates**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) は MRTK にそのまま含まれている、*Interactable* コンポーネントのデフォルトのパラメーターです。
+**DefaultInteractableStates** (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) は MRTK にそのまま含まれている、*Interactable* コンポーネントのデフォルトのパラメーターです。
 
 ![States ScriptableObject example in inspector](../Documentation/Images/Interactable/DefaultInteractableStates.png)
 
@@ -37,7 +37,7 @@
 リスト内の順序に応じて、ビット値 (#) がステートに割り当てられます。
 
 > [!NOTE]
->  一般に、*Interactable* コンポーネントを作成する場合は、 [**DefaultInteractableStates**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) を使用することをお勧めします。
+>  一般に、*Interactable* コンポーネントを作成する場合は、**DefaultInteractableStates** (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) を使用することをお勧めします。
 >
 > ただし、テーマの駆動に使用できる Interactable のステートは17ありますが、一部は他のコンポーネントによって駆動されるように設計されています。以下は、そのようなステートで、機能が組み込まれているもののリストです。
 >
@@ -98,7 +98,11 @@ true の場合、音声コマンドは、ポインタからすでにフォーカ
 
 テーマはマテリアルのような働きをします。これらは、現在の状態に基づいてオブジェクトに割り当てられるプロパティのリストを含むスクリプタブル オブジェクトです。テーマも再利用可能で、複数の *Interactable* UX オブジェクトに割り当てることができます。
 
-![Interactable Profiles](../Documentation/Images/Interactable/Profiles_Themes.png)
+**Reset On Destroy**
+
+ビジュアル テーマはターゲットとなる GameObject のさまざまなプロパティを、そのクラスと選択されたテーマ エンジンに応じて変更します。もし Interactable コンポーネントが破棄される時に *Reset On Destroy* が true の場合、コンポーネントはすべての変更されたプロパティをアクティブなテーマから元の値へとリセットします。そうでなければ、破棄されるときに Interactable コンポーネントはすべての変更されたプロパティをそのままにします。後者の場合、値の最後の状態は他の外部のコンポーネントによって変更されない限り持続します。デフォルトは false です。
+
+<img src="../Documentation/Images/Interactable/Profiles_Themes.png" width="450">
 
 ## Events
 
@@ -144,7 +148,7 @@ Event Receiver (イベント レシーバー) 定義の新しいタイプを追�
 1) [`ReceiverBaseMonoBehavior`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior) クラスを拡張して、*Interactable* または別のオブジェクトに配置できる完全にカスタムなイベント コンポーネントを作成します。[`ReceiverBaseMonoBehavior`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior) は、*Interactable* を参照してステートの変化を検出します。
 
 #### `ReceiverBase` の拡張例
-`MixedRealityToolkit.Examples` 配下の [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) クラスは、*Interactable* に関するステータス情報を表示し、カスタム イベント レシーバの作成例となります。
+[`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) クラスは、*Interactable* に関するステータス情報を表示し、カスタム イベント レシーバの作成例となります。
 
 ```c#
 public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
@@ -200,7 +204,7 @@ public Vector3 EffectOffset = Vector3.zero;
 ボタンをさらに一歩進めて、新しいプロファイルを作成し、GameObject 自体を割り当て、新しいテーマを作成します。さらに、*OnClick* イベントを使用して、何かを実行します。
 
 > [!NOTE]
-> 押下可能な [Button (ボタン)](README_Button.md) を作成するには、`PressableButton` コンポーネントが必要です。さらに、`PhysicalPressEventRouter` コンポーネントは、押下イベントを *Interactable* コンポーネントに転送するために必要です。
+> 押下可能な [Button (ボタン)](README_Button.md) を作成するには、[`PressableButton`](xref:Microsoft.MixedReality.Toolkit.UI.PressableButton) コンポーネントが必要です。さらに、[`PhysicalPressEventRouter`](xref:Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter) コンポーネントは、押下イベントを *Interactable* コンポーネントに転送するために必要です。
 
 ### Toggle Button (トグル ボタン) と Multi-Dimension ボタンの作成
 
@@ -230,7 +234,7 @@ bool isSelected = myInteractable.IsToggled;
 
 トグル ボタンのリストを作り、一度にアクティブにできるのは1つだけにすることがよくあります。これはラジアル セットまたはラジオ ボタンなどとも呼ばれます。
 
-この機能を有効にするには、[`InteractableToggleCollection`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection) コンポーネントを使用します。このコントロールにより、常に1つの *Interactable* のみがオンになります。[*RadialSet* prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab) も、すぐに使える素晴らしい出発点です。
+この機能を有効にするには、[`InteractableToggleCollection`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection) コンポーネントを使用します。このコントロールにより、常に1つの *Interactable* のみがオンになります。*RadialSet* (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab) も、すぐに使える素晴らしい出発点です。
 
 カスタム ラジオ ボタン グループを作成するには:
 

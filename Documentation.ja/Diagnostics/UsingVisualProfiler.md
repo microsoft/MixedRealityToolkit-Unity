@@ -32,6 +32,9 @@
 - Microsoft HoloLens: 60
 - Windows Mixed Reality Ultra: 90
 
+> [!NOTE]
+> [デフォルトの MRC が有効な場合フレーム レートが制限される](https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#what-to-expect-when-mrc-is-enabled-on-hololens)ため、ビデオや写真が撮影されている間ビジュアル プロファイラーは非表示になります。この設定は診断システムのプロファイルで上書きすることができます。
+
 ### Frame Time (フレーム時間)
 
 フレーム レートの右側は、CPU に費やされるフレーム時間 (ミリ秒単位)です。前述の目標フレーム レートを実現するために、アプリケーションがフレームごとに費やすことのできる時間は以下の通りです。

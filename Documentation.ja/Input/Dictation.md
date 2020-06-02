@@ -28,6 +28,6 @@ Unity での音声入力の詳細は、[Windows Mixed Reality Documentation](htt
 
 ## サンプルシーン
 
-`MixedRealityToolkit.Examples\Demos\Input\Scenes\Dictation` 内の **Dictation** シーンは、`DictationHandler` スクリプトの使い方を示しています。より多くの制御が必要であれば、このスクリプトを拡張するか、または [`IMixedRealityDictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler) の独自実装を作ってディクテーション イベントを直接受け取ってください。
+`MRTK/Examples/Demos/Input/Scenes/Dictation` 内の **Dictation** シーンは、`DictationHandler` スクリプトの使い方を示しています。より多くの制御が必要であれば、このスクリプトを拡張するか、または [`IMixedRealityDictationHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler) の独自実装を作ってディクテーション イベントを直接受け取ってください。
 
 <img src="../../Documentation/Images/Input/DictationDemo.png" width="80%" class="center">

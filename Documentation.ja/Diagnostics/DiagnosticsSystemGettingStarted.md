@@ -33,7 +33,7 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
     ![診断システムの実装を選択する](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
 > [!NOTE]
-> デフォルトのプロファイル [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) を使うユーザーは、[`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) オブジェクトを使う事前に設定された診断システムを持ちます。
+> デフォルトのプロファイル `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) を使うユーザーは、[`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) オブジェクトを使う事前に設定された診断システムを持ちます。
 
 ### 診断のオプションを設定する
 

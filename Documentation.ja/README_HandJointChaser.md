@@ -5,7 +5,7 @@
 
 ## サンプル シーン
 
-サンプル シーン **HandJointChaserExample** シーンは、MixedRealityToolkit.Examples パッケージの `Demos/Input/Scenes/` にあります。
+サンプル シーン **HandJointChaserExample** シーンは、`Assets/MRTK/Examples` フォルダの `Demos/Input/Scenes/` にあります。
 
 ## ソルバー ハンドラー
 

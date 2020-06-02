@@ -3,7 +3,7 @@
 MRTK を設定する主な方法の一つは、foundation パッケージに含まれる多数の Profile を使用することです。
 シーン内のメインとなる [`MixedRealityToolkit`](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit) オブジェクトはアクティブな Profile を持っており、これは実装としては ScriptableObject です。トップ レベルの MRTK Configuration Profile は主要なコア システムのそれぞれに対しサブプロファイル データを含んでおり、それらは対応するサブ システムの振る舞いを設定するようデザインされています。さらに、これらのサブプロファイルも ScriptableObject であり、一階層下の他のプロファイルへの参照を含むことができます。本質的に、MRTK のサブシステムと機能をどう初期化するかの設定情報を作り上げる、結合されたプロファイルのツリーがあります。
 
-例えば入力機能の振る舞いは [input system プロファイル オブジェクト](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset)で管理されています。Profile の ScriptableObject を編集するにはエディターの \[Inspector](インスペクター) ウィンドウを常に使用することを強くお勧めします。
+例えば入力機能の振る舞いは入力システム プロファイル、例としては `DefaultMixedRealityInputSystemProfile` (Assets/MRTK/SDK/Profiles) によって管理されています。Profile の ScriptableObject を編集するにはエディターの \[Inspector](インスペクター) ウィンドウを常に使用することを強くお勧めします。
 
 <img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;">
 <sup>Profile Inspector</sup>
@@ -13,12 +13,12 @@ MRTK を設定する主な方法の一つは、foundation パッケージに含�
 
 ## Default Profile
 
-MRTK は様々なプラットフォームとシナリオをサポートするデフォルトの Profile を提供します。例えば、 [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset)
-を選択すれば VR (OpenVR, WMR) と HoloLens(1, 2) 両方に対応したシナリオを試すことができます。これは幅広い用途のための Profile なので、特定のユースケースに最適化されてはいないことに注意してください。もし他のプラットフォーム向けに、より高パフォーマンスで特化した設定にしたければ、以下の他のプラットフォーム向けに調整された Profile をご覧ください。
+MRTK は様々なプラットフォームとシナリオをサポートするデフォルトの Profile を提供します。例えば、`DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) を選択すれば VR (OpenVR, WMR) と HoloLens(1, 2) 両方に対応したシナリオを試すことができます。これは幅広い用途のための Profile なので、特定のユースケースに最適化されてはいないことに注意してください。もし他のプラットフォーム向けに、より高パフォーマンスで特化した設定にしたければ、以下の他のプラットフォーム向けに調整された Profile をご覧ください。
 
 ## HoloLens 2 Profile
 
-MRTK は HoloLens2 上での開発・テストに最適化された Profile を提供します。 [DefaultHoloLens2ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset).
+MRTK は HoloLens2 上での開発・テストに最適化された Profile を提供します。それは `DefaultHoloLens2ConfigurationProfile` (Assets/MRTK/SDK/Profiles/HoloLens2) です。
+
 MixedRealityToolkit オブジェクトに Profile を設定するよう表示されたら、デフォルトではなくこちらを選択してください。
 
 HoloLens2 Profile とデフォルト Profile の主な違いは以下の通りです。

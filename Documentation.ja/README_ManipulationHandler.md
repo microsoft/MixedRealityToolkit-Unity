@@ -6,11 +6,9 @@
 
 ## Manipulation handler の使用方法
 
-[`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) コンポーネントをゲームオブジェクトに追加します。
+`ManipulationHandler` スクリプト コンポーネントを GameObject に追加します。必ず、オブジェクトのつかめる範囲に合わせてコライダーも追加してください。
 
-また、オブジェクトのつかめる範囲に合わせてコライダーを追加してください。オブジェクトが近くにある多関節ハンドに反応するには、[NearInteractionGrabbable.cs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) スクリプトも追加します。
-
-オブジェクトのスケールの最小値または最大値を設定する場合は、[TransformScaleHandler](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) スクリプトも追加してください。
+オブジェクトが近くにある多関節ハンドに反応するようにするには、`NearInteractionGrabbable` スクリプトも追加します。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 

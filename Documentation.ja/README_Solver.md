@@ -37,10 +37,10 @@ Solvers(ソルバー) は、事前に定義されたアルゴリズムにした�
 
 * *Head* : 参照点はメイン カメラのトランスフォーム
 * *ControllerRay*: 参照点は、ライン レイの方向を指しているコントローラーの [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer) のトランスフォーム(すなわち、モーション コントローラーやハンド コントローラーのポインター原点)。
-    * どちらの手（左手、右手、両手）を優先するかを選択するには、`TrackedHandedness` プロパティを使用します。
+  * どちらの手（左手、右手、両手）を優先するかを選択するには、`TrackedHandedness` プロパティを使用します。
 * *HandJoint*: 参照点は特定のハンド ジョイントのトランスフォーム
-    * どちらの手（左手、右手、両手）を優先するかを選択するには、`TrackedHandedness` プロパティを使用します。
-    * 利用するジョイントのトランスフォームを決定するには、`TrackedHandJoint` プロパティを使用します。
+  * どちらの手（左手、右手、両手）を優先するかを選択するには、`TrackedHandedness` プロパティを使用します。
+  * 利用するジョイントのトランスフォームを決定するには、`TrackedHandJoint` プロパティを使用します。
 * *CustomOverride*: アサインされた `TransformOverride` からの参照点
 
 > [!NOTE]
@@ -48,6 +48,17 @@ Solvers(ソルバー) は、事前に定義されたアルゴリズムにした�
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)  
 *TrackedTargetType に関連するさまざまなプロパティの例*
+
+> [!IMPORTANT]
+> 多くのソルバーは `SolverHandler` によって提供される tracked transform target (追跡するトランスフォーム ターゲット) の forward vector を使用します。*Hand Joint* のターゲット追跡タイプを使うとき、手のひらのジョイントの forward vector は手のひらをつき抜ける方向ではなく、指の方向を向くかもしれません。これは、プラットフォームが提供する手のジョイント データによります。入力シミュレーションと Windows Mixed Reality では、*up vector* が手のひらをつき抜ける向き (緑色の vectorが up, 青色の vector が forward) です。
+>
+> ![Solver](../Documentation/Images/Solver/HandJoint_ForwardUpVectors.png)
+>
+> これを解決するため、`SolverHandler` の *Additional Rotation* プロパティを **<90, 0, 0>** に更新します。これにより、ソルバーに提供される forward ベクターが手のひらをつき抜けて手の外側へと向くようになります。
+>
+> ![Solver](../Documentation/Images/Solver/SolverHandler_AdditionalRotation.png)
+>
+> あるいは、*Controller Ray* のターゲット追跡タイプを使うことで、似たようなふるまいをさせることもできます。
 
 ## Solver (ソルバー) を連鎖させる方法
 
@@ -161,22 +172,9 @@ Finally, surfaces farther than the `MaxRaycastDistance` property setting will be
 
 ![Hand Menu UX Example](../Documentation/Images/Solver/MRTK_UX_HandMenu.png)
 
-The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes)
+The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.
 
-Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) property for additional documentation. A few properties are defined in more detail below.
-
-<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
-
-* **Safe Zone**: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with [`IMixedRealityHand`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.
-
-<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
-
-* **Activation Events**: Currently the [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) triggers four activation events. These events can be used in many different combinations to create unique [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behaviors, please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes) for examples of these behaviors.
-
-    * *OnHandActivate*: triggers when a hand satisfies the IsHandActive method
-    * *OnHandDeactivate*: triggers when the IsHandActive method is no longer satisfied.
-    * *OnFirstHandDetected*: occurs when the hand tracking state changes from no hands in view, to the first hand in view.
-    * *OnLastHandLost*: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
+[Please see Hand Menu page](README_HandMenu.md) for the examples of using Hand Constraint solver to create hand menus.
 
 ## Experimental Solvers
 
@@ -200,7 +198,7 @@ If the directional target is viewable by the user, or whatever frame of referenc
 
 ![Directional Indicator example scene](../Documentation/Images/Solver/DirectionalIndicatorExampleScene.gif)
 
-*[Directional Indicator Example Scene](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
+*Directional Indicator Example Scene (Assets/MRTK/Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
 
 ## See also
 

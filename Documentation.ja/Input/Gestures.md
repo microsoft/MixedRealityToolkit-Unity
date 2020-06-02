@@ -58,6 +58,6 @@
 
 ## サンプル シーン
 
-`MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` 内の **HandInteractionGestureEventsExample** シーンでは、ポインターの結果を使って、オブジェクトをヒットした位置に生成する方法を示しています。
+**HandInteractionGestureEventsExample** (Assets/MRTK/Examples/Demos/HandTracking/Scenes) シーンでは、ポインターの結果を使って、オブジェクトをヒットした位置に生成する方法を示しています。
 
-[Gesture Tester script](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs) は、ジェスチャ イベントを GameObject を介して可視化する実装例です。このハンドラー 関数はインジケーター オブジェクトの色を変え、最後に記録されたイベントをシーンのテキスト オブジェクトに表示します。
+`GestureTester` (Assets/MRTK/Examples/Demos/HandTracking/Script) スクリプトは、ジェスチャ イベントを GameObject を介して可視化する実装例です。このハンドラー関数はインジケーター オブジェクトの色を変え、最後に記録されたイベントをシーンのテキスト オブジェクトに表示します。

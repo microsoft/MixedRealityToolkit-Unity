@@ -58,11 +58,11 @@ HoloLens を開発のターゲットとする場合は、24 ビットよりも 1
 
 変更前
 
-![Depth Buffer Before Fix MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_Before.png)
+![Depth Buffer Before Fix MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_Before.PNG)
 
 変更後
 
-![Depth Buffer Fixed MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_After.png)
+![Depth Buffer Fixed MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_After.PNG)
 
 ##### Text Mesh Pro
 

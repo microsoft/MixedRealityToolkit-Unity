@@ -23,7 +23,7 @@
 - **Pointer (ポインター)**
 
     コントローラーはポインターを使用してゲームオブジェクトとやり取りします。例えば、ニア インタラクション ポインターは、
-    (コントローラーである) 手が ‘near interaction’ をサポートしていると宣伝するオブジェクトに近づいたことを検出する責務を負います。
+    (コントローラーである) 手が 'near interaction' をサポートしていると宣伝するオブジェクトに近づいたことを検出する責務を負います。
     ポインターの他の例としては、テレポーテーションまたはファー ポインター (シェル ハンド レイ ポインター) があり、
     ファー レイキャストを使用して、ユーザーからの腕の長さよりも遠いコンテンツを処理します。
 
@@ -41,12 +41,12 @@
     IMixedRealityFocusHandler を実装する必要があります。 オブジェクトをグローバルに登録して、
     フィルター処理されていないポインター イベントを受け取ることは可能ですが、この方法はお勧めしません。
 
-    どのオブジェクトがフォーカスされているかを更新するコンポーネントは [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs) です。
+    どのオブジェクトがフォーカスされているかを更新するコンポーネントは [FocusProvider](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider) です。
 
 - **Cursor (カーソル)**
 
     ポインター インタラクションの周りに追加の視覚的効果を与える、ポインターに関連付けられたエンティティです。
-    例えば、FingerCursor は指の周りにリングを描画し、指が ‘near interactable’ オブジェクトの近くにあるときにそのリングを回転させる場合があります。
+    例えば、FingerCursor は指の周りにリングを描画し、指が 'near interactable' オブジェクトの近くにあるときにそのリングを回転させる場合があります。
     ポインターは、一度に 1 つのカーソルに関連付けることができます。
 
 - **Interaction and Manipulation (インタラクションとマニピュレーション)**

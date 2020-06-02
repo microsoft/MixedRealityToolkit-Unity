@@ -2,7 +2,7 @@
 
 ![System keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
 
-Unity アプリケーションならば、いつでもシステム キーボードを呼び出すことができます。システム キーボードはターゲット プラットフォームの機能に応じて動作し、たとえば HoloLens 2 のキーボードはダイレクト ハンド インタラクションをサポートしますが、HoloLens (第 1 世代) のキーボードは GGV<sup>[1](https://docs.microsoft.com/windows/mixed-reality/gaze)</sup> をサポートすることに注意してください。
+Unity アプリケーションならば、いつでもシステム キーボードを呼び出すことができます。システム キーボードはターゲット プラットフォームの機能に応じて動作し、たとえば HoloLens 2 のキーボードはダイレクト ハンド インタラクションをサポートしますが、HoloLens (第 1 世代) のキーボードは GGV (Gaze, Gesture, and Voice)<sup>[1](https://docs.microsoft.com/windows/mixed-reality/gaze)</sup> をサポートすることに注意してください。さらに、[Unity Remoting](Tools/HolographicRemoting.md) によってエディターから HoloLens に対し実行している場合は、システム キーボードは表示されません。
 
 ## System keyboard (システム キーボード) の呼び出し方
 
@@ -36,4 +36,8 @@ private void Update()
 
 ## System keyboard (システム キーボード) のサンプル
 
-システム キーボードを表示する簡単な例は、[`MixedRealityKeyboard.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/UX/MixedRealityKeyboard.cs) にて見ることができます。
+システム キーボードを表示する簡単な例は、`MixedRealityKeyboard.cs` (Assets/MRTK/SDK/Experimental/Features/UX/MixedRealityKeyboard.cs) にて見ることができます。
+
+## 関連項目
+
+- [Mixed Reality Keyboard Helper Classes](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md)
