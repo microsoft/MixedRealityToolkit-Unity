@@ -17,23 +17,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public TextMeshPro DebugText;
 
         [SerializeField]
+        [Tooltip("The joystick mesh that gets rotated when this control is interacted with.")]
         GameObject JoystickVisual = null;
 
         [SerializeField]
+        [Tooltip("The mesh + collider object that gets dragged and controls the joystick visual rotation.")]
         GameObject GrabberVisual = null;
 
         [SerializeField]
+        [Tooltip("Toggles on / off the GrabberVisual's mesh renderer because it can be dragged away from the joystick visual, it kind of breaks the illusion of pushing / pulling a lever.")]
         bool ShowGrabberVisual = true;
 
         [SerializeField]
+        [Tooltip("The speed at which the JoystickVisual and GrabberVisual move / rotate back to a neutral position.")]
         [Range(1, 20)]
         int ReboundSpeed = 5;
 
         [SerializeField]
+        [Tooltip("How sensitive the joystick reacts to dragging left / right. Customize this value to get the right feel for your scenario.")]
         [Range(50, 300)]
         int SensitivityLeftRight = 100;
 
         [SerializeField]
+        [Tooltip("How sensitive the joystick reacts to pushing / pulling. Customize this value to get the right feel for your scenario.")]
         [Range(50, 300)]
         int SensitivityForwardBack = 150;
 
@@ -41,14 +47,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public JoystickMode mode = JoystickMode.Move;
 
         [SerializeField]
+        [Tooltip("The distance multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
         [Range(0.01f, 1f)]
         float MultiplierMove = 0.03f;
 
         [SerializeField]
+        [Tooltip("The rotation multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
         [Range(0.1f, 3.0f)]
         float MultiplierRotate = 1.1f;
 
         [SerializeField]
+        [Tooltip("The scale multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
         [Range(0.001f, 0.1f)]
         float MultiplierScale = 0.01f;
 
