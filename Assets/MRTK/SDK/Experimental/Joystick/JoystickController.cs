@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 }
                 else if (mode == JoystickMode.Scale)
                 {
-                    //TODO: Clamp above zero
+                    // TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * MultiplierScale;
                     ObjectToManipulate.transform.localScale += newScale;
                     if (DebugText != null)
