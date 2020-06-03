@@ -15,27 +15,46 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
     /// </summary>
     public class RiggedHandVisualizer : MonoBehaviour, IMixedRealityControllerVisualizer, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
     {
-        public virtual Handedness Handedness { get; set; }
-
+        /// <inheritdoc/>
         public GameObject GameObjectProxy => gameObject;
 
+        /// <inheritdoc/>
         public IMixedRealityController Controller { get; set; }
 
+        /// <summary>
+        /// Wrist Transform
+        /// </summary>
         public Transform Wrist;
+        /// <summary>
+        /// Palm transform
+        /// </summary>
         public Transform Palm;
-        
-        // User configurable metacarpal transforms for each finger
+        /// <summary>
+        /// Thumb metacarpal transform  (thumb root)
+        /// </summary>
         public Transform ThumbMetacarpal;
+        /// <summary>
+        /// Index metacarpal transform (index finger root)
+        /// </summary>
         public Transform IndexMetacarpal;
+        /// <summary>
+        /// Middle metacarpal transform (middle finger root)
+        /// </summary>
         public Transform MiddleMetacarpal;
+        /// <summary>
+        /// Ring metacarpal transform (ring finger root)
+        /// </summary>
         public Transform RingMetacarpal;
+        /// <summary>
+        /// Pinky metacarpal transform (pinky finger root)
+        /// </summary>
         public Transform PinkyMetacarpal;
 
         [Tooltip("Hands are typically rigged in 3D packages with the palm transform near the wrist. Uncheck this if your model's palm transform is at the center of the palm similar to Leap API hands.")]
-        public bool modelPalmAtLeapWrist = true;
+        public bool ModelPalmAtLeapWrist = true;
 
         [Tooltip("Allows the mesh to be stretched to align with finger joint positions. Only set to true when mesh is not visible.")]
-        public bool deformPosition = true;
+        public bool DeformPosition = true;
 
         [Tooltip("Because bones only exist at their roots in model rigs, the length " +
           "of the last fingertip bone is lost when placing bones at positions in the " +
@@ -43,95 +62,131 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
           "This option scales the last bone along its X axis (length axis) to match " +
           "its bone length to the tracked bone length. This option only has an " +
           "effect if Deform Positions In Fingers is enabled.")]
-        public bool scaleLastFingerBone = true;
+        public bool ScaleLastFingerBone = true;
 
         [Tooltip("If non-zero, this vector and the modelPalmFacing vector " +
         "will be used to re-orient the Transform bones in the hand rig, to " +
         "compensate for bone axis discrepancies between Leap Bones and model " +
         "bones.")]
-        public Vector3 modelFingerPointing = new Vector3(0, 0, 0);
+        public Vector3 ModelFingerPointing = new Vector3(0, 0, 0);
 
         [Tooltip("If non-zero, this vector and the modelFingerPointing vector " +
           "will be used to re-orient the Transform bones in the hand rig, to " +
           "compensate for bone axis discrepancies between Leap Bones and model " +
           "bones.")]
-        public Vector3 modelPalmFacing = new Vector3(0, 0, 0);
+        public Vector3 ModelPalmFacing = new Vector3(0, 0, 0);
 
-        private Dictionary<TrackedHandJoint, float> FingerTipLengths = new Dictionary<TrackedHandJoint, float>();
+        /// <summary>
+        /// Precalculated values for LeapMotion testhand fingertip lengths
+        /// </summary>
+        private const float thumbFingerTipLength = 0.02167f;
+        private const float indexingerTipLength = 0.01582f;
+        private const float middleFingerTipLength = 0.0174f;
+        private const float ringFingerTipLength = 0.0173f;
+        private const float pinkyFingerTipLength = 0.01596f;
 
-        /// <summary> Rotation derived from the `modelFingerPointing` and
-        /// `modelPalmFacing` vectors in the RiggedHand inspector. </summary>
-        public Quaternion userBoneRotation
+        /// <summary>
+        /// Precalculated fingertip lengths used for scaling the fingertips of the skinnedmesh
+        /// to match with tracked hand fingertip size 
+        /// </summary>
+        private Dictionary<TrackedHandJoint, float> fingerTipLengths = new Dictionary<TrackedHandJoint, float>()
+        {
+            {TrackedHandJoint.ThumbTip, thumbFingerTipLength },
+            {TrackedHandJoint.IndexTip, indexingerTipLength },
+            {TrackedHandJoint.MiddleTip, middleFingerTipLength },
+            {TrackedHandJoint.RingTip, ringFingerTipLength },
+            {TrackedHandJoint.PinkyTip, pinkyFingerTipLength }
+        };       
+
+        /// <summary>
+        /// Rotation derived from the `modelFingerPointing` and
+        /// `modelPalmFacing` vectors in the RiggedHand inspector.
+        /// </summary>
+        private Quaternion userBoneRotation
         {
             get
             {
-                if (modelFingerPointing == Vector3.zero || modelPalmFacing == Vector3.zero)
+                if (ModelFingerPointing == Vector3.zero || ModelPalmFacing == Vector3.zero)
                 {
                     return Quaternion.identity;
                 }
-                return Quaternion.Inverse(Quaternion.LookRotation(modelFingerPointing, -modelPalmFacing));
+                return Quaternion.Inverse(Quaternion.LookRotation(ModelFingerPointing, -ModelPalmFacing));
             }
         }
 
-        public Quaternion Reorientation()
+        private Quaternion Reorientation()
         {
-            return Quaternion.Inverse(Quaternion.LookRotation(modelFingerPointing, -modelPalmFacing));
+            return Quaternion.Inverse(Quaternion.LookRotation(ModelFingerPointing, -ModelPalmFacing));
         }
 
         private Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
 
         private void Start()
         {
-            // Initialize dictionary with joint transforms
+            // Initialize joint dictionary with their corresponding joint transforms
             joints[TrackedHandJoint.Wrist] = Wrist;
             joints[TrackedHandJoint.Palm] = Palm;
 
+            // Thumb joints, first node is user assigned, note that there are only 4 joints in the thumb
             if (ThumbMetacarpal)
             {
                 joints[TrackedHandJoint.ThumbMetacarpalJoint] = ThumbMetacarpal;
-                joints[TrackedHandJoint.ThumbProximalJoint] = ThumbMetacarpal.GetChild(0);
-                joints[TrackedHandJoint.ThumbDistalJoint] = ThumbMetacarpal.GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.ThumbTip] = ThumbMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                if (ThumbMetacarpal)
+                {
+                    joints[TrackedHandJoint.ThumbProximalJoint] = ThumbMetacarpal.GetChild(0);
+                    joints[TrackedHandJoint.ThumbDistalJoint] = ThumbMetacarpal.GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.ThumbTip] = ThumbMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                }
             }
+            // Look up index finger joints below the index finger root joint
             if (IndexMetacarpal)
             {
                 joints[TrackedHandJoint.IndexMetacarpal] = IndexMetacarpal;
-                joints[TrackedHandJoint.IndexKnuckle] = IndexMetacarpal.GetChild(0);
-                joints[TrackedHandJoint.IndexMiddleJoint] = IndexMetacarpal.GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.IndexDistalJoint] = IndexMetacarpal.GetChild(0).GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.IndexTip] = IndexMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                if (IndexMetacarpal)
+                {
+                    joints[TrackedHandJoint.IndexKnuckle] = IndexMetacarpal.GetChild(0);
+                    joints[TrackedHandJoint.IndexMiddleJoint] = IndexMetacarpal.GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.IndexDistalJoint] = IndexMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.IndexTip] = IndexMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                }
             }
+            // Look up middle finger joints below the middle finger root joint
             if (MiddleMetacarpal)
             {
                 joints[TrackedHandJoint.MiddleMetacarpal] = MiddleMetacarpal;
-                joints[TrackedHandJoint.MiddleKnuckle] = MiddleMetacarpal.GetChild(0);
-                joints[TrackedHandJoint.MiddleMiddleJoint] = MiddleMetacarpal.GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.MiddleDistalJoint] = MiddleMetacarpal.GetChild(0).GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.MiddleTip] = MiddleMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                if (MiddleMetacarpal)
+                {
+                    joints[TrackedHandJoint.MiddleKnuckle] = MiddleMetacarpal.GetChild(0);
+                    joints[TrackedHandJoint.MiddleMiddleJoint] = MiddleMetacarpal.GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.MiddleDistalJoint] = MiddleMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.MiddleTip] = MiddleMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                }
             }
+            // Look up ring finger joints below the ring finger root joint
             if (RingMetacarpal)
             {
                 joints[TrackedHandJoint.RingMetacarpal] = RingMetacarpal;
-                joints[TrackedHandJoint.RingKnuckle] = RingMetacarpal.GetChild(0);
-                joints[TrackedHandJoint.RingMiddleJoint] = RingMetacarpal.GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.RingDistalJoint] = RingMetacarpal.GetChild(0).GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.RingTip] = RingMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                if (RingMetacarpal)
+                {
+                    joints[TrackedHandJoint.RingKnuckle] = RingMetacarpal.GetChild(0);
+                    joints[TrackedHandJoint.RingMiddleJoint] = RingMetacarpal.GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.RingDistalJoint] = RingMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.RingTip] = RingMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                }
             }
+            // Look up pinky joints below the pinky root joint
             if (PinkyMetacarpal)
             {
                 joints[TrackedHandJoint.PinkyMetacarpal] = PinkyMetacarpal;
-                joints[TrackedHandJoint.PinkyKnuckle] = PinkyMetacarpal.GetChild(0);
-                joints[TrackedHandJoint.PinkyMiddleJoint] = PinkyMetacarpal.GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.PinkyDistalJoint] = PinkyMetacarpal.GetChild(0).GetChild(0).GetChild(0);
-                joints[TrackedHandJoint.PinkyTip] = PinkyMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                if (PinkyMetacarpal)
+                {
+                    joints[TrackedHandJoint.PinkyKnuckle] = PinkyMetacarpal.GetChild(0);
+                    joints[TrackedHandJoint.PinkyMiddleJoint] = PinkyMetacarpal.GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.PinkyDistalJoint] = PinkyMetacarpal.GetChild(0).GetChild(0).GetChild(0);
+                    joints[TrackedHandJoint.PinkyTip] = PinkyMetacarpal.GetChild(0).GetChild(0).GetChild(0).GetChild(0);
+                }
             }
 
-            // Precalculated values for LeapMotion testhand
-            FingerTipLengths[TrackedHandJoint.ThumbTip] = 0.02167f;
-            FingerTipLengths[TrackedHandJoint.IndexTip] = 0.01582f;
-            FingerTipLengths[TrackedHandJoint.MiddleTip] = 0.0174f;
-            FingerTipLengths[TrackedHandJoint.RingTip] = 0.0173f;
-            FingerTipLengths[TrackedHandJoint.PinkyTip] = 0.01596f;
         }
 
         private void OnEnable()
@@ -145,9 +200,11 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
         }
-
+        
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
-
+        
+        /// <inheritdoc/>
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             if (Controller?.InputSource.SourceId == eventData.SourceId)
@@ -156,6 +213,7 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
             }
         }
 
+        /// <inheritdoc/>
         void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
             var inputSystem = CoreServices.InputSystem;
@@ -167,6 +225,7 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
             Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
             Transform jointTransform;
+            // Apply updated TrackedHandJoint pose data to the assigned transforms
             foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
             {
                 if (joints.TryGetValue(handJoint, out jointTransform))
@@ -175,7 +234,7 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
                     {
                         if (handJoint == TrackedHandJoint.Palm)
                         {
-                            if (modelPalmAtLeapWrist)
+                            if (ModelPalmAtLeapWrist)
                             {
                                 Palm.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
                             }
@@ -187,7 +246,7 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
                         }
                         else if (handJoint == TrackedHandJoint.Wrist)
                         {
-                            if (!modelPalmAtLeapWrist)
+                            if (!ModelPalmAtLeapWrist)
                             {
                                 Wrist.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
                             }
@@ -197,11 +256,11 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
                             // Finger joints
                             jointTransform.rotation = eventData.InputData[handJoint].Rotation * Reorientation();
 
-                            if (deformPosition)
+                            if (DeformPosition)
                             {
                                 jointTransform.position = eventData.InputData[handJoint].Position;
 
-                                if (scaleLastFingerBone &&
+                                if (ScaleLastFingerBone &&
                                     (handJoint == TrackedHandJoint.ThumbDistalJoint ||
                                     handJoint == TrackedHandJoint.IndexDistalJoint ||
                                     handJoint == TrackedHandJoint.MiddleDistalJoint ||
@@ -230,12 +289,12 @@ namespace Microsoft.MixedReality.Experimental.RiggedHandVisualizer
                 boneVec /= transform.lossyScale.x;
             }
             var newScale = jointTransform.transform.localScale;
-            var lengthComponentIdx = getLargestComponentIndex(modelFingerPointing);
-            newScale[lengthComponentIdx] = boneVec.magnitude / FingerTipLengths[fingerTipJoint];
+            var lengthComponentIdx = GetLargestComponentIndex(ModelFingerPointing);
+            newScale[lengthComponentIdx] = boneVec.magnitude / fingerTipLengths[fingerTipJoint];
             jointTransform.transform.localScale = newScale;
         }
 
-        private int getLargestComponentIndex(Vector3 pointingVector)
+        private int GetLargestComponentIndex(Vector3 pointingVector)
         {
             var largestValue = 0f;
             var largestIdx = 0;

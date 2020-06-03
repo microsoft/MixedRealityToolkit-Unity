@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 1979851749877808998}
   - component: {fileID: 8140969293924167725}
   m_Layer: 0
-  m_Name: hand_left
+  m_Name: RiggedHandLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,11 +134,11 @@ MonoBehaviour:
   MiddleMetacarpal: {fileID: 1979851749886791836}
   RingMetacarpal: {fileID: 1979851749886791858}
   PinkyMetacarpal: {fileID: 1979851749886791854}
-  modelPalmAtLeapWrist: 1
-  deformPosition: 1
-  scaleLastFingerBone: 1
-  modelFingerPointing: {x: -1, y: 0, z: 0}
-  modelPalmFacing: {x: 0, y: 1, z: 0}
+  ModelPalmAtLeapWrist: 1
+  DeformPosition: 1
+  ScaleLastFingerBone: 1
+  ModelFingerPointing: {x: -1, y: 0, z: 0}
+  ModelPalmFacing: {x: 0, y: 1, z: 0}
 --- !u!1 &1979851749887282344
 GameObject:
   m_ObjectHideFlags: 0
