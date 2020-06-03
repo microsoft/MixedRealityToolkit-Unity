@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         protected class PointerData
         {
-            public IMixedRealityPointer pointer;
+            public readonly IMixedRealityPointer pointer;
 
             public Vector3? lastMousePoint3d = null; // Last position of the pointer for the input in 3D.
             public PointerEventData.FramePressState nextPressState = PointerEventData.FramePressState.NotChanged;
@@ -305,8 +305,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
             int pointerId = (int)eventData.Pointer.PointerId;
-            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
-            pointerDataToUpdate[pointerId].nextPressState = PointerEventData.FramePressState.Released;
+
+            // OnPointerUp can be raised during an OnSourceLost. If the pointer has already been removed
+            // from the pointerDataToUpdate Dictionary and added to the pointerDataToRemove list, then
+            // that pointer's state update can be ignored.
+            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId) || IsPointerIdInRemovedList());
+            if (pointerDataToUpdate.TryGetValue(pointerId, out PointerData pointerData))
+            {
+                pointerData.nextPressState = PointerEventData.FramePressState.Released;
+            }
+
+            bool IsPointerIdInRemovedList()
+            {
+                for (int i = 0; i < pointerDataToRemove.Count; i++)
+                {
+                    if (pointerDataToRemove[i].pointer.PointerId == pointerId)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
