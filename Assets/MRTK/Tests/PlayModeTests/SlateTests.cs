@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return handLeft.Hide();
         }
 
-        // <summary>
+        /// <summary>
         /// Test zooming in using far and near interaction on a slate that is rotated 90 degrees around up vector.
         /// This test garantees that the z component of the hand or controller position is being considered on the zooming logic.
         /// </summary>
