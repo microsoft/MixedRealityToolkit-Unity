@@ -111,7 +111,7 @@ Hand menu has been adapted in many applications. One of the biggest issue we fou
 ![0416_HandMenu_04](https://user-images.githubusercontent.com/13754172/79508227-f9043280-7fed-11ea-995f-ac3cfe42fe65.gif)
 
 **Dialog (Experimental)**
-<br/><img src="Images/Dialog/MRTK_UX_Dialog_Main.png" width="450">
+<br/><img src="../Documentation/Images/Dialog/MRTK_UX_Dialog_Main.png" width="450">
 
 Dialog UI has been ported over from HoloToolkit with new HoloLens 2 shell-style design updates.
 
