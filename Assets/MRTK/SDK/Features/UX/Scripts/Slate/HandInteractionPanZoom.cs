@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -617,7 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;
 
-            if (magVertical != 0.0f && magHorizontal != 0.0f)
+            if (!Mathf.Approximately(0, magVertical) && !Mathf.Approximately(0, magHorizontal))
             {
                 // Get coord projection on uv coordinates then divide by length to get quad coord 0 to 1
                 uvCoord.x = Vector2.Dot(coord - upperLeft, upperRight - upperLeft) / (magHorizontal * magHorizontal);
@@ -644,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;
 
-            if (magVertical != 0.0f && magHorizontal != 0.0f)
+            if (!Mathf.Approximately(0, magVertical) && !Mathf.Approximately(0, magHorizontal))
             {
                 // Get point projection on vertices coordinates then divide by length to get quad coord 0 to 1
                 quadCoord.x = Vector3.Dot(point - upperLeft, upperRight - upperLeft) / (magHorizontal * magHorizontal);
@@ -763,7 +764,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void EndTouch(uint sourceId)
         {
-            if (handDataMap.ContainsKey(sourceId))
+                          if (handDataMap.ContainsKey(sourceId))
             {
                 handDataMap.Remove(sourceId);
                 RaisePanEnded(0);
@@ -864,7 +865,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
+                                     eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
         }
@@ -882,7 +883,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Unused Methods
 
-        public void OnSourceDetected(SourceStateEventData eventData) { }
+        public void OnSourceDetected(SourceStateEventData eventData) 
+        { 
+
+        }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 

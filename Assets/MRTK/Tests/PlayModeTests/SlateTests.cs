@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabTouchScroll()
         {
-            InstantiateFromPrefab(Vector3.forward, Quaternion.identity);
+            InstantiateFromPrefab();
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabRayScroll()
         {
-            InstantiateFromPrefab(Vector3.forward, Quaternion.identity);
+            InstantiateFromPrefab();
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabTouchZoom()
         {
-            InstantiateFromPrefab(Vector3.forward, Quaternion.identity);
+            InstantiateFromPrefab();
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(Vector3.zero);
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabGGVZoom()
         {
-            InstantiateFromPrefab(Vector3.forward, Quaternion.identity);
+            InstantiateFromPrefab();
 
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Test zooming in using far and near interaction on a slate that is rotated 90 degrees around up vector.
-        /// This test garantees that the z component of the hand or controller position is being considered on the zooming logic.
+        /// This test guarantees that the z component of the hand or controller position is being considered on the zooming logic.
         /// </summary>
         [UnityTest]
         public IEnumerator ZoomRotatedSlate()
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabGGVScroll()
         {
-            InstantiateFromPrefab(Vector3.forward, Quaternion.identity);
+            InstantiateFromPrefab();
             yield return RunGGVScrollTest(0.25f);
         }
 
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator InstantiateGGVScroll()
         {
-            InstantiateFromCode(Vector3.forward);
+            InstantiateFromCode();
             yield return RunGGVScrollTest(0.08f);
         }
 
@@ -242,11 +242,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return handRight.Hide();
         }
 
-        private void InstantiateFromCode(Vector3 pos)
+        private void InstantiateFromCode(Vector3? position = null, Quaternion? rotation = null)
         {
             panObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             panObject.EnsureComponent<BoxCollider>();
-            panObject.transform.position = pos;
+            panObject.transform.position = position != null ? (Vector3)position : Vector3.forward;
+            panObject.transform.rotation = rotation != null ? (Quaternion)rotation : Quaternion.identity;
             panZoom = panObject.AddComponent<HandInteractionPanZoom>();
             panObject.AddComponent<NearInteractionTouchable>();
 
@@ -255,13 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a slate from the default prefab at position and rotation
         /// </summary>
-        private void InstantiateFromPrefab(Vector3 position, Quaternion rotation)
+        private void InstantiateFromPrefab(Vector3? position = null, Quaternion? rotation = null)
         {
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));
             panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
             Assert.IsNotNull(panObject);
-            panObject.transform.position = position;
-            panObject.transform.rotation = rotation;
+            panObject.transform.position = position != null ? (Vector3)position : Vector3.forward;
+            panObject.transform.rotation = rotation != null ? (Quaternion)rotation : Quaternion.identity;
             panZoom = panObject.GetComponentInChildren<HandInteractionPanZoom>();
             Assert.IsNotNull(panZoom);
         }
