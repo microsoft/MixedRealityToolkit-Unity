@@ -764,7 +764,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void EndTouch(uint sourceId)
         {
-                          if (handDataMap.ContainsKey(sourceId))
+            if (handDataMap.ContainsKey(sourceId))
             {
                 handDataMap.Remove(sourceId);
                 RaisePanEnded(0);
@@ -865,7 +865,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-                                     eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
         }
@@ -883,10 +883,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Unused Methods
 
-        public void OnSourceDetected(SourceStateEventData eventData) 
-        { 
-
-        }
+        public void OnSourceDetected(SourceStateEventData eventData) { }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
