@@ -21668,7 +21668,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SlateTests.html",
-          "hash": "JWfu/hVQfsFyPlh/hrD4jw=="
+          "hash": "wSo/tbLcdaqwIrkOSKbRow=="
         }
       },
       "is_incremental": false,
@@ -22544,7 +22544,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.HandInteractionPanZoom.html",
-          "hash": "mYslQK35REJjSH6cwHa+sg=="
+          "hash": "ApvW6sro7QDHBX/YjkXglQ=="
         }
       },
       "is_incremental": false,
@@ -27943,6 +27943,12 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1619,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -27954,12 +27960,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1619,
           "skipped_file_count": 0
         }
       }
