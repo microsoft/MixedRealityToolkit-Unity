@@ -11,22 +11,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     public class ButtonConfigHelperMigrationHandler : IMigrationHandler
     {
+        /// <inheritdoc />
         public bool CanMigrate(GameObject gameObject)
         {
-#if UNITY_EDITOR
             ButtonConfigHelper bch = gameObject.GetComponent<ButtonConfigHelper>();
             return bch != null && bch.EditorCheckForCustomIcon();
-#else
-            return false;
-#endif
         }
 
+        /// <inheritdoc />
         public void Migrate(GameObject gameObject)
         {
-#if UNITY_EDITOR
             ButtonConfigHelper bch = gameObject.GetComponent<ButtonConfigHelper>();
             bch.EditorUpgradeCustomIcon();
-#endif
         }
     }
 }

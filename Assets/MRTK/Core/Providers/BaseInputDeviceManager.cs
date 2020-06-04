@@ -73,8 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
-        { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         #region Private members
 
@@ -117,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
+        private static readonly ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
         private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig
