@@ -9,4 +9,20 @@
 
 ### Breaking changes
 
+** Rest / Device Portal API**
+
+The `UseSSL` static property has been moved from `Rest` to `DevicePortal`.
+
+If you did this previously...
+
+```csharp
+Rest.UseSSL = true
+```
+
+Do this now...
+
+```csharp
+DevicePortal.UseSSL = true
+```
+
 ### Known issues
