@@ -141,7 +141,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Uses near interaction to scale the bounds control by directly grabbing corner
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleViaNearInteration()
+        public IEnumerator FlickeringBoundsTest()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            
+            boundsControl.gameObject.transform.position = new Vector3(0, 0, 1.386f);
+            boundsControl.gameObject.transform.rotation = Quaternion.Euler(0, 45.0f, 0);
+            
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(new Vector3(0, 0, 1));
+            
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            
+            // Check for a few loops that the hand is not flickering between states
+            int iterations = 15;
+            for (int i = 0; i < iterations; i++)
+            {
+                Assert.IsFalse(hand.GetPointer<SpherePointer>().IsNearObject);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteraction()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);

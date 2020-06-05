@@ -96,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             var contextInfo = afford.EnsureComponent<CursorContextInfo>();
             contextInfo.CurrentCursorAction = cursorType;
             contextInfo.ObjectCenter = parent;
+
+            afford.EnsureComponent<BoundsHandleVisual>();
         }
 
         /// <summary>

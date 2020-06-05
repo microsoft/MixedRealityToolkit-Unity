@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
@@ -166,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance);
+            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance, true);
             queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f);
         }
 
@@ -354,7 +355,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public float queryAngle;
 
-            
+            /// <summary>
+            /// Variable that controls ignoring handlers for this interaction
+            /// </summary>
+            public bool ignoreHandlersForQuery;
+
             /// <summary>
             /// The grabbable near the QueryRadius. 
             /// </summary>
@@ -367,13 +372,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="radius">Radius of the sphere </param>
             /// <param name="angle">Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried</param>
             /// <param name="minDistance">"Minimum required distance to be registered in the query"</param>
-            public SpherePointerQueryInfo(int bufferSize, float radius, float angle, float minDistance)
+            public SpherePointerQueryInfo(int bufferSize, float radius, float angle, float minDistance, bool ignoreHandlers = false)
             {
                 numColliders = 0;
                 queryBuffer = new Collider[bufferSize];
                 queryRadius = radius;
                 queryMinDistance = minDistance;
                 queryAngle = angle * 0.5f;
+                ignoreHandlersForQuery = ignoreHandlers;
             }
 
             private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
@@ -435,7 +441,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Check to ensure the object is beyond the minimum distance
                         bool pastMinDistance = relativeColliderPosition.sqrMagnitude >= queryMinDistance * queryMinDistance;
 
-                        if (!pastMinDistance || !inAngle)
+                        bool isBoundHandler = ignoreHandlersForQuery && grabbable != null && grabbable.GetComponent<BoundsHandleVisual>() != null;
+
+                        if (!pastMinDistance || !inAngle || isBoundHandler)
                         {
                             grabbable = null;
                             continue;
@@ -443,6 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         
                         if (grabbable != null)
                         {
+                            Debug.Log(grabbable);
                             return true;
                         }
                     }
