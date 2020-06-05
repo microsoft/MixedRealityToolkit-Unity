@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 int index = 0;
                 Action<KeyType, int> AddEnumValue = (bindingType, code) =>
                 {
-                    var kb = new KeyBinding() { bindingType=bindingType, code=code };
+                    var kb = new KeyBinding() { bindingType = bindingType, code = code };
                     names.Add(kb.ToString());
                     EnumToKeyBindingMap[index] = Tuple.Create(bindingType, code);
                     KeyBindingToEnumMap[Tuple.Create(bindingType, code)] = index;

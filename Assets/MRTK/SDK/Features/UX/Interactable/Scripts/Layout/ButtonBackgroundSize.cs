@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             BasePixelScale = scale;
         }
-        
+
         /// <summary>
         /// Set the size
         /// </summary>

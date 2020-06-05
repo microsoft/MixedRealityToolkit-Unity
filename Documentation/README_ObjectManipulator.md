@@ -8,13 +8,13 @@ The *ObjectManipulator* script makes an object movable, scalable, and rotatable 
 
 ## How to use the object manipulator
 
-To use the object manipulator, first add the `ObjectManipulator` script component to a GameObject.Mak e sure to also add a collider to the object, matching its grabbable bounds.
+To use the object manipulator, first add the `ObjectManipulator` script component to a GameObject. Make sure to also add a collider to the object, matching its grabbable bounds.
 
 To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
 
 Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
 
-As well as this, manipulation can be constrained by adding [manipulation constraint components](#transform-constraints) to the object. These are special components that work with manipulation and change the manipulation behaviour in some way. 
+As well as this, manipulation can be constrained by adding [manipulation constraint components](#transform-constraints) to the object. These are special components that work with manipulation and change the manipulation behaviour in some way.
 
 ![Manipulation Handler](../Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Howto.png)
 
@@ -49,6 +49,7 @@ Specifies how the object will behave when it is being grabbed with one hand near
 * *Rotate about grab point*: Rotate object with the hand about the grab point between the thumb and index finger. It should feel as if the object is being held by the hand.
 
 #### One hand rotation mode far
+
 Specifies how the object will behave when it is being grabbed with one hand at distance. These options only work for articulated hands.
 
 * *Rotate about object center*: Rotate object using rotation of the hand, but about the object center point. Useful for inspecting at a distance without the object center moving as the object rotates.
@@ -74,7 +75,7 @@ This button allows a constraint component to be added directly from the object m
 
 #### Go to component
 
-All constraints found on the object wil be listed here with a *Go to component* button. This button will cause the inspector to scroll to the selected constraint component so that it can be configured. 
+All constraints found on the object wil be listed here with a *Go to component* button. This button will cause the inspector to scroll to the selected constraint component so that it can be configured.
 
 ### Physics
 
@@ -88,15 +89,19 @@ Specify which physical properties a manipulated object should keep upon release.
 ### Smoothing
 
 #### Smoothing active
+
 Specifies whether smoothing is active.
 
 #### Move lerp time
+
 Amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.
 
 #### Rotate lerp time
+
 Amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
 
 #### Scale lerp time
+
 Amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.
 
 ### Manipulation events
@@ -244,7 +249,9 @@ Physics behaviour can be enabled by adding a rigidbody component to the same obj
 When a rigidbody is added, collisions should work correctly.
 
 ### Without rigidbody
+
 <img src="../Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_NoRigidbody.gif" width="500">
 
 ### With rigidbody
+
 <img src="../Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_Rigidbody.gif" width="500">

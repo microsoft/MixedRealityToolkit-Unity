@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private void CollectItems()
-        { 
+        {
             Items.Clear();
 
             foreach (Transform childTransform in transform)

@@ -19,7 +19,7 @@
   <Import Project="Sdk.props" Sdk="Microsoft.Build.NoTargets" Version="1.0.85" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.MixedReality.DotNetWinRT" Version="0.5.1045" />
+    <PackageReference Include="Microsoft.Windows.MixedReality.DotNetWinRT" Version="0.5.1049" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.Build.NoTargets" Version="1.0.85" />

@@ -186,11 +186,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
                 return false;
             }
@@ -604,9 +600,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public static bool ConfirmInitialized()
         {
-            // ReSharper disable once UnusedVariable
-            // Assigning the Instance to access is used Implicitly.
-            MixedRealityToolkit access = Instance;
+            // Calling the Instance property performs important initialization work.
+            _ = Instance;
             return IsInitialized;
         }
 
@@ -681,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static void RegisterInstance(MixedRealityToolkit toolkitInstance, bool setAsActiveInstance = false)
         {
-            if (MixedRealityToolkit.isApplicationQuitting)
+            if (MixedRealityToolkit.isApplicationQuitting || toolkitInstance == null)
             {   // Don't register instances while application is quitting
                 return;
             }
@@ -1459,12 +1454,19 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        private void OnValidate()
+        {
+            EditorApplication.delayCall += DelayOnValidate; // This is a workaround for a known unity issue when calling refresh assetdatabase from inside a on validate scope.
+        }
+
         /// <summary>
         /// Used to register newly created instances in edit mode.
         /// Initially handled by using ExecuteAlways, but this attribute causes the instance to be destroyed as we enter play mode, which is disruptive to services.
         /// </summary>
-        private void OnValidate()
+        private void DelayOnValidate()
         {
+            EditorApplication.delayCall -= DelayOnValidate;
+
             // This check is only necessary in edit mode. This can also get called during player builds as well,
             // and shouldn't be run during that time.
             if (EditorApplication.isPlayingOrWillChangePlaymode ||

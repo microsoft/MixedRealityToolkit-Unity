@@ -6,7 +6,7 @@ MRTK Standard shading system utilizes a single, flexible shader that can achieve
 
 ## Example scenes
 
-You can find the shader material examples in the **MaterialGallery** scene under 
+You can find the shader material examples in the **MaterialGallery** scene under
 `MRTK/Examples/Demos/StandardShader/Scenes/`. All materials in this scene are using the MRTK/Standard shader.
 
 ![Material Gallery](../Documentation/Images/MRTKStandardShader/MRTK_MaterialGallery.jpg)
@@ -77,11 +77,11 @@ For static lighting, the shader will respect lightmaps built by Unity's [Lightma
 
 ### Hover light
 
-* See [Hover Light](/Rendering/HoverLight.md)
+* See [Hover Light](Rendering/HoverLight.md)
 
 ### Proximity light
 
-* See [Proximity Light](/Rendering/ProximityLight.md)
+* See [Proximity Light](Rendering/ProximityLight.md)
 
 ## Lightweight Scriptable Render Pipeline support
 
@@ -132,7 +132,7 @@ Below are extra details on a handful of feature details available with the MRTK/
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-* See [Clipping Primitive](/Rendering/ClippingPrimitive.md)
+* See [Clipping Primitive](Rendering/ClippingPrimitive.md)
 
 ### Mesh outlines
 
@@ -196,6 +196,6 @@ Per pixel clipping textures, local edge based anti aliasing, and normal map scal
 ## See also
 
 - [Interactable](README_Interactable.md)
-- [Hover Light](/Rendering/HoverLight.md)
-- [Proximity Light](/Rendering/ProximityLight.md)
-- [Clipping Primitive](/Rendering/ClippingPrimitive.md)
+- [Hover Light](Rendering/HoverLight.md)
+- [Proximity Light](Rendering/ProximityLight.md)
+- [Clipping Primitive](Rendering/ClippingPrimitive.md)

@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
         public static Vector3 CylindricalMapping(Vector3 source, float radius)
         {
-            float circ  = 2f * Mathf.PI * radius;
+            float circ = 2f * Mathf.PI * radius;
 
             float xAngle = (source.x / circ) * 360f;
 

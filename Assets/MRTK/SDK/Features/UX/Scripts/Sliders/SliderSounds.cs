@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private members
         private PinchSlider slider;
-        
+
         // Play sound when passing through slider notches
         private float accumulatedDeltaSliderValue = 0;
         private float lastSoundPlayTime;

@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="docURL">documentation URL to open on button click</param>
         /// <returns>true if button clicked, false otherwise</returns>
-        public static bool RenderDocumentationButton(string docURL)
+        public static bool RenderDocumentationButton(string docURL, float width = DocLinkWidth)
         {
             if (!string.IsNullOrEmpty(docURL))
             {
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // The documentation button should always be enabled.
                 using (new GUIEnabledWrapper())
                 {
-                    if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                    if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(width)))
                     {
                         Application.OpenURL(docURL);
                         return true;
@@ -506,15 +506,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return show;
         }
 
-    /// <summary>
-    /// Draws a popup UI with PropertyField type features.
-    /// Displays prefab pending updates
-    /// </summary>
-    /// <param name="prop">serialized property corresponding to Enum</param>
-    /// <param name="label">label for property</param>
-    /// <param name="propValue">Current enum value for property</param>
-    /// <returns>New enum value after draw</returns>
-    public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
             return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
         }

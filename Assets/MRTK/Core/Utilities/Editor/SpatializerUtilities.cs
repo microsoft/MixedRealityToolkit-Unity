@@ -29,17 +29,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <returns>
         /// True if the selected spatializer is installed and no changes have been made to the collection of installed spatializers.
-        /// False if there is no selected spatializer, the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
+        /// False if the selected spatializer is no longer installed or the collection of installed spatializers has been changed.
         /// </returns>
         public static bool CheckSettings()
         {
+            // Check to see if the count of installed spatializers has changed
+            if (!CheckSpatializerCount())
+            {
+                // A spatializer has been added or removed.
+                return false;
+            }
+
             string spatializerName = CurrentSpatializer;
 
             // Check to see if an audio spatializer is configured.
             if (string.IsNullOrWhiteSpace(spatializerName))
             {
-                // A spatializer has not been configured.
-                return false;
+                // The user chose to not initialize a spatializer so we are set correctly
+                return true;
             }
 
             string[] installedSpatializers = InstalledSpatializers;
@@ -51,14 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            // Next, check to see if the count of installed spatializers has changed
-            if (!CheckSpatializerCount())
-            {
-                // A spatializer has been added or removed.
-                return false;
-            }
-
-            // A spatializer is correctly confiugured.
+            // A spatializer is correctly configured.
             return true;
         }
 
@@ -67,7 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SaveSettings(string spatializer)
         {
-            if (!InstalledSpatializers.Contains(spatializer))
+            if (string.IsNullOrWhiteSpace(spatializer))
+            {
+                Debug.LogWarning("No spatializer was specified. The application will not support Spatial Sound.");
+            }
+            else if (!InstalledSpatializers.Contains(spatializer))
             {
                 Debug.LogError($"{spatializer} is not an installed spatializer.");
                 return;

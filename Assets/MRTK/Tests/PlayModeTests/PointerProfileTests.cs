@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string eyeTrackingConfigurationProfileGuid = "6615cacb3eaaa044f99b917186093aeb";
 
         private static readonly string eyeTrackingConfigurationProfilePath = AssetDatabase.GUIDToAssetPath(eyeTrackingConfigurationProfileGuid);
-        
+
         [SetUp]
         public void Setup()
         {
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.TearDown();
         }
-        
+
         // <summary>
         /// Verifies if eye tracking configuration is correctly applied at gaze provider initialization.
         /// </summary>
@@ -43,6 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.ResetConfiguration(profile);
 
             Assert.IsTrue(eyeGazeProvider.IsEyeTrackingEnabled, "Use eye tracking should be set to true");
-        }       
+        }
     }
 }

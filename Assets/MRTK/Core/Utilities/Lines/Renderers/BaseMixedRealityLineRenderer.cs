@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region Gizmos
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         protected virtual void OnDrawGizmos()
         {
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        #endif
+#endif
         #endregion
     }
 }

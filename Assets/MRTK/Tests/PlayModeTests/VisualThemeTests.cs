@@ -307,12 +307,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
-                (host, theme) => 
+                (host, theme) =>
                 {
                     Assert.AreEqual(Vector3.one, host.transform.localScale);
                     Assert.AreEqual(Vector3.zero, host.transform.position);
                 },
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state0, theme.Host.transform.localScale);
                     Assert.AreEqual(state0Offset, theme.Host.transform.position);
@@ -376,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return TestTheme<InteractableColorChildrenTheme, AudioSource>(parent,
                 defaultStateValues,
-                (host, theme) => 
+                (host, theme) =>
                 {
                     foreach (Transform child in host.transform)
                     {
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableStringTheme, Text>(defaultStateValues,
-                (host,theme) => { Assert.AreEqual(string.Empty, host.GetComponent<Text>().text); },
+                (host, theme) => { Assert.AreEqual(string.Empty, host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<Text>().text); });
 

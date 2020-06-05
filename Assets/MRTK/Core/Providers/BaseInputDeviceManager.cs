@@ -73,8 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
-        { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         #region Private members
 
@@ -117,10 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
+        private static readonly ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion
@@ -161,8 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
             foreach (var pointer in activePointersToConfig.Keys)
             {
-                var pointerComponent = pointer as MonoBehaviour;
-                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                if (pointer.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                 {
                     GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                 }
@@ -203,8 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             while (pointerCache.Count > 0)
                             {
                                 var p = pointerCache.Pop();
-                                var pointerComponent = p as MonoBehaviour;
-                                if (!UnityObjectExtensions.IsNull(pointerComponent))
+                                if (p.TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                                 {
                                     pointerComponent.gameObject.SetActive(true);
 
@@ -218,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (requestedPointer == null)
                         {
                             // We couldn't obtain a pointer from our cache, resort to creating a new one
-                            requestedPointer = CreatePointer(in option);
+                            requestedPointer = CreatePointer(ref option);
                         }
 
                         if (requestedPointer != null)
@@ -253,8 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     for (int i = 0; i < pointers.Length; i++)
                     {
                         var pointer = pointers[i];
-                        var pointerComponent = pointer as MonoBehaviour;
-                        if (!UnityObjectExtensions.IsNull(pointerComponent))
+                        if (pointers[i].TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                         {
                             // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
                             // At least if this is a controller we know about and we expect it to be destroyed, skip
@@ -295,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// PointerOption is passed by ref to reduce copy overhead of struct
         /// </remarks>
-        private IMixedRealityPointer CreatePointer(in PointerOption option)
+        private IMixedRealityPointer CreatePointer(ref PointerOption option)
         {
             using (CreatePointerPerfMarker.Auto())
             {
@@ -329,10 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var enumerator = activePointersToConfig.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var pointer = enumerator.Current.Key as MonoBehaviour;
-                    if (UnityObjectExtensions.IsNull(pointer))
+                    var pointer = enumerator.Current.Key;
+                    if (pointer.IsNull())
                     {
-                        removal.Add(enumerator.Current.Key);
+                        removal.Add(pointer);
                     }
                 }
 
@@ -352,8 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
-                    var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    if (pointerConfigurations[i].cache.Pop().TryGetMonoBehaviour(out MonoBehaviour pointerComponent))
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }

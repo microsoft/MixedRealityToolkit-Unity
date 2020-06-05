@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
     /// Tests for edit mode behavior of bounds control
     /// </summary>
     public class BoundsControlTests
-    {       
+    {
         [Test]
         /// <summary>
         /// Tests configuring every property of bounds control in edit mode
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             scaleConfig.HandleMaterial = testMaterial;
             scaleConfig.HandleGrabbedMaterial = testMaterial;
             scaleConfig.HandlePrefab = testCube;
-            scaleConfig.HandleSize = 0.05f ;
+            scaleConfig.HandleSize = 0.05f;
             scaleConfig.ColliderPadding = Vector3.one;
             scaleConfig.DrawTetherWhenManipulating = false;
             scaleConfig.HandlesIgnoreCollider = collider;

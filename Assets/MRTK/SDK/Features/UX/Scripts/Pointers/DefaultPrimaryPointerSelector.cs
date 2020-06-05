@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) {}
+        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         #endregion IMixedRealityPointerHandler
 

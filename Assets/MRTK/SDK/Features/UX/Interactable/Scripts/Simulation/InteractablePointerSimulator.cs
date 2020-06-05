@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// A way to test button state feedback while in the editor
     /// </summary>
-    
+
     [AddComponentMenu("Scripts/MRTK/SDK/InteractablePointerSimulator")]
     public class InteractablePointerSimulator : MonoBehaviour
     {

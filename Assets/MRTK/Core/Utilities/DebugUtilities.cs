@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             DrawPoint(point, Quaternion.identity, color, size);
         }
-        
+
         /// <summary>
         /// Draws a point with a rotation in the Scene window.
         /// </summary>

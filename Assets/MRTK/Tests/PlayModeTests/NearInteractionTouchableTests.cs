@@ -190,14 +190,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return testHand.MoveTo(backPosition);              
+                yield return testHand.MoveTo(backPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 1);
                 int dragEventCount = catcher.DragEventCount;
 
                 // No touch when moving at behind the plane
-                yield return testHand.MoveTo(rightPosition);              
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving behind plane");
@@ -247,12 +247,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return testHand.MoveTo(backPosition);              
+                yield return testHand.MoveTo(backPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
                 // No touch when moving at behind the plane
-                yield return testHand.MoveTo(rightPosition);              
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
-            
+
             yield return new WaitForFixedUpdate();
             yield return null;
 

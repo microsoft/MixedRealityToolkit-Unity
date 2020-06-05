@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     // todo: remove this.... it requires customization to add new device types
-    
+
     /// <summary>
     /// The SDKType lists the XR SDKs that are supported by the Mixed Reality Toolkit.
     /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)

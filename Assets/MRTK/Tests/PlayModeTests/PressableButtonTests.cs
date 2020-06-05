@@ -566,8 +566,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(AreApproximatelyEqual(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled, tolerance), "Max push distance plane did not scale correctly");
             Assert.IsTrue(AreApproximatelyEqual(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled, tolerance), "Press distance plane did not scale correctly");
             Assert.IsTrue(AreApproximatelyEqual(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled, tolerance), "Release distance plane did not scale correctly");
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a chance to actually destroy the object
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestParentZeroScale([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
+        {
+            // instantiate scene and button
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            PressableButton button = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(button);
+
+            // check default value -> default must be using local space in order for the button to scale and function correctly
+            Assert.IsTrue(button.DistanceSpaceMode == PressableButton.SpaceMode.Local);
+
+            // make sure there's no scale on our button and non-zero to start push distance
+            testButton.transform.localScale = Vector3.one;
+            button.StartPushDistance = 0.00003f;
+
+            // Create an empty GameObject for our parent.
+            GameObject emptyParent = new GameObject();
+            emptyParent.transform.position = testButton.transform.position;
+            // This should not cause any NaN errors, as per resolution to #7874
+            emptyParent.transform.localScale = Vector3.zero; 
+            // Parent our button to the empty object.
+            testButton.transform.parent = emptyParent.transform;
+            yield return null;
+
+            // Scale up the parent. Should not throw NaN exceptions.
+            emptyParent.transform.localScale = Vector3.one;
+            yield return null;
 
             Object.Destroy(testButton);
+            Object.Destroy(emptyParent);
             // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }

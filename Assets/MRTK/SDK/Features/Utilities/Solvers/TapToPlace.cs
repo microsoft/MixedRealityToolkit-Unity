@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public float DefaultPlacementDistance
         {
             get => defaultPlacementDistance;
-            set => defaultPlacementDistance = value;    
+            set => defaultPlacementDistance = value;
         }
 
         [SerializeField]
@@ -203,12 +203,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (AutoStart)
             {
-                StartPlacement();  
+                StartPlacement();
             }
             else
             {
                 SolverHandler.UpdateSolvers = false;
-            } 
+            }
         }
 
         private void OnDisable()
@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             CurrentRay.UpdateRayStep(ref origin, ref endpoint);
 
             // Check if the current ray hits a magnetic surface
-            DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);  
+            DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (DidHitSurface)
             {
                 // Take the current hit point and add an offset relative to the surface to avoid half of the object in the surface
-                GoalPosition = CurrentHit.point;  
+                GoalPosition = CurrentHit.point;
                 AddOffset(CurrentHit.normal * SurfaceNormalOffset);
 
 #if UNITY_EDITOR
@@ -326,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             Vector3 direction = CurrentRay.Direction;
             Vector3 surfaceNormal = CurrentHit.normal;
-            
+
             if (KeepOrientationVertical)
             {
                 direction.y = 0;
@@ -338,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 GoalRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
             }
-            else 
+            else
             {
                 GoalRotation = Quaternion.LookRotation(direction, Vector3.up);
             }

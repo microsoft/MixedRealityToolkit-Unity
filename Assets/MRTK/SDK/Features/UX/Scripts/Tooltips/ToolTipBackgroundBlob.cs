@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Transform Targets
 
-                /// <summary>
+        /// <summary>
         /// Determines whether background of Tooltip is visible.
         /// </summary>
         public bool IsVisible

@@ -1,6 +1,6 @@
-# Getting started with Holographic Remoting
+# Holographic Remoting
 
-Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi connection. This feature can significantly increase developer productivity when developing mixed reality applications.
+Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi or USB cable connection. This feature can significantly increase developer productivity when developing mixed reality applications.
 
 ## Initial setup
 
@@ -23,15 +23,32 @@ configure the project using the following steps.
 1. Ensure that **Enable MSBuild for Unity** is selected
 1. Click **Apply**
 
+When using **Unity 2019.3** and later the **Enable MSBuild for Unity** is not available. please follow the below procedures to enable holographic remoting.
+
+1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
+1. Set the target platform in **File > Build Settings** to **Universal Windows Platform**
+1. Click **Apply**
+1. Open **Window > Package Manager**
+    - Ensure that the **Windows XR Plugin** is not installed if the project isn't using [XR SDK](../GettingStartedWithMRTKAndXRSDK.md), as the legacy **Windows Mixed Reality** package will not function alongside it
+1. Open **Edit > Project Settings > Player**
+
+    ![Windows Mixed Reality SDK](../Images/Tools/Remoting/WindowsMixedRealitySDK.png)
+
+1. Ensure that **Virtual Reality Supported** is selected and that **Windows Mixed Reality** is added to the **Virtual Reality SDKs**
+
+To enable tracking of hand joints and eye tracking, follow the steps in the **Debugging HoloLens 2 remoting via Unity package import** and related sections.
+
 ### Debugging HoloLens 2 remoting via Unity package import
 
 If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are a few common points of potential issues. They're listed below in the order they should be checked.
+
+These issues are particularly relevant when running on **Unity 2019.3** or later.
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
 > [!Note]
 > There is a known issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. To avoid this issue, the MRTK does not support MSBuild for Unity on Unity 2019.3.
-> 
+>
 > To acquire the required NuGet package when running on Unity 2019.3, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
 
 The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
@@ -102,7 +119,7 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 1. (Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
-## Connecting to the HoloLens
+## Connecting to the HoloLens with Wi-Fi
 
 Once the project has been configured, a connection can be established to the HoloLens.
 
@@ -120,7 +137,7 @@ Once the project has been configured, a connection can be established to the Hol
 
     ![Select Device Version](../Images/Tools/Remoting/SelectDeviceVersion.png)
 
-1. Using the IP Address displayed by the Holographic Remoting application, set the **Remote Machine** field.
+1. Using the IP Address displayed by the Holographic Remoting Player application, set the **Remote Machine** field.
 
     ![Enter IP Address](../Images/Tools/Remoting/EnterIPAddress.png)
 
@@ -128,6 +145,10 @@ Once the project has been configured, a connection can be established to the Hol
 
 > [!NOTE]
 > If you cannot connect, make sure your HoloLens 2 is not plugged in to your PC and restart Unity.
+
+## Connecting to the HoloLens with USB cable
+
+USB cable connection gives better rendering quality and stability. To use USB cable connection, disconnect from the HoloLens from Wi-Fi in HoloLens's Settings and launch Holographic Remoting Player app. It will display an IP address that starts with 169. Use this IP address in Unity's Holographic Emulation setting to connect. Once the IP address for USB cable has been identified, it is safe to connect the HoloLens to Wi-Fi again. 
 
 ## Starting a remoting session
 

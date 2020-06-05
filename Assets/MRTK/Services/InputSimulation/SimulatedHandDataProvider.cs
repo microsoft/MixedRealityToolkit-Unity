@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.XR;
 
 /// <summary>
 /// Provides per-frame data access to simulated hand data
@@ -88,8 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 ViewportPosition.x += mouseDelta.viewportDelta.x;
-				ViewportPosition.y += mouseDelta.viewportDelta.y;
-				viewportPositionZTarget += mouseDelta.viewportDelta.z;
+                ViewportPosition.y += mouseDelta.viewportDelta.y;
+                viewportPositionZTarget += mouseDelta.viewportDelta.z;
             }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
@@ -182,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
-        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight;
+        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight && !XRDevice.isPresent;
         /// <summary>
         /// Left hand is controlled by user input.
         /// </summary>
@@ -307,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     isSimulatingRight = false;
                 }
-                if(isSimulatingGaze)
+                if (isSimulatingGaze)
                     lastSimulationGaze = time;
             }
 

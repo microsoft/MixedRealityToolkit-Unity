@@ -432,9 +432,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     AssetDatabase.CreateFolder("Assets", DefaultGeneratedFolderName);
                 }
-                
+
                 AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
+
+                // Setting the default folders is necessary after the asset database refresh
+                // to ensure that the extension service creator's consumers will not need
+                // to manually set the location in a separate step.
+                SetAllFolders(ExtensionsFolder);
             }
 
             return errors.Count == 0;
@@ -458,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 errors.Add("Name must end with 'Service' suffix.");
             }
-            
+
             if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
             {
                 errors.Add("Name must not contain illegal characters.");
@@ -537,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Start the creation process for all revelant extension service files based on current creator property settings
+        /// Start the creation process for all relevant extension service files based on current creator property settings
         /// </summary>
         public async Task BeginAssetCreationProcess()
         {

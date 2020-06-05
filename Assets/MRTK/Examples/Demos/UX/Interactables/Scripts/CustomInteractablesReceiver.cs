@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     outputString = statusString.Replace("%state%", lastState.Name);
 
-                    if(showClicked != null)
+                    if (showClicked != null)
                     {
                         outputString += "\n" + clickString + "(" + clickCount + ")";
                     }
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.OnClick(state, source);
             if (Host != null)
             {
-                if(showClicked != null)
+                if (showClicked != null)
                 {
                     Host.StopCoroutine(showClicked);
                     showClicked = null;
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.OnVoiceCommand(state, source, command, index, length);
             lastVoiceCommand = command;
-            
+
             if (Host != null)
             {
                 if (showVoice != null)

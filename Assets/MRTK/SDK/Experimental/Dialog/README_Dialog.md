@@ -1,11 +1,11 @@
 # Dialog
-![](/Documentation/Images/Dialog/MRTK_UX_Dialog_Main.png)
+![Dialog](../../../../../Documentation/Images/Dialog/MRTK_UX_Dialog_Main.png)
 
 Dialog controls are UI overlays that provide contextual app information. They often request some kind of action from the user. Use dialogs to notify users of important information or to request confirmation or additional info before an action can be completed. 
 
 ## Example scene
 You can find examples in the **DialogExample** scene under:
-[MRTK/Examples/Experimental/Dialog](/Assets/MRTK/Examples/Experimental/Dialog/)
+[MRTK/Examples/Experimental/Dialog](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Experimental/Dialog)
 
 ## How to use Dialog control
 MRTK provides three Dialog prefabs: 

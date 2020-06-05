@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                     CheckFieldForKeywords(property, config, result);
                 }
             }
-           
+
             if (result.Fields.Count > 0)
             {
                 result.Fields.Sort(delegate (FieldSearchResult r1, FieldSearchResult r2)
@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             return isProfileField;
         }
 
-        private static IEnumerable<SerializedProperty> GatherProperties (UnityEngine.Object profile)
+        private static IEnumerable<SerializedProperty> GatherProperties(UnityEngine.Object profile)
         {
             List<SerializedProperty> properties = new List<SerializedProperty>();
             SerializedProperty iterator = new SerializedObject(profile).GetIterator();
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                             break;
 
                         case SerializedPropertyType.String:
-                            if(!string.IsNullOrEmpty(property.stringValue) && property.stringValue.ToLower().Contains(keyword))
+                            if (!string.IsNullOrEmpty(property.stringValue) && property.stringValue.ToLower().Contains(keyword))
                             {
                                 keywordMatch = true;
                                 numContentMatches++;

@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
                 }
             }
         }
-            
+
         private static void TestVector2Internal(bool invertXAxis, bool invertYAxis, Vector2 vectorValue)
         {
             string msg = string.Format("invertXAxis: {0}, invertYAxis: {1}, vectorValue: {2}", invertXAxis, invertYAxis, vectorValue);

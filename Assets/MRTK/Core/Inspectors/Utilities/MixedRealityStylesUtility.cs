@@ -37,22 +37,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
           };
 
         /// <summary>
-        /// Default style for large button
+        /// Default style for controller mapping buttons
         /// </summary>
         public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("LargeButton")
         {
             imagePosition = ImagePosition.ImageAbove,
-                    fontStyle = FontStyle.Bold,
-                    stretchHeight = true,
-                    stretchWidth = true,
-                    wordWrap = true,
-                    fontSize = 10,
+            fixedHeight = 128,
+            fontStyle = FontStyle.Bold,
+            stretchHeight = true,
+            stretchWidth = true,
+            wordWrap = true,
+            fontSize = 10,
         };
 
         /// <summary>
         /// Default style for bold large font size title
         /// </summary>
-        public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle()
+        public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle(EditorStyles.largeLabel)
         {
             fontSize = InspectorUIUtility.TitleFontSize,
             fontStyle = FontStyle.Bold,

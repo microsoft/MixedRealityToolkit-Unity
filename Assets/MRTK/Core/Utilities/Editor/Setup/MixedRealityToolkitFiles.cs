@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
-        public static string GetAssetDatabasePath(string absolutePath) 
+        public static string GetAssetDatabasePath(string absolutePath)
             // Use Path.GetFullPath to ensure proper Path.DirectorySeparatorChar is used depending on our editor platform
             => Path.GetFullPath(absolutePath)?.Replace(Path.GetFullPath(Application.dataPath), "Assets");
 

@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 SetIndicator(NavigationIndicator, $"Navigation: started {Vector3.zero}", NavigationMaterial, Vector3.zero);
                 ShowRails(Vector3.zero);
             }
-            
+
             SetIndicator(SelectIndicator, "Select:", DefaultMaterial);
         }
 

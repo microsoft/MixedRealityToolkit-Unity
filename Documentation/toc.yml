@@ -13,6 +13,8 @@
     href: BuildAndDeploy.md
   - name: NuGet Packages
     href: MRTKNuGetPackage.md
+  - name: MRTK configuration dialog
+    href: MRTK_Configuration_Dialog.md
   - name: Getting started with MRTK and XR SDK
     href: GettingStartedWithMRTKAndXRSDK.md
   - name: Performance
@@ -206,6 +208,8 @@
         href: Tools/ControllerMappingTool.md 
   - name: UX Building Blocks
     items:
+    - name: Toolbox Window
+      href: README_Toolbox.md
     - name: Button
       href: README_Button.md
     - name: Bounding Box
@@ -233,6 +237,8 @@
       href: README_Sliders.md
     - name: Hand Menu
       href: README_HandMenu.md
+    - name: Near Menu
+      href: README_NearMenu.md
     - name: App Bar
       href: README_AppBar.md
     - name: Fingertip Visualization

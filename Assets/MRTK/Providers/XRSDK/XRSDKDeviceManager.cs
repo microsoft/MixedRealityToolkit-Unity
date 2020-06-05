@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     return;
                 }
 
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, inputDevices);
+                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking, inputDevices);
                 foreach (InputDevice device in inputDevices)
                 {
                     if (device.isValid)
@@ -137,13 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     controllingHand = Handedness.None;
                 }
 
-                var currentControllerType = GetCurrentControllerType(inputDevice);
+                SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
                 Type controllerType = GetControllerType(currentControllerType);
                 InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
                 IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-                IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
                 GenericXRSDKController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
 
                 if (detectedController == null || !detectedController.Enabled)

@@ -729,9 +729,9 @@ namespace Microsoft.MixedReality.Toolkit
             var x = bounds.extents.x;
             var y = bounds.extents.y;
             var z = bounds.extents.z;
-            var a = new Vector3(-x,  y, -z);
-            var b = new Vector3( x, -y, -z);
-            var c = new Vector3( x,  y, -z);
+            var a = new Vector3(-x, y, -z);
+            var b = new Vector3(x, -y, -z);
+            var c = new Vector3(x, y, -z);
 
             var verticies = new Vector3[]
             {

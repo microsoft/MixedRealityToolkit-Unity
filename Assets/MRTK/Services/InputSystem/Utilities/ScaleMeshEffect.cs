@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             var canvas = GetComponentInParent<Canvas>();
 
             // Pack the z scale into x and a flag indicating this value comes from a ScaleMeshEffect into y into UV channel 3.
-            var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z, 
+            var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z,
                                     -1.0f);
 
             var vertex = new UIVertex();

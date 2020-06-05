@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public void StopLoggingAndSave()
         {
-            Debug.Log(">> STOP LOGGING and save! ");       
+            Debug.Log(">> STOP LOGGING and save! ");
             SaveLogs();
             isLogging = false;
         }

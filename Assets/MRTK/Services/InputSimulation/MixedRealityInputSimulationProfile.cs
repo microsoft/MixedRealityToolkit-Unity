@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
         [Tooltip("Mouse Movement X-axis")]
-        private string mouseX = "Mouse X"; 
+        private string mouseX = "Mouse X";
         /// <summary>
         /// Mouse Movement X-axis
         /// </summary>
@@ -65,6 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum time interval for double press
         /// </summary>
         public float DoublePressTime => doublePressTime;
+        [SerializeField]
+        [Tooltip("Enable hands free input")]
+        private bool isHandsFreeInputEnabled = true;
+        /// <summary>
+        /// Enable hands free input
+        /// </summary>
+        public bool IsHandsFreeInputEnabled => isHandsFreeInputEnabled;
 
         [Header("Camera Control")]
         [SerializeField]

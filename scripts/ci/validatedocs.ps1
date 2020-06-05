@@ -56,6 +56,30 @@ function CheckDocLinks {
     }
 }
 
+<#
+.SYNOPSIS
+    Checks if the given file at the given line contains an incorrect relative path
+    (for example /Documentation/...). These "absolute" paths will only resolve correct on
+    github.com and not github.io
+#>
+function CheckIncorrectRelativePath {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        if ($FileContent[$LineNumber] -match "]\(/") {
+            Write-Host "An incorrect absolute path was found in $FileName at line $LineNumber "
+            Write-Host "Avoid links of the form '/Documentation/Folder' and use relative paths "
+            Write-Host "'../Folder' instead."
+            $true;
+        }
+        $false
+    }
+}
+
 # A case-sensitve cache of all checked image paths, so that we can
 # avoid hitting disk when checking for repeated images. Uses System.Collections.Hashtable
 # directly because the default Dictionary in powershell is case-insensitive
@@ -200,6 +224,8 @@ function CheckDocument {
             if (CheckDocLinks $FileName $fileContent $i) {
                 $issueFound = $true
             } elseif (CheckBrokenImages $FileName $fileContent $i) {
+                $issueFound = $true
+            } elseif (CheckIncorrectRelativePath $FileName $fileContent $i) {
                 $issueFound = $true
             }
         }

@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         {
             RecordingUI_Reset(true);
         }
-        
+
         private void RecordingUI_Reset(bool reset)
         {
             if (btn_StopRecording != null)

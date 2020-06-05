@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void PlayAudio(Interactable source)
         {
             AudioSource audioSource = source.GetComponent<AudioSource>();
-            if(audioSource == null)
+            if (audioSource == null)
             {
                 audioSource = source.gameObject.AddComponent<AudioSource>();
             }

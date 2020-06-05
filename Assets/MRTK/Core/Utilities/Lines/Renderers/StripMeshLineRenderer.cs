@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             forwards.Clear();
             colors.Clear();
             widths.Clear();
-            
+
             for (int i = 0; i <= LineStepCount; i++)
             {
                 float normalizedDistance = GetNormalizedPointAlongLine(i);
