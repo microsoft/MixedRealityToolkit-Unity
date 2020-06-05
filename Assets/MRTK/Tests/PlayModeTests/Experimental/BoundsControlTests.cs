@@ -157,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             
             // Check for a few loops that the hand is not flickering between states
+            // number of iterations is an arbirary number to check that the box isn't flickering
             int iterations = 15;
             for (int i = 0; i < iterations; i++)
             {

@@ -92,12 +92,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // to add NearInteractionGrabbable;
             var g = afford.EnsureComponent<NearInteractionGrabbable>();
             g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
+            g.IsBoundsHandler = true;
 
             var contextInfo = afford.EnsureComponent<CursorContextInfo>();
             contextInfo.CurrentCursorAction = cursorType;
             contextInfo.ObjectCenter = parent;
-
-            afford.EnsureComponent<BoundsHandleVisual>();
         }
 
         /// <summary>
