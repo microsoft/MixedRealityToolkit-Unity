@@ -1,6 +1,6 @@
 # Unity AR camera settings provider
 
-The Unity AR camera settings provider is an experimental MRTK component that enables mixed reality applications to run on Android and iOS devices.
+The Unity AR camera settings provider is an MRTK component that enables mixed reality applications to run on Android and iOS devices.
 
 ## Unity AR camera settings provider options
 

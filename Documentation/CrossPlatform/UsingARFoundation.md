@@ -2,8 +2,6 @@
 
 ## Install required packages
 
-1. Download and import the **Microsoft.MixedReality.Toolkit.Unity.Foundation** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0) or [NuGet](../MRTKNuGetPackage.md)
-
 1. In the Unity Package Manager (UPM), install the following packages:
 
     **Unity 2018.4.x**
@@ -40,7 +38,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
     ![Expand settings providers](../Images/CameraSystem/ExpandProviders.png)
 
-1. Click **Add Camera Settings Provider** and expand the newly added **New camera settings** entry.
+1. Click **Add Camera Settings Provider** and expand **New camera settings** entry.
 
     ![Expand new settings provider](../Images/CameraSystem/ExpandNewProvider.png)
 
