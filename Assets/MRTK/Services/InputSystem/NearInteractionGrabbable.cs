@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Check to show a tether from the position where object was grabbed to the hand when manipulating. Useful for things like bounding boxes where resizing/rotating might be constrained.")]
         public bool ShowTetherWhenManipulating = false;
 
+        [Tooltip("Used to designate this interaction grabbable as a bounds handle")]
+        public bool IsBoundsHandles = false;
+
         void OnEnable()
         {
             // As of https://docs.unity3d.com/ScriptReference/Physics.ClosestPoint.html
