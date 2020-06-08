@@ -98,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                     grabberVisual.transform.position = Vector3.Lerp(grabberVisual.transform.position, startPosition, Time.deltaTime * reboundSpeed);
                 }
             }
-            calculateJoystickRotation();
-            applyJoystickValues();
+            CalculateJoystickRotation();
+            ApplyJoystickValues();
         }
 
         private void CalculateJoystickRotation()
