@@ -174,9 +174,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         /// <summary>
         /// Set the joystick mode from a UI button.
         /// </summary>
-        public void UpdateJoystickMode(JoystickMode joystickMode = JoystickMode.Move)
+        public void JoystickModeMove()
         {
-            Mode = joystickMode;
+            Mode = JoystickMode.Move;
+        }
+        /// <summary>
+        /// Set the joystick mode from a UI button.
+        /// </summary>
+        public void JoystickModeRotate()
+        {
+            Mode = JoystickMode.Rotate;
+        }
+        /// <summary>
+        /// Set the joystick mode from a UI button.
+        /// </summary>
+        public void JoystickModeScale()
+        {
+            Mode = JoystickMode.Scale;
         }
     }
 }
