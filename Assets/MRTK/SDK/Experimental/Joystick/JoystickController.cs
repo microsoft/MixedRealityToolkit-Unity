@@ -114,7 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 joystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
             }
         }
-        void applyJoystickValues()
+
+        private void ApplyJoystickValues()
         {
             if(ObjectToManipulate != null)
             {
