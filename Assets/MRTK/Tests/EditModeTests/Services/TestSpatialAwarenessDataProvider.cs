@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
         public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public int DefaultPhysicsLayer => throw new System.NotImplementedException();
         public bool IsRunning => throw new System.NotImplementedException();
+        public bool WaitingForSceneObserverAccess => throw new System.NotImplementedException();
         public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public VolumeType ObserverVolumeType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public Vector3 ObservationExtents { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

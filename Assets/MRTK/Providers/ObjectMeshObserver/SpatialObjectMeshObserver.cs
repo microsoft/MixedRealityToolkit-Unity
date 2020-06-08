@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Update()
         {
-            if (!IsRunning)
+            if (!WaitingForSceneObserverAccess) 
             {
                 return;
             }
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            using (ClearObservationsPerfMarker.Auto())
+            if (WaitingForSceneObserverAccess)
             {
                 if (IsRunning)
                 {
@@ -150,15 +150,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Resume()
         {
-            if (IsRunning) { return; }
-            IsRunning = true;
+            if (WaitingForSceneObserverAccess) { return; }
+            WaitingForSceneObserverAccess = true;
         }
 
         /// <inheritdoc />
         public override void Suspend()
         {
-            if (!IsRunning) { return; }
-            IsRunning = false;
+            if (!WaitingForSceneObserverAccess) { return; }
+            WaitingForSceneObserverAccess = false;
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver Implementation

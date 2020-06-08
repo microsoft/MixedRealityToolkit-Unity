@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         public override void Resume()
         {
 #if UNITY_WSA
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
                 return;
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         public override void Suspend()
         {
 #if UNITY_WSA
-            if (!IsRunning)
+            if (!WaitingForSceneObserverAccess)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently stopped.");
                 return;
@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             using (SuspendPerfMarker.Auto())
             {
                 // UpdateObserver keys off of this value to stop observing.
-                IsRunning = false;
+                WaitingForSceneObserverAccess = false;
 
                 // Halt any outstanding work.
                 if (outstandingMeshObject != null)
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             using (UpdateObserverPerfMarker.Auto())
             {
                 // Only update the observer if it is running.
-                if (IsRunning && (outstandingMeshObject == null))
+                if (WaitingForSceneObserverAccess && (outstandingMeshObject == null))
                 {
                     // If we have a mesh to work on...
                     if (meshWorkQueue.Count > 0)
@@ -603,7 +603,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <param name="updateTime">The date and time at which the change occurred.</param>
         private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
         {
-            if (!IsRunning) { return; }
+            if (!WaitingForSceneObserverAccess) { return; }
 
             using (OnSurfaceChangedPerfMarker.Auto())
             {
@@ -631,7 +631,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            if (!IsRunning) { return; }
+            if (!WaitingForSceneObserverAccess) { return; }
 
             using (OnDataReadyPerfMarker.Auto())
             {

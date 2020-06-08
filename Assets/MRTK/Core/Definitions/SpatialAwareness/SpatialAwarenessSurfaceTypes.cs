@@ -36,6 +36,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Platforms, like floors, that can be used for placing objects
         /// requiring a horizontal surface.
         /// </remarks>
-        Platform = 1 << 4
+        Platform = 1 << 4,
+
+        /// <summary>
+        /// A surface that isn't a Platform but are known as objects (not unknown)
+        /// </summary>
+        /// <remarks>
+        /// These objects may be windows, monitors, stairs, etc.
+        /// </remarks>
+        Background = 1 << 5,
+
+        /// <summary>
+        /// A boundless world mesh.
+        /// </summary>
+        World = 1 << 6,
+
+        /// <summary>
+        /// Objects for which we have no observations
+        /// </summary>
+        CompletelyInferred = 1 << 7
     }
 }
