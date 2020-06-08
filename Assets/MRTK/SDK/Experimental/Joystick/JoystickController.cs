@@ -87,7 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 grabberVisual.GetComponent<MeshRenderer>().enabled = showGrabberVisual;
             }
         }
-        void Update()
+
+        private void Update()
         {
             if (!isDragging)
             {
