@@ -101,7 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             calculateJoystickRotation();
             applyJoystickValues();
         }
-        void calculateJoystickRotation()
+
+        private void CalculateJoystickRotation()
         {
             joystickGrabberPosition = grabberVisual.transform.position - startPosition;
             // Left Right
