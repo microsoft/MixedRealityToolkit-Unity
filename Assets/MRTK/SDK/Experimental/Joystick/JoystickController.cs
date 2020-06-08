@@ -72,13 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         [Range(0.001f, 0.1f)]
         private float multiplierScale = 0.01f;
 
-        Vector3 startPosition;
-        Vector3 joystickGrabberPosition;
-        Vector3 joystickVisualRotation;
-        const int joystickVisualMaxRotation = 80;
-        bool isDragging = false;
-
-
+        private Vector3 startPosition;
+        private Vector3 joystickGrabberPosition;
+        private Vector3 joystickVisualRotation;
+        private const int joystickVisualMaxRotation = 80;
+        private bool isDragging = false;
         private void Start()
         {
             startPosition = grabberVisual.transform.position;
