@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.UnityAR
 {
     [CustomEditor(typeof(UnityARCameraSettingsProfile))]
     public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

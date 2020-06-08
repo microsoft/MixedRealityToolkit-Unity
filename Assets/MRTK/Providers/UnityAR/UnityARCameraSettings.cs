@@ -12,7 +12,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
 #endif // ARFOUNDATION_PRESENT
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.UnityAR
 {
     /// <summary>
     /// Camera settings provider for use with the Unity AR Foundation system.

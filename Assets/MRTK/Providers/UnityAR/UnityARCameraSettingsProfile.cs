@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.UnityAR
 {
     /// <summary>
     /// Configuration profile for the XR camera settings provider.

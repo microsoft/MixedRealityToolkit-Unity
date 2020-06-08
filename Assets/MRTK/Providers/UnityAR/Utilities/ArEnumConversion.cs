@@ -5,7 +5,7 @@
 using UnityEngine.SpatialTracking;
 #endif // ARFOUNDATION_PRESENT
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.UnityAR
 {
     /// <summary>
     /// Class that performs conversions between Unity's AR enum values and the provider's

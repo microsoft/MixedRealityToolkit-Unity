@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.UnityAR
 {
     /// <summary>
     /// Class to perform checks for configuration checks for the UnityAR provider.
