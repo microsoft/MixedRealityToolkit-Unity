@@ -1536,7 +1536,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // to add NearInteractionGrabbable;
             var g = afford.EnsureComponent<NearInteractionGrabbable>();
             g.ShowTetherWhenManipulating = drawTetherWhenManipulating;
-            g.IsBoundsHandler = true;
+            g.IsBoundsHandles = true;
 
             var contextInfo = afford.EnsureComponent<CursorContextInfo>();
             contextInfo.CurrentCursorAction = cursorType;
