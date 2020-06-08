@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <param name="readResponseData">Optional bool. If its true, response data will be read from web request download handler.</param>
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
-        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying <see cref="UnityWebRequest"/> is disposed.</param>
+        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
         public static async Task<Response> PostAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
         {
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <param name="readResponseData">Optional bool. If its true, response data will be read from web request download handler.</param>
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
-        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying <see cref="UnityWebRequest"/> is disposed.</param>
+        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
         public static async Task<Response> PutAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
         {
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <param name="readResponseData">Optional bool. If its true, response data will be read from web request download handler.</param>
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
-        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying <see cref="UnityWebRequest"/> is disposed.</param>
+        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
         public static async Task<Response> PutAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
         {
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <param name="readResponseData">Optional bool. If its true, response data will be read from web request download handler.</param>
         /// <param name="certificateHandler">Optional certificate handler for custom certificate verification</param>
-        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying <see cref="UnityWebRequest"/> is disposed.</param>
+        /// <param name="disposeCertificateHandlerOnDispose">Optional bool. If true and <paramref name="certificateHandler"/> is not null, <paramref name="certificateHandler"/> will be disposed, when the underlying UnityWebRequest is disposed.</param>
         /// <returns>The response data.</returns>
         public static async Task<Response> DeleteAsync(string query, Dictionary<string, string> headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)
         {
