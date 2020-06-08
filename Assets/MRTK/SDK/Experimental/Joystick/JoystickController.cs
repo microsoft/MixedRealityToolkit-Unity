@@ -178,6 +178,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             Mode = joystickMode;
         }
-
     }
 }
