@@ -54,8 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         [Range(50, 300)]
         private int sensitivityForwardBack = 150;
 
-        public enum JoystickMode { Move, Rotate, Scale }
-        public JoystickMode mode = JoystickMode.Move;
+        [SerializeField]
+        [Tooltip("The property that the joystick manipulates.")]
+        private JoystickMode mode = JoystickMode.Move;
+
+        public JoystickMode Mode
+        {
+            get => mode;
+            set => mode = value;
+        }
 
         [SerializeField]
         [Tooltip("The distance multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
@@ -117,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             if(ObjectToManipulate != null)
             {
-                if (mode == JoystickMode.Move)
+                if (Mode == JoystickMode.Move)
                 {
                     ObjectToManipulate.transform.position += (joystickGrabberPosition * multiplierMove);
                     if (debugText != null)
@@ -125,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = ObjectToManipulate.transform.position.ToString();
                     }
                 }
-                else if (mode == JoystickMode.Rotate)
+                else if (Mode == JoystickMode.Rotate)
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
@@ -138,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = ObjectToManipulate.transform.rotation.eulerAngles.ToString();
                     }
                 }
-                else if (mode == JoystickMode.Scale)
+                else if (Mode == JoystickMode.Scale)
                 {
                     // TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * multiplierScale;
@@ -165,25 +172,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             isDragging = false;
         }
         /// <summary>
-        /// Set the joystick to control movement only.
+        /// Set the joystick mode from a UI button.
         /// </summary>
-        public void JoystickMode_Move()
+        public void UpdateJoystickMode(JoystickMode joystickMode = JoystickMode.Move)
         {
-            mode = JoystickMode.Move;
+            Mode = joystickMode;
         }
-        /// <summary>
-        /// Set the joystick to control rotation only.
-        /// </summary>
-        public void JoystickMode_Rotate()
-        {
-            mode = JoystickMode.Rotate;
-        }
-        /// <summary>
-        /// Set the joystick to control scale only.
-        /// </summary>
-        public void JoystickMode_Scale()
-        {
-            mode = JoystickMode.Scale;
-        }
+
     }
 }

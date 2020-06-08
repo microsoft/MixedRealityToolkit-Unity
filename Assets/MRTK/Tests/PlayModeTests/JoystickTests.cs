@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class JoystickTests
     {
+
         [SetUp]
         public void Setup()
         {
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch the joystick mode to 'Move'.
-            joystick.mode = JoystickController.JoystickMode.Move;
+            joystick.Mode = JoystickMode.Move;
 
             // Instantiate large object and set as target.
             var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -82,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch the joystick mode to 'rotate'.
-            joystick.mode = JoystickController.JoystickMode.Rotate;
+            joystick.Mode = JoystickMode.Rotate;
 
             // Instantiate large object and set as target.
             var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -119,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch the joystick mode to 'Scale'.
-            joystick.mode = JoystickController.JoystickMode.Scale;
+            joystick.Mode = JoystickMode.Scale;
 
             // Instantiate large object and set as target.
             var targetObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
