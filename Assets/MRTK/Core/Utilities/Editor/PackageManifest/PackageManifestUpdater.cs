@@ -343,9 +343,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // This loop also identifies the start / end of a pre-existing scoped registries collections
             int scopedRegistriesStartIndex = -1;
             int scopedRegistriesEndIndex = -1;
+            int dependenciesStartIndex = -1;
             int packageToRemove = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
+                if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
+                {
+                    scopedRegistriesStartIndex = i;
+                }
+                if (manifestFileLines[i].Contains("],") && (scopedRegistriesStartIndex != -1) && (scopedRegistriesEndIndex == -1))
+                {
+                    scopedRegistriesEndIndex = i;
+                }
+                if (manifestFileLines[i].Contains("\"dependencies\": {"))
+                {
+                    dependenciesStartIndex = i;
+                }
                 if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
                     packageToRemove = i;
@@ -359,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             // Update the manifest file
             if ((registryToRemove == -1) &&
-                (packageToRemove != -1))
+                (packageToRemove == -1))
             {
                 // No changes needed.
                 return;
