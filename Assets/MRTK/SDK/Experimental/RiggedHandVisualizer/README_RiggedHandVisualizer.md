@@ -10,7 +10,7 @@ An added advantage is that this will also work in the Unity editor.
 
 ## Example scene
 You can find and example in the **RiggedHandVisualizer** scene under:
-[MixedRealityToolkit.Examples/Experimental/RiggedHandVisualizer/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/RiggedHandVisualizer/Scenes)
+[MixedRealityToolkit.Examples/Experimental/RiggedHandVisualizer/Scenes](../../../Examples/Experimental/RiggedHandVisualizer/Scenes)
 
 ## Features
 - Feature parity with the LeapMotion hand visualization
