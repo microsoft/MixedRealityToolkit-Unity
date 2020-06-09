@@ -8,6 +8,10 @@ An added advantage is that this will also work in the Unity editor.
 ![WMR Headset + Ultraleap](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion.gif)
 ![InputSimulation](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation.gif)
 
+## Example scene
+You can find and example in the **RiggedHandVisualizer** scene under:
+[MixedRealityToolkit.Examples/Experimental/RiggedHandVisualizer/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/RiggedHandVisualizer/Scenes)
+
 ## Features
 - Feature parity with the LeapMotion hand visualization
 
