@@ -90,6 +90,14 @@
 </ul>
 <h3 id="whats-new">What's new</h3>
 <h3 id="breaking-changes">Breaking changes</h3>
+<p>** Rest / Device Portal API**</p>
+<p>The <code>UseSSL</code> static property has been moved from <code>Rest</code> to <code>DevicePortal</code>.</p>
+<p>If you did this previously...</p>
+<pre><code class="lang-csharp">Rest.UseSSL = true
+</code></pre>
+<p>Do this now...</p>
+<pre><code class="lang-csharp">DevicePortal.UseSSL = true
+</code></pre>
 <h3 id="known-issues">Known issues</h3>
 </article>
           </div>
