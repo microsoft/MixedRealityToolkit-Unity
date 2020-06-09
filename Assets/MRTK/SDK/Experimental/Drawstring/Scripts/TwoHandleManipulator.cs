@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Physics.Experimental;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     /// <summary>
     /// TODO insert drawstring summary

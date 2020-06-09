@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics.Experimental
 {
 
     /// <summary>
