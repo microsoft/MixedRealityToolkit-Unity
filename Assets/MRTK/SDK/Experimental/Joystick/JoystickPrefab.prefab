@@ -258,12 +258,12 @@ MonoBehaviour:
   grabberVisual: {fileID: 5706572166712672382}
   showGrabberVisual: 1
   reboundSpeed: 5
-  sensitivityLeftRight: 100
-  sensitivityForwardBack: 150
+  sensitivityLeftRight: 3
+  sensitivityForwardBack: 6
   mode: 0
-  multiplierMove: 0.03
-  multiplierRotate: 1.1
-  multiplierScale: 0.01
+  multiplierMove: 0.01
+  multiplierRotate: 0.05
+  multiplierScale: 0.001
 --- !u!1 &5706572166712672382
 GameObject:
   m_ObjectHideFlags: 0

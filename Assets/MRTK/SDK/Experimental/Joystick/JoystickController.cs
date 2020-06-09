@@ -46,13 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         [SerializeField]
         [Tooltip("How sensitive the joystick reacts to dragging left / right. Customize this value to get the right feel for your scenario.")]
-        [Range(50, 300)]
-        private int sensitivityLeftRight = 100;
+        [Range(0.01f, 10)]
+        private float sensitivityLeftRight = 3;
 
         [SerializeField]
         [Tooltip("How sensitive the joystick reacts to pushing / pulling. Customize this value to get the right feel for your scenario.")]
-        [Range(50, 300)]
-        private int sensitivityForwardBack = 150;
+        [Range(0.01f, 10)]
+        private float sensitivityForwardBack = 6;
 
         [SerializeField]
         [Tooltip("The property that the joystick manipulates.")]
@@ -66,18 +66,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         [SerializeField]
         [Tooltip("The distance multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
-        [Range(0.01f, 1f)]
-        private float multiplierMove = 0.03f;
+        [Range(0.0003f, 0.03f)]
+        private float MoveSpeed = 0.01f;
 
         [SerializeField]
         [Tooltip("The rotation multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
-        [Range(0.1f, 3.0f)]
-        private float multiplierRotate = 1.1f;
+        [Range(0.001f, 0.1f)]
+        private float RotationSpeed = 0.05f;
 
         [SerializeField]
         [Tooltip("The scale multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
-        [Range(0.001f, 0.1f)]
-        private float multiplierScale = 0.01f;
+        [Range(0.00003f, 0.003f)]
+        private float ScaleSpeed = 0.001f;
 
         private Vector3 startPosition;
         private Vector3 joystickGrabberPosition;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         private bool isDragging = false;
         private void Start()
         {
-            startPosition = grabberVisual.transform.position;
+            startPosition = grabberVisual.transform.localPosition;
             if(grabberVisual != null)
             {
                 grabberVisual.GetComponent<MeshRenderer>().enabled = showGrabberVisual;
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 // when dragging stops, move joystick back to idle
                 if(grabberVisual != null)
                 {
-                    grabberVisual.transform.position = Vector3.Lerp(grabberVisual.transform.position, startPosition, Time.deltaTime * reboundSpeed);
+                    grabberVisual.transform.localPosition = Vector3.Lerp(grabberVisual.transform.localPosition, startPosition, Time.deltaTime * reboundSpeed);
                 }
             }
             CalculateJoystickRotation();
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void CalculateJoystickRotation()
         {
-            joystickGrabberPosition = grabberVisual.transform.position - startPosition;
+            joystickGrabberPosition = grabberVisual.transform.localPosition - startPosition;
             // Left Right
             joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * sensitivityLeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
             // Forward Back
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             {
                 if (Mode == JoystickMode.Move)
                 {
-                    ObjectToManipulate.transform.position += (joystickGrabberPosition * multiplierMove);
+                    ObjectToManipulate.transform.position += (joystickGrabberPosition * MoveSpeed);
                     if (debugText != null)
                     {
                         debugText.text = ObjectToManipulate.transform.position.ToString();
@@ -136,19 +136,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
-                    newRotation.y += (joystickGrabberPosition.x * multiplierRotate);
+                    newRotation.y += (joystickGrabberPosition.x * RotationSpeed);
                     newRotation.x = 0;
                     newRotation.z = 0;
-                    ObjectToManipulate.transform.rotation = Quaternion.Euler(newRotation);
+                    ObjectToManipulate.transform.localRotation = Quaternion.Euler(newRotation);
                     if (debugText != null)
                     {
-                        debugText.text = ObjectToManipulate.transform.rotation.eulerAngles.ToString();
+                        debugText.text = ObjectToManipulate.transform.localRotation.eulerAngles.ToString();
                     }
                 }
                 else if (Mode == JoystickMode.Scale)
                 {
                     // TODO: Clamp above zero
-                    Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * multiplierScale;
+                    Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * ScaleSpeed;
                     ObjectToManipulate.transform.localScale += newScale;
                     if (debugText != null)
                     {
