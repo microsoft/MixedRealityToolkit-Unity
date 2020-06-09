@@ -5,8 +5,8 @@ The RiggedHandVisualizer can be used to control a SkinnedMesh to visualize the h
 This can be more efficient than using the triangle based visualization because it does not have to reconstruct the hand mesh every frame. 
 An added advantage is that this will also work in the Unity editor.
 
-![WMR Headset + Ultraleap](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion)
-![InputSimulation](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation)
+![WMR Headset + Ultraleap](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion.gif)
+![InputSimulation](../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation.gif)
 
 ## Features
 - Feature parity with the LeapMotion hand visualization
