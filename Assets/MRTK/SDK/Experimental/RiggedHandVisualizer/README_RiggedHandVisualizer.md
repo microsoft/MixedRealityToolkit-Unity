@@ -35,8 +35,8 @@ After importing the model in Unity create a prefab that uses it and add the Rigg
 
 ### Orientation correction ###
 Since models can be imported with different orientations you may need to apply a correction.
-Configure **Model Finger Pointing** and **Model Palm Facing** values with the cardinal axes that they are closest to.
-The easiest way to find these axes is to look at the model in it's default orientation after importing it in Unity. Make sure palm and wrist nodes have an orientation of **0, 0, 0**  
+Configure **Model Finger Pointing** and **Model Palm Facing** values with the cardinal axes that they are closest to.  
+The easiest way to find these axes is to look at the model in its default orientation after importing it in Unity. Make sure the palm and wrist nodes have an orientation of **0, 0, 0**  
 In the model below you can see that the palm is pointing in the Y-direction (green arrow) so the **Model Palm Facing** is set to **0, 1, 0**. The fingers are pointing in the negative X-direction (red arrow) so the **Model Finger Pointing** is set to **-1, 0, 0**.
 
 <img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Orientation.png" width="600px"  style="display:inline;">
