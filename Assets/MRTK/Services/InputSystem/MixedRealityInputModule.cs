@@ -314,19 +314,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 pointerData.nextPressState = PointerEventData.FramePressState.Released;
             }
-
-            bool IsPointerIdInRemovedList()
-            {
-                for (int i = 0; i < pointerDataToRemove.Count; i++)
-                {
-                    if (pointerDataToRemove[i].pointer.PointerId == pointerId)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
         }
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
@@ -340,6 +327,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
         {
+        }
+
+        private bool IsPointerIdInRemovedList()
+        {
+            for (int i = 0; i < pointerDataToRemove.Count; i++)
+            {
+                if (pointerDataToRemove[i].pointer.PointerId == pointerId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
