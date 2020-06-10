@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // OnPointerUp can be raised during an OnSourceLost. If the pointer has already been removed
             // from the pointerDataToUpdate Dictionary and added to the pointerDataToRemove list, then
             // that pointer's state update can be ignored.
-            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId) || IsPointerIdInRemovedList());
+            Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId) || IsPointerIdInRemovedList(pointerId));
             if (pointerDataToUpdate.TryGetValue(pointerId, out PointerData pointerData))
             {
                 pointerData.nextPressState = PointerEventData.FramePressState.Released;
@@ -329,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
         }
 
-        private bool IsPointerIdInRemovedList()
+        private bool IsPointerIdInRemovedList(int pointerId)
         {
             for (int i = 0; i < pointerDataToRemove.Count; i++)
             {
