@@ -15,9 +15,9 @@ You can find and example in the **RiggedHandVisualizer** scene under:
 [MixedRealityToolkit.Examples/Experimental/RiggedHandVisualizer/Scenes](../../../Examples/Experimental/RiggedHandVisualizer/Scenes)
 
 ## Using the RiggedHandVisualizer in your scene
-To enable the use of rigged hand visualization navigate to
+To enable the use of rigged hand visualization, select the **MixedRealityToolkit** game object in the hierarchy and within the **Input** Configuration Profile navigate to
 
-**MixedRealityToolkit > Controllers > Input > Controller Visualization Settings > Global Left Hand Visualizer**  
+**Controllers > Controller Visualization Settings > Global Left Hand Visualizer**  
 
 Set it to use a prefab with the skinned mesh and RiggedHandVisualizer component.  Do the same for the right hand.
 RiggedHandLeft and RiggedHandRight prefabs are included in the MRTK as defaults, but you can also configure your own skinned mesh models.
@@ -49,6 +49,5 @@ Allows the mesh to be stretched to align with finger joint positions.
 
 **Scale Last Finger Bone**  
 Because bones only exist at their roots in model rigs, the length of the last fingertip bone is lost when placing bones at positions in the tracked hand. This option scales the last bone along its length axis to match its bone length to the tracked bone length. This option only has an effect if Deform Positions In Fingers is enabled.
-
 
 
