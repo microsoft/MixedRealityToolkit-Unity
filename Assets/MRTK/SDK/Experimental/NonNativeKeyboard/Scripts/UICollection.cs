@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// To use this component attach it to a UI element (a GameObject with a
     /// RectTransform component) such as an Image or Panel.
     /// </summary>
-    [AddComponentMenu("MRTK/Experimental/UICollection")]
+    [AddComponentMenu("Scripts/MRTK/Experimental/UICollection")]
     [RequireComponent(typeof(RectTransform))]
     [ExecuteInEditMode]
     public class UICollection : MonoBehaviour

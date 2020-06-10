@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard
     /// </summary>
     [RequireComponent(typeof(InputField))]
-    [AddComponentMenu("Scripts/MRTK/Experimental/MixedRealityKeyboard")]
+    [AddComponentMenu("Scripts/MRTK/Experimental/Keyboard/UI_KeyboardInputField")]
     public class UI_KeyboardInputField : KeyboardInputFieldBase<InputField>
     {
         public override string Text { get => inputField.text; protected set => inputField.text = value; }

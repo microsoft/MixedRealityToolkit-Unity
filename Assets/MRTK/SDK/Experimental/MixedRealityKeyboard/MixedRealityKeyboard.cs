@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// UWP keyboard from showing up again after it is closed.
     /// Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Experimental/MixedRealityKeyboard")]
+    [AddComponentMenu("Scripts/MRTK/Experimental/Keyboard/MixedRealityKeyboard")]
     public class MixedRealityKeyboard : MixedRealityKeyboardBase
     {
         /// <summary>
