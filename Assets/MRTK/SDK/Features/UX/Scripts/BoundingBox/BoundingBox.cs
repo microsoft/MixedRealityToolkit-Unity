@@ -1230,7 +1230,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // was when we constructed the rig, so we can restore
             // it after we destructively edit the size with the
             // BoxPadding (#7997)
-            if(boundsOverride != null){
+            if (boundsOverride != null){
                 initialBoundsOverrideSize = boundsOverride.size;
             }
 
@@ -1334,7 +1334,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // If we have previously logged an initial bounds size,
                 // reset the boundsOverride BoxCollider to the initial size.
                 // This is because the CalculateBoxPadding
-                if(initialBoundsOverrideSize.HasValue){
+                if (initialBoundsOverrideSize.HasValue){
                     boundsOverride.size = initialBoundsOverrideSize.Value;
                 }
 
