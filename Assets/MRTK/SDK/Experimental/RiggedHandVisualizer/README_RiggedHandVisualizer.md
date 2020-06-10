@@ -12,7 +12,7 @@ This works on HoloLens 2 with detected hands, when using the Ultraleap sensor or
 
 ## Example scene
 You can find and example in the **RiggedHandVisualizer** scene under:
-[MixedRealityToolkit.Examples/Experimental/RiggedHandVisualizer/Scenes](../../../Examples/Experimental/RiggedHandVisualizer/Scenes)
+**MRTK/Examples/Experimental/RiggedHandVisualizer/Scenes/**
 
 ## Using the RiggedHandVisualizer in your scene
 To enable the use of rigged hand visualization, select the **MixedRealityToolkit** game object in the hierarchy and within the **Input** Configuration Profile navigate to
@@ -49,4 +49,3 @@ Allows the mesh to be stretched to align with finger joint positions.
 
 **Scale Last Finger Bone**  
 Because bones only exist at their roots in model rigs, the length of the last fingertip bone is lost when placing bones at positions in the tracked hand. This option scales the last bone along its length axis to match its bone length to the tracked bone length. This option only has an effect if Deform Positions In Fingers is enabled.
-
