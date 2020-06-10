@@ -1,4 +1,4 @@
-# RiggedHandVisualizer
+# Rigged Hand Visualizer [Experimental]
 <img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Main.png" width="600px"  style="display:inline;">
 
 The RiggedHandVisualizer can be used to control a SkinnedMesh to visualize the hands.  
@@ -49,5 +49,4 @@ Allows the mesh to be stretched to align with finger joint positions.
 
 **Scale Last Finger Bone**  
 Because bones only exist at their roots in model rigs, the length of the last fingertip bone is lost when placing bones at positions in the tracked hand. This option scales the last bone along its length axis to match its bone length to the tracked bone length. This option only has an effect if Deform Positions In Fingers is enabled.
-
 
