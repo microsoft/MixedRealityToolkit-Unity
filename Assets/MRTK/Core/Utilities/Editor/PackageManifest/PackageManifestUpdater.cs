@@ -204,15 +204,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Enable MSBuild for Unity", priority = 599)]
         internal static void EnableMSBuildForUnity()
         {
-#if UNITY_2019_3
+#if UNITY_2019
             if (!EditorUtility.DisplayDialog(
                 "Enable MSBuild for Unity",
-                "Some versions of Unity 2019.3 have experienced issues with MSBuild for Unity. Do you wish to continue?",
+                "Some versions of Unity 2019 have experienced issues with MSBuild for Unity. Do you wish to continue?",
                 "Yes", "No"))
             {
                 return;
             }
-#endif // UNITY_2019_3
+#endif // UNITY_2019
 
             List<string> manifestFileLines;
             PackageManifest manifest = LoadManifest(out manifestFileLines);
