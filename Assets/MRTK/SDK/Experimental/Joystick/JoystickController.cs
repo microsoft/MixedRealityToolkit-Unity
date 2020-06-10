@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         [SerializeField]
         [Tooltip("The large or small game object that receives manipulation by the joystick.")]
         private GameObject objectToManipulate = null;
-
         public GameObject ObjectToManipulate
         {
             get => objectToManipulate;
@@ -104,10 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         private void CalculateJoystickRotation()
         {
             joystickGrabberPosition = grabberVisual.transform.localPosition - startPosition;
-            // Left Right
+            // Left Right = Horizontal
             joystickVisualRotation.z = Mathf.Clamp(-joystickGrabberPosition.x * SensitivityLeftRight,-joystickVisualMaxRotation, joystickVisualMaxRotation);
-            // Forward Back
+            // Forward Back = Vertical
             joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * SensitivityForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
+            // TODO: calculate joystickVisualRotation.y to always face the proper direction (for when the joystick container gets moved around the scene)
             if (joystickVisual != null)
             {
                 joystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
