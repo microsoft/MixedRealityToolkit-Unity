@@ -1202,6 +1202,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void CreateRig()
         {
+            // Record what the initial size of the bounds override
+            // was when we constructed the rig, so we can restore
+            // it after we destructively edit the size with the
+            // BoxPadding (#7997)
+            if (boundsOverride != null){
+                initialBoundsOverrideSize = boundsOverride.size;
+            }
             DestroyRig();
             SetMaterials();
             InitializeRigRoot();
@@ -1226,14 +1233,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            // Record what the initial size of the bounds override
-            // was when we constructed the rig, so we can restore
-            // it after we destructively edit the size with the
-            // BoxPadding (#7997)
-            if (boundsOverride != null){
-                initialBoundsOverrideSize = boundsOverride.size;
-            }
-
             CreateRig();
             CaptureInitialState();
 
