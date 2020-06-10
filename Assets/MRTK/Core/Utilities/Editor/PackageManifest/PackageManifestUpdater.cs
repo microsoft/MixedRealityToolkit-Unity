@@ -245,28 +245,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Update the manifest's scoped registries, as the collection may have been modified.
             manifest.scopedRegistries = scopedRegistries.ToArray();
 
-            int dependenciesStartIndex = -1;
-            int scopedRegistriesStartIndex = -1;
-            int scopedRegistriesEndIndex = -1;
-            int packageLine = -1;
-
             // Presume that we need to add the MSBuild for Unity package. If this value is false,
             // we will check to see if the currently configured version meets or exceeds the
             // minimum requirements.
             bool needToAddPackage = true;
 
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
-            // This loop also identifies the dependencies collection line and the start / end of a
-            // pre-existing scoped registries collections
+            // This loop also identifies the line that starts the dependencies and encloses the
+            // scoped registries collection.
+            int dependenciesStartIndex = -1;
+            int registriesStartIndex = -1;
+            int registriesEndIndex = -1;
+            int packageLine = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
                 {
-                    scopedRegistriesStartIndex = i;
+                    registriesStartIndex = i;
                 }
-                if (manifestFileLines[i].Contains("],") && (scopedRegistriesStartIndex != -1) && (scopedRegistriesEndIndex == -1))
+                if (manifestFileLines[i].Contains("],") && (registriesStartIndex != -1) && (registriesEndIndex == -1))
                 {
-                    scopedRegistriesEndIndex = i;
+                    registriesEndIndex = i;
                 }
                 if (manifestFileLines[i].Contains("\"dependencies\": {"))
                 {
@@ -297,7 +296,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // No changes required.
                 return;
             }
-            WriteManifest(manifest, manifestFileLines, scopedRegistriesStartIndex, scopedRegistriesEndIndex);
+            WriteManifest(
+                manifest, 
+                manifestFileLines, 
+                registriesStartIndex,
+                registriesEndIndex);
         }
 
         /// <summary>
@@ -340,24 +343,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Attempt to find the msbuild for unity package
-            // This loop also identifies the start / end of a pre-existing scoped registries collections
-            int scopedRegistriesStartIndex = -1;
-            int scopedRegistriesEndIndex = -1;
-            int dependenciesStartIndex = -1;
+            // This loop also identifies the lines that enclose the scoped registry collection.
+            int registriesStartIndex = -1;
+            int registriesEndIndex = -1;
             int packageToRemove = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
                 {
-                    scopedRegistriesStartIndex = i;
+                    registriesStartIndex = i;
                 }
-                if (manifestFileLines[i].Contains("],") && (scopedRegistriesStartIndex != -1) && (scopedRegistriesEndIndex == -1))
+                if (manifestFileLines[i].Contains("],") && (registriesStartIndex != -1) && (registriesEndIndex == -1))
                 {
-                    scopedRegistriesEndIndex = i;
-                }
-                if (manifestFileLines[i].Contains("\"dependencies\": {"))
-                {
-                    dependenciesStartIndex = i;
+                    registriesEndIndex = i;
                 }
                 if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
@@ -378,7 +376,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return;
             }
 
-            WriteManifest(manifest, manifestFileLines, scopedRegistriesStartIndex, scopedRegistriesEndIndex);
+            WriteManifest(
+                manifest,
+                manifestFileLines,
+                registriesStartIndex,
+                registriesEndIndex);
         }
 
         private static PackageManifest LoadManifest(out List<string> manifestFileLines)
@@ -429,7 +431,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             int registriesEndIndex)
         {
             // First, serialize the scoped registry collection.
-            string serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
+            string serializedRegistriesJson = string.Empty;
+            if (manifest.scopedRegistries.Length > 0)
+            {
+                serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
+            }
 
             // Ensure that the file is truncated to ensure it is always valid after writing.
             using (FileStream outFile = new FileStream(ManifestFilePath, FileMode.Truncate, FileAccess.Write))
@@ -447,7 +453,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             continue;
                         }
 
-                        if (!scopedRegistriesWritten && (i > 0))
+                        if (!string.IsNullOrWhiteSpace(serializedRegistriesJson) &&
+                            !scopedRegistriesWritten && 
+                            (i > 0))
                         {
                             // Trim the leading '{' and '\n' from the serialized scoped registries
                             serializedRegistriesJson = serializedRegistriesJson.Remove(0, 2);
