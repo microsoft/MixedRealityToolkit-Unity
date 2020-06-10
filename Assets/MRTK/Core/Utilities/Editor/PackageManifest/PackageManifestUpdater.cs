@@ -186,13 +186,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return false;
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Enable MSBuild for Unity", true)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Use MSBuild for Unity dependency resolution", true)]
         private static bool ShowEnableMenuItem()
         {
             return !IsMSBuildForUnityEnabled();
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Disable MSBuild for Unity", true)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Do not use MSBuild for Unity dependency resolution", true)]
         private static bool ShowDisableMenuItem()
         {
             return IsMSBuildForUnityEnabled();
@@ -201,12 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Ensures the required settings exist in the package manager to allow for using MSBuild for Unity.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Enable MSBuild for Unity", priority = 599)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Use MSBuild for Unity dependency resolution", priority = 599)]
         internal static void EnableMSBuildForUnity()
         {
 #if UNITY_2019
             if (!EditorUtility.DisplayDialog(
-                "Enable MSBuild for Unity",
+                "Use MSBuild for Unity for dependency resolution",
                 "Some versions of Unity 2019 have experienced issues with MSBuild for Unity. Do you wish to continue?",
                 "Yes", "No"))
             {
@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Removes the package manager settings that allow for using MSBuild for Unity.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Disable MSBuild for Unity", priority = 600)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Do not use MSBuild for Unity dependency resolution", priority = 600)]
         internal static void DisableMSBuildForUnity()
         {
             List<string> manifestFileLines;
