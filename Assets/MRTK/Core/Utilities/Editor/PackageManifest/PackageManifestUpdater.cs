@@ -417,13 +417,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return manifest;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="manifest"></param>
-        /// <param name="manifestFileLines"></param>
-        /// <param name="registriesStartIndex"></param>
-        /// <param name="registriesEndIndex"></param>
         private static void WriteManifest(
             PackageManifest manifest, 
             List<string> manifestFileLines,
