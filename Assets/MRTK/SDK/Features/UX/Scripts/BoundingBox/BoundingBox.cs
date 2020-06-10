@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -1206,7 +1206,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // was when we constructed the rig, so we can restore
             // it after we destructively edit the size with the
             // BoxPadding (#7997)
-            if (boundsOverride != null){
+            if (boundsOverride != null)
+            {
                 initialBoundsOverrideSize = boundsOverride.size;
             }
             DestroyRig();
@@ -1333,7 +1334,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // If we have previously logged an initial bounds size,
                 // reset the boundsOverride BoxCollider to the initial size.
                 // This is because the CalculateBoxPadding
-                if (initialBoundsOverrideSize.HasValue){
+                if (initialBoundsOverrideSize.HasValue)
+                {
                     boundsOverride.size = initialBoundsOverrideSize.Value;
                 }
 

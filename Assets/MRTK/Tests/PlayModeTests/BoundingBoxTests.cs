@@ -10,14 +10,14 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.UI;
-using NUnit.Framework;
 using System.Collections;
+using System.Linq;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -152,7 +152,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyBoundingBox();
 
             // Private helper function to prevent code copypasta.
-            IEnumerator VerifyBoundingBox() {
+            IEnumerator VerifyBoundingBox()
+            {
                 // Toggle the bounding box active status to check that the boundsOverride
                 // will persist, and will not be destructively resized 
                 bbox.gameObject.SetActive(false);
