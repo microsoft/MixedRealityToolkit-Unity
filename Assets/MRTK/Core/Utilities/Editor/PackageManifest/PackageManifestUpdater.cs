@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return !IsMSBuildForUnityEnabled();
         }
 
-        [MenuItem("Mixed Reality Toolkit/MSBuild/Do not use MSBuild for Unity dependency resolution", true)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Remove MSBuild for Unity", true)]
         private static bool ShowDisableMenuItem()
         {
             return IsMSBuildForUnityEnabled();
