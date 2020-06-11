@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Removes the package manager settings that allow for using MSBuild for Unity.
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/MSBuild/Do not use MSBuild for Unity dependency resolution", priority = 100)]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Remove MSBuild for Unity", priority = 100)]
         internal static void DisableMSBuildForUnity()
         {
             List<string> manifestFileLines;
