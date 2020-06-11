@@ -425,6 +425,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return manifest;
         }
 
+        /// <summary>
+        /// Writes the Unity Package Manager manifest file.
+        /// </summary>
+        /// <param name="manifest">The manifest to be written.</param>
+        /// <param name="manifestFileLines">Contents of the manifest file as a collection of lines.</param>
+        /// <param name="registriesStartIndex">The line number on which the scopedRegistries section begins.</param>
+        /// <param name="registriesEndIndex">The line number on which the scopedRegistries section ends.</param>
+        /// <remarks>
+        /// The Unity JSON parser / writer appear to not have full support for dictionaries. As a result, the 
+        /// provided manifest contains only the scoped registry collection, while the manifestFileLines contains
+        /// a potentially modified collection of packages to install, along with the previous collection of scoped
+        /// registries. The registries collection in manifestFileLines will be replaced by those contained in 
+        /// the provided manifest.
+        /// </remarks>
         private static void WriteManifest(
             PackageManifest manifest, 
             List<string> manifestFileLines,

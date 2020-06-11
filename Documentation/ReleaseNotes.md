@@ -13,7 +13,7 @@ To prevent the MRTK configuration dialog from repeatedly displaying when `Enable
 
 ![MSBuild for Unity menu items](Images/ConfigurationDialog/MSB4UMenuItems.png)
 
-This change also adds the ability to uninstall / disable using MSBulid or Unity.
+This change also adds the ability to remove MSBulid for Unity.
 
 There is a confirmation dialog that will be displayed when selecting `Use MSBuild for Unity dependency resolution`.
 
