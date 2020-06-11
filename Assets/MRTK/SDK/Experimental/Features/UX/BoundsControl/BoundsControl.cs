@@ -87,6 +87,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        [Tooltip("Use precision affordances where available.")]
+        [SerializeField]
+        private bool usePrecisionAffordances = false;
+
+        /// <summary>
+        /// Use precision affordances where available.
+        /// </summary>
+        public bool UsePrecisionAffordances
+        {
+            get => usePrecisionAffordances;
+            set => usePrecisionAffordances = value;
+        }
+
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
         private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider;
@@ -502,7 +515,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             // instantiate runtime classes for visuals
             scaleHandles = new ScaleHandles(scaleHandlesConfiguration);
-            rotationHandles = new RotationHandles(rotationHandlesConfiguration);
+
+            if (usePrecisionAffordances)
+            {
+                rotationHandles = new PrecisionRotationHandles(rotationHandlesConfiguration as PrecisionRotationHandlesConfiguration);
+            } else
+            {
+                rotationHandles = new RotationHandles(rotationHandlesConfiguration);
+            }
+
+            
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);

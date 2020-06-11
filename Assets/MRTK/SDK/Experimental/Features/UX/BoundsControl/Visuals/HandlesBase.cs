@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         internal protected List<Transform> handles = new List<Transform>();
-        private Transform highlightedHandle = null;
+        protected Transform highlightedHandle = null;
 
         ProximityObjectsChangedEvent IProximityEffectObjectProvider.ProximityObjectsChanged => objectsChangedEvent;
         protected ProximityObjectsChangedEvent objectsChangedEvent = new ProximityObjectsChangedEvent();
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get { return handles; }
         }
 
-        internal void SetHighlighted(Transform handleToHighlight)
+        internal virtual void SetHighlighted(Transform handleToHighlight)
         {
             // turn off all handles that aren't the handle we want to highlight
             if (handles != null)
@@ -124,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                     else
                     {
+                        Debug.Log($"Highlighting: {handleToHighlight.gameObject}");
                         VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
                         highlightedHandle = handleToHighlight;
                     }

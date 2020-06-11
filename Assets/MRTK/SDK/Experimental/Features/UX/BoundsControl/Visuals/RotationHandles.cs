@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     public class RotationHandles : HandlesBase
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
-        private RotationHandlesConfiguration config;
-        private FlattenModeType cachedFlattenAxis;
+        protected RotationHandlesConfiguration config;
+        protected FlattenModeType cachedFlattenAxis;
 
         internal RotationHandles(RotationHandlesConfiguration configuration)
         {
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.colliderTypeChanged.RemoveListener(UpdateColliderType);
         }
 
-        private void UpdateColliderType()
+        protected void UpdateColliderType()
         {
             foreach (var handle in handles)
             {
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             CreateHandles(parent);
         }
 
-        private void CreateHandles(Transform parent)
+        protected virtual void CreateHandles(Transform parent)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)
             {
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
 
-        private Bounds CreateVisual(int handleIndex, GameObject parent)
+        protected Bounds CreateVisual(int handleIndex, GameObject parent)
         {
             GameObject midpointVisual;
             GameObject prefabType = config.HandlePrefab;
