@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 {
     /// <summary>
-    /// Example script to demonstrate adding sliders to control the joystick values at runtime.
+    /// Example script to demonstrate adding sliders to control material values at runtime.
     /// </summary>
     public class ColorSliders : MonoBehaviour
     {
@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public PinchSlider SliderBrightness;
         //
         public TextMeshPro TextRed;
-        public TextMeshPro TextBlue;
         public TextMeshPro TextGreen;
+        public TextMeshPro TextBlue;
         public TextMeshPro TextAlpha;
         public TextMeshPro TextHue;
         public TextMeshPro TextSaturation;
@@ -35,24 +35,40 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         private Color CustomColor = Color.clear;
         private float hue, saturation, brightness;
         //
+        bool IsDragging = false;
         public void UpdateColorHSV()
         {
-            hue = SliderHue.SliderValue;
-            saturation = SliderSaturation.SliderValue;
-            brightness = SliderBrightness.SliderValue;
-            CustomColor = Color.HSVToRGB(hue, saturation, brightness);
-            //
-            UpdateSliderText();
-            ApplyColor();
+            if (IsDragging == true)
+            {
+                hue = SliderHue.SliderValue;
+                saturation = SliderSaturation.SliderValue;
+                brightness = SliderBrightness.SliderValue;
+                CustomColor = Color.HSVToRGB(hue, saturation, brightness);
+                //
+                UpdateSliderText();
+                ApplyColor();
+            }
         }
         public void UpdateColorRGB() {
-            CustomColor.r = SliderRed.SliderValue;
-            CustomColor.g = SliderGreen.SliderValue;
-            CustomColor.b = SliderBlue.SliderValue;
-            CustomColor.a = SliderAlpha.SliderValue;
-            //
-            UpdateSliderText();
-            ApplyColor();
+            if (IsDragging == true)
+            {
+                CustomColor.r = SliderRed.SliderValue;
+                CustomColor.g = SliderGreen.SliderValue;
+                CustomColor.b = SliderBlue.SliderValue;
+                CustomColor.a = SliderAlpha.SliderValue;
+                //
+                UpdateSliderText();
+                ApplyColor();
+            }
+        }
+        public void StartDrag()
+        {
+            IsDragging = true;
+        }
+        public void StopDrag()
+        {
+            IsDragging = false;
+            ApplySliderValues();
         }
         private void UpdateSliderText()
         {
@@ -91,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             SliderRed.SliderValue = CustomColor.r;
             SliderGreen.SliderValue = CustomColor.g;
             SliderBlue.SliderValue = CustomColor.b;
+            SliderBlue.SliderValue = CustomColor.a;
             SliderHue.SliderValue = hue;
             SliderSaturation.SliderValue = saturation;
             SliderBrightness.SliderValue = brightness;
