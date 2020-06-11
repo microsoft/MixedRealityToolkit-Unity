@@ -15,10 +15,7 @@ To prevent the MRTK configuration dialog from repeatedly displaying when `Enable
 
 This change also adds the ability to uninstall / disable using MSBulid or Unity.
 
-If running on Unity 2019, the following confirmation dialog will appear due to issue [7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239) which may occur on some versions.
-
->[!NOTE]
-> Based on recent testing, it appears that issue [7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239) has been resolved in recent Unity 2019.3 releases.
+There is a confirmation dialog that will be displayed when selecting `Use MSBuild for Unity dependency resolution`.
 
 ![MSBuild for Unity confirmation](Images/ConfigurationDialog/EnableMSB4UPrompt.png)
 
