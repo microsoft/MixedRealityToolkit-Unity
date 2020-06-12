@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             edgeAxes[11] = CardinalAxisType.Z;
         }
 
-        internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
+        internal virtual void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
         {
             IsActive = areHandlesActive;
             cachedFlattenAxis = flattenAxis;
@@ -203,6 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void RecreateVisuals()
         {
+            Debug.Log("RecreateVisuals");
             for (int i = 0; i < handles.Count; ++i)
             {
                 // get parent of visual
@@ -230,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
+            Debug.Log("UpdateColliderBounds");
             var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
@@ -250,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected Bounds CreateVisual(int handleIndex, GameObject parent)
         {
+            Debug.Log("CreateVisual");
             GameObject midpointVisual;
             GameObject prefabType = config.HandlePrefab;
             if (prefabType != null)

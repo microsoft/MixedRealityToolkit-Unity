@@ -33,28 +33,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal override void SetHighlighted(Transform handleToHighlight)
         {
-            // turn off all handles that aren't the handle we want to highlight
-            if (handles != null)
+            base.SetHighlighted(handleToHighlight);
+
+            if (handles.Contains(handleToHighlight))
             {
-                // Lets the currently active precision affordance
-                // destroy itself in a timely (and visually fluid) way
-                activePrecisionAffordance?.DestroySelf();
+                // Create a precision affordance mounted onto the active handle's visual
+                activePrecisionAffordance = CreatePrecisionAffordance(handleToHighlight.GetChild(0), handleToHighlight.parent);
+            }
+        }
 
-                for (int i = 0; i < handles.Count; ++i)
-                {
-                    if (handles[i] != handleToHighlight)
-                    {
-                        handles[i].gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
-                        highlightedHandle = handleToHighlight;
+        protected override void ResetHandles()
+        {
+            base.ResetHandles();
+            activePrecisionAffordance?.DestroySelf();
+        }
 
-                        // Create a precision affordance mounted onto the active handle's visual
-                        activePrecisionAffordance = CreatePrecisionAffordance(handles[i].GetChild(0), handles[i].parent);
-                    }
-                }
+        public virtual void SetPointer(IMixedRealityPointer pointer)
+        {
+            if (activePrecisionAffordance != null)
+            {
+                activePrecisionAffordance.SetAssociatedPointer(pointer);
             }
         }
 
@@ -65,15 +63,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             PrecisionRotationAffordance affordance = GameObject.Instantiate(precisionConfig.PrecisionWidgetPrefab).GetComponent<PrecisionRotationAffordance>();
-
+            
             // Precision affordances are centered on the parent object's origin.
             affordance.transform.position = objectRoot.position;
 
             affordance.transform.rotation = Quaternion.LookRotation(attachTarget.position - objectRoot.position, attachTarget.up);
 
-            affordance.manipulationScale = (attachTarget.position - objectRoot.position).magnitude;
+            affordance.manipulationScale = (attachTarget.position - objectRoot.position).magnitude + 0.05f;
 
-            affordance.SetTrackingTarget(attachTarget);
+            affordance.SetTrackingTarget(attachTarget, objectRoot, objectRoot.rotation * Quaternion.Inverse(affordance.transform.rotation));
 
             return affordance;
         }

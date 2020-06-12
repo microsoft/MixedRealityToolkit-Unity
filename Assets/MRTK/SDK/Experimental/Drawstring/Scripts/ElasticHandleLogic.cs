@@ -41,13 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="leftHandleVelocity">Optional, initial velocity in 1-dimensional stretch space</param>
         /// <param name="rightHandleVelocity">Optional, initial velocity in 1-dimensional stretch space</param>
         public virtual void Setup(Vector3 leftHandleStart, Vector3 rightHandleStart,
-                                    ElasticExtentProperties<float> extentInfo, ElasticProperties elasticProperties,
-                                    float leftHandleVelocity = 0.0f, float rightHandleVelocity = 0.0f)
+                                    ElasticExtentProperties<float> extentInfo, ElasticProperties elasticProperties)
         {
             isSetup = true;
             leftInitialPosition = leftHandleStart;
             rightInitialPosition = rightHandleStart;
-            elasticSystem = new LinearElasticSystem((leftHandleStart - rightHandleStart).magnitude, 0.0f, extentInfo, elasticProperties);
+            elasticSystem = new LinearElasticSystem((leftHandleStart - rightHandleStart).magnitude, elasticSystem?.GetCurrentVelocity() ?? 0.0f, extentInfo, elasticProperties);
         }
 
         /// <summary>

@@ -118,6 +118,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         /// <returns>Current value of the elastic system</returns>
         public T GetCurrentValue() => currentValue;
+
+        /// <summary>
+        /// Query the elastic system for the current instantaneous velocity
+        /// </summary>
+        /// <returns>Current value of the elastic system</returns>
+        public T GetCurrentVelocity() => currentVelocity;
     }
 
     internal class LinearElasticSystem : ElasticSystem<float>

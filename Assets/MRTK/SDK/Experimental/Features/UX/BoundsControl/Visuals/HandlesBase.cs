@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
         protected abstract void RecreateVisuals();
 
-        protected void ResetHandles()
+        protected virtual void ResetHandles()
         {
             if (handles != null)
             {

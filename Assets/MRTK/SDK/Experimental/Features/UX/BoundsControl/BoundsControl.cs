@@ -361,6 +361,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         // Scale of the target at the beginning of the current manipulation
         private Vector3 initialScaleOnGrabStart;
 
+        // Scale of the target at the beginning of the current manipulation
+        private Quaternion initialRotationOnGrabStart;
+
         // Position of the target at the beginning of the current manipulation
         private Vector3 initialPositionOnGrabStart;
 
@@ -474,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 return;
             }
-
+            Debug.Log("CreateRig");
             DestroyRig();
             InitializeRigRoot();
             InitializeDataStructures();
@@ -608,6 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 // also only use proximity effect if nothing is being dragged or grabbed
                 if (!wireframeOnly && currentPointer == null)
                 {
+                    Debug.Log("UpdateScaling?");
                     proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position, currentBoundsExtents);
                 }
             }
@@ -979,12 +983,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 if (transformType == HandleType.Rotation)
                 {
-                    Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
-                    q.ToAngleAxis(out float angle, out Vector3 axis);
+                    //Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    //Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    //Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
+                    //q.ToAngleAxis(out float angle, out Vector3 axis);
 
-                    Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
+                    //Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
+
+                    Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    Quaternion q = Quaternion.FromToRotation(initDir, currentDir);
+                    Target.transform.rotation = q * initialRotationOnGrabStart;
                 }
                 else if (transformType == HandleType.Scale)
                 {
@@ -1079,11 +1088,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
                     initialScaleOnGrabStart = Target.transform.localScale;
+                    initialRotationOnGrabStart = Target.transform.rotation;
                     initialPositionOnGrabStart = Target.transform.position;
                     grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
                     // todo: move this out?
-                    SetHighlighted(grabbedHandleTransform);
+                    SetHighlighted(grabbedHandleTransform, eventData.Pointer);
 
                     if (currentHandleType == HandleType.Scale)
                     {
@@ -1143,7 +1153,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             if (currentPointer != null && currentPointer.InputSourceParent.SourceId == eventData.SourceId)
             {
                 HandleType lastHandleType = currentHandleType;
-
                 currentPointer = null;
                 currentHandleType = HandleType.None;
                 // todo: move this out?
@@ -1173,11 +1182,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #region BoundsControl Visuals Private Methods
 
-        private void SetHighlighted(Transform activeHandle)
+        private void SetHighlighted(Transform activeHandle, IMixedRealityPointer pointer = null)
         {
             scaleHandles.SetHighlighted(activeHandle);
             rotationHandles.SetHighlighted(activeHandle);
             boxDisplay.SetHighlighted();
+
+            if (usePrecisionAffordances && pointer != null)
+            {
+                (rotationHandles as PrecisionRotationHandles).SetPointer(pointer);
+            }
         }
 
         private void ResetVisuals()
@@ -1199,6 +1213,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void CreateVisuals()
         {
+            Debug.Log("CreateVisuals");
+
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
             scaleHandles.Create(ref boundsCorners, rigRoot, isFlattened);

@@ -32,6 +32,19 @@ public class Drawstring : MonoBehaviour
         set => scaleMapping = value;
     }
 
+    [SerializeField]
+    [Tooltip("Nonlinear mapping for magnetizing the diorama to the drawstring.")]
+    private AnimationCurve magnetMapping = null;
+
+    /// <summary>
+    /// Nonlinear mapping for magnetizing the diorama to the drawstring.
+    /// </summary>
+    public AnimationCurve MagnetMapping
+    {
+        get => magnetMapping;
+        set => magnetMapping = value;
+    }
+
 
     [Tooltip("Manipulator which generates the value for the drawstring.")]
     [SerializeField]
@@ -125,15 +138,30 @@ public class Drawstring : MonoBehaviour
         set => carousel = value;
     }
 
+    [SerializeField]
+    [Tooltip("Attachment point")]
+    private Transform attachmentPoint;
+
+    /// <summary>
+    /// Attachment point
+    /// </summary>
+    public Transform AttachmentPoint
+    {
+        get => attachmentPoint;
+        set => attachmentPoint = value;
+    }
+
     private Vector3 valueLabelInitialScale;
     private float valueLabelAnimationTime;
     private Vector3 targetInitialScale;
+    private Vector3 targetInitialPosition;
 
     // Start is called before the first frame update
     void Start()
     {
         valueLabelInitialScale = valueTransform.localScale;
         targetInitialScale = target.localScale;
+        targetInitialPosition = target.position;
     }
 
     // Update is called once per frame
@@ -141,14 +169,16 @@ public class Drawstring : MonoBehaviour
     {
         var animationDirection = Manipulator.IsGrabbed ? 1.0f : -1.0f;
 
+        float scaling = scaleMapping.Evaluate(Manipulator.HandleDistance);
+
         valueLabelAnimationTime = Mathf.Clamp01(valueLabelAnimationTime + animationDirection * Time.deltaTime / valueAnimationDuration);
         valueTransform.localScale = valueLabelInitialScale * valueAnimationCurve.Evaluate(valueLabelAnimationTime);
-        valueText.text = scaleMapping.Evaluate(Manipulator.HandleDistance).ToString("F2") + "x";
+        valueText.text = scaling.ToString("F2") + "x";
 
         int closestIndex = carousel.index;
         float closestValue = Mathf.Abs(Manipulator.HandleDistance - DiscreteLevels[closestIndex]);
 
-        for(int i = 0; i < DiscreteLevels.Count; i++)
+        for (int i = 0; i < DiscreteLevels.Count; i++)
         {
             var variance = Mathf.Abs(Manipulator.HandleDistance - DiscreteLevels[i]);
             if (variance < closestValue && variance < 0.05f)
@@ -160,6 +190,8 @@ public class Drawstring : MonoBehaviour
 
         carousel.index = closestIndex;
 
-        target.localScale = targetInitialScale * scaleMapping.Evaluate(Manipulator.HandleDistance);
+        target.localScale = Vector3.one * scaleMapping.Evaluate(Manipulator.HandleDistance);
+
+        target.position = Vector3.Lerp(attachmentPoint.position, Vector3.zero, magnetMapping.Evaluate(scaling));
     }
 }
