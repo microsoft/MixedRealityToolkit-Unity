@@ -33,9 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string DefaultHoloLens2ProfileGuid = "7e7c962b9eb9dfa44993d5b2f2576752";
         private static readonly string DefaultHoloLens2ProfilePath = AssetDatabase.GUIDToAssetPath(DefaultHoloLens2ProfileGuid);
 
-        private const string BoundaryOnlyProfileGuid = "1945e1d0f0513ea4da45f9296a206ab3";
-        private static readonly string BoundaryOnlyProfilePath = AssetDatabase.GUIDToAssetPath(BoundaryOnlyProfileGuid);
-
         /// <summary>
         /// Test to verify that switching profiles results in appropriate service counts.
         /// </summary>
