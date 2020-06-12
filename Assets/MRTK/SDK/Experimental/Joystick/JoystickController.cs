@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void Update()
         {
-            if (!isDragging)
+            if(!isDragging)
             {
                 // when dragging stops, move joystick back to idle
                 if(grabberVisual != null)
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             // Forward Back = Vertical
             joystickVisualRotation.x = Mathf.Clamp(joystickGrabberPosition.z * SensitivityForwardBack,-joystickVisualMaxRotation, joystickVisualMaxRotation);
             // TODO: calculate joystickVisualRotation.y to always face the proper direction (for when the joystick container gets moved around the scene)
-            if (joystickVisual != null)
+            if(joystickVisual != null)
             {
                 joystickVisual.transform.localRotation = Quaternion.Euler(joystickVisualRotation);
             }
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         {
             if(ObjectToManipulate != null)
             {
-                if (Mode == JoystickMode.Move)
+                if(Mode == JoystickMode.Move)
                 {
                     ObjectToManipulate.transform.position += (joystickGrabberPosition * MoveSpeed);
                     if (debugText != null)
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = ObjectToManipulate.transform.position.ToString();
                     }
                 }
-                else if (Mode == JoystickMode.Rotate)
+                else if(Mode == JoystickMode.Rotate)
                 {
                     Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
                         debugText.text = ObjectToManipulate.transform.localRotation.eulerAngles.ToString();
                     }
                 }
-                else if (Mode == JoystickMode.Scale)
+                else if(Mode == JoystickMode.Scale)
                 {
                     // TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * ScaleSpeed;

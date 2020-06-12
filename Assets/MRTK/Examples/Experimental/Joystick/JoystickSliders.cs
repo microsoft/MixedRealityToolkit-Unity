@@ -20,16 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public PinchSlider SliderRebound;
         public PinchSlider SliderSensitivityHorizontal;
         public PinchSlider SliderSensitivityVertical;
-        //
         public TextMeshPro TextMove;
         public TextMeshPro TextScale;
         public TextMeshPro TextRotate;
         public TextMeshPro TextRebound;
         public TextMeshPro TextSensitivityHorizontal;
         public TextMeshPro TextSensitivityVertical;
-        //
         public JoystickController[] Joysticks;
-        //
         private float MinimumFloatValue = 0.001f;
         private int MinimumIntValue = 1;
         private float DefaultMoveValue= 0.001f;
@@ -38,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         private float DefaultReboundValue = 5f;
         private float DefaultSensitivityHorizontalValue = 3f;
         private float DefaultSliderSensitivityVerticalValue = 6f;
-        //
         private float CurrentMoveValue;
         private float CurrentScaleValue;
         private float CurrentRotateValue;
@@ -61,14 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public void UpdateSliderValues()
         {
             CalculateValues();
-            //
             TextMove.text = CurrentMoveValue.ToString();
             TextScale.text = CurrentScaleValue.ToString();
             TextRotate.text = CurrentRotateValue.ToString();
             TextRebound.text = CurrentReboundValue.ToString();
             TextSensitivityHorizontal.text = CurrentSensitivityHorizontalValue.ToString();
             TextSensitivityVertical.text = CurrentSliderSensitivityVerticalValue.ToString();
-            //
             foreach (JoystickController joystick in Joysticks)
             {
                 joystick.MoveSpeed = CurrentMoveValue;
