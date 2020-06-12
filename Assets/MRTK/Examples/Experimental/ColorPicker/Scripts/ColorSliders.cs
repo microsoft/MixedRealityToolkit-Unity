@@ -32,18 +32,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public TextMeshPro TextSaturation;
         public TextMeshPro TextBrightness;
         //
-        private Color CustomColor = Color.clear;
-        private float hue, saturation, brightness;
+        private Color CustomColor;
+        private float Hue, Saturation, Brightness, Alpha = 0.3f;
         //
         bool IsDragging = false;
+        //
+        private void Start()
+        {
+            CustomColor = Color.red;
+            CustomColor.a = Alpha;
+            UpdateSliderText();
+            ApplyColor();
+        }
         public void UpdateColorHSV()
         {
             if (IsDragging == true)
             {
-                hue = SliderHue.SliderValue;
-                saturation = SliderSaturation.SliderValue;
-                brightness = SliderBrightness.SliderValue;
-                CustomColor = Color.HSVToRGB(hue, saturation, brightness);
+                Hue = SliderHue.SliderValue;
+                Saturation = SliderSaturation.SliderValue;
+                Brightness = SliderBrightness.SliderValue;
+                CustomColor = Color.HSVToRGB(Hue, Saturation, Brightness);
+                CustomColor.a = Alpha;
                 //
                 UpdateSliderText();
                 ApplyColor();
@@ -55,7 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 CustomColor.r = SliderRed.SliderValue;
                 CustomColor.g = SliderGreen.SliderValue;
                 CustomColor.b = SliderBlue.SliderValue;
-                CustomColor.a = SliderAlpha.SliderValue;
+                Alpha = SliderAlpha.SliderValue;
+                CustomColor.a = Alpha;
+                Color.RGBToHSV(CustomColor, out Hue, out Saturation, out Brightness);
                 //
                 UpdateSliderText();
                 ApplyColor();
@@ -72,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void UpdateSliderText()
         {
-            TextRed.text = CustomColor.r.ToString();
-            TextBlue.text = CustomColor.b.ToString();
-            TextGreen.text = CustomColor.g.ToString();
-            TextAlpha.text = CustomColor.a.ToString();
+            TextRed.text = Mathf.RoundToInt(CustomColor.r * 255).ToString();
+            TextBlue.text = Mathf.RoundToInt(CustomColor.b * 255).ToString();
+            TextGreen.text = Mathf.RoundToInt(CustomColor.g * 255).ToString();
+            TextAlpha.text = Mathf.RoundToInt(CustomColor.a * 100) + "%";
             //
-            TextHue.text = hue.ToString();
-            TextSaturation.text = saturation.ToString();
-            TextBrightness.text = brightness.ToString();
+            TextHue.text = Mathf.RoundToInt(Hue * 360).ToString();
+            TextSaturation.text = Mathf.RoundToInt(Saturation * 100) + "%";
+            TextBrightness.text = Mathf.RoundToInt(Brightness * 100) + "%";
         }
         private void ApplyColor()
         {
@@ -108,9 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             SliderGreen.SliderValue = CustomColor.g;
             SliderBlue.SliderValue = CustomColor.b;
             SliderAlpha.SliderValue = CustomColor.a;
-            SliderHue.SliderValue = hue;
-            SliderSaturation.SliderValue = saturation;
-            SliderBrightness.SliderValue = brightness;
+            SliderHue.SliderValue = Hue;
+            SliderSaturation.SliderValue = Saturation;
+            SliderBrightness.SliderValue = Brightness;
         }
     }
 }
