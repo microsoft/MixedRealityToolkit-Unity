@@ -263,17 +263,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // scoped registries collection.
             int dependenciesStartIndex = -1;
             int registriesStartIndex = -1;
-            int registriesEndIndex = -1;
             int packageLine = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
                 {
                     registriesStartIndex = i;
-                }
-                if (manifestFileLines[i].Contains("],") && (registriesStartIndex != -1) && (registriesEndIndex == -1))
-                {
-                    registriesEndIndex = i;
                 }
                 if (manifestFileLines[i].Contains("\"dependencies\": {"))
                 {
@@ -308,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 manifest, 
                 manifestFileLines, 
                 registriesStartIndex,
-                registriesEndIndex);
+                dependenciesStartIndex);
         }
 
         /// <summary>
@@ -353,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Attempt to find the msbuild for unity package
             // This loop also identifies the lines that enclose the scoped registry collection.
             int registriesStartIndex = -1;
-            int registriesEndIndex = -1;
+            int dependenciesStartIndex = -1;
             int packageToRemove = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
@@ -361,9 +356,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     registriesStartIndex = i;
                 }
-                if (manifestFileLines[i].Contains("],") && (registriesStartIndex != -1) && (registriesEndIndex == -1))
+                if (manifestFileLines[i].Contains("\"dependencies\":"))
                 {
-                    registriesEndIndex = i;
+                    dependenciesStartIndex = i;
                 }
                 if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
@@ -388,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 manifest,
                 manifestFileLines,
                 registriesStartIndex,
-                registriesEndIndex);
+                dependenciesStartIndex);
         }
 
         private static PackageManifest LoadManifest(out List<string> manifestFileLines)
@@ -431,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="manifest">The manifest to be written.</param>
         /// <param name="manifestFileLines">Contents of the manifest file as a collection of lines.</param>
         /// <param name="registriesStartIndex">The line number on which the scopedRegistries section begins.</param>
-        /// <param name="registriesEndIndex">The line number on which the scopedRegistries section ends.</param>
+        /// <param name="dependenciesStartIndex">The line number on which the dependencies section begins.</param>
         /// <remarks>
         /// The Unity JSON parser / writer appear to not have full support for dictionaries. As a result, the 
         /// provided manifest contains only the scoped registry collection, while the manifestFileLines contains
@@ -443,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             PackageManifest manifest, 
             List<string> manifestFileLines,
             int registriesStartIndex,
-            int registriesEndIndex)
+            int dependenciesStartIndex)
         {
             // First, serialize the scoped registry collection.
             string serializedRegistriesJson = string.Empty;
@@ -462,7 +457,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // Write each line of the manifest back to the file.
                     for (int i = 0; i < manifestFileLines.Count; i++)
                     {
-                        if ((i >= registriesStartIndex) && (i <= registriesEndIndex))
+                        if ((registriesStartIndex > 0 ) &&
+                            (i >= registriesStartIndex) && 
+                            (i < dependenciesStartIndex))
                         {
                             // Skip these lines, they will be replaced.
                             continue;
