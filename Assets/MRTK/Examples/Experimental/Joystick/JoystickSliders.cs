@@ -20,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public PinchSlider SliderRebound;
         public PinchSlider SliderSensitivityHorizontal;
         public PinchSlider SliderSensitivityVertical;
-        //
         public TextMeshPro TextMove;
         public TextMeshPro TextScale;
         public TextMeshPro TextRotate;
