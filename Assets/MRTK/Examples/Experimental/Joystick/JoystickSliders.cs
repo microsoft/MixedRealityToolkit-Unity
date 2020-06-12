@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public TextMeshPro TextSensitivityHorizontal;
         public TextMeshPro TextSensitivityVertical;
         public JoystickController[] Joysticks;
-        //
         private float MinimumFloatValue = 0.001f;
         private int MinimumIntValue = 1;
         private float DefaultMoveValue= 0.001f;
