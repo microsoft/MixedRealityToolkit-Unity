@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
             if (!isDragging)
             {
                 // when dragging stops, move joystick back to idle
-                if(grabberVisual != null)
+                if (grabberVisual != null)
                 {
                     grabberVisual.transform.localPosition = Vector3.Lerp(grabberVisual.transform.localPosition, startPosition, Time.deltaTime * ReboundSpeed);
                 }
