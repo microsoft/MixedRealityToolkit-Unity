@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             SliderRed.SliderValue = CustomColor.r;
             SliderGreen.SliderValue = CustomColor.g;
             SliderBlue.SliderValue = CustomColor.b;
-            SliderBlue.SliderValue = CustomColor.a;
+            SliderAlpha.SliderValue = CustomColor.a;
             SliderHue.SliderValue = hue;
             SliderSaturation.SliderValue = saturation;
             SliderBrightness.SliderValue = brightness;
