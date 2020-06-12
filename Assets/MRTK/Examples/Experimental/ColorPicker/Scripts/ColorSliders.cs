@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public TextMeshPro TextGreen;
         public TextMeshPro TextBlue;
         public TextMeshPro TextAlpha;
+        public TextMeshPro TextHex;
         public TextMeshPro TextHue;
         public TextMeshPro TextSaturation;
         public TextMeshPro TextBrightness;
@@ -88,6 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             TextGreen.text = Mathf.RoundToInt(CustomColor.g * 255).ToString();
             TextAlpha.text = Mathf.RoundToInt(CustomColor.a * 100) + "%";
             //
+            TextHex.text = "#" + ColorUtility.ToHtmlStringRGBA(CustomColor);
             TextHue.text = Mathf.RoundToInt(Hue * 360).ToString();
             TextSaturation.text = Mathf.RoundToInt(Saturation * 100) + "%";
             TextBrightness.text = Mathf.RoundToInt(Brightness * 100) + "%";
