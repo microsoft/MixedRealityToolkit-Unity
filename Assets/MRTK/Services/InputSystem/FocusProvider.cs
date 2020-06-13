@@ -1534,6 +1534,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnSourceLostPerfMarker.Auto())
             {
+                Debug.Log("focus provider lost source event");
+
                 // If the input source does not have pointers, then skip.
                 if (eventData.InputSource.Pointers == null) { return; }
 
