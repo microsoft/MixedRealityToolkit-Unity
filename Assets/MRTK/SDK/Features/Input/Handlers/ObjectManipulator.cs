@@ -114,6 +114,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Tooltip("Whether to use forces to apply near manipulations. Turning this off will feel more like directly grasping the object.")]
+        private bool useForcesForNearManipulation = false;
+
+        /// <summary>
+        /// Specifies whether to use forces to apply near manipulations.
+        /// </summary>
+        /// <remarks>
+        /// Setting this to false will feel more like directly grasping the object.
+        /// </remarks>
+        public bool UseForcesForNearManipulation
+        {
+            get => useForcesForNearManipulation;
+            set => useForcesForNearManipulation = value;
+        }
+
+        [SerializeField]
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateInOneHandType oneHandRotationModeNear = RotateInOneHandType.RotateAboutGrabPoint;
 
@@ -298,6 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool isManipulationStarted;
 
         private Rigidbody rigidBody;
+        private bool wasGravity = false;
         private bool wasKinematic = false;
 
         private ConstraintManager constraints;
@@ -637,7 +654,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (rigidBody != null)
             {
+                wasGravity = rigidBody.useGravity;
                 wasKinematic = rigidBody.isKinematic;
+                rigidBody.useGravity = false;
                 rigidBody.isKinematic = false;
             }
 
@@ -685,15 +704,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
-
-                var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
-                relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-                if (angle > 180f)
-                    angle -= 360f;
-                if (axis.IsValidVector())
+                if (!useForcesForNearManipulation && IsNearManipulation())
                 {
-                    rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
+                    // If not using forces for near manipulation and this is a near manipulation, apply immediate updates
+                    rigidBody.MovePosition(targetTransform.Position);
+                    rigidBody.MoveRotation(targetTransform.Rotation);
+                }
+                else
+                {
+                    // Far manipulation is always applied using forces
+                    rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
+
+                    var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
+                    relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+                    if (angle > 180f)
+                        angle -= 360f;
+                    if (axis.IsValidVector())
+                    {
+                        rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
+                    }
                 }
 
                 HostTransform.localScale = SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime);
@@ -761,6 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigidBody != null)
             {
+                rigidBody.useGravity = wasGravity;
                 rigidBody.isKinematic = wasKinematic;
 
                 if (releaseBehavior.HasFlag(ReleaseBehaviorType.KeepVelocity))

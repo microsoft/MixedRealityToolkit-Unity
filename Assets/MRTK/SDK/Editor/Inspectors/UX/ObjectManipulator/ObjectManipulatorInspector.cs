@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
+        private SerializedProperty useForcesForNearManipulation;
 
         private SerializedProperty oneHandRotationModeNear;
         private SerializedProperty oneHandRotationModeFar;
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             hostTransform = serializedObject.FindProperty("hostTransform");
             manipulationType = serializedObject.FindProperty("manipulationType");
             allowFarManipulation = serializedObject.FindProperty("allowFarManipulation");
+            useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
 
             // One handed
             oneHandRotationModeNear = serializedObject.FindProperty("oneHandRotationModeNear");
@@ -83,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(hostTransform);
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
+            EditorGUILayout.PropertyField(useForcesForNearManipulation);
 
             var handedness = (ManipulationHandFlags)manipulationType.intValue;
 
