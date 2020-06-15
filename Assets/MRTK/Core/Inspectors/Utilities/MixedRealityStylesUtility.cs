@@ -37,16 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
           };
 
         /// <summary>
-        /// Default style for foldouts with a bold medium font size
-        /// </summary>
-        public static readonly GUIStyle HeaderBoldFoldoutStyle =
-          new GUIStyle(EditorStyles.foldout)
-          {
-              fontStyle = FontStyle.Bold,
-              fontSize = InspectorUIUtility.HeaderFontSize,
-          };
-
-        /// <summary>
         /// Default style for controller mapping buttons
         /// </summary>
         public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("LargeButton")

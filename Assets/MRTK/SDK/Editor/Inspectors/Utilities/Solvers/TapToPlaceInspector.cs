@@ -104,10 +104,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private void RenderAdvancedProperties()
         {
             // Render Advanced Settings
-            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey, MixedRealityStylesUtility.HeaderBoldFoldoutStyle, false))
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced Properties", AdvancedPropertiesFoldoutKey, MixedRealityStylesUtility.TitleFoldoutStyle, false))
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.Space();
+
                     EditorGUILayout.PropertyField(updateLinkedTransformProperty);
                     EditorGUILayout.PropertyField(moveLerpTimeProperty);
                     EditorGUILayout.PropertyField(rotateLerpTimeProperty);
