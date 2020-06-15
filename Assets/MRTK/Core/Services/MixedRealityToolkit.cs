@@ -647,6 +647,14 @@ namespace Microsoft.MixedReality.Toolkit
             UnregisterInstance(this);
         }
 
+        private void OnApplicationPause(bool pause)
+        {
+            if (pause)
+                DisableAllServices();
+            else
+                EnableAllServices();
+        }
+
         #endregion MonoBehaviour Implementation
 
         #region Instance Registration
