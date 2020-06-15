@@ -380,21 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
 
-            string ids = "";
-            foreach (uint id in activeControllers.Keys)
-            {
-                ids += id + ", ";
-            }
-            Debug.Log("ids present on enable" + ids);
-            Debug.Log(numInteractionManagerStates + " states cached on enable");
             UpdateInteractionManagerReading();
-
-            // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            for (var i = 0; i < numInteractionManagerStates; i++)
-            {
-                Debug.Log("would add this typically" + interactionManagerStates[i].source.id);
-                GetOrAddController(interactionManagerStates[i]);
-            }
 
             if (InputSystemProfile.GesturesProfile != null &&
                 InputSystemProfile.GesturesProfile.WindowsGestureAutoStart == AutoStartBehavior.AutoStart)
@@ -476,21 +462,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         controller.UpdateController(interactionManagerStates[i]);
                     }
                 }
-                
-                HashSet<uint> currentActiveIds = new HashSet<uint>(interactionManagerStates.Select(x => x.source.id));
-                List<uint> removedIds = new List<uint>();
-                // Clean up controllers that don't exist any longer
-                foreach (uint id in activeControllers.Keys)
-                {
-                    if(!currentActiveIds.Contains(id))
-                    {
-                        Debug.Log("this id: " + id + " is no longer tracked by the interaction manager");
-                        var controller = activeControllers[id] as BaseWindowsMixedRealitySource;
-                        CleanRemovedController(controller);
-                        removedIds.Add(id);
-                    }
-                }
-                removedIds.ForEach(x => activeControllers.Remove(x));
 
                 LastInteractionManagerStateReading = interactionManagerStates;
             }
@@ -615,30 +586,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
 
-            UpdateInteractionManagerReading();
+            //UpdateInteractionManagerReading();
 
-            foreach (uint id in activeControllers.Keys)
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
             {
-                var controller = activeControllers[id] as BaseWindowsMixedRealitySource;
-                CleanRemovedController(controller);
+                RemoveController(states[i].source);
             }
-            for (var i = 0; i < numInteractionManagerStates; i++)
-            {
-                Debug.Log("removing controllers" + interactionManagerStates[i].source.id);
-                RemoveController(interactionManagerStates[i].source);
-            }
-            numInteractionManagerStates = 0;
-
-            string ids = "";
-            foreach(uint id in activeControllers.Keys)
-            {
-                ids += id + ", ";
-            }
-            Debug.Log("ids left on disable" + ids);
-        }
-
-        public override void ApplicationPause()
-        {
         }
 
         #endregion IMixedRealityDeviceManager Interface
@@ -760,7 +714,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            Debug.Log("added " + interactionSource.id);
             activeControllers.Add(interactionSource.id, detectedController);
             return detectedController;
         }
@@ -775,28 +728,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             if (controller != null)
             {
-                CleanRemovedController(controller);  
+                Service?.RaiseSourceLost(controller.InputSource, controller);
+
+                RecyclePointers(controller.InputSource);
+
+                var visualizer = controller.Visualizer;
+
+                if (visualizer != null && !visualizer.Equals(null) &&
+                    visualizer.GameObjectProxy != null)
+                {
+                    visualizer.GameObjectProxy.SetActive(false);
+                }
             }
 
-            Debug.Log("Attempting to remove " + interactionSource.id);
-            if(activeControllers.Remove(interactionSource.id))
-                Debug.Log("removed " + interactionSource.id);
-        }
-
-        private void CleanRemovedController(BaseWindowsMixedRealitySource controller)
-        {
-            Debug.Log("cleaning controller");
-            Service?.RaiseSourceLost(controller.InputSource, controller);
-
-            RecyclePointers(controller.InputSource);
-
-            var visualizer = controller.Visualizer;
-
-            if (visualizer != null && !visualizer.Equals(null) &&
-                visualizer.GameObjectProxy != null)
-            {
-                visualizer.GameObjectProxy.SetActive(false);
-            }
+            activeControllers.Remove(interactionSource.id);
         }
 
         #endregion Controller Utilities
@@ -809,10 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-            Debug.Log("wmr source detected start");
             GetOrAddController(args.state);
-            Debug.Log("wmr source detected end");
-
         }
 
         /// <summary>
@@ -854,9 +796,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="args">SDK source updated event arguments</param>
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            Debug.Log("wmr source lost start");
             RemoveController(args.state.source);
-            Debug.Log("wmr source lost end");
         }
 
         #endregion Unity InteractionManager Events

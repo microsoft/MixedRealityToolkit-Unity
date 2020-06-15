@@ -1180,8 +1180,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 if (gazePointer != null)
                 {
-                    bool wasGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
-
                     gazePointerStateMachine.UpdateState(
                         NumNearPointersActive,
                         NumFarPointersActive,
@@ -1189,12 +1187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
 
                     bool isGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
-
-                    if (wasGazePointerActive != isGazePointerActive)
-                    {
-                        // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                        gazePointer.IsInteractionEnabled = isGazePointerActive;
-                    }
+                    gazePointer.IsInteractionEnabled = isGazePointerActive;
                 }
             }
         }
@@ -1534,8 +1527,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnSourceLostPerfMarker.Auto())
             {
-                Debug.Log("focus provider lost source event");
-
                 // If the input source does not have pointers, then skip.
                 if (eventData.InputSource.Pointers == null) { return; }
 
