@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void ApplyJoystickValues()
         {
-            if(ObjectToManipulate != null)
+            if (ObjectToManipulate != null)
             {
                 if(Mode == JoystickMode.Move)
                 {
