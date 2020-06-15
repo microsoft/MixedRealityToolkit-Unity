@@ -63,8 +63,5 @@ namespace Microsoft.MixedReality.Toolkit
         /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.
         /// </summary>
         void Destroy();
-
-
-        void ApplicationPause();
     }
 }

@@ -624,11 +624,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 UpdateAllServices();
             }
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.N))
-                OnApplicationPause(true);
-            else if (UnityEngine.Input.GetKeyDown(KeyCode.M))
-                OnApplicationPause(false);
         }
 
         private void LateUpdate()
@@ -650,15 +645,6 @@ namespace Microsoft.MixedReality.Toolkit
         private void OnDestroy()
         {
             UnregisterInstance(this);
-        }
-
-        private void OnApplicationPause(bool pause)
-        {
-            Debug.Log("pausing services" + pause);
-            if (pause)
-                DisableAllServices();
-            else
-                EnableAllServices();
         }
 
         #endregion MonoBehaviour Implementation
@@ -937,34 +923,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             // Reset all systems
             ExecuteOnAllServicesInOrder(service => service.Reset());
-        }
-
-        /// <summary>
-        /// Reset all services in the Mixed Reality Toolkit active service registry for a given type
-        /// </summary>
-        /// <param name="interfaceType">The interface type for the system to be eset.  E.G. InputSystem, BoundarySystem</param>
-        public void PauseAllServicesByType(Type interfaceType)
-        {
-            PauseAllServicesByTypeAndName(interfaceType, string.Empty);
-        }
-        /// <summary>
-        /// Reset all services in the Mixed Reality Toolkit active service registry for a given type and name
-        /// </summary>
-        /// <param name="interfaceType">The interface type for the system to be reset.  E.G. InputSystem, BoundarySystem</param>
-        /// <param name="serviceName">Name of the specific service</param>
-        public void PauseAllServicesByTypeAndName(Type interfaceType, string serviceName)
-        {
-            if (interfaceType == null)
-            {
-                Debug.LogError("Unable to disable null service type.");
-                return;
-            }
-
-            IReadOnlyList<IMixedRealityService> services = GetAllServicesByNameInternal<IMixedRealityService>(interfaceType, serviceName);
-            for (int i = 0; i < services.Count; i++)
-            {
-                services[i].ApplicationPause();
-            }
         }
 
         private void EnableAllServices()
