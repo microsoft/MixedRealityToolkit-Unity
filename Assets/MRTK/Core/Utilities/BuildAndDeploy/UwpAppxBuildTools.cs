@@ -235,6 +235,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // For ARM64 builds we need to add ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch
             // to vcxproj file in order to ensure that the build passes
             string projectFilePath = GetProjectFilePath(buildInfo);
+            if (projectFilePath == null)
+            {
+                return false;
+            }
 
             var rootNode = XElement.Load(projectFilePath);
             var defaultNamespace = rootNode.GetDefaultNamespace();
