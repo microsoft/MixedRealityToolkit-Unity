@@ -650,9 +650,13 @@ namespace Microsoft.MixedReality.Toolkit
         private void OnApplicationPause(bool pause)
         {
             if (pause)
+            {
                 DisableAllServices();
+            }
             else
+            {
                 EnableAllServices();
+            }
         }
 
         #endregion MonoBehaviour Implementation

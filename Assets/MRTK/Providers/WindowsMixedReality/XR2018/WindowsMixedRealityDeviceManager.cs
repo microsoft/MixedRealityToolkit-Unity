@@ -930,8 +930,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             using (UpdateInteractionManagerReadingPerfMarker.Auto())
             {
-                interactionManagerStates = InteractionManager.GetCurrentReading();
-                numInteractionManagerStates = interactionManagerStates.Length;
+                int newSourceStateCount = InteractionManager.numSourceStates;
+                // If there isn't enough space in the cache to hold the results, we should grow it so that it can, but also
+                // grow it in a way that is unlikely to require re-allocations each time.
+                if (newSourceStateCount > interactionManagerStates.Length)
+                {
+                    interactionManagerStates = new InteractionSourceState[newSourceStateCount * InteractionManagerStatesGrowthFactor];
+                }
+
+                // Note that InteractionManager.GetCurrentReading throws when invoked when the number of
+                // source states is zero. In that case, we want to just update the number of read states to be zero.
+                if (newSourceStateCount == 0)
+                {
+                    // clean up existing controllers that didn't trigger the InteractionSourceLost event.
+                    // this can happen eg. when unity is registering cached controllers from a previous play session in the editor.
+                    // those actually don't exist in the current session and therefor won't receive the InteractionSourceLost once  
+                    // Unity's InteractionManager catches up
+                    for (int i = 0; i < numInteractionManagerStates; ++i)
+                    {
+                        RemoveController(interactionManagerStates[i].source);
+                    }
+
+                    numInteractionManagerStates = newSourceStateCount;
+                }
+                else
+                {
+                    // new interaction manager states allocated to a buffer at the end to prevent new memory from being alloc'd each frame
+                    numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionManagerStates);
+                }
             }
         }
 
