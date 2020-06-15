@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.ConfigCheck",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WMR.ConfigCheck",
     "references": [
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
