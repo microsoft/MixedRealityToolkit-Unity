@@ -215,8 +215,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void RefreshFolders()
         {
-            string path = Application.dataPath;
-            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(path));
+            // MRTK may be located in Assets (.unitypackage import) or the Packages (UPM import)
+            // folder. Check both locations.
+            List<string> rootFolders = new List<string>();
+            rootFolders.Add(Application.dataPath);
+            rootFolders.Add(Path.GetFullPath("Packages"));
+            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(rootFolders));
         }
 
         /// <summary>
@@ -371,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private static async Task SearchForFoldersAsync(string rootPath)
+        private static async Task SearchForFoldersAsync(List<string> rootFolders)
         {
             if (searchForFoldersToken != null)
             {
@@ -379,7 +383,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             searchForFoldersToken = new CancellationTokenSource();
-            await Task.Run(() => SearchForFolders(rootPath, searchForFoldersToken.Token), searchForFoldersToken.Token);
+            await Task.Run(() =>
+                {
+                    for (int i = 0; i < rootFolders.Count; i++)
+                    {
+                        SearchForFolders(rootFolders[i], searchForFoldersToken.Token);
+                    }
+                }, searchForFoldersToken.Token);
             searchForFoldersToken = null;
         }
 
