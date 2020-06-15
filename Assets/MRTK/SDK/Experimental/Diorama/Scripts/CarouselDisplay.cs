@@ -16,7 +16,7 @@ public class CarouselDisplay : MonoBehaviour
     private float highlightFrameVerticalOffset;
     private List<TextMeshPro> textObjects = new List<TextMeshPro>();
     // Start is called before the first frame update
-    void OnValidate()
+    void Awake()
     {
         highlightFrameScale = highlightFrame.localScale;
         highlightFrameVerticalOffset = highlightFrame.localPosition.y - elements[0].localPosition.y;

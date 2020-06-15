@@ -9,6 +9,8 @@ public class FFITest : MonoBehaviour
     public Text DisplacementText;
     public Text OrientationText;
 
+    public Text infoText;
+
     public Transform testObject;
     public Transform testGoal;
 
@@ -27,6 +29,7 @@ public class FFITest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     public void StartTest()
@@ -71,6 +74,11 @@ public class FFITest : MonoBehaviour
             OrientationText.color = Color.green;
         }
 
+        var x_a = (new Vector3(testObject.position.x, 0, testObject.position.z)).magnitude;
+        var theta_b = Vector3.Angle(testObject.position, testGoal.position - testObject.position);
+        var x_b = (testObject.position - testGoal.position).magnitude;
+        var theta_c = (testGoal.rotation.eulerAngles).y;
 
+        infoText.text = $"x_a = {x_a} m\ntheta_b = {theta_b} deg\nx_b = {x_b} m\ntheta_c = {theta_c} deg";
     }
 }
