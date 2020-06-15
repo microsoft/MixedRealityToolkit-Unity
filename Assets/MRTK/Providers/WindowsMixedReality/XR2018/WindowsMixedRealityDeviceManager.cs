@@ -585,9 +585,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
             InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
-
-            //UpdateInteractionManagerReading();
-
+            
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {

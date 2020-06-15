@@ -44,11 +44,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void Destroy() { }
 
-
-        /// <inheritdoc />
-        public virtual void ApplicationPause() { }
-
-
         #endregion IMixedRealityService Implementation
 
         #region IDisposable Implementation
