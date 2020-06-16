@@ -138,6 +138,73 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test that if we toggle the bounding box's active status,
+        /// that the size of the boundsOverride is consistent, even
+        /// when BoxPadding is set.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator BoundsOverridePaddingReset()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            boundsControl.HideElementsInInspector = false;
+
+            // Set the bounding box to have a large padding.
+            boundsControl.BoxPadding = Vector3.one;
+            yield return null;
+
+            var newObject = new GameObject();
+            var bc = newObject.AddComponent<BoxCollider>();
+            bc.center = new Vector3(1, 2, 3);
+            var backupSize = bc.size = new Vector3(1, 2, 3);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Change the center and size of the boundsOverride
+            // in the middle of execution, to ensure
+            // these changes will be correctly reflected
+            // in the BoundingBox after toggling.
+            bc.center = new Vector3(0.1776f, 0.42f, 0.0f);
+            backupSize = bc.size = new Vector3(0.1776f, 0.42f, 1.0f);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Private helper function to prevent code copypasta.
+            IEnumerator VerifyBoundingBox()
+            {
+                // Toggle the bounding box active status to check that the boundsOverride
+                // will persist, and will not be destructively resized 
+                boundsControl.gameObject.SetActive(false);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+                boundsControl.gameObject.SetActive(true);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+
+                Bounds b = GetBoundsControlRigBounds(boundsControl);
+
+                var expectedSize = backupSize + Vector3.Scale(boundsControl.BoxPadding, newObject.transform.lossyScale);
+                Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
+                Debug.Assert(b.size == expectedSize, $"bounds size should be {expectedSize} but they are {b.size}");
+                Debug.Assert(bc.size == expectedSize, $"boundsOverride's size was corrupted.");
+            }
+
+            GameObject.Destroy(boundsControl.gameObject);
+            GameObject.Destroy(newObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Uses near interaction to scale the bounds control by directly grabbing corner
         /// </summary>
         [UnityTest]
