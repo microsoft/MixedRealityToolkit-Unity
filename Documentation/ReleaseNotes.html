@@ -89,8 +89,14 @@
 <li><a href="#known-issues">Known issues</a></li>
 </ul>
 <h3 id="whats-new">What's new</h3>
+<p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
+<p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
+<p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
+<p>This change also adds the ability to remove MSBulid for Unity.</p>
+<p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
+<p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
 <h3 id="breaking-changes">Breaking changes</h3>
-<p>** Rest / Device Portal API**</p>
+<p><strong>Rest / Device Portal API</strong></p>
 <p>The <code>UseSSL</code> static property has been moved from <code>Rest</code> to <code>DevicePortal</code>.</p>
 <p>If you did this previously...</p>
 <pre><code class="lang-csharp">Rest.UseSSL = true
