@@ -82,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(maxRaycastDistance);
             EditorGUILayout.PropertyField(useDefaultSurfaceNormalOffset);
 
-            // Only show the SurfaceNormalOffset Property if UseDefaultSurfaceNormalOffset is false
+            // Only show the SurfaceNormalOffset property if UseDefaultSurfaceNormalOffset is false because setting the SurfaceNormalOffset of 
+            // a tap to place object is only relevant if the defaultSurfaceNormalOffset is not used
             if (!instance.UseDefaultSurfaceNormalOffset)
             {
                 EditorGUILayout.PropertyField(surfaceNormalOffset);
