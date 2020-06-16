@@ -73,6 +73,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 ApplyColor();
             }
         }
+        //public void UpdateColorHEX()
+        //{
+        //    string s = "#" + TextHex.text;
+        //    ColorUtility.TryParseHtmlString(s, out CustomColor);
+        //    UpdateSliderText();
+        //    ApplyColor();
+        //}
+        //public void UpdateColorHEX1(string colorString)
+        //{
+        //    string s = "#" + colorString;
+        //    ColorUtility.TryParseHtmlString(s, out CustomColor);
+        //    UpdateSliderText();
+        //    ApplyColor();
+        //}
+        public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
+        {
+            CustomColor = meshRenderer.material.color;
+            UpdateSliderText();
+            ApplyColor();
+            ApplySliderValues();
+        }
         public void StartDrag()
         {
             IsDragging = true;
