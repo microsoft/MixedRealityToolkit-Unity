@@ -265,6 +265,48 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        [Header("Smoothing")]
+        [SerializeField]
+        [Tooltip("Check to enable frame-rate independent smoothing.")]
+        private bool smoothingActive = false;
+
+        /// <summary>
+        /// Check to enable frame-rate independent smoothing.
+        /// </summary>
+        public bool SmoothingActive
+        {
+            get => smoothingActive;
+            set => smoothingActive = value;
+        }
+
+        [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float rotateLerpTime = 0.001f;
+
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
+        public float RotateLerpTime
+        {
+            get => rotateLerpTime;
+            set => rotateLerpTime = value;
+        }
+
+        [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float scaleLerpTime = 0.001f;
+
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
+        public float ScaleLerpTime
+        {
+            get => scaleLerpTime;
+            set => scaleLerpTime = value;
+        }
+
         [Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
@@ -347,6 +389,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         // Scale of the target at the beginning of the current manipulation
         private Vector3 initialScaleOnGrabStart;
+
+        // Rotation of the target at the beginning of the current manipulation
+        private Quaternion initialRotationOnGrabStart;
 
         // Position of the target at the beginning of the current manipulation
         private Vector3 initialPositionOnGrabStart;
@@ -957,12 +1002,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 if (transformType == HandleType.Rotation)
                 {
-                    Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
-                    q.ToAngleAxis(out float angle, out Vector3 axis);
-
-                    Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
+                    Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
+                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
+                    Debug.DrawLine(transform.position, initDir);
+                    Debug.DrawLine(transform.position, currentDir);
+                    Quaternion q = Quaternion.FromToRotation(initDir, currentDir);
+                    Target.transform.rotation = SmoothTo(Target.transform.rotation, q * initialRotationOnGrabStart, rotateLerpTime);
                 }
                 else if (transformType == HandleType.Scale)
                 {
@@ -982,10 +1027,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         }
                     }
 
-                    Target.transform.localScale = clampedTransform.Scale;
-                    Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
+                    var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
+                    Target.transform.localScale = SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime);
+                    Target.transform.position = SmoothTo(Target.transform.position, newPosition, scaleLerpTime);
                 }
             }
+        }
+
+        private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
+        {
+            return Vector3.Lerp(source, goal, (!smoothingActive || lerpTime == 0f) ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
+        }
+
+        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float slerpTime)
+        {
+            return Quaternion.Slerp(source, goal, (!smoothingActive || slerpTime == 0f) ? 1f : 1f - Mathf.Pow(slerpTime, Time.deltaTime));
         }
 
         private void OnTargetBoundsChanged()
@@ -1057,6 +1113,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
                     initialScaleOnGrabStart = Target.transform.localScale;
+                    initialRotationOnGrabStart = Target.transform.rotation;
                     initialPositionOnGrabStart = Target.transform.position;
                     grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
