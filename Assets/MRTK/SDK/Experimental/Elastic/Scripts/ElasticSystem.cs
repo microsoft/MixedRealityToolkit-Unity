@@ -32,10 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
         /// <value>
         /// Whether the system, when approaching the upper bound,
-        /// will treat the upper bound as a snap point.
+        /// will treat the end limits like snap points and magnetize to them.
         /// </value>
         [SerializeField]
-        public bool SnapToMax;
+        public bool SnapToEnd;
 
         /// <value>
         /// Points inside the extent to which the system will snap.
@@ -107,10 +107,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         /// <summary>
-        /// Update the internal state of the damped harmonic oscillator, given the forcing/desired value.
+        /// Update the internal state of the damped harmonic oscillator,
+        /// given the forcing/desired value, returning the new value.
         /// </summary>
         /// <param name="forcingValue">Input value, for example, a desired manipulation position.</param>
         /// <param name="deltaTime">Amount of time that has passed since the last update.</param>
+        /// <returns>The new value of the system.</returns>
         public abstract T ComputeIteration(T forcingValue, float deltaTime);
 
         /// <summary>
@@ -129,9 +131,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     internal class LinearElasticSystem : ElasticSystem<float>
     {
         public LinearElasticSystem(float initialValue, float initialVelocity,
-                                ElasticExtentProperties<float> extentInfo, ElasticProperties elasticProperties)
-        : base(initialValue, initialVelocity, extentInfo, elasticProperties) { }
-
+                                   ElasticExtentProperties<float> extentInfo,
+                                   ElasticProperties elasticProperties)
+                                   : base(initialValue, initialVelocity,
+                                          extentInfo, elasticProperties) { }
 
         /// <summary>
         /// Update the internal state of the damped harmonic oscillator, given the forcing/desired value.
@@ -155,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             else
             {
                 // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                if (extentInfo.SnapToMax)
+                if (extentInfo.SnapToEnd)
                 {
                     force += (distFromEnd) * elasticProperties.EndK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromEnd / elasticProperties.SnapRadius)));
                 }
@@ -169,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             else
             {
                 // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                if (extentInfo.SnapToMax)
+                if (extentInfo.SnapToEnd)
                 {
                     force += (distFromEnd) * elasticProperties.EndK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromEnd / elasticProperties.SnapRadius)));
                 }
