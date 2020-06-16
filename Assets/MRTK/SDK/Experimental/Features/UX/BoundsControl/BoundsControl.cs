@@ -471,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // Record what the initial size of the bounds override
             // was when we constructed the rig, so we can restore
             // it after we destructively edit the size with the
-            // BoxPadding (#7997)
+            // BoxPadding (https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7997)
             if (boundsOverride != null)
             {
                 initialBoundsOverrideSize = boundsOverride.size;
