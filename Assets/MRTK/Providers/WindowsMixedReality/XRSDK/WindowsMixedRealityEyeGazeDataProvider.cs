@@ -4,11 +4,15 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+using UnityEngine.XR;
+
+#if WMR_ENABLED
 using System;
 using Unity.Profiling;
 using Unity.XR.WindowsMR;
 using UnityEngine;
-using UnityEngine.XR;
+#endif // WMR_ENABLED
+
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -42,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
+#if WMR_ENABLED
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.Update");
 
         /// <inheritdoc />
@@ -67,7 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     Quaternion eyeGazeRotation;
                     if (centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazePosition, out eyeGazePosition) && centerEye.TryGetFeatureValue(WindowsMRUsages.EyeGazeRotation, out eyeGazeRotation))
                     {
-                        Ray newGaze = new Ray(eyeGazePosition, eyeGazeRotation * Vector3.forward);
+                        Vector3 worldPosition = CameraCache.Main.transform.TransformPoint(eyeGazePosition);
+                        Vector3 worldRotation = CameraCache.Main.transform.TransformDirection(eyeGazeRotation * Vector3.forward);
+
+                        Ray newGaze = new Ray(worldPosition, worldRotation);
 
                         if (SmoothEyeTracking)
                         {
@@ -79,5 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
+#endif // WMR_ENABLED
     }
 }
