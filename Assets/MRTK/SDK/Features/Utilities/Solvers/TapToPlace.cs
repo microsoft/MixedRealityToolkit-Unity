@@ -204,7 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         /// <summary>
         /// The default value for SurfaceNormalOffset if UseDefaultSurfaceNormalOffset is true.  This value ensures an object
-        /// will be placed in alignment with a surface.
+        /// will be placed in alignment with a surface. This value is not cached to specifically support adjustments to object scale 
+        /// while in the placing state.
         /// </summary>
         private float defaultSurfaceNormalOffset => gameObject.GetComponent<Collider>().bounds.extents.z;
 
