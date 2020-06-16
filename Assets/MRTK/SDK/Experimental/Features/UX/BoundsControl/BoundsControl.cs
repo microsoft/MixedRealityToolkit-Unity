@@ -1004,8 +1004,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
                     Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
-                    Debug.DrawLine(transform.position, initDir);
-                    Debug.DrawLine(transform.position, currentDir);
                     Quaternion q = Quaternion.FromToRotation(initDir, currentDir);
                     Target.transform.rotation = SmoothTo(Target.transform.rotation, q * initialRotationOnGrabStart, rotateLerpTime);
                 }
