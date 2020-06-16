@@ -1004,8 +1004,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
                     Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
-                    Quaternion q = Quaternion.FromToRotation(initDir, currentDir);
-                    Target.transform.rotation = SmoothTo(Target.transform.rotation, q * initialRotationOnGrabStart, rotateLerpTime);
+                    Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
+                    Target.transform.rotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.rotation, goal, rotateLerpTime, Time.deltaTime) : goal;
                 }
                 else if (transformType == HandleType.Scale)
                 {
@@ -1026,22 +1026,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
 
                     var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
-                    Target.transform.localScale = SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime);
-                    Target.transform.position = SmoothTo(Target.transform.position, newPosition, scaleLerpTime);
+                    Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
+                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
             }
         }
-
-        private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
-        {
-            return Vector3.Lerp(source, goal, (!smoothingActive || lerpTime == 0f) ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
-        }
-
-        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float slerpTime)
-        {
-            return Quaternion.Slerp(source, goal, (!smoothingActive || slerpTime == 0f) ? 1f : 1f - Mathf.Pow(slerpTime, Time.deltaTime));
-        }
-
+        
         private void OnTargetBoundsChanged()
         {
             DetermineTargetBounds();
