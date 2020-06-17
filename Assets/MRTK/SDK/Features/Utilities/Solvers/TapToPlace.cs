@@ -75,23 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public float SurfaceNormalOffset
         {
             get => surfaceNormalOffset;
-            set
-            {
-                if (surfaceNormalOffset != value)
-                {
-                    // If the current surface normal offset is the defaultSurfaceNormalOffset set the UseDefaultSurfaceNormalOffset
-                    if (value == defaultSurfaceNormalOffset)
-                    {
-                        UseDefaultSurfaceNormalOffset = true;
-                    }
-                    else
-                    {
-                        UseDefaultSurfaceNormalOffset = false;
-                    }
-
-                    surfaceNormalOffset = value;
-                }
-            }
+            set => surfaceNormalOffset = value;
         }
 
         [SerializeField]
@@ -348,13 +332,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 GoalPosition = CurrentHit.point;
 
                 // Allow switching between a specified SurfaceNormalOffset and the defaultSurfaceNormalOffset while the object is in the placing state
-                if (UseDefaultSurfaceNormalOffset && SurfaceNormalOffset != defaultSurfaceNormalOffset)
-                {
-                    SurfaceNormalOffset = defaultSurfaceNormalOffset;
-                }
+                // The defaultSurfaceNormalOffset is based on the Z extents of the bounds on a collider which is subject to change while the object is in the placing state
+                float currentSurfaceNormalOffset = UseDefaultSurfaceNormalOffset ? defaultSurfaceNormalOffset : SurfaceNormalOffset; 
 
-                AddOffset(CurrentHit.normal * SurfaceNormalOffset);
-
+                AddOffset(CurrentHit.normal * currentSurfaceNormalOffset);
+                
 #if UNITY_EDITOR
                 if (DebugEnabled)
                 {
