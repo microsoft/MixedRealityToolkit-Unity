@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// <summary>
     /// Example script to demonstrate adding sliders to control material values at runtime.
     /// </summary>
-    public class ColorSliders : MonoBehaviour
+    public class ColorPicker : MonoBehaviour
     {
         public MeshRenderer[] TargetObjectMesh;
         public SpriteRenderer[] TargetObjectSprite;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         private Color CustomColor;
         private float Hue, Saturation, Brightness, Alpha = 0.3f;
         //
-        private bool IsDragging = false;
+        private bool IsDraggingSliders = false;
         private bool IsDraggingGradient = false;
         //
         private void Start()
@@ -58,6 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             if (IsDraggingGradient)
             {
                 ConstrainDragging();
+            }
+            if (IsDraggingSliders)
+            {
+                GradientDragCurrentPosition.x = ((Saturation + GradientDragMaxDistance) * -1)+1;
+                GradientDragCurrentPosition.y = Brightness - GradientDragMaxDistance;
+                GradientDragger.transform.localPosition = GradientDragCurrentPosition;
             }
         }
         public void StartDragGradient()
@@ -102,13 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             Saturation = Mathf.Abs(GradientDragCurrentPosition.x + (GradientDragMaxDistance * -1));
             Brightness = GradientDragCurrentPosition.y + GradientDragMaxDistance;
             CustomColor = Color.HSVToRGB(Hue, Saturation, Brightness);
+            CustomColor.a = Alpha;
             //
             UpdateSliderText();
             ApplyColor();
         }
         public void UpdateColorHSV()
         {
-            if (IsDragging == true)
+            if (IsDraggingSliders == true)
             {
                 Hue = SliderHue.SliderValue;
                 Saturation = SliderSaturation.SliderValue;
@@ -121,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
         }
         public void UpdateColorRGB() {
-            if (IsDragging == true)
+            if (IsDraggingSliders == true)
             {
                 CustomColor.r = SliderRed.SliderValue;
                 CustomColor.g = SliderGreen.SliderValue;
@@ -137,17 +144,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
         {
             CustomColor = meshRenderer.material.color;
+            CustomColor.a = Alpha;
             UpdateSliderText();
             ApplyColor();
             ApplySliderValues();
         }
         public void StartDrag()
         {
-            IsDragging = true;
+            IsDraggingSliders = true;
         }
         public void StopDrag()
         {
-            IsDragging = false;
+            IsDraggingSliders = false;
             ApplySliderValues();
         }
         private void UpdateSliderText()
