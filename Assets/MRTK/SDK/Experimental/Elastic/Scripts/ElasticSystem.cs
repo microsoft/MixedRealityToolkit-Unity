@@ -4,8 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
 
@@ -98,7 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         protected T currentVelocity;
 
         public ElasticSystem(T initialValue, T initialVelocity,
-                                ElasticExtentProperties<T> extentInfo, ElasticProperties elasticProperties)
+                             ElasticExtentProperties<T> extentInfo,
+                             ElasticProperties elasticProperties)
         {
             this.extentInfo = extentInfo;
             this.elasticProperties = elasticProperties;
@@ -149,46 +153,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             // Distance that the current stretch value is from the end limit.
             float distFromEnd = extentInfo.MaxStretch - currentValue;
 
-            // If we are extended beyond the end cap,
-            // add one-sided force back to the center.
-            if (currentValue > extentInfo.MaxStretch)
-            {
-                force += distFromEnd * elasticProperties.EndK;
-            }
-            else
-            {
-                // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                if (extentInfo.SnapToEnd)
-                {
-                    force += (distFromEnd) * elasticProperties.EndK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromEnd / elasticProperties.SnapRadius)));
-                }
-            }
+            // Add force to the "left" if we are beyond the max stretch.
+            // (or, if enabled, add snapping force if we are near the endpoint)
+            force -= computeEndForce(currentValue - extentInfo.MaxStretch);
 
-            distFromEnd = extentInfo.MinStretch - currentValue;
-            if (currentValue < extentInfo.MinStretch)
-            {
-                force += distFromEnd * elasticProperties.EndK;
-            }
-            else
-            {
-                // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                if (extentInfo.SnapToEnd)
-                {
-                    force += (distFromEnd) * elasticProperties.EndK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromEnd / elasticProperties.SnapRadius)));
-                }
-            }
+            // Add force to the "right" if we are beyond the max stretch.
+            // (or, if enabled, add snapping force if we are near the endpoint)
+            force += computeEndForce(extentInfo.MinStretch - currentValue);
 
             // Iterate over each snapping point, and apply forces as necessary.
             foreach (float snappingPoint in extentInfo.SnapPoints)
             {
                 // Calculate distance from snapping point.
                 var distFromSnappingPoint = snappingPoint - currentValue;
+                force += computeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, elasticProperties.SnapRadius);
+            }
 
+            // Helper closure to reduce force calculation copypasta.
+            float computeEndForce(float current)
+            {
+                // If we are extended beyond the end cap,
+                // add one-sided force back to the center.
+                if(current > 0)
+                {
+                    return current * elasticProperties.EndK;
+                }
+                else
+                {
+                    // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
+                    return extentInfo.SnapToEnd ? computeSnapForce(current, elasticProperties.EndK, elasticProperties.SnapRadius) : 0.0f;
+                }
+            }
+
+            // Helper closure to reduce force calculation copypasta.
+            float computeSnapForce(float distFromPoint, float k, float radius)
+            {
                 // Snap force is calculated by multiplying the "-kx" factor by
                 // a clamped distance factor. This results in an overall
                 // hyperbolic profile to the force imparted by the snap point.
-                force += (distFromSnappingPoint) * elasticProperties.SnapK
-                          * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromSnappingPoint / elasticProperties.SnapRadius)));
+                return (distFromPoint) * elasticProperties.SnapK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromPoint / radius)));
             }
 
             // a = F/m
