@@ -88,8 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// If true, the default surface normal offset will be used instead of any value specified for the SurfaceNormalOffset property.  
         /// If false, the SurfaceNormalOffset is used. The default surface normal offset is the Z extents of the bounds on the attached collider, this 
-        /// ensures the object being placed is aligned on a surface. This property is automatically set to false if the SurfaceNormalOffset property is set and is not 
-        /// the default value.
+        /// ensures the object being placed is aligned on a surface.
         /// </summary>
         public bool UseDefaultSurfaceNormalOffset
         {
