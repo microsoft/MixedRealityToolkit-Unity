@@ -33,15 +33,76 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public TextMeshPro TextSaturation;
         public TextMeshPro TextBrightness;
         //
+        public GameObject GradientDragger;
+        private float GradientDragMaxDistance = 0.5f;
+        private Vector3 GradientDragStartPosition;
+        private Vector3 GradientDragCurrentPosition;
+        //
         private Color CustomColor;
         private float Hue, Saturation, Brightness, Alpha = 0.3f;
         //
-        bool IsDragging = false;
+        private bool IsDragging = false;
+        private bool IsDraggingGradient = false;
         //
         private void Start()
         {
+            GradientDragStartPosition = GradientDragger.transform.localPosition;
+            GradientDragCurrentPosition = GradientDragStartPosition;
             CustomColor = Color.red;
             CustomColor.a = Alpha;
+            UpdateSliderText();
+            ApplyColor();
+        }
+        private void Update()
+        {
+            if (IsDraggingGradient)
+            {
+                ConstrainDragging();
+            }
+        }
+        public void StartDragGradient()
+        {
+            IsDraggingGradient = true;
+        }
+        public void StopDragGradient()
+        {
+            IsDraggingGradient = false;
+            ApplySliderValues();
+        }
+        private void ConstrainDragging()
+        {
+            // Horizontal
+            if (GradientDragger.transform.localPosition.x >= GradientDragStartPosition.x + GradientDragMaxDistance)
+            {
+                GradientDragCurrentPosition.x = GradientDragStartPosition.x + GradientDragMaxDistance;
+            }
+            else if (GradientDragger.transform.localPosition.x <= GradientDragStartPosition.x - GradientDragMaxDistance)
+            {
+                GradientDragCurrentPosition.x = GradientDragStartPosition.x - GradientDragMaxDistance;
+            }
+            else
+            {
+                GradientDragCurrentPosition.x = GradientDragger.transform.localPosition.x;
+            }
+            // Vertical
+            if (GradientDragger.transform.localPosition.y >= GradientDragStartPosition.y + GradientDragMaxDistance)
+            {
+                GradientDragCurrentPosition.y = GradientDragStartPosition.y + GradientDragMaxDistance;
+            }
+            else if (GradientDragger.transform.localPosition.y <= GradientDragStartPosition.y - GradientDragMaxDistance)
+            {
+                GradientDragCurrentPosition.y = GradientDragStartPosition.y - GradientDragMaxDistance;
+            }
+            else
+            {
+                GradientDragCurrentPosition.y = GradientDragger.transform.localPosition.y;
+            }
+            GradientDragger.transform.localPosition = GradientDragCurrentPosition;
+            //DebugText.text = GradientDragCurrentPosition.ToString();
+            Saturation = Mathf.Abs(GradientDragCurrentPosition.x + (GradientDragMaxDistance * -1));
+            Brightness = GradientDragCurrentPosition.y + GradientDragMaxDistance;
+            CustomColor = Color.HSVToRGB(Hue, Saturation, Brightness);
+            //
             UpdateSliderText();
             ApplyColor();
         }
@@ -73,20 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 ApplyColor();
             }
         }
-        //public void UpdateColorHEX()
-        //{
-        //    string s = "#" + TextHex.text;
-        //    ColorUtility.TryParseHtmlString(s, out CustomColor);
-        //    UpdateSliderText();
-        //    ApplyColor();
-        //}
-        //public void UpdateColorHEX1(string colorString)
-        //{
-        //    string s = "#" + colorString;
-        //    ColorUtility.TryParseHtmlString(s, out CustomColor);
-        //    UpdateSliderText();
-        //    ApplyColor();
-        //}
         public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
         {
             CustomColor = meshRenderer.material.color;
