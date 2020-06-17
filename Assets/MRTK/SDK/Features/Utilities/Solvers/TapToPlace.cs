@@ -75,7 +75,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public float SurfaceNormalOffset
         {
             get => surfaceNormalOffset;
-            set => surfaceNormalOffset = value;
+            set
+            {
+                // If a user were to configure Tap to Place via script and they try to set the SurfaceNormalOffset while UseDefaultSurfaceNormalOffset is true, display the following error:
+                Debug.Assert(!UseDefaultSurfaceNormalOffset, $"The new value for SurfaceNormalOffset on the Tap to Place object will not be applied because UseDefaultSurfaceNormalOffset is true, set UseDefaultSurfaceNormalOffset to false.");
+
+                surfaceNormalOffset = value;
+            }
         }
 
         [SerializeField]

@@ -844,14 +844,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             tapToPlace.KeepOrientationVertical = true;
             tapToPlace.RotateAccordingToSurface = true;
 
-            // Set UseDefaultSurfaceNormalOffset
+            // Switch off UseDefaultSurfaceNormalOffset, this shifts the current surface normal offset value to SurfaceNormalOffset
             tapToPlace.UseDefaultSurfaceNormalOffset = false;
 
             // Make sure the SurfaceNormalOffset is not the default z extents of the bounds
             Assert.AreNotEqual(tapToPlace.SurfaceNormalOffset, tapToPlaceObj.target.GetComponent<Collider>().bounds.extents.z);
-       
-            // Make sure the default SurfaceNormalOffset is 0 initially, 0 is the SurfaceNormalOffset default
-            Assert.AreEqual(tapToPlace.SurfaceNormalOffset, 0);
 
             // Start the placement via code instead of click from the hand
             tapToPlace.StartPlacement();
@@ -859,32 +856,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(tapToPlace.IsBeingPlaced);
 
-            // Move hand, object should follow
+            // Move hand in front of a collider for surface detection, the Tap to Place object should follow
             yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
 
             // Make sure the depth of the Tap to Place Object is very close to the depth of the wall because the SurfaceNormalOffset is 0
             Assert.AreEqual(tapToPlaceObj.target.transform.position.z, colliderObj1.transform.position.z, 0.05f);
 
+            // Move hand between the colliders, the Tap to Place object should have a greater z position because the raycast did not detect a surface
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
+
+            // Move the hand in front of a collider for a surface detection
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+
             // Set the UseDefaultSurfaceNormalOffset to true while still in the placing state
             tapToPlace.UseDefaultSurfaceNormalOffset = true;
             yield return null;
 
-            // Make sure the SurfaceNormalOffset is the z extents of the bounds after UseDefaultSurfaceNormalOffset is set to true
-            Assert.AreEqual(tapToPlace.SurfaceNormalOffset, tapToPlaceObj.target.GetComponent<Collider>().bounds.extents.z);
-
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
-            Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
-            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
-
             // Make sure the depth of the Tap to Place Object is less than the depth of the wall because UseDefaultSurfaceNormalOffset is true
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
-
-            // Set a new SurfaceNormalOffset
-            tapToPlace.SurfaceNormalOffset = 0.5f;
-            yield return null;
-
-            // Make sure UseDefaultSurfaceNormalOffset was automatically set to false if a new SurfaceNormalOffset is specified
-            Assert.False(tapToPlace.UseDefaultSurfaceNormalOffset);
 
             // Stop the placement via code instead of click from the hand
             tapToPlace.StopPlacement();
