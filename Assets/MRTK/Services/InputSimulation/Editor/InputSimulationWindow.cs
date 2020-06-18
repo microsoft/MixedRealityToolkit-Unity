@@ -460,20 +460,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void LoadIcons()
         {
-            LoadTexture(ref iconPlay, "MRTK_TimelinePlay.png");
-            LoadTexture(ref iconRecord, "MRTK_TimelineRecord.png");
-            LoadTexture(ref iconRecordActive, "MRTK_TimelineRecordActive.png");
-            LoadTexture(ref iconStepFwd, "MRTK_TimelineStepFwd.png");
-            LoadTexture(ref iconJumpFwd, "MRTK_TimelineJumpFwd.png");
-            LoadTexture(ref iconJumpBack, "MRTK_TimelineJumpBack.png");
+            // MRTK_TimelinePlay.png
+            LoadTexture(ref iconPlay, "474f3f21b48daea4f8617806305769ff");
+            // MRTK_TimelineRecord.png
+            LoadTexture(ref iconRecord, "c079cf55f13c1dc4db7d09053a51a40d");
+            // MRTK_TimelineRecordActive.png
+            LoadTexture(ref iconRecordActive, "6752387ee2181ee4fbef5cc74691b6ac");
+            // MRTK_TimelineStepFwd.png
+            LoadTexture(ref iconStepFwd, "230b98155638e544892c123d8d674737");
+            // MRTK_TimelineJumpFwd.png
+            LoadTexture(ref iconJumpFwd, "3afb597cbd6ec44439ea7b8ce92d957a");
+            // MRTK_TimelineJumpBack.png
+            LoadTexture(ref iconJumpBack, "a5d8e80a54741dc459e4f116e1d477f2");
         }
 
-        private static void LoadTexture(ref Texture2D tex, string filename)
+        private static void LoadTexture(ref Texture2D tex, string fileGuid)
         {
-            const string assetPath = "StandardAssets/Textures";
             if (tex == null)
             {
-                tex = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath(Path.Combine(assetPath, filename)), typeof(Texture2D));
+                tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(fileGuid));
             }
         }
     }
