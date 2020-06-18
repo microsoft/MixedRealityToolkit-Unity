@@ -159,12 +159,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplyColor();
             ApplySliderValues();
         }
-        public void StartDrag()
+        public void StartDrag(GameObject dragger)
         {
+            dragger.SetActive(true);
             IsDraggingSliders = true;
         }
-        public void StopDrag()
+        public void StopDrag(GameObject dragger)
         {
+            dragger.SetActive(false);
             IsDraggingSliders = false;
             ApplySliderValues();
         }
