@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public TextMeshPro TextSaturation;
         public TextMeshPro TextBrightness;
         //
+        public MeshRenderer GradientMesh;
         public GameObject GradientDragger;
         private float GradientDragMaxDistance = 0.5f;
         private Vector3 GradientDragStartPosition;
@@ -172,7 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void ApplyColor()
         {
-            foreach(MeshRenderer rend in TargetObjectMesh)
+            GradientMesh.material.color = Color.HSVToRGB(Hue, 1, 1);
+            foreach (MeshRenderer rend in TargetObjectMesh)
             {
                 if(rend != null)
                 {
