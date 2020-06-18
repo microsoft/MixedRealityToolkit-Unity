@@ -2,11 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -15,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class InputSimulationWindow : EditorWindow
     {
-        private InputAnimation animation
+        private InputAnimation Animation
         {
             get { return PlaybackService?.Animation; }
             set { if (PlaybackService != null) PlaybackService.Animation = value; }
@@ -77,15 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Playback,
         }
 
-        private ToolMode mode = ToolMode.Record;
-        public ToolMode Mode
-        {
-            get { return mode; }
-            private set
-            {
-                mode = value;
-            }
-        }
+        public ToolMode Mode { get; private set; } = ToolMode.Record;
 
         /// Icon textures
         private Texture2D iconPlay = null;
@@ -121,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
 
-            switch (mode)
+            switch (Mode)
             {
                 case ToolMode.Record:
                     DrawRecordingGUI();
@@ -341,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 float time = PlaybackService.LocalTime;
-                float duration = (animation != null ? animation.Duration : 0.0f);
+                float duration = (Animation != null ? Animation.Duration : 0.0f);
                 float newTimeField = EditorGUILayout.FloatField("Current time", time);
                 float newTimeSlider = GUILayout.HorizontalSlider(time, 0.0f, duration);
 
@@ -391,10 +382,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GUILayout.Label("Animation Info:", EditorStyles.boldLabel);
 
-                if (animation != null)
+                if (Animation != null)
                 {
                     GUILayout.Label($"File Path: {loadedFilePath}");
-                    GUILayout.Label($"Duration: {animation.Duration} seconds");
+                    GUILayout.Label($"Duration: {Animation.Duration} seconds");
                 }
                 else
                 {
