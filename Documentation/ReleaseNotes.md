@@ -26,7 +26,7 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 ```
 
 For instructions on how to write a test using these TestUtilities, see this section on
-[writing tests](Contributing/UnitTests.html#writing-tests)
+[writing tests](Contributing/UnitTests.md#writing-tests)
 
 For examples of existing tests that use this infrastructure, see MRTK's [PlayModeTests](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests)
 
