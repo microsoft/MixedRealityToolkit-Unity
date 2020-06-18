@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// Icon textures
         private Texture2D iconPlay = null;
+        private Texture2D iconPause = null;
         private Texture2D iconRecord = null;
         private Texture2D iconRecordActive = null;
         private Texture2D iconStepFwd = null;
@@ -324,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Jump to the start of the input animation"), "Button");
                     var playButtonContent = wasPlaying
-                        ? new GUIContent(iconPlay, "Stop playing input animation")
+                        ? new GUIContent(iconPause, "Stop playing input animation")
                         : new GUIContent(iconPlay, "Play back input animation");
                     play = GUILayout.Toggle(wasPlaying, playButtonContent, "Button");
                     stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
@@ -453,6 +454,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // MRTK_TimelinePlay.png
             LoadTexture(ref iconPlay, "474f3f21b48daea4f8617806305769ff");
+            // MRTK_TimelinePause.png
+            LoadTexture(ref iconPause, "1bfd4df7e86b18640b9fa1af5713bfb9");
             // MRTK_TimelineRecord.png
             LoadTexture(ref iconRecord, "c079cf55f13c1dc4db7d09053a51a40d");
             // MRTK_TimelineRecordActive.png
