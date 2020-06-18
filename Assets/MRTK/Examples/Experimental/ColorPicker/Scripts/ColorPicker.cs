@@ -62,10 +62,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
             if (IsDraggingSliders)
             {
-                GradientDragCurrentPosition.x = ((Saturation + GradientDragMaxDistance) * -1)+1;
-                GradientDragCurrentPosition.y = Brightness - GradientDragMaxDistance;
-                GradientDragger.transform.localPosition = GradientDragCurrentPosition;
+                CalculateGradientDragPosition();
             }
+        }
+        private void CalculateGradientDragPosition()
+        {
+            float xPosition = ((Saturation + GradientDragMaxDistance) * -1) + 1;
+            float yPosition = Brightness - GradientDragMaxDistance;
+            GradientDragCurrentPosition.x = Mathf.Clamp(xPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
+            GradientDragCurrentPosition.y = Mathf.Clamp(yPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
+            GradientDragger.transform.localPosition = GradientDragCurrentPosition;
         }
         public void StartDragGradient()
         {
@@ -145,7 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
         {
             CustomColor = meshRenderer.material.color;
+            Color.RGBToHSV(CustomColor, out Hue, out Saturation, out Brightness);
             CustomColor.a = Alpha;
+            //
+            CalculateGradientDragPosition();
             UpdateSliderText();
             ApplyColor();
             ApplySliderValues();
@@ -161,15 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void UpdateSliderText()
         {
-            TextRed.text = Mathf.RoundToInt(CustomColor.r * 255).ToString();
-            TextBlue.text = Mathf.RoundToInt(CustomColor.b * 255).ToString();
-            TextGreen.text = Mathf.RoundToInt(CustomColor.g * 255).ToString();
-            TextAlpha.text = Mathf.RoundToInt(CustomColor.a * 100) + "%";
+            TextRed.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.r * 255),0,255).ToString();
+            TextBlue.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.b * 255), 0, 255).ToString();
+            TextGreen.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.g * 255), 0, 255).ToString();
+            TextAlpha.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.a * 100), 0, 100) + "%";
             //
             TextHex.text = "#" + ColorUtility.ToHtmlStringRGBA(CustomColor);
-            TextHue.text = Mathf.RoundToInt(Hue * 360).ToString();
-            TextSaturation.text = Mathf.RoundToInt(Saturation * 100) + "%";
-            TextBrightness.text = Mathf.RoundToInt(Brightness * 100) + "%";
+            TextHue.text = Mathf.Clamp(Mathf.RoundToInt(Hue * 360), 0, 360).ToString();
+            TextSaturation.text = Mathf.Clamp(Mathf.RoundToInt(Saturation * 100), 0, 100) + "%";
+            TextBrightness.text = Mathf.Clamp(Mathf.RoundToInt(Brightness * 100), 0, 100) + "%";
         }
         private void ApplyColor()
         {
@@ -195,13 +204,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
         }
         private void ApplySliderValues() {
-            SliderRed.SliderValue = CustomColor.r;
-            SliderGreen.SliderValue = CustomColor.g;
-            SliderBlue.SliderValue = CustomColor.b;
-            SliderAlpha.SliderValue = CustomColor.a;
-            SliderHue.SliderValue = Hue;
-            SliderSaturation.SliderValue = Saturation;
-            SliderBrightness.SliderValue = Brightness;
+            SliderRed.SliderValue = Mathf.Clamp(CustomColor.r,0,1);
+            SliderGreen.SliderValue = Mathf.Clamp(CustomColor.g, 0, 1);
+            SliderBlue.SliderValue = Mathf.Clamp(CustomColor.b, 0, 1);
+            SliderAlpha.SliderValue = Mathf.Clamp(CustomColor.a, 0, 1);
+            SliderHue.SliderValue = Mathf.Clamp(Hue, 0, 1);
+            SliderSaturation.SliderValue = Mathf.Clamp(Saturation, 0, 1);
+            SliderBrightness.SliderValue = Mathf.Clamp(Brightness, 0, 1);
         }
     }
 }
