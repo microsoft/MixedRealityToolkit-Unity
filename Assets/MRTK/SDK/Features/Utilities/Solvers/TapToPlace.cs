@@ -75,7 +75,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public float SurfaceNormalOffset
         {
             get => surfaceNormalOffset;
-            set => surfaceNormalOffset = value;
+            set
+            {
+                // If a user were to configure Tap to Place via script and they try to set the SurfaceNormalOffset while UseDefaultSurfaceNormalOffset is true, display the following error:
+                Debug.Assert(!UseDefaultSurfaceNormalOffset, $"The new value for SurfaceNormalOffset on the Tap to Place object will not be applied because UseDefaultSurfaceNormalOffset is true, set UseDefaultSurfaceNormalOffset to false.");
+
+                surfaceNormalOffset = value;
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("If true, the default surface normal offset will be used instead of any value specified for the SurfaceNormalOffset property. If false, the " +
+                "SurfaceNormalOffset is used. The default surface normal offset is the Z extents of the bounds on the attached collider, this ensures the object being " +
+                "placed is aligned on a surface. This property is automatically set to false if the SurfaceNormalOffset property is set and is not " +
+                "the default value.")]
+        private bool useDefaultSurfaceNormalOffset = true;
+
+        /// <summary>
+        /// If true, the default surface normal offset will be used instead of any value specified for the SurfaceNormalOffset property.  
+        /// If false, the SurfaceNormalOffset is used. The default surface normal offset is the Z extents of the bounds on the attached collider, this 
+        /// ensures the object being placed is aligned on a surface.
+        /// </summary>
+        public bool UseDefaultSurfaceNormalOffset
+        {
+            get => useDefaultSurfaceNormalOffset;
+            set => useDefaultSurfaceNormalOffset = value;
         }
 
         [SerializeField]
@@ -167,6 +191,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
 
+        /// <summary>
+        /// The default value for SurfaceNormalOffset if UseDefaultSurfaceNormalOffset is true.  This value ensures an object
+        /// will be placed in alignment with a surface. This value is not cached to specifically support adjustments to object scale 
+        /// while in the placing state.
+        /// </summary>
+        private float defaultSurfaceNormalOffset => gameObject.GetComponent<Collider>().bounds.extents.z;
+
         private int ignoreRaycastLayer;
 
         /// <summary>
@@ -196,8 +227,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             // of (1, 1, 1) which always returns a 0.5 SurfaceNormalOffset.  Adding SyncTransforms updates the
             // size of the collider to match the game object before we calculate the SurfaceNormalOffset.
             UnityPhysics.SyncTransforms();
-
-            SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
 
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
@@ -306,8 +335,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 // Take the current hit point and add an offset relative to the surface to avoid half of the object in the surface
                 GoalPosition = CurrentHit.point;
-                AddOffset(CurrentHit.normal * SurfaceNormalOffset);
 
+                // Allow switching between a specified SurfaceNormalOffset and the defaultSurfaceNormalOffset while the object is in the placing state
+                // The defaultSurfaceNormalOffset is based on the Z extents of the bounds on a collider which is subject to change while the object is in the placing state
+                float currentSurfaceNormalOffset = UseDefaultSurfaceNormalOffset ? defaultSurfaceNormalOffset : SurfaceNormalOffset; 
+
+                AddOffset(CurrentHit.normal * currentSurfaceNormalOffset);
+                
 #if UNITY_EDITOR
                 if (DebugEnabled)
                 {
