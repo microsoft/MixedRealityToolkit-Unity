@@ -3,9 +3,9 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Gltf",
-        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Serialized"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "WSA"
@@ -15,5 +15,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

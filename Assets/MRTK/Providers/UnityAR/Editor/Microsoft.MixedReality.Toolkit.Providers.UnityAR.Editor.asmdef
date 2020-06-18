@@ -4,7 +4,8 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Providers.UnityAR"
+        "Microsoft.MixedReality.Toolkit.Providers.UnityAR",
+        "Microsoft.MixedReality.Toolkit.Providers.UnityAR.Serialized"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

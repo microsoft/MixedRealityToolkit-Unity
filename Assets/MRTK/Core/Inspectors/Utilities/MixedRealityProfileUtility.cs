@@ -79,30 +79,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in profileType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
             {
-                bool requirementsMet = true;
                 foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
                 {
                     if (!requiredType.IsAssignableFrom(serviceType))
                     {
-                        requirementsMet = false;
-                        break;
+                        return false;
                     }
                 }
 
-                if (requirementsMet)
+                foreach (Type excludedType in serviceProfileAttribute.ExcludedTypes)
                 {
-                    foreach (Type excludedType in serviceProfileAttribute.ExcludedTypes)
+                    if (excludedType.IsAssignableFrom(serviceType))
                     {
-                        if (excludedType.IsAssignableFrom(serviceType))
-                        {
-                            requirementsMet = false;
-                            break;
-                        }
+                        return false;
+                    }
 
+                }
+            }
+
+            foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in serviceType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
+            {
+                foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
+                {
+                    if (requiredType.Equals(profileType))
+                    {
+                        return true;
                     }
                 }
-
-                return requirementsMet;
             }
             return false;
         }

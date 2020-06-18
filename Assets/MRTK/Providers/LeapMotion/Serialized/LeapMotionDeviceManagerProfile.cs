@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
     /// added to the MRTK input configuration profile.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Leap Motion Profile", fileName = "LeapMotionDeviceManagerProfile", order = 4)]
-    [MixedRealityServiceProfile(typeof(LeapMotionDeviceManager))]
     public class LeapMotionDeviceManagerProfile : BaseMixedRealityProfile
     {
         [Space(10)]

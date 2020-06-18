@@ -41,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
                 unityAssemblies.Add(assembly.name, assembly);
             }
 
+            AssemblyDefinitionLoader.ClearCache();
+
             var errors = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(assembly => assembly.GetLoadableTypes())
@@ -64,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
                 unityAssemblies.ContainsKey(type.Assembly.GetName().Name))
             {
                 AssemblyDefinition assemblyDefinition = AssemblyDefinitionLoader.Load(unityAssemblies[type.Assembly.GetName().Name]);
-
+                
                 if (assemblyDefinition.excludePlatforms.Length != 0 || assemblyDefinition.includePlatforms.Length != 0)
                 {
                     return true;

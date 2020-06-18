@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Camera settings provider for use with Windows Mixed Reality.
     /// </summary>
+    [MixedRealityServiceProfile(typeof(WindowsMixedRealityCameraSettingsProfile))]
     public class WindowsMixedRealityCameraSettings : BaseWindowsMixedRealityCameraSettings
     {
         /// <summary>

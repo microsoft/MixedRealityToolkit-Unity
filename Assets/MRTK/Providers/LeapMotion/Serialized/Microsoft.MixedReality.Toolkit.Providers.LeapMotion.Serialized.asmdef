@@ -1,14 +1,15 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Profiles",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.LeapMotion.Serialized",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         "LeapMotion/Profiles/LeapMotionDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers",
         true)]
+    [MixedRealityServiceProfile(typeof(LeapMotionDeviceManagerProfile))]
     /// <summary>
     /// Class that detects the tracking state of leap motion hands.  This class will only run if the Leap Motion Core Assets are in the project and the Leap Motion Device
     /// Manager data provider has been added in the input system configuration profile.

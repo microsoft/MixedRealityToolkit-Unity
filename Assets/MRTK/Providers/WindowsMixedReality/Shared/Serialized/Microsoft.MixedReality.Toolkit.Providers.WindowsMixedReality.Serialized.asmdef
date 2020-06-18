@@ -1,9 +1,7 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Serialized",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

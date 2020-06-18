@@ -39,6 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
         }
 
         /// <summary>
+        /// Clears the AssemblyDefinition cache
+        /// </summary>
+        public static void ClearCache()
+        {
+            cache.Clear();
+        }
+
+        /// <summary>
         /// Performs basic validation on the given AssemblyDefinition object to ensure that it conforms
         /// to the asmdef spec: https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html
         /// </summary>

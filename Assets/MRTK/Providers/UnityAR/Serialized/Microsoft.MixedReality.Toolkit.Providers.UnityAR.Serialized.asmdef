@@ -1,7 +1,9 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.LeapMotion.Profiles",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR.Serialized",
     "references": [
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Unity.XR.ARFoundation",
+        "UnityEngine.SpatialTracking"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
