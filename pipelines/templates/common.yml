@@ -17,6 +17,9 @@ parameters:
   # ID in order to determine the two commits to diff. Only relevant if validateCode
   # is true.
   scopedValidation: false
+  # If true, all MRTK profiles will be checked to ensure that they are fully
+  # deserializable across all platforms.
+  validateProfileSerialization: false
 
 steps:
 # Generate the list of changed files in this pull request.
@@ -31,6 +34,14 @@ steps:
     parameters:
       scopedValidation: ${{ parameters.scopedValidation }}
       changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+
+# Validate that the all MRTK profiles are fully deserializable across all platforms
+# In the future this could be updated to run generic code-runtime checks (i.e. actual C#
+# code running within Unity)
+- ${{ if eq(parameters.validateProfileSerialization, true) }}:
+  - template: tasks/validateprofileserialization.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build Standalone x86.
 # This must happen before tests run, because if the build fails and tests attempt

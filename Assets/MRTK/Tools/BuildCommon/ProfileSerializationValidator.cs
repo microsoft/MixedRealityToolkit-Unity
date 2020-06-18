@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEditor.Compilation;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tools.Build
@@ -28,13 +29,16 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
         /// that class is compiled away (it doesn't support that platform), Unity deserialization
         /// errors when it isn't able to find that particular type. This leads to unavoidable
         /// error messages in consoles/logs.
+        ///
+        /// While this is primarily being used from CI tools, it's also possible to run this by
+        /// annotating this with: 
+        /// [UnityEditor.MenuItem("Mixed Reality Toolkit/Build/ProfileSerializationValidator")]
         /// </remarks>
         /// <returns>True if profile classes are properly marked for each platform</returns>
-        [UnityEditor.MenuItem("Mixed Reality Toolkit/Build/ProfileSerializationValidator")]
         public static bool Validate()
         {
             // In order to convert from System.Reflection.Assembly to UnityEditor.Compilation.Assembly,
-            // we generate a map of assmebly name to Unity Assembly
+            // we generate a map of assembly name to Unity Assembly
             Dictionary<string, Assembly> unityAssemblies = new Dictionary<string, Assembly>();
             foreach (Assembly assembly in CompilationPipeline.GetAssemblies())
             {
@@ -54,6 +58,16 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
             }
 
             return errors.Count() == 0;
+        }
+
+        /// <summary>
+        /// A version of Validate designed to be called from the command line, will cause the application
+        /// exit with a non-zero value on failure.
+        /// </summary>
+        public static void CommandLineValidate()
+        {
+            bool succeeded = Validate();
+            EditorApplication.Exit(succeeded ? 0 : 1);
         }
 
         /// <summary>

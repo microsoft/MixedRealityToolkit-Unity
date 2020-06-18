@@ -3,12 +3,14 @@ parameters:
   packagingEnabled: true
   packagePublishing: true
   UnityVersion: ""
+  validateProfileSerialization: false
 
 steps:
 - template: common.yml
   parameters:
     buildUWPDotNet: false
     UnityVersion: ${{ parameters.UnityVersion }}
+    validateProfileSerialization: ${{ parameters.validateProfileSerialization }}
 - template: compilemsbuild.yml
   parameters:
     UnityVersion: ${{ parameters.UnityVersion }}
