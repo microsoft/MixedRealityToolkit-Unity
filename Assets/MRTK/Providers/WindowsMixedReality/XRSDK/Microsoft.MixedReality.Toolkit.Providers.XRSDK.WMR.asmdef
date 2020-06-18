@@ -20,13 +20,5 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.windowsmr",
-            "expression": "",
-            "define": "WMR_ENABLED"
-        }
-    ],
-    "noEngineReferences": false
+    ]
 }
