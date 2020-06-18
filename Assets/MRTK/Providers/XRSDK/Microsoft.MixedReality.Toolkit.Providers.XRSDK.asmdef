@@ -13,18 +13,5 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.management",
-            "expression": "",
-            "define": "XR_MANAGEMENT_ENABLED"
-        },
-        {
-            "name": "com.unity.xr.legacyinputhelpers",
-            "expression": "",
-            "define": "SPATIALTRACKING_ENABLED"
-        }
-    ],
-    "noEngineReferences": false
+    ]
 }
