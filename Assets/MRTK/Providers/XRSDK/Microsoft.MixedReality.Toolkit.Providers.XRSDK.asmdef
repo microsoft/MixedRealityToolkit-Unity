@@ -2,8 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Unity.XR.Management",
-        "UnityEngine.SpatialTracking"
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Serialized"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
