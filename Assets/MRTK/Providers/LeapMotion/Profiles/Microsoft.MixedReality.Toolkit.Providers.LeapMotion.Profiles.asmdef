@@ -1,0 +1,15 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.LeapMotion.Profiles",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

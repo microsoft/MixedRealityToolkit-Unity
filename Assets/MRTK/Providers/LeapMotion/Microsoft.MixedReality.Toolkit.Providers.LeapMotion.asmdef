@@ -1,7 +1,8 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.LeapMotion",
     "references": [
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Providers.LeapMotion.Profiles"
     ],
     "includePlatforms": [
         "Editor",

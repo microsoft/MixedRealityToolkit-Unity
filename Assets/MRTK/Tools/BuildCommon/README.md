@@ -1,0 +1,1 @@
+This folder contains shared code that can be used across build and continuous integration scenarios.
