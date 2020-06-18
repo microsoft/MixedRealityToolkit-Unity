@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -108,5 +109,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         internal UnityEvent colliderTypeChanged = new UnityEvent();
+
+        /// <summary>
+        /// Fabricates an instance of RotationHandles, applying
+        /// this config to it whilst creating it.
+        /// </summary>
+        /// <returns>New RotationHandles</returns>
+        internal virtual RotationHandles ConstructInstance()
+        {
+            // Return a new RotationHandles, using this config as the active config.
+            return new RotationHandles(this);
+        }
     }
 }

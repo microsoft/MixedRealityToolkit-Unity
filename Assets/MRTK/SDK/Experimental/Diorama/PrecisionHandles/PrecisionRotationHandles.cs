@@ -45,7 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override void ResetHandles()
         {
             base.ResetHandles();
-            activePrecisionAffordance?.DestroySelf();
+            if(activePrecisionAffordance != null)
+            {
+                activePrecisionAffordance.DestroySelf();
+            }
         }
 
         public virtual void SetPointer(IMixedRealityPointer pointer)

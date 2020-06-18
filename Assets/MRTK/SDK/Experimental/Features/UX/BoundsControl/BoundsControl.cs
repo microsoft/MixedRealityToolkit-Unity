@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -559,17 +558,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             handleProximityEffectConfiguration = EnsureScriptable(handleProximityEffectConfiguration);
 
             // instantiate runtime classes for visuals
-            scaleHandles = new ScaleHandles(scaleHandlesConfiguration);
-
-            if (usePrecisionAffordances)
-            {
-                rotationHandles = new PrecisionRotationHandles(rotationHandlesConfiguration as PrecisionRotationHandlesConfiguration);
-            } else
-            {
-                rotationHandles = new RotationHandles(rotationHandlesConfiguration);
-            }
-
-            translationHandles = new TranslationHandles(translationHandlesConfiguration);
+            scaleHandles = scaleHandlesConfiguration.ConstructInstance();
+            rotationHandles = rotationHandlesConfiguration.ConstructInstance();
+            translationHandles = translationHandlesConfiguration.ConstructInstance();
             
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
@@ -1130,6 +1121,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
         {
+            // Recalculate our extents and visuals when we gain focus.
             UpdateExtents();
             UpdateVisuals();
         }

@@ -108,5 +108,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         internal UnityEvent colliderTypeChanged = new UnityEvent();
+
+        /// <summary>
+        /// Fabricates an instance of TranslationHandles, applying
+        /// this config to it whilst creating it.
+        /// </summary>
+        /// <returns>New TranslationHandles</returns>
+        internal virtual TranslationHandles ConstructInstance()
+        {
+            // Return a new TranslationHandles, using this config as the active config.
+            return new TranslationHandles(this);
+        }
     }
 }

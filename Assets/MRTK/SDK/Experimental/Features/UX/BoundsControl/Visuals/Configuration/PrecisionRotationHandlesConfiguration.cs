@@ -29,6 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
+
+        /// <summary>
+        /// Fabricates an instance of PrecisionRotationHandles, applying
+        /// this config to it whilst creating it.
+        /// </summary>
+        /// <returns>New PrecisionRotationHandles</returns>
+        internal override RotationHandles ConstructInstance()
+        {
+            // Return a new PrecisionRotationHandles, using this config as the active config.
+            return new PrecisionRotationHandles(this);
+        }
     }
 }
 
