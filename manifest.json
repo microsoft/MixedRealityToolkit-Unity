@@ -8059,7 +8059,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_TapToPlace.html",
-          "hash": "+ScDzE+7VneK7dHdH9Iyng=="
+          "hash": "2baw3RsD5QHMnHuFPA49xg=="
         }
       },
       "is_incremental": false,
@@ -21774,7 +21774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SolverTests.html",
-          "hash": "QPP8lF3SSYsbw52AZjCZhA=="
+          "hash": "vLkUniNuKbbIFwSWnjEAPg=="
         }
       },
       "is_incremental": false,
@@ -24986,11 +24986,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.TapToPlaceInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.TapToPlaceInspector.html",
+          "hash": "qIYBDl8FaNz4h0bt3QmPgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.html",
-          "hash": "Yg2yAEhOwIeNlwg/1uVHDg=="
+          "hash": "XAW72ccmcf6y2GwgYanK6A=="
         }
       },
       "is_incremental": false,
@@ -26802,7 +26814,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.TapToPlace.html",
-          "hash": "aCIIq7z3ncr419Ee2vbaIQ=="
+          "hash": "weBBYSyZTjJJdIF91rgUMQ=="
         }
       },
       "is_incremental": false,
@@ -27966,7 +27978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "OG1ljFLa+Nnaj1sHIqc2yA=="
+          "hash": "VVYo212WQtyr10Fqq0+Tsw=="
         }
       },
       "is_incremental": false,
@@ -28034,7 +28046,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1624,
+          "total_file_count": 1625,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
