@@ -35,7 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     {
         None = 0,
         Rotation,
-        Scale
+        Scale,
+        Translation
     }
 
     /// <summary>
@@ -95,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     public enum HandlePrefabCollider
     {
         Sphere,
-        Box
+        Box,
+        None
     }
 
     /// <summary>

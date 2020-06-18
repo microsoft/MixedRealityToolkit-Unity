@@ -131,7 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         public void DestroySelf()
         {
-            Destroy(gameObject, 0.5f);
+            if(gameObject != null)
+                Destroy(gameObject, 0.5f);
             deployed = false;
         }
     }

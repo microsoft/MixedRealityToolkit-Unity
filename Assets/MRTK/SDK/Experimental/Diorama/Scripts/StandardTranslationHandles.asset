@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fcb6341cafc3f84994828d3606683d3, type: 3}
+  m_Name: StandardTranslationHandles
+  m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9,
+    type: 2}
+  handlePrefab: {fileID: 100000, guid: 332c8596f773d4c4db31915a9df86221, type: 3}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 0
+  handlesIgnoreCollider: {fileID: 0}
+  translationHandlePrefabColliderType: 1
+  showTranslationHandleForX: 1
+  showTranslationHandleForY: 1
+  showTranslationHandleForZ: 1
