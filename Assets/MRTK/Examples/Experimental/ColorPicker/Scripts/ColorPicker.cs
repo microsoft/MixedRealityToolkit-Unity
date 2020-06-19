@@ -13,6 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// </summary>
     public class ColorPicker : MonoBehaviour
     {
+        #region Event handlers
+        public TouchEvent OnTouchCompleted;
+        public TouchEvent OnTouchStarted;
+        public TouchEvent OnTouchUpdated;
+        #endregion
+
         public MeshRenderer[] TargetObjectMesh;
         public SpriteRenderer[] TargetObjectSprite;
         //
