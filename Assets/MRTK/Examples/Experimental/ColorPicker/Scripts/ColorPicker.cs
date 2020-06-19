@@ -13,12 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// </summary>
     public class ColorPicker : MonoBehaviour
     {
-        #region Event handlers
-        public TouchEvent OnTouchCompleted;
-        public TouchEvent OnTouchStarted;
-        public TouchEvent OnTouchUpdated;
-        #endregion
-
         public MeshRenderer[] TargetObjectMesh;
         public SpriteRenderer[] TargetObjectSprite;
         //
@@ -68,16 +62,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
             if (IsDraggingSliders)
             {
-                CalculateGradientDragPosition();
+                CalculateGradientDraggerPosition();
             }
         }
-        private void CalculateGradientDragPosition()
+        private void CalculateGradientDraggerPosition()
         {
             float xPosition = ((Saturation + GradientDragMaxDistance) * -1) + 1;
             float yPosition = Brightness - GradientDragMaxDistance;
             GradientDragCurrentPosition.x = Mathf.Clamp(xPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
             GradientDragCurrentPosition.y = Mathf.Clamp(yPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
             GradientDragger.transform.localPosition = GradientDragCurrentPosition;
+        }
+        public void ClickGradientTexture(MixedRealityPointerEventData eventData)
+        {
+            GradientDragger.transform.position = eventData.Pointer.Result.Details.Point;
+            ConstrainDragging();
+            ApplyColor();
+            UpdateSliderText();
+            ApplySliderValues();
+            //PokePointer
         }
         public void StartDragGradient()
         {
@@ -160,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             Color.RGBToHSV(CustomColor, out Hue, out Saturation, out Brightness);
             CustomColor.a = Alpha;
             //
-            CalculateGradientDragPosition();
+            CalculateGradientDraggerPosition();
             UpdateSliderText();
             ApplyColor();
             ApplySliderValues();
