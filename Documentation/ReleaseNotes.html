@@ -89,6 +89,22 @@
 <li><a href="#known-issues">Known issues</a></li>
 </ul>
 <h3 id="whats-new">What's new</h3>
+<p><strong>TestUtilities package</strong></p>
+<p>There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
+PlayMode and TestMode test infrastructure that the MRTK uses to create end-to-end tests. This infrastructure has
+been extremely handy for the MRTK team itself, and we're excited to have consumers use this to add test coverage
+to their own projects.</p>
+<p>The following code shows how to create a test hand, show it at a certain location, move it around, and then
+pinch and open.</p>
+<pre><code class="lang-csharp">TestHand leftHand = new TestHand(Handedness.Left);
+yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+yield return leftHand.Move(new Vector3(0.2f, 0.2f, 0));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+</code></pre>
+<p>For instructions on how to write a test using these TestUtilities, see this section on
+<a href="Contributing/UnitTests.html#writing-tests">writing tests</a></p>
+<p>For examples of existing tests that use this infrastructure, see MRTK's <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests">PlayModeTests</a></p>
 <p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
 <p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
 <p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
