@@ -117,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
                     if (RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
                         configuration.ComponentType.Type,
+                        configuration.ComponentName,
                         configuration.RuntimePlatform,
                         args))
                     {

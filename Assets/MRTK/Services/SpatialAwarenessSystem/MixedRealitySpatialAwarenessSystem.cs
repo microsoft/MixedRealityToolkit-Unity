@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
                     RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,
+                        configuration.ComponentName,
                         configuration.RuntimePlatform,
                         args);
                 }
