@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// <summary>
     /// Example script to demonstrate adding sliders to control material values at runtime.
     /// </summary>
-    public class ColorPicker : MonoBehaviour
+    public class ColorPicker : MonoBehaviour, IMixedRealityTouchHandler
     {
         public MeshRenderer[] TargetObjectMesh;
         public SpriteRenderer[] TargetObjectSprite;
@@ -65,6 +65,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 CalculateGradientDraggerPosition();
             }
         }
+        void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
+        {
+            //Debug.Log("OnTouchStarted: " + Time.unscaledTime);
+        }
+        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            //Debug.Log("OnTouchCompleted: " + Time.unscaledTime);
+        }
+
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            GradientDragger.transform.position = new Vector3(eventData.InputData.x, eventData.InputData.y, eventData.InputData.z);
+            ConstrainDragging();
+            ApplyColor();
+            UpdateSliderText();
+            ApplySliderValues();
+        }
         private void CalculateGradientDraggerPosition()
         {
             float xPosition = ((Saturation + GradientDragMaxDistance) * -1) + 1;
@@ -80,7 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplyColor();
             UpdateSliderText();
             ApplySliderValues();
-            //PokePointer
         }
         public void StartDragGradient()
         {
