@@ -27,6 +27,6 @@
     <file src="..\..\..\MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Providers.UnityAR.targets" />
 
     <file src="..\..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR.*" target="Plugins\" />
-    <file src="..\..\..\..\Assets\MRTK\Providers\UnityAR\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers\UnityAR" />
+    <file src="..\..\..\..\..\Assets\MRTK\Providers\UnityAR\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers\UnityAR" />
   </files>
 </package>
