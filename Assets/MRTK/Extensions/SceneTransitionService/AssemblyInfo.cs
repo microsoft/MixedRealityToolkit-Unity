@@ -10,3 +10,5 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 
 [assembly: UnityEngine.Scripting.Preserve]
+
+[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
