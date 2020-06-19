@@ -1022,14 +1022,16 @@ namespace Microsoft.MixedReality.Toolkit
                     return false;
                 }
 
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
                 try
                 {
-                    foreach (IMixedRealityService service in MixedRealityServiceRegistry.GetAllServices())
+                    for (int i = 0; i < length; i++)
                     {
-                        execute(service);
+                        execute(services[i]);
                     }
                 }
-                catch(InvalidOperationException)
+                catch (ArgumentOutOfRangeException)
                 {
                     Debug.LogWarning($"Service collection changed during {execute.Method.Name}.");
                 }
@@ -1049,14 +1051,17 @@ namespace Microsoft.MixedReality.Toolkit
                     return false;
                 }
 
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
+
                 try
                 {
-                    foreach (var service in MixedRealityServiceRegistry.GetAllServices().Reverse())
+                    for (int i = length - 1; i >= 0; i--)
                     {
-                        execute(service);
+                        execute(services[i]);
                     }
                 }
-                catch(InvalidOperationException)
+                catch (ArgumentOutOfRangeException)
                 {
                     Debug.LogWarning($"Service collection changed during {execute.Method.Name}.");
                 }
