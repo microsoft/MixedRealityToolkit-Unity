@@ -45,6 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         private bool IsDraggingSliders = false;
         private bool IsDraggingGradient = false;
         //
+        //#region Event handlers
+        //public TouchEvent OnTouchCompleted;
+        //public TouchEvent OnTouchStarted;
+        //public TouchEvent OnTouchUpdated;
+        //#endregion
         private void Start()
         {
             GradientDragStartPosition = GradientDragger.transform.localPosition;
@@ -67,15 +72,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            //OnTouchStarted.Invoke(eventData);
+            Debug.Log("OnTouchStarted: " + eventData.selectedObject.name.ToString());
             //Debug.Log("OnTouchStarted: " + Time.unscaledTime);
         }
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            //OnTouchCompleted.Invoke(eventData);
             //Debug.Log("OnTouchCompleted: " + Time.unscaledTime);
         }
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
+            //OnTouchUpdated.Invoke(eventData);
+            //Debug.Log("OnTouchUpdated: " + Time.unscaledTime);
             GradientDragger.transform.position = new Vector3(eventData.InputData.x, eventData.InputData.y, eventData.InputData.z);
             ConstrainDragging();
             ApplyColor();
@@ -97,6 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplyColor();
             UpdateSliderText();
             ApplySliderValues();
+        }
+        public void ClickSliderTrack(MixedRealityPointerEventData eventData)
+        {
+            Debug.Log("SliderCLick=" + eventData.Pointer.Result.Details.Point);
+            //ApplyColor();
+            //UpdateSliderText();
+            //ApplySliderValues();
         }
         public void StartDragGradient()
         {
