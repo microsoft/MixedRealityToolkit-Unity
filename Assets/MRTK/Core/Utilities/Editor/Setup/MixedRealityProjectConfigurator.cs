@@ -43,8 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing = 5,
             OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
+            [Obsolete("EnableMSBuildForUnity is obsolete and may no longer be used", true)]
             EnableMSBuildForUnity,
-            AudioSpatializer,
+            AudioSpatializer = 8,
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -114,9 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
             { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
-#if !UNITY_2019_3_OR_NEWER
-            { Configurations.EnableMSBuildForUnity, new ConfigGetter(PackageManifestUpdater.IsMSBuildForUnityEnabled, BuildTarget.WSAPlayer) },
-#endif // !UNITY_2019_3_OR_NEWER
             { Configurations.AudioSpatializer, new ConfigGetter(SpatializerUtilities.CheckSettings) },
 
             // UWP Capabilities
@@ -146,9 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
             { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
             { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
-#if !UNITY_2019_3_OR_NEWER
-            { Configurations.EnableMSBuildForUnity, PackageManifestUpdater.EnsureMSBuildForUnity },
-#endif // !UNITY_2019_3_OR_NEWER
             { Configurations.AudioSpatializer, SetAudioSpatializer },
 
             // UWP Capabilities

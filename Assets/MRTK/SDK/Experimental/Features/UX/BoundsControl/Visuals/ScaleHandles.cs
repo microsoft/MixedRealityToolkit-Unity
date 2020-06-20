@@ -120,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             Vector3 colliderSize = visualSize * invScale;
             collider.size = colliderSize;
             collider.size += BaseConfig.ColliderPadding;
+            collider.center = new Vector3(collider.size.x, collider.size.y, collider.size.z) * 0.5f;
         }
 
         /// <summary>
