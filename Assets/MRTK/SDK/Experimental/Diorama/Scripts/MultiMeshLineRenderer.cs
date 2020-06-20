@@ -56,12 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         [Tooltip("How many line steps to skip before a major mesh is drawn")]
         [Range(0, 20)]
-        private int majorLineStepSkip = 0;
+        public int majorLineStepSkip = 0;
 
         [SerializeField]
         [Tooltip("How many line steps to skip before a minor mesh is drawn")]
         [Range(0, 20)]
-        private int minorLineStepSkip = 0;
+        public int minorLineStepSkip = 0;
 
         [SerializeField]
         private bool useVertexColors = true;
@@ -99,7 +99,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         private int colorId;
-        private List<Vector4> colorValues = new List<Vector4>();
+        private List<Vector4> majorColorValues = new List<Vector4>();
+        private List<Vector4> minorColorValues = new List<Vector4>();
         private List<Matrix4x4> majorMeshTransforms = new List<Matrix4x4>();
         private List<Matrix4x4> minorMeshTransforms = new List<Matrix4x4>();
         private MaterialPropertyBlock linePropertyBlock;
@@ -135,7 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 majorMeshTransforms.Clear();
                 minorMeshTransforms.Clear();
-                colorValues.Clear();
+                majorColorValues.Clear();
+                minorColorValues.Clear();
                 linePropertyBlock.Clear();
 
                 for (int i = 0; i < LineStepCount; i++)
@@ -145,10 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                     if(i % majorLineStepSkip == 0)
                     {
-                        colorValues.Add(GetColor(normalizedDistance));
+                        majorColorValues.Add(GetColor(normalizedDistance));
                         majorMeshTransforms.Add(Matrix4x4.TRS(LineDataSource.GetPoint(normalizedDistance), LineDataSource.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance)));
                     } else if(i % minorLineStepSkip == 0)
                     {
+                        //minorColorValues.Add(GetColor(normalizedDistance));
                         minorMeshTransforms.Add(Matrix4x4.TRS(LineDataSource.GetPoint(normalizedDistance), LineDataSource.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance)));
                     }
 
@@ -157,12 +160,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 if (useVertexColors)
                 {
                     colorId = Shader.PropertyToID(colorProperty);
-                    linePropertyBlock.SetVectorArray(colorId, colorValues);
+                    linePropertyBlock.SetVectorArray(colorId, majorColorValues);
                 }
-
                 Graphics.DrawMeshInstanced(majorLineMesh, 0, lineMaterial, majorMeshTransforms, linePropertyBlock);
+
                 if(minorLineMesh)
+                {
+                    //if (useVertexColors)
+                    //{
+                    //    colorId = Shader.PropertyToID(colorProperty);
+                    //    linePropertyBlock.Clear();
+                    //    linePropertyBlock.SetVectorArray(colorId, minorColorValues);
+                    //}
                     Graphics.DrawMeshInstanced(minorLineMesh, 0, lineMaterial, minorMeshTransforms, linePropertyBlock);
+                }
+                    
             }
         }
     }

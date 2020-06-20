@@ -10,22 +10,22 @@ using Microsoft.MixedReality.Toolkit.Utilities.Experimental;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
-    /// Allows more advanced rotation widget spawning for BoundsControl.
-    /// Inteded for use with variable precision rotation widgets.
+    /// Allows more advanced translation widget spawning for BoundsControl.
+    /// Inteded for use with variable precision translation widgets.
     /// </summary>
-    public class PrecisionRotationHandles : RotationHandles
+    public class PrecisionTranslationHandles : TranslationHandles
     {
 
-        protected PrecisionRotationHandlesConfiguration precisionConfig;
+        protected PrecisionTranslationHandlesConfiguration precisionConfig;
 
-        protected PrecisionRotationAffordance activePrecisionAffordance;
+        protected PrecisionTranslationAffordance activePrecisionAffordance;
 
-        internal PrecisionRotationHandles(PrecisionRotationHandlesConfiguration configuration) : base(configuration)
+        internal PrecisionTranslationHandles(PrecisionTranslationHandlesConfiguration configuration) : base(configuration)
         {
             precisionConfig = configuration;
         }
 
-        ~PrecisionRotationHandles()
+        ~PrecisionTranslationHandles()
         {
             config.handlesChanged.RemoveListener(HandlesChanged);
             config.colliderTypeChanged.RemoveListener(UpdateColliderType);
@@ -56,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        protected PrecisionRotationAffordance CreatePrecisionAffordance(Transform attachTarget, Transform objectRoot){
+        protected PrecisionTranslationAffordance CreatePrecisionAffordance(Transform attachTarget, Transform objectRoot){
             if (precisionConfig.PrecisionWidgetPrefab == null || attachTarget == null)
             {
                 return null;
             }
 
-            PrecisionRotationAffordance affordance = GameObject.Instantiate(precisionConfig.PrecisionWidgetPrefab).GetComponent<PrecisionRotationAffordance>();
+            PrecisionTranslationAffordance affordance = GameObject.Instantiate(precisionConfig.PrecisionWidgetPrefab).GetComponent<PrecisionTranslationAffordance>();
             
             // Precision affordances are centered on the parent object's origin.
             affordance.transform.position = objectRoot.position;

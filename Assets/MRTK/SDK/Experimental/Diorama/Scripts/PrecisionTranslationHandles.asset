@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fcb6341cafc3f84994828d3606683d3, type: 3}
-  m_Name: StandardTranslationHandles
+  m_Script: {fileID: 11500000, guid: 72cf02ae5021e3449948a393cfe6e844, type: 3}
+  m_Name: PrecisionTranslationHandles
   m_EditorClassIdentifier: 
   handleMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9,
     type: 2}
-  handlePrefab: {fileID: 100000, guid: 332c8596f773d4c4db31915a9df86221, type: 3}
+  handlePrefab: {fileID: 3868891704370700786, guid: f73c916a7266dd941a534f5f0f10a423,
+    type: 3}
   handleSize: 0.032
   colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   drawTetherWhenManipulating: 1
@@ -24,3 +25,5 @@ MonoBehaviour:
   showTranslationHandleForX: 1
   showTranslationHandleForY: 1
   showTranslationHandleForZ: 1
+  precisionWidgetPrefab: {fileID: 792803156412167364, guid: 54d9d543030479a429a5afdc87295ef2,
+    type: 3}

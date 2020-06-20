@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get { return handles; }
         }
 
-        internal virtual void SetHighlighted(Transform handleToHighlight)
+        internal virtual void SetHighlighted(Transform handleToHighlight, IMixedRealityPointer associatedPointer = null)
         {
             // turn off all handles that aren't the handle we want to highlight
             if (handles != null)

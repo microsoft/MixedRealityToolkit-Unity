@@ -119,7 +119,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             //if(markerPivot != null)
             //{
             markerPivot.localRotation = Quaternion.Euler(0, endDegrees, 0);
-            ProgressLine.CustomPointDistributionLength = 0.01f/Mathf.Abs(startNormalized - endNormalized);
+
+            // We want to have a specified point distribution for a given unit of arclength.
+            var arclength = (Mathf.Abs(startDegrees - endDegrees) / 360.0f) * 2.0f * Mathf.PI * (manipulationScale + progressLineRadiusOffset) * transform.lossyScale.x;
+            var degreesPerStep = Mathf.Abs(startDegrees - endDegrees) / 50.0f;
+            var lengthPerDegree = arclength / Mathf.Abs(startDegrees - endDegrees);
+            var lengthPerStep = lengthPerDegree * degreesPerStep;
+
+            ProgressLine.CustomPointDistributionLength = (0.1f / Mathf.Abs(startNormalized - endNormalized)) * manipulationScale;
             valueDisplay.text = (startDegrees - endDegrees).ToString("F2") + "°";
             valueDisplay.transform.rotation = Quaternion.LookRotation(valueDisplay.transform.position - Camera.main.transform.position, Vector3.up);
             valueDisplay.transform.localPosition = new Vector3(0, 0, manipulationScale + markerRadiusOffset + textLabelRadiusOffset);

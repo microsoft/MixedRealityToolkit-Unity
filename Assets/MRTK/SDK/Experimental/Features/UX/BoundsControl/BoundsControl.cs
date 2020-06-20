@@ -86,19 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Tooltip("Use precision affordances where available.")]
-        [SerializeField]
-        private bool usePrecisionAffordances = false;
-
-        /// <summary>
-        /// Use precision affordances where available.
-        /// </summary>
-        public bool UsePrecisionAffordances
-        {
-            get => usePrecisionAffordances;
-            set => usePrecisionAffordances = value;
-        }
-
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
         private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider;
@@ -117,6 +104,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     OnTargetBoundsChanged();
                 }
             }
+        }
+
+        [Header("Precision Translation Options")]
+        [Tooltip("Use an off-axis-displacement-based logistic function for more precise translation.")]
+        [SerializeField]
+        private bool usePreciseTranslation = false;
+
+        /// <summary>
+        /// Use an off-axis-displacement-based logistic function for more precise translation.
+        /// </summary>
+        public bool UsePreciseTranslation
+        {
+            get => usePreciseTranslation;
+            set => usePreciseTranslation = value;
+        }
+
+        [Tooltip("Slope of logistic function at displacement = 0 (sensitivity of precision translation system).")]
+        [SerializeField]
+        private float precisionLogisticSlope = 50.0f;
+
+        /// <summary>
+        /// Slope of logistic function at displacement = 0 (sensitivity of precision translation system).
+        /// The higher the value, the more the translation will be dampened proportionally to the off-axis
+        /// displacement.
+        /// </summary>
+        public float PrecisionLogisticSlope
+        {
+            get => precisionLogisticSlope;
+            set => precisionLogisticSlope = value;
         }
 
         [Header("Behavior")]
@@ -411,6 +427,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         // Current position of the grab point
         private Vector3 currentGrabPoint;
+
+        // This is a little complicated.
+        // This stores an "accumulated" value used to offset the
+        // absolute translation distance, adjusted by the off-axis
+        // displacement of the current manipulation's pointer.
+        // This way, the further your hand is from the axis, the
+        // "slower" you will move the object, while still being able
+        // to use *absolute positioning* to translate the object.
+        //
+        // Only used when precision translation manipulation is enabled.
+        private float accumulatedPrecisionDamping;
 
         private MinMaxScaleConstraint scaleConstraint;
 
@@ -1069,7 +1096,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 else if (transformType == HandleType.Translation)
                 {
                     Vector3 translateVectorAlongAxis = Vector3.Project(currentGrabPoint - initialGrabPoint, currentTranslationAxis);
-                    Target.transform.position = initialPositionOnGrabStart + translateVectorAlongAxis;
+                    
+                    if (usePreciseTranslation)
+                    {
+                        // Compute off-axis manipulation displacement, will be used to adjust "precision" of manipulation
+                        float distanceFromAxis = ((currentGrabPoint - initialGrabPoint) - translateVectorAlongAxis).magnitude;
+
+                        // If the off-axis displacement is less than our threshold, we'll just call it zero, to avoid unwanted drifting.
+                        distanceFromAxis = (distanceFromAxis < 0.01f) ? 0.0f : distanceFromAxis;
+
+                        // Compute per-frame manipulation displacement, used to increment the damping.
+                        Vector3 lastTranslateVectorAlongAxis = Vector3.Project(prevGrabPoint - initialGrabPoint, currentTranslationAxis);
+                        Vector3 perFrameDiff = translateVectorAlongAxis - lastTranslateVectorAlongAxis;
+
+                        // Compute the sign of the diff.
+                        float sign = Vector3.Dot(perFrameDiff, currentTranslationAxis) > 0 ? 1.0f : -1.0f;
+
+                        // Sigmoid logistic function
+                        float damperFactor = (2 / (1 + Mathf.Exp(PrecisionLogisticSlope * -distanceFromAxis))) - 1;
+
+                        accumulatedPrecisionDamping += damperFactor * sign * perFrameDiff.magnitude;
+                    }
+                    
+                    Target.transform.position = initialPositionOnGrabStart + translateVectorAlongAxis - accumulatedPrecisionDamping * currentTranslationAxis;
                 }
             }
         }
@@ -1147,6 +1196,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     currentPointer = eventData.Pointer;
                     initialGrabPoint = currentPointer.Result.Details.Point;
                     currentGrabPoint = initialGrabPoint;
+                    accumulatedPrecisionDamping = 0.0f;
                     initialScaleOnGrabStart = Target.transform.localScale;
                     initialRotationOnGrabStart = Target.transform.rotation;
                     initialPositionOnGrabStart = Target.transform.position;
@@ -1255,15 +1305,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void SetHighlighted(Transform activeHandle, IMixedRealityPointer pointer = null)
         {
-            scaleHandles.SetHighlighted(activeHandle);
-            rotationHandles.SetHighlighted(activeHandle);
-            translationHandles.SetHighlighted(activeHandle);
+            scaleHandles.SetHighlighted(activeHandle, pointer);
+            rotationHandles.SetHighlighted(activeHandle, pointer);
+            translationHandles.SetHighlighted(activeHandle, pointer);
             boxDisplay.SetHighlighted();
-
-            if (usePrecisionAffordances && pointer != null)
-            {
-                (rotationHandles as PrecisionRotationHandles).SetPointer(pointer);
-            }
         }
 
         private void ResetVisuals()
