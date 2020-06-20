@@ -92,6 +92,9 @@ $packages = @{
     "Tools" = @(
         "Assets\MRTK\Tools"
     );
+    "TestUtilities" = @(
+        "Assets\MRTK\Tests\TestUtilities"
+    );
 }
 
 function GetPackageVersion() {
