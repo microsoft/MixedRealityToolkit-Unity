@@ -63,6 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private Vector3 initialGrabPoint;
         private Vector3 initialHandlePosition;
 
+        private Vector3 smoothedGrabPoint;
+
         private float initialGrabOffset;
 
         private Material rulerMaterial;
@@ -94,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
             associatedPointer = new PointerData(pointer, pointer.Result.Details.Point);
             this.initialGrabPoint = associatedPointer.Value.GrabPoint;
+            this.smoothedGrabPoint = this.initialGrabPoint;
 
             // Nudge the widget over to line up with the handle's position along the translation axis.
             var inLocalSpace = transform.InverseTransformPoint(associatedPointer.Value.GrabPoint);
@@ -106,11 +109,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             this.rotationOffset = rotationOffset;
             initialHandlePosition = targetHandle.position;
             translationAxis = (targetHandle.position - targetObject.position).normalized;
-            //startDegrees = endDegrees = 0;
             deployed = true;
-            //TickmarksDataProvider.LineStartClamp = (-startDegrees / 360.0f) + 0.5f;
-            //TickmarksDataProvider.LineEndClamp = (-endDegrees / 360.0f) + 0.5f;
-            transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis), Vector3.up);
+            //transform.right = translationAxis;
+            //transform.forward = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
+            Vector3 eyeVector = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
+
+            Vector3 localAxis = targetObject.InverseTransformVector(translationAxis);
+            bool isNegative = localAxis.x < 0 || localAxis.y < 0 || localAxis.z < 0;
+
+            Vector3 crossAxis = Vector3.Cross(eyeVector, isNegative ? -translationAxis : translationAxis);
+            transform.rotation = Quaternion.LookRotation(eyeVector, crossAxis);
             
         }
 
@@ -119,18 +127,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
             if (targetObject != null && targetHandle != null && associatedPointer != null)
             {
-                Vector3 translateVectorAlongAxis = Vector3.Project(associatedPointer.Value.GrabPoint - initialGrabPoint, translationAxis);
-                distanceFromAxis = ((associatedPointer.Value.GrabPoint - initialGrabPoint) - translateVectorAlongAxis).magnitude;
-
-                
-                    
+                smoothedGrabPoint = Smoothing.SmoothTo(smoothedGrabPoint, associatedPointer.Value.GrabPoint, 0.001f, Time.deltaTime);
+                Vector3 translateVectorAlongAxis = Vector3.Project(smoothedGrabPoint - initialGrabPoint, translationAxis);
+                distanceFromAxis = ((smoothedGrabPoint - initialGrabPoint) - translateVectorAlongAxis).magnitude;
                 Vector3 handleVectorAlongAxis = Vector3.Project(targetHandle.position - initialHandlePosition, translationAxis);
 
                 manipAmount = Vector3.Dot(translateVectorAlongAxis, translationAxis);
                 handleAmount = Vector3.Dot(handleVectorAlongAxis, translationAxis);
 
                 // Align widget with the YZ coords of the grab point, but leave the X alone.
-                var localGrabPoint = transform.InverseTransformPoint(associatedPointer.Value.GrabPoint);
+                var localGrabPoint = transform.InverseTransformPoint(smoothedGrabPoint);
                 rulerContainer.localPosition = new Vector3(0, localGrabPoint.y, localGrabPoint.z);
             }
             else
@@ -141,12 +147,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             if(localTranslationAxis == Vector3.zero) { localTranslationAxis = Vector3.right; }
 
-            var toleranceDistanceFromAxis = tolerance.Evaluate(distanceFromAxis) * distanceFromAxis;
-
+            
             // Sigmoid logistic function
-            float damperFactor = (2 / (1 + Mathf.Exp(30.0f * -toleranceDistanceFromAxis))) - 1;
+            float damperFactor = (2 / (1 + Mathf.Exp(30.0f * -distanceFromAxis))) - 1;
 
             float scale = 1.0f - damperFactor;
+            scale = Mathf.Clamp(scale, 0.001f, 1.0f);
 
             if (scale < 0.5f)
             {
@@ -165,9 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             markerPivot.localPosition = localTranslationAxis * manipAmount + Vector3.up * (markerOffset+ upperTicksOffset);
 
             ProgressLineDataProvider.LineStartClamp = 0.5f;
-            ProgressLineDataProvider.LineEndClamp = 0.5f + handleAmount;
+            ProgressLineDataProvider.LineEndClamp = 0.5f + localTranslationAxis.x * handleAmount;
 
-            CircleLineProvider.Radius = Vector2.one * toleranceDistanceFromAxis;
+            CircleLineProvider.Radius = Vector2.one * distanceFromAxis;
             CircleLineProvider.transform.localPosition = localTranslationAxis * manipAmount;
             TetherLineProvider.EndPoint = new MixedRealityPose(localTranslationAxis * manipAmount);
 

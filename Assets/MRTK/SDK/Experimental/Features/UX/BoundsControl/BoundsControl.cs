@@ -347,6 +347,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleLerpTime = value;
         }
 
+        [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float translateLerpTime = 0.001f;
+
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
+        public float TranslateLerpTime
+        {
+            get => translateLerpTime;
+            set => translateLerpTime = value;
+        }
+
         [Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
@@ -1174,8 +1188,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                         accumulatedPrecisionDamping += damperFactor * sign * perFrameDiff.magnitude;
                     }
-                    
-                    Target.transform.position = initialPositionOnGrabStart + translateVectorAlongAxis - accumulatedPrecisionDamping * currentTranslationAxis;
+
+                    var goal = initialPositionOnGrabStart + translateVectorAlongAxis - accumulatedPrecisionDamping * currentTranslationAxis;
+
+
+                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
                 }
             }
         }
