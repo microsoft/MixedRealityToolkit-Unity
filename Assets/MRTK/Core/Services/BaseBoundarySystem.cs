@@ -24,6 +24,24 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             BoundaryProfile = profile;
         }
 
+        /// <summary>
+        /// Reads the visualization profile contents and stores the values in class properties.
+        /// </summary>
+        private void ReadProfile()
+        {
+            BoundaryHeight = BoundaryVisualizationProfile.BoundaryHeight;
+            ShowFloor = BoundaryProfile.ShowFloor;
+            FloorPhysicsLayer = BoundaryProfile.FloorPhysicsLayer;
+            ShowPlayArea = BoundaryProfile.ShowPlayArea;
+            PlayAreaPhysicsLayer = BoundaryProfile.PlayAreaPhysicsLayer;
+            ShowTrackedArea = BoundaryProfile.ShowTrackedArea;
+            TrackedAreaPhysicsLayer = BoundaryProfile.TrackedAreaPhysicsLayer;
+            ShowBoundaryWalls = BoundaryProfile.ShowBoundaryWalls;
+            BoundaryWallsPhysicsLayer = BoundaryProfile.BoundaryWallsPhysicsLayer;
+            ShowBoundaryCeiling = BoundaryProfile.ShowBoundaryCeiling;
+            CeilingPhysicsLayer = BoundaryProfile.CeilingPhysicsLayer;
+        }
+
         #region IMixedRealityService Implementation
 
         private MixedRealityBoundaryVisualizationProfile BoundaryProfile { get; }
@@ -36,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
+            ReadProfile();
+
             if (!Application.isPlaying || BoundaryProfile == null) { return; }
 
             boundaryEventData = new BoundaryEventData(EventSystem.current);
@@ -44,17 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
-
-            ShowFloor = BoundaryProfile.ShowFloor;
-            FloorPhysicsLayer = BoundaryProfile.FloorPhysicsLayer;
-            ShowPlayArea = BoundaryProfile.ShowPlayArea;
-            PlayAreaPhysicsLayer = BoundaryProfile.PlayAreaPhysicsLayer;
-            ShowTrackedArea = BoundaryProfile.ShowTrackedArea;
-            TrackedAreaPhysicsLayer = BoundaryProfile.TrackedAreaPhysicsLayer;
-            ShowBoundaryWalls = BoundaryProfile.ShowBoundaryWalls;
-            BoundaryWallsPhysicsLayer = BoundaryProfile.BoundaryWallsPhysicsLayer;
-            ShowBoundaryCeiling = BoundaryProfile.ShowBoundaryCeiling;
-            CeilingPhysicsLayer = BoundaryProfile.CeilingPhysicsLayer;
 
             RaiseBoundaryVisualizationChanged();
         }
