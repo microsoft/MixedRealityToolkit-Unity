@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.VersionControl;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
@@ -109,6 +110,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets("MixedRealityToolkitFilesTests.cs");
             Assert.IsTrue(files.Length == 1);
+        }
+
+        /// <summary>
+        /// Validates that MixedRealutyToolkit.GetAssetDatabasePath produces the correct asset path.
+        /// </summary>
+        [Test]
+        public void VerifyGetAssetDatabasePath()
+        {
+            // File in the Assets folder structure
+            string inputPath = @"c:\projects\MyUnityProject\Assets\materials\test.mat";
+            string expectedPath = "Assets/materials/test.mat";
+            string actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
+
+            // File in the Packages folder structire
+            inputPath = "d:/source/projects/Packages/CoolFeature/textures/background.png";
+            expectedPath = "Packages/CoolFeature/textures/background.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
+
+            // File in the Library/PackageCache folder structure
+            inputPath = @"c:\development\projects\space\Library\PackageCache\com.contoso.custompackage@17.43.0-preview.13\scripable.asset";
+            expectedPath = "Packages/com.contoso.custompackage/scriptable.asset";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
         }
 
         [TearDown]
