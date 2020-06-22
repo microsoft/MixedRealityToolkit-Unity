@@ -32,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-
             base.Initialize();
+
+            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
         }
 
         #endregion IMixedRealityService Implementation
