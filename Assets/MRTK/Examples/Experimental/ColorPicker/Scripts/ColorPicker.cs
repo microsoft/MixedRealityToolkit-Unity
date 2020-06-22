@@ -13,28 +13,48 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// </summary>
     public class ColorPicker : MonoBehaviour, IMixedRealityTouchHandler
     {
-        public MeshRenderer[] TargetObjectMesh;
-        public SpriteRenderer[] TargetObjectSprite;
+        public MeshRenderer TargetObjectMesh = null;
+        public SpriteRenderer TargetObjectSprite = null;
+        [SerializeField]
+        private MeshRenderer[] PickerUIMeshes = null;
+        [SerializeField]
+        private SpriteRenderer[] PickerUISprites = null;
+        [SerializeField]
+        private MeshRenderer GradientMesh = null;
+        [SerializeField]
+        private GameObject GradientDragger = null;
+        [SerializeField]
+        private PinchSlider SliderRed = null;
+        [SerializeField]
+        private PinchSlider SliderGreen = null;
+        [SerializeField]
+        private PinchSlider SliderBlue = null;
+        [SerializeField]
+        private PinchSlider SliderAlpha = null;
+        [SerializeField]
+        private PinchSlider SliderHue = null;
+        [SerializeField]
+        private PinchSlider SliderSaturation = null;
+        [SerializeField]
+        private PinchSlider SliderBrightness = null;
         //
-        public PinchSlider SliderRed;
-        public PinchSlider SliderGreen;
-        public PinchSlider SliderBlue;
-        public PinchSlider SliderAlpha;
-        public PinchSlider SliderHue;
-        public PinchSlider SliderSaturation;
-        public PinchSlider SliderBrightness;
+        [SerializeField]
+        private TextMeshPro TextRed = null;
+        [SerializeField]
+        private TextMeshPro TextGreen = null;
+        [SerializeField]
+        private TextMeshPro TextBlue = null;
+        [SerializeField]
+        private TextMeshPro TextAlpha = null;
+        [SerializeField]
+        private TextMeshPro TextHex = null;
+        [SerializeField]
+        private TextMeshPro TextHue = null;
+        [SerializeField]
+        private TextMeshPro TextSaturation = null;
+        [SerializeField]
+        private TextMeshPro TextBrightness = null;
         //
-        public TextMeshPro TextRed;
-        public TextMeshPro TextGreen;
-        public TextMeshPro TextBlue;
-        public TextMeshPro TextAlpha;
-        public TextMeshPro TextHex;
-        public TextMeshPro TextHue;
-        public TextMeshPro TextSaturation;
-        public TextMeshPro TextBrightness;
-        //
-        public MeshRenderer GradientMesh;
-        public GameObject GradientDragger;
         private float GradientDragMaxDistance = 0.5f;
         private Vector3 GradientDragStartPosition;
         private Vector3 GradientDragCurrentPosition;
@@ -73,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             //OnTouchStarted.Invoke(eventData);
-            Debug.Log("OnTouchStarted: " + eventData.selectedObject.name.ToString());
+            //Debug.Log("OnTouchStarted: " + eventData.selectedObject.name.ToString());
             //Debug.Log("OnTouchStarted: " + Time.unscaledTime);
         }
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
@@ -226,15 +246,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void ApplyColor()
         {
-            GradientMesh.material.color = Color.HSVToRGB(Hue, 1, 1);
-            foreach (MeshRenderer rend in TargetObjectMesh)
+            if(GradientMesh != null && GradientMesh.material != null)
+            {
+                GradientMesh.material.color = Color.HSVToRGB(Hue, 1, 1);
+            }
+            if(TargetObjectMesh != null && TargetObjectMesh.material != null)
+            {
+                TargetObjectMesh.material.color = CustomColor;
+            }
+            if(TargetObjectSprite != null)
+            {
+                TargetObjectSprite.color = CustomColor;
+            }
+            foreach(MeshRenderer rend in PickerUIMeshes)
             {
                 if(rend != null)
                 {
                     rend.material.color = CustomColor;
                 }
             }
-            foreach(SpriteRenderer rend in TargetObjectSprite)
+            foreach(SpriteRenderer rend in PickerUISprites)
             {
                 if(rend != null)
                 {
