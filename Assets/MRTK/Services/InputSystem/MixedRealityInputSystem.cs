@@ -322,7 +322,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GazeProvider.GazePointer.BaseCursor.Destroy();
                 }
 
-                UnityObjectExtensions.DestroyObject(GazeProvider as Component);
+                // To avoid a race condition where the GazeProvider is technically still present
+                // in the scene after calling Destroy(), we call DestroyImmediate() to ensure it gets
+                // recreated appropriately.
+                // We acknowledge and are willing to accept the small performance hit that
+                // will occur during service tear down / restart.
+                UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
 
                 GazeProvider = null;
             }

@@ -132,53 +132,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(showCeiling1 != boundarySystem2.ShowBoundaryCeiling);
         }
 
-        // todo: uncomment when default cursor creation is fixed
-        ///// <summary>
-        ///// Test to verify that switching profiles results in the expected playspace children.
-        ///// </summary>
-        //[UnityTest]
-        //public IEnumerator VerifyPlayspaceChildren()
-        //{
-        //    MixedRealityToolkitConfigurationProfile profile1 = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-        //    yield return null;
+        /// <summary>
+        /// Test to verify that switching profiles results in the expected playspace children.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator VerifyPlayspaceChildren()
+        {
+            MixedRealityToolkitConfigurationProfile profile1 = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+            yield return null;
 
-        //    // Initialize the test case with profile 1
-        //    InitializeTest(profile1);
+            // Initialize the test case with profile 1
+            InitializeTest(profile1);
 
-        //    // Switch between the profiles a few times.
-        //    MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2ProfilePath);
-        //    ChangeProfile(profile2);
-        //    yield return null;
-        //    ChangeProfile(profile1);
-        //    yield return null;
-        //    ChangeProfile(profile2);
-        //    yield return null;
+            // Switch between the profiles a few times.
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2ProfilePath);
+            ChangeProfile(profile2);
+            yield return null;
+            ChangeProfile(profile1);
+            yield return null;
+            ChangeProfile(profile2);
+            yield return null;
 
-        //    int uiRaycastCameraCount = 0;
-        //    // Confirm that we have one UIRaycastCamera.
-        //    Debug.Log("Validating UIRaycastCamera count.");
-        //    Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
-        //    foreach (Camera camera in cameras)
-        //    {
-        //        if ("UIRaycastCamera" == camera.name)
-        //        {
-        //            uiRaycastCameraCount++;
-        //        }
-        //    }
-        //    Assert.AreEqual(1, uiRaycastCameraCount);
+            int uiRaycastCameraCount = 0;
+            // Confirm that we have one UIRaycastCamera.
+            Debug.Log("Validating UIRaycastCamera count.");
+            Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+            foreach (Camera camera in cameras)
+            {
+                if ("UIRaycastCamera" == camera.name)
+                {
+                    uiRaycastCameraCount++;
+                }
+            }
+            Assert.AreEqual(1, uiRaycastCameraCount);
 
-        //    // Confirm that we have only one instance of the default cursor.
-        //    int defaultCursorCount = 0;
-        //    Debug.Log("Validating DefaultCursor count.");
-        //    foreach (Transform child in MixedRealityPlayspace.Transform.GetComponentsInChildren<Transform>())
-        //    {
-        //        if ("DefaultCursor(Clone)" == child.name)
-        //        {
-        //            defaultCursorCount++;
-        //        }
-        //    }
-        //    Assert.AreEqual(1, defaultCursorCount);
-        //}
+            // Confirm that we have only one instance of the default cursor.
+            int defaultCursorCount = 0;
+            Debug.Log("Validating DefaultCursor count.");
+            foreach (Transform child in MixedRealityPlayspace.Transform.GetComponentsInChildren<Transform>())
+            {
+                if ("DefaultCursor(Clone)" == child.name)
+                {
+                    defaultCursorCount++;
+                }
+            }
+            Assert.AreEqual(1, defaultCursorCount);
+        }
 
         #endregion // Test cases
     }
