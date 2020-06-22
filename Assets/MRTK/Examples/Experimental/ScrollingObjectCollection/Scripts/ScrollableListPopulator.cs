@@ -112,13 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
 
                 // Prevent the scrolling collection from running until we're done dynamically populating it.
-                scrollCollection.SetUpAtRuntime = false;
+                scrollCollection.SetupAtRuntime = false;
                 scrollCollection.CellHeight = 0.032f;
                 scrollCollection.CellWidth = 0.032f;
                 scrollCollection.Tiers = 3;
                 scrollCollection.ViewableArea = 5;
                 scrollCollection.DragTimeThreshold = 0.75f;
-                scrollCollection.HandDeltaMagThreshold = 0.8f;
+                scrollCollection.HandDeltaMagThreshold = 0.02f;
                 scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
             }
 

@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty tiers;
         private SerializedProperty useCameraPreRender;
 
-        private SerializedProperty setUpAtRuntime;
+        private SerializedProperty setupAtRuntime;
         private SerializedProperty occlusionPositionPadding;
         private SerializedProperty occlusionScalePadding;
         private SerializedProperty dragTimeThreshold;
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             scrollDirection = serializedObject.FindProperty("scrollDirection");
             useNearScrollBoundary = serializedObject.FindProperty("useNearScrollBoundary");
             viewableArea = serializedObject.FindProperty("viewableArea");
-            setUpAtRuntime = serializedObject.FindProperty("setUpAtRuntime");
+            setupAtRuntime = serializedObject.FindProperty("setupAtRuntime");
             useCameraPreRender = serializedObject.FindProperty("useOnPreRender");
 
             occlusionPositionPadding = serializedObject.FindProperty("occlusionPositionPadding");
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 EditorGUILayout.PropertyField(canScroll);
                 EditorGUILayout.PropertyField(scrollDirection);
-                EditorGUILayout.PropertyField(setUpAtRuntime);
+                EditorGUILayout.PropertyField(setupAtRuntime);
                 EditorGUILayout.PropertyField(useCameraPreRender);
                 EditorGUILayout.Space();
             }
