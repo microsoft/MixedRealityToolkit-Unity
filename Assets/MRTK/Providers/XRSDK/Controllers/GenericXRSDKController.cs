@@ -309,6 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 // Update the interaction data source
                 switch (interactionMapping.InputType)
                 {
+                    case DeviceInputType.SpatialPointer:
                     case DeviceInputType.SpatialGrip:
                         interactionMapping.PoseData = CurrentControllerPose;
 
