@@ -53,8 +53,8 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit.SDK
   - description: Oculus XRSDK Touch Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Input.OculusXRSDKTouchController,
-        Assembly-CSharp
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 1
     useDefaultModel: 1
     defaultModelMaterial: {fileID: 0}
@@ -63,8 +63,8 @@ MonoBehaviour:
       reference: 
   - description: Oculus XRSDK Touch Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Input.OculusXRSDKTouchController,
-        Assembly-CSharp
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
     useDefaultModel: 1
     defaultModelMaterial: {fileID: 0}

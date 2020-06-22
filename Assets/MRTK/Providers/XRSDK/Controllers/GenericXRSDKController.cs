@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+using Unity.XR.Oculus;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
@@ -150,10 +151,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     InputFeatureUsage<bool> buttonUsage;
 
                     // Update the interaction data source
+                    // We need to update the DeviceInputType to differentiate between primary/secondary/other buttons
+                    // For now it maps directly to the primary button as a stopgap measure
                     switch (interactionMapping.InputType)
                     {
                         case DeviceInputType.Select:
+                        case DeviceInputType.TriggerTouch:
+                        case DeviceInputType.TriggerNearTouch:
+                        case DeviceInputType.TriggerPress:
                             buttonUsage = CommonUsages.triggerButton;
+                            break;
+                        case DeviceInputType.ButtonPress:
+                            buttonUsage = CommonUsages.primaryButton;
+                            break;
+                        case DeviceInputType.ThumbTouch:
+                        case DeviceInputType.ThumbNearTouch:
+                            buttonUsage = OculusUsages.thumbTouch;
                             break;
                         case DeviceInputType.TouchpadTouch:
                             buttonUsage = CommonUsages.primary2DAxisTouch;
