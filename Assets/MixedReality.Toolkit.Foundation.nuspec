@@ -34,24 +34,20 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Core" /> -->
+    <file src="..\..\Assets\MRTK\Core\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Core" />
 
     <!-- Assemblies and Sources that are built from the Providers folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*;..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR\**\*.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers" /> -->
+    <file src="..\..\Assets\MRTK\Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers" />
 
     <!-- Assemblies and Sources that are built from the SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\SDK" /> -->
+    <file src="..\..\Assets\MRTK\SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\SDK" />
 
     <!-- Assemblies and Sources that are built from the Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" /> -->
+    <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" />
     
     <!-- 
       link.xml is copied to the root location, so that it can catch IL2CPP
