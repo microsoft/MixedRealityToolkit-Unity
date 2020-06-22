@@ -252,12 +252,12 @@ MonoBehaviour:
   canScroll: 1
   setUpAtRuntime: 1
   viewableArea: 2
-  handDeltaMagThreshold: 0.4
+  handDeltaMagThreshold: 0.02
   dragTimeThreshold: 0.75
   useNearScrollBoundary: 0
   scrollDirection: 0
   useOnPreRender: 0
-  velocityMultiplier: 0.8
+  velocityMultiplier: 0.008
   velocityDampen: 0.9
   typeOfVelocity: 0
   paginationCurve:
