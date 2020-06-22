@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Unity.XR.ARFoundation"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
