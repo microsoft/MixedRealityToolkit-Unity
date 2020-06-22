@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
 using System.IO;
 using System;
-using UnityEngine;
-using System.Collections.Generic;
 using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tools.Build
 {
@@ -32,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
             string relativePath = CompilationPipeline.GetAssemblyDefinitionFilePathFromAssemblyName(assembly.name);
             string fullPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(Application.dataPath)), relativePath);
 
-            AssemblyDefinition assemblyDefinition = JsonUtility.FromJson<AssemblyDefinition>(File.ReadAllText(fullPath));
+            AssemblyDefinition assemblyDefinition = AssemblyDefinition.Load(fullPath);
             Validate(assemblyDefinition);
             cache[assembly.name] = assemblyDefinition;
             return assemblyDefinition;
@@ -52,11 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
         /// </summary>
         private static void Validate(AssemblyDefinition assemblyDefinition)
         {   
-            if (assemblyDefinition.excludePlatforms.Length > 0 && assemblyDefinition.includePlatforms.Length > 0)
+            if (assemblyDefinition.ExcludePlatforms.Length > 0 && assemblyDefinition.IncludePlatforms.Length > 0)
             {
                 // This isn't support according to the Unity asmdef spec:
                 // https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html
-                throw new InvalidOperationException($"Assembly definition '{assemblyDefinition.name}' erroneously contains both excluded and included platform list");
+                throw new InvalidOperationException($"Assembly definition '{assemblyDefinition.Name}' erroneously contains both excluded and included platform list");
             }
         }
 

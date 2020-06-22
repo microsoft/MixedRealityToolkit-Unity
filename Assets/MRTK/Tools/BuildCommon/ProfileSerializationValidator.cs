@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -81,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Build
             {
                 AssemblyDefinition assemblyDefinition = AssemblyDefinitionLoader.Load(unityAssemblies[type.Assembly.GetName().Name]);
                 
-                if (assemblyDefinition.excludePlatforms.Length != 0 || assemblyDefinition.includePlatforms.Length != 0)
+                if (assemblyDefinition.ExcludePlatforms.Length != 0 || assemblyDefinition.IncludePlatforms.Length != 0)
                 {
                     return true;
                 }

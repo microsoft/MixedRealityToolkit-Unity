@@ -77,6 +77,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IsProfileForService(Type profileType, Type serviceType)
         {
+            var serviceTypeAttributes = serviceType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true);
+            if (serviceTypeAttributes.Length > 0)
+            {
+                foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in serviceTypeAttributes)
+                {
+                    foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
+                    {
+                        if (requiredType.Equals(profileType))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
             foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in profileType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
             {
                 foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
@@ -93,21 +109,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         return false;
                     }
-
                 }
             }
 
-            foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in serviceType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
-            {
-                foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
-                {
-                    if (requiredType.Equals(profileType))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return true;
         }
 
         /// <summary>
