@@ -59,7 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     return;
                 }
 
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking, inputDevices);
+                // Need to make it so we get devices that are either controllers or handtracking, the old commented code only got devices that met both requirements
+                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, inputDevices);
                 foreach (InputDevice device in inputDevices)
                 {
                     if (device.isValid)

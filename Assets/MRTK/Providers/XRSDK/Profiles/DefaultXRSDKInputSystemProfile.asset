@@ -21,6 +21,13 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: 9
     deviceManagerProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.OculusXRSDKDeviceManager,
+        Assembly-CSharp
+    componentName: XRSDK Oculus Quest Device Manager
+    priority: 0
+    runtimePlatform: 32
+    deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:
