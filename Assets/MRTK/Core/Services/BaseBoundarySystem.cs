@@ -375,8 +375,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private bool showTrackedArea = false;
-
         private int playAreaPhysicsLayer;
 
         /// <inheritdoc/>
@@ -401,6 +399,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
         }
+
+        private bool showTrackedArea = false;
 
         /// <inheritdoc/>
         public bool ShowTrackedArea
