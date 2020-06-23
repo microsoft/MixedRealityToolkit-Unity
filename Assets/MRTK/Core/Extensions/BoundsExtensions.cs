@@ -427,14 +427,26 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="target">gameObject that boundingBox bounds.</param>
         /// <param name="boundsPoints">array reference that gets filled with points</param>
         /// <param name="ignoreLayers">layerMask to simplify search</param>
-        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
-                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers);
+                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers, relativeTo);
             }
         }
+
+        private static void InverseTransformPoints(ref Vector3[] positions, Transform relativeTo)	 
+        {	 	 
+            if (relativeTo)	 	 
+            {	 	 
+                for (var i = 0; i < positions.Length; ++i)	 	 
+                {	 	 
+                    positions[i] = relativeTo.InverseTransformPoint(positions[i]);	 	 
+                }	 	 
+            }	 	 
+        }
+
 
         /// <summary>
         /// Method to get bounds from a single Collider
@@ -442,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="collider">Target collider</param>
         /// <param name="boundsPoints">array reference that gets filled with points</param>
         /// <param name="ignoreLayers">layerMask to simplify search</param>
-        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             if (ignoreLayers == (1 << collider.gameObject.layer | ignoreLayers)) { return; }
 
@@ -451,6 +463,7 @@ namespace Microsoft.MixedReality.Toolkit
                 SphereCollider sc = collider as SphereCollider;
                 Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
                 sphereBounds.GetFacePositions(sc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
             else if (collider is BoxCollider)
@@ -458,6 +471,7 @@ namespace Microsoft.MixedReality.Toolkit
                 BoxCollider bc = collider as BoxCollider;
                 Bounds boxBounds = new Bounds(bc.center, bc.size);
                 boxBounds.GetCornerPositions(bc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
 
             }
@@ -466,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit
                 MeshCollider mc = collider as MeshCollider;
                 Bounds meshBounds = mc.sharedMesh.bounds;
                 meshBounds.GetCornerPositions(mc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
             else if (collider is CapsuleCollider)
@@ -487,6 +502,7 @@ namespace Microsoft.MixedReality.Toolkit
                         break;
                 }
                 capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                InverseTransformPoints(ref corners, relativeTo);
                 boundsPoints.AddRange(corners);
             }
         }
