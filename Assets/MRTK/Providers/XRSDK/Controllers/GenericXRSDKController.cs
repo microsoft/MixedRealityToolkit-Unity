@@ -155,7 +155,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     switch (interactionMapping.InputType)
                     {
                         case DeviceInputType.Select:
-                        case DeviceInputType.TriggerTouch:
                         case DeviceInputType.TriggerNearTouch:
                         case DeviceInputType.TriggerPress:
                             buttonUsage = CommonUsages.triggerButton;
