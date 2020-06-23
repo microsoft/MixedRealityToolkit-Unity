@@ -427,6 +427,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="target">gameObject that boundingBox bounds.</param>
         /// <param name="boundsPoints">array reference that gets filled with points</param>
         /// <param name="ignoreLayers">layerMask to simplify search</param>
+        /// <param name="relativeTo">compute bounds relative to this transform</param>
         public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
