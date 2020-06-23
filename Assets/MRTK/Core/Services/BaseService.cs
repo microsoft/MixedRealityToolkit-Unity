@@ -8,7 +8,6 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// The base service implements <see cref="IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
-    [MixedRealityToolkitPreserve]
     public abstract class BaseService : IMixedRealityService
     {
         public const uint DefaultPriority = 10;
