@@ -13,46 +13,75 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
     /// </summary>
     public class ColorPicker : MonoBehaviour, IMixedRealityTouchHandler
     {
-        public MeshRenderer TargetObjectMesh = null;
-        public SpriteRenderer TargetObjectSprite = null;
+        private MeshRenderer targetObjectMesh = null;
+        public MeshRenderer TargetObjectMesh
+        {
+            get => targetObjectMesh;
+            set => targetObjectMesh = value;
+        }
+        private SpriteRenderer targetObjectSprite = null;
+        public SpriteRenderer TargetObjectSprite
+        {
+            get => targetObjectSprite;
+            set => targetObjectSprite = value;
+        }
         [SerializeField]
+        [Tooltip("")]
         private MeshRenderer[] PickerUIMeshes = null;
         [SerializeField]
+        [Tooltip("")]
         private SpriteRenderer[] PickerUISprites = null;
         [SerializeField]
+        [Tooltip("")]
         private MeshRenderer GradientMesh = null;
         [SerializeField]
+        [Tooltip("")]
         private GameObject GradientDragger = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderRed = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderGreen = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderBlue = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderAlpha = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderHue = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderSaturation = null;
         [SerializeField]
+        [Tooltip("")]
         private PinchSlider SliderBrightness = null;
         //
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextRed = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextGreen = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextBlue = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextAlpha = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextHex = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextHue = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextSaturation = null;
         [SerializeField]
+        [Tooltip("")]
         private TextMeshPro TextBrightness = null;
         //
         private float GradientDragMaxDistance = 0.5f;
@@ -65,11 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         private bool IsDraggingSliders = false;
         private bool IsDraggingGradient = false;
         //
-        //#region Event handlers
-        //public TouchEvent OnTouchCompleted;
-        //public TouchEvent OnTouchStarted;
-        //public TouchEvent OnTouchUpdated;
-        //#endregion
         private void Start()
         {
             GradientDragStartPosition = GradientDragger.transform.localPosition;
@@ -80,22 +104,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         {
             if (IsDraggingGradient)
             {
-                ConstrainDragging();
+                ConstrainGradientDragging();
             }
             if (IsDraggingSliders)
             {
                 CalculateGradientDraggerPosition();
             }
         }
-        //////public void ClickSliderTrack(MixedRealityPointerEventData eventData)
-        //////{
-        //////    Debug.Log("SliderCLick=" + eventData.Pointer.Result.Details.Point);
-        //////    //ApplyColor();
-        //////    //UpdateSliderText();
-        //////    //ApplySliderValues();
-        //////}
-
-        #region Gradient Logic
+        #region Gradient Logic (Private)
+        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            //OnTouchUpdated.Invoke(eventData);
+            //Debug.Log("OnTouchUpdated: " + Time.unscaledTime);
+            GradientDragger.transform.position = new Vector3(eventData.InputData.x, eventData.InputData.y, eventData.InputData.z);
+            ConstrainGradientDragging();
+            ApplyColor();
+            UpdateSliderText();
+            ApplySliderValues();
+        }
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             //OnTouchStarted.Invoke(eventData);
@@ -107,44 +133,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             //OnTouchCompleted.Invoke(eventData);
             //Debug.Log("OnTouchCompleted: " + Time.unscaledTime);
         }
-
-        void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
-        {
-            //OnTouchUpdated.Invoke(eventData);
-            //Debug.Log("OnTouchUpdated: " + Time.unscaledTime);
-            GradientDragger.transform.position = new Vector3(eventData.InputData.x, eventData.InputData.y, eventData.InputData.z);
-            ConstrainDragging();
-            ApplyColor();
-            UpdateSliderText();
-            ApplySliderValues();
-        }
         private void CalculateGradientDraggerPosition()
         {
+            // TODO: change this to invert Y logic
             float xPosition = ((Saturation + GradientDragMaxDistance) * -1) + 1;
             float yPosition = Brightness - GradientDragMaxDistance;
             GradientDragCurrentPosition.x = Mathf.Clamp(xPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
             GradientDragCurrentPosition.y = Mathf.Clamp(yPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
             GradientDragger.transform.localPosition = GradientDragCurrentPosition;
         }
-        public void ClickGradientTexture(MixedRealityPointerEventData eventData)
-        {
-            GradientDragger.transform.position = eventData.Pointer.Result.Details.Point;
-            ConstrainDragging();
-            ApplyColor();
-            UpdateSliderText();
-            ApplySliderValues();
-        }
-
-        public void StartDragGradient()
-        {
-            IsDraggingGradient = true;
-        }
-        public void StopDragGradient()
-        {
-            IsDraggingGradient = false;
-            ApplySliderValues();
-        }
-        private void ConstrainDragging()
+        private void ConstrainGradientDragging()
         {
             // Horizontal
             if (GradientDragger.transform.localPosition.x >= GradientDragStartPosition.x + GradientDragMaxDistance)
@@ -184,7 +182,40 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         #endregion
 
+        #region Gradient Logic (Public)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ClickGradientTexture(MixedRealityPointerEventData eventData)
+        {
+            GradientDragger.transform.position = eventData.Pointer.Result.Details.Point;
+            ConstrainGradientDragging();
+            ApplyColor();
+            UpdateSliderText();
+            ApplySliderValues();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void StartDragGradient()
+        {
+            IsDraggingGradient = true;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void StopDragGradient()
+        {
+            IsDraggingGradient = false;
+            ApplySliderValues();
+        }
+
+        #endregion
+
         #region Public Functions
+        /// <summary>
+        /// 
+        /// </summary>
         public void SummonColorPicker(GameObject container)
         {
             this.gameObject.SetActive(true);
@@ -194,6 +225,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             TargetObjectSprite = GameObject.Find(container.name + "/TargetObject (Sprite)").GetComponent<SpriteRenderer>();
             ExtractColorFromMaterial(TargetObjectMesh);
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void UpdateColorHSV()
         {
             if (IsDraggingSliders == true)
@@ -208,6 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 ApplyColor();
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void UpdateColorRGB() {
             if (IsDraggingSliders == true)
             {
@@ -222,6 +259,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 ApplyColor();
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
         {
             CustomColor = meshRenderer.material.color;
@@ -233,11 +273,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplyColor();
             ApplySliderValues();
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void StartDrag(GameObject dragger)
         {
             dragger.SetActive(true);
             IsDraggingSliders = true;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void StopDrag(GameObject dragger)
         {
             dragger.SetActive(false);
