@@ -237,12 +237,19 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: -1.6510965
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: dc3e9c5e9568cc7448477aacd53a9cda,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: dc3e9c5e9568cc7448477aacd53a9cda,
         type: 3}
       propertyPath: m_Name
       value: TeardropDraggerPrefab
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -1504981713932161579, guid: dc3e9c5e9568cc7448477aacd53a9cda, type: 3}
+    - {fileID: -5178661895559278292, guid: dc3e9c5e9568cc7448477aacd53a9cda, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dc3e9c5e9568cc7448477aacd53a9cda, type: 3}
 --- !u!4 &4776024414239850832 stripped
 Transform:

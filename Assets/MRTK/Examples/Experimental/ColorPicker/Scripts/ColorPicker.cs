@@ -74,10 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         {
             GradientDragStartPosition = GradientDragger.transform.localPosition;
             GradientDragCurrentPosition = GradientDragStartPosition;
-            CustomColor = Color.red;
-            CustomColor.a = Alpha;
-            UpdateSliderText();
-            ApplyColor();
+            this.gameObject.SetActive(false);
         }
         private void Update()
         {
@@ -90,6 +87,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 CalculateGradientDraggerPosition();
             }
         }
+        //////public void ClickSliderTrack(MixedRealityPointerEventData eventData)
+        //////{
+        //////    Debug.Log("SliderCLick=" + eventData.Pointer.Result.Details.Point);
+        //////    //ApplyColor();
+        //////    //UpdateSliderText();
+        //////    //ApplySliderValues();
+        //////}
+
+        #region Gradient Logic
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
             //OnTouchStarted.Invoke(eventData);
@@ -128,13 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             UpdateSliderText();
             ApplySliderValues();
         }
-        public void ClickSliderTrack(MixedRealityPointerEventData eventData)
-        {
-            Debug.Log("SliderCLick=" + eventData.Pointer.Result.Details.Point);
-            //ApplyColor();
-            //UpdateSliderText();
-            //ApplySliderValues();
-        }
+
         public void StartDragGradient()
         {
             IsDraggingGradient = true;
@@ -181,6 +181,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             //
             UpdateSliderText();
             ApplyColor();
+        }
+        #endregion
+
+        #region Public Functions
+        public void SummonColorPicker(GameObject container)
+        {
+            this.gameObject.SetActive(true);
+            transform.localScale = Vector3.one;
+            transform.position = GameObject.Find(container.name + "/Anchor").transform.position;
+            TargetObjectMesh = GameObject.Find(container.name + "/TargetObject (Mesh)").GetComponent<MeshRenderer>();
+            TargetObjectSprite = GameObject.Find(container.name + "/TargetObject (Sprite)").GetComponent<SpriteRenderer>();
+            ExtractColorFromMaterial(TargetObjectMesh);
         }
         public void UpdateColorHSV()
         {
@@ -232,6 +244,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             IsDraggingSliders = false;
             ApplySliderValues();
         }
+        #endregion
+
+        #region UI Logic
         private void UpdateSliderText()
         {
             TextRed.text = Mathf.Clamp(Mathf.RoundToInt(CustomColor.r * 255),0,255).ToString();
@@ -287,5 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             SliderSaturation.SliderValue = Mathf.Clamp(Saturation, 0, 1);
             SliderBrightness.SliderValue = Mathf.Clamp(Brightness, 0, 1);
         }
+        #endregion
     }
 }
