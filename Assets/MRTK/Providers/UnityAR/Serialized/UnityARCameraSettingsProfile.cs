@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// Configuration profile for the XR camera settings provider.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Providers/Unity AR/Unity AR Foundation Camera Settings Profile", fileName = "DefaultUnityARCameraSettingsProfile", order = 100)]
-    [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {
         #region Tracked Pose Driver settings

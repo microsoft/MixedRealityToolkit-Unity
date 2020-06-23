@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsEditor,
         "Leap Motion Device Manager",
-        "LeapMotion/Profiles/LeapMotionDeviceManagerProfile.asset",
+        "LeapMotion/Serialized/LeapMotionDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers",
         true)]
     [MixedRealityServiceProfile(typeof(LeapMotionDeviceManagerProfile))]
