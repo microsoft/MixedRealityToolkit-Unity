@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
         private LinearElasticSystem elasticSystem = null;
 
-        private bool isSetup;
+        private bool isSetup = false;
 
         /// <summary>
         /// Initialize system with source info from controllers/hands.
@@ -113,7 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             else if (leftPointer.HasValue && !rightPointer.HasValue)
             {
                 return (leftPointer.Value + rightInitialPosition) / 2.0f;
-            } else
+            }
+            else
             {
                 return Vector3.zero; // Failure case.
             }

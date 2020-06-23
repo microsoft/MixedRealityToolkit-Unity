@@ -7,84 +7,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-
-    /// <summary>
-    /// Properties of the extent in which a damped
-    /// harmonic oscillator is free to move.
-    /// </summary>
-    [Serializable]
-    public struct ElasticExtentProperties<T>
-    {
-        /// <value>
-        /// Represents the lower bound of the extent,
-        /// specified as the norm of the n-dimensional extent
-        /// </value>
-        [SerializeField]
-        public float MinStretch;
-
-        /// <value>
-        /// Represents the upper bound of the extent,
-        /// specified as the norm of the n-dimensional extent
-        /// </value>
-        [SerializeField]
-        public float MaxStretch;
-
-        /// <value>
-        /// Whether the system, when approaching the upper bound,
-        /// will treat the end limits like snap points and magnetize to them.
-        /// </value>
-        [SerializeField]
-        public bool SnapToEnd;
-
-        /// <value>
-        /// Points inside the extent to which the system will snap.
-        /// </value>
-        [SerializeField]
-        public T[] SnapPoints;
-    }
-
-    /// <summary>
-    /// Properties of the damped harmonic oscillator differential system.
-    /// </summary>
-    [Serializable]
-    public struct ElasticProperties
-    {
-        /// <value>
-        /// Mass of the simulated oscillator element
-        /// </value>
-        [SerializeField]
-        public float Mass;
-        /// <value>
-        /// Hand spring constant
-        /// </value>
-        [SerializeField]
-        public float HandK;
-        /// <value>
-        /// End cap spring constant
-        /// </value>
-        [SerializeField]
-        public float EndK;
-        /// <value>
-        /// Snap point spring constant
-        /// </value>
-        [SerializeField]
-        public float SnapK;
-        /// <value>
-        /// Extent at which snap points begin forcing the spring.
-        /// </value>
-        [SerializeField]
-        public float SnapRadius;
-        /// <value>
-        /// Drag/damper factor, proportional to velocity.
-        /// </value>
-        [SerializeField]
-        public float Drag;
-    }
-
     /// <summary>
     /// Represents a damped harmonic oscillator over an
     /// N-dimensional vector space, specified by generic type T.
@@ -173,31 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 force += computeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, elasticProperties.SnapRadius);
             }
 
-            // Helper closure to reduce force calculation copypasta.
-            float computeEndForce(float current)
-            {
-                // If we are extended beyond the end cap,
-                // add one-sided force back to the center.
-                if(current > 0)
-                {
-                    return current * elasticProperties.EndK;
-                }
-                else
-                {
-                    // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                    return extentInfo.SnapToEnd ? computeSnapForce(current, elasticProperties.EndK, elasticProperties.SnapRadius) : 0.0f;
-                }
-            }
-
-            // Helper closure to reduce force calculation copypasta.
-            float computeSnapForce(float distFromPoint, float k, float radius)
-            {
-                // Snap force is calculated by multiplying the "-kx" factor by
-                // a clamped distance factor. This results in an overall
-                // hyperbolic profile to the force imparted by the snap point.
-                return (distFromPoint) * elasticProperties.SnapK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromPoint / radius)));
-            }
-
             // a = F/m
             var accel = force / elasticProperties.Mass;
 
@@ -207,6 +107,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             currentValue += currentVelocity * deltaTime;
 
             return currentValue;
+        }
+
+        // Helper function to reduce force calculation copypasta.
+        private float computeEndForce(float current)
+        {
+            // If we are extended beyond the end cap,
+            // add one-sided force back to the center.
+            if (current > 0)
+            {
+                return current * elasticProperties.EndK;
+            }
+            else
+            {
+                // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
+                return extentInfo.SnapToEnds ? computeSnapForce(current, elasticProperties.EndK, elasticProperties.SnapRadius) : 0.0f;
+            }
+        }
+
+        // Helper function to reduce force calculation copypasta.
+        private float computeSnapForce(float distFromPoint, float k, float radius)
+        {
+            // Snap force is calculated by multiplying the "-kx" factor by
+            // a clamped distance factor. This results in an overall
+            // hyperbolic profile to the force imparted by the snap point.
+            return (distFromPoint) * elasticProperties.SnapK * (1.0f - Mathf.Clamp01(Mathf.Abs(distFromPoint / radius)));
         }
     }
 }
