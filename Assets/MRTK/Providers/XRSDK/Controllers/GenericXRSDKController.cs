@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
-using Unity.XR.Oculus;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
@@ -163,10 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                             break;
                         case DeviceInputType.ButtonPress:
                             buttonUsage = CommonUsages.primaryButton;
-                            break;
-                        case DeviceInputType.ThumbTouch:
-                        case DeviceInputType.ThumbNearTouch:
-                            buttonUsage = OculusUsages.thumbTouch;
                             break;
                         case DeviceInputType.TouchpadTouch:
                             buttonUsage = CommonUsages.primary2DAxisTouch;

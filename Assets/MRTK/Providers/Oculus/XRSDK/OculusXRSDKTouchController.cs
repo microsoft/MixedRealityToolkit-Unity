@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using UnityEngine;
 using Unity.Profiling;
 using UnityEngine.XR;
+using Unity.XR.Oculus;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
@@ -69,50 +70,46 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         };
 
 
-        //private Vector3 currentPointerPosition = Vector3.zero;
-        //private Quaternion currentPointerRotation = Quaternion.identity;
-        //private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKController.UpdateButtonData");
+        protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
+        {
+            using (UpdateButtonDataPerfMarker.Auto())
+            {
+                base.UpdateButtonData(interactionMapping, inputDevice);
 
-        //private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKTouchController.UpdatePoseData");
+                Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-        ///// <summary>
-        ///// Update spatial pointer and spatial grip data.
-        ///// </summary>
-        //protected override void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
-        //{
-        //    using (UpdatePoseDataPerfMarker.Auto())
-        //    {
-        //        Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
+                if (!(interactionMapping.InputType == DeviceInputType.TriggerTouch
+                    && inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData)))
+                {
+                    InputFeatureUsage<bool> buttonUsage;
+                    switch (interactionMapping.InputType)
+                    {
+                        case DeviceInputType.ThumbTouch:
+                        case DeviceInputType.ThumbNearTouch:
+                            buttonUsage = OculusUsages.thumbTouch;
+                            if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
+                            {
+                                interactionMapping.BoolData = buttonPressed;
+                            }
 
-        //        base.UpdatePoseData(interactionMapping, inputDevice);
-
-        //        // Update the interaction data source
-        //        switch (interactionMapping.InputType)
-        //        {
-        //            case DeviceInputType.SpatialPointer:
-        //                if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerPosition, out currentPointerPosition))
-        //                {
-        //                    currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
-        //                }
-
-        //                if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerRotation, out currentPointerRotation))
-        //                {
-        //                    currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
-        //                }
-
-        //                interactionMapping.PoseData = currentPointerPose;
-
-        //                // If our value changed raise it.
-        //                if (interactionMapping.Changed)
-        //                {
-        //                    // Raise input system event if it's enabled
-        //                    CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
-        //                }
-        //                break;
-        //            default:
-        //                return;
-        //        }
-        //    }
-        //}
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionMapping.BoolData)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            return;
+                    }
+                }
+            }
+        }
     }
 }
