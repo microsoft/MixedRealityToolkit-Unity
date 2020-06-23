@@ -6,8 +6,13 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Custom preserve attribute that is inheritable.
+    /// Customized version of Unity's PreserveAttribute. This version makes the attribute inheritable.
     /// </summary>
+    /// <remarks>
+    /// Applying this attribute to a class, for example, instructs the Unity linker exclude it from
+    /// byte code stripping. For more information on byte code stripping, please see
+    /// https://docs.unity3d.com/Manual/ManagedCodeStripping.html.
+    /// </remarks>
     [AttributeUsage(
         AttributeTargets.Assembly |
         AttributeTargets.Class |

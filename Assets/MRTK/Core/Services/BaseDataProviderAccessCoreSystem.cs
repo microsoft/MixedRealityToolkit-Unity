@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit
             params object[] args) where T : IMixedRealityDataProvider
         {
             return RegisterDataProviderInternal<T>(
-                true, // Register the provider
+                true, // Retry with an added IMixedRealityService parameter
                 concreteType,
                 providerName,
                 supportedPlatforms,
