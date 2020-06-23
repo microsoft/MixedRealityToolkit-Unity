@@ -60,21 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
-            {
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
-                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
-                {
-                    // If it's a hand with a reported handedness, assume articulated hand
-                    return SupportedControllerType.ArticulatedHand;
-                }
-                else
-                {
-                    // Otherwise, assume a basic ggv hand
-                    return SupportedControllerType.GGVHand;
-                }
-            }
-
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
                 return SupportedControllerType.OculusTouch;

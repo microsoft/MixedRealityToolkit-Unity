@@ -43,8 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         protected static readonly Dictionary<InputDevice, GenericXRSDKController> ActiveControllers = new Dictionary<InputDevice, GenericXRSDKController>();
 
         private readonly List<InputDevice> inputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
 
+        // Need to make it so we get devices that are either controllers or handtracking, the old commented code only got devices that met both requirements
+        protected static readonly InputDeviceCharacteristics[] DesiredCharacteristics = new InputDeviceCharacteristics[]
+            {InputDeviceCharacteristics.Controller, InputDeviceCharacteristics.HandTracking, InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking};
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
         /// <inheritdoc/>
@@ -59,31 +63,36 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     return;
                 }
 
-                // Need to make it so we get devices that are either controllers or handtracking, the old commented code only got devices that met both requirements
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, inputDevices);
-                foreach (InputDevice device in inputDevices)
+                inputDevices.Clear();
+                for(int i = 0; i < DesiredCharacteristics.Length; i++)
                 {
-                    if (device.isValid)
+                    InputDeviceCharacteristics inputDeviceCharacteristics = DesiredCharacteristics[i];
+                    InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
+                    foreach (InputDevice device in inputDevicesSubset)
                     {
-                        GenericXRSDKController controller = GetOrAddController(device);
+                        if (device.isValid)
+                        {
+                            GenericXRSDKController controller = GetOrAddController(device);
 
-                        if (controller == null)
-                        {
-                            continue;
-                        }
+                            if (controller == null)
+                            {
+                                continue;
+                            }
 
-                        if (!lastInputDevices.Contains(device))
-                        {
-                            CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                            if (!lastInputDevices.Contains(device))
+                            {
+                                CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                            }
+                            else
+                            {
+                                // Remove devices from our previously tracked list as we update them.
+                                // This will allow us to remove all stale devices that were tracked
+                                // last frame but not this one.
+                                lastInputDevices.Remove(device);
+                                controller.UpdateController(device);
+                            }
                         }
-                        else
-                        {
-                            // Remove devices from our previously tracked list as we update them.
-                            // This will allow us to remove all stale devices that were tracked
-                            // last frame but not this one.
-                            lastInputDevices.Remove(device);
-                            controller.UpdateController(device);
-                        }
+                        inputDevices.AddRange(inputDevicesSubset);
                     }
                 }
 
