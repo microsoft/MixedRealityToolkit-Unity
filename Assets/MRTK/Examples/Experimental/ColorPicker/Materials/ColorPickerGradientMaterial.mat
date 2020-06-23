@@ -79,7 +79,7 @@ Material:
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 1
-    - _BorderWidth: 0.13
+    - _BorderWidth: 0.03
     - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025

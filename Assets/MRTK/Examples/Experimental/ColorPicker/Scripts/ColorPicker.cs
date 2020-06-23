@@ -135,7 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         private void CalculateGradientDraggerPosition()
         {
-            // TODO: change this to invert Y logic
             float xPosition = ((Saturation + GradientDragMaxDistance) * -1) + 1;
             float yPosition = Brightness - GradientDragMaxDistance;
             GradientDragCurrentPosition.x = Mathf.Clamp(xPosition, -GradientDragMaxDistance, GradientDragMaxDistance);
