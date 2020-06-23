@@ -110,12 +110,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             initialHandlePosition = targetHandle.position;
             translationAxis = (targetHandle.position - targetObject.position).normalized;
             deployed = true;
+
             //transform.right = translationAxis;
             //transform.forward = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
             Vector3 eyeVector = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
 
-            Vector3 localAxis = targetObject.InverseTransformVector(translationAxis);
-            bool isNegative = localAxis.x < 0 || localAxis.y < 0 || localAxis.z < 0;
+            Vector3 cameraAxis = Camera.main.transform.InverseTransformVector(translationAxis);
+            bool isNegative = cameraAxis.x < 0;
 
             Vector3 crossAxis = Vector3.Cross(eyeVector, isNegative ? -translationAxis : translationAxis);
             transform.rotation = Quaternion.LookRotation(eyeVector, crossAxis);
