@@ -12206,6 +12206,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticExtentProperties-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticExtentProperties-1.html",
+          "hash": "lZmZh945Ax4iw1BkmbJDAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticProperties.html",
+          "hash": "hhd/2JjhPzPmDBBCs7sbtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.html",
+          "hash": "r2nG6WjIMOhpzFvMAoq5ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SpatialAwarenessSystemManager.yml",
       "output": {
         ".html": {
@@ -21482,11 +21518,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Experimental.LinearElasticSystemTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Experimental.LinearElasticSystemTests.html",
+          "hash": "+2swZerLWXn1fdHIg8HtJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Experimental.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Experimental.html",
-          "hash": "KPeJi8YTJwdBbRnKgnjEAw=="
+          "hash": "dAuZxbhYaK7s1KWyXehJ7w=="
         }
       },
       "is_incremental": false,
@@ -27990,7 +28038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xV1V89II7Zpz0QVpQsWeGA=="
+          "hash": "GNeWW7NMV0TjHQd7+s/ueQ=="
         }
       },
       "is_incremental": false,
@@ -28042,10 +28090,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1626,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -28061,11 +28110,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1630,
           "skipped_file_count": 0
         }
       }
