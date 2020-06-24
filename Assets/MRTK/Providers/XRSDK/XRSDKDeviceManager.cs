@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
 
         // Need to make it so we get devices that are either controllers or handtracking, the old commented code only got devices that met both requirements
-        protected static readonly InputDeviceCharacteristics[] DesiredCharacteristics = new InputDeviceCharacteristics[]
-            {InputDeviceCharacteristics.Controller, InputDeviceCharacteristics.HandTracking, InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking};
+        protected static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
+            { InputDeviceCharacteristics.Controller, InputDeviceCharacteristics.HandTracking, InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking };
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
         /// <inheritdoc/>
@@ -64,9 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 }
 
                 inputDevices.Clear();
-                for(int i = 0; i < DesiredCharacteristics.Length; i++)
+                foreach (InputDeviceCharacteristics inputDeviceCharacteristics  in DesiredCharacteristics)
                 {
-                    InputDeviceCharacteristics inputDeviceCharacteristics = DesiredCharacteristics[i];
                     InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
                     foreach (InputDevice device in inputDevicesSubset)
                     {
@@ -92,8 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                                 controller.UpdateController(device);
                             }
                         }
-                        inputDevices.AddRange(inputDevicesSubset);
                     }
+                    inputDevices.AddRange(inputDevicesSubset);
                 }
 
                 foreach (InputDevice device in lastInputDevices)

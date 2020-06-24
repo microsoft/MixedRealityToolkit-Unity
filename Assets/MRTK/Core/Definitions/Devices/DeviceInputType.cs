@@ -29,11 +29,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         ButtonPress,
         ButtonTouch,
         ButtonNearTouch,
+        PrimaryButtonPress,
+        PrimaryButtonTouch,
+        PrimaryButtonNearTouch,
+        SecondaryButtonPress,
+        SecondaryButtonTouch,
+        SecondaryButtonNearTouch,
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
         // TriggerPress, in some cases, maps to the Grab gesture.
         TriggerPress,
+        Grip,
+        GripTouch,
+        GripNearTouch,
+        // GripPress, in some cases, maps to the Grab gesture.
+        GripPress,
         /// <summary>
         /// 6 DoF Grip with position and rotation.
         /// </summary>
