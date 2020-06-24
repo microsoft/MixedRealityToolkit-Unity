@@ -7,6 +7,12 @@
 
 ### What's new
 
+**Oculus Quest XRSDK support**
+
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the instructions here: [Tutorial is a WIP].
+
 **TestUtilities package**
 
 There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
