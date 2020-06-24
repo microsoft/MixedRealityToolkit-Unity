@@ -35,7 +35,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -48,7 +48,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -61,7 +61,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -74,7 +74,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -105,7 +105,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -118,7 +118,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -131,7 +131,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -144,7 +144,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -175,7 +175,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -188,7 +188,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -201,7 +201,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -214,7 +214,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -227,7 +227,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -240,7 +240,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -253,7 +253,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -266,7 +266,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -279,7 +279,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 37
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -292,7 +292,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -305,7 +305,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -336,7 +336,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -349,7 +349,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -362,7 +362,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -375,7 +375,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -388,7 +388,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -401,7 +401,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -414,7 +414,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -427,7 +427,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -440,7 +440,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 37
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -453,7 +453,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -466,7 +466,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -484,7 +484,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -497,7 +497,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -515,7 +515,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -528,7 +528,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -546,7 +546,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -559,7 +559,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -590,7 +590,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -603,7 +603,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -616,7 +616,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -629,7 +629,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -660,7 +660,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -673,7 +673,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -686,7 +686,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -699,7 +699,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -717,7 +717,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -730,7 +730,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -748,7 +748,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -761,7 +761,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -779,7 +779,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -792,7 +792,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -823,7 +823,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -835,8 +835,8 @@ MonoBehaviour:
       invertYAxis: 0
     - id: 2
       description: Grip Press
-      axisType: 2
-      inputType: 23
+      axisType: 3
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -849,7 +849,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -862,7 +862,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -875,7 +875,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -888,7 +888,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -901,7 +901,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -914,7 +914,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -927,7 +927,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 37
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -940,7 +940,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -953,7 +953,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -984,7 +984,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -996,8 +996,8 @@ MonoBehaviour:
       invertYAxis: 0
     - id: 2
       description: Grip Press
-      axisType: 2
-      inputType: 23
+      axisType: 3
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -1010,7 +1010,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -1023,7 +1023,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -1036,7 +1036,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -1049,7 +1049,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -1062,7 +1062,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -1075,7 +1075,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -1088,7 +1088,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 37
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -1101,7 +1101,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -1114,7 +1114,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -1158,7 +1158,7 @@ MonoBehaviour:
     - id: 2
       description: Mouse Scroll Position
       axisType: 4
-      inputType: 60
+      inputType: 50
       inputAction:
         id: 11
         description: Scroll
@@ -1311,7 +1311,7 @@ MonoBehaviour:
     - id: 0
       description: Left Thumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 0
         description: None
@@ -1337,7 +1337,7 @@ MonoBehaviour:
     - id: 2
       description: Right Thumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -1363,7 +1363,7 @@ MonoBehaviour:
     - id: 4
       description: D-Pad
       axisType: 4
-      inputType: 59
+      inputType: 49
       inputAction:
         id: 0
         description: None
@@ -1376,7 +1376,7 @@ MonoBehaviour:
     - id: 5
       description: Shared Trigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -1389,7 +1389,7 @@ MonoBehaviour:
     - id: 6
       description: Left Trigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 0
         description: None
@@ -1402,7 +1402,7 @@ MonoBehaviour:
     - id: 7
       description: Right Trigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 0
         description: None
@@ -1524,7 +1524,7 @@ MonoBehaviour:
     - id: 0
       description: D-Pad Position
       axisType: 4
-      inputType: 59
+      inputType: 49
       inputAction:
         id: 5
         description: Teleport Direction
@@ -1581,7 +1581,7 @@ MonoBehaviour:
     - id: 1
       description: Axis1D.PrimaryIndexTrigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -1594,7 +1594,7 @@ MonoBehaviour:
     - id: 2
       description: Axis1D.PrimaryIndexTrigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -1607,7 +1607,7 @@ MonoBehaviour:
     - id: 3
       description: Axis1D.PrimaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 18
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -1620,7 +1620,7 @@ MonoBehaviour:
     - id: 4
       description: Axis1D.PrimaryIndexTrigger Press
       axisType: 2
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -1633,7 +1633,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.PrimaryHandTrigger Press
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -1646,7 +1646,7 @@ MonoBehaviour:
     - id: 6
       description: Axis2D.PrimaryThumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -1659,7 +1659,7 @@ MonoBehaviour:
     - id: 7
       description: Button.PrimaryThumbstick Touch
       axisType: 2
-      inputType: 29
+      inputType: 19
       inputAction:
         id: 0
         description: None
@@ -1672,7 +1672,7 @@ MonoBehaviour:
     - id: 8
       description: Button.PrimaryThumbstick Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -1685,7 +1685,7 @@ MonoBehaviour:
     - id: 9
       description: Button.PrimaryThumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -1763,7 +1763,7 @@ MonoBehaviour:
     - id: 15
       description: Touch.PrimaryThumbRest Touch
       axisType: 2
-      inputType: 40
+      inputType: 30
       inputAction:
         id: 0
         description: None
@@ -1776,7 +1776,7 @@ MonoBehaviour:
     - id: 16
       description: Touch.PrimaryThumbRest Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -1807,7 +1807,7 @@ MonoBehaviour:
     - id: 1
       description: Axis1D.SecondaryIndexTrigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -1820,7 +1820,7 @@ MonoBehaviour:
     - id: 2
       description: Axis1D.SecondaryIndexTrigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -1833,7 +1833,7 @@ MonoBehaviour:
     - id: 3
       description: Axis1D.SecondaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 18
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -1846,7 +1846,7 @@ MonoBehaviour:
     - id: 4
       description: Axis1D.SecondaryIndexTrigger Press
       axisType: 2
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -1859,7 +1859,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.SecondaryHandTrigger Press
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -1872,7 +1872,7 @@ MonoBehaviour:
     - id: 6
       description: Axis2D.SecondaryThumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -1885,7 +1885,7 @@ MonoBehaviour:
     - id: 7
       description: Button.SecondaryThumbstick Touch
       axisType: 2
-      inputType: 29
+      inputType: 19
       inputAction:
         id: 0
         description: None
@@ -1898,7 +1898,7 @@ MonoBehaviour:
     - id: 8
       description: Button.SecondaryThumbstick Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -1911,7 +1911,7 @@ MonoBehaviour:
     - id: 9
       description: Button.SecondaryThumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -1976,7 +1976,7 @@ MonoBehaviour:
     - id: 14
       description: Touch.SecondaryThumbRest Touch
       axisType: 2
-      inputType: 40
+      inputType: 30
       inputAction:
         id: 0
         description: None
@@ -1989,7 +1989,7 @@ MonoBehaviour:
     - id: 15
       description: Touch.SecondaryThumbRest Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -2020,7 +2020,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2033,7 +2033,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2046,7 +2046,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2059,7 +2059,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Average
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -2072,7 +2072,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2085,7 +2085,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2098,7 +2098,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2137,7 +2137,7 @@ MonoBehaviour:
     - id: 10
       description: Index Finger Cap Sensor
       axisType: 3
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 0
         description: None
@@ -2150,7 +2150,7 @@ MonoBehaviour:
     - id: 11
       description: Middle Finger Cap Sensor
       axisType: 3
-      inputType: 47
+      inputType: 37
       inputAction:
         id: 0
         description: None
@@ -2163,7 +2163,7 @@ MonoBehaviour:
     - id: 12
       description: Ring Finger Cap Sensor
       axisType: 3
-      inputType: 51
+      inputType: 41
       inputAction:
         id: 0
         description: None
@@ -2176,7 +2176,7 @@ MonoBehaviour:
     - id: 13
       description: Pinky Finger Cap Sensor
       axisType: 3
-      inputType: 55
+      inputType: 45
       inputAction:
         id: 0
         description: None
@@ -2207,7 +2207,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2220,7 +2220,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2233,7 +2233,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2246,7 +2246,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Average
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -2259,7 +2259,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2272,7 +2272,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2285,7 +2285,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2324,7 +2324,7 @@ MonoBehaviour:
     - id: 10
       description: Index Finger Cap Sensor
       axisType: 3
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 0
         description: None
@@ -2337,7 +2337,7 @@ MonoBehaviour:
     - id: 11
       description: Middle Finger Cap Sensor
       axisType: 3
-      inputType: 47
+      inputType: 37
       inputAction:
         id: 0
         description: None
@@ -2350,7 +2350,7 @@ MonoBehaviour:
     - id: 12
       description: Ring Finger Cap Sensor
       axisType: 3
-      inputType: 51
+      inputType: 41
       inputAction:
         id: 0
         description: None
@@ -2363,7 +2363,7 @@ MonoBehaviour:
     - id: 13
       description: Pinky Finger Cap Sensor
       axisType: 3
-      inputType: 55
+      inputType: 45
       inputAction:
         id: 0
         description: None
@@ -2394,7 +2394,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2407,7 +2407,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2420,7 +2420,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2433,7 +2433,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Press
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -2446,7 +2446,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2459,7 +2459,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2472,7 +2472,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2516,7 +2516,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2529,7 +2529,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2542,7 +2542,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2555,7 +2555,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Press
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 7
         description: Grip Press
@@ -2568,7 +2568,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2581,7 +2581,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2594,7 +2594,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2638,7 +2638,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -2651,7 +2651,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -2664,7 +2664,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2677,7 +2677,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 3
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2690,7 +2690,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2703,7 +2703,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2716,7 +2716,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2729,7 +2729,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2755,7 +2755,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -2799,7 +2799,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -2812,7 +2812,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -2825,7 +2825,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Position
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -2838,7 +2838,7 @@ MonoBehaviour:
     - id: 4
       description: Trigger Touch
       axisType: 3
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -2851,7 +2851,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2864,7 +2864,7 @@ MonoBehaviour:
     - id: 6
       description: Touchpad Position
       axisType: 4
-      inputType: 31
+      inputType: 21
       inputAction:
         id: 0
         description: None
@@ -2877,7 +2877,7 @@ MonoBehaviour:
     - id: 7
       description: Touchpad Touch
       axisType: 2
-      inputType: 32
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -2890,7 +2890,7 @@ MonoBehaviour:
     - id: 8
       description: Touchpad Press
       axisType: 2
-      inputType: 34
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -2916,7 +2916,7 @@ MonoBehaviour:
     - id: 10
       description: Thumbstick Position
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -2960,7 +2960,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -2973,7 +2973,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2986,7 +2986,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -2999,7 +2999,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -3030,7 +3030,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -3043,7 +3043,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3056,7 +3056,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -3069,7 +3069,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -3100,7 +3100,7 @@ MonoBehaviour:
     - id: 1
       description: Axis1D.PrimaryIndexTrigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -3113,7 +3113,7 @@ MonoBehaviour:
     - id: 2
       description: Axis1D.PrimaryIndexTrigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -3126,7 +3126,7 @@ MonoBehaviour:
     - id: 3
       description: Axis1D.PrimaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 18
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -3139,7 +3139,7 @@ MonoBehaviour:
     - id: 4
       description: Axis1D.PrimaryIndexTrigger Press
       axisType: 2
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -3152,7 +3152,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.PrimaryHandTrigger Press
       axisType: 3
-      inputType: 23
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -3165,7 +3165,7 @@ MonoBehaviour:
     - id: 6
       description: Axis2D.PrimaryThumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -3178,7 +3178,7 @@ MonoBehaviour:
     - id: 7
       description: Button.PrimaryThumbstick Touch
       axisType: 2
-      inputType: 29
+      inputType: 19
       inputAction:
         id: 0
         description: None
@@ -3191,7 +3191,7 @@ MonoBehaviour:
     - id: 8
       description: Button.PrimaryThumbstick Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -3204,7 +3204,7 @@ MonoBehaviour:
     - id: 9
       description: Button.PrimaryThumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -3217,7 +3217,7 @@ MonoBehaviour:
     - id: 10
       description: Button.Three Press
       axisType: 2
-      inputType: 10
+      inputType: 51
       inputAction:
         id: 0
         description: None
@@ -3230,33 +3230,7 @@ MonoBehaviour:
     - id: 11
       description: Button.Four Press
       axisType: 2
-      inputType: 13
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 13
-      description: Button.Three Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 14
-      description: Button.Four Touch
-      axisType: 2
-      inputType: 14
+      inputType: 54
       inputAction:
         id: 0
         description: None
@@ -3267,9 +3241,35 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 12
+      description: Button.Three Touch
+      axisType: 2
+      inputType: 52
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 13
+      description: Button.Four Touch
+      axisType: 2
+      inputType: 55
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 14
       description: Button.Start Press
       axisType: 2
-      inputType: 37
+      inputType: 27
       inputAction:
         id: 0
         description: None
@@ -3282,7 +3282,7 @@ MonoBehaviour:
     - id: 15
       description: Touch.PrimaryThumbRest Touch
       axisType: 2
-      inputType: 40
+      inputType: 30
       inputAction:
         id: 0
         description: None
@@ -3295,7 +3295,7 @@ MonoBehaviour:
     - id: 16
       description: Touch.PrimaryThumbRest Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -3326,7 +3326,7 @@ MonoBehaviour:
     - id: 1
       description: Axis1D.SecondaryIndexTrigger
       axisType: 3
-      inputType: 16
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -3339,7 +3339,7 @@ MonoBehaviour:
     - id: 2
       description: Axis1D.SecondaryIndexTrigger Touch
       axisType: 2
-      inputType: 17
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -3352,7 +3352,7 @@ MonoBehaviour:
     - id: 3
       description: Axis1D.SecondaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 18
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -3365,7 +3365,7 @@ MonoBehaviour:
     - id: 4
       description: Axis1D.SecondaryIndexTrigger Press
       axisType: 2
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -3378,7 +3378,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.SecondaryHandTrigger Press
       axisType: 3
-      inputType: 23
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -3391,7 +3391,7 @@ MonoBehaviour:
     - id: 6
       description: Axis2D.SecondaryThumbstick
       axisType: 4
-      inputType: 27
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -3404,7 +3404,7 @@ MonoBehaviour:
     - id: 7
       description: Button.SecondaryThumbstick Touch
       axisType: 2
-      inputType: 29
+      inputType: 19
       inputAction:
         id: 0
         description: None
@@ -3417,7 +3417,7 @@ MonoBehaviour:
     - id: 8
       description: Button.SecondaryThumbstick Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -3430,7 +3430,7 @@ MonoBehaviour:
     - id: 9
       description: Button.SecondaryThumbstick Press
       axisType: 2
-      inputType: 28
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -3443,7 +3443,7 @@ MonoBehaviour:
     - id: 10
       description: Button.One Press
       axisType: 2
-      inputType: 10
+      inputType: 51
       inputAction:
         id: 0
         description: None
@@ -3456,7 +3456,7 @@ MonoBehaviour:
     - id: 11
       description: Button.Two Press
       axisType: 2
-      inputType: 13
+      inputType: 54
       inputAction:
         id: 0
         description: None
@@ -3469,7 +3469,7 @@ MonoBehaviour:
     - id: 12
       description: Button.One Touch
       axisType: 2
-      inputType: 11
+      inputType: 52
       inputAction:
         id: 0
         description: None
@@ -3482,7 +3482,7 @@ MonoBehaviour:
     - id: 13
       description: Button.Two Touch
       axisType: 2
-      inputType: 14
+      inputType: 55
       inputAction:
         id: 0
         description: None
@@ -3495,7 +3495,7 @@ MonoBehaviour:
     - id: 14
       description: Touch.SecondaryThumbRest Touch
       axisType: 2
-      inputType: 40
+      inputType: 30
       inputAction:
         id: 0
         description: None
@@ -3508,7 +3508,7 @@ MonoBehaviour:
     - id: 15
       description: Touch.SecondaryThumbRest Near Touch
       axisType: 2
-      inputType: 41
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -3538,7 +3538,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -3551,7 +3551,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3564,7 +3564,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -3577,7 +3577,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -3607,7 +3607,7 @@ MonoBehaviour:
     - id: 1
       description: Spatial Grip
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -3620,7 +3620,7 @@ MonoBehaviour:
     - id: 2
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3633,7 +3633,7 @@ MonoBehaviour:
     - id: 3
       description: Grab
       axisType: 3
-      inputType: 19
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -3646,7 +3646,7 @@ MonoBehaviour:
     - id: 4
       description: Index Finger Pose
       axisType: 7
-      inputType: 43
+      inputType: 33
       inputAction:
         id: 13
         description: Index Finger Pose
@@ -3663,7 +3663,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3676,7 +3676,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -3693,7 +3693,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3706,7 +3706,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
@@ -3723,7 +3723,7 @@ MonoBehaviour:
     - id: 0
       description: Select
       axisType: 2
-      inputType: 35
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -3736,7 +3736,7 @@ MonoBehaviour:
     - id: 1
       description: Grip Pose
       axisType: 7
-      inputType: 24
+      inputType: 14
       inputAction:
         id: 3
         description: Grip Pose
