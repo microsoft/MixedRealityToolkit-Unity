@@ -103,6 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             FileInfo[] leapDataProviderAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef");
 
+            // When MRTK is used through NuGet compiled assemblies, there will not be an asmdef file in the assets directory to configure.
+            if (leapDataProviderAsmDefFile.Length == 0)
+            {
+                return;
+            }
+
             AssemblyDefinition leapDataProviderAsmDef = AssemblyDefinition.Load(leapDataProviderAsmDefFile[0].FullName);
 
             List<string> references = leapDataProviderAsmDef.References.ToList();

@@ -37,11 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
           };
 
         /// <summary>
-        /// Default style for large button
+        /// Default style for controller mapping buttons
         /// </summary>
         public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("LargeButton")
         {
             imagePosition = ImagePosition.ImageAbove,
+            fixedHeight = 128,
             fontStyle = FontStyle.Bold,
             stretchHeight = true,
             stretchWidth = true,

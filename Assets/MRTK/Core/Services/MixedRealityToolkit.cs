@@ -600,9 +600,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public static bool ConfirmInitialized()
         {
-            // ReSharper disable once UnusedVariable
-            // Assigning the Instance to access is used Implicitly.
-            MixedRealityToolkit access = Instance;
+            // Calling the Instance property performs important initialization work.
+            _ = Instance;
             return IsInitialized;
         }
 

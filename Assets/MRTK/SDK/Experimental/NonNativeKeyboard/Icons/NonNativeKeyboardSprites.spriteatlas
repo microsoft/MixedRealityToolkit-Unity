@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NonNativeKeyboardSprites
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 1
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 5eb0b332d494ca84d9c38cf77ba0e12d, type: 3}
+    - {fileID: 2800000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}
+    - {fileID: 2800000, guid: b575d7b7d87461b4ea9965b50e367249, type: 3}
+    - {fileID: 2800000, guid: 161fc5872226601449a8143014ece469, type: 3}
+    - {fileID: 2800000, guid: ec8b4073237c9724ba8422f71fda3694, type: 3}
+    - {fileID: 2800000, guid: 11e4524f21fc6434abbbba83d70d0040, type: 3}
+    - {fileID: 2800000, guid: 1dde69ccd9583fa4f8dfab2b590119ee, type: 3}
+    - {fileID: 2800000, guid: f6f44dc3b387f9d48bcaaee0038969c4, type: 3}
+    - {fileID: 2800000, guid: 73830216a21a45e499598b2624ef723e, type: 3}
+    - {fileID: 2800000, guid: 2adc8135dd936004db37d5cead85f951, type: 3}
+    totalSpriteSurfaceArea: 0
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
+  m_Tag: NonNativeKeyboardSprites
+  m_IsVariant: 0

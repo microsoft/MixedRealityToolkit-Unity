@@ -281,14 +281,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// This function attenpts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
+        /// This function attempts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
         /// On a success, it then calls GenerateActivationPoint to try to generate a hand-based activation point that the user
         /// needs to gaze at to activate the constrained object.
         /// On a failure, it assigns them to be default values and then returns false
         /// </summary>
         /// <param name="jointedHand">Hand reference to the user's hand that is used to generate the hand plane and activation point</param>
         /// <param name="handPlane">Out Plane that represents the hand and is raycasted against to determine whether the users gaze is close to the activation point or not</param>
-        /// <param name="activationPoint">Out Vector3 that represents the point on the hand-based plane to determine whther the menu activates or not</param>
+        /// <param name="activationPoint">Out Vector3 that represents the point on the hand-based plane to determine whether the menu activates or not</param>
         /// <returns>True if the function can properly generate an activation point using the hand-based plane</returns>
         private bool TryGenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
         {

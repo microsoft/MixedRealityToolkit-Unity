@@ -138,10 +138,106 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test that if we toggle the bounding box's active status,
+        /// that the size of the boundsOverride is consistent, even
+        /// when BoxPadding is set.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator BoundsOverridePaddingReset()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            boundsControl.HideElementsInInspector = false;
+
+            // Set the bounding box to have a large padding.
+            boundsControl.BoxPadding = Vector3.one;
+            yield return null;
+
+            var newObject = new GameObject();
+            var bc = newObject.AddComponent<BoxCollider>();
+            bc.center = new Vector3(1, 2, 3);
+            var backupSize = bc.size = new Vector3(1, 2, 3);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Change the center and size of the boundsOverride
+            // in the middle of execution, to ensure
+            // these changes will be correctly reflected
+            // in the BoundingBox after toggling.
+            bc.center = new Vector3(0.1776f, 0.42f, 0.0f);
+            backupSize = bc.size = new Vector3(0.1776f, 0.42f, 1.0f);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Private helper function to prevent code copypasta.
+            IEnumerator VerifyBoundingBox()
+            {
+                // Toggle the bounding box active status to check that the boundsOverride
+                // will persist, and will not be destructively resized 
+                boundsControl.gameObject.SetActive(false);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+                boundsControl.gameObject.SetActive(true);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+
+                Bounds b = GetBoundsControlRigBounds(boundsControl);
+
+                var expectedSize = backupSize + Vector3.Scale(boundsControl.BoxPadding, newObject.transform.lossyScale);
+                Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
+                Debug.Assert(b.size == expectedSize, $"bounds size should be {expectedSize} but they are {b.size}");
+                Debug.Assert(bc.size == expectedSize, $"boundsOverride's size was corrupted.");
+            }
+
+            GameObject.Destroy(boundsControl.gameObject);
+            GameObject.Destroy(newObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Uses near interaction to scale the bounds control by directly grabbing corner
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleViaNearInteration()
+        public IEnumerator FlickeringBoundsTest()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            
+            boundsControl.gameObject.transform.position = new Vector3(0, 0, 1.386f);
+            boundsControl.gameObject.transform.rotation = Quaternion.Euler(0, 45.0f, 0);
+            
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(new Vector3(0, 0, 1));
+            
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            
+            // Check for a few loops that the hand is not flickering between states
+            // number of iterations is an arbirary number to check that the box isn't flickering
+            int iterations = 15;
+            for (int i = 0; i < iterations; i++)
+            {
+                Assert.IsFalse(hand.GetPointer<SpherePointer>().IsNearObject);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteraction()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
@@ -212,6 +308,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test bounds control rotation via far interaction, while moving extremely slowly.
+        /// Rotation amount should be coherent even with extremely small per-frame motion
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateVerySlowlyViaFarInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // First, we make a series of very very tiny movements, as if the user
+            // is making very precise adjustments to the rotation. If the rotation is
+            // being calculated per-frame instead of per-manipulation-event, this should
+            // induce drift/error.
+            for (int i = 0; i < 50; i++)
+            {
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+            }
+
+            // Move the rest of the way very quickly.
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 85f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Test bounds control rotation via near interaction
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
@@ -254,7 +401,59 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Test bounds control rotation via near interaction, while moving extremely slowly.
+        /// Rotation amount should be coherent even with extremely small per-frame motion
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateVerySlowlyViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            
+            // First, we make a series of very very tiny movements, as if the user
+            // is making very precise adjustments to the rotation. If the rotation is
+            // being calculated per-frame instead of per-manipulation-event, this should
+            // induce drift/error.
+            for (int i = 0; i < 50; i++)
+            {
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+            }
+
+            // Move the rest of the way very quickly.
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 90f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, $"cube didn't rotate as expected, actual angle: {angle}");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -538,7 +737,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -819,7 +1018,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
-            // make sure handles are disabled and enabled when bounds control is deactived / activated
+            // make sure handles are disabled and enabled when bounds control is deactivated / activated
             boundsControl.Active = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
             Assert.IsFalse(scaleHandle.gameObject.activeSelf, "scale handle not disabled");
@@ -1211,7 +1410,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// and making sure the the entire rig won't be recreated
+        /// and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator RotationHandlePrefabTest()
@@ -1258,7 +1457,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// in regular and flatten mode and making sure the the entire rig won't be recreated
+        /// in regular and flatten mode and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleHandlePrefabTest()

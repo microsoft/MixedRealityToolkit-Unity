@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
-            // Emits a single event and validates the the pointer click and diagnostic handler are both called.
+            // Emits a single event and validates that the pointer click and diagnostic handler are both called.
             inputSystem.RaisePointerClicked(inputSystem.GazeProvider.GazePointer, MixedRealityInputAction.None, 1);
             Assert.AreEqual(1, inputListener.pointerClickedCount);
             Assert.AreEqual(1, diagnosticsListener.eventCount);

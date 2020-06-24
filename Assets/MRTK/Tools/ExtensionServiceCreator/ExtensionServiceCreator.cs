@@ -542,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Start the creation process for all revelant extension service files based on current creator property settings
+        /// Start the creation process for all relevant extension service files based on current creator property settings
         /// </summary>
         public async Task BeginAssetCreationProcess()
         {

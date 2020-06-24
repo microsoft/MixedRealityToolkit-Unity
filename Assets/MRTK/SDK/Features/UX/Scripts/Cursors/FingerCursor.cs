@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 tipPosition = fingerPosition + tipNormal * skinSurfaceOffset;
             Vector3 tipOffset = tipPosition - fingerPosition;
 
-            // Check how perpindicular the finger normal is to the surface, so that the cursor will
+            // Check how perpendicular the finger normal is to the surface, so that the cursor will
             // not translate to the finger pad if the user is poking with a horizontal finger
             float fingerSurfaceDot = Vector3.Dot(tipNormal, -surfaceNormal);
 

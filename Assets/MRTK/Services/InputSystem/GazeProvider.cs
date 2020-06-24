@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float MovementThreshold = 0.01f;
 
         /// <summary>
-        /// Used on Gaze Pointer initialization. To make the object lock/not lock when focus locked durign runtime, use the IsTargetPositionLockedOnFocusLock 
+        /// Used on Gaze Pointer initialization. To make the object lock/not lock when focus locked during runtime, use the IsTargetPositionLockedOnFocusLock 
         /// attribute of <see cref="GazePointer.IsTargetPositionLockedOnFocusLock"/>
         /// </summary>
         [SerializeField]

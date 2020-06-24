@@ -2,11 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -15,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class InputSimulationWindow : EditorWindow
     {
-        private InputAnimation animation
+        private InputAnimation Animation
         {
             get { return PlaybackService?.Animation; }
             set { if (PlaybackService != null) PlaybackService.Animation = value; }
@@ -77,18 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Playback,
         }
 
-        private ToolMode mode = ToolMode.Record;
-        public ToolMode Mode
-        {
-            get { return mode; }
-            private set
-            {
-                mode = value;
-            }
-        }
+        public ToolMode Mode { get; private set; } = ToolMode.Record;
 
         /// Icon textures
         private Texture2D iconPlay = null;
+        private Texture2D iconPause = null;
         private Texture2D iconRecord = null;
         private Texture2D iconRecordActive = null;
         private Texture2D iconStepFwd = null;
@@ -121,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
 
-            switch (mode)
+            switch (Mode)
             {
                 case ToolMode.Record:
                     DrawRecordingGUI();
@@ -134,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             EditorGUILayout.Space();
 
             // XXX Reloading the scene is currently not supported,
-            // due to the life cycle of the MRTK "instance" object (see see #4530).
+            // due to the life cycle of the MRTK "instance" object (see #4530).
             // Enable the button below once scene reloading is supported!
 #if false
             using (new GUIEnabledWrapper(Application.isPlaying))
@@ -333,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     jumpBack = GUILayout.Button(new GUIContent(iconJumpBack, "Jump to the start of the input animation"), "Button");
                     var playButtonContent = wasPlaying
-                        ? new GUIContent(iconPlay, "Stop playing input animation")
+                        ? new GUIContent(iconPause, "Stop playing input animation")
                         : new GUIContent(iconPlay, "Play back input animation");
                     play = GUILayout.Toggle(wasPlaying, playButtonContent, "Button");
                     stepFwd = GUILayout.Button(new GUIContent(iconStepFwd, "Step forward one frame"), "Button");
@@ -341,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 float time = PlaybackService.LocalTime;
-                float duration = (animation != null ? animation.Duration : 0.0f);
+                float duration = (Animation != null ? Animation.Duration : 0.0f);
                 float newTimeField = EditorGUILayout.FloatField("Current time", time);
                 float newTimeSlider = GUILayout.HorizontalSlider(time, 0.0f, duration);
 
@@ -391,10 +383,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GUILayout.Label("Animation Info:", EditorStyles.boldLabel);
 
-                if (animation != null)
+                if (Animation != null)
                 {
                     GUILayout.Label($"File Path: {loadedFilePath}");
-                    GUILayout.Label($"Duration: {animation.Duration} seconds");
+                    GUILayout.Label($"Duration: {Animation.Duration} seconds");
                 }
                 else
                 {
@@ -460,20 +452,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void LoadIcons()
         {
-            LoadTexture(ref iconPlay, "MRTK_TimelinePlay.png");
-            LoadTexture(ref iconRecord, "MRTK_TimelineRecord.png");
-            LoadTexture(ref iconRecordActive, "MRTK_TimelineRecordActive.png");
-            LoadTexture(ref iconStepFwd, "MRTK_TimelineStepFwd.png");
-            LoadTexture(ref iconJumpFwd, "MRTK_TimelineJumpFwd.png");
-            LoadTexture(ref iconJumpBack, "MRTK_TimelineJumpBack.png");
+            // MRTK_TimelinePlay.png
+            LoadTexture(ref iconPlay, "474f3f21b48daea4f8617806305769ff");
+            // MRTK_TimelinePause.png
+            LoadTexture(ref iconPause, "1bfd4df7e86b18640b9fa1af5713bfb9");
+            // MRTK_TimelineRecord.png
+            LoadTexture(ref iconRecord, "c079cf55f13c1dc4db7d09053a51a40d");
+            // MRTK_TimelineRecordActive.png
+            LoadTexture(ref iconRecordActive, "6752387ee2181ee4fbef5cc74691b6ac");
+            // MRTK_TimelineStepFwd.png
+            LoadTexture(ref iconStepFwd, "230b98155638e544892c123d8d674737");
+            // MRTK_TimelineJumpFwd.png
+            LoadTexture(ref iconJumpFwd, "3afb597cbd6ec44439ea7b8ce92d957a");
+            // MRTK_TimelineJumpBack.png
+            LoadTexture(ref iconJumpBack, "a5d8e80a54741dc459e4f116e1d477f2");
         }
 
-        private static void LoadTexture(ref Texture2D tex, string filename)
+        private static void LoadTexture(ref Texture2D tex, string fileGuid)
         {
-            const string assetPath = "StandardAssets/Textures";
             if (tex == null)
             {
-                tex = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath(Path.Combine(assetPath, filename)), typeof(Texture2D));
+                tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(fileGuid));
             }
         }
     }

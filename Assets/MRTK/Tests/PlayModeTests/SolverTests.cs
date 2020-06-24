@@ -807,12 +807,87 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(tapToPlace.IsBeingPlaced);
         }
 
+
+        /// <summary>
+        /// Tests the UseDefaultSurfaceNormalOffset property for Tap to Place while the object is in the placing state. If the 
+        /// UseDefaultSurfaceNormalOffset is true, the object should appear flat against a collider. If false, the object will
+        /// have an offset based on SurfaceNormalOffset.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceSurfaceNormalOffsetSet()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a scene with 2 cubes
+            GameObject colliderObj1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj1.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj1.transform.position = new Vector3(0.3f, 0, 1.5f);
+
+            GameObject colliderObj2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj2.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj2.transform.position = new Vector3(-0.3f, 0, 1.5f);
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward * 2;
+            tapToPlaceObj.target.transform.localScale = Vector3.one * 0.2f;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Switching the TrackedTargetType to Controller Ray
+            SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
+            tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
+
+            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            tapToPlace.KeepOrientationVertical = true;
+            tapToPlace.RotateAccordingToSurface = true;
+
+            // Switch off UseDefaultSurfaceNormalOffset, this shifts the current surface normal offset value to SurfaceNormalOffset
+            tapToPlace.UseDefaultSurfaceNormalOffset = false;
+
+            // Make sure the SurfaceNormalOffset is not the default z extents of the bounds
+            Assert.AreNotEqual(tapToPlace.SurfaceNormalOffset, tapToPlaceObj.target.GetComponent<Collider>().bounds.extents.z);
+
+            // Start the placement via code instead of click from the hand
+            tapToPlace.StartPlacement();
+            yield return null;
+
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move hand in front of a collider for surface detection, the Tap to Place object should follow
+            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+
+            // Make sure the depth of the Tap to Place Object is very close to the depth of the wall because the SurfaceNormalOffset is 0
+            Assert.AreEqual(tapToPlaceObj.target.transform.position.z, colliderObj1.transform.position.z, 0.05f);
+
+            // Move hand between the colliders, the Tap to Place object should have a greater z position because the raycast did not detect a surface
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
+
+            // Move the hand in front of a collider for a surface detection
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+
+            // Set the UseDefaultSurfaceNormalOffset to true while still in the placing state
+            tapToPlace.UseDefaultSurfaceNormalOffset = true;
+            yield return null;
+
+            // Make sure the depth of the Tap to Place Object is less than the depth of the wall because UseDefaultSurfaceNormalOffset is true
+            Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
+
+            // Stop the placement via code instead of click from the hand
+            tapToPlace.StopPlacement();
+
+            Assert.False(tapToPlace.IsBeingPlaced);
+        }
+
         #endregion
 
         #region Experimental
 
         /// <summary>
-        /// Tests that the DirectionalIndicator can be instatiated through code.
+        /// Tests that the DirectionalIndicator can be instantiated through code.
         /// </summary>
         [UnityTest]
         public IEnumerator TestDirectionalIndicator()
@@ -1222,7 +1297,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Move(delta, 5);
             yield return null;
 
-            // Ensure Activation occured by making sure the testObjects position isn't still Vector3.zero
+            // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
             yield return hand.Hide();

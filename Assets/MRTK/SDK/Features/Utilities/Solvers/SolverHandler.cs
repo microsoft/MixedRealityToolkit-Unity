@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                     if (controllerRay == null)
                     {
-                        // If no pointer found, try again on the the opposite hand
+                        // If no pointer found, try again on the opposite hand
                         currentTrackedHandedness = currentTrackedHandedness.GetOppositeHandedness();
                         controllerRay = PointerUtils.GetPointer<LinePointer>(currentTrackedHandedness);
                     }

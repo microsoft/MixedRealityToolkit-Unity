@@ -214,11 +214,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [SerializeField]
-        [Tooltip("Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength")]
+        [Tooltip("Curve that defines distortion strength over distance, only used when DistortionMode = NormalizedLength")]
         private AnimationCurve distortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
         /// <summary>
-        /// Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength
+        /// Curve that defines distortion strength over distance, only used when DistortionMode = NormalizedLength
         /// </summary>
         public AnimationCurve DistortionStrength
         {
@@ -227,12 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [Range(0f, 1f)]
-        [Tooltip("Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform")]
+        [Tooltip("Float value that defines distortion strength uniformly over distance, only used when DistortionMode = Uniform")]
         [SerializeField]
         private float uniformDistortionStrength = 1f;
 
         /// <summary>
-        /// Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform
+        /// Float value that defines distortion strength uniformly over distance, only used when DistortionMode = Uniform
         /// </summary>
         public float UniformDistortionStrength
         {

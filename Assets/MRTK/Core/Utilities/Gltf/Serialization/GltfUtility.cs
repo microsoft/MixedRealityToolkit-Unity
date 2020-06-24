@@ -415,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <summary>
         /// Takes a json object string with key value pairs, and returns a json string
         /// in the format of `{"items": [{"key": $key_name, "value": $value}]}`.
-        /// This format can be handled by JsonUtility and support an aribtrary number
+        /// This format can be handled by JsonUtility and support an arbitrary number
         /// of key/value pairs
         /// </summary>
         /// <param name="json">JSON string in the format `{"key": $value}`</param>

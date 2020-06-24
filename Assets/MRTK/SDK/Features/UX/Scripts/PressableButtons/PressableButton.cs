@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     distanceSpaceMode = value;
                     float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
+
                     startPushDistance *= scale;
                     maxPushDistance *= scale;
                     pressDistance *= scale;
@@ -189,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Transform for local to world space in the world direction of a press
         /// Multiply local scale positions by this value to convert to world space
         /// </summary>
-        public float LocalToWorldScale => 1.0f / WorldToLocalScale;
+        public float LocalToWorldScale => (WorldToLocalScale != 0) ? 1.0f / WorldToLocalScale : 0.0f;
 
         /// <summary>
         /// The press direction of the button as defined by a NearInteractionTouchableSurface.
@@ -205,6 +206,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 return transform.forward;
+            }
+        }
+
+        /// <summary>
+        /// The press direction of the button as defined by a NearInteractionTouchableSurface, in local space,
+        /// using Vector3.forward as an optional fallback when no NearInteractionTouchableSurface is defined.
+        /// </summary>
+        private Vector3 LocalSpacePressDirection
+        {
+            get
+            {
+                var nearInteractionTouchable = GetComponent<NearInteractionTouchableSurface>();
+                if (nearInteractionTouchable != null)
+                {
+                    return nearInteractionTouchable.LocalPressDirection;
+                }
+
+                return Vector3.forward;
             }
         }
 
@@ -227,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// The position from where the button starts to move.  Projected into world space based on the button's current world space position.
         /// </summary>
-        private Vector3 InitialPosition
+        private Vector3 InitialWorldPosition
         {
             get
             {
@@ -244,6 +263,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// The position from where the button starts to move.  In local space, relative to button root.
+        /// </summary>
+        private Vector3 InitialLocalPosition
+        {
+            get
+            {
+                if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
+                {
+                    return movingVisualsInitialLocalPosition;
+                }
+                else
+                {
+                    return PushSpaceSourceTransform.position;
+                }
+            }
+        }
+
         #endregion
 
         private void OnEnable()
@@ -252,6 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         private Vector3 PushSpaceSourceParentPosition => (PushSpaceSourceTransform.parent != null) ? PushSpaceSourceTransform.parent.position : Vector3.zero;
+
 
         protected virtual void Start()
         {
@@ -427,7 +465,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
         {
             float distance = (distanceSpaceMode == SpaceMode.Local) ? localDistance * LocalToWorldScale : localDistance;
-            return InitialPosition + WorldSpacePressDirection.normalized * distance;
+            return InitialWorldPosition + WorldSpacePressDirection.normalized * distance;
+        }
+
+        /// <summary>
+        /// Returns local position along the push direction for the given local distance
+        /// </summary>
+        /// 
+        public Vector3 GetLocalPositionAlongPushDirection(float localDistance)
+        {
+            return InitialLocalPosition + LocalSpacePressDirection.normalized * localDistance;
         }
 
         /// <summary>
@@ -435,9 +482,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)
         {
-            Vector3 localPosition = positionWorldSpace - InitialPosition;
+            Vector3 localPosition = positionWorldSpace - InitialWorldPosition;
             float distance = Vector3.Dot(localPosition, WorldSpacePressDirection.normalized);
-            return (distanceSpaceMode == SpaceMode.Local) ? distance / LocalToWorldScale : distance;
+            return (distanceSpaceMode == SpaceMode.Local) ? distance * WorldToLocalScale : distance;
         }
 
         #endregion
@@ -449,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (movingButtonVisuals != null)
             {
                 // Always move relative to startPushDistance
-                movingButtonVisuals.transform.position = GetWorldPositionAlongPushDirection(currentPushDistance - startPushDistance);
+                movingButtonVisuals.transform.localPosition = GetLocalPositionAlongPushDirection(currentPushDistance - startPushDistance);
             }
         }
 

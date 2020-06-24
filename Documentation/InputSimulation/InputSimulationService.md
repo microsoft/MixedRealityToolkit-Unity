@@ -98,7 +98,7 @@ Hands can be toggled on and frozen relative to the camera in the [input simulati
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the **mouse wheel**.
 
-To rotate hands using the mouse, hold both the **Left/Right Hand Control Key** (*Left Shift* or *Space*) *and* the **Hand Rotate Button** (default: *cntrl* button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the **Mouse Hand Rotation Speed** setting in the input simulation profile.
+To rotate hands using the mouse, hold both the **Left/Right Hand Control Key** (*Left Shift* or *Space*) *and* the **Hand Rotate Button** (default: *ctrl* button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the **Mouse Hand Rotation Speed** setting in the input simulation profile.
 
 All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 

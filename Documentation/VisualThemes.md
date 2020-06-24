@@ -128,7 +128,6 @@ For the given property, which can be identified by `ThemeStateProperty.Name`, re
 
 Returns a [`ThemeDefinition`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) object that defines the default properties and configuration needed for the custom theme
 
-
 `protected abstract void SetValue(ThemeStateProperty property, ThemePropertyValue value)`
 
 Protected variant of the public `SetValue()` definition, except provided ThemePropertyValue to set instead of directing to use index and/or percentage configuration.
@@ -158,7 +157,6 @@ If the custom Theme Engine can support targeting shader properties. It is recomm
 > - [`InteractableColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme)
 > - [`InteractableTextureTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme)
 > - [`ScaleOffsetColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme)
-
 
 [`InteractableThemeBase.Reset`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Reset)
 

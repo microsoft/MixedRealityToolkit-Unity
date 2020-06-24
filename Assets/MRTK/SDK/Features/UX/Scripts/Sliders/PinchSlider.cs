@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private SliderAxis? previousSliderAxis = null;
         /// <summary>
-        /// Property accessor for previousSliderAxis that is used also to initiallize the property with the current value in case of null value.
+        /// Property accessor for previousSliderAxis that is used also to initialize the property with the current value in case of null value.
         /// </summary>
         private SliderAxis PreviousSliderAxis
         {

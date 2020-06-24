@@ -1,10 +1,11 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.SDK",
-        "Microsoft.MixedReality.Toolkit.Services.InputSystem"
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Unity.TextMeshPro.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
