@@ -7,7 +7,10 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using UnityEngine;
 using Unity.Profiling;
 using UnityEngine.XR;
+
+#if OCULUS_ENABLED
 using Unity.XR.Oculus;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
@@ -80,6 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 InputFeatureUsage<bool> buttonUsage;
                 switch (interactionMapping.InputType)
                 {
+
+#if OCULUS_ENABLED
                     case DeviceInputType.TriggerTouch:
                         buttonUsage = OculusUsages.indexTouch;
                         break;
@@ -90,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                     case DeviceInputType.ThumbNearTouch:
                         buttonUsage = OculusUsages.thumbrest;
                         break;
+#endif
                     default:
                         base.UpdateButtonData(interactionMapping, inputDevice);
                         return;
