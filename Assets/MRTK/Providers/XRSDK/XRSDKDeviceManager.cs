@@ -48,8 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         protected static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
         {
             InputDeviceCharacteristics.Controller,
-            InputDeviceCharacteristics.HandTracking,
-            InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking
+            InputDeviceCharacteristics.HandTracking
         };
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
@@ -69,32 +68,39 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredCharacteristics)
                 {
                     InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
-                    foreach (InputDevice device in inputDevicesSubset)
+                    foreach (InputDevice device in inputDevices)
                     {
-                        if (device.isValid)
+                        if (!inputDevices.Contains(device))
                         {
-                            GenericXRSDKController controller = GetOrAddController(device);
-
-                            if (controller == null)
-                            {
-                                continue;
-                            }
-
-                            if (!lastInputDevices.Contains(device))
-                            {
-                                CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-                            }
-                            else
-                            {
-                                // Remove devices from our previously tracked list as we update them.
-                                // This will allow us to remove all stale devices that were tracked
-                                // last frame but not this one.
-                                lastInputDevices.Remove(device);
-                                controller.UpdateController(device);
-                            }
+                            inputDevices.Add(device);
                         }
                     }
-                    inputDevices.AddRange(inputDevicesSubset);
+                }
+
+                foreach (InputDevice device in inputDevices)
+                {
+                    if (device.isValid)
+                    {
+                        GenericXRSDKController controller = GetOrAddController(device);
+
+                        if (controller == null)
+                        {
+                            continue;
+                        }
+
+                        if (!lastInputDevices.Contains(device))
+                        {
+                            CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                        }
+                        else
+                        {
+                            // Remove devices from our previously tracked list as we update them.
+                            // This will allow us to remove all stale devices that were tracked
+                            // last frame but not this one.
+                            lastInputDevices.Remove(device);
+                            controller.UpdateController(device);
+                        }
+                    }
                 }
 
                 foreach (InputDevice device in lastInputDevices)
