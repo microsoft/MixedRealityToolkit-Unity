@@ -155,8 +155,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     InputFeatureUsage<bool> buttonUsage;
 
                     // Update the interaction data source
-                    // We need to update the DeviceInputType to differentiate between primary/secondary/other buttons
-                    // For now it maps directly to the primary button as a stopgap measure
                     switch (interactionMapping.InputType)
                     {
                         case DeviceInputType.Select:

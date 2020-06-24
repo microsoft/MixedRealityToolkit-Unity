@@ -45,10 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private readonly List<InputDevice> inputDevices = new List<InputDevice>();
         private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
-
-        // Need to make it so we get devices that are either controllers or handtracking, the old commented code only got devices that met both requirements
         protected static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
-            { InputDeviceCharacteristics.Controller, InputDeviceCharacteristics.HandTracking, InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking };
+        {
+            InputDeviceCharacteristics.Controller,
+            InputDeviceCharacteristics.HandTracking,
+            InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking
+        };
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
         /// <inheritdoc/>
@@ -64,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 }
 
                 inputDevices.Clear();
-                foreach (InputDeviceCharacteristics inputDeviceCharacteristics  in DesiredCharacteristics)
+                foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredCharacteristics)
                 {
                     InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
                     foreach (InputDevice device in inputDevicesSubset)
