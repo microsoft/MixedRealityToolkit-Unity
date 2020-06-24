@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿git// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Reflection;
@@ -8,7 +8,5 @@ using System.Reflection;
 
 [assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Extensions")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
-
-[assembly: UnityEngine.Scripting.Preserve]
 
 [assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
