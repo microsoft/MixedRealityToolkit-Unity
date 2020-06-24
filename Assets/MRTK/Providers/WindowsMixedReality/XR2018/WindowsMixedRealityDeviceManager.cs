@@ -726,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        public void RemoveController(InteractionSource interactionSource)
+        private void RemoveController(InteractionSource interactionSource)
         {
             var controller = GetOrAddController(interactionSource, false);
 
@@ -746,6 +746,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             activeControllers.Remove(interactionSource.id);
+        }
+
+        [Obsolete("This function exists to workaround a bug in Unity and will be removed in an upcoming release. For more details, see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8101")]
+        public void RemoveControllerForSuspendWorkaround(InteractionSource interactionSource)
+        {
+            RemoveController(interactionSource);
         }
 
         #endregion Controller Utilities
