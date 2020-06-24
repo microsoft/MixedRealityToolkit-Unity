@@ -8,7 +8,7 @@ using System;
 using UnityEditor.Compilation;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tools.Build
+namespace Microsoft.MixedReality.Toolkit.Tools.ContinuousIntegration
 {
     /// <summary>
     /// A helper for loading assembly definition information from disk.

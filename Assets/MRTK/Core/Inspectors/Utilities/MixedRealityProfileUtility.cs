@@ -77,22 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IsProfileForService(Type profileType, Type serviceType)
         {
-            var serviceTypeAttributes = serviceType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true);
-            if (serviceTypeAttributes.Length > 0)
-            {
-                foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in serviceTypeAttributes)
-                {
-                    foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
-                    {
-                        if (requiredType.Equals(profileType))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-
+            // There are two ways in which a profile and service can match up:
+            // 1. If a profile is marked as supporting a set of services (which is the first foreach loop)
+            // 2. If a service is marked as supporting a specific profile.
+            // Note that the first takes precedence over the second - there are also exclusion rules that can prevent
+            // a profile from supporting a service, and these rules would override anything specified in #2.
             foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in profileType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
             {
                 foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
@@ -110,9 +99,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         return false;
                     }
                 }
+                return true;
             }
 
-            return true;
+            foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in serviceType.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
+            {
+                foreach (Type requiredType in serviceProfileAttribute.RequiredTypes)
+                {
+                    if (requiredType.Equals(profileType))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

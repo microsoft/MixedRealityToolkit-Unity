@@ -1,3 +1,5 @@
+# This task runs validators that run within Unity itself (i.e. to run validation code that needs
+# to run within the context of Unity or needs type/reflection validation)
 
 parameters:
   UnityVersion: ""
@@ -8,9 +10,9 @@ steps:
    $editor = Get-ChildItem ${Env:${{ parameters.UnityVersion }}} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    $outDir = "$(Build.ArtifactStagingDirectory)\build"
-   $logFile = New-Item -Path "$outDir\build\profileSerializationValidation.log" -ItemType File -Force
+   $logFile = New-Item -Path "$outDir\build\unityValidation.log" -ItemType File -Force
    
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.Tools.Build.ProfileSerializationValidator.CommandLineValidate -logFile $($logFile.FullName) -nographics -quit" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.Tools.ContinuousIntegration.ValidatorRunner.Run -logFile $($logFile.FullName) -nographics -quit" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)
@@ -25,7 +27,7 @@ steps:
    Remove-Job $ljob
    Stop-Process $proc
 
-   $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\profileSerializationValidation.log'
+   $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\unityValidation.log'
    If (Test-Path $unityLogFileName)
    {
       Write-Output '====================================================='
@@ -46,4 +48,4 @@ steps:
    {
        exit $proc.ExitCode
    }
-  displayName: 'Validate Profile Serialization'
+  displayName: 'Unity Validators'
