@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
+using UnityEngine;
+
+#if UNITY_2019_3_OR_NEWER
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEngine;
 using UnityEngine.XR;
+#endif // UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
 {
@@ -25,8 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
         [Tooltip("Used for displaying data from input.")]
         private TextMesh[] displayFeatureUsagesTextMeshes = null;
 
-        private readonly List<InputDevice> inputDevices = new List<InputDevice>();
+#if UNITY_2019_3_OR_NEWER
+        private readonly List<InputDevice> controllerInputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> handInputDevices = new List<InputDevice>();
         private readonly List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
+#endif // UNITY_2019_3_OR_NEWER
 
         private void Update()
         {
@@ -35,7 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                 return;
             }
 
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, inputDevices);
+#if UNITY_2019_3_OR_NEWER
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, controllerInputDevices);
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HandTracking, handInputDevices);
+
+            List<InputDevice> inputDevices = controllerInputDevices.Union(handInputDevices).ToList();
 
             listInputDevicesTextMesh.text = $"Detected {inputDevices.Count} input source{(inputDevices.Count > 1 ? "s:" : inputDevices.Count != 0 ? ":" : "s")}\n";
 
@@ -120,6 +127,14 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                     }
                 }
             }
+
+            for (int i = displayFeatureUsagesTextMeshes.Length; i < inputDevices.Count; i++)
+            {
+                listInputDevicesTextMesh.text += $"{inputDevices[i].name}\n";
+            }
+#else
+            listInputDevicesTextMesh.text = $"This feature is only supported on Unity 2019.3 or newer.";
+#endif // UNITY_2019_3_OR_NEWER
         }
     }
 }
