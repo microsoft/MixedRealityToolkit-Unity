@@ -726,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        private void RemoveController(InteractionSource interactionSource)
+        public void RemoveController(InteractionSource interactionSource)
         {
             var controller = GetOrAddController(interactionSource, false);
 
