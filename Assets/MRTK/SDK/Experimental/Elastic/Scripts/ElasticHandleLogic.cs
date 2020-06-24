@@ -6,9 +6,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Physics
+namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-
     /// <summary>
     /// Implements a two-handle elastic "stretch" logic, which allows for
     /// either one or two pointers to stretch along a particular axis.
@@ -18,16 +17,17 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// 
     /// Usage:
     /// When a manipulation starts, call Setup.
-    /// Call Update any time to update the move logic and get a new rotation for the object.
+    /// Call Update() to compute an iteration of the system and obtain the calculated
+    /// distance between the handles.
     /// </summary>
     internal class ElasticHandleLogic
     {
-        private Vector3 leftInitialPosition;
-        private Vector3 rightInitialPosition;
+        private Vector3 leftInitialPosition = Vector3.zero;
+        private Vector3 rightInitialPosition = Vector3.zero;
 
-        private LinearElasticSystem elasticSystem;
+        private LinearElasticSystem elasticSystem = null;
 
-        private bool isSetup;
+        private bool isSetup = false;
 
         /// <summary>
         /// Initialize system with source info from controllers/hands.
@@ -73,12 +73,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 // If we have both pointers, we simply project the vector between the
                 // two hands onto the handle axis vector.
                 handDistance = Vector3.Dot(rightPointer.Value - leftPointer.Value, handleAxis);
-            } else if (!leftPointer.HasValue && rightPointer.HasValue)
+            }
+            else if (!leftPointer.HasValue && rightPointer.HasValue)
             {
                 // If we only have a right pointer, calculate the hand distance
                 // as twice the distance of the right pointer from the center.
                 handDistance = 2.0f * Vector3.Dot(rightPointer.Value - (leftInitialPosition + rightInitialPosition) / 2.0f, handleAxis);
-            } else if (leftPointer.HasValue && !rightPointer.HasValue)
+            }
+            else if (leftPointer.HasValue && !rightPointer.HasValue)
             {
                 // If we only have a left pointer, calculate the hand distance
                 // as twice the distance of the left pointer from the center.
@@ -88,6 +90,16 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return elasticSystem.ComputeIteration(handDistance, deltaTime);
         }
 
+        /// <summary>
+        /// Computes the "center position" between the two "hands". However, this
+        /// includes some extra checks; if the hand is not present (i.e., the argument
+        /// has been nullified) this method will substitude the leftInitialPosition or
+        /// rightInitialPosition in place of the missing hand. This is for accessibility
+        /// purposes, so single-handed elastic handle logic can be implemented.
+        /// </summary>
+        /// <param name="leftPointer">Nullable position of left hand/grab point</param>
+        /// <param name="rightPointer">Nullable position of right hand/grab point</param>
+        /// <returns>Calculated center point, according to the above criteria</returns>
         public virtual Vector3 GetCenterPosition(Vector3? leftPointer, Vector3? rightPointer)
         {
             if (leftPointer.HasValue && rightPointer.HasValue)
@@ -101,7 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             else if (leftPointer.HasValue && !rightPointer.HasValue)
             {
                 return (leftPointer.Value + rightInitialPosition) / 2.0f;
-            } else
+            }
+            else
             {
                 return Vector3.zero; // Failure case.
             }
