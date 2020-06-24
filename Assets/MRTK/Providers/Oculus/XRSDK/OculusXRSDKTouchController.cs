@@ -81,42 +81,50 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
                 InputFeatureUsage<bool> buttonUsage;
-                switch (interactionMapping.InputType)
-                {
+                bool usingOculusButtonData = false;
 
 #if OCULUS_ENABLED
+                switch (interactionMapping.InputType)
+                {
                     case DeviceInputType.TriggerTouch:
                         buttonUsage = OculusUsages.indexTouch;
+                        usingOculusButtonData = true;
                         break;
                     case DeviceInputType.TriggerNearTouch:
                         buttonUsage = OculusUsages.indexTouch;
+                        usingOculusButtonData = true;
                         break;
                     case DeviceInputType.ThumbTouch:
                     case DeviceInputType.ThumbNearTouch:
                         buttonUsage = OculusUsages.thumbrest;
+                        usingOculusButtonData = true;
                         break;
+                }
 #endif
-                    default:
-                        base.UpdateButtonData(interactionMapping, inputDevice);
-                        return;
-                }
 
-                if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
+                if (!usingOculusButtonData)
                 {
-                    interactionMapping.BoolData = buttonPressed;
+                    base.UpdateButtonData(interactionMapping, inputDevice);
                 }
-
-                // If our value changed raise it.
-                if (interactionMapping.Changed)
+                else
                 {
-                    // Raise input system event if it's enabled
-                    if (interactionMapping.BoolData)
+                    if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
                     {
-                        CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        interactionMapping.BoolData = buttonPressed;
                     }
-                    else
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        // Raise input system event if it's enabled
+                        if (interactionMapping.BoolData)
+                        {
+                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
                 }
             }
