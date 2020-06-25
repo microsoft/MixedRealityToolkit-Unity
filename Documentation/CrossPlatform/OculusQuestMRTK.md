@@ -30,7 +30,7 @@ project which uses the Legacy XR pipeline.
 
     - Open the **Input Data Providers** section, select **Add Data Provider** at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.LeapMotion.Input > LeapMotionDeviceManager**
 
-    ![OculusAddDataProvider](../Images/CrossPlatform/LeapMotion/OculusAddDataProvider.png)
+    ![OculusAddDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png)
 
 1. Building your project to deploy on Oculus Quest
     - Plug in your Oculus Quest via a USB 3.0 -> USB C cable
@@ -38,7 +38,7 @@ project which uses the Legacy XR pipeline.
     - Change the deployment to Android
     - Ensure that the Oculus Quest is selected as the applicable run device
     
-    ![OculusRunDevice](../Images/CrossPlatform/LeapMotion/OculusRunDevice.png)
+    ![OculusRunDevice](../Images/CrossPlatform/OculusQuest/OculusRunDevice.png)
 
     - Select Build and Run 
     - Accept the _Allow USB Debugging_ prompt from inside the quest
@@ -56,4 +56,4 @@ Make sure your Android paths are properly configured. If you continue to encount
 
 Edit --> Preferences --> External Tools --> Android
 
-![AndroidToolsConfig](../Images/CrossPlatform/LeapMotion/AndroidToolsConfig.png)
+![AndroidToolsConfig](../Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png)
