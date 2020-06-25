@@ -25,63 +25,64 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             get => targetObjectSprite;
             set => targetObjectSprite = value;
         }
+        [Experimental]
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Any mesh within the ColorPicker UI that receives color changes")]
         private MeshRenderer[] PickerUIMeshes = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Any sprite within the ColorPicker UI that receives color changes")]
         private SpriteRenderer[] PickerUISprites = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The gradient mesh that receives touch input")]
         private MeshRenderer GradientMesh = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The gradient drag game object that gets constrained while dragging")]
         private GameObject GradientDragger = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for the color red")]
         private PinchSlider SliderRed = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for the color green")]
         private PinchSlider SliderGreen = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for the color blue")]
         private PinchSlider SliderBlue = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for the color alpha")]
         private PinchSlider SliderAlpha = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for the color hue")]
         private PinchSlider SliderHue = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for saturation")]
         private PinchSlider SliderSaturation = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A pinch slider used for brightness")]
         private PinchSlider SliderBrightness = null;
         //
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's red property")]
         private TextMeshPro TextRed = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's green property")]
         private TextMeshPro TextGreen = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's blue property")]
         private TextMeshPro TextBlue = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's alpha property")]
         private TextMeshPro TextAlpha = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's hex property")]
         private TextMeshPro TextHex = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's hue property")]
         private TextMeshPro TextHue = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's saturation property")]
         private TextMeshPro TextSaturation = null;
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The text value of the color's brightness property")]
         private TextMeshPro TextBrightness = null;
         //
         private float GradientDragMaxDistance = 0.5f;
@@ -114,8 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         #region Gradient Logic (Private)
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            //OnTouchUpdated.Invoke(eventData);
-            //Debug.Log("OnTouchUpdated: " + Time.unscaledTime);
             GradientDragger.transform.position = new Vector3(eventData.InputData.x, eventData.InputData.y, eventData.InputData.z);
             ConstrainGradientDragging();
             ApplyColor();
@@ -124,14 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
         }
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            //OnTouchStarted.Invoke(eventData);
-            //Debug.Log("OnTouchStarted: " + eventData.selectedObject.name.ToString());
-            //Debug.Log("OnTouchStarted: " + Time.unscaledTime);
         }
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            //OnTouchCompleted.Invoke(eventData);
-            //Debug.Log("OnTouchCompleted: " + Time.unscaledTime);
         }
         private void CalculateGradientDraggerPosition()
         {
@@ -170,7 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
                 GradientDragCurrentPosition.y = GradientDragger.transform.localPosition.y;
             }
             GradientDragger.transform.localPosition = GradientDragCurrentPosition;
-            //DebugText.text = GradientDragCurrentPosition.ToString();
             Saturation = Mathf.Abs(GradientDragCurrentPosition.x + (GradientDragMaxDistance * -1));
             Brightness = GradientDragCurrentPosition.y + GradientDragMaxDistance;
             CustomColor = Color.HSVToRGB(Hue, Saturation, Brightness);
@@ -183,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
         #region Gradient Logic (Public)
         /// <summary>
-        /// 
+        /// Touching the gradient texture will calculate the color and constrain the dragger based on the point in eventData
         /// </summary>
         public void ClickGradientTexture(MixedRealityPointerEventData eventData)
         {
@@ -194,14 +187,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplySliderValues();
         }
         /// <summary>
-        /// 
+        /// Tells the update loop that the gradient is being dragged
         /// </summary>
         public void StartDragGradient()
         {
             IsDraggingGradient = true;
         }
         /// <summary>
-        /// 
+        /// Tells the update loop that the gradient is not being dragged, and applies the updated color value to the sliders
         /// </summary>
         public void StopDragGradient()
         {
@@ -213,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
         #region Public Functions
         /// <summary>
-        /// 
+        /// This will set the visibility, scale, and position of the color picker while extracting the color of the touched object's MeshRenderer or SpriteRender
         /// </summary>
         public void SummonColorPicker(GameObject container)
         {
@@ -225,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ExtractColorFromMaterial(TargetObjectMesh);
         }
         /// <summary>
-        /// 
+        /// Applies Hue, Saturation, Brightness slider values to the Red, Green, Blue sliders
         /// </summary>
         public void UpdateColorHSV()
         {
@@ -242,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
         }
         /// <summary>
-        /// 
+        /// Applies Red, Green, Blue slider values to the Hue, Saturation, Brightness sliders
         /// </summary>
         public void UpdateColorRGB() {
             if (IsDraggingSliders == true)
@@ -259,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             }
         }
         /// <summary>
-        /// 
+        /// Extracts a color from a MeshRenderer and applies it to the color picker
         /// </summary>
         public void ExtractColorFromMaterial(MeshRenderer meshRenderer)
         {
@@ -273,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             ApplySliderValues();
         }
         /// <summary>
-        /// 
+        /// Tells the update loop that a slider knob is being dragged
         /// </summary>
         public void StartDrag(GameObject dragger)
         {
@@ -281,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
             IsDraggingSliders = true;
         }
         /// <summary>
-        /// 
+        /// Tells the update loop that a slider knob is not being dragged and applies the value to all sliders
         /// </summary>
         public void StopDrag(GameObject dragger)
         {
