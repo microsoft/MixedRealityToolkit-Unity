@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
         }
 
         /// <summary>
-        /// Validates that MixedRealutyToolkit.GetAssetDatabasePath produces the correct asset path.
+        /// Validates that MixedRealityToolkit.GetAssetDatabasePath produces the correct asset path.
         /// </summary>
         [Test]
         public void VerifyGetAssetDatabasePath()
