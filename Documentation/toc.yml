@@ -205,7 +205,9 @@
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
+        href: Tools/ControllerMappingTool.md
+      - name: InputFeatureUsage tool
+        href: Tools/InputFeatureUsageTool.md 
   - name: UX Building Blocks
     items:
     - name: Toolbox Window
