@@ -748,6 +748,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             activeControllers.Remove(interactionSource.id);
         }
 
+        [Obsolete("This function exists to workaround a bug in Unity and will be removed in an upcoming release. For more details, see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8101")]
+        public void RemoveControllerForSuspendWorkaround(InteractionSource interactionSource)
+        {
+            RemoveController(interactionSource);
+        }
+
         #endregion Controller Utilities
 
         #region Unity InteractionManager Events
