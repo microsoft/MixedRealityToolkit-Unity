@@ -135,6 +135,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
             expectedPath = "Packages/com.contoso.custompackage/scriptable.asset";
             actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
             Asset.Equals(expectedPath, actualPath);
+
+            // Edge cases
+            inputPath = @"c:\projects\AssetsViewer\Assets\materials\test.mat";
+            expectedPath = "Assets/materials/test.mat";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
+
+            inputPath = "d:/source/projects/Packages/CoolFeature/MyAssets/textures/background.png";
+            expectedPath = "Packages/CoolFeature/MyAssets/textures/background.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
+
+            inputPath = @"c:\development\projects\space\Library\PackageCache\com.microsoft.mixedreality.toolkit.foundation@17.43.0-preview.13\Core\StandardAssets\Textures\MRTK_Logo_Black.png";
+            expectedPath = "Packages/com.microsoft.mixedreality.toolkit.foundation/Core/StandardAssets/Textures/MRTK_Logo_Black.png";
+            actualPath = MixedRealityToolkitFiles.GetAssetDatabasePath(inputPath);
+            Asset.Equals(expectedPath, actualPath);
         }
 
         [TearDown]

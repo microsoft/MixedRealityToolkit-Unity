@@ -142,12 +142,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string assetDatabasePath = Path.GetFullPath(absolutePath).Replace("\\", "/");
             string token = string.Empty;
             string newRoot = string.Empty;
-            if (assetDatabasePath.Contains("Assets"))
+            if (assetDatabasePath.Contains("/Assets/"))
             {
                 token = "Assets";
                 newRoot = "Assets";
             }
-            else if (assetDatabasePath.Contains("PackageCache"))
+            else if (assetDatabasePath.Contains("/PackageCache/"))
             {
                 token = "PackageCache";
                 newRoot = "Packages";
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 string versionString = assetDatabasePath.Substring(atIndex, separatorIndex);
                 assetDatabasePath = assetDatabasePath.Replace(versionString, "");
             }
-            else if (assetDatabasePath.Contains("Packages"))
+            else if (assetDatabasePath.Contains("/Packages/"))
             {
                 token = "Packages";
                 newRoot = "Packages";
