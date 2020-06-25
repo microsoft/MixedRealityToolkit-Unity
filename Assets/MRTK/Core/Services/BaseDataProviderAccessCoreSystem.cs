@@ -152,12 +152,31 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         protected bool RegisterDataProvider<T>(
             Type concreteType,
+            string providerName,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
             return RegisterDataProviderInternal<T>(
                 true, // Retry with an added IMixedRealityService parameter
                 concreteType,
+                providerName,
+                supportedPlatforms,
+                args);
+        }
+
+        /// <summary>
+        /// Registers a data provider of the specified type.
+        /// </summary>
+        [Obsolete("RegisterDataProvider<T>(Type, SupportedPlatforms, param object[]) is obsolete and will be removed from a future version of MRTK\n" +
+            "Please use RegisterDataProvider<T>(Type, string, SupportedPlatforms, params object[])")]
+        protected bool RegisterDataProvider<T>(
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            params object[] args) where T : IMixedRealityDataProvider
+        {
+            return RegisterDataProvider<T>(
+                concreteType,
+                string.Empty,
                 supportedPlatforms,
                 args);
         }
@@ -168,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit
         private bool RegisterDataProviderInternal<T>(
             bool retryWithRegistrar,
             Type concreteType,
+            string providerName,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
@@ -178,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} data provider ({(!string.IsNullOrWhiteSpace(providerName) ? providerName : "unknown")}) with a null concrete type.");
                 return false;
             }
 
@@ -209,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit
                     return RegisterDataProviderInternal<T>(
                         false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
                         concreteType,
+                        providerName,
                         supportedPlatforms,
                         updatedArgs.ToArray());
 #pragma warning restore 0618
