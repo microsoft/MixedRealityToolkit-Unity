@@ -677,13 +677,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 bool sendUpdatedEvent = false;
                 if (meshes.ContainsKey(cookedData.id.handle))
                 {
-                    // Reclaim the old mesh object for future use.
-                    ReclaimMeshObject(meshes[cookedData.id.handle]);
-                    meshes.Remove(cookedData.id.handle);
+                    SpatialAwarenessMeshObject toRemove = meshes[cookedData.id.handle];
 
+                    meshes[cookedData.id.handle] = meshObject;
                     sendUpdatedEvent = true;
+
+                    // Reclaim the old mesh object for future use.
+                    ReclaimMeshObject(toRemove);
                 }
-                meshes.Add(cookedData.id.handle, meshObject);
+                else
+                {
+                    meshes.Add(cookedData.id.handle, meshObject);
+                }
 
                 meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
 
