@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     {
         [Experimental]
         [SerializeField]
-        private PinchSlider slider;
+        private PinchSlider slider = null;
         [SerializeField]
-        private TextMeshPro text;
+        private TextMeshPro text = null;
         public void UpdateSliderText()
         {
             text.text = slider.SliderValue.ToString();
