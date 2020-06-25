@@ -8,5 +8,3 @@ using System.Reflection;
 
 [assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
-
-[assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
