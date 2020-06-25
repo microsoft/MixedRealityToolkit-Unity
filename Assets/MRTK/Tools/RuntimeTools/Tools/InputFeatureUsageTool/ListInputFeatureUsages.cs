@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
     /// <summary>
     /// Displays all active controllers with all available feature usages and their current state.
     /// </summary>
+    /// <remarks>Only works on Unity 2019.3 or newer.</remarks>
     [AddComponentMenu("Scripts/MRTK/Tools/ListInputFeatureUsages")]
     public class ListInputFeatureUsages : MonoBehaviour
     {
