@@ -179,8 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// Event fired when function key on keyboard is pressed.
+        /// Fires before internal keyboard state is updated.
         /// </summary>
-        public event Action<KeyboardKeyFunc> OnKeyboardKeyFuncPressed = delegate { };
+        public event Action<KeyboardKeyFunc> OnKeyboardFunctionKeyPressed = delegate { };
 
         /// <summary>
         /// Current shift state of keyboard.
@@ -640,7 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
             IndicateActivity();
-            OnKeyboardKeyFuncPressed(functionKey);
+            OnKeyboardFunctionKeyPressed(functionKey);
             switch (functionKey.ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
