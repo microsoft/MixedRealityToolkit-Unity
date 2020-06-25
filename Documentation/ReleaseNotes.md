@@ -11,7 +11,7 @@
 
 MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
 
-For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the instructions here: [Tutorial is a WIP].
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform\LeapMotionMRTK.md)
 
 **TestUtilities package**
 
