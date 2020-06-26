@@ -73,6 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             affordance.SetTrackingTarget(attachTarget, objectRoot, objectRoot.rotation * Quaternion.Inverse(affordance.transform.rotation));
 
+            affordance.logisticSlope = precisionConfig.LogisticSlope;
+
             return affordance;
         }
 

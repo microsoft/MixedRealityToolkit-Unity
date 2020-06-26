@@ -27,3 +27,4 @@ MonoBehaviour:
   showTranslationHandleForZ: 1
   precisionWidgetPrefab: {fileID: 792803156412167364, guid: 54d9d543030479a429a5afdc87295ef2,
     type: 3}
+  logisticSlope: 10

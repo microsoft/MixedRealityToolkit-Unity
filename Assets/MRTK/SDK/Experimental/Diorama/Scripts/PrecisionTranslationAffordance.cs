@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         public float start, end;
 
+        [Range(1.0f, 100.0f)]
+        public float logisticSlope;
+
         [Range(0.0f, 2.0f)]
         public float manipulationScale;
 
@@ -150,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             
             // Sigmoid logistic function
-            float damperFactor = (2 / (1 + Mathf.Exp(30.0f * -distanceFromAxis))) - 1;
+            float damperFactor = (2 / (1 + Mathf.Exp(logisticSlope * -distanceFromAxis))) - 1;
 
             float scale = 1.0f - damperFactor;
             scale = Mathf.Clamp(scale, 0.001f, 1.0f);

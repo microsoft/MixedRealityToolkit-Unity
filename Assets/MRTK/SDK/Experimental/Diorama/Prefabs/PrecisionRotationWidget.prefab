@@ -1346,7 +1346,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 101
+  lineStepCount: 122
   pointDistributionMode: 3
   customPointDistributionLength: 0.04
   customPointDistributionCurve:

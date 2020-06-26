@@ -1374,7 +1374,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         // Set the snap point to the desired interval. We also set the snap radius
                         // to be twice the interval, for to ensure the snapping force is mostly continuous.
                         extentProperties.SnapPoints = new Quaternion[] { Quaternion.Euler(elasticInterval, elasticInterval, elasticInterval) };
-                        elasticProperties.SnapRadius = elasticInterval * 2.0f;
+                        elasticProperties.SnapRadius = elasticInterval * 0.5f;
 
                         // Initialize our quaternion oscillator system
                         elastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);

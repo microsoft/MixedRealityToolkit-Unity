@@ -30,6 +30,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        [SerializeField]
+        [Tooltip("Slope of the logistic sigmoid function used for precision mode activation")]
+        float logisticSlope = 30.0f;
+
+        /// <summary>
+        /// Slope of the logistic sigmoid function used for precision mode activation
+        /// </summary>
+        public float LogisticSlope
+        {
+            get => logisticSlope;
+            set => logisticSlope = value;
+        }
+
         /// <summary>
         /// Fabricates an instance of PrecisionRotationHandles, applying
         /// this config to it whilst creating it.
