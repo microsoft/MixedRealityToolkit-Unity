@@ -336,6 +336,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => elasticInterval = value;
         }
 
+        [SerializeField]
+        [Range(0, 180)]
+        [Tooltip("Radius of effect of the snapping force.")]
+        private float elasticRadius = 5.0f;
+
+        /// <summary>
+        /// Radius of effect of the snapping force.
+        /// </summary>
+        public float ElasticRadius
+        {
+            get => elasticRadius;
+            set => elasticRadius = value;
+        }
+
         [Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
@@ -1220,10 +1234,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     {
                         currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
 
-                        // Set the snap point to the desired interval. We also set the snap radius
-                        // to be twice the interval, for to ensure the snapping force is mostly continuous.
+                        // Set the snap point to the desired interval, as well as update the desired snap radius.
                         extentProperties.SnapPoints = new Quaternion[] { Quaternion.Euler(elasticInterval, elasticInterval, elasticInterval) };
-                        elasticProperties.SnapRadius = elasticInterval * 2.0f;
+                        elasticProperties.SnapRadius = elasticRadius;
 
                         // Initialize our quaternion oscillator system
                         elastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);
