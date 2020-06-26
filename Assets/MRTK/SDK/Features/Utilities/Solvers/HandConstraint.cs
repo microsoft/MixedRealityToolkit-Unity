@@ -41,6 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             BelowWrist = 3
         }
 
+        private static readonly int SolverSafeZoneCount = System.Enum.GetValues(typeof(SolverSafeZone)).Length;
+        private static readonly SolverSafeZone[] handSafeZonesClockWiseRightHand = new SolverSafeZone[] {
+            SolverSafeZone.UlnarSide,
+            SolverSafeZone.AboveFingerTips,
+            SolverSafeZone.RadialSide,
+            SolverSafeZone.BelowWrist
+        };
+
         [Header("Hand Constraint")]
         [SerializeField]
         [Tooltip("Which part of the hand to move the solver towards. The ulnar side of the hand is recommended for most situations.")]
@@ -137,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// </summary>
             LookAtCameraRotation,
             /// <summary>
-            /// Uses the object-to-head vector to compute an offset independent of look at camera rotation.
+            /// Uses the hand rotation to compute an offset independent of look at camera rotation.
             /// </summary>
             TrackedObjectRotation
         }
@@ -153,6 +161,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get => offsetBehavior;
             set => offsetBehavior = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Additional offset to apply towards the user.")]
+        private float forwardOffset = 0;
+
+        /// <summary>
+        /// Additional offset to apply towards the user.
+        /// </summary>
+        public float ForwardOffset
+        {
+            get { return forwardOffset; }
+            set { forwardOffset = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Additional degree offset to apply from the stated SafeZone." + 
+        " Direction is clockwise on the left hand and anti-clockwise on the right hand.")]
+        private float safeZoneAngleOffset = 0;
+
+        /// <summary>
+        /// Additional degree offset to apply clockwise from the stated SafeZone.
+        /// Direction is clockwise on the left hand and anti-clockwise on the right hand.
+        /// </summary>
+        public float SafeZoneAngleOffset
+        {
+            get { return safeZoneAngleOffset; }
+            set { safeZoneAngleOffset = value; }
         }
 
         [SerializeField]
@@ -331,12 +367,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
+                Ray ray = CalculateProjectedSafeZoneRay(
+                    goalPosition, SolverHandler.TransformTarget, 
+                    trackedController, safeZone, OffsetBehavior, safeZoneAngleOffset);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
                 {
-                    goalPosition = ray.origin + ray.direction * distance;
+                    var forwardVector = (CameraCache.Main.transform.position - GoalPosition).normalized * ForwardOffset;
+                    goalPosition = ray.origin + (ray.direction + forwardVector) * distance;
                 }
             }
 
@@ -435,7 +474,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
+        private static Ray CalculateProjectedSafeZoneRay(
+            Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
         {
             Vector3 direction;
             Vector3 lookAtCamera = targetTransform.transform.position - CameraCache.Main.transform.position;
@@ -509,6 +549,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     break;
             }
 
+            return new Ray(origin + direction, -direction);
+        }
+
+        private static Ray CalculateProjectedSafeZoneRay(
+            Vector3 origin, Transform targetTransform, IMixedRealityController hand,
+            SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset)
+        {
+            if (angleOffset == 0)
+            {
+                return CalculateProjectedSafeZoneRay(origin, targetTransform, hand, handSafeZone, offsetBehavior);
+            }
+
+            angleOffset = angleOffset % 360;
+            while (angleOffset < 0)
+            {
+                angleOffset = (angleOffset + 360) % 360;
+            }
+
+            var offset = angleOffset / 90;
+            var intOffset = Mathf.FloorToInt(offset);
+            var fracOffset = offset - intOffset;
+
+            var currentSafeZoneClockwiseIdx = System.Array.IndexOf(handSafeZonesClockWiseRightHand, handSafeZone);
+
+            var intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % SolverSafeZoneCount];
+            var fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % SolverSafeZoneCount];
+
+            var intSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
+            var fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
+
+            var direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
+            DebugInfo.Status($"angleOffset {angleOffset} intPart {intPartSafeZoneClockwise} fracPart {fracPartSafeZoneClockwise} fracOffset {fracOffset}");
             return new Ray(origin + direction, -direction);
         }
 
