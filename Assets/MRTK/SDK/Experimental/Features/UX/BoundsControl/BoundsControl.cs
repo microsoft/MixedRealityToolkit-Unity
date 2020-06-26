@@ -9,6 +9,7 @@ using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
@@ -360,6 +361,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get => translateLerpTime;
             set => translateLerpTime = value;
         }
+        
+        [Header("Elastic")]
+        [SerializeField]
+        [Tooltip("Check to enable frame-rate independent damped elastic feedback for rotation handles.")]
+        private bool elasticActive = false;
+
+        /// <summary>
+        /// Check to enable frame-rate independent damped elastic feedback for rotation handles.
+        /// </summary>
+        public bool ElasticActive
+        {
+            get => elasticActive;
+            set => elasticActive = value;
+        }
+
+        [SerializeField]
+        [Range(0, 180)]
+        [Tooltip("Elastic rotation snapping interval.")]
+        private float elasticInterval = 10.0f;
+
+        /// <summary>
+        /// Elastic rotation snapping interval.
+        /// </summary>
+        public float ElasticInterval
+        {
+            get => elasticInterval;
+            set => elasticInterval = value;
+        }
 
         [Header("Events")]
         [SerializeField]
@@ -527,6 +556,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
+
+        // Properties for the quaternion elastic system.
+        private ElasticExtentProperties<Quaternion> extentProperties = new ElasticExtentProperties<Quaternion>
+        {
+            MinStretch = 0, // Not used in a Quaternion elastic system.
+            MaxStretch = 0,
+            SnapToEnds = false,
+            SnapPoints = new Quaternion[] { } // Will be set to the specified snap interval at runtime
+        };
+        
+        // Tested and verified "good" values.
+        private ElasticProperties elasticProperties = new ElasticProperties
+        {
+            Mass = 0.005f,
+            HandK = 4.0f,
+            EndK = 0.0f, // Unused
+            SnapK = 7.0f,
+            SnapRadius = 10.0f, // In degrees; will be set at runtime
+            Drag = 0.08f
+        };
+
+        private IntervalQuaternionElasticSystem elastic = null;
 
         #endregion
 
@@ -732,6 +783,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     UpdateExtents();
                     UpdateVisuals();
                     Target.transform.hasChanged = false;
+                }
+
+                if (elasticActive && elastic != null && currentPointer == null)
+                {
+                    // Only continue to compute elastic sim if angular velocity is (effectively) nonzero.
+                    if (Mathf.Abs(elastic.GetCurrentVelocity().eulerAngles.magnitude) > 0.000001f)
+                    {
+                        Target.transform.localRotation = initialRotationOnGrabStart * elastic.ComputeIteration(elastic.GetCurrentValue(), Time.deltaTime);
+                    }
                 }
 
                 // Only update proximity scaling of handles if they are visible which is when
@@ -1137,10 +1197,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 if (transformType == HandleType.Rotation)
                 {
-                    Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
-                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
-                    Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
-                    Target.transform.rotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.rotation, goal, rotateLerpTime, Time.deltaTime) : goal;
+                    // Compute initial and current manipulation vectors relative to local frame.
+                    Vector3 initDir = Quaternion.Inverse(initialRotationOnGrabStart) * (Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized);
+                    Vector3 currentDir = Quaternion.Inverse(initialRotationOnGrabStart) * (Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized);
+
+                    // Quaternion from init to current, relative to local frame.
+                    Quaternion localDelta = Quaternion.FromToRotation(initDir, currentDir);
+
+                    // Elastic takes higher priority over smoothing, as it itself is a kind of smoothing!
+                    if (elasticActive)
+                    {
+                        // Compute and apply elastic result.
+                        Quaternion elasticResult = elastic.ComputeIteration(localDelta, Time.deltaTime);
+                        Target.transform.localRotation = initialRotationOnGrabStart * elasticResult;
+                    } else
+                    {
+                        // Compute and apply smoothed result, if smoothing requested.
+                        Quaternion target = initialRotationOnGrabStart * localDelta;
+                        Target.transform.localRotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.localRotation, target, rotateLerpTime, Time.deltaTime) : target;
+                    }
                 }
                 else if (transformType == HandleType.Scale)
                 {
@@ -1295,6 +1370,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     else if (currentHandleType == HandleType.Rotation)
                     {
                         currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
+
+                        // Set the snap point to the desired interval. We also set the snap radius
+                        // to be twice the interval, for to ensure the snapping force is mostly continuous.
+                        extentProperties.SnapPoints = new Quaternion[] { Quaternion.Euler(elasticInterval, elasticInterval, elasticInterval) };
+                        elasticProperties.SnapRadius = elasticInterval * 2.0f;
+
+                        // Initialize our quaternion oscillator system
+                        elastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);
 
                         RotateStarted?.Invoke();
 
