@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -679,9 +679,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigidBody == null)
             {
-                HostTransform.position = SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime);
-                HostTransform.rotation = SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime);
-                HostTransform.localScale = SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+                HostTransform.position = smoothingActive ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                HostTransform.rotation = smoothingActive ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
+                HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
             else
             {
@@ -696,18 +696,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
                 }
 
-                HostTransform.localScale = SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+                HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
-        }
-
-        private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
-        {
-            return Vector3.Lerp(source, goal, (!smoothingActive || lerpTime == 0f) ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
-        }
-
-        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float slerpTime)
-        {
-            return Quaternion.Slerp(source, goal, (!smoothingActive || slerpTime == 0f) ? 1f : 1f - Mathf.Pow(slerpTime, Time.deltaTime));
         }
 
         private Vector3[] GetHandPositionArray()

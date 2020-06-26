@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -98,7 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent VersionNumberLabel = new GUIContent("Version Number", "Major.Minor.Build.Revision\nNote: Revision should always be zero because it's reserved by Windows Store.");
 
-        private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SLL to communicate with Device Portal");
+        private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SSL to communicate with Device Portal");
+
+        private readonly GUIContent VerifySSLLabel = new GUIContent("Verify SSL Certificates?", "When using SSL for Device Portal communication, verfiy the SSL certificate against Root Certificates. For self-signed Device Portal certificates disabling this omits SSL rejection errors.");
 
         private readonly GUIContent TargetTypeLabel = new GUIContent("Target Type", "Target either local connection or a remote device");
 
@@ -285,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             LoadWindowsSdkPaths();
             UpdateBuilds();
 
-            Rest.UseSSL = UwpBuildDeployPreferences.UseSSL;
+            DevicePortal.UseSSL = UwpBuildDeployPreferences.UseSSL;
 
             localConnection = JsonUtility.FromJson<DeviceInfo>(UwpBuildDeployPreferences.LocalConnectionInfo);
 
@@ -655,17 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     RenderRemoteConnections();
 
-                    bool useSSL = UwpBuildDeployPreferences.UseSSL;
-                    bool newUseSSL = EditorGUILayout.ToggleLeft(UseSSLLabel, useSSL);
-                    if (newUseSSL != useSSL)
-                    {
-                        UwpBuildDeployPreferences.UseSSL = newUseSSL;
-                        Rest.UseSSL = newUseSSL;
-                    }
-                    else if (UwpBuildDeployPreferences.UseSSL != Rest.UseSSL)
-                    {
-                        Rest.UseSSL = UwpBuildDeployPreferences.UseSSL;
-                    }
+                    RenderSSLButtons();
                 }
                 else
                 {
@@ -684,6 +676,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             }
                         }
                     }
+
+                    RenderSSLButtons();
                 }
 
                 EditorGUILayout.Space();
@@ -694,6 +688,38 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             EditorGUILayout.Space();
 
             RenderBuildsList();
+        }
+
+        private void RenderSSLButtons()
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                bool useSSL = UwpBuildDeployPreferences.UseSSL;
+                bool newUseSSL = EditorGUILayout.ToggleLeft(UseSSLLabel, useSSL);
+                if (newUseSSL != useSSL)
+                {
+                    UwpBuildDeployPreferences.UseSSL = newUseSSL;
+                    DevicePortal.UseSSL = newUseSSL;
+                }
+                else if (UwpBuildDeployPreferences.UseSSL != DevicePortal.UseSSL)
+                {
+                    DevicePortal.UseSSL = UwpBuildDeployPreferences.UseSSL;
+                }
+
+                bool verifySSL = UwpBuildDeployPreferences.VerifySSL;
+                bool newVerifySSL = EditorGUILayout.ToggleLeft(VerifySSLLabel, verifySSL);
+                if (newVerifySSL != verifySSL)
+                {
+                    UwpBuildDeployPreferences.VerifySSL = newVerifySSL;
+                    DevicePortal.VerifySSLCertificates = verifySSL;
+                }
+                else if (UwpBuildDeployPreferences.VerifySSL != DevicePortal.VerifySSLCertificates)
+                {
+                    DevicePortal.VerifySSLCertificates = UwpBuildDeployPreferences.VerifySSL;
+                }
+
+                GUILayout.FlexibleSpace();
+            }
         }
 
         private void RenderConnectionButtons()

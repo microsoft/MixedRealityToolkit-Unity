@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_LOCAL_CONNECT_INFO = "BuildDeployWindow_LocalConnection";
         private const string EDITOR_PREF_FULL_REINSTALL = "BuildDeployWindow_FullReinstall";
         private const string EDITOR_PREF_USE_SSL = "BuildDeployWindow_UseSSL";
+        private const string EDITOR_PREF_VERIFY_SSL = "BuildDeployWindow_VerifySSL";
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
         private const string EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED = "BuildDeployWindow_GazeInputCapabilityEnabled";
         private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
@@ -136,6 +137,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_USE_SSL, false);
             set => EditorPreferences.Set(EDITOR_PREF_USE_SSL, value);
+        }
+
+        /// <summary>
+        /// Current setting to verify SSL certificates for connections to the device portal.
+        /// </summary>
+        public static bool VerifySSL
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_VERIFY_SSL, true);
+            set => EditorPreferences.Set(EDITOR_PREF_VERIFY_SSL, value);
         }
 
         /// <summary>
