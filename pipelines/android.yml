@@ -1,0 +1,22 @@
+# Build for Android APK
+
+variables:
+- template: config/settings.yml
+
+jobs:
+- job: AndroidValidation
+  timeoutInMinutes: 60
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2019.4.0f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/leap-tests.yml
+    parameters:
+      UnityVersion: $(Unity2019Version)
+      Arch: 'x86'  # x86|arm
+      Platform: 'Android' 
+
+  - template: templates/end.yml
