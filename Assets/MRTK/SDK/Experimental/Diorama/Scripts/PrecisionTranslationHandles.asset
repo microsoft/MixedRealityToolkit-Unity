@@ -18,7 +18,7 @@ MonoBehaviour:
   handlePrefab: {fileID: 3868891704370700786, guid: f73c916a7266dd941a534f5f0f10a423,
     type: 3}
   handleSize: 0.032
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  colliderPadding: {x: 0.032, y: 0.032, z: 0.032}
   drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
   translationHandlePrefabColliderType: 1
