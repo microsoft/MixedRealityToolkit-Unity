@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredCharacteristics)
                 {
                     InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
-                    foreach (InputDevice device in inputDevices)
+                    foreach (InputDevice device in inputDevicesSubset)
                     {
                         if (!inputDevices.Contains(device))
                         {
