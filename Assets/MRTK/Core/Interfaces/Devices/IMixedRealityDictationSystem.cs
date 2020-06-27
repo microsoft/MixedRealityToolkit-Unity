@@ -46,5 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns><see href="https://docs.unity3d.com/ScriptReference/AudioClip.html">AudioClip</see> of the last recording session.</returns>
         Task<AudioClip> StopRecordingAsync();
+
+        /// <summary>
+        /// Get the audio clip associated with the current session.	+-	 
+        /// </summary>	 	 
+        AudioClip GetAudioClip();
     }
 }
