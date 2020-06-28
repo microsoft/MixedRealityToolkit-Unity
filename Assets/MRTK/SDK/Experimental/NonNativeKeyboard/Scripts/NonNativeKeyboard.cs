@@ -173,6 +173,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public event Action<bool> OnKeyboardShifted = delegate { };
 
         /// <summary>
+        /// Event fired when char key on keyboard is pressed.
+        /// </summary>
+        public event Action<KeyboardValueKey> OnKeyboardValueKeyPressed = delegate { };
+
+        /// <summary>
+        /// Event fired when function key on keyboard is pressed.
+        /// Fires before internal keyboard state is updated.
+        /// </summary>
+        public event Action<KeyboardKeyFunc> OnKeyboardFunctionKeyPressed = delegate { };
+
+        /// <summary>
         /// Current shift state of keyboard.
         /// </summary>
         private bool m_IsShifted = false;
@@ -598,6 +609,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             IndicateActivity();
             string value = "";
 
+            OnKeyboardValueKeyPressed(valueKey);
+
             // Shift value should only be applied if a shift value is present.
             if (m_IsShifted && !string.IsNullOrEmpty(valueKey.ShiftValue))
             {
@@ -628,6 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
             IndicateActivity();
+            OnKeyboardFunctionKeyPressed(functionKey);
             switch (functionKey.ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
