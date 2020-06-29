@@ -2658,7 +2658,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5629718995257534582
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2773,7 +2773,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -13.2, y: -261}
+  m_AnchoredPosition: {x: -13.2, y: -160}
   m_SizeDelta: {x: 440, y: 111.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5629718995900112735
@@ -2905,7 +2905,7 @@ GameObject:
   - component: {fileID: 5629718995931189460}
   - component: {fileID: 5629718995931189461}
   m_Layer: 0
-  m_Name: Help Panel Viewer
+  m_Name: Help_Panel_Viewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2939,10 +2939,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b468aa5b7f931c140adaa4a3e66d718e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShortcutTip: {fileID: 5629718995900112730}
-  displayShortcutTipOnStart: 1
+  HelpGuideShortcutKeys: 3201000068000000
+  HelpGuideShortcutTip: {fileID: 5629718995257534583}
+  DisplayHelpGuideShortcutTipOnStart: 1
   HelpGuideVisual: {fileID: 7326249947363464692}
-  displayShortcut: 3201000068000000
+  helpDisplayOffset: {x: 0, y: 0.1, z: 0.5}
 --- !u!1 &5737899074140542202
 GameObject:
   m_ObjectHideFlags: 0
