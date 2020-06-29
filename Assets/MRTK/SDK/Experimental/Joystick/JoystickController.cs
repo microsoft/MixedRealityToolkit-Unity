@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
     public class JoystickController : MonoBehaviour
     {
         [Experimental]
-        [SerializeField]
+        [SerializeField, FormerlySerializedAs("ObjectToManipulate")]
         [Tooltip("The large or small game object that receives manipulation by the joystick.")]
         private GameObject targetObject = null;
         public GameObject TargetObject
