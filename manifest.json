@@ -2420,6 +2420,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/InputFeatureUsages.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/InputFeatureUsages.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png",
       "output": {
         "resource": {
@@ -8311,7 +8322,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/ControllerMappingTool.html",
-          "hash": "QEWwubQaHfBYc+PhU8Susw=="
+          "hash": "NncYxLdKec4HCKlenNXqtg=="
         }
       },
       "is_incremental": false,
@@ -8348,6 +8359,18 @@
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
           "hash": "QR7/9jUOC8pe5NTbpbaLTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/InputFeatureUsageTool.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/InputFeatureUsageTool.html",
+          "hash": "qku15lr7DwOaHw7Dtz79Mw=="
         }
       },
       "is_incremental": false,
@@ -8431,7 +8454,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "9NwnbjiUO850buoes3cQ9Q=="
+          "hash": "Kq1kCj48DwlgF0fL7O4duA=="
         }
       },
       "is_incremental": false,
@@ -22070,11 +22093,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tools.Runtime.ListInputFeatureUsages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tools.Runtime.ListInputFeatureUsages.html",
+          "hash": "OHAGuiN/x+C1Yi2q7xYUbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tools.Runtime.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tools.Runtime.html",
-          "hash": "NjVgTQG0DL0maR667cDX9A=="
+          "hash": "R+lIVEezC9ncBsf7sfsjWg=="
         }
       },
       "is_incremental": false,
@@ -26550,7 +26585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Response.html",
-          "hash": "ihmbKZxRmSjP6VNJzDGxeg=="
+          "hash": "0ZhA4f7HFQZp1hrqN7O0Mg=="
         }
       },
       "is_incremental": false,
@@ -28038,7 +28073,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "GNeWW7NMV0TjHQd7+s/ueQ=="
+          "hash": "oGc7XPJf0PDczW3nIjjA+w=="
         }
       },
       "is_incremental": false,
@@ -28097,23 +28132,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 162,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1630,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 163,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1631,
           "skipped_file_count": 0
         }
       }
