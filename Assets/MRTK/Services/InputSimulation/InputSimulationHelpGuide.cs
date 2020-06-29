@@ -68,9 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             {
                 HelpGuideVisual.transform.parent = CameraCache.Main.transform;
                 HelpGuideVisual.transform.rotation = CameraCache.Main.transform.rotation;
-                HelpGuideVisual.transform.localPosition = CameraCache.Main.transform.right * helpDisplayOffset.x 
-                                                          + CameraCache.Main.transform.up * helpDisplayOffset.y 
-                                                          + CameraCache.Main.transform.forward * helpDisplayOffset.z;
+                HelpGuideVisual.transform.localPosition = helpDisplayOffset;
 
                 HelpGuideVisual.transform.parent = null;
 
