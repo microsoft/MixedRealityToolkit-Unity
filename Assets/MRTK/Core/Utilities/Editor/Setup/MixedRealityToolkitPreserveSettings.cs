@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             "    can be found here: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5273 \n" +
             "    If your application doesn't use some specific services (for example, if teleportation system is \n" +
             "    disabled in the profile), it is possible to remove their corresponding lines down \n" +
-            "    below(in the previous example, we would remove the TeleportSystem below). \n" +
+            "    below (in the previous example, we would remove the TeleportSystem below). \n" +
             "    It's recommended to start with this list and narrow down if you want to ensure \n" +
             "    specific bits of code get optimized away. \n" +
             "  --> \n" +
