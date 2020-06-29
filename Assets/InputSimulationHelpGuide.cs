@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 HelpGuideVisual.transform.parent = CameraCache.Main.transform;
                 HelpGuideVisual.transform.rotation = CameraCache.Main.transform.rotation;
-                HelpGuideVisual.transform.localPosition = CameraCache.Main.transform.forward * 0.5f;
+                HelpGuideVisual.transform.localPosition = CameraCache.Main.transform.forward * 0.5f + CameraCache.Main.transform.up * 0.1f;
 
                 HelpGuideVisual.transform.parent = null;
 
