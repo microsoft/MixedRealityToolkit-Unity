@@ -830,7 +830,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: -0.000006159005}
+  m_AnchoredPosition: {x: 0.000015258789, y: -0.00003643366}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1930685357111994320
@@ -1208,7 +1208,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5397203284966508641}
   m_HandleRect: {fileID: 5832530812432599120}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3888,6 +3888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
+  IsBoundsHandles: 0
 --- !u!82 &7326249946757565459
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4509,7 +4510,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 7326249947511958871}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: 8d0274d8bc6a17844a08b493920d9491, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &7326249947176158474
 GameObject:
   m_ObjectHideFlags: 0
@@ -5023,7 +5026,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 7326249946657352096}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bd30f98596e69f7469fda20a47760dd1, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &7326249947230095627
 GameObject:
   m_ObjectHideFlags: 0
