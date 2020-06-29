@@ -18,23 +18,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         private PinchSlider Slider = null;
         [SerializeField]
-        private TextMeshPro SliderValue= null;
-        //[SerializeField]
-        //private BoxCollider TouchableCollider = null;
+        private TextMeshPro SliderValue = null;
         [SerializeField]
-        private TextMeshPro DebugText = null;
+        private BoxCollider TouchableCollider = null;
         [SerializeField]
-        private float TouchableWidth = 0.135776976f;
-        [SerializeField]
-        private float Multiplier = 4f;
+        private float SnapValue = 0.05f;
+        //
+        private float ColliderWidth;
+        private float ColliderPosition;
+        private float ColliderLeft;
+        private float ColliderRight;
         public void UpdateSliderText()
         {
-            //SliderValue.text = Slider.SliderValue.ToString();
+            if(SliderValue != null)
+            {
+                SliderValue.text = Slider.SliderValue.ToString();
+            }
         }
-        //void Start()
-        //{
-        //    DebugText.text = TouchableCollider.bounds.size.x.ToString();
-        //}
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             //throw new NotImplementedException();
@@ -47,21 +47,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            float position = (eventData.InputData.x + TouchableWidth) * Multiplier;
-            float newPosition;
-            if(position < 0.1f)
+            CalculateSliderPosition(eventData.InputData.x);
+        }
+        private void CalculateSliderPosition(float touchPoint) {
+            ColliderWidth = TouchableCollider.bounds.size.x;
+            ColliderPosition = TouchableCollider.gameObject.transform.position.x;
+            ColliderLeft = ColliderPosition - ColliderWidth / 2;
+            ColliderRight = ColliderPosition + ColliderWidth / 2;
+            //
+            float result = (touchPoint - ColliderLeft) / (ColliderRight - ColliderLeft);
+            float clampedResult;
+            if (result < SnapValue)
             {
-                newPosition = 0;
-            } else if(position > 0.95f)
-            {
-                newPosition = 1;
-            } else
-            {
-                newPosition = position;
+                clampedResult = 0;
             }
-            Slider.SliderValue = newPosition;
-            SliderValue.text = (Mathf.Round(newPosition*100) / 100).ToString();
-            DebugText.text = position.ToString() + " | " + newPosition.ToString();
+            else if (result > (1 - SnapValue))
+            {
+                clampedResult = 1;
+            }
+            else
+            {
+                clampedResult = result;
+            }
+            Slider.SliderValue = clampedResult;
         }
     }
 }
