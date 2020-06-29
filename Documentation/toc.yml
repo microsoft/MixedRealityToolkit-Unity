@@ -11,6 +11,8 @@
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
   - name: NuGet Packages
     href: MRTKNuGetPackage.md
   - name: MRTK configuration dialog

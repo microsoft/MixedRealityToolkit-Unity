@@ -193,7 +193,9 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} service because the value of concreteType is null.\n" +
+                    "This may be caused by code being stripped during linking. The link.xml file in the MixedRealityToolkit.Generated folder is used to control code preservation.\n" +
+                    "More information can be found at https://docs.unity3d.com/Manual/ManagedCodeStripping.html.");
                 return false;
             }
 
