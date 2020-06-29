@@ -105,6 +105,9 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p>For instructions on how to write a test using these TestUtilities, see this section on
 <a href="Contributing/UnitTests.html#writing-tests">writing tests</a></p>
 <p>For examples of existing tests that use this infrastructure, see MRTK's <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests">PlayModeTests</a></p>
+<p><strong>Link.xml created in the MixedRealityToolkit.Generated folder</strong></p>
+<p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
+<p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
 <p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
 <p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
 <p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
@@ -120,6 +123,8 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p>Do this now...</p>
 <pre><code class="lang-csharp">DevicePortal.UseSSL = true
 </code></pre>
+<p><strong>Link.xml</strong></p>
+<p>If an application was previously using the NuGet distribution of the MRTK, the <code>link.xml</code> file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default <code>link.xml</code> file in <code>Assets/MixedRealityToolkit.Generated</code>. It is recommended that this file (and <code>link.xml.meta</code>) be added to source control.</p>
 <h3 id="known-issues">Known issues</h3>
 </article>
           </div>
