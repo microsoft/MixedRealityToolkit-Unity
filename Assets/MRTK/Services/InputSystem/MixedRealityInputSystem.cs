@@ -169,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (inputModules.Length == 0)
             {
+                DebugUtilities.LogVerbose("MixedRealityInputModule added to main camera");
                 // There is no input module attached to the camera, add one.
                 CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
                 isInputModuleAdded = true;
@@ -265,6 +266,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
                     object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
+                    DebugUtilities.LogVerboseFormat(
+                        "Attempting to register input system data provider {0}, {1}, {2}",
+                        configuration.ComponentType.Type,
+                        configuration.ComponentName,
+                        configuration.RuntimePlatform);
+
                     RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
                         configuration.ComponentName,
@@ -280,16 +287,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                DebugUtilities.LogVerboseFormat("Initialized a gaze provider of type {0}", pointerProfile.GazeProviderType.Type);
                 // Current default implementation implements both provider types in one concrete class.
                 EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
                 if (EyeGazeProvider != null)
                 {
                     EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
+                    DebugUtilities.LogVerboseFormat("Gaze Provider supports IMixedRealityEyeGazeProvider, IsEyeTrackingEnabled set to {0}", EyeGazeProvider.IsEyeTrackingEnabled);
                 }
 
                 if (GazeProvider is IMixedRealityGazeProviderHeadOverride gazeProviderHeadOverride)
                 {
                     gazeProviderHeadOverride.UseHeadGazeOverride = pointerProfile.UseHeadGazeOverride;
+                    DebugUtilities.LogVerboseFormat("Gaze Provider supports IMixedRealityGazeProviderHeadOverride, UseHeadGazeOverride set to {0}", gazeProviderHeadOverride.UseHeadGazeOverride);
                 }
             }
             else
@@ -321,17 +331,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (Application.isPlaying)
                 {
                     GazeProvider.GazePointer.BaseCursor.Destroy();
+                    DebugUtilities.LogVerbose("Application was playing, destroyed the gaze pointer's BaseCursor");
                 }
 
                 UnityObjectExtensions.DestroyObject(GazeProvider as Component);
 
                 GazeProvider = null;
+                DebugUtilities.LogVerbose("Destroyed the GazeProvider in MixedRealityInputSystem");
             }
 
             foreach (var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
                 if (provider != null)
                 {
+                    DebugUtilities.LogVerboseFormat("Unregistering input data provider {0}", provider);
                     UnregisterDataProvider<IMixedRealityInputDeviceManager>(provider);
                 }
             }
@@ -857,6 +870,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     DetectedControllers.Add(controller);
                 }
 
+                DebugUtilities.LogVerboseFormat("RaiseSourceDetected: Source ID: {0}, Source Type: {1}", source.SourceId, source.SourceType);
+
                 FocusProvider?.OnSourceDetected(sourceStateEventData);
 
                 // Pass handler through HandleEvent to perform modal/fallback logic
@@ -888,6 +903,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 sourceStateEventData.Initialize(source, controller);
 
                 DetectedInputSources.Remove(source);
+
+                DebugUtilities.LogVerboseFormat("RaiseSourceLost: Source ID: {0}, Source Type: {1}", source.SourceId, source.SourceType);
 
                 if (controller != null)
                 {
