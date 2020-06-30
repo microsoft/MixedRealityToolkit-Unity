@@ -1,7 +1,7 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.testutilities",
     "displayName": "Mixed Reality Toolkit Test Utilities",
-    "version": "2.5.0-test.1",
+    "version": "2.5.0-preview.0",
     "unity": "2018.4",
     "description": "Test utilities for use with the Microsoft Mixed Reality Toolkit",
     "keywords": [
@@ -25,6 +25,6 @@
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
       },
     "dependencies": {
-        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-test.1"
+        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0"
     }
 }

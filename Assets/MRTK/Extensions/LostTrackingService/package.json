@@ -1,7 +1,7 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.losttrackingservice",
     "displayName": "Mixed Reality Toolkit Lost Tracking Service",
-    "version": "2.5.0-test.1",
+    "version": "2.5.0-preview.0",
     "unity": "2018.4",
     "description": "Extension to the Microsoft Mixed Reality Toolkit providing support for handling tracking loss.",
     "keywords": [
@@ -25,6 +25,6 @@
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
       },
     "dependencies": {
-        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-test.1"
+        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0"
     }
 }
