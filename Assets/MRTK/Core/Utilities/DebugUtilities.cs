@@ -120,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         /// <summary>
         /// Logs the given message to the Unity console and player log if verbose logging is enabled.
+        /// Note that verbose logs do not include the callstack
         /// </summary>
         /// <remarks>
         /// If you are doing string concatentation or manipulation, use LogVerboseFormat
@@ -135,18 +136,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (LogLevel <= LoggingLevel.Verbose)
             {
+                // Save/restore the previous stack trace configuration, rather than assuming that
+                // it's the default (StackTraceLogType.ScriptOnly)
+                StackTraceLogType stackTraceLogType = Application.GetStackTraceLogType(LogType.Log);
+                Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
                 Debug.Log(message);
+                Application.SetStackTraceLogType(LogType.Log, stackTraceLogType);
             }
         }
 
         /// <summary>
         /// Formats and logs the given message to the Unity console and player log if verbose logging is enabled.
+        /// Note that verbose logs do not include the callstack
         /// </summary>
         public static void LogVerboseFormat(string message, params object[] args)
         {
             if (LogLevel <= LoggingLevel.Verbose)
             {
+                // Save/restore the previous stack trace configuration, rather than assuming that
+                // it's the default (StackTraceLogType.ScriptOnly)
+                StackTraceLogType stackTraceLogType = Application.GetStackTraceLogType(LogType.Log);
+                Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
                 Debug.LogFormat(message, args);
+                Application.SetStackTraceLogType(LogType.Log, stackTraceLogType);
             }
         }
 
