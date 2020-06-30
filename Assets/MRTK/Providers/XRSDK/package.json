@@ -28,6 +28,5 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0"
-
     }
 }
