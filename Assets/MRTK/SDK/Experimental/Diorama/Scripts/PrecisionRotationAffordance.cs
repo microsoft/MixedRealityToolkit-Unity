@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 
                 if(associatedPointer != null)
                 {
-                    manipulationScale = (associatedPointer.Value.GrabPoint - transform.position).magnitude;
+                    manipulationScale = Smoothing.SmoothTo(manipulationScale, (associatedPointer.Value.GrabPoint - transform.position).magnitude, 0.001f, Time.deltaTime);
                 }
             }
 

@@ -1,18 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class FFITest : MonoBehaviour
 {
-    public Text TimeText;
-    public Text DisplacementText;
-    public Text OrientationText;
+    public TextMeshPro TimeText;
+    public TextMeshPro DisplacementText;
+    public TextMeshPro OrientationText;
 
-    public Text infoText;
+    public TextMeshPro infoText;
 
     public Transform testObject;
     public Transform testGoal;
+
+    public MeshRenderer floorplan;
 
     public float displacementTolerance;
     public float orientationTolerance;
@@ -60,6 +63,7 @@ public class FFITest : MonoBehaviour
                     TimeText.color = Color.white;
                     DisplacementText.color = Color.white;
                     OrientationText.color = Color.white;
+                    floorplan.material.color = Color.white;
                 }
                 testHasCompleted = false;
                 testTime += Time.deltaTime;
@@ -72,6 +76,7 @@ public class FFITest : MonoBehaviour
             TimeText.color = Color.green;
             DisplacementText.color = Color.green;
             OrientationText.color = Color.green;
+            floorplan.material.color = Color.green;
         }
 
         var x_a = (new Vector3(testObject.position.x, 0, testObject.position.z)).magnitude;

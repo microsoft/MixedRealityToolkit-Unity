@@ -572,16 +572,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         public Vector3[] BoundsCorners { get; private set; }
 
         // Properties for the quaternion elastic system.
-        private ElasticExtentProperties<Quaternion> extentProperties = new ElasticExtentProperties<Quaternion>
+        public ElasticExtentProperties<Quaternion> extentProperties = new ElasticExtentProperties<Quaternion>
         {
             MinStretch = 0, // Not used in a Quaternion elastic system.
             MaxStretch = 0,
             SnapToEnds = false,
             SnapPoints = new Quaternion[] { } // Will be set to the specified snap interval at runtime
         };
-        
+
+        // Properties for the 3D elastic system.
+        public ElasticExtentProperties<Vector3> volumeExtentProperties = new ElasticExtentProperties<Vector3>
+        {
+            MinStretch = 0, // Not used in a Quaternion elastic system.
+            MaxStretch = 0,
+            SnapToEnds = false,
+            SnapPoints = new Vector3[] { new Vector3(0.2f, 0.2f, 0.2f) } // Will be set to the specified snap interval at runtime
+        };
+
         // Tested and verified "good" values.
-        private ElasticProperties elasticProperties = new ElasticProperties
+        public ElasticProperties elasticProperties = new ElasticProperties
         {
             Mass = 0.005f,
             HandK = 4.0f,
@@ -591,7 +600,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             Drag = 0.08f
         };
 
-        private IntervalQuaternionElasticSystem elastic = null;
+        private IntervalQuaternionElasticSystem rotationElastic = null;
+        private Interval3DElasticSystem translationElastic = null;
 
         #endregion
 
@@ -635,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 return scaleHandles != null &&
                     rotationHandles != null &&
-                    translationHandles != null &&
+                    // translationHandles != null &&
                     boxDisplay != null &&
                     links != null &&
                     proximityEffect != null;
@@ -715,7 +725,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // ensure we have a default configuration in case there's none set by the user
             scaleHandlesConfiguration = EnsureScriptable(scaleHandlesConfiguration);
             rotationHandlesConfiguration = EnsureScriptable(rotationHandlesConfiguration);
-            translationHandlesConfiguration = EnsureScriptable(translationHandlesConfiguration);
+            //translationHandlesConfiguration = EnsureScriptable(translationHandlesConfiguration);
             boxDisplayConfiguration = EnsureScriptable(boxDisplayConfiguration);
             linksConfiguration = EnsureScriptable(linksConfiguration);
             handleProximityEffectConfiguration = EnsureScriptable(handleProximityEffectConfiguration);
@@ -723,7 +733,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // instantiate runtime classes for visuals
             scaleHandles = scaleHandlesConfiguration.ConstructInstance();
             rotationHandles = rotationHandlesConfiguration.ConstructInstance();
-            translationHandles = translationHandlesConfiguration.ConstructInstance();
+            translationHandles = translationHandlesConfiguration?.ConstructInstance();
             
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
@@ -799,12 +809,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Target.transform.hasChanged = false;
                 }
 
-                if (elasticActive && elastic != null && currentPointer == null)
+                if (elasticActive && rotationElastic != null && currentPointer == null)
                 {
                     // Only continue to compute elastic sim if angular velocity is (effectively) nonzero.
-                    if (Mathf.Abs(elastic.GetCurrentVelocity().eulerAngles.magnitude) > 0.000001f)
+                    if (Mathf.Abs(rotationElastic.GetCurrentVelocity().eulerAngles.magnitude) > 0.000005f)
                     {
-                        Target.transform.localRotation = initialRotationOnGrabStart * elastic.ComputeIteration(elastic.GetCurrentValue(), Time.deltaTime);
+                        Target.transform.localRotation = initialRotationOnGrabStart * rotationElastic.ComputeIteration(rotationElastic.GetCurrentValue(), Time.deltaTime);
+                    }
+                }
+
+                if (elasticActive && translationElastic != null && currentPointer == null)
+                {
+                    // Only continue to compute elastic sim if velocity is (effectively) nonzero.
+                    if (translationElastic.GetCurrentVelocity().magnitude > 0.000005f)
+                    {
+                        Target.transform.localPosition = translationElastic.ComputeIteration(translationElastic.GetCurrentValue(), Time.deltaTime);
                     }
                 }
 
@@ -1009,7 +1028,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 return scaleHandles.GetHandleType();
             }
-            else if (translationHandles.IsHandleType(handle))
+            else if (translationHandles?.IsHandleType(handle) ?? false)
             {
                 return translationHandles.GetHandleType();
             }
@@ -1222,7 +1241,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (elasticActive)
                     {
                         // Compute and apply elastic result.
-                        Quaternion elasticResult = elastic.ComputeIteration(localDelta, Time.deltaTime);
+                        Quaternion elasticResult = rotationElastic.ComputeIteration(localDelta, Time.deltaTime);
                         Target.transform.localRotation = initialRotationOnGrabStart * elasticResult;
                     } else
                     {
@@ -1280,8 +1299,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                     var goal = initialPositionOnGrabStart + translateVectorAlongAxis - accumulatedPrecisionDamping * currentTranslationAxis;
 
-
-                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
+                    if(elasticActive)
+                    {
+                        Vector3 localGoal = Target.transform.parent.InverseTransformPoint(goal);
+                        Target.transform.localPosition = translationElastic.ComputeIteration(localGoal, Time.deltaTime);
+                    }
+                    else
+                    {
+                        Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
+                    }
                 }
             }
         }
@@ -1390,7 +1416,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         elasticProperties.SnapRadius = elasticRadius;
 
                         // Initialize our quaternion oscillator system
-                        elastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);
+                        translationElastic = null;
+                        rotationElastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);
 
                         RotateStarted?.Invoke();
 
@@ -1402,6 +1429,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     else if (currentHandleType == HandleType.Translation)
                     {
                         currentTranslationAxis = GetTranslationAxis(grabbedHandleTransform);
+
+                        // Immediately stop the rotational elastic system.
+                        rotationElastic = null;
+                        elasticProperties.SnapRadius = volumeExtentProperties.SnapPoints[0].x / 2.0f;
+                        translationElastic = new Interval3DElasticSystem(Target.transform.localPosition, Vector3.zero, volumeExtentProperties, elasticProperties);
 
                         TranslateStarted?.Invoke();
 
@@ -1477,7 +1509,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             scaleHandles.SetHighlighted(activeHandle, pointer);
             rotationHandles.SetHighlighted(activeHandle, pointer);
-            translationHandles.SetHighlighted(activeHandle, pointer);
+            translationHandles?.SetHighlighted(activeHandle, pointer);
             boxDisplay.SetHighlighted();
         }
 
@@ -1496,7 +1528,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             bool isVisible = (active == true && wireframeOnly == false);
             rotationHandles.Reset(isVisible, flattenAxis);
             scaleHandles.Reset(isVisible, flattenAxis);
-            translationHandles.Reset(isVisible, flattenAxis);
+            translationHandles?.Reset(isVisible, flattenAxis);
         }
 
         private void CreateVisuals()
@@ -1514,9 +1546,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
 
             // Add translation handles
-            translationHandles.Create(ref boundsCorners, rigRoot);
-            proximityEffect.RegisterObjectProvider(translationHandles);
-
+            translationHandles?.Create(ref boundsCorners, rigRoot);
+            if (translationHandles != null)
+            {
+                proximityEffect.RegisterObjectProvider(translationHandles);
+            }
 
             // add box display
             boxDisplay.AddBoxDisplay(rigRoot.transform, currentBoundsExtents, flattenAxis);
@@ -1531,7 +1565,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             links.Clear();
             scaleHandles.DestroyHandles();
             rotationHandles.DestroyHandles();
-            translationHandles.DestroyHandles();
+            translationHandles?.DestroyHandles();
         }
 
         private void UpdateVisuals()
@@ -1547,7 +1581,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 rigRoot.localScale = Vector3.one;
 
                 rotationHandles.CalculateEdgeCenters(ref boundsCorners);
-                translationHandles.CalculateFaceCenters(ref boundsCorners);
+                translationHandles?.CalculateFaceCenters(ref boundsCorners);
                 scaleHandles.UpdateHandles(ref boundsCorners);
                 links.UpdateLinkPositions(ref boundsCorners);
                 links.UpdateLinkScales(currentBoundsExtents);

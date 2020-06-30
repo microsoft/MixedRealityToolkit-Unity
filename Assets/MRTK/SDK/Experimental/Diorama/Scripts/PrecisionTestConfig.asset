@@ -19,7 +19,7 @@ MonoBehaviour:
     type: 3}
   handleSize: 0.02
   colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  drawTetherWhenManipulating: 0
+  drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
   rotationHandlePrefabColliderType: 1
   showRotationHandleForX: 1

@@ -36,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
 
+        private SerializedProperty elasticActive;
+
         private SerializedProperty onManipulationStarted;
         private SerializedProperty onManipulationEnded;
         private SerializedProperty onHoverEntered;
@@ -46,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         bool constraintsFoldout = true;
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
+        bool elasticFoldout = true;
         bool eventsFoldout = true;
 
         public void OnEnable()
@@ -70,6 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             moveLerpTime = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
+
+            elasticActive = serializedObject.FindProperty("elasticActive");
 
             // Manipulation Events
             onManipulationStarted = serializedObject.FindProperty("onManipulationStarted");
@@ -186,6 +191,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.PropertyField(moveLerpTime);
                 EditorGUILayout.PropertyField(rotateLerpTime);
                 EditorGUILayout.PropertyField(scaleLerpTime);
+            }
+
+            EditorGUILayout.Space();
+            elasticFoldout = EditorGUILayout.Foldout(elasticFoldout, "Elastic", true);
+
+            if (elasticFoldout)
+            {
+                EditorGUILayout.PropertyField(elasticActive);
             }
 
             EditorGUILayout.Space();

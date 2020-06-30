@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -154,6 +155,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Tooltip("Check to enable frame-rate independent elastic feedback.")]
+        private bool elasticActive = false;
+
+        /// <summary>
+        /// Check to enable frame-rate independent elastic feedback.
+        /// </summary>
+        public bool ElasticActive
+        {
+            get => elasticActive;
+            set => elasticActive = value;
+        }
+
+
+        [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = true;
 
@@ -208,6 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => scaleLerpTime = value;
         }
 
+        
         #endregion Serialized Fields
 
         #region Event handlers
@@ -305,6 +321,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
+
+        // Properties for the position elastic system.
+        public ElasticExtentProperties<Vector3> extentProperties = new ElasticExtentProperties<Vector3>
+        {
+            MinStretch = 0,
+            MaxStretch = 0,
+            SnapToEnds = false,
+            SnapPoints = new Vector3[] { new Vector3(0.2f,0.2f,0.2f) } // Will be set to the specified snap interval at runtime
+        };
+
+        // Tested and verified "good" values.
+        public ElasticProperties elasticProperties = new ElasticProperties
+        {
+            Mass = 0.005f,
+            HandK = 4.0f,
+            EndK = 0.0f, // Unused
+            SnapK = 7.0f,
+            SnapRadius = 0.1f, // In degrees; will be set at runtime
+            Drag = 0.08f
+        };
+
+        private Interval3DElasticSystem translationElastic = null;
+
         #endregion
 
         #region MonoBehaviour Functions
@@ -319,6 +358,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             rigidBody = HostTransform.GetComponent<Rigidbody>();
             constraints = new ConstraintManager(gameObject);
+        }
+        private void Update()
+        {
+            if (elasticActive && pointerIdToPointerMap.Count == 0 && translationElastic != null)
+            {
+                if(translationElastic.GetCurrentVelocity().magnitude > 0.00001f)
+                {
+                    HostTransform.localPosition = translationElastic.ComputeIteration(translationElastic.GetCurrentValue(), Time.deltaTime);
+                }
+            }
         }
         #endregion MonoBehaviour Functions
 
@@ -635,6 +684,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
+            translationElastic = new Interval3DElasticSystem(HostTransform.localPosition, Vector3.zero, extentProperties, elasticProperties);
+
             if (rigidBody != null)
             {
                 wasKinematic = rigidBody.isKinematic;
@@ -679,7 +730,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigidBody == null)
             {
-                HostTransform.position = smoothingActive ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                if(elasticActive)
+                {
+                    Vector3 localTarget = HostTransform.parent.InverseTransformPoint(targetTransform.Position);
+                    HostTransform.localPosition = translationElastic.ComputeIteration(localTarget, Time.deltaTime);
+                }
+                else
+                {
+                    HostTransform.position = smoothingActive ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
+                }
+
                 HostTransform.rotation = smoothingActive ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
