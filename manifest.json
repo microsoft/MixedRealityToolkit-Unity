@@ -242,6 +242,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.html",
+          "hash": "mOS3B1Qx86iGSv84fyZkiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.md",
       "output": {
         ".html": {
@@ -6281,6 +6293,72 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_ControllerVisualizationSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_ControllerVisualizationSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Orientation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Orientation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_PrefabSetup.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_PrefabSetup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
       "output": {
         "resource": {
@@ -8466,7 +8544,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "s4aMtNTIc2TnxkqJ1P9fCQ=="
+          "hash": "mLNmRVphqg3mc7Bv4RgHMw=="
         }
       },
       "is_incremental": false,
@@ -12270,6 +12348,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.html",
           "hash": "r2nG6WjIMOhpzFvMAoq5ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.html",
+          "hash": "yETMV8sWJpzkEnFek54c8w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.html",
+          "hash": "PLyURaUbKnWv+drj3Ii6BA=="
         }
       },
       "is_incremental": false,
@@ -28085,7 +28187,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "oGc7XPJf0PDczW3nIjjA+w=="
+          "hash": "4ZSQFufaUxG1j1AVxHHBBg=="
         }
       },
       "is_incremental": false,
@@ -28147,13 +28249,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 164,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1631,
+          "total_file_count": 165,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -28161,6 +28257,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1633,
           "skipped_file_count": 0
         }
       }
