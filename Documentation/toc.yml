@@ -11,6 +11,8 @@
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
   - name: NuGet Packages
     href: MRTKNuGetPackage.md
   - name: MRTK configuration dialog
@@ -205,7 +207,9 @@
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
+        href: Tools/ControllerMappingTool.md
+      - name: InputFeatureUsage tool
+        href: Tools/InputFeatureUsageTool.md 
   - name: UX Building Blocks
     items:
     - name: Toolbox Window

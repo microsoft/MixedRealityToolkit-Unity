@@ -50,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             InputDeviceCharacteristics.Controller,
             InputDeviceCharacteristics.HandTracking
         };
+
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
         /// <inheritdoc/>
