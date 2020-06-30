@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public float MoveSpeed = 0.01f;
 
         [Tooltip("The rotation multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
-        [Range(0.001f, 0.1f)]
+        [Range(0.01f, 1f)]
         public float RotationSpeed = 0.05f;
 
         [Tooltip("The scale multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
