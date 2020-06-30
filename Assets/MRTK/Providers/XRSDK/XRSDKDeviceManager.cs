@@ -43,7 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         protected static readonly Dictionary<InputDevice, GenericXRSDKController> ActiveControllers = new Dictionary<InputDevice, GenericXRSDKController>();
 
         private readonly List<InputDevice> inputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
+        protected static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
+        {
+            InputDeviceCharacteristics.Controller,
+            InputDeviceCharacteristics.HandTracking
+        };
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.Update");
 
@@ -59,7 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     return;
                 }
 
-                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HandTracking, inputDevices);
+                inputDevices.Clear();
+                foreach (InputDeviceCharacteristics inputDeviceCharacteristics in DesiredCharacteristics)
+                {
+                    InputDevices.GetDevicesWithCharacteristics(inputDeviceCharacteristics, inputDevicesSubset);
+                    foreach (InputDevice device in inputDevicesSubset)
+                    {
+                        if (!inputDevices.Contains(device))
+                        {
+                            inputDevices.Add(device);
+                        }
+                    }
+                }
+
                 foreach (InputDevice device in inputDevices)
                 {
                     if (device.isValid)

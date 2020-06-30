@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             CheckMinimumEditorVersion();
             ApplyARFoundationUWPCompileFix();
+            MixedRealityToolkitPreserveSettings.EnsureLinkXml();
+
         }
 
         /// <summary>
