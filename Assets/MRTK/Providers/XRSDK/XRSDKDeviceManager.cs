@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private readonly List<InputDevice> inputDevices = new List<InputDevice>();
         private readonly List<InputDevice> inputDevicesSubset = new List<InputDevice>();
         private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
-        protected static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
+        protected virtual static List<InputDeviceCharacteristics> DesiredCharacteristics = new List<InputDeviceCharacteristics>()
         {
             InputDeviceCharacteristics.Controller,
             InputDeviceCharacteristics.HandTracking
