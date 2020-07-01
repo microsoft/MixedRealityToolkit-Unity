@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.windowsvoice",
-    "displayName": "Mixed Reality Toolkit Windows Voice Input Provider",
+    "name": "com.microsoft.mixedreality.toolkit.windows",
+    "displayName": "Mixed Reality Toolkit Windows Provider",
     "version": "2.5.0-preview.0",
     "unity": "2018.4",
-    "description": "Platform support for Windows Voice input on the Microsoft Mixed Reality Toolkit",
+    "description": "Platform support for Microsoft Windows features on the Microsoft Mixed Reality Toolkit",
     "keywords": [
         "mrtk",
         "microsoft",
