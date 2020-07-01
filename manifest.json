@@ -7776,7 +7776,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "aeoFGkiLEKsJ49Knb5hGDg=="
+          "hash": "vrPSUkQlKl8k7CC+Sv8DZQ=="
         }
       },
       "is_incremental": false,
@@ -8208,7 +8208,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "Gy0ukfmLOcyF4q/RCGj+sw=="
+          "hash": "8HstdukDpB5gNEhDSM3CZg=="
         }
       },
       "is_incremental": false,
@@ -11803,6 +11803,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.InputSimulationHelpGuide.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.InputSimulationHelpGuide.html",
+          "hash": "RtyHvIWl9C1TOLZgU4S9aw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.RotateWithPan.yml",
       "output": {
         ".html": {
@@ -11819,7 +11831,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.html",
-          "hash": "bTaq/ZQ5OFzCONgPvpvD2g=="
+          "hash": "W7cz8ZpcV0rhfdJzl3ahIg=="
         }
       },
       "is_incremental": false,
@@ -28187,7 +28199,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4ZSQFufaUxG1j1AVxHHBBg=="
+          "hash": "42kcZlTyff0gUtguPFPvfQ=="
         }
       },
       "is_incremental": false,
@@ -28252,17 +28264,17 @@
           "total_file_count": 165,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1634,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1633,
           "skipped_file_count": 0
         }
       }
