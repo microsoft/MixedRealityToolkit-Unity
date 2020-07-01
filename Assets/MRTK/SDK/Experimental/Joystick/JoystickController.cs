@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
     public class JoystickController : MonoBehaviour
     {
         [Experimental]
-        [SerializeField, FormerlySerializedAs("ObjectToManipulate")]
+        [SerializeField, FormerlySerializedAs("objectToManipulate")]
         [Tooltip("The large or small game object that receives manipulation by the joystick.")]
         private GameObject targetObject = null;
         public GameObject TargetObject
