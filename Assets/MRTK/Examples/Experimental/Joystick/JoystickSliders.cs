@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         private int MinimumIntValue = 1;
         private float DefaultMoveValue= 0.001f;
         private float DefaultScaleValue= 0.0001f;
-        private float DefaultRotateValue = 0.005f;
+        private float DefaultRotateValue = 0.3f;
         private float DefaultReboundValue = 5f;
         private float DefaultSensitivityHorizontalValue = 3f;
         private float DefaultSliderSensitivityVerticalValue = 6f;
