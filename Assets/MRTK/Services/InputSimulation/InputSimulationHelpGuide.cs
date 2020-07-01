@@ -9,6 +9,9 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// Class which handles displaying and hiding the input simulation help guide
+    /// </summary>
     public class InputSimulationHelpGuide : MonoBehaviour
     {
         [SerializeField]
