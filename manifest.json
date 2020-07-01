@@ -28003,6 +28003,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Input.CustomUsages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.CustomUsages.html",
+          "hash": "esOlQeegloyNmcrZDKRjfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Input.GenericXRSDKController.yml",
       "output": {
         ".html": {
@@ -28031,7 +28043,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.html",
-          "hash": "liM2IBS4VE9gzC8blIclvQ=="
+          "hash": "X42+s1HW0/1fq57qX5t7oA=="
         }
       },
       "is_incremental": false,
@@ -28043,7 +28055,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.BaseWindowsMixedRealityXRSDKSource.html",
-          "hash": "XOU02IMzSjxQX6cg7ODtCw=="
+          "hash": "2EpK+P+EKFtZzhwg3BQ2pw=="
         }
       },
       "is_incremental": false,
@@ -28091,7 +28103,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand.html",
-          "hash": "6Pbf1zyVwk9+x91L3SsKwQ=="
+          "hash": "Pfr03BD6YbcurqXZM8Lznw=="
         }
       },
       "is_incremental": false,
@@ -28103,7 +28115,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKGGVHand.html",
-          "hash": "szD8Z53bKaqBQ5wOCFgvbg=="
+          "hash": "W7RyRtrgporeVtcWZjbeMg=="
         }
       },
       "is_incremental": false,
@@ -28115,7 +28127,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController.html",
-          "hash": "4fRXolHQt4WR93Ognq1orA=="
+          "hash": "m+PX62DWGJdOGREpKQgIfg=="
         }
       },
       "is_incremental": false,
@@ -28199,7 +28211,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "42kcZlTyff0gUtguPFPvfQ=="
+          "hash": "WI/G9hZklivR1eMLcoXmBA=="
         }
       },
       "is_incremental": false,
@@ -28251,13 +28263,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -28267,12 +28272,19 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1634,
+          "total_file_count": 1635,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
