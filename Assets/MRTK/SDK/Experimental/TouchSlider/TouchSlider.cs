@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public void UpdateSliderText()
         {
-            if(SliderValue != null)
+            if (SliderValue != null)
             {
                 SliderValue.text = Slider.SliderValue.ToString();
             }
