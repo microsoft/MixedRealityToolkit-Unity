@@ -156,16 +156,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                             buttonUsage = CommonUsages.triggerButton;
                             break;
                         case DeviceInputType.TouchpadTouch:
-                            buttonUsage = CommonUsages.primary2DAxisTouch;
+                            buttonUsage = CommonUsages.secondary2DAxisTouch;
                             break;
                         case DeviceInputType.TouchpadPress:
-                            buttonUsage = CommonUsages.primary2DAxisClick;
+                            buttonUsage = CommonUsages.secondary2DAxisClick;
                             break;
                         case DeviceInputType.Menu:
                             buttonUsage = CommonUsages.menuButton;
                             break;
+                        case DeviceInputType.ThumbStickTouch:
+                            buttonUsage = CommonUsages.primary2DAxisTouch;
+                            break;
                         case DeviceInputType.ThumbStickPress:
-                            buttonUsage = CommonUsages.secondary2DAxisClick;
+                            buttonUsage = CommonUsages.primary2DAxisClick;
                             break;
                         default:
                             return;
@@ -271,10 +274,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.ThumbStick:
-                        axisUsage = CommonUsages.secondary2DAxis;
+                        axisUsage = CommonUsages.primary2DAxis;
                         break;
                     case DeviceInputType.Touchpad:
-                        axisUsage = CommonUsages.primary2DAxis;
+                        axisUsage = CommonUsages.secondary2DAxis;
                         break;
                     default:
                         return;

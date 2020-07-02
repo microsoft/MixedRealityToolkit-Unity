@@ -7,6 +7,11 @@
 
 ### What's new
 
+**Input Simulation Cheat Sheet**
+The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
+
+![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
+
 **TestUtilities package**
 
 There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
