@@ -34,9 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdatePoseDataPerfMarker.Auto())
             {
-                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
-
-                base.UpdatePoseData(interactionMapping, inputDevice);
+                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);      
 
                 // Update the interaction data source
                 switch (interactionMapping.InputType)
@@ -62,7 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         }
                         break;
                     default:
-                        return;
+                        base.UpdatePoseData(interactionMapping, inputDevice);
+                        break;
                 }
             }
         }

@@ -7,6 +7,12 @@
 
 ### What's new
 
+**Oculus Quest XRSDK support**
+
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
+
 **Input Simulation Cheat Sheet**
 The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
 
