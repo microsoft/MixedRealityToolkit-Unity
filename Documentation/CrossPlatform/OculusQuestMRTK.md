@@ -1,4 +1,4 @@
-# How to Configure Oculus Quest in MRTK using the XRSDK pipeline
+# How to configure Oculus Quest in MRTK using the XRSDK pipeline
 
 A [Oculus Quest](https://www.ultraleap.com/product/leap-motion-controller/) is required to use this data provider.
 
