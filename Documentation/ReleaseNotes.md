@@ -1,9 +1,9 @@
 # Microsoft Mixed Reality Toolkit release notes
 
-- [What's new](#whats-new-in-240)
-- [Breaking changes](#breaking-changes-in-240)
+- [What's new](#whats-new-in-24)
+- [Breaking changes](#breaking-changes-in-24)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
-- [Known issues](#known-issues-in-240)
+- [Known issues](#known-issues-in-241)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
