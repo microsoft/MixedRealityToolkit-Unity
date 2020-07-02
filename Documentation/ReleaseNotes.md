@@ -1,9 +1,9 @@
 # Microsoft Mixed Reality Toolkit release notes
 
-- [What's new](#whats-new-in-240)
-- [Breaking changes](#breaking-changes-in-240)
+- [What's new](#whats-new-in-24)
+- [Breaking changes](#breaking-changes-in-24)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
-- [Known issues](#known-issues-in-240)
+- [Known issues](#known-issues-in-241)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -25,12 +25,12 @@ The following software is required.
 
 **Download**
 
-[Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.0.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.0.unitypackage)
-[Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.0.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.0.unitypackage)
-[Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.0.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.0.unitypackage)
-[Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.0.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.0.unitypackage)
+[Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.1.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.1/Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.1.unitypackage)
+[Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.1.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.1/Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.1.unitypackage)
+[Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.1.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.1/Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.1.unitypackage)
+[Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.1.unitypackage](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.1/Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.1.unitypackage)
 
-Other files can be found on the [GitHub release page](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.4.0)
+Other files can be found on the [GitHub release page](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.4.1)
 
 **NuGet requirements**
 
@@ -38,7 +38,7 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 - [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
-### What's new in 2.4.0
+### What's new in 2.4
 
 **Ultraleap Hand Tracking Support**
 
@@ -199,7 +199,7 @@ Users can take advantage of the new [migration window](Tools/MigrationWindow.md)
 
 We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.
 
-### Breaking changes in 2.4.0
+### Breaking changes in 2.4
 
 **Eye Gaze API**
 
@@ -229,7 +229,7 @@ This version of MRTK modifies the steps required for eye gaze setup. The _'IsEye
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
 
-### Known issues in 2.4.0
+### Known issues in 2.4.1
 
 **MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
 
