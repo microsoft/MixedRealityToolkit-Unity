@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
         [Tooltip("Mouse Movement X-axis")]
-        private string mouseX = "Mouse X";
+        private string mouseX = "Mouse X"; 
         /// <summary>
         /// Mouse Movement X-axis
         /// </summary>
@@ -191,6 +191,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Enable eye simulation
         /// </summary>
         public bool SimulateEyePosition => simulateEyePosition;
+
+        [SerializeField]
+        [Tooltip("Mouse moves eye gaze")]
+        private bool mouseMovesEyeGaze = false;
+        /// <summary>
+        /// Enable eye simulation
+        /// </summary>
+        public bool MouseMovesEyeGaze => mouseMovesEyeGaze;
 
         [Header("Hand Simulation")]
         [SerializeField]

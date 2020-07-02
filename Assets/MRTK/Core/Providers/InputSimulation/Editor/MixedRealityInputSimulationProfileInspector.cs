@@ -38,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty defaultHandSimulationMode;
 
         private SerializedProperty simulateEyePosition;
+        private SerializedProperty mouseMovesEyeGaze;
 
         private SerializedProperty toggleLeftHandKey;
         private SerializedProperty toggleRightHandKey;
@@ -94,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             defaultHandSimulationMode = serializedObject.FindProperty("defaultHandSimulationMode");
 
             simulateEyePosition = serializedObject.FindProperty("simulateEyePosition");
+            mouseMovesEyeGaze = serializedObject.FindProperty("mouseMovesEyeGaze");
 
             toggleLeftHandKey = serializedObject.FindProperty("toggleLeftHandKey");
             toggleRightHandKey = serializedObject.FindProperty("toggleRightHandKey");
@@ -165,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(simulateEyePosition);
+                EditorGUILayout.PropertyField(mouseMovesEyeGaze);
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(defaultHandSimulationMode);
