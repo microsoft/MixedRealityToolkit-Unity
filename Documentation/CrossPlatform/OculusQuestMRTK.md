@@ -48,7 +48,7 @@ project which uses the Legacy XR pipeline.
 
 Writeup forthcoming
 
-## Common Errors
+## Common errors
 
 ### Quest not recognized by Unity
 
