@@ -14,7 +14,7 @@ project which uses the Legacy XR pipeline.
 1. Ensure that [developer mode] (https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
 1. Adding the Oculus XRSDK Data Provider
-    - Create a new Unity scene
+    - Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
     - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
     - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
 
@@ -43,10 +43,6 @@ project which uses the Legacy XR pipeline.
     - Select Build and Run 
     - Accept the _Allow USB Debugging_ prompt from inside the quest
     - See your scene inside the Oculus Quest
-
-## Integrating with MRTK-Quest project for HandTracking
-
-Writeup forthcoming
 
 ## Common Errors
 
