@@ -786,7 +786,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "5M5vXbHHYHVGivUfW/+Zeg=="
+          "hash": "heniuebqOW2Ya7XaD+b+AA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/CrossPlatform/OculusQuestMRTK.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CrossPlatform/OculusQuestMRTK.html",
+          "hash": "QfhnbR/lSDTF6jlidrILnQ=="
         }
       },
       "is_incremental": false,
@@ -2454,6 +2466,39 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/CloneInputSystemProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/CloneInputSystemProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/CloneProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/CloneProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/InputConfigurationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/InputConfigurationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapAddDataProvider.png",
       "output": {
         "resource": {
@@ -2575,10 +2620,43 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapProfileClone.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapProfileClone.png"
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusDeviceManagerProfileBeforeClone.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusDeviceManagerProfileBeforeClone.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusRunDevice.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusRunDevice.png"
         }
       },
       "is_incremental": false,
@@ -8208,7 +8286,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "8HstdukDpB5gNEhDSM3CZg=="
+          "hash": "QcyOLCK2i6n6GDyH5drhkg=="
         }
       },
       "is_incremental": false,
@@ -14255,7 +14333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DeviceInputType.html",
-          "hash": "Aficsa7pUvZzVwDr1uY20w=="
+          "hash": "a/QLbW6XGbc7ytVIOIdcrQ=="
         }
       },
       "is_incremental": false,
@@ -28031,7 +28109,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.XRSDKDeviceManager.html",
-          "hash": "h2BHKUICWuOaZt/dJUufdA=="
+          "hash": "3A5GFInnAKEhVZSAeJIoMA=="
         }
       },
       "is_incremental": false,
@@ -28044,6 +28122,42 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.html",
           "hash": "X42+s1HW0/1fq57qX5t7oA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManager.html",
+          "hash": "aosG6yD+BJ8HqwMvLz+dhw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController.html",
+          "hash": "E6ldAyP1PXk1iR2cg7InhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.html",
+          "hash": "lC34Eklmphq+lpINMNVkNg=="
         }
       },
       "is_incremental": false,
@@ -28211,7 +28325,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "WI/G9hZklivR1eMLcoXmBA=="
+          "hash": "xzhTEZalmnrN7kdQqq3rkQ=="
         }
       },
       "is_incremental": false,
@@ -28266,13 +28380,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 165,
+          "total_file_count": 166,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1635,
+          "total_file_count": 1638,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
