@@ -580,7 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
 
             var direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
-            DebugInfo.Status($"angleOffset {angleOffset} intPart {intPartSafeZoneClockwise} fracPart {fracPartSafeZoneClockwise} fracOffset {fracOffset}");
             return new Ray(origin + direction, -direction);
         }
 
