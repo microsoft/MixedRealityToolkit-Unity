@@ -11,7 +11,7 @@ project which uses the Legacy XR pipeline.
 
 1. Follow [these steps](https://developer.oculus.com/documentation/unity/book-unity-gsg/) to ensure that your project is ready to deploy on Oculus Quest.
 
-1. Ensure that [developer mode] (https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
+1. Ensure that [developer mode](https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
 1. Adding the Oculus XRSDK Data Provider
     - Create a new Unity scene
