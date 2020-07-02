@@ -101,6 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private UnityEvent onTapDown = new UnityEvent();
 
+        /// <summary>
+        /// Event is triggered when the RaiseEventManually_TapDown is called.
+        /// </summary>
         public UnityEvent OnTapDown
         {
             get { return onTapDown; }
@@ -110,6 +113,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private UnityEvent onTapUp = new UnityEvent();
 
+        /// <summary>
+        /// Event is triggered when the RaiseEventManually_TapUp is called.
+        /// </summary>
         public UnityEvent OnTapUp
         {
             get { return onTapUp; }
@@ -160,11 +166,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private DateTime lastTimeClicked;
         private float minTimeoutBetweenClicksInMs = 20f;
 
-
+        /// <summary>
+        /// GameObject eye gaze is currently targeting, updated once per frame.
+        /// null if no object with colllider is currently being looked at.
+        /// </summary>
         public static GameObject LookedAtTarget { get; private set; }
+
+        /// <summary>
+        /// EyeTrackingTarget eye gaze is currently looking at.
+        /// null if currently gazed at object has no EyeTrackingTarget, or if
+        /// no object with collider is being looked at.
+        /// </summary>
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
         public static Vector3 LookedAtPoint { get; private set; }
 
+        /// <summary>
+        /// Most recently selected target, selected either using pointer
+        /// or voice.
+        /// </summary>
         public static GameObject SelectedTarget { get; set; }
 
         #region Focus handling
@@ -211,12 +230,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEyeFocusStop();
         }
 
+        /// <inheritdoc/>
         protected override void RegisterHandlers()
         {
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
-
+        
+        /// <inheritdoc/>
         protected override void UnregisterHandlers()
         {
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
@@ -233,9 +254,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
                     // ToDo: Handle raycasting layers
-                    RaycastHit hitInfo;
-                    Ray lookRay = new Ray(CoreServices.InputSystem.EyeGazeProvider.GazeOrigin, CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized);
-                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
+                    var lookRay = new Ray(
+                        CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
+                        CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized);
+                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out RaycastHit hitInfo);
 
                     if (isHit)
                     {
@@ -325,6 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         #endregion
 
+        #region Methods to Invoke Events Manually
         public void RaiseSelectEventManually()
         {
             EyeTrackingTarget.SelectedTarget = this.gameObject;
@@ -340,5 +363,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             OnTapUp.Invoke();
         }
+        #endregion
     }
 }
