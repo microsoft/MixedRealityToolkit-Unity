@@ -3,6 +3,8 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
+.PARAMETER NodejsPath
+    The path to the Node.js installation.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER PackageVersion
@@ -12,16 +14,29 @@
     What is the target for the artifacts? To the Official server ("official"), test server ("test") or local folder ("local")?
 #>
 param(
-    [string]$OutputDirectory = ".\artifacts",
-    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
+    [string]$NodejsPath,
+    [string]$OutputDirectory = ".\artifacts\upm",
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
     [string]$PackageVersion,
     [string]$OutputTarget = "local"
 )
 
-if (-not $PackageVersion) {
-        throw "Could not find a valid version to build. Specify -PackageVersion when building."
+if (-not $NodejsPath) {
+        throw "Unknown location of node.js. Please specify the -NodejsPath when building."
 }
 
+if (-not $PackageVersion) {
+        throw "Unknown package version. Please specify -PackageVersion when building."
+}
+
+if ($OutputTarget -eq "local") {
+    if (-not (Test-Path $OutputDirectory -PathType Container)) {
+        New-Item $OutputDirectory -ItemType Directory | Out-Null
+    }
+    $OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
+}
+
+$npmFullPath = "$NodejsPath\npm"
 $projectRoot = Resolve-Path "$(Get-Location)\..\.." 
 $scriptPath = "$projectRoot\scripts\packaging"
 
@@ -65,7 +80,9 @@ $packages = @{
 # 2) Create and publish the packages (local publishing copies the package to the OutputFolder)
 # 3) Delete the .npmrc files copied into the source tree
 
-$npmrcFile = "$projectRoot\scripts\packaging\.npmrc.$OutputTarget"
+$npmrcFile = ".npmrc"
+$npmrcFileFullPath = "$projectRoot\scripts\packaging\$npmrcFile.$OutputTarget"
+$cmdFullPath = "$env:systemroot\system32\cmd.exe"
 $npmCommand = "pack"
 $updateAuth = $true
 $isLocalBuild = ($OutputTarget -eq "local")
@@ -75,61 +92,65 @@ $isLocalBuild = ($OutputTarget -eq "local")
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = "$projectRoot\$packageFolder"
-    $npmrcFullPath = "$packagePath\.npmrc"
-    $npmrcBackup = ".npmrc.mrtk-bak"
+    $npmrcBackup = "$npmrcFile .mrtk-bak"
+
+    # Switch to the folder containing the package.json file
+    Set-Location $packagePath
 
     # Backup any existing .npmrc file
-    if (Test-Path -Path $npmrcFullPath) {
-        Rename-Item -Path $npmrnpmrcFullPathcPath -NewName $npmrcBackup
+    if (Test-Path -Path $npmrcFile ) {
+        Rename-Item -Path $npmrcFile  -NewName $npmrcBackup
     }
 
-    # Copy the appropriate .nmprc file
-    if (-not ($isLocalBuild)) {
-        Copy-Item -Path $npmrcFile -Destination $packagePath
+     if (-not ($isLocalBuild)) {
+        # Copy the appropriate .nmprc file
+        Copy-Item -Path $npmrcFileFullPath -Destination ".\$npmrcFile" -Force
 
         # Set the npm command to "publish"
         $npmCommand = "publish"
     }
 
-    # Switch to the folder containing the package.json file
-    Set-Location $packagePath
-
     # Get/update the credentials needed to access the serveer.
     # This only needs to happen when credentials are updated. We run this script
     # once per build to ensure the machine is ready to publish.
-    if (($updateAuth -eq $true) -and (Test-Path -Path "$packagePath\.npmrc")) {
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "vsts-npm-auth.ps1 -config .npmrc" -NoNewWindow -Wait
+    if (($updateAuth -eq $true) -and (Test-Path -Path $npmrcFile )) {
+        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "vsts-npm-auth.ps1 -config $npmrcFile" -NoNewWindow -Wait
         $updateAuth = $false
     }
+
+    # Apply the version number to the package json file
+    # todo
 
     # Create and publish the package
     $packageName = $entry.Name
     $registryName = $OutputPath
 
-    if (-not $isLocalBuild) {
+    if ($isLocalBuild) {
+        $registryName = $OutputDirectory
+    }
+    else {
         $registryName = "the $OutputTarget registry"
     }
 
+    Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName and publishing to $registryName"
-    # todo
+    Write-Output "======================="
+    # todo - use actual npm command
+    Start-Process -FilePath $cmdFullPath -ArgumentList "/c npm $npmCommand" -NoNewWindow -Wait
 
-    if ($isLocalBuild)
-    {
+    if ($isLocalBuild) {
         # Move package file to OutputFolder
-        # todo
+        Move-Item -Path ".\*.tgz" $OutputDirectory -Force
     }
 
     # Delete the .npmrc file
-    Remove-Item -ErrorAction SilentlyContinue $npmrcFullPath
+    Remove-Item -ErrorAction SilentlyContinue $npmrcFile
 
     # Restore any backup file that we may have made
-    if (Test-Path -Path "$pacakgePath\$npmrcBackup") {
-        Rename-Item -Path "$pacakgePath\$npmrcBackup" -NewName .npmrc
+    if (Test-Path -Path "$npmrcBackup") {
+         Rename-Item -Path "$npmrcBackup" -NewName $npmrcFile 
     }
 
     # Return the the scripts\packaging folder
     Set-Location -Path $projectRoot\scripts\packaging
 }
-
-
-
