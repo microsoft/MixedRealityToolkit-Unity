@@ -1,4 +1,4 @@
-# How to Configure Oculus Quest in MRTK using the XRSDK pipeline
+# How to configure Oculus Quest in MRTK using the XRSDK pipeline
 
 A [Oculus Quest](https://www.ultraleap.com/product/leap-motion-controller/) is required to use this data provider.
 
@@ -11,7 +11,7 @@ project which uses the Legacy XR pipeline.
 
 1. Follow [these steps](https://developer.oculus.com/documentation/unity/book-unity-gsg/) to ensure that your project is ready to deploy on Oculus Quest.
 
-1. Ensure that [developer mode] (https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
+1. Ensure that [developer mode](https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
 1. Adding the Oculus XRSDK Data Provider
     - Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
@@ -44,7 +44,7 @@ project which uses the Legacy XR pipeline.
     - Accept the _Allow USB Debugging_ prompt from inside the quest
     - See your scene inside the Oculus Quest
 
-## Common Errors
+## Common errors
 
 ### Quest not recognized by Unity
 
