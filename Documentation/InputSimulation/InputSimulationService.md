@@ -46,6 +46,12 @@ Hand icons show the state of the simulated hands:
 * ![Controlled hand icon](../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png "Controlled hand icon") The hand is tracked and controlled by the user. Click to hide the hand.
 * ![Reset hand icon](../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png "Reset hand icon") Click to reset the hand to default position.
 
+## In editor input simulation cheat sheet
+
+Press Left Ctrl + H in the HandInteractionExamples scene to bring up a cheat sheet with Input simulation controls.
+
+![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
+
 ## Camera control
 
 Head movement can be emulated by the Input Simulation Service.

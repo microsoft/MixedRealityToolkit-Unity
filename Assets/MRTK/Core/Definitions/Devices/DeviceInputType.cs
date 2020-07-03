@@ -83,5 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         PinkyFingerPress,
         DirectionalPad,
         Scroll,
+        PrimaryButtonPress,
+        PrimaryButtonTouch,
+        PrimaryButtonNearTouch,
+        SecondaryButtonPress,
+        SecondaryButtonTouch,
+        SecondaryButtonNearTouch,
+        Grip,
+        GripTouch,
+        GripNearTouch,
+        // GripPress, in some cases, maps to the Grab gesture.
+        GripPress,
     }
 }

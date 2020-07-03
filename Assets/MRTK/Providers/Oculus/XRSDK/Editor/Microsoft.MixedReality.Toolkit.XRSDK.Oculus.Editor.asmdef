@@ -1,12 +1,12 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
-        "Unity.TextMeshPro"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
