@@ -37,10 +37,10 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 
 * *Head* : Point of reference is the transform of the main camera
 * *ControllerRay*: Point of reference is the [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer) transform on a controller (i.e pointer origin on a motion controller or hand controller) pointing in the direction of the line ray
-    * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
+  * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
 * *HandJoint*: Point of reference is the transform of a specific hand joint
-    * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
-    * Use the  `TrackedHandJoint` property to determine the joint transform to utilize
+  * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
+  * Use the  `TrackedHandJoint` property to determine the joint transform to utilize
 * *CustomOverride*: Point of reference from the assigned `TransformOverride`
 
 > [!NOTE]
@@ -51,9 +51,9 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 
 > [!IMPORTANT]
 > Most solvers use the forward vector of the tracked transform target supplied by the `SolverHandler`. When using a *Hand Joint* tracked target type, the forward vector of the palm joint may point through the fingers and not through the palm. This depends on the platform supplying the hand joint data. For input simulation and Windows Mixed Reality, it is the *up vector* that points up through the palm (i.e green vector is up, blue vector is forward).
-> 
+>
 > ![Solver](Images/Solver/HandJoint_ForwardUpVectors.png)
-> 
+>
 > To overcome this, update the *Additional Rotation* property on the `SolverHandler` to **<90, 0, 0>**. This will ensure the forward vector supplied to solvers is pointing through the palm and outward away from the hand.
 >
 > ![Solver](Images/Solver/SolverHandler_AdditionalRotation.png)
@@ -174,7 +174,7 @@ Finally, surfaces farther than the `MaxRaycastDistance` property setting will be
 
 ![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
 
-The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. 
+The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.
 
 [Please see Hand Menu page](README_HandMenu.md) for the examples of using Hand Constraint solver to create hand menus.
 

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
@@ -193,7 +193,9 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (concreteType == null)
             {
-                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} service because the value of concreteType is null.\n" +
+                    "This may be caused by code being stripped during linking. The link.xml file in the MixedRealityToolkit.Generated folder is used to control code preservation.\n" +
+                    "More information can be found at https://docs.unity3d.com/Manual/ManagedCodeStripping.html.");
                 return false;
             }
 
@@ -600,9 +602,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public static bool ConfirmInitialized()
         {
-            // ReSharper disable once UnusedVariable
-            // Assigning the Instance to access is used Implicitly.
-            MixedRealityToolkit access = Instance;
+            // Calling the Instance property performs important initialization work.
+            _ = Instance;
             return IsInitialized;
         }
 

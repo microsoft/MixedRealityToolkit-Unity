@@ -36,7 +36,7 @@ Data providers are components that, per their name, provide data to a Mixed Real
 they implement the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) interface.
 
 > [!NOTE]
-> Not all services will require data providers. Of the MixedRealityToolkit's systems, the Input and Spatial Awareness systems are the
+> Not all services will require data providers. Of the Mixed Reality Toolkit's systems, the Input and Spatial Awareness systems are the
 only services to utilize data providers.
 
 To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile.

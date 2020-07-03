@@ -12,26 +12,17 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
 
 ### HoloLens 2
 
-When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features,
-configure the project using the following steps.
+When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
-1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
-1. Expand **Modify Configurations**
+Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the **Use MSBuild for Unity dependency resolution** option fails, please use the following steps to enable holographic remoting.
 
-    ![MRTK Configurator](../Images/Tools/Remoting/EnableMSBuildForUnity.png)
-
-1. Ensure that **Enable MSBuild for Unity** is selected
-1. Click **Apply**
-
-When using **Unity 2019.3** and later the **Enable MSBuild for Unity** is not available. please follow the below procedures to enable holographic remoting. 
-
-1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
 1. Set the target platform in **File > Build Settings** to **Universal Windows Platform**
+1. If it does not automatically display, run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
 1. Click **Apply**
 1. Open **Window > Package Manager**
     - Ensure that the **Windows XR Plugin** is not installed if the project isn't using [XR SDK](../GettingStartedWithMRTKAndXRSDK.md), as the legacy **Windows Mixed Reality** package will not function alongside it
 1. Open **Edit > Project Settings > Player**
-    
+
     ![Windows Mixed Reality SDK](../Images/Tools/Remoting/WindowsMixedRealitySDK.png)
 
 1. Ensure that **Virtual Reality Supported** is selected and that **Windows Mixed Reality** is added to the **Virtual Reality SDKs**
@@ -47,9 +38,7 @@ These issues are particularly relevant when running on **Unity 2019.3** or later
 #### MSBuildForUnity package import via writing into the package.manifest
 
 > [!Note]
-> There is a known issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. To avoid this issue, the MRTK does not support MSBuild for Unity on Unity 2019.3.
-> 
-> To acquire the required NuGet package when running on Unity 2019.3, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
+> There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution** does not work correctly, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
 
 The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
 

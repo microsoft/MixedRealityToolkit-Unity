@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using TMPro;
 using UnityEngine;
@@ -714,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             else
                             {
-                                EditorGUILayout.HelpBox("No icons added yet. Click avaialable icons to add.", MessageType.Info);
+                                EditorGUILayout.HelpBox("No icons added yet. Click available icons to add.", MessageType.Info);
                             }
 
                             if (removeIndex >= 0)

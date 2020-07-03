@@ -46,6 +46,12 @@ Hand icons show the state of the simulated hands:
 * ![Controlled hand icon](../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png "Controlled hand icon") The hand is tracked and controlled by the user. Click to hide the hand.
 * ![Reset hand icon](../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png "Reset hand icon") Click to reset the hand to default position.
 
+## In editor input simulation cheat sheet
+
+Press Left Ctrl + H in the HandInteractionExamples scene to bring up a cheat sheet with Input simulation controls.
+
+![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
+
 ## Camera control
 
 Head movement can be emulated by the Input Simulation Service.
@@ -98,7 +104,7 @@ Hands can be toggled on and frozen relative to the camera in the [input simulati
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the **mouse wheel**.
 
-To rotate hands using the mouse, hold both the **Left/Right Hand Control Key** (*Left Shift* or *Space*) *and* the **Hand Rotate Button** (default: *cntrl* button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the **Mouse Hand Rotation Speed** setting in the input simulation profile.
+To rotate hands using the mouse, hold both the **Left/Right Hand Control Key** (*Left Shift* or *Space*) *and* the **Hand Rotate Button** (default: *ctrl* button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the **Mouse Hand Rotation Speed** setting in the input simulation profile.
 
 All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 

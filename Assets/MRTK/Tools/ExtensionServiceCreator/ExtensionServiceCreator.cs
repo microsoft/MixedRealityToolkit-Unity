@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -542,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Start the creation process for all revelant extension service files based on current creator property settings
+        /// Start the creation process for all relevant extension service files based on current creator property settings
         /// </summary>
         public async Task BeginAssetCreationProcess()
         {

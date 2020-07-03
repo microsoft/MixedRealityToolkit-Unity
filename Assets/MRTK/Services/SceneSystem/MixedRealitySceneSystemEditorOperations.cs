@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -470,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (EditorSceneUtils.LoadScene(profile.ManagerScene, true, out Scene scene))
             {
-                // If we're managing scene heirarchy, move this to the front
+                // If we're managing scene hierarchy, move this to the front
                 if (profile.EditorEnforceSceneOrder)
                 {
                     Scene currentFirstScene = EditorSceneManager.GetSceneAt(0);

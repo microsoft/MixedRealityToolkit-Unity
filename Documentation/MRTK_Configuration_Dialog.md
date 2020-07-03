@@ -15,7 +15,7 @@ All build targets share a collection of common options.
 
 ![Common Settings](Images/ConfigurationDialog/ConfigurationDialogCommonSettings.png)
 
-### Force text asset serilialization and Enable visible meta files
+### Force text asset serialization and Enable visible meta files
 
 These settings help simplify working with Unity projects and source control systems (ex: Git).
 
@@ -23,13 +23,13 @@ These settings help simplify working with Unity projects and source control syst
 
 **Unity 2018**
 
-Configures the Virutual Reality Supported and Virtual Reality SDK options in **Player Settings** > **XR Settings**.
+Configures the Virtual Reality Supported and Virtual Reality SDK options in **Player Settings** > **XR Settings**.
 
 ### Set Single Pass Instanced rendering path
 
 Configures the **Player Settings** > **XR Settings** > **Stereo Rendering Mode** to **Single Pass Instanced**.
 
-### Set default Spatial Awareness layer 
+### Set default Spatial Awareness layer
 
 Registers Spatial Awareness as layer 31 to enable easy and consistent configuration of raycast and physics options.
 
@@ -48,7 +48,7 @@ Microsoft provided spatializer that supports utilization of hardware acceleratio
 
 This spatializer is available via [NuGet](https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/) and [GitHub](https://github.com/microsoft/spatialaudio-unity).
 
-More details on Microsoft Spatializer can be found in the [Spatial Sound documentation](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-sound-in-unity).
+More details on Microsoft Spatializer can be found in the [Spatial Sound documentation](https://docs.microsoft.com/windows/mixed-reality/spatial-sound-in-unity).
 
 - MS HRTF Spatializer
 
@@ -58,7 +58,7 @@ Microsoft Windows spatializer that is provided by Unity as part of the Windows M
 
 A cross platform spatializer from Google that is provided by Unity.
 
-More information can be found on the [Resonance Audio documentation](https://resonance-audio.github.io/resonance-audio/develop/unity/getting-started) site. 
+More information can be found on the [Resonance Audio documentation](https://resonance-audio.github.io/resonance-audio/develop/unity/getting-started) site.
 
 ## Universal Windows Platform settings
 
@@ -72,11 +72,11 @@ MSBuild for Unity is a component that enables automatic restoring of specific Nu
 
 ### UWP Capabilities
 
-Enables specific application capabilites for Universal Windows Platform application. These capabilities enable the platform to inform and request permission to enable specific functionality.
+Enables specific application capabilities for Universal Windows Platform application. These capabilities enable the platform to inform and request permission to enable specific functionality.
 
 - Microphone
 
-  Enables capturing sound via the microphone. 
+  Enables capturing sound via the microphone.
 
 - Internet Client
 
@@ -100,7 +100,7 @@ Configuration settings to support AR applications on Android powered devices.
 
 ### Disable Multi-Threaded Rendering
 
-Disbles **Player Settings** > **Other Settings** > **Multithreaded Rendering** as required by Android's AR support.
+Disables **Player Settings** > **Other Settings** > **Multithreaded Rendering** as required by Android's AR support.
 
 ### Set Minimum API Level
 
@@ -122,4 +122,4 @@ Sets the value of **Player Settings** > **Other Settings** > **Architecture** to
 
 ### Set Camera Usage Descriptions
 
-Sets the value of **Player Settings** > **Other Settings** > **Camera Usage Description** used to request permission to use the device's camnera.
+Sets the value of **Player Settings** > **Other Settings** > **Camera Usage Description** used to request permission to use the device's camera.

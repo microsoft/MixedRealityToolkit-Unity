@@ -1,5 +1,5 @@
 // Copyright(c) Microsoft Corporation.All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 
             if (currentGameObject.GetComponent<Collider>() == null)
             {
-                Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Collder component.");
+                Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Collider component.");
                 UnityEngine.Object.Destroy(currentGameObject);
                 return false;
             }
