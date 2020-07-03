@@ -40,7 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            handDefinition = new WindowsMixedRealityArticulatedHandDefinition(inputSource, controllerHandedness);
+            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+            handMeshProvider = new WindowsMixedRealityHandMeshProvider(this);
             articulatedHandApiAvailable = WindowsApiChecker.IsMethodAvailable(
                 "Windows.UI.Input.Spatial",
                 "SpatialInteractionSourceState",
@@ -54,7 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
+        private readonly ArticulatedHandDefinition handDefinition;
+        private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
         private readonly bool articulatedHandApiAvailable = false;
 
         #region IMixedRealityHand Implementation
@@ -143,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     if (sourceState.Source.Id.Equals(interactionSourceState.source.id))
                     {
 #if WINDOWS_UWP
-                        handDefinition?.UpdateHandMesh(sourceState);
+                        handMeshProvider?.UpdateHandMesh(sourceState);
 #endif // WINDOWS_UWP
 
                         HandPose handPose = sourceState.TryGetHandPose();

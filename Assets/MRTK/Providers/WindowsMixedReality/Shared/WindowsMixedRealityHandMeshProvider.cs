@@ -3,12 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+
+#if WINDOWS_UWP
 using System;
 using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
-
-#if WINDOWS_UWP
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
@@ -16,11 +16,15 @@ using Windows.UI.Input.Spatial;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     /// <summary>
-    /// Defines the additional data, like hand mesh, that an articulated hand on HoloLens 2 can provide.
+    /// Queries the hand mesh data that an articulated hand on HoloLens 2 can provide.
     /// </summary>
-    public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
+    public class WindowsMixedRealityHandMeshProvider
     {
-        public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.controller = controller;
+
+        private readonly IMixedRealityController controller;
+        private IMixedRealityInputSource InputSource => controller.InputSource;
+        private Handedness Handedness => controller.ControllerHandedness;
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
@@ -100,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         // Notify that hand mesh has been updated (cleared)
                         HandMeshInfo handMeshInfo = new HandMeshInfo();
-                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
                     }
@@ -182,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 rotation = rotationUnity
                             };
 
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         }
                     }
                 }
