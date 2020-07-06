@@ -48,7 +48,7 @@ $product = "toolkit"
 #
 # The keys of this hashtable will be combined with the scope and product to create the 
 # final name of the package (for example, com.microsoft.mixedreality.toolkit.foundation 
-# will use the packaging file contained in the folder associated with the foundation" key).
+# will use the packaging file contained in the folder associated with the foundation key).
 #
 # Note that capitalization below in the key itself is significant. Capitalization
 # in the values is not significant.
