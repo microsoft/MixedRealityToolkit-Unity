@@ -54,14 +54,17 @@ $product = "toolkit"
 # in the values is not significant.
 #
 # These paths are projectRoot relative.
-$packages = @{
+$packages = [ordered]@{
     "foundation" = "Assets\MRTK";
     # providers
     "leapmotion" = "Assets\MRTK\Providers\LeapMotion";
+    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
     "openvr" = "Assets\MRTK\Providers\OpenVR";
     "unityar" = "Assets\MRTK\Providers\UnityAR";
     "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality";
+    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
+    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
+    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
     "xrplugin" = "Assets\MRTK\Providers\XRSDK";
     # extensions
     "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
@@ -74,11 +77,13 @@ $packages = @{
 }
 
 # Beginning of the upm packaging script main section
-# The overall structure of this script looks like:
+# The overall structure of this script is:
 #
-# 1) Copy the appropriate publishing (.npmrc) file and sett the npm command
-# 2) Create and publish the packages (local publishing copies the package to the OutputFolder)
-# 3) Delete the .npmrc files copied into the source tree
+# 1) Copy the appropriate publishing (.npmrc) file and set the npm command
+# 2) Replace the %version% token in the package.json file with the value of PackageVersion
+# 3) Overwrite the package.json file
+# 4) Create and publish the packages (local publishing copies the package to the OutputFolder)
+# 5) Cleanup files created and/or modified
 
 $npmrcFile = ".npmrc"
 $npmrcFileFullPath = "$projectRoot\scripts\packaging\$npmrcFile.$OutputTarget"
@@ -88,12 +93,11 @@ $updateAuth = $true
 $isLocalBuild = ($OutputTarget -eq "local")
 
 # Create and publish the packages
-# todo - handle moving files to outputfolder in local case
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = "$projectRoot\$packageFolder"
-    $npmrcBackup = "$npmrcFile .mrtk-bak"
-
+    $npmrcBackup = "$npmrcFile.mrtk-bak"
+  
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
@@ -110,7 +114,7 @@ foreach ($entry in $packages.GetEnumerator()) {
         $npmCommand = "publish"
     }
 
-    # Get/update the credentials needed to access the serveer.
+    # Get/update the credentials needed to access the server.
     # This only needs to happen when credentials are updated. We run this script
     # once per build to ensure the machine is ready to publish.
     if (($updateAuth -eq $true) -and (Test-Path -Path $npmrcFile )) {
@@ -119,7 +123,10 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
 
     # Apply the version number to the package json file
-    # todo
+    $packageJsonPath = "$packagePath\package.json"
+    $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
+    $packageJson = ($packageJson -replace "%version%", $PackageVersion)
+    [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
 
     # Create and publish the package
     $packageName = $entry.Name
@@ -132,16 +139,34 @@ foreach ($entry in $packages.GetEnumerator()) {
         $registryName = "the $OutputTarget registry"
     }
 
+    # The examples folder needs a custom setup step
+    if ($entry.Name -eq "examples") {
+        Write-Output "Preparing the examples folder"
+        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1" -NoNewWindow -Wait
+    }
+
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName and publishing to $registryName"
     Write-Output "======================="
-    # todo - use actual npm command
     Start-Process -FilePath $cmdFullPath -ArgumentList "/c npm $npmCommand" -NoNewWindow -Wait
 
     if ($isLocalBuild) {
         # Move package file to OutputFolder
         Move-Item -Path ".\*.tgz" $OutputDirectory -Force
     }
+
+    # ======================
+    # Cleanup the changes we have made
+    # ======================
+
+    # The examples folder needs a custom cleanup step
+    if ($entry.Name -eq "examples") {
+        Write-Output "Cleaning up examples folder"
+        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpostupm.ps1" -NoNewWindow -Wait
+    }
+    
+    # Restore the package.json file
+    Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
 
     # Delete the .npmrc file
     Remove-Item -ErrorAction SilentlyContinue $npmrcFile
@@ -152,5 +177,5 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
 
     # Return the the scripts\packaging folder
-    Set-Location -Path $projectRoot\scripts\packaging
+    Set-Location -Path $scriptPath
 }
