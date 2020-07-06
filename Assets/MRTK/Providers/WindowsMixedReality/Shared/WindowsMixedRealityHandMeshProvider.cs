@@ -3,9 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 
 #if WINDOWS_UWP
+using System;
 using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
@@ -16,14 +16,15 @@ using Windows.UI.Input.Spatial;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     /// <summary>
-    /// Defines the additional data, like hand mesh, that an articulated hand on HoloLens 2 can provide.
+    /// Queries the hand mesh data that an articulated hand on HoloLens 2 can provide.
     /// </summary>
-    /// <remarks>This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.</remarks>
-    [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.")]
-    public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
+    public class WindowsMixedRealityHandMeshProvider
     {
-        [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.")]
-        public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
+        public WindowsMixedRealityHandMeshProvider(IMixedRealityController controller) => this.controller = controller;
+
+        private readonly IMixedRealityController controller;
+        private IMixedRealityInputSource InputSource => controller.InputSource;
+        private Handedness Handedness => controller.ControllerHandedness;
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;
@@ -85,7 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Updates the current hand mesh based on the passed in state of the hand.
         /// </summary>
         /// <param name="sourceState">The current hand state.</param>
-        [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider.UpdateHandMesh instead.")]
         public void UpdateHandMesh(SpatialInteractionSourceState sourceState)
         {
             using (UpdateHandMeshPerfMarker.Auto())
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         // Notify that hand mesh has been updated (cleared)
                         HandMeshInfo handMeshInfo = new HandMeshInfo();
-                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
                     }
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 rotation = rotationUnity
                             };
 
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         }
                     }
                 }
