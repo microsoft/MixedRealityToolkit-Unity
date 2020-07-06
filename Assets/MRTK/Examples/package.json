@@ -27,6 +27,7 @@
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
     },
     "files": [
+        "Samples~*",
         "StandardAssets*",
         "package.json.meta",
         "Microsoft.MixedReality.Toolkit.Examples*",
