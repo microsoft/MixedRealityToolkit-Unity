@@ -1,0 +1,36 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.examples",
+    "displayName": "Mixed Reality Toolkit Examples",
+    "version": "2.5.0-preview.0",
+    "unity": "2018.4",
+    "description": "Example scenes and assets for the Microsoft Mixed Reality Toolkit.",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0"
+    },
+    "files": [
+        "StandardAssets*",
+        "package.json.meta",
+        "Microsoft.MixedReality.Toolkit.Examples*",
+        "MRTK.Examples.sentiel*"
+    ],
+    %samples%
+}
