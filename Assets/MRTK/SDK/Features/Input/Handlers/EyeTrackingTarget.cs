@@ -236,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
             CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
-        
         /// <inheritdoc/>
         protected override void UnregisterHandlers()
         {
