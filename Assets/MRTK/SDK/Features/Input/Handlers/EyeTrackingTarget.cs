@@ -353,16 +353,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             EyeTrackingTarget.SelectedTarget = this.gameObject;
             OnSelected.Invoke();
         }
-
-        public void RaiseEventManually_TapDown()
-        {
-            OnTapDown.Invoke();
-        }
-
-        public void RaiseEventManually_TapUp()
-        {
-            OnTapUp.Invoke();
-        }
         #endregion
     }
 }
