@@ -16,17 +16,17 @@
 param(
     [string]$NodejsPath,
     [string]$OutputDirectory = ".\artifacts\upm",
-    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$PackageVersion,
     [string]$OutputTarget = "local"
 )
 
 if (-not $NodejsPath) {
-        throw "Unknown location of node.js. Please specify the -NodejsPath when building."
+    throw "Unknown location of node.js. Please specify the -NodejsPath when building."
 }
 
 if (-not $PackageVersion) {
-        throw "Unknown package version. Please specify -PackageVersion when building."
+    throw "Unknown package version. Please specify -PackageVersion when building."
 }
 
 if ($OutputTarget -eq "local") {
