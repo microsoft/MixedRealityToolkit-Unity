@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -138,8 +138,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
         public static string GetAssetDatabasePath(string absolutePath)
+        {
+            string assetDatabasePath = Path.GetFullPath(absolutePath).Replace("\\", "/");
+            string token = string.Empty;
+            string newRoot = string.Empty;
+            if (assetDatabasePath.Contains("/Assets/"))
+            {
+                token = "Assets";
+                newRoot = "Assets";
+            }
+            else if (assetDatabasePath.Contains("/PackageCache/"))
+            {
+                token = "PackageCache";
+                newRoot = "Packages";
+
+                // PackageCache folders need the embedded version removed.
+                int atIndex = assetDatabasePath.IndexOf("@");
+                int separatorIndex = assetDatabasePath.Substring(atIndex).IndexOf("/");
+                string versionString = assetDatabasePath.Substring(atIndex, separatorIndex);
+                assetDatabasePath = assetDatabasePath.Replace(versionString, "");
+            }
+            else if (assetDatabasePath.Contains("/Packages/"))
+            {
+                token = "Packages";
+                newRoot = "Packages";
+            }
+
             // Use Path.GetFullPath to ensure proper Path.DirectorySeparatorChar is used depending on our editor platform
-            => Path.GetFullPath(absolutePath)?.Replace(Path.GetFullPath(Application.dataPath), "Assets");
+            if (!string.IsNullOrWhiteSpace(newRoot) &&
+                !string.IsNullOrWhiteSpace(token))
+            {
+                string oldRoot = assetDatabasePath.Substring(0,
+                    assetDatabasePath.IndexOf(token) + token.Length);
+                assetDatabasePath = assetDatabasePath.Replace(oldRoot, newRoot);
+            }
+            return assetDatabasePath;
+        }
 
         /// <summary>
         /// Returns a collection of MRTK Core directories found in the project.
@@ -215,8 +249,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void RefreshFolders()
         {
-            string path = Application.dataPath;
-            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(path));
+            // MRTK may be located in Assets (.unitypackage import) or the Packages (UPM import)
+            // folder. Check both locations.
+            List<string> rootFolders = new List<string>();
+            rootFolders.Add(Application.dataPath);
+            rootFolders.Add(Path.GetFullPath("Packages"));
+            rootFolders.Add(Path.GetFullPath(Path.Combine("Library", "PackageCache")));
+            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(rootFolders));
         }
 
         /// <summary>
@@ -371,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private static async Task SearchForFoldersAsync(string rootPath)
+        private static async Task SearchForFoldersAsync(List<string> rootFolders)
         {
             if (searchForFoldersToken != null)
             {
@@ -379,7 +418,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             searchForFoldersToken = new CancellationTokenSource();
-            await Task.Run(() => SearchForFolders(rootPath, searchForFoldersToken.Token), searchForFoldersToken.Token);
+            await Task.Run(() =>
+                {
+                    for (int i = 0; i < rootFolders.Count; i++)
+                    {
+                        SearchForFolders(rootFolders[i], searchForFoldersToken.Token);
+                    }
+                }, searchForFoldersToken.Token);
             searchForFoldersToken = null;
         }
 
