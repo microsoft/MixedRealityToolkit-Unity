@@ -28,6 +28,7 @@
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%",
         "com.microsoft.mixedreality.toolkit.wmr.shared": "%version%",
-        "com.microsoft.mixedreality.toolkit.xrplugin": "%version%"
+        "com.microsoft.mixedreality.toolkit.xrplugin": "%version%",
+        "com.unity.xr.windowsmr": "2.2.0"
     }
 }

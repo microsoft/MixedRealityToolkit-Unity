@@ -27,6 +27,7 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%",
-        "com.microsoft.mixedreality.toolkit.wmr.shared": "%version%"
+        "com.microsoft.mixedreality.toolkit.wmr.shared": "%version%",
+        "com.unity.xr.windowsmr.metro": "1.0.21"
      }
 }
