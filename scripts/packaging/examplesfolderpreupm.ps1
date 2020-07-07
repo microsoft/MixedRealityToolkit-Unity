@@ -42,22 +42,39 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
     Copy-Item -Path "$examplesRoot\$sampleGroupName.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
 }
 
-# Create the samples data for the project.json file
-$sampleCount = $exampleFolders.keys.count
+# Create the samples data for the package.json file
+$sampleCategoryCount = 0
 $samples = "`"samples`": ["
-$i = 0
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     # Since we need to place appropriate separator characters between entries, we need to
-    # keep track of how many items we have written.
-    $i++
+    # keep track of how many folders we have processed
+    $sampleCategoryCount++
 
-    $samples = $samples + "`n      {`n"
-    $samples = $samples + "        `"displayName`": `"" + $entry.Name + "`"," + "`n"
-    $samples = $samples + "        `"description`": `"MRTK Examples: " + $entry.Name + "`"," + "`n"
-    $samples = $samples + "        `"path`": `"Samples~/" + $entry.Name + "`"" + "`n"
-    $samples = $samples + "      }"
-    if (-not ($i -eq $sampleCount)) {
-        $samples = $samples + ","
+    $folderName = $entry.Name
+    $subFolderList = Get-ChildItem -Path "$samplesFolder\$folderName" -Directory -Name
+    $sampleCount = 0
+    foreach ($n in $subFolderList) 
+    {
+        $sampleCount++
+
+        $displayName = "$folderName - $n"
+        $description = "MRTK Examples: $n ($folderName)"
+        $path = "Samples~/$folderName/$n"
+    
+        $samples = $samples + "`n      {`n"
+        $samples = $samples + "        `"displayName`": `"" + $displayName + "`",`n"
+        $samples = $samples + "        `"description`": `"" + $description + "`",`n"
+        $samples = $samples + "        `"path`": `"" + $path + "`"`n"
+        $samples = $samples + "      }"
+        if ($sampleCategoryCount -eq $exampleFolders.keys.count) {
+            if (-not ($sampleCount -eq $subFolderList.count)) {
+                $samples = $samples + ","
+            }
+        }
+        else {
+            $samples = $samples + ","
+        }
+        
     }
 }
 $samples = $samples + "`n   ]"
@@ -66,4 +83,5 @@ $samples = $samples + "`n   ]"
 $packageJsonPath = "$examplesRoot\package.json"
 $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
 $packageJson = ($packageJson -replace "%samples%", $samples)
+Write-Output $packageJson
 [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
