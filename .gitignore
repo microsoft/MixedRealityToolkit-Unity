@@ -59,7 +59,6 @@ obj/
 # Project Specific List #
 # ===================== #
 artifacts/
-Assets/MRTK/**/.npmrc
 Assets/ThirdParty*
 Assets/TextMesh Pro*
 --Version/

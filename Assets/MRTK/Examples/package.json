@@ -31,7 +31,7 @@
         "StandardAssets*",
         "package.json.meta",
         "Microsoft.MixedReality.Toolkit.Examples*",
-        "MRTK.Examples.sentiel*"
+        "MRTK.Examples.sentinel*"
     ],
     %samples%
 }
