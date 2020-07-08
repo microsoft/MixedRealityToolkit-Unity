@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // release the click on the cube
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
