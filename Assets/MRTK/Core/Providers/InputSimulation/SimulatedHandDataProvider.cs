@@ -27,10 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Show a tracked hand device
         public bool IsTracked = false;
         // Activate the pinch gesture
-        public bool IsPinching
-        {
-            get { return gesture == ArticulatedHandPose.GestureId.Pinch; }
-        }
+        public bool IsPinching { get; private set; }
 
         // Position of the hand in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
@@ -61,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 gestureBlending = Mathf.Clamp(value, gestureBlending, 1.0f);
+                // Pinch is a special gesture that triggers the Select and TriggerPress input actions
+                // The pinch action doesn't occur until the gesture is completed.
+                IsPinching = (gesture == ArticulatedHandPose.GestureId.Pinch && gestureBlending == 1.0f);
             }
         }
 
