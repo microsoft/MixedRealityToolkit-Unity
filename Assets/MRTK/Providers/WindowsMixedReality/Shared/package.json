@@ -1,5 +1,5 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.wmr",
+    "name": "com.microsoft.mixedreality.toolkit.wmr.shared",
     "displayName": "Mixed Reality Toolkit Windows Mixed Reality Provider Shared Components",
     "version": "%version%",
     "unity": "2018.4",
