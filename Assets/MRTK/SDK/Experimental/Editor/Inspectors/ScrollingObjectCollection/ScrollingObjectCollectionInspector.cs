@@ -31,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty setupAtRuntime;
         private SerializedProperty occlusionPositionPadding;
         private SerializedProperty occlusionScalePadding;
-        private SerializedProperty dragTimeThreshold;
         private SerializedProperty handDeltaMagThreshold;
         private SerializedProperty snapListItems;
 
@@ -53,8 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
         // Serialized properties purely for inspector visualization
         private SerializedProperty nodeList;
-        private SerializedProperty releaseDistance;
-
+        private SerializedProperty releaseThresholdFront;
+        private SerializedProperty releaseThresholdBack;
+        private SerializedProperty releaseThresholdLeftRight;
+        private SerializedProperty releaseThresholdTopBottom;
+        private SerializedProperty frontPlaneDistance;
         private Shader MRTKtmp;
 
         private void OnEnable()
@@ -66,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             tiers = serializedObject.FindProperty("tiers");
             canScroll = serializedObject.FindProperty("canScroll");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
-            useNearScrollBoundary = serializedObject.FindProperty("useNearScrollBoundary");
             viewableArea = serializedObject.FindProperty("viewableArea");
             setupAtRuntime = serializedObject.FindProperty("setupAtRuntime");
             useCameraPreRender = serializedObject.FindProperty("useOnPreRender");
@@ -74,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             occlusionPositionPadding = serializedObject.FindProperty("occlusionPositionPadding");
             occlusionScalePadding = serializedObject.FindProperty("occlusionScalePadding");
 
-            dragTimeThreshold = serializedObject.FindProperty("dragTimeThreshold");
             handDeltaMagThreshold = serializedObject.FindProperty("handDeltaMagThreshold");
 
             snapListItems = serializedObject.FindProperty("snapListItems");
@@ -90,10 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             untouchEvent = serializedObject.FindProperty("TouchEnded");
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
-            disableClippedItems = serializedObject.FindProperty("disableClippedItems");
             // Serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
-            releaseDistance = serializedObject.FindProperty("releaseDistance");
+            releaseThresholdFront = serializedObject.FindProperty("releaseThresholdFront");
+            releaseThresholdBack = serializedObject.FindProperty("releaseThresholdBack");
+            releaseThresholdLeftRight = serializedObject.FindProperty("releaseThresholdLeftRight");
+            releaseThresholdTopBottom = serializedObject.FindProperty("releaseThresholdTopBottom");
+            frontPlaneDistance = serializedObject.FindProperty("frontPlaneDistance");
         }
 
         public override void OnInspectorGUI()
@@ -157,9 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.PropertyField(dragTimeThreshold);
                 EditorGUILayout.PropertyField(handDeltaMagThreshold);
-                EditorGUILayout.PropertyField(useNearScrollBoundary);
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(occlusionPositionPadding);
@@ -168,7 +169,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
                 EditorGUILayout.PropertyField(animationCurve);
                 EditorGUILayout.PropertyField(animationLength);
-                EditorGUILayout.PropertyField(disableClippedItems);
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(releaseThresholdFront);
+                EditorGUILayout.PropertyField(releaseThresholdBack);
+                EditorGUILayout.PropertyField(releaseThresholdLeftRight);
+                EditorGUILayout.PropertyField(releaseThresholdTopBottom);
+                EditorGUILayout.PropertyField(frontPlaneDistance);
             }
 
             EditorGUILayout.Space();
@@ -317,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             var scrollContainer = (ScrollingObjectCollection)target;
             // now that its running lets show the press plane so users have feedback about touch
-            center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * releaseDistance.floatValue);
+            center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * frontPlaneDistance.floatValue);
 
             UnityEditor.Handles.color = arrowColor;
 

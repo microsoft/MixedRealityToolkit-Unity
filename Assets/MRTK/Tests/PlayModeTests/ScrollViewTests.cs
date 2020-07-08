@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -113,14 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float offset = 0.001f;
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
-            Vector3 postButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);     
-            Vector3 scrollEngagedPos = postButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(initialPos);
             yield return hand.MoveTo(preButtonTouchPos);
-            yield return hand.MoveTo(postButtonPressPos);
+            yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(initialPos);
 
             Assert.IsFalse(scrollDragBegin, "Scroll drag begin was triggered.");
@@ -137,8 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Scroll drag engage should halt interaction with child button                
             yield return hand.MoveTo(preButtonTouchPos);
-            yield return hand.MoveTo(postButtonPressPos);
-            
+            yield return hand.MoveTo(pastButtonPressPos);
+
             Assert.IsTrue(button1TouchBegin, "Button1 touch begin did not trigger.");
             Assert.IsTrue(button1PressBegin, "Button1 press begin did not trigger.");
 
@@ -154,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Interaction with other children buttons should behave normally after scroll drag engage is finished
             yield return hand.MoveTo(preButtonTouchPos);
-            yield return hand.MoveTo(postButtonPressPos);
+            yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(initialPos);
 
             Assert.IsTrue(button2TouchBegin, "Button2 touch begin did not trigger.");
@@ -212,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = new Vector3(0.13f, -0.17f, 0.5f); // Far pointer focus is on button       
-            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight  + offset);
+            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
@@ -231,12 +232,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Scroll drag engage should halt interaction with child button 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            
+
             Assert.IsFalse(scrollDragBegin, "Scroll drag begin was triggered.");
             Assert.IsTrue(interactable1.HasFocus, "Interactable1 does not have far pointer focus.");
             Assert.IsTrue(interactable1.HasPress, "Interactable1 did not get press from far interaction.");
 
-            yield return hand.MoveTo(scrollEngagedPos);            
+            yield return hand.MoveTo(scrollEngagedPos);
             yield return new WaitForSeconds(interactable1.RollOffTime); // Wait for interactable has press roll off
 
             Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered");
@@ -313,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(scrollDragBegin, "Scroll drag begin was triggered.");
             Assert.AreEqual(scrollView.ScrollContainerPosition.y, 0, "Scroll container has moved.");
 
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);           
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.Hide();
         }
 
@@ -379,6 +380,393 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(scrollDragBegin, "Scroll drag begin was triggered.");
             Assert.AreEqual(scrollView.ScrollContainerPosition.y, 0, 0.001, "Scroll container has not moved to first row.");
+
+            yield return hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests if adding or deleting children items while scroll is engaged in a drag work as expected. 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ChildrenCanBeAddedAndDeleted()
+        {
+            // Setting up three pressable buttons as scroll items
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            GameObject button2 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button2.transform.parent = scrollObject.transform;
+
+            GameObject button3 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button3.transform.parent = scrollObject.transform;
+
+            GameObject button4 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+
+            // Setting up a vertical 1x1 scroll view
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.Tiers = 1;
+            scrollView.ViewableArea = 1;
+            scrollView.UpdateCollection();
+            scrollObject.transform.position = Vector3.forward;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton button1Component = button1.GetComponentInChildren<PressableButton>();
+            PressableButton button3Component = button3.GetComponentInChildren<PressableButton>();
+            PressableButton button4Component = button4.GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+            Assert.IsNotNull(button3Component);
+            Assert.IsNotNull(button4Component);
+
+            bool scrollDragBegin = false;
+            scrollView.ListMomentumBegin.AddListener(() =>
+            {
+                scrollDragBegin = true;
+            });
+
+            bool button1TouchBegin = false;
+            button1Component.TouchBegin.AddListener(() =>
+            {
+                button1TouchBegin = true;
+            });
+
+            bool button3TouchBegin = false;
+            button3Component.TouchBegin.AddListener(() =>
+            {
+                button3TouchBegin = true;
+            });
+
+            bool button4TouchBegin = false;
+            button4Component.TouchBegin.AddListener(() =>
+            {
+                button4TouchBegin = true;
+            });
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonTouchPos = button1.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight / 2 + offset);
+            Vector3 scrollEngagedOnePageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 scrollEngagedTwoPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight * 2 + offset);
+
+            // Scrolling half of the row width
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered.");
+            Assert.IsTrue(button1TouchBegin, "Button1 touch begin was not triggered.");
+            Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
+            Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
+
+            // Removing scroll item while scroll is engaged
+            scrollView.RemoveItem(button2);
+            GameObject.Destroy(button2);
+
+            // Scrolling to second row
+            scrollDragBegin = false;
+            button1TouchBegin = false;
+            button3TouchBegin = false;
+            button4TouchBegin = false;
+
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedOnePageUpPos);
+
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered."); // both coliders disabled need to go deeper
+            Assert.IsTrue(button1TouchBegin, "Button1 touch begin was not triggered.");
+            Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
+            Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
+
+            scrollDragBegin = false;
+            button1TouchBegin = false;
+            button3TouchBegin = false;
+            button4TouchBegin = false;
+
+            // Button 3 should be visible and interaction should allow scroll drag
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered.");
+            Assert.IsFalse(button1TouchBegin, "Button1 touch begin was triggered.");
+            Assert.IsTrue(button3TouchBegin, "Button3 touch begin was not triggered.");
+            Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
+
+            // Adding scroll item while scroll is engaged
+            scrollView.AddItem(button4);
+
+            // Scrolling to third row
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedTwoPageUpPos);
+
+            scrollDragBegin = false;
+            button1TouchBegin = false;
+            button3TouchBegin = false;
+            button4TouchBegin = false;
+
+            // Button 4 should be visible and interaction should allow scroll drag
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedTwoPageUpPos);
+
+            Assert.IsTrue(scrollDragBegin, "Scroll drag begin was not triggered.");
+            Assert.IsFalse(button1TouchBegin, "Button1 touch begin was triggered.");
+            Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
+            Assert.IsTrue(button4TouchBegin, "Button4 touch begin was not triggered.");
+
+            hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests if scroll engage triggered by a near interaction is reset if pointer crosses outside boundaries threshold.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollEngageResetsWhenOutOfBoundaryThreshold()
+        {
+            // Setting up two pressable buttons as scroll items
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            GameObject button2 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button2.transform.parent = scrollObject.transform;
+
+            // Setting up a vertical 1x1 scroll view. 
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.Tiers = 1;
+            scrollView.ViewableArea = 1;
+            scrollView.UpdateCollection();
+            scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
+            scrollObject.transform.position = Vector3.forward;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton button1Component = button1.GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.002f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight / 2 + offset);
+            Vector3 scrollEngagedInsideTopBound = pastButtonPressPos + Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom - offset);
+            Vector3 scrollEngagedOutsideTopBound = pastButtonPressPos + Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom + offset);
+            Vector3 scrollEngagedInsideBottomBound = pastButtonPressPos - Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom - offset);
+            Vector3 scrollEngagedOutsideBottomBound = pastButtonPressPos - Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom + offset);
+            Vector3 scrollEngagedInsideRightBound = pastButtonPressPos + Vector3.right * (scrollView.CellWidth / 2 + scrollView.ReleaseThresholdLeftRight - offset);
+            Vector3 scrollEngagedOutsideRightBound = pastButtonPressPos + Vector3.right * (scrollView.CellWidth / 2 + scrollView.ReleaseThresholdLeftRight + offset);
+            Vector3 scrollEngagedInsideLeftBound = pastButtonPressPos - Vector3.right * (scrollView.CellWidth / 2 + scrollView.ReleaseThresholdLeftRight - offset);
+            Vector3 scrollEngagedOutsideLeftBound = pastButtonPressPos - Vector3.right * (scrollView.CellWidth / 2 + scrollView.ReleaseThresholdLeftRight + offset);
+            Vector3 scrollEngagedInsideBackBound = pastButtonPressPos + Vector3.forward * (scrollView.CellHeight / 4 + scrollView.ReleaseThresholdBack - offset);
+            Vector3 scrollEngagedOutsideBackBound = pastButtonPressPos + Vector3.forward * (scrollView.CellHeight / 4 + scrollView.ReleaseThresholdBack + offset);
+            Vector3 scrollEngagedInsideFrontBound = pastButtonPressPos - Vector3.forward * (scrollView.CellHeight / 4 + scrollView.ReleaseThresholdFront - offset);
+            Vector3 scrollEngagedOutsideFrontBound = pastButtonPressPos - Vector3.forward * (scrollView.CellHeight / 4 + scrollView.ReleaseThresholdFront + offset);
+
+            // Moving hand outside top boundary should halt scroll drag engagement
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedInsideTopBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideTopBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand outside bottom boundary should halt scroll drag engagement            
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedInsideBottomBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideBottomBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand outside left boundary should halt scroll drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(scrollEngagedInsideLeftBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideLeftBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand outside right boundary should halt scroll drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(scrollEngagedInsideRightBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideRightBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand outside front boundary should halt scroll drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(scrollEngagedInsideFrontBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideFrontBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand outside back boundary should halt scroll drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(scrollEngagedInsideBackBound);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
+
+            yield return hand.MoveTo(scrollEngagedOutsideBackBound);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            yield return hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests if scroll engage is only triggered by a near interaction if pointer comes from the front plane.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollEngageOnlyFromFrontInteraction()
+        {
+            // Setting up two pressable buttons as scroll items
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            GameObject button2 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button2.transform.parent = scrollObject.transform;
+
+            // Setting up a vertical 1x1 scroll view. 
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.Tiers = 1;
+            scrollView.ViewableArea = 1;
+            scrollView.UpdateCollection();
+            scrollObject.transform.position = Vector3.forward;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton button1Component = button1.GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.002f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 offFrontPos = pastButtonPressPos - Vector3.forward * scrollView.CellHeight;
+            Vector3 offBackPos = pastButtonPressPos + Vector3.forward * scrollView.CellHeight;
+            Vector3 offBottomPos = pastButtonPressPos - Vector3.up * scrollView.CellHeight;
+            Vector3 offTopPos = pastButtonPressPos + Vector3.up * scrollView.CellHeight;
+            Vector3 offRightPos = pastButtonPressPos + Vector3.right * scrollView.CellHeight;
+            Vector3 offLeftPos = pastButtonPressPos - Vector3.right * scrollView.CellHeight;
+
+            // Moving hand from outside top boundary should not trigger drag engagement
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(offTopPos);
+            yield return hand.MoveTo(offBottomPos);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand from outside bottom boundary should not trigger drag engagement
+            yield return hand.MoveTo(offTopPos);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand from outside right boundary should not trigger drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(offRightPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(offTopPos);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand from outside left boundary should not trigger drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(offLeftPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(offTopPos);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand from outside back boundary should not trigger drag engagement
+            yield return hand.MoveTo(offBackPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(offTopPos);
+
+            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
+
+            // Moving hand from outside front boundary should trigger drag engagement
+            yield return hand.MoveTo(initialPos);
+            yield return hand.MoveTo(offFrontPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(offTopPos);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsTrue(scrollView.IsEngaged, "Scroll view is engaged.");
 
             yield return hand.Hide();
         }

@@ -98,31 +98,62 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Seconds the user's pointer can intersect a controller item before it is considered a drag.")]
-        [Range(0.0f, 2.0f)]
-        private float dragTimeThreshold = 0.75f;
-
+        [Tooltip("Withdraw amount from the front of the scroll boundary needed to transition from touch engaged to released.")]
+        [Range(0.0f, 0.30f)]
+        private float releaseThresholdFront = 0.03f;
         /// <summary>
-        /// Seconds the user's pointer can intersect a controller item before it is considered a drag.
+        /// Withdraw amount from the front of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
-        public float DragTimeThreshold
+        public float ReleaseThresholdFront
         {
-            get { return dragTimeThreshold; }
-            set { dragTimeThreshold = value; }
+            get { return releaseThresholdFront; }
+            set { releaseThresholdFront = value; }
         }
 
         [SerializeField]
-        [Tooltip("Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.")]
-        private bool useNearScrollBoundary = false;
-
+        [Tooltip("Withdraw amount from the back of the scroll boundary needed to transition from touch engaged to released.")]
+        [Range(0.0f, 0.30f)]
+        private float releaseThresholdBack = 0.20f;
         /// <summary>
-        /// Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.
+        /// Withdraw amount from the back of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
-        public bool UseNearScrollBoundary
+        public float ReleaseThresholdBack
         {
-            get { return useNearScrollBoundary; }
-            set { useNearScrollBoundary = value; }
+            get { return releaseThresholdBack; }
+            set { releaseThresholdBack = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Withdraw amount from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
+        [Range(0.0f, 0.30f)]
+        private float releaseThresholdLeftRight = 0.20f;
+        /// <summary>
+        /// Withdraw amount from the right or left of the scroll boundary needed to transition from touch engaged to released.
+        /// </summary>
+        public float ReleaseThresholdLeftRight
+        {
+            get { return releaseThresholdLeftRight; }
+            set { releaseThresholdLeftRight = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Withdraw amount from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
+        [Range(0.0f, 0.30f)]
+        private float releaseThresholdTopBottom = 0.20f;
+        /// <summary>
+        /// Withdraw amount from the top or bottom of the scroll boundary needed to transition from touch engaged to released.
+        /// </summary>
+        public float ReleaseThresholdTopBottom
+        {
+            get { return releaseThresholdTopBottom; }
+            set { releaseThresholdTopBottom = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Distance to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
+        [Range(0.0f, 0.05f)]
+        private float frontPlaneDistance = 0.005f;
+
 
         [SerializeField]
         [Tooltip("The direction in which content should scroll.")]
@@ -260,15 +291,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get { return (tiers > 0) ? tiers : 1; }
             set { tiers = value; }
-        }
-
-        [Tooltip("Whether items that are partially clipped are disabled for input hit testing")]
-        [SerializeField]
-        private bool disableClippedItems = true;
-        public bool DisableClippedItems
-        {
-            get => disableClippedItems;
-            set => disableClippedItems = value;
         }
 
         [SerializeField]
@@ -512,8 +534,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public bool IsEngaged { get; private set; } = false;
 
-        // Tracks whether a movement action resulted in dragging the list  
-        private bool isDragging = false;
+        /// <summary>
+        /// Tracks whether a movement action resulted in dragging the list  
+        /// </summary>
+        public bool isDragging { get; private set; } = false;
 
         // we need to know if the pointer was a touch so we can do the threshold test (dot product test)
         private bool isTouched = false;
@@ -1016,12 +1040,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                 }
 
-                var thresholdPoint = transform.TransformPoint((Vector3.forward * -1.0f) * releaseDistance);
-                // Make sure we're actually (near) touched and not a pointer event, do a dot product check            
-                bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
-                                                           : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
-
-                if (isTouched && scrollRelease)
+                if (isTouched && DetectScrollRelease(currentPointerPos))
                 {
                     // We're on the other side of the original touch position. This is a release.
                     if (isDragging)
@@ -1050,7 +1069,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         }
                     }
 
-                    ResetState();
+                    ResetInteraction();
 
                 }
                 else if (isDragging && canScroll)
@@ -1532,41 +1551,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Checks to see if the engaged joint has released the scrollable list
         /// </summary>
-        /// <param name="initialDirection">The plane normal direction.</param>
-        /// <param name="initialPosition">The point representing the plane's origin.</param>
-        /// <param name="pointToCompare">The point compared to the normal and origin.</param>
-        /// <param name="clippingObj">The object representing the maximum scrollable area.</param>
-        /// <param name="transformMatrix">The world Matrix for the scrollable area to be compared in.</param>
-        /// <param name="direction"><see cref="ScrollDirectionType"/> the list is scrolling in.</param>
-        /// <returns><see cref="true"/> if released.</returns>
-        private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj = null, Matrix4x4? transformMatrix = null, ScrollDirectionType? direction = null)
+         private bool DetectScrollRelease(Vector3 pointerPos)
         {
-            Plane testPlane = new Plane(initialDirection.normalized, initialPosition);
+            Vector3 projectedPointerPos = transform.InverseTransformPoint(pointerPos);
+            bool isScrollRelease = projectedPointerPos.y > clipBox.transform.localPosition.y + clipBox.transform.lossyScale.y / 2 + releaseThresholdTopBottom
+                                || projectedPointerPos.y < clipBox.transform.localPosition.y - clipBox.transform.lossyScale.y / 2 - releaseThresholdTopBottom
+                                || projectedPointerPos.x > clipBox.transform.localPosition.x + clipBox.transform.lossyScale.x / 2 + releaseThresholdLeftRight 
+                                || projectedPointerPos.x < clipBox.transform.localPosition.x - clipBox.transform.lossyScale.x / 2 - releaseThresholdLeftRight
+                                || projectedPointerPos.z > clipBox.transform.localPosition.z + clipBox.transform.lossyScale.z / 2 + releaseThresholdBack
+                                || projectedPointerPos.z < clipBox.transform.localPosition.z - clipBox.transform.lossyScale.z / 2 - releaseThresholdFront;
 
-            if (testPlane.GetSide(pointToCompare))
-            {
-                return true;
-            }
+            return isScrollRelease;
+        }
 
-            bool hasPassedBoundary = false;
-
-            if (clippingObj != null && transformMatrix != null && direction != null)
-            {
-                Matrix4x4 tMat = (Matrix4x4)transformMatrix;
-                Vector3 posToClip = tMat.MultiplyPoint3x4(pointToCompare) - clippingObj.localPosition;
-                Vector3 halfScale = clippingObj.localScale * 0.5f;
-
-                if (direction == ScrollDirectionType.UpAndDown)
-                {
-                    hasPassedBoundary = posToClip.y > halfScale.y || posToClip.y < -halfScale.y;
-                }
-                else
-                {
-                    hasPassedBoundary = posToClip.x > halfScale.x || posToClip.x < -halfScale.x;
-                }
-            }
-
-            return hasPassedBoundary;
+        private bool HasPassedThroughFrontPlane(PokePointer pokePointer)
+        {
+            var p = transform.InverseTransformPoint(pokePointer.PreviousPosition);
+            return p.z <= - frontPlaneDistance;
         }
 
         /// <summary>
@@ -1686,6 +1687,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     node = NodeList[i] as ScrollingObjectCollectionNode;
                 }
 
+                // Node object was not properly removed
+                if (node.Transform == null)
+                {
+                    //Reset();
+                    //return;
+                }
+
                 // Hide the items that have no chance of being seen
                 if (i < prevItems - Tiers || i > postItems + Tiers)
                 {
@@ -1704,9 +1712,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else
                 {
-                    bool disableNode = disableClippedItems ?
-                        i < prevItems || i > postItems :
-                        i < prevItems - Tiers || i > postItems + Tiers;
+                    bool disableNode =  i < prevItems - Tiers || i > postItems + Tiers;
 
                     // Disable colliders on items that will be scrolling in and out of view
                     // During drag all visible children should also has its colliders disabled 
@@ -1791,9 +1797,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Resets the state of the ScrollingObjectCollection for the next scroll
+        /// Resets the ScrollingObjectCollection to start settings
         /// </summary>
-        private void ResetState()
+        public void Reset()
+        {
+            ResetInteraction();
+            ResetScrollOffset();
+            UpdateCollection();
+        }
+
+        /// <summary>
+        /// Resets the interaction state of the ScrollingObjectCollection for the next scroll
+        /// </summary>
+        private void ResetInteraction()
         {
             TouchEnded?.Invoke(initialFocusedObject);
 
@@ -1806,6 +1822,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             isTouched = false;
             IsEngaged = false;
             isDragging = false;
+        }
+
+        /// <summary>
+        /// Resets the scroll offset state of the ScrollingObjectCollection
+        /// </summary>
+        private void ResetScrollOffset()
+        {
+            MoveTo(0, false);
+            workingScrollerPos = Vector3.zero;
+            ApplyPosition(workingScrollerPos);
         }
 
         #endregion private methods
@@ -2098,6 +2124,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             return (canGetSize) ? true : false;
         }
 
+        /// <summary>
+        /// Safely adds a child game object to scroll collection.
+        /// </summary>
+        public bool AddItem(GameObject item)
+        {
+            if (!ContainsNode(item.transform, out int nodeIndex))
+            {               
+                item.transform.parent = transform;
+                Reset();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Safely removes a child game object from scroll collection.
+        /// </summary>
+        public bool RemoveItem(GameObject item)
+        {
+            if (ContainsNode(item.transform, out int nodeIndex))
+            {
+                NodeList.RemoveAt(nodeIndex);
+                item.transform.parent = null;
+                Reset();
+
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion public methods
 
         #region IMixedRealityPointerHandler implementation
@@ -2130,7 +2189,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Release the pointer
                 currentPointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
 
-                ResetState();
+                ResetInteraction();
             }
         }
 
@@ -2197,32 +2256,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            PokePointer pokePointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
+
+            if (pokePointer == null || !HasPassedThroughFrontPlane(pokePointer))
+            {
+                return;
+            }
+
             if (isDragging || initialFocusedObject)
             {
                 eventData.Use();
                 return;
             }
 
-            currentPointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
-            if (currentPointer != null)
+            currentPointer = pokePointer;
+
+            StopAllCoroutines();
+            animateScroller = null;
+
+            if (!isTouched && !IsEngaged)
             {
-                StopAllCoroutines();
-                animateScroller = null;
+                initialPointerPos = currentPointer.Position;
+                initialPressTime = Time.time;
+                initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
+                initialScrollerPos = scrollContainer.transform.localPosition;
 
-                if (!isTouched && !IsEngaged)
-                {
-                    initialPointerPos = currentPointer.Position;
-                    initialPressTime = Time.time;
-                    initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
-                    initialScrollerPos = scrollContainer.transform.localPosition;
+                isTouched = true;
+                IsEngaged = true;
+                isDragging = false;
 
-                    isTouched = true;
-                    IsEngaged = true;
-                    isDragging = false;
-
-                    TouchStarted?.Invoke(initialFocusedObject);
-                }
+                TouchStarted?.Invoke(initialFocusedObject);
             }
+
         }
 
         /// <inheritdoc/>
@@ -2267,7 +2332,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
                 }
 
-                ResetState();
+                ResetInteraction();
 
                 velocityState = VelocityState.Calculating;
             }
