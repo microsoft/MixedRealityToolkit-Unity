@@ -1,6 +1,6 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.wmr.shared",
-    "displayName": "Mixed Reality Toolkit Windows Mixed Reality Provider Shared Components",
+    "displayName": "Mixed Reality Toolkit Windows Mixed Reality Shared Components",
     "version": "%version%",
     "unity": "2018.4",
     "description": "Platform support for Windows Mixed Reality devices on the Microsoft Mixed Reality Toolkit",

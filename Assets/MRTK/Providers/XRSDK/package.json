@@ -1,6 +1,6 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.xrplugin",
-    "displayName": "Mixed Reality Toolkit XR Plugin Provider",
+    "displayName": "Mixed Reality Toolkit XR Plugin",
     "version": "%version%",
     "unity": "2019.4",
     "description": "Platform support for XR Plugin based devices on the Microsoft Mixed Reality Toolkit",

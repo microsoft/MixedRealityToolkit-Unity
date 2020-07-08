@@ -1,9 +1,9 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.leapmotion",
-    "displayName": "Mixed Reality Toolkit Leap Motion Provider",
+    "displayName": "Mixed Reality Toolkit Leap Motion (Legacy XR)",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Platform support for the UltraLeap Leap Motion on the Microsoft Mixed Reality Toolkit",
+    "description": "Platform support for the UltraLeap Leap Motion on the Microsoft Mixed Reality Toolkit (not supported on Unity 2020 and newer)",
     "keywords": [
         "mrtk",
         "microsoft",

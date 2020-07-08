@@ -1,9 +1,9 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.openvr",
-    "displayName": "Mixed Reality Toolkit OpenVR Provider",
+    "displayName": "Mixed Reality Toolkit OpenVR (Legacy XR)",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Platform support for OpenVR on the Microsoft Mixed Reality Toolkit",
+    "description": "Platform support for OpenVR on the Microsoft Mixed Reality Toolkit (not supported on Unity 2020 and newer)",
     "keywords": [
         "mrtk",
         "microsoft",

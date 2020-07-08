@@ -1,6 +1,6 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.unityar",
-    "displayName": "Mixed Reality Toolkit Mobile AR Provider",
+    "displayName": "Mixed Reality Toolkit Mobile AR",
     "version": "%version%",
     "unity": "2018.4",
     "description": "Platform support for mobile device AR on the Microsoft Mixed Reality Toolkit",

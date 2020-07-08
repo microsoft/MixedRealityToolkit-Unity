@@ -1,6 +1,6 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.oculus.xrplugin",
-    "displayName": "Mixed Reality Toolkit Oculus Provider",
+    "name": "com.microsoft.mixedreality.toolkit.oculus",
+    "displayName": "Mixed Reality Toolkit Oculus",
     "version": "%version%",
     "unity": "2019.4",
     "description": "Platform support for Oculus based devices on the Microsoft Mixed Reality Toolkit",

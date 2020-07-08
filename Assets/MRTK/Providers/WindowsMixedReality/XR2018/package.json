@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.wmr",
-    "displayName": "Mixed Reality Toolkit Windows Mixed Reality Provider",
+    "name": "com.microsoft.mixedreality.toolkit.wmr.legacy",
+    "displayName": "Mixed Reality Toolkit Windows Mixed Reality (Legacy XR)",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Platform support for Windows Mixed Reality devices on the Microsoft Mixed Reality Toolkit",
+    "description": "Platform support for Windows Mixed Reality devices on the Microsoft Mixed Reality Toolkit (not supported on Unity 2020 and newer)",
     "keywords": [
         "mrtk",
         "microsoft",

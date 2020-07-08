@@ -1,9 +1,9 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.windows",
-    "displayName": "Mixed Reality Toolkit Windows Provider",
+    "displayName": "Mixed Reality Toolkit Windows",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Platform support for Microsoft Windows features on the Microsoft Mixed Reality Toolkit",
+    "description": "Platform support for Microsoft Windows features on the Microsoft Mixed Reality Toolkit.",
     "keywords": [
         "mrtk",
         "microsoft",
