@@ -3,8 +3,8 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER NodejsPath
-    The path to the Node.js installation.
+.PARAMETER NodejsVersion
+    The desired version of node.js to use when packaging. If not specified, a known good version will be used.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER PackageVersion
@@ -14,16 +14,13 @@
     What is the target for the artifacts? To the Official server ("official"), test server ("test") or local folder ("local")?
 #>
 param(
-    [string]$NodejsPath,
+    [ValidatePattern("^\d+\.\d+\.\d+")]
+    [string]$NodejsVersion = "12.18.0",
     [string]$OutputDirectory = ".\artifacts\upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$PackageVersion,
     [string]$OutputTarget = "local"
 )
-
-if (-not $NodejsPath) {
-    throw "Unknown location of node.js. Please specify the -NodejsPath when building."
-}
 
 if (-not $PackageVersion) {
     throw "Unknown package version. Please specify -PackageVersion when building."
@@ -36,7 +33,6 @@ if ($OutputTarget -eq "local") {
     $OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
 }
 
-$npmFullPath = "$NodejsPath\npm"
 $projectRoot = Resolve-Path "$(Get-Location)\..\.." 
 $scriptPath = "$projectRoot\scripts\packaging"
 
@@ -75,6 +71,17 @@ $packages = [ordered]@{
     "testutilties" = "Assets\MRTK\Tests\TestUtilities";
     "examples" = "Assets\MRTK\Examples";
 }
+
+# Acquire and unpack node.js
+$archiveName = "node-v$NodejsVersion-win-x64"
+$archiveFile = ".\$archiveName.zip"
+$downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
+Write-Output "Downloading node.js v$NodejsVersion"
+Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
+Write-Output "Extracting $archiveFile"
+Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
+
+$npmPath = "$scriptPath\$archiveName\npm"
 
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
@@ -148,7 +155,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName and publishing to $registryName"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c npm $npmCommand" -NoNewWindow -Wait
+    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmPath $npmCommand" -NoNewWindow -Wait
 
     if ($isLocalBuild) {
         # Move package file to OutputFolder
@@ -175,7 +182,11 @@ foreach ($entry in $packages.GetEnumerator()) {
     if (Test-Path -Path "$npmrcBackup") {
          Rename-Item -Path "$npmrcBackup" -NewName $npmrcFile 
     }
-
-    # Return the the scripts\packaging folder
-    Set-Location -Path $scriptPath
 }
+
+# Return the the scripts\packaging folder
+Set-Location -Path $scriptPath
+
+# Cleanup the node.js "installation"
+Remove-Item ".\$archiveName" -Recurse -Force
+Remove-Item $archiveFile -Force
