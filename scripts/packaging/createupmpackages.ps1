@@ -72,16 +72,29 @@ $packages = [ordered]@{
     "examples" = "Assets\MRTK\Examples";
 }
 
-# Acquire and unpack node.js
-$archiveName = "node-v$NodejsVersion-win-x64"
-$archiveFile = ".\$archiveName.zip"
-$downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
-Write-Output "Downloading node.js v$NodejsVersion"
-Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
-Write-Output "Extracting $archiveFile"
-Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
+$npmPath = "npm"
 
-$npmPath = "$scriptPath\$archiveName\npm"
+# Ensure we can call npm.cmd to package and publish
+[boolean]$nodejsInstalled = $false
+try {
+    node.exe -v > $null 2> $null
+    $nodejsInstalled = $true
+}
+catch {}
+
+if ($nodejsInstalled -eq $false)
+{
+    # Acquire and unpack node.js
+    $archiveName = "node-v$NodejsVersion-win-x64"
+    $archiveFile = ".\$archiveName.zip"
+    $downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
+    Write-Output "Downloading node.js v$NodejsVersion"
+    Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
+    Write-Output "Extracting $archiveFile"
+    Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
+
+    $npmPath = "$scriptPath\$archiveName\$npmPath"
+}
 
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
@@ -187,6 +200,8 @@ foreach ($entry in $packages.GetEnumerator()) {
 # Return the the scripts\packaging folder
 Set-Location -Path $scriptPath
 
-# Cleanup the node.js "installation"
-Remove-Item ".\$archiveName" -Recurse -Force
-Remove-Item $archiveFile -Force
+if ($nodejsInstalled -eq $false) {
+    # Cleanup the node.js "installation"
+    Remove-Item ".\$archiveName" -Recurse -Force
+    Remove-Item $archiveFile -Force
+}
