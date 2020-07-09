@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private float handDeltaMagThreshold = 0.02f;
 
         /// <summary>
-        /// The distance the user's pointer can make before its considered a drag.
+        /// The distance, in meters, the user's pointer can make before its considered a drag.
         /// </summary>
         public float HandDeltaMagThreshold
         {
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Range(0.0f, 0.30f)]
         private float releaseThresholdFront = 0.03f;
         /// <summary>
-        /// Withdraw amount from the front of the scroll boundary needed to transition from touch engaged to released.
+        /// Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
         public float ReleaseThresholdFront
         {
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Range(0.0f, 0.30f)]
         private float releaseThresholdBack = 0.20f;
         /// <summary>
-        /// Withdraw amount from the back of the scroll boundary needed to transition from touch engaged to released.
+        /// Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
         public float ReleaseThresholdBack
         {
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Range(0.0f, 0.30f)]
         private float releaseThresholdLeftRight = 0.20f;
         /// <summary>
-        /// Withdraw amount from the right or left of the scroll boundary needed to transition from touch engaged to released.
+        /// Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
         public float ReleaseThresholdLeftRight
         {
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Range(0.0f, 0.30f)]
         private float releaseThresholdTopBottom = 0.20f;
         /// <summary>
-        /// Withdraw amount from the top or bottom of the scroll boundary needed to transition from touch engaged to released.
+        /// Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
         public float ReleaseThresholdTopBottom
         {
