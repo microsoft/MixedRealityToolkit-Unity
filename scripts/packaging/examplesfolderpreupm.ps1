@@ -16,7 +16,6 @@ $examplesRoot = "$(Get-Location)"
 $exampleFolders = [ordered]@{
     "Demos" = "Demos";
     "Experimental" = "Experimental";
-    "Editor" = "Editor";
 }
 
 # Beginning of the upm packaging script main section
