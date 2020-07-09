@@ -178,8 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator SpherePointerDistances()
         {
-            Vector3 margin = new Vector3(0, 0, 0.001f);
-
             var rightHand = new TestHand(Handedness.Right);
 
             // Show hand far enough from the test collider
@@ -188,6 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             var pointer = rightHand.GetPointer<SpherePointer>();
+            Vector3 margin = new Vector3(0, 0, 0.001f);
+            Vector3 farMargin = new Vector3(0, 0, 0.001f + pointer.NearObjectSmoothingFactor);
             Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
             Vector3 nearObjectPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.NearObjectRadius);
             Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(pointer.IsInteractionEnabled);
 
             // Move hand closer to the collider to enable IsNearObject
-            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos - farMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
@@ -219,8 +219,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
-            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos - farMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Testing that we have more leeway when the pointer's nearObject smoothing factor is set
+            // Move hand back out to disable IsNearObject
+            Debug.Log(pointer.NearObjectSmoothingFactor);
+            pointer.NearObjectSmoothingFactor = 0.0f;
+            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
             yield return rightHand.MoveTo(idlePos, numFramesPerMove);

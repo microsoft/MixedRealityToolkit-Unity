@@ -95,7 +95,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Min(0.0f)]
         [Tooltip("Smoothing factor for near object detection sensitivity")]
         private float nearObjectSmoothingFactor = 0.4f;
-
+        /// <summary>
+        /// Smoothing factor for near object detection sensitivity.
+        /// </summary>
+        public float NearObjectSmoothingFactor
+        {
+            get => nearObjectSmoothingFactor;
+            set => nearObjectSmoothingFactor = value;
+        }
         /// <summary>
         /// Distance at which the pointer is considered "near" an object.
         /// </summary>
@@ -419,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     grabbable = null;
                     numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
                         pointerPosition,
-                        queryRadius,
+                        radius,
                         queryBuffer,
                         layerMask,
                         triggerInteraction);
