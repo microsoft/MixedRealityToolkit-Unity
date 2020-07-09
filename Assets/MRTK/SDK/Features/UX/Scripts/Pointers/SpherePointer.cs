@@ -91,6 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => nearObjectAxisLerp = value;
         }
 
+        [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Smoothing factor for near object detection sensitivity")]
+        private float nearObjectSmoothingFactor = 0.4f;
+
         /// <summary>
         /// Distance at which the pointer is considered "near" an object.
         /// </summary>
@@ -166,8 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance, true);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f);
+            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, Mathf.Max(NearObjectRadius, SphereCastRadius), NearObjectSectorAngle, PullbackDistance, nearObjectSmoothingFactor, true);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, 360.0f, 0.0f, 0.0f);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -355,6 +360,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public float queryAngle;
 
             /// <summary>
+            /// Smoothing factor for query detection. If an object is detected in the query, the queried radius then becomes queryRadius * (1 + querySmoothingFactor) to reduce the sensitivity
+            /// </summary>
+            public float querySmoothingFactor;
+
+            /// <summary>
             /// Variable that controls ignoring handles for this interaction
             /// </summary>
             public bool ignoreBoundsHandlesForQuery = false;
@@ -372,13 +382,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="angle">Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried</param>
             /// <param name="minDistance">"Minimum required distance to be registered in the query"</param>
             /// <param name="ignoreBoundsHandles">"Whether or not this sphere cast ignores detecting bounds handles"</param>
-            public SpherePointerQueryInfo(int bufferSize, float radius, float angle, float minDistance, bool ignoreBoundsHandles = false)
+            public SpherePointerQueryInfo(int bufferSize, float radius, float angle, float minDistance, float smoothingFactor, bool ignoreBoundsHandles = false)
             {
                 numColliders = 0;
                 queryBuffer = new Collider[bufferSize];
                 queryRadius = radius;
                 queryMinDistance = minDistance;
                 queryAngle = angle * 0.5f;
+                querySmoothingFactor = smoothingFactor;
                 ignoreBoundsHandlesForQuery = ignoreBoundsHandles;
             }
 
@@ -399,6 +410,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 using (TryUpdateQueryBufferForLayerMaskPerfMarker.Auto())
                 {
+                    float radius;
+                    if (ContainsGrabbable)
+                        radius = queryRadius * (1 + querySmoothingFactor);
+                    else
+                        radius = queryRadius;
+
                     grabbable = null;
                     numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
                         pointerPosition,
@@ -478,11 +495,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryGetNearGraspPoint(out Vector3 point);
             Vector3 centralAxis = sectorForwardAxis.normalized;
 
+            float gizmoNearObjectRadius;
+            if (NearObjectCheck)
+                gizmoNearObjectRadius = NearObjectRadius * (1 + nearObjectSmoothingFactor);
+            else
+                gizmoNearObjectRadius = NearObjectRadius;
+
+
             if (NearObjectSectorAngle >= 360.0f)
             {
                 // Draw the sphere and the inner near interaction deadzone (governed by the pullback distance)
                 Gizmos.color = (NearObjectCheck ? Color.red : Color.cyan) - Color.black * 0.8f;
-                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, NearObjectRadius);
+                Gizmos.DrawSphere(point - centralAxis * PullbackDistance, gizmoNearObjectRadius);
 
                 Gizmos.color = Color.blue - Color.black * 0.8f;
                 Gizmos.DrawSphere(point - centralAxis * PullbackDistance, PullbackDistance);
@@ -491,7 +515,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Draw something approximating the sphere's sector
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(point, point + centralAxis * (NearObjectRadius - PullbackDistance));
+                Gizmos.DrawLine(point, point + centralAxis * (gizmoNearObjectRadius - PullbackDistance));
 
                 UnityEditor.Handles.color = NearObjectCheck ? Color.red : Color.cyan;
                 float GizmoAngle = NearObjectSectorAngle * 0.5f * Mathf.Deg2Rad;
@@ -499,9 +523,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                                  centralAxis,
                                                  PullbackDistance * Mathf.Sin(GizmoAngle));
 
-                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (NearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
+                UnityEditor.Handles.DrawWireDisc(point + sectorForwardAxis.normalized * (gizmoNearObjectRadius * Mathf.Cos(GizmoAngle) - PullbackDistance),
                                                  centralAxis,
-                                                 NearObjectRadius * Mathf.Sin(GizmoAngle));
+                                                 gizmoNearObjectRadius * Mathf.Sin(GizmoAngle));
             }
 
             // Draw the sphere representing the grabable area
