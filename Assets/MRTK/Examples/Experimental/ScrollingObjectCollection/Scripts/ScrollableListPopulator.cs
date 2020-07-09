@@ -117,7 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 scrollCollection.CellWidth = 0.032f;
                 scrollCollection.Tiers = 3;
                 scrollCollection.ViewableArea = 5;
-                scrollCollection.DragTimeThreshold = 0.75f;
                 scrollCollection.HandDeltaMagThreshold = 0.02f;
                 scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
             }
