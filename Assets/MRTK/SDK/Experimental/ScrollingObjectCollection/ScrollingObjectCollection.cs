@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("The distance the user's pointer can make before its considered a drag.")]
+        [Tooltip("The distance, in meters, the user's pointer can make before its considered a drag.")]
         [Range(0.0f, 0.2f)]
         private float handDeltaMagThreshold = 0.02f;
 
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Withdraw amount from the front of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")] 
         [Range(0.0f, 0.30f)]
         private float releaseThresholdFront = 0.03f;
         /// <summary>
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Withdraw amount from the back of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.")]
         [Range(0.0f, 0.30f)]
         private float releaseThresholdBack = 0.20f;
         /// <summary>
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Withdraw amount from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
         [Range(0.0f, 0.30f)]
         private float releaseThresholdLeftRight = 0.20f;
         /// <summary>
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Withdraw amount from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
         [Range(0.0f, 0.30f)]
         private float releaseThresholdTopBottom = 0.20f;
         /// <summary>
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Distance to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
+        [Tooltip("Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
         [Range(0.0f, 0.05f)]
         private float frontPlaneDistance = 0.005f;
 
@@ -1685,13 +1685,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     // The object we grabbed isn't a ScrollingObjectCollectionNode
                     NodeList[i] = new ScrollingObjectCollectionNode(NodeList[i]);
                     node = NodeList[i] as ScrollingObjectCollectionNode;
-                }
-
-                // Node object was not properly removed
-                if (node.Transform == null)
-                {
-                    //Reset();
-                    //return;
                 }
 
                 // Hide the items that have no chance of being seen
