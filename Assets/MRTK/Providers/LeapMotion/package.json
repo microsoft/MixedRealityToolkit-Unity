@@ -1,5 +1,5 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.leapmotion",
+    "name": "com.microsoft.mixedreality.toolkit.leapmotion.legacy",
     "displayName": "Mixed Reality Toolkit Leap Motion (Legacy XR)",
     "version": "%version%",
     "unity": "2018.4",
