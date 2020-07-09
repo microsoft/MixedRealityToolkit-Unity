@@ -202,7 +202,10 @@ with the target's bounding box.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_LookedAtEyeTarget_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.LookedAtEyeTarget*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_LookedAtEyeTarget" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.LookedAtEyeTarget">LookedAtEyeTarget</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>EyeTrackingTarget eye gaze is currently looking at.
+null if currently gazed at object has no EyeTrackingTarget, or if
+no object with collider is being looked at.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -252,7 +255,9 @@ with the target's bounding box.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_LookedAtTarget_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.LookedAtTarget*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_LookedAtTarget" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.LookedAtTarget">LookedAtTarget</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>GameObject eye gaze is currently targeting, updated once per frame.
+null if no object with colllider is currently being looked at.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -379,6 +384,85 @@ with the target's bounding box.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_OnTapDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.OnTapDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_OnTapDown" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.OnTapDown">OnTapDown</h4>
+  <div class="markdown level1 summary"><p>Event is triggered when the RaiseEventManually_TapDown is called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnTapDown { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_OnTapUp_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.OnTapUp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_OnTapUp" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.OnTapUp">OnTapUp</h4>
+  <div class="markdown level1 summary"><p>Event is triggered when the RaiseEventManually_TapUp is called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnTapUp { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_SelectedTarget_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.SelectedTarget*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_SelectedTarget" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.SelectedTarget">SelectedTarget</h4>
+  <div class="markdown level1 summary"><p>Most recently selected target, selected either using pointer
+or voice.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GameObject SelectedTarget { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_WhileLookingAtTarget_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.WhileLookingAtTarget*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_WhileLookingAtTarget" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.WhileLookingAtTarget">WhileLookingAtTarget</h4>
   <div class="markdown level1 summary"><p>Event is triggered when the user continues to look at the target.</p>
@@ -456,6 +540,16 @@ with the target's bounding box.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected void OnEyeFocusStop()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_RaiseSelectEventManually_" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.RaiseSelectEventManually*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_EyeTrackingTarget_RaiseSelectEventManually" data-uid="Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.RaiseSelectEventManually">RaiseSelectEventManually()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RaiseSelectEventManually()</code></pre>
   </div>
   
   
