@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions}");
+                        Debug.LogWarning($"On gameObject {gameObject.name}, value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions} ");
                     }
                 }
             }
@@ -806,7 +806,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset.");
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
                 }
             }
         }
