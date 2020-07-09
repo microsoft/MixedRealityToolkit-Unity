@@ -1,5 +1,5 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.openvr",
+    "name": "com.microsoft.mixedreality.toolkit.openvr.legacy",
     "displayName": "Mixed Reality Toolkit OpenVR (Legacy XR)",
     "version": "%version%",
     "unity": "2018.4",

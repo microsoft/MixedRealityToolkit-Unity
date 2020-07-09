@@ -54,12 +54,12 @@ $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
     # providers
     "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus" = "Assets\MRTK\Providers\Oculus\XRSDK"
+    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
     "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
     "unityar" = "Assets\MRTK\Providers\UnityAR";
     "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr.legacy" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
+    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
+    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
     "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
     "xrplugin" = "Assets\MRTK\Providers\XRSDK";
     # extensions
