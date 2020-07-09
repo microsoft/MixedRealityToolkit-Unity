@@ -806,7 +806,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset.");
                 }
             }
         }
