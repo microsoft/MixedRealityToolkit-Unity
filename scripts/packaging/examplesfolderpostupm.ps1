@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    Cleans up temporary files created during the UPM packaging of the MRTK/Exampes folder.
+    Cleans up temporary files created during the UPM packaging of the MRTK/Examples folder.
 .DESCRIPTION
-    Cleans up temporary files created during the UPM packaging of the MRTK/Exampes folder.
+    Cleans up temporary files created during the UPM packaging of the MRTK/Examples folder.
 #>
 
 $examplesRoot = "$(Get-Location)"
