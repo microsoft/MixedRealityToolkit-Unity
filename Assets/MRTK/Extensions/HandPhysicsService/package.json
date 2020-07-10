@@ -26,5 +26,12 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
-    }
+    },
+    "samples": [
+        {
+            "displayName": "Hand Physics Examples",
+            "description": "Examples of using the MRTK Hand Physics service",
+            "path" : "Samples~/Examples"
+        }
+    ]
 }
