@@ -106,8 +106,9 @@ The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* u
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
-- *Near Object Margin*: The distance to query for detecting of an object is near the pointer.
+- *Near Object Margin*: The distance on top of the Sphere Cast Radius to query for detecting if an object is near the pointer. Total Near Object detection radius is Sphere Cast Radius + Near Object Margin
 - *Near Object Sector Angle*: The angle around the forward axis of the pointer for querying for nearby objects. Makes the `IsNearObject` query function like a cone. 
+- *Near Object Smoothing Factor*: Smoothing factor for Near Object detection. If an object is detected in the Near Object Radius, the queried radius then becomes Near Object Radius * (1 + Near Object Smoothing Factor) to reduce the sensitivity and make it harder for an object to leave the detection range.
 
 ![Sphere pointer modified to only query for objects in the forward direction](https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png)
 
