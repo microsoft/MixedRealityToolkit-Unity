@@ -1113,6 +1113,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (debugText != null) debugText.text = "OnPointerUp:RotateStopped";
                 RotateStopped?.Invoke();
             }
+            else if (lastHandleType == HandleType.Translation)
+            {
+                if (debugText != null) debugText.text = "OnPointerUp:TranslateStopped";
+                TranslateStopped?.Invoke();
+            }
         }
 
         private void DestroyRig()
@@ -1490,6 +1495,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     if (debugText != null) debugText.text = "OnSourceLost:RotateStopped";
                     RotateStopped?.Invoke();
+                }
+                else if (lastHandleType == HandleType.Translation)
+                {
+                    if (debugText != null) debugText.text = "OnSourceLost:TranslateStopped";
+                    TranslateStopped?.Invoke();
                 }
             }
         }
