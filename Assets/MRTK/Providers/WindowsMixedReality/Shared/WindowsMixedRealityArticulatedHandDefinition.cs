@@ -4,11 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+
+#if WINDOWS_UWP
 using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
-
-#if WINDOWS_UWP
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
@@ -18,8 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Defines the additional data, like hand mesh, that an articulated hand on HoloLens 2 can provide.
     /// </summary>
+    /// <remarks>This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.</remarks>
+    [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.")]
     public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
     {
+        [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.")]
         public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
 
 #if WINDOWS_UWP
@@ -82,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Updates the current hand mesh based on the passed in state of the hand.
         /// </summary>
         /// <param name="sourceState">The current hand state.</param>
+        [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider.UpdateHandMesh instead.")]
         public void UpdateHandMesh(SpatialInteractionSourceState sourceState)
         {
             using (UpdateHandMeshPerfMarker.Auto())

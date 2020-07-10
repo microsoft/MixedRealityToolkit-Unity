@@ -1,0 +1,33 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.foundation",
+    "displayName": "Mixed Reality Toolkit Foundation",
+    "version": "2.5.0-preview.0",
+    "unity": "2018.4",
+    "description": "MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity.",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {},
+    "files": [
+        "Core*",
+        "SDK*",
+        "Services*",
+        "package.json.meta"
+    ]
+}

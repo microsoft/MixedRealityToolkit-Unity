@@ -7,6 +7,17 @@
 
 ### What's new
 
+**Oculus Quest XRSDK support**
+
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
+
+**Input Simulation Cheat Sheet**
+The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
+
+![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
+
 **TestUtilities package**
 
 There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
@@ -29,6 +40,12 @@ For instructions on how to write a test using these TestUtilities, see this sect
 [writing tests](Contributing/UnitTests.md#writing-tests)
 
 For examples of existing tests that use this infrastructure, see MRTK's [PlayModeTests](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests)
+
+**Link.xml created in the MixedRealityToolkit.Generated folder**
+
+With the introduction of Unity Package Manger MRTK, MRTK now writes a `link.xml` file to the `Assets/MixedRealityToolkit.Generated` folder, if none is present. It is recommended to add this file (and `link.xml.meta`) be added to source control. Link.xml is used to influence the [managed code stripping](https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML) functionality of the Unity linker.
+
+More information on the MRTK link.xml file can be found in the [MRTK and managed code stripping](MRTK_and_managed_code_stripping.md) article.
 
 **Enable MSBuild for Unity removed from the configuration dialog**
 
@@ -59,5 +76,9 @@ Do this now...
 ```csharp
 DevicePortal.UseSSL = true
 ```
+
+**Link.xml**
+
+If an application was previously using the NuGet distribution of the MRTK, the `link.xml` file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default `link.xml` file in `Assets/MixedRealityToolkit.Generated`. It is recommended that this file (and `link.xml.meta`) be added to source control.
 
 ### Known issues

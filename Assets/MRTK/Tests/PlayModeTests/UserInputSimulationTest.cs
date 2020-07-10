@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // release the click on the cube
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
