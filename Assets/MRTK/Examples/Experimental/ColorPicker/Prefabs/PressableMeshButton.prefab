@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8448672204047979371}
   - component: {fileID: 1332148591745023433}
   - component: {fileID: 1027107041183114592}
-  - component: {fileID: 4982317654323653474}
   m_Layer: 0
   m_Name: PressableMeshButton
   m_TagString: Untagged
@@ -430,20 +429,6 @@ MonoBehaviour:
   localCenter: {x: 0, y: -0.0008731882, z: -0.0055}
   bounds: {x: 0.032, y: 0.04449328}
   touchableCollider: {fileID: 1332148591745023444}
---- !u!64 &4982317654323653474
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332148591745023432}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3123733131551202060, guid: cc3c25bcf3978ab46b6eeab34f67b88d, type: 3}
 --- !u!1 &1332148592044349109
 GameObject:
   m_ObjectHideFlags: 0
