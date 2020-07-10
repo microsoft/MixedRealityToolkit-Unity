@@ -126,7 +126,7 @@ foreach ($entry in $packages.GetEnumerator()) {
         Rename-Item -Path $npmrcFile  -NewName $npmrcBackup
     }
 
-     if (-not ($isLocalBuild)) {
+    if (-not ($isLocalBuild)) {
         # Copy the appropriate .nmprc file
         Copy-Item -Path $npmrcFileFullPath -Destination ".\$npmrcFile" -Force
 
@@ -159,10 +159,28 @@ foreach ($entry in $packages.GetEnumerator()) {
         $registryName = "the $OutputTarget registry"
     }
 
-    # The examples folder needs a custom setup step
-    if ($entry.Name -eq "examples") {
-        Write-Output "Preparing the examples folder"
+    $samplesFolder = "$packagePath\Samples~"
+     
+    if ($packageName -eq "examples") {
+        # The examples folder needs a custom setup step
         Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1" -NoNewWindow -Wait
+    }
+    else {
+        # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
+        # are pacakged in the examples package.
+        $exampleFolder = "$packagePath\Examples"
+        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
+            if (Test-Path -Path $exampleFolder) {
+                # Ensure the required samples exists
+                if (-not (Test-Path -Path $samplesFolder)) {
+                    New-Item $samplesFolder -ItemType Directory | Out-Null
+                }
+
+                # Copy the examples
+                Write-Output "Copying $exampleFolder to $samplesFolder"
+                Copy-Item -Path $exampleFolder -Destination $samplesFolder -Recurse -Force
+            }
+        }
     }
 
     Write-Output "======================="
@@ -178,11 +196,11 @@ foreach ($entry in $packages.GetEnumerator()) {
     # ======================
     # Cleanup the changes we have made
     # ======================
+    Write-Output "Cleaning up temporary changes"
 
-    # The examples folder needs a custom cleanup step
-    if ($entry.Name -eq "examples") {
-        Write-Output "Cleaning up examples folder"
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpostupm.ps1" -NoNewWindow -Wait
+    if (Test-Path -Path $samplesFolder) {
+        # A samples folder was created. Remove it.
+        Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
     # Restore the package.json file
