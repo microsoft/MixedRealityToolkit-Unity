@@ -27,19 +27,6 @@
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
     },
-    "files": [
-        "Interfaces*",
-        "Prefabs*",
-        "Profiles*",
-        "Samples~*",
-        "Microsoft.MixedReality.Toolkit.Extensions.HandPhysics*",
-        "*.cs",
-        "*.cs.meta",
-        "*.json",
-        "*.json.meta",
-        "*.md",
-        "*.md.meta"
-    ],
     "samples": [
         {
             "displayName": "Hand Physics Examples",
