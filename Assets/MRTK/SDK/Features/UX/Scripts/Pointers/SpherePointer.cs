@@ -93,10 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
-        [Tooltip("Smoothing factor for near object detection sensitivity")]
+        [Tooltip("Smoothing factor for query detection. If an object is detected in the NearObjectRadius, the queried radius then becomes NearObjectRadius * (1 + nearObjectSmoothingFactor) to reduce the sensitivity")]
         private float nearObjectSmoothingFactor = 0.4f;
         /// <summary>
-        /// Smoothing factor for near object detection sensitivity.
+        /// Smoothing factor for query detection. If an object is detected in the NearObjectRadius, the queried radius then becomes NearObjectRadius * (1 + nearObjectSmoothingFactor) to reduce the sensitivity.
         /// </summary>
         public float NearObjectSmoothingFactor
         {
@@ -419,9 +419,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     float radius;
                     if (ContainsGrabbable)
+                    {
                         radius = queryRadius * (1 + querySmoothingFactor);
+                    }
                     else
+                    {
                         radius = queryRadius;
+                    }
 
                     grabbable = null;
                     numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
