@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.testutilities",
-    "displayName": "Mixed Reality Toolkit Test Utilities",
+    "name": "com.microsoft.mixedreality.toolkit.examples",
+    "displayName": "Mixed Reality Toolkit Examples",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Test utilities for use with the Microsoft Mixed Reality Toolkit",
+    "description": "Example scenes and assets for the Microsoft Mixed Reality Toolkit.",
     "keywords": [
         "mrtk",
         "microsoft",
@@ -12,8 +12,7 @@
         "augmented",
         "virtual",
         "xr",
-        "hololens",
-        "test"
+        "hololens"
     ],
     "author": "Microsoft Corporation",
     "license": "MIT",
@@ -26,5 +25,13 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
-    }
+    },
+    "files": [
+        "Samples~*",
+        "StandardAssets*",
+        "package.json.meta",
+        "Microsoft.MixedReality.Toolkit.Examples*",
+        "MRTK.Examples.sentinel*"
+    ],
+    %samples%
 }

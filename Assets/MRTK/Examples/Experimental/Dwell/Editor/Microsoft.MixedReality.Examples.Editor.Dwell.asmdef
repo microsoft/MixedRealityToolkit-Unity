@@ -1,12 +1,12 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Examples.Editor.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.Examples.Editor.Dwell",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
         "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-		"Microsoft.MixedReality.Toolkit.Examples",
+        "Microsoft.MixedReality.Toolkit.Examples",
         "Unity.TextMeshPro.Editor"
     ],
     "optionalUnityReferences": [],
