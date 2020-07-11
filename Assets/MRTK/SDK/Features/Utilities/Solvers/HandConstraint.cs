@@ -40,7 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// </summary>
             BelowWrist = 3,
             /// <summary>
-            /// Floating above the palm.
+            /// Floating above the palm, towards the "inside" of the hand (opposite side of knuckles),
+            /// based on the "down" vector of the palm joint (i.e., the grabbing-side of the hand)
             /// </summary>
             AtopPalm = 4
         }
