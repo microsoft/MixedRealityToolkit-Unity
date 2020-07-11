@@ -73,19 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Use raycasting when attaching to palm, instead of using palm joint directly.")]
-        private bool usePalmRaycast = false;
-
-        /// <summary>
-        /// Use raycasting when attaching to palm, instead of using palm joint directly.
-        /// </summary>
-        public bool UsePalmRaycast
-        {
-            get => usePalmRaycast;
-            set => usePalmRaycast = value;
-        }
-
-        [SerializeField]
         [Tooltip("Should the solver continue to move when the opposite hand (hand which is not being tracked) is near the tracked hand. This can improve stability when one hand occludes the other.")]
         private bool updateWhenOppositeHandNear = false;
 
@@ -344,30 +331,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var goalPosition = SolverHandler.TransformTarget.position;
             Bounds trackedHandBounds;
 
-            if (trackedController != null &&
-                handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
-            {
-                // If we are mounting to the palm, and don't want to use raycasting to find the
-                // palm goal position, we will calculate the goal position using the palm joint directly.
-                if (safeZone == SolverSafeZone.AtopPalm && !UsePalmRaycast)
-                {
-                    MixedRealityPose? palmPose = GetPalmPose(trackedController);
-                    if(palmPose.HasValue)
-                    {
-                        // We also apply the buffer value manually here.
-                        goalPosition = palmPose.Value.Position - palmPose.Value.Up * safeZoneBuffer;
-                    }
-                }
-                else
-                {
-                    float distance;
-                    Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
-                    trackedHandBounds.Expand(safeZoneBuffer);
+            MixedRealityPose? palmPose = GetPalmPose(trackedController);
 
-                    if (trackedHandBounds.IntersectRay(ray, out distance))
-                    {
-                        goalPosition = ray.origin + ray.direction * distance;
-                    }
+            if (trackedController != null &&
+                handBounds.LocalBounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
+            {
+                float distance;
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
+                trackedHandBounds.Expand(safeZoneBuffer);
+
+                // We need to transform the ray into hand-space before performing the AABB intersection.
+                ray.origin = Quaternion.Inverse(palmPose.Value.Rotation) * (ray.origin - palmPose.Value.Position);
+                ray.direction = Quaternion.Inverse(palmPose.Value.Rotation) * ray.direction;
+
+                if (trackedHandBounds.IntersectRay(ray, out distance))
+                {
+                    // As hand bounds are computed and raycasted in palm-relative space,
+                    // we must transform the hit target back into global space.
+                    var localSpaceHit = ray.origin + ray.direction * distance;
+                    goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
                 }
             }
 

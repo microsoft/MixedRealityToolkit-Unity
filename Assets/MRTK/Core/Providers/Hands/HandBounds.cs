@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Accessor for the bounds associated with a handedness.
         /// </summary>
         public Dictionary<Handedness, Bounds> Bounds { get; private set; } = new Dictionary<Handedness, Bounds>();
+        
+        /// <summary>
+        /// Accessor for the bounds associated with a handedness, but calculated in local hand-space.
+        /// </summary>
+        public Dictionary<Handedness, Bounds> LocalBounds { get; private set; } = new Dictionary<Handedness, Bounds>();
 
         [SerializeField]
         [Tooltip("Should a gizmo be drawn to represent the hand bounds.")]
@@ -27,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool DrawBoundsGizmo
         {
-            get { return drawBoundsGizmo; }
-            set { drawBoundsGizmo = value; }
+            get => drawBoundsGizmo;
+            set => drawBoundsGizmo = value;
         }
 
         #region MonoBehaviour Implementation
@@ -77,16 +82,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (proxy != null)
                     {
-                        var newBounds = new Bounds(proxy.transform.position, Vector3.zero);
+                        // Bounds calculated in hand-space will have an origin of zero, but bounds
+                        // calculated in global space will have an origin centered on the proxy transform.
+                        var newGlobalBounds = new Bounds(proxy.transform.position, Vector3.zero);
+                        var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
                         var boundsPoints = new List<Vector3>();
                         BoundsExtensions.GetRenderBoundsPoints(proxy, boundsPoints, 0);
 
                         foreach (var point in boundsPoints)
                         {
-                            newBounds.Encapsulate(point);
+                            newGlobalBounds.Encapsulate(point);
+                            // Local hand-space bounds are encapsulated using hand-space point coordinates
+                            newLocalBounds.Encapsulate(proxy.transform.InverseTransformPoint(point));
                         }
 
-                        Bounds[hand.ControllerHandedness] = newBounds;
+                        Bounds[hand.ControllerHandedness] = newGlobalBounds;
+                        LocalBounds[hand.ControllerHandedness] = newLocalBounds;
                     }
                 }
             }
@@ -114,7 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out palmPose))
             {
-                var newBounds = new Bounds(palmPose.Position, Vector3.zero);
+                var newGlobalBounds = new Bounds(palmPose.Position, Vector3.zero);
+                var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
 
                 foreach (var kvp in eventData.InputData)
                 {
@@ -124,10 +136,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         continue;
                     }
 
-                    newBounds.Encapsulate(kvp.Value.Position);
+                    newGlobalBounds.Encapsulate(kvp.Value.Position);
+                    newLocalBounds.Encapsulate(Quaternion.Inverse(palmPose.Rotation) * (kvp.Value.Position - palmPose.Position));
                 }
 
-                Bounds[eventData.Handedness] = newBounds;
+                Bounds[eventData.Handedness] = newGlobalBounds;
+                LocalBounds[eventData.Handedness] = newLocalBounds;
             }
         }
 
