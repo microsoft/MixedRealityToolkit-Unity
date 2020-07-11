@@ -400,6 +400,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the AtopPalm safe zone
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverActivationAtopPalm()
+        {
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.AtopPalm, Handedness.Left);
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.AtopPalm, Handedness.Right);
+        }
+
+        /// <summary>
         /// Test the HandConstraintPalm up to make sure the FollowHandUntilFacingCamera behavior works as expected
         /// </summary>
         [UnityTest]
@@ -1269,7 +1279,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handConstraintSolver.FollowHandUntilFacingCamera = true;
             handConstraintSolver.UseGazeActivation = true;
 
-            // First test the Ulnar safe zone
             handConstraintSolver.SafeZone = safeZone;
 
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
@@ -1327,6 +1336,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 case HandConstraint.SolverSafeZone.BelowWrist:
                     return Vector3.up * WristTestActivationPointModifier;
 
+                case HandConstraint.SolverSafeZone.AtopPalm:
                 case HandConstraint.SolverSafeZone.AboveFingerTips:
                     return Vector3.down * AboveFingerTipsTestActivationPointModifier;
 
