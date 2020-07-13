@@ -175,7 +175,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platforms)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use PlatformUtility.IsPlatformSupported(SupportedPlatforms platforms) instead, which accounts for both the in-editor and runtime case.&quot;)]
+public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platforms)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
