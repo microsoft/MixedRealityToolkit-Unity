@@ -7,7 +7,7 @@ steps:
   displayName: 'Version Metadata'
   inputs:
     targetType: filePath
-    filePath: ./scripts/ci/versionmetadata.ps1
+    filePath: ./scripts/packaging/versionmetadata.ps1
     arguments: >
       -Directory: '$(Build.SourcesDirectory)'
       -Version: '$(parameters.MRTKVersion)'
