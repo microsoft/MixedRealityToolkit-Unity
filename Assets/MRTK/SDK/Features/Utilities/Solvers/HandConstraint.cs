@@ -332,14 +332,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var goalPosition = SolverHandler.TransformTarget.position;
             Bounds trackedHandBounds;
 
-            MixedRealityPose? palmPose = GetPalmPose(trackedController);
-
             if (trackedController != null &&
                 handBounds.LocalBounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
                 Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
                 trackedHandBounds.Expand(safeZoneBuffer);
+
+                MixedRealityPose? palmPose = GetPalmPose(trackedController);
 
                 // We need to transform the ray into hand-space before performing the AABB intersection.
                 ray.origin = Quaternion.Inverse(palmPose.Value.Rotation) * (ray.origin - palmPose.Value.Position);
