@@ -537,12 +537,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private static bool IsPalmFacingCamera(IMixedRealityController hand)
         {
-            MixedRealityPose palmPose;
-            var jointedHand = hand as IMixedRealityHand;
+            MixedRealityPose? palmPose = GetPalmPose(hand);
 
-            if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+            if (palmPose.HasValue)
             {
-                return (Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f);
+                return (Vector3.Dot(palmPose.Value.Up, CameraCache.Main.transform.forward) > 0.0f);
             }
 
             return false;
