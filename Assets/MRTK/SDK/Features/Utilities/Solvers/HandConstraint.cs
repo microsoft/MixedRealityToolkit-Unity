@@ -392,7 +392,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 goalRotation *= Quaternion.Euler(additionalRotation.x, additionalRotation.y, additionalRotation.z);
             }
-            
             return goalRotation;
         }
 
