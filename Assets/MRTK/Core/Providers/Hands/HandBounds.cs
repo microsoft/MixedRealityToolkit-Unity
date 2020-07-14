@@ -36,6 +36,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => drawBoundsGizmo = value;
         }
 
+        [SerializeField]
+        [Tooltip("Should a gizmo be drawn to represent the locally-calculated hand bounds.")]
+        private bool drawLocalBoundsGizmo = false;
+
+        /// <summary>
+        /// Should a gizmo be drawn to represent the locally-calculated hand bounds.
+        /// </summary>
+        public bool DrawLocalBoundsGizmo
+        {
+            get => drawLocalBoundsGizmo;
+            set => drawLocalBoundsGizmo = value;
+        }
+
+        /// <summary>
+        /// Mapping between controller handedness and associated hand transforms.
+        /// Used to transform the debug gizmos when rendering the hand AABBs.
+        /// </summary>
+        private Dictionary<Handedness, Matrix4x4> BoundsTransforms = new Dictionary<Handedness, Matrix4x4>();
+
         #region MonoBehaviour Implementation
 
         private void OnEnable()
@@ -54,8 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (drawBoundsGizmo)
             {
+                Gizmos.color = Color.yellow;
                 foreach (var kvp in Bounds)
                 {
+                    Gizmos.DrawWireCube(kvp.Value.center, kvp.Value.size);
+                }
+            }
+            if (drawLocalBoundsGizmo)
+            {
+                Gizmos.color = Color.cyan;
+                foreach (var kvp in LocalBounds)
+                {
+                    Gizmos.matrix = BoundsTransforms[kvp.Key];
                     Gizmos.DrawWireCube(kvp.Value.center, kvp.Value.size);
                 }
             }
@@ -82,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (proxy != null)
                     {
-                        // Bounds calculated in hand-space will have an origin of zero, but bounds
+                        // Bounds calculated in proxy-space will have an origin of zero, but bounds
                         // calculated in global space will have an origin centered on the proxy transform.
                         var newGlobalBounds = new Bounds(proxy.transform.position, Vector3.zero);
                         var newLocalBounds = new Bounds(Vector3.zero, Vector3.zero);
@@ -92,12 +121,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         foreach (var point in boundsPoints)
                         {
                             newGlobalBounds.Encapsulate(point);
-                            // Local hand-space bounds are encapsulated using hand-space point coordinates
+                            // Local hand-space bounds are encapsulated using proxy-space point coordinates
                             newLocalBounds.Encapsulate(proxy.transform.InverseTransformPoint(point));
                         }
 
                         Bounds[hand.ControllerHandedness] = newGlobalBounds;
                         LocalBounds[hand.ControllerHandedness] = newLocalBounds;
+                        BoundsTransforms[hand.ControllerHandedness] = proxy.transform.localToWorldMatrix;
                     }
                 }
             }
@@ -111,6 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (hand != null)
             {
                 Bounds.Remove(hand.ControllerHandedness);
+                LocalBounds.Remove(hand.ControllerHandedness);
+                BoundsTransforms.Remove(hand.ControllerHandedness);
             }
         }
 
@@ -142,6 +174,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 Bounds[eventData.Handedness] = newGlobalBounds;
                 LocalBounds[eventData.Handedness] = newLocalBounds;
+
+                // We must normalize the quaternion before constructing the TRS matrix; non-unit-length quaternions
+                // may be emitted from the palm-pose and they must be renormalized.
+                BoundsTransforms[eventData.Handedness] = Matrix4x4.TRS(palmPose.Position, palmPose.Rotation.normalized, Vector3.one);
             }
         }
 
