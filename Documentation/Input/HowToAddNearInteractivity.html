@@ -94,8 +94,8 @@
 <li><p>Ensure a <a href="Pointers.html#spherepointer">SpherePointer</a> is registered in the <em>MRTK Pointer profile</em>.</p>
 <p>The default MRTK profile and the default HoloLens 2 profile already contain a <em>SpherePointer</em>. One can confirm a SpherePointer will be created by selecting the MRTK Configuration Profile and navigating to <strong>Input</strong> &gt; <strong>Pointers</strong> &gt; <strong>Pointer Options</strong>. The default <code>GrabPointer</code> prefab (Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) should be listed with a <em>Controller Type</em> of <em>Articulated Hand</em>. A custom prefab can be utilized as long as it implements the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html"><code>SpherePointer</code></a> class.</p>
 <p><img src="../Images/Input/Pointers/GrabPointer_MRTKProfile.png" alt="Grab Pointer Profile Example"></p>
-<p>The default grab point will query for nearby objects in a sphere around the grab point. By replacing the prefab with the <code>ConicalGrabPointer</code> prefab
-(Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) , you can change the behavior to more closely resemble the default Hololens 2 interface, which queries for nearby objects using a cone.</p>
+<p>The default grab pointer queries for nearby objects in a cone around the grab point to match the default Hololens 2 interface.</p>
+<p><img src="https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png" alt="Conical Grab Pointer"></p>
 </li>
 <li><p>On the GameObject that should be grabbable, add a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a>, as well as a collider.</p>
 <p>Make sure the layer of the GameObject is on a grabbable layer. By default, all layers except <em>Spatial Awareness</em> and <em>Ignore Raycasts</em> are grabbable. See which layers are grabbable by inspecting the <em>Grab Layer Masks</em> in your <em>GrabPointer</em> prefab.</p>

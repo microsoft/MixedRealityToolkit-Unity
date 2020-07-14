@@ -161,11 +161,12 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <p>Useful Sphere Pointer properties:</p>
 <ul>
 <li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
-<li><em>Near Object Margin</em>: The distance to query for detecting of an object is near the pointer.</li>
-<li><em>Near Object Sector Angle</em>: The angle around the forward axis of the pointer for querying for nearby objects. Makes the <code>IsNearObject</code> query function like a cone.</li>
+<li><em>Near Object Margin</em>: The distance on top of the Sphere Cast Radius to query for detecting if an object is near the pointer. Total Near Object detection radius is Sphere Cast Radius + Near Object Margin</li>
+<li><em>Near Object Sector Angle</em>: The angle around the forward axis of the pointer for querying for nearby objects. Makes the <code>IsNearObject</code> query function like a cone. This is set to 66 degrees by default to match Hololens 2 behavior</li>
 </ul>
 <p><img src="https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png" alt="Sphere pointer modified to only query for objects in the forward direction"></p>
 <ul>
+<li><em>Near Object Smoothing Factor</em>: Smoothing factor for Near Object detection. If an object is detected in the Near Object Radius, the queried radius then becomes Near Object Radius * (1 + Near Object Smoothing Factor) to reduce the sensitivity and make it harder for an object to leave the detection range.</li>
 <li><em>Grab Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionGrabbable</code> to interact with a SpherePointer.
 <div class="NOTE">
 <h5>Note</h5>
