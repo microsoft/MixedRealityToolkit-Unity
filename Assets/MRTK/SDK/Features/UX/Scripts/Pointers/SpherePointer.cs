@@ -481,10 +481,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         
                         if (grabbable != null)
                         {
-                            Debug.Log(grabbable);
-                            Debug.Log(relativeColliderPosition);
-                            Debug.Log(relativeColliderPosition.sqrMagnitude);
-                            Debug.Log(pointerPosition.x + " " + pointerPosition.y + " " + pointerPosition.z);
                             return true;
                         }
                     }
