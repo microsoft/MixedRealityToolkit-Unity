@@ -335,11 +335,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (trackedController != null &&
                 handBounds.LocalBounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
+                MixedRealityPose? palmPose = GetPalmPose(trackedController);
+
+                // If we somehow were unable to obtain a palm pose, we just quit;
+                // we require a valid palm pose to perform the hand-space transformations.
+                if (palmPose.HasValue == false)
+                {
+                    return goalPosition;
+                }
+
                 float distance;
                 Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
                 trackedHandBounds.Expand(safeZoneBuffer);
-
-                MixedRealityPose? palmPose = GetPalmPose(trackedController);
 
                 // We need to transform the ray into hand-space before performing the AABB intersection.
                 ray.origin = Quaternion.Inverse(palmPose.Value.Rotation) * (ray.origin - palmPose.Value.Position);
@@ -347,10 +354,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
                 {
+                    var localSpaceHit = ray.origin + ray.direction * distance;
+
                     // As hand bounds are computed and raycasted in palm-relative space,
                     // we must transform the hit target back into global space.
-                    var localSpaceHit = ray.origin + ray.direction * distance;
-                    goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
+                    if (palmPose.HasValue)
+                    {
+                        goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
+                    }
                 }
             }
 
