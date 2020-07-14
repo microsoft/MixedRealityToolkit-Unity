@@ -1,7 +1,7 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.wmr.xrplugin",
-    "displayName": "Mixed Reality Toolkit Windows Mixed Reality XR Plugin Provider",
-    "version": "2.5.0-preview.0",
+    "name": "com.microsoft.mixedreality.toolkit.wmr",
+    "displayName": "Mixed Reality Toolkit Windows Mixed Reality",
+    "version": "%version%",
     "unity": "2019.4",
     "description": "Platform support for Windows Mixed Reality devices on the Microsoft Mixed Reality Toolkit",
     "keywords": [
@@ -26,8 +26,9 @@
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
       },
     "dependencies": {
-        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0",
-        "com.microsoft.mixedreality.toolkit.wmr.shared": "2.5.0-preview.0",
-        "com.microsoft.mixedreality.toolkit.xrplugin": "2.5.0-preview.0"
+        "com.microsoft.mixedreality.toolkit.foundation": "%version%",
+        "com.microsoft.mixedreality.toolkit.wmr.shared": "%version%",
+        "com.microsoft.mixedreality.toolkit.xrplugin": "%version%",
+        "com.unity.xr.windowsmr": "2.2.0"
     }
 }

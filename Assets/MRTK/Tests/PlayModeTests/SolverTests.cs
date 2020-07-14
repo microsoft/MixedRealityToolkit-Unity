@@ -1336,6 +1336,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 case HandConstraint.SolverSafeZone.BelowWrist:
                     return Vector3.up * WristTestActivationPointModifier;
 
+                // AtopPalm uses the same test zone as AboveFingerTips because
+                // the hand must move to a similar position to activate.
                 case HandConstraint.SolverSafeZone.AtopPalm:
                 case HandConstraint.SolverSafeZone.AboveFingerTips:
                     return Vector3.down * AboveFingerTipsTestActivationPointModifier;
