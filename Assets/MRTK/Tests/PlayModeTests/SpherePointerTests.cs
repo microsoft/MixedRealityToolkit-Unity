@@ -186,6 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             var pointer = rightHand.GetPointer<SpherePointer>();
+            pointer.NearObjectSectorAngle = 360.0f;
+            pointer.PullbackDistance = 0.0f;
+
             Vector3 margin = new Vector3(0, 0, 0.001f);
             Vector3 nearObjectMargin = new Vector3(0, 0, 0.001f + (pointer.NearObjectSmoothingFactor + 1) * pointer.NearObjectRadius);
             Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
@@ -255,6 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             var pointer = rightHand.GetPointer<SpherePointer>();
+            pointer.NearObjectSectorAngle = 360.0f;
             pointer.PullbackDistance = 0.08f;
             pointer.TryGetNearGraspPoint(out Vector3 graspPoint);
             // Orient the right hand so the grab axis is approximately aligned with the z axis
@@ -308,6 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var pointer = rightHand.GetPointer<SpherePointer>();
             pointer.NearObjectSectorAngle = 180.0f;
+            pointer.PullbackDistance = 0.0f;
             // Orient the right hand so the grab axis is approximately aligned with the z axis
 
             Vector3 margin = new Vector3(0, 0, 0.001f);

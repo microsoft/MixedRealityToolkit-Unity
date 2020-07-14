@@ -109,7 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 1.2f);
+            cube.transform.localScale = Vector3.one * 0.3f;
+            cube.transform.position = new Vector3(-0.2f, 0.2f, 0.6f);
             yield return null;
 
             // Grab pointer is near grabbable
