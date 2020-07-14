@@ -167,7 +167,8 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
-        # are pacakged in the examples package.
+        # are packaged in the examples package.
+
         $exampleFolder = "$packagePath\Examples"
         if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
             if (Test-Path -Path $exampleFolder) {
