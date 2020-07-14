@@ -112,7 +112,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_HandBounds_Bounds_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandBounds.Bounds*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_HandBounds_Bounds" data-uid="Microsoft.MixedReality.Toolkit.Input.HandBounds.Bounds">Bounds</h4>
-  <div class="markdown level1 summary"><p>Accessor for the bounds associated with a handedness.</p>
+  <div class="markdown level1 summary"><p>Accessor for the bounds associated with a handedness, calculated in global-axis-aligned space.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -156,6 +156,32 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_HandBounds_LocalBounds_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandBounds.LocalBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_HandBounds_LocalBounds" data-uid="Microsoft.MixedReality.Toolkit.Input.HandBounds.LocalBounds">LocalBounds</h4>
+  <div class="markdown level1 summary"><p>Accessor for the bounds associated with a handedness, calculated in local hand-space, locally axis aligned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;Handedness, Bounds&gt; LocalBounds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span>&lt;<span class="xref">Handedness</span>, <span class="xref">Bounds</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
