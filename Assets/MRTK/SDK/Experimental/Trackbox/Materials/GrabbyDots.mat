@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Glow
+  m_Name: GrabbyDots
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _ALPHABLEND_ON _HOVER_LIGHT _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -49,8 +49,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 2e264b2035e178e4dac9e40cfcf38662, type: 3}
+        m_Scale: {x: 10, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -84,12 +84,12 @@ Material:
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ColorWriteMask: 15
-    - _CullMode: 2
+    - _CullMode: 0
     - _CustomMode: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
-    - _DstBlend: 1
+    - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EnableChannelMap: 0
     - _EnableEmission: 0
@@ -108,7 +108,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HoverLight: 0
+    - _HoverLight: 1
     - _IgnoreZScale: 0
     - _IndependentCorners: 0
     - _InnerGlow: 0
@@ -119,7 +119,7 @@ Material:
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
-    - _Mode: 4
+    - _Mode: 2
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
@@ -141,7 +141,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
@@ -158,7 +158,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.49019608}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}

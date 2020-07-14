@@ -26,6 +26,7 @@ public class TrackboxHydration : MonoBehaviour
     float scaleGoal;
     Light trackboxLight;
     float initialLightIntensity;
+    Collider[] colliders;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,8 @@ public class TrackboxHydration : MonoBehaviour
         {
             initialLightIntensity = trackboxLight.intensity;
         }
+
+        colliders = GetComponentsInChildren<Collider>();
         
     }
 
@@ -46,15 +49,25 @@ public class TrackboxHydration : MonoBehaviour
         {
             trackboxLight.intensity = hydrationElastic.GetCurrentValue() * initialLightIntensity;
         }
+
+        
     }
 
     public void Hydrate()
     {
+        foreach (var c in colliders)
+        {
+            c.enabled = true;
+        }
         scaleGoal = 1.0f;
     }
 
     public void Dehydrate()
     {
+        foreach(var c in colliders)
+        {
+            c.enabled = false;
+        }
         scaleGoal = -1.0f;
     }
 }
