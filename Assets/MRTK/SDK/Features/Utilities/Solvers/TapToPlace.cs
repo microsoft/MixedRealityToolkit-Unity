@@ -216,6 +216,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected float DoubleClickTimeout = 0.5f;
 
+        // Used to mark whether Start() has been called.
+        private bool startCalled;
+
         #region MonoBehaviour Implementation
         protected override void Start()
         {
@@ -229,6 +232,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             UnityPhysics.SyncTransforms();
 
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
+
+            startCalled = true;
 
             if (AutoStart)
             {
@@ -255,6 +260,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public void StartPlacement()
         {
+            // Check to see if Start() has been called, if not set AutoStart to true. This will make sure StartPlacement() will be
+            // called again when Start() is called.
+            if (!startCalled)
+            {
+                AutoStart = true;
+                return;
+            }
+
             // Added for code configurability to avoid multiple calls to StartPlacement in a row
             if (!IsBeingPlaced)
             {
