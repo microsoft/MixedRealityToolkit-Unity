@@ -3,7 +3,7 @@
 A [Oculus Quest](https://www.ultraleap.com/product/leap-motion-controller/) is required to use this data provider.
 
 The Oculus XRSDK Data Provider enables the use of the Oculus Quest with MRTK using [Unity's XR Pipeline](https://docs.unity3d.com/Manual/XR.html).
-This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond.
+This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using **Unity 2019.3 or newer**
 The Oculus Quest XR Plugin does not currently support hand tracking. In order to use hand tracking, consult the [MRTK-Quest](https://github.com/provencher/MRTK-Quest)
 project which uses the Legacy XR pipeline.
 
@@ -28,7 +28,7 @@ project which uses the Legacy XR pipeline.
 
     ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
-    - Open the **Input Data Providers** section, select **Add Data Provider** at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.LeapMotion.Input > LeapMotionDeviceManager**
+    - Open the **Input Data Providers** section, select **Add Data Provider** at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
 
     ![OculusAddDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png)
 
