@@ -3,8 +3,8 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _GlowPos("Glow Position", Vector) = (0,0,0)
         _Multiplier("Glow Distance Multiplier", Float) = 10
+        _BoxSize("Glow Box Size", Float) = 10
     }
     SubShader
     {
@@ -45,6 +45,7 @@
             float4 _MainTex_ST;
             float3 _GlowPos;
             float _Multiplier;
+            uniform float4x4 _GlowTransform;
 
             #define PROXIMITY_LIGHT_COUNT 2
             #define PROXIMITY_LIGHT_DATA_SIZE 6
@@ -58,6 +59,7 @@
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
+
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;

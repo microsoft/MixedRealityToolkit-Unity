@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -89,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("What manipulation will two hands perform?")]
-        private TransformFlags twoHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate | TransformFlags.Scale;
+        protected TransformFlags twoHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate | TransformFlags.Scale;
 
         /// <summary>
         /// What manipulation will two hands perform?
@@ -98,6 +99,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get => twoHandedManipulationType;
             set => twoHandedManipulationType = value;
+        }
+
+        [SerializeField]
+        [EnumFlags]
+        [Tooltip("What manipulation will two hands perform?")]
+        protected TransformFlags oneHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate;
+
+        /// <summary>
+        /// What manipulation will one hand perform?
+        /// </summary>
+        public TransformFlags OneHandedManipulationType
+        {
+            get => oneHandedManipulationType;
+            set => oneHandedManipulationType = value;
         }
 
         [SerializeField]
@@ -275,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Holds the pointer and the initial intersection point of the pointer ray 
         /// with the object on pointer down in pointer space
         /// </summary>
-        private struct PointerData
+        protected struct PointerData
         {
             public IMixedRealityPointer pointer;
             private Vector3 initialGrabPointInPointer;
@@ -292,13 +307,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             public Vector3 GrabPoint => (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
         }
 
-        private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
-        private Quaternion objectToGripRotation;
-        private bool isNearManipulation;
-        private bool isManipulationStarted;
+        protected Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
+        protected Quaternion objectToGripRotation;
+        protected bool isNearManipulation;
+        protected bool isManipulationStarted;
 
-        private Rigidbody rigidBody;
-        private bool wasKinematic = false;
+        protected Rigidbody rigidBody;
+        protected bool wasKinematic = false;
 
         private ConstraintManager constraints;
 
@@ -309,13 +324,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region MonoBehaviour Functions
 
-        private void Awake()
+        protected virtual void Awake()
         {
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
         }
-        private void Start()
+        protected virtual void Start()
         {
             rigidBody = HostTransform.GetComponent<Rigidbody>();
             constraints = new ConstraintManager(gameObject);
@@ -323,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Functions
 
         #region Private Methods
-        private Vector3 GetPointersGrabPoint()
+        protected Vector3 GetPointersGrabPoint()
         {
             Vector3 sum = Vector3.zero;
             int count = 0;
@@ -335,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, count);
         }
 
-        private MixedRealityPose GetPointersPose()
+        protected MixedRealityPose GetPointersPose()
         {
             Vector3 sumPos = Vector3.zero;
             Vector3 sumDir = Vector3.zero;
@@ -354,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             };
         }
 
-        private Vector3 GetPointersVelocity()
+        protected Vector3 GetPointersVelocity()
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
@@ -370,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, numControllers);
         }
 
-        private Vector3 GetPointersAngularVelocity()
+        protected Vector3 GetPointersAngularVelocity()
         {
             Vector3 sum = Vector3.zero;
             int numControllers = 0;
@@ -386,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, numControllers);
         }
 
-        private bool IsNearManipulation()
+        protected bool IsNearManipulation()
         {
             foreach (var item in pointerIdToPointerMap)
             {
@@ -528,7 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Hand Event Handlers
 
         #region Private Event Handlers
-        private void HandleTwoHandManipulationStarted()
+        protected virtual void HandleTwoHandManipulationStarted()
         {
             var handPositionArray = GetHandPositionArray();
 
@@ -538,7 +553,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
-                MixedRealityPose pointerPose = GetPointersPose();
+                // If we are a near-manipulation interaction, the grab pose is simply the grab point centroid, without
+                // any rotation information. If we are a far interaction (hand rays), then we include pointer rotation in
+                // the centroid calculation, leveraging GetPointersPose() for this.
+                MixedRealityPose pointerPose = IsNearManipulation() ? new MixedRealityPose(GetPointersGrabPoint()) : GetPointersPose();
                 MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, HostTransform.localScale);
             }
@@ -548,33 +566,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void HandleTwoHandManipulationUpdated()
+        protected virtual void HandleTwoHandManipulationUpdated()
         {
             var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-            var handPositionArray = GetHandPositionArray();
-
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
-            {
-                targetTransform.Scale = scaleLogic.UpdateMap(handPositionArray);
-                constraints.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
-            }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
-            {
-                targetTransform.Rotation = rotateLogic.Update(handPositionArray, targetTransform.Rotation);
-                constraints.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
-            }
-            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
-            {
-                MixedRealityPose pose = GetPointersPose();
-                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
-                constraints.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
-            }
+            // Will update the moveLogic, scaleLogic, etc, depending on
+            // what twoHandedManipulationType has specified; will also
+            // apply constraints from the ConstraintManager.
+            UpdateTwoHandedLogic(twoHandedManipulationType, ref targetTransform);
 
             ApplyTargetTransform(targetTransform);
         }
 
-        private void HandleOneHandMoveStarted()
+        protected virtual void HandleOneHandMoveStarted()
         {
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
             PointerData pointerData = GetFirstPointer();
@@ -591,27 +595,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, HostTransform.localScale);
         }
 
-        private void HandleOneHandMoveUpdated()
+        protected virtual void HandleOneHandMoveUpdated()
         {
-            Debug.Assert(pointerIdToPointerMap.Count == 1);
-            PointerData pointerData = GetFirstPointer();
-            IMixedRealityPointer pointer = pointerData.pointer;
-
             var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-            constraints.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
-
-            Quaternion gripRotation;
-            TryGetGripRotation(pointer, out gripRotation);
-            targetTransform.Rotation = gripRotation * objectToGripRotation;
-
-            constraints.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
-
-            RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
-            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
-
-            constraints.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
+            // Will update the moveLogic, scaleLogic, etc, depending on
+            // what twoHandedManipulationType has specified; will also
+            // apply constraints from the ConstraintManager.
+            UpdateOneHandedLogic(oneHandedManipulationType, ref targetTransform);
 
             ApplyTargetTransform(targetTransform);
         }
@@ -675,7 +666,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private methods
 
-        private void ApplyTargetTransform(MixedRealityTransform targetTransform)
+        protected virtual void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
             if (rigidBody == null)
             {
@@ -700,7 +691,75 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private Vector3[] GetHandPositionArray()
+        /// <summary>
+        /// Wraps the updating of the -Logic components and the application of the constraints
+        /// in a separate call from when the transform is actually applied; this allows for
+        /// subclasses to compute their own respective transformations independently.
+        /// </summary>
+        /// <param name="transformType">The requested transform types to be computed</param>
+        /// <param name="targetTransform">The target transform that will be modified by this call (passed by reference)</param>
+        protected virtual void UpdateOneHandedLogic(TransformFlags transformType, ref MixedRealityTransform targetTransform)
+        {
+            Debug.Assert(pointerIdToPointerMap.Count == 1);
+            PointerData pointerData = GetFirstPointer();
+            IMixedRealityPointer pointer = pointerData.pointer;
+
+            if (transformType.HasFlag(TransformFlags.Scale))
+            {
+                // Can't adjust scale with only one hand, but we can apply the scale constraint.
+                constraints.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
+            }
+            if (transformType.HasFlag(TransformFlags.Rotate))
+            {
+                Quaternion gripRotation;
+                TryGetGripRotation(pointer, out gripRotation);
+                targetTransform.Rotation = gripRotation * objectToGripRotation;
+                constraints.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
+            }
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
+            {
+                // If we are a near-manipulation interaction, the grab pose is simply the grab point centroid, without
+                // any rotation information. If we are a far interaction (hand rays), then we include pointer rotation in
+                // the centroid calculation, leveraging GetPointersPose() for this.
+                RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
+                MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+                targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+                constraints.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
+            }
+        }
+
+        /// <summary>
+        /// Wraps the updating of the -Logic components and the application of the constraints
+        /// in a separate call from when the transform is actually applied; this allows for
+        /// subclasses to compute their own respective transformations independently.
+        /// </summary>
+        /// <param name="transformType">The requested transform types to be computed</param>
+        /// <param name="targetTransform">The target transform that will be modified by this call (passed by reference)</param>
+        protected virtual void UpdateTwoHandedLogic(TransformFlags transformType, ref MixedRealityTransform targetTransform)
+        {
+            var handPositionArray = GetHandPositionArray();
+            if (transformType.HasFlag(TransformFlags.Scale))
+            {
+                targetTransform.Scale = scaleLogic.UpdateMap(handPositionArray);
+                constraints.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
+            }
+            if (transformType.HasFlag(TransformFlags.Rotate))
+            {
+                targetTransform.Rotation = rotateLogic.Update(handPositionArray, targetTransform.Rotation);
+                constraints.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
+            }
+            if (transformType.HasFlag(TransformFlags.Move))
+            {
+                // If we are a near-manipulation interaction, the grab pose is simply the grab point centroid, without
+                // any rotation information. If we are a far interaction (hand rays), then we include pointer rotation in
+                // the centroid calculation, leveraging GetPointersPose() for this.
+                MixedRealityPose pose = isNearManipulation ? new MixedRealityPose(GetPointersGrabPoint()) : GetPointersPose();
+                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
+                constraints.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
+            }
+        }
+
+        protected Vector3[] GetHandPositionArray()
         {
             var handPositionMap = new Vector3[pointerIdToPointerMap.Count];
             int index = 0;

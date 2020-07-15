@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Setup function
         /// </summary>
-        public void Setup(MixedRealityPose pointerPose, Vector3 grabCentroid, MixedRealityPose objectPose)
+        public void Setup(Vector3 grabCentroid, MixedRealityPose objectPose)
         {
             originalObjectPose = objectPose;
             originalGrabPosition = grabCentroid;

@@ -49,8 +49,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 34e7c3ac52db9c24db60c64ced52b3ed, type: 3}
-        m_Scale: {x: 9, y: 9}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0.5, y: 0.5}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -79,6 +79,7 @@ Material:
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
+    - _BoxSize: 10
     - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
@@ -119,7 +120,7 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _Mode: 5
-    - _Multiplier: 18.31
+    - _Multiplier: 15.33
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
