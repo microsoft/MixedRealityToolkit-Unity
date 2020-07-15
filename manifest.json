@@ -4259,6 +4259,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Logo_MRTK_Unity_Badge.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Logo_MRTK_Unity_Badge.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Logo_MRTK_Unity_Banner.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Logo_MRTK_Unity_Banner.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/LostTracking/LostTrackingVisualization.jpg",
       "output": {
         "resource": {
@@ -4285,6 +4307,50 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRDL_PeriodicTable.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRDL_Surfaces.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRDL_Surfaces.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRDevDays_Session1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRDevDays_Session1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRDevDays_Session2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRDevDays_Session2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRDevDays_Session3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRDevDays_Session3.png"
         }
       },
       "is_incremental": false,
@@ -8657,7 +8723,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "Pv81FiCBcKXTR1hGFi9f8A=="
+          "hash": "7RiErKLsU/Oz4rR9VI6/RA=="
         }
       },
       "is_incremental": false,
