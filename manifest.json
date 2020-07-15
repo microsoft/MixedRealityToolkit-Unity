@@ -798,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/OculusQuestMRTK.html",
-          "hash": "QfhnbR/lSDTF6jlidrILnQ=="
+          "hash": "Ddp7hV9pi5WqlBzFPC4qnA=="
         }
       },
       "is_incremental": false,
@@ -2642,10 +2642,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusDeviceManagerProfileBeforeClone.png",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusPluginProvider.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusDeviceManagerProfileBeforeClone.png"
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusPluginProvider.png"
         }
       },
       "is_incremental": false,
@@ -2657,6 +2657,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusRunDevice.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png"
         }
       },
       "is_incremental": false,
@@ -28402,17 +28413,17 @@
           "total_file_count": 166,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1639,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1639,
           "skipped_file_count": 0
         }
       }

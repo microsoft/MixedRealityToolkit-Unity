@@ -82,14 +82,22 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="how-to-configure-oculus-quest-in-mrtk-using-the-xrsdk-pipeline">How to configure Oculus Quest in MRTK using the XRSDK pipeline</h1>
 
-<p>A <a href="https://www.ultraleap.com/product/leap-motion-controller/">Oculus Quest</a> is required to use this data provider.</p>
+<p>A <a href="https://www.oculus.com/quest/?locale=en_US">Oculus Quest</a> is required to use this data provider.</p>
 <p>The Oculus XRSDK Data Provider enables the use of the Oculus Quest with MRTK using <a href="https://docs.unity3d.com/Manual/XR.html">Unity's XR Pipeline</a>.
-This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond.
+This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using <strong>Unity 2019.3 or newer</strong>
 The Oculus Quest XR Plugin does not currently support hand tracking. In order to use hand tracking, consult the <a href="https://github.com/provencher/MRTK-Quest">MRTK-Quest</a>
 project which uses the Legacy XR pipeline.</p>
 <h2 id="deploying-to-oculus-quest">Deploying to Oculus Quest</h2>
 <ol>
 <li><p>Follow <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/">these steps</a> to ensure that your project is ready to deploy on Oculus Quest.</p>
+<ul>
+<li>Make sure that the Oculus Plug-in Provider is included in your project by going to <strong>Edit --&gt; Project Settings --&gt; XR Plug-in Management --&gt; Plug-in Providers</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png" alt="OculusPluginProvider"></p>
+<ul>
+<li>If it does not show up ensure that the <strong>Oculus XR Plugin</strong> is installed under <strong>Window --&gt; Package Manager</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png" alt="OculusXRPluginPackage"></p>
 </li>
 <li><p>Ensure that <a href="https://developer.oculus.com/documentation/native/android/mobile-device-setup/">developer mode</a> is enabled on your device. Installing the Oculus ADB Drivers is optional.</p>
 </li>
@@ -109,7 +117,7 @@ project which uses the Legacy XR pipeline.</p>
 </ul>
 <p><img src="../Images/CrossPlatform/CloneInputSystemProfile.png" alt="CloneInputSystemProfile"></p>
 <ul>
-<li>Open the <strong>Input Data Providers</strong> section, select <strong>Add Data Provider</strong> at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the <strong>Type</strong> to <strong>Microsoft.MixedReality.Toolkit.LeapMotion.Input &gt; LeapMotionDeviceManager</strong></li>
+<li>Open the <strong>Input Data Providers</strong> section, select <strong>Add Data Provider</strong> at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the <strong>Type</strong> to <strong>Microsoft.MixedReality.Toolkit.XRSDK.Oculus &gt; OculusXRSDKDeviceManager</strong></li>
 </ul>
 <p><img src="../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png" alt="OculusAddDataProvider"></p>
 </li>
@@ -117,7 +125,7 @@ project which uses the Legacy XR pipeline.</p>
 <ul>
 <li>Plug in your Oculus Quest via a USB 3.0 -&gt; USB C cable</li>
 <li>Navigate to <strong>File &gt; Build Settings</strong></li>
-<li>Change the deployment to Android</li>
+<li>Change the deployment to <strong>Android</strong></li>
 <li>Ensure that the Oculus Quest is selected as the applicable run device</li>
 </ul>
 <p><img src="../Images/CrossPlatform/OculusQuest/OculusRunDevice.png" alt="OculusRunDevice"></p>
@@ -131,7 +139,7 @@ project which uses the Legacy XR pipeline.</p>
 <h2 id="common-errors">Common errors</h2>
 <h3 id="quest-not-recognized-by-unity">Quest not recognized by Unity</h3>
 <p>Make sure your Android paths are properly configured. If you continue to encounter problems, follow this <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/#install-android-tools">guide</a></p>
-<p>Edit --&gt; Preferences --&gt; External Tools --&gt; Android</p>
+<p><strong>Edit &gt; Preferences &gt; External Tools &gt; Android</strong></p>
 <p><img src="../Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png" alt="AndroidToolsConfig"></p>
 </article>
           </div>
