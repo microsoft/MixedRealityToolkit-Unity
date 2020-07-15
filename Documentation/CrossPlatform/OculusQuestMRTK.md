@@ -12,11 +12,11 @@ project which uses the Legacy XR pipeline.
 1. Follow [these steps](https://developer.oculus.com/documentation/unity/book-unity-gsg/) to ensure that your project is ready to deploy on Oculus Quest.
     - Make sure that the Oculus Plug-in Provider is included in your project by going to **Edit --> Project Settings --> XR Plug-in Management --> Plug-in Providers**
 
-    ![OculusPluginProvider](../Images/CrossPlatform/OculusPluginProvider.png)
+    ![OculusPluginProvider](../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png)
 
     - If it does not show up ensure that the **Oculus XR Plugin** is installed under **Window --> Package Manager**
 
-    ![OculusXRPluginPackage](../Images/CrossPlatform/OculusXRPluginPackage.png)
+    ![OculusXRPluginPackage](../Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png)
 
 1. Ensure that [developer mode](https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
