@@ -94,6 +94,8 @@ See [Examples Hub README page](Documentation/README_ExampleHub.md) to learn abou
 
 | [![MRDevDays](Documentation/Images/MRDevDays_Session1.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/Intro-to-MRTK-Unity)| [![MRDevDays](Documentation/Images/MRDevDays_Session2.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/MRTKs-UX-Building-Blocks)| [![MRDevDays](Documentation/Images/MRDevDays_Session3.png)](https://channel9.msdn.com/Shows/Docs-Mixed-Reality/MRTK-Performance-and-Shaders)|
 |:--- | :--- | :--- | 
+
+
 See [Mixed Reality Dev Days](https://docs.microsoft.com/en-us/windows/mixed-reality/mr-dev-days-sessions) to explore more session videos.
 
 # Engage with the community
