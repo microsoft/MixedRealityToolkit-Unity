@@ -323,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
-            HandStateGaze.GestureBlending += gestureAnimDelta;
+            HandStateGaze.GestureBlending = 1.0f;
         }
 
         /// Apply changes to one hand and update tracking
