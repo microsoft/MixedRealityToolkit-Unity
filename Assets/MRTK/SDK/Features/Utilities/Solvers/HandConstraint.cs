@@ -46,12 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AtopPalm = 4
         }
 
-        private static readonly int SolverSafeZoneCount = System.Enum.GetValues(typeof(SolverSafeZone)).Length;
+        // Subtract one here because AtopPalm is not along the palm, in clockwise direction
+        private static readonly int SolverSafeZoneClockwiseCount = System.Enum.GetValues(typeof(SolverSafeZone)).Length - 1;
         private static readonly SolverSafeZone[] handSafeZonesClockWiseRightHand = new SolverSafeZone[] {
             SolverSafeZone.UlnarSide,
             SolverSafeZone.AboveFingerTips,
             SolverSafeZone.RadialSide,
-            SolverSafeZone.BelowWrist
+            SolverSafeZone.BelowWrist,
+            SolverSafeZone.AtopPalm
         };
 
         [Header("Hand Constraint")]
@@ -398,9 +400,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     // we must transform the hit target back into global space.
                     if (palmPose.HasValue)
                     {
-                        var forwardVector = (CameraCache.Main.transform.position - GoalPosition).normalized * ForwardOffset;
-                        goalPosition = ray.origin + (ray.direction + forwardVector) * distance;
                         goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
+                        goalPosition += (CameraCache.Main.transform.position - goalPosition).normalized * ForwardOffset;
                     }
                 }
             }
@@ -607,8 +608,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             var currentSafeZoneClockwiseIdx = System.Array.IndexOf(handSafeZonesClockWiseRightHand, handSafeZone);
 
-            var intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % SolverSafeZoneCount];
-            var fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % SolverSafeZoneCount];
+            var intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % SolverSafeZoneClockwiseCount];
+            var fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % SolverSafeZoneClockwiseCount];
 
             var intSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
             var fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
