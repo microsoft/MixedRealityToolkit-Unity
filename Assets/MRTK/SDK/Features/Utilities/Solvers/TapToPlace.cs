@@ -219,6 +219,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         // Used to mark whether Start() has been called.
         private bool startCalled;
 
+        // Used to mark whether StartPlacement() is called before Start() is called.
+        private bool placementRequested;
+
         #region MonoBehaviour Implementation
         protected override void Start()
         {
@@ -235,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             startCalled = true;
 
-            if (AutoStart)
+            if (AutoStart || placementRequested)
             {
                 StartPlacement();
             }
@@ -260,11 +263,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public void StartPlacement()
         {
-            // Check to see if Start() has been called, if not set AutoStart to true. This will make sure StartPlacement() will be
+            // Check to see if Start() has been called, if not set placementRequested to true. This will make sure StartPlacement() will be
             // called again when Start() is called.
             if (!startCalled)
             {
-                AutoStart = true;
+                placementRequested = true;
                 return;
             }
 

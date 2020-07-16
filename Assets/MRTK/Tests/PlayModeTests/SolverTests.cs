@@ -817,7 +817,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(tapToPlace.IsBeingPlaced);
         }
 
-
         /// <summary>
         /// Tests the UseDefaultSurfaceNormalOffset property for Tap to Place while the object is in the placing state. If the 
         /// UseDefaultSurfaceNormalOffset is true, the object should appear flat against a collider. If false, the object will
@@ -890,6 +889,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             tapToPlace.StopPlacement();
 
             Assert.False(tapToPlace.IsBeingPlaced);
+        }
+
+        /// <summary>
+        /// Tests the functionality of StartPlacement() when called before Start() is called. In this case, StartPlacement should
+        /// do its normal job after Start() is called.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceStartPlacementBeforeStart()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create an inactive cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>(false);
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Call StartPlament() before its Start() is called
+            tapToPlace.StartPlacement();
+
+            // Make sure it is not in beingPlace state
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            //Set the cube to active which causes Start() to be called
+            tapToPlaceObj.target.SetActive(true);
+
+            // Wait until the next frame
+            yield return null;
+
+            // Make sure it is now in beingPlace state
+            Assert.True(tapToPlace.IsBeingPlaced);
+        }
+
+        /// <summary>
+        /// Tests the functionality of StartPlacement() when called after Start() is called. In this case, StartPlacement should
+        /// do its normal job.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceStartPlacementAfterStart()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create an active cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Wait until the next frame
+            yield return null;
+
+            // Call StartPlament() after its Start() is called
+            tapToPlace.StartPlacement();
+
+            // Make sure it is now in beingPlace state
+            Assert.True(tapToPlace.IsBeingPlaced);
         }
 
         #endregion
@@ -1218,11 +1269,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
         }
 
-        private SetupData InstantiateTestSolver<T>() where T : Solver
+        private SetupData InstantiateTestSolver<T>(bool setGameObjectActive = true) where T : Solver
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.name = typeof(T).Name;
             cube.transform.localScale = new Vector3(0.1f, 0.2f, 0.1f);
+            cube.SetActive(setGameObjectActive);
 
             Solver solver = AddSolverComponent<T>(cube);
 
