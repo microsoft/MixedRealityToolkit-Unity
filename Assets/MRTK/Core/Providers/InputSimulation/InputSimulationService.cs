@@ -130,17 +130,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handDataProvider.ResetHand(Handedness.Right);
             }
         }
-
-        /// <summary>
-        /// If true then camera forward direction is used to simulate eye tracking data.    
-        /// </summary>
-        public bool SimulateEyePosition { get; set; }
-
-        /// <summary>
-        /// If true then instead of camera forward, mouse is used.
-        /// Value is ignored if SimulatedEyePosition == false.
-        /// </summary>
-        public bool MouseMovesEyeGaze { get; set; }
+        
+        private EyeGazeSimulationMode eyeGazeSimulationMode;
+        /// <inheritdoc />
+        public EyeGazeSimulationMode EyeGazeSimulationMode
+        {
+            get => eyeGazeSimulationMode;
+            set
+            {
+                eyeGazeSimulationMode = value;
+            }
+        }
 
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return (HandSimulationMode != HandSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
-                    return SimulateEyePosition;
+                    return EyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
             }
 
             return false;
@@ -226,8 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Initialize();
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
-            SimulateEyePosition = InputSimulationProfile.SimulateEyePosition;
-            MouseMovesEyeGaze = InputSimulationProfile.MouseMovesEyeGaze;
+            EyeGazeSimulationMode = InputSimulationProfile.DefaultEyeGazeSimulationMode;
+            //SimulateEyeGaze = InputSimulationProfile.SimulateEyePosition;
+            //MouseMovesEyeGaze = InputSimulationProfile.MouseMovesEyeGaze;
         }
 
         /// <inheritdoc />
@@ -314,19 +315,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (SimulateEyePosition)
+            switch (EyeGazeSimulationMode)
             {
-                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
-                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
-
-                if (MouseMovesEyeGaze)
-                {
-                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition), DateTime.UtcNow);
-                }
-                else
-                {
+                case EyeGazeSimulationMode.Disabled:
+                    break;
+                case EyeGazeSimulationMode.CameraForwardAxis:
+                    // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
                     Service?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
-                }
+                    break;
+                case EyeGazeSimulationMode.Mouse:
+                    // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition), DateTime.UtcNow);
+                    break;
             }
         }
 
