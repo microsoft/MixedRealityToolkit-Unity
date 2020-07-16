@@ -83,7 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 4.72f);
+            cube.transform.localScale = Vector3.one * 0.35f;
+            cube.transform.position = new Vector3(-0.2f, 0.3f, 4.2f);
             yield return null;
 
             // No hands, default cursor should be visible

@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty sphereCastRadius;
         private SerializedProperty pullbackDistance;
         private SerializedProperty nearObjectMargin;
+        private SerializedProperty nearObjectSmoothingFactor;
         private SerializedProperty grabLayerMasks;
         private SerializedProperty triggerInteraction;
         private SerializedProperty sceneQueryBufferSize;
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             sceneQueryBufferSize = serializedObject.FindProperty("sceneQueryBufferSize");
             nearObjectSectorAngle = serializedObject.FindProperty("nearObjectSectorAngle");
             nearObjectMargin = serializedObject.FindProperty("nearObjectMargin");
+            nearObjectSmoothingFactor = serializedObject.FindProperty("nearObjectSmoothingFactor");
             grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
             triggerInteraction = serializedObject.FindProperty("triggerInteraction");
             ignoreCollidersNotInFOV = serializedObject.FindProperty("ignoreCollidersNotInFOV");
@@ -53,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(pullbackDistance);
                     EditorGUILayout.PropertyField(sceneQueryBufferSize);
                     EditorGUILayout.PropertyField(nearObjectMargin);
+                    EditorGUILayout.PropertyField(nearObjectSmoothingFactor);
                     EditorGUILayout.PropertyField(triggerInteraction);
                     EditorGUILayout.PropertyField(grabLayerMasks, true);
                     EditorGUILayout.PropertyField(ignoreCollidersNotInFOV);
