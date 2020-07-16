@@ -12462,6 +12462,54 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickController.html",
+          "hash": "oTWZ4n0sOUYYRXz6g8KtxQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickMode.html",
+          "hash": "zl+FOmW+1FR9avCHA+995w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickSliders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.JoystickSliders.html",
+          "hash": "DbONqoLjAICFP9QFWIOjhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Joystick.html",
+          "hash": "MnvMI4krBKmgzWWuigEXVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticExtentProperties-1.yml",
       "output": {
         ".html": {
@@ -21918,6 +21966,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.JoystickTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.JoystickTests.html",
+          "hash": "fgfOvJHhCAE+qmH3AKT33w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.yml",
       "output": {
         ".html": {
@@ -22282,7 +22342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "pxUH3XinCSo8KztVNrgopw=="
+          "hash": "blj1pt+ie/W0rOb2I/4cVg=="
         }
       },
       "is_incremental": false,
@@ -28378,7 +28438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1mzCZTplM1Ktc5Wn0kbdsw=="
+          "hash": "4SDFy3p/S638nrRV35FvvA=="
         }
       },
       "is_incremental": false,
@@ -28446,7 +28506,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1636,
+          "total_file_count": 1641,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
