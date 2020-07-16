@@ -130,7 +130,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handDataProvider.ResetHand(Handedness.Right);
             }
         }
-        
+
+        /// <summary>
+        /// If true then camera forward direction is used to simulate eye tracking data.    
+        /// </summary>
+        [Obsolete("Check the EyeGazeSimulationMode instead")]
+        public bool SimulateEyePosition => eyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+
         private EyeGazeSimulationMode eyeGazeSimulationMode;
         /// <inheritdoc />
         public EyeGazeSimulationMode EyeGazeSimulationMode
@@ -227,8 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
             EyeGazeSimulationMode = InputSimulationProfile.DefaultEyeGazeSimulationMode;
-            //SimulateEyeGaze = InputSimulationProfile.SimulateEyePosition;
-            //MouseMovesEyeGaze = InputSimulationProfile.MouseMovesEyeGaze;
         }
 
         /// <inheritdoc />

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -183,6 +184,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public string LookVertical => lookVertical;
 
+        /// <summary>
+        /// Enable eye gaze simulation
+        /// </summary>
+        [Obsolete("Check the EyeGazeSimulationMode instead")]
+        public bool SimulateEyePosition => defaultEyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+
         [Header("Eye Gaze Simulation")]
         [SerializeField]
         [Tooltip("Enable eye gaze simulation")]
@@ -190,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private EyeGazeSimulationMode defaultEyeGazeSimulationMode = EyeGazeSimulationMode.Disabled;
 
         /// <summary>
-        /// Enable hand simulation
+        /// Enable eye gaze simulation
         /// </summary>
         public EyeGazeSimulationMode DefaultEyeGazeSimulationMode => defaultEyeGazeSimulationMode;
 
