@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
+            if (gltfMaterial.emissiveTexture?.index >= 0 && material.HasProperty("_EmissionMap"))
             {
                 material.EnableKeyword("_EMISSION");
                 material.SetColor(EmissiveColorId, gltfMaterial.emissiveFactor.GetColorValue());
