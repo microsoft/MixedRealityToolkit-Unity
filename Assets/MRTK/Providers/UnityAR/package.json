@@ -1,0 +1,32 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.unityar",
+    "displayName": "Mixed Reality Toolkit Mobile AR Provider",
+    "version": "2.5.0-preview.0",
+    "unity": "2018.4",
+    "description": "Platform support for mobile device AR on the Microsoft Mixed Reality Toolkit",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "mobile",
+        "android",
+        "ios"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "2.5.0-preview.0",
+        "com.unity.xr.arfoundation": "1.5.0-preview.6"
+    }
+}

@@ -34,15 +34,15 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
     - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
 
-    ![LeapMotionProfileClone](../Images/CrossPlatform/LeapMotion/LeapProfileClone.png)
+    ![LeapMotionProfileClone](../Images/CrossPlatform/CloneProfile.png)
 
     - Select the **Input** Configuration Profile
 
-    ![InputConfigurationProfile](../Images/CrossPlatform/LeapMotion/LeapInputConfigurationProfile.png)
+    ![InputConfigurationProfile](../Images/CrossPlatform/InputConfigurationProfile.png)
 
     - Select **Clone** in the input system profile to enable modification.
 
-    ![LeapMotionInputProfileClone](../Images/CrossPlatform/LeapMotion/LeapCloneInputSystemProfile.png)
+    ![LeapMotionInputProfileClone](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
     - Open the **Input Data Providers** section, select **Add Data Provider** at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.LeapMotion.Input > LeapMotionDeviceManager**
 
