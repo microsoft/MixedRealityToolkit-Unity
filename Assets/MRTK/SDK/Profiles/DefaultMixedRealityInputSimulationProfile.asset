@@ -41,7 +41,7 @@ MonoBehaviour:
   moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  defaultEyeGazeSimulationMode: 1
+  defaultEyeGazeSimulationMode: 0
   defaultHandSimulationMode: 2
   toggleLeftHandKey:
     bindingType: 2

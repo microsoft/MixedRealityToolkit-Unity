@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case EyeGazeSimulationMode.Mouse:
                     // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
                     Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
-                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition), DateTime.UtcNow);
+                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, CameraCache.main.ScreenPointToRay(UnityEngine.Input.mousePosition), DateTime.UtcNow);
                     break;
             }
         }
