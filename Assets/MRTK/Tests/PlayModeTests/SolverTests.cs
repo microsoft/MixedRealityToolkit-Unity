@@ -910,7 +910,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Make sure it is not in beingPlace state
             Assert.False(tapToPlace.IsBeingPlaced);
 
-            //Set the cube to active which causes Start() to be called
+            // Set the cube to active which causes Start() to be called
             tapToPlaceObj.target.SetActive(true);
 
             // Wait until the next frame
