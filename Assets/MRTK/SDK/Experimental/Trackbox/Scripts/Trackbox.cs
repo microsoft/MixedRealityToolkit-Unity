@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Trackbox : ObjectManipulator
@@ -15,6 +16,22 @@ public class Trackbox : ObjectManipulator
     {
         get => manipulationScale;
         set => manipulationScale = value;
+    }
+
+    [SerializeField]
+    private AnimationCurve manipulationCurve;
+    public AnimationCurve ManipulationCurve
+    {
+        get => manipulationCurve;
+        set => manipulationCurve = value;
+    }
+
+    [SerializeField]
+    private TextMeshPro scaleLabel;
+    public TextMeshPro ScaleLabel
+    {
+        get => scaleLabel;
+        set => scaleLabel = value;
     }
 
     [SerializeField]
@@ -117,8 +134,8 @@ public class Trackbox : ObjectManipulator
     // Update is called once per frame
     void Update()
     {
-        ManipulationScale = (1.0f / transform.lossyScale.x) * 20.0f;
-        UpdateToggles();
+        ManipulationScale = ManipulationCurve.Evaluate(transform.lossyScale.x);
+        scaleLabel.text = ManipulationScale.ToString("F1") + "x";
     }
 
     public void UpdateToggles()
