@@ -8363,7 +8363,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "TotKJt1se9RbbZrhLe6PIg=="
+          "hash": "sA2W5WsvprM+8BOX9A0Ghg=="
         }
       },
       "is_incremental": false,
@@ -14694,6 +14694,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.EyeGazeSimulationMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.EyeGazeSimulationMode.html",
+          "hash": "XdyuUCcNwOpSi0EyXsE+KQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.yml",
       "output": {
         ".html": {
@@ -14950,7 +14962,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IInputSimulationService.html",
-          "hash": "ZdfY9V2QsMQxVzk9hRYFig=="
+          "hash": "TFhWuRH4EHtuyVpPuUabhA=="
         }
       },
       "is_incremental": false,
@@ -15766,7 +15778,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
-          "hash": "tZAiXYU8mcvX1ppIED/iUQ=="
+          "hash": "euS8nDS1rDG9zQ9PLY8pTA=="
         }
       },
       "is_incremental": false,
@@ -16246,7 +16258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html",
-          "hash": "dipNLLFHS8PhErXAcYleQw=="
+          "hash": "I02WdgElAXA3pm4IIgUpjQ=="
         }
       },
       "is_incremental": false,
@@ -17086,7 +17098,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "P/wkxjZlUJ/1Yl6Qd6kkXQ=="
+          "hash": "rZIeIRImuo6h1kQNIyUwXw=="
         }
       },
       "is_incremental": false,
@@ -28438,7 +28450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4SDFy3p/S638nrRV35FvvA=="
+          "hash": "/NQhtHQ5hQ2bwdsa82R2ug=="
         }
       },
       "is_incremental": false,
@@ -28490,16 +28502,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 166,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1641,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -28509,11 +28522,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1642,
           "skipped_file_count": 0
         }
       }

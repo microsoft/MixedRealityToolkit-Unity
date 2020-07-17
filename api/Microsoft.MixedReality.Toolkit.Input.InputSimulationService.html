@@ -305,6 +305,32 @@ public InputSimulationService(IMixedRealityServiceRegistrar registrar, IMixedRea
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_EyeGazeSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.EyeGazeSimulationMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_EyeGazeSimulationMode" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.EyeGazeSimulationMode">EyeGazeSimulationMode</h4>
+  <div class="markdown level1 summary"><p>Simulated eye gaze behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EyeGazeSimulationMode EyeGazeSimulationMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.EyeGazeSimulationMode.html">EyeGazeSimulationMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_HandDataLeft_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.HandDataLeft*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_InputSimulationService_HandDataLeft" data-uid="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.HandDataLeft">HandDataLeft</h4>
   <div class="markdown level1 summary"><p>Pose data for the left hand.</p>
@@ -624,7 +650,8 @@ public InputSimulationService(IMixedRealityServiceRegistrar registrar, IMixedRea
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SimulateEyePosition { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Check the EyeGazeSimulationMode instead&quot;)]
+public bool SimulateEyePosition { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">

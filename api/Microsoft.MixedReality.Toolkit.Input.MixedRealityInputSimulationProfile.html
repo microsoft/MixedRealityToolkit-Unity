@@ -183,6 +183,32 @@ public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile</code>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_DefaultEyeGazeSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.DefaultEyeGazeSimulationMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_DefaultEyeGazeSimulationMode" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.DefaultEyeGazeSimulationMode">DefaultEyeGazeSimulationMode</h4>
+  <div class="markdown level1 summary"><p>Enable eye gaze simulation</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EyeGazeSimulationMode DefaultEyeGazeSimulationMode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.EyeGazeSimulationMode.html">EyeGazeSimulationMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_DefaultHandDistance_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.DefaultHandDistance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_DefaultHandDistance" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.DefaultHandDistance">DefaultHandDistance</h4>
   <div class="markdown level1 summary"><p>Default distance of the hand from the camera</p>
@@ -1095,12 +1121,13 @@ public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile</code>
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_SimulateEyePosition_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.SimulateEyePosition*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputSimulationProfile_SimulateEyePosition" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.SimulateEyePosition">SimulateEyePosition</h4>
-  <div class="markdown level1 summary"><p>Enable eye simulation</p>
+  <div class="markdown level1 summary"><p>Enable eye gaze simulation</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SimulateEyePosition { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Check the EyeGazeSimulationMode instead&quot;)]
+public bool SimulateEyePosition { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
