@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Additional degree offset to apply from the stated SafeZone." + 
+        [Tooltip("Additional degree offset to apply from the stated SafeZone. Ignored if Safe Zone is Atop Palm" + 
         " Direction is clockwise on the left hand and anti-clockwise on the right hand.")]
         private float safeZoneAngleOffset = 0;
 
@@ -591,7 +591,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 origin, Transform targetTransform, IMixedRealityController hand,
             SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset)
         {
-            if (angleOffset == 0)
+            // Ignore the angle offset if safe zone is atop palm, does not apply in that case.
+            if (angleOffset == 0 || handSafeZone == SolverSafeZone.AtopPalm)
             {
                 return CalculateProjectedSafeZoneRay(origin, targetTransform, hand, handSafeZone, offsetBehavior);
             }

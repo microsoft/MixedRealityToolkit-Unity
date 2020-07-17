@@ -1309,8 +1309,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
-            yield return hand.Hide();
+            // Test forward offset 
+            var palmConstraint = testObjects.solver as HandConstraint;
+            float forwardOffset = -0.5f;
             yield return null;
+            do
+            {
+                Vector3 prevPosition = testObjects.target.transform.position;
+                forwardOffset += 0.1f;
+                palmConstraint.ForwardOffset = forwardOffset;
+                yield return null;
+                Vector3 curPosition = testObjects.target.transform.position;
+                Vector3 deltaPos = curPosition - prevPosition;
+                Assert.True(Vector3.Dot(deltaPos, CameraCache.Main.transform.forward) > 0, "Increasing forward offset is expected to move object away from camera.");
+            } while (forwardOffset < 0.5f);
+
+            
         }
 
         /// <summary>
