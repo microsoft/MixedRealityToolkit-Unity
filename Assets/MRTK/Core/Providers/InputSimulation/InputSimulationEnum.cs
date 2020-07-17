@@ -12,6 +12,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Walk,
     }
 
+    public enum EyeGazeSimulationMode
+    {
+        // Disable eye gaze simulation
+        Disabled,
+        // Eye gaze follows the camera forward axis
+        CameraForwardAxis,
+        // Eye gaze follows the mouse
+        Mouse,
+    }
+
     public enum HandSimulationMode
     {
         // Disable hand simulation
