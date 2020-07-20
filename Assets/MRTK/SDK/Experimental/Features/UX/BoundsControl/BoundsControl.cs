@@ -129,8 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Visuals")]
-
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
         private FlattenModeType flattenAxis = FlattenModeType.DoNotFlatten;
@@ -233,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => handleProximityEffectConfiguration = value;
         }
 
-        [Header("Debug")]
+        //[Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
         private TextMesh debugText;
         /// <summary>
@@ -307,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleLerpTime = value;
         }
 
-        [Header("Events")]
+        //[Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
