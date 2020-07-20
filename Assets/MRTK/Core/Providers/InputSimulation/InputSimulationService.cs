@@ -135,7 +135,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// If true then camera forward direction is used to simulate eye tracking data.    
         /// </summary>
         [Obsolete("Check the EyeGazeSimulationMode instead")]
-        public bool SimulateEyePosition => eyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+        public bool SimulateEyePosition
+        {
+            get
+            {
+                return eyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+            }
+            set
+            {
+                eyeGazeSimulationMode = value ? EyeGazeSimulationMode.CameraForwardAxis : EyeGazeSimulationMode.Disabled;
+            }
+        }
 
         private EyeGazeSimulationMode eyeGazeSimulationMode;
         /// <inheritdoc />
