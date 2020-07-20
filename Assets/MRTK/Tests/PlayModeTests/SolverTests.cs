@@ -1332,6 +1332,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handConstraintSolver.UseGazeActivation = true;
 
             handConstraintSolver.SafeZone = safeZone;
+            testObjects.solver.Smoothing = false;
 
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
             Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
@@ -1354,29 +1355,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.SetRotation(handRotation);
             yield return null;
 
-            var delta = new Vector3(0.5f, 0.5f, 0f);
-            yield return hand.Move(delta, 5);
-            yield return null;
-
             // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
             // Test forward offset 
             var palmConstraint = testObjects.solver as HandConstraint;
-            float forwardOffset = -0.5f;
-            yield return null;
-            do
+            if (safeZone != HandConstraint.SolverSafeZone.AtopPalm)
             {
-                Vector3 prevPosition = testObjects.target.transform.position;
-                forwardOffset += 0.1f;
-                palmConstraint.ForwardOffset = forwardOffset;
+                palmConstraint.ForwardOffset = -0.6f;
                 yield return null;
-                Vector3 curPosition = testObjects.target.transform.position;
-                Vector3 deltaPos = curPosition - prevPosition;
-                Assert.True(Vector3.Dot(deltaPos, CameraCache.Main.transform.forward) > 0, "Increasing forward offset is expected to move object away from camera.");
-            } while (forwardOffset < 0.5f);
+                for(float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
+                {
+                    Vector3 prevPosition = testObjects.target.transform.position;
+                    palmConstraint.ForwardOffset = forwardOffset;
+                    yield return null;
+                    Vector3 curPosition = testObjects.target.transform.position;
+                    Vector3 deltaPos = curPosition - prevPosition;
+                    float actual = Vector3.Dot(deltaPos, CameraCache.Main.transform.forward);
+                    string debugStr = $"forwardOffset: {palmConstraint.ForwardOffset} prevPosition: {prevPosition.ToString("0.0000")} curPosition: {curPosition.ToString("0.0000")}, {actual}";
+                    // Debug.Log("debugStr: " + debugStr);
+                    Assert.True(actual < 0, $"Increasing forward offset is expected to move object toward camera. {debugStr}");
+                }
+            }
 
-            
+            yield return hand.Hide();
         }
 
         /// <summary>
