@@ -168,14 +168,14 @@ foreach ($entry in $packages.GetEnumerator()) {
     $samplesFolder = "$packagePath\Samples~"
      
     if ($packageName -eq "examples") {
-        # The examples folder needs a custom setup step
-        # todo
+        # The examples folder is a collection of sample projects. In order to perform the necessary
+        # preparaton, without overly complicating this script, we will use a helper script to prepare
+        # the folder.
         Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         # are packaged in the examples package.
-
         $exampleFolder = "$packagePath\Examples"
         if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
