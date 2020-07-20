@@ -12,6 +12,8 @@
     git tag pointing to HEAD is searched. If none is found, an error is reported.
 .PARAMETER OutputTarget
     What is the target for the artifacts? To the Official server ("official"), test server ("test") or local folder ("local")?
+.PARAMETER ProjectRoot
+    The root folder of the project.
 #>
 param(
     [ValidatePattern("^\d+\.\d+\.\d+")]
@@ -19,7 +21,8 @@ param(
     [string]$OutputDirectory = ".\artifacts\upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
     [string]$PackageVersion,
-    [string]$OutputTarget = "local"
+    [string]$OutputTarget = "local",
+    [string]$ProjectRoot
 )
 
 if (-not $PackageVersion) {
@@ -33,8 +36,11 @@ if ($OutputTarget -eq "local") {
     $OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
 }
 
-$projectRoot = Resolve-Path "$(Get-Location)\..\.." 
-$scriptPath = "$projectRoot\scripts\packaging"
+if (-not $ProjectRoot) {
+    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
+    $ProjectRoot = Resolve-Path "$(Get-Location)\..\.." 
+}
+$scriptPath = "$ProjectRoot\scripts\packaging"
 
 $scope = "com.microsoft.mixedreality"
 $product = "toolkit"
@@ -49,7 +55,7 @@ $product = "toolkit"
 # Note that capitalization below in the key itself is significant. Capitalization
 # in the values is not significant.
 #
-# These paths are projectRoot relative.
+# These paths are ProjectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
     # providers
@@ -106,7 +112,7 @@ if ($nodejsInstalled -eq $false)
 # 5) Cleanup files created and/or modified
 
 $npmrcFile = ".npmrc"
-$npmrcFileFullPath = "$projectRoot\scripts\packaging\$npmrcFile.$OutputTarget"
+$npmrcFileFullPath = "$scriptPath\$npmrcFile.$OutputTarget"
 $cmdFullPath = "$env:systemroot\system32\cmd.exe"
 $npmCommand = "pack"
 $updateAuth = $true
@@ -115,7 +121,7 @@ $isLocalBuild = ($OutputTarget -eq "local")
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
-    $packagePath = "$projectRoot\$packageFolder"
+    $packagePath = "$ProjectRoot\$packageFolder"
     $npmrcBackup = "$npmrcFile.mrtk-bak"
   
     # Switch to the folder containing the package.json file

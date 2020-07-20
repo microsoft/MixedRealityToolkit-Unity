@@ -7,7 +7,7 @@
     The root folder containing the examples package contents. If not specified, the current folder is presumed.
 #>
 param(
-    $PackageRoot = "$(Get-Location)"
+    [string]$PackageRoot = "$(Get-Location)"
 )
 
 # This hashtable contains mappings of the sample categories to the folder which contains
