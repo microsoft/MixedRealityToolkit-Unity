@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("Constrain rotation about an axis")]
-        private AxisFlags constraintOnRotation = 0;
+        private AxisFlags constraintOnRotation = AxisFlags.None;
 
         /// <summary>
         /// Constrain rotation about an axis
