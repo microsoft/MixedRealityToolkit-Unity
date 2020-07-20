@@ -1,0 +1,3 @@
+registry=https://microsoft.pkgs.visualstudio.com/Analog/_packaging/MixedReality-UPM-Internal/npm/registry/
+
+always-auth=true

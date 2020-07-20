@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -83,7 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 4.72f);
+            cube.transform.localScale = Vector3.one * 0.35f;
+            cube.transform.position = new Vector3(-0.2f, 0.3f, 4.2f);
             yield return null;
 
             // No hands, default cursor should be visible
@@ -104,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Enabling eye tracking data
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            inputSimulationService.SimulateEyePosition = true;
+            inputSimulationService.EyeGazeSimulationMode = EyeGazeSimulationMode.CameraForwardAxis;
             yield return null;
 
             // Eye based gaze cursor should still be invisible

@@ -33,14 +33,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         public WindowsMixedRealityXRSDKArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            handDefinition = new WindowsMixedRealityArticulatedHandDefinition(inputSource, controllerHandedness);
+            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+            handMeshProvider = new WindowsMixedRealityHandMeshProvider(this);
         }
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
+        private readonly ArticulatedHandDefinition handDefinition;
+        private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
@@ -108,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 {
                     if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
                     {
-                        handDefinition?.UpdateHandMesh(sourceState);
+                        handMeshProvider?.UpdateHandMesh(sourceState);
                         break;
                     }
                 }

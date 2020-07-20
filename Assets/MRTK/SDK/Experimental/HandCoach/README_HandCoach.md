@@ -103,8 +103,8 @@ The provided prefabs “RotatingHandCoachRoot_L.prefab” and “RotatingHandCoa
 - **AnimationCurve** This is defaulted to a linear curve, but you can alter the curve to provide easing in/out when starting and stopping the motion path.
 - **RotationVector** How many degrees to rotate along each axis.
 
-#### Controlling MoveToTarget via script
+#### Controlling RotateAroundPoint via script
 In your custom script, make a call to RotateToTarget() when you want the hand rig to begin its rotation around the CenteredParent. When you want the position to reset to the original PivotPosition, make a call to ResetAndDeterminePivot().
 
-#### Controlling MoveToTarget via animations
+#### Controlling RotateAroundPoint via animations
 In the animation that needs to move, set two events: one with a call to ResetAndDeterminePivot() and one with a call to RotateToTarget(). ResetAndDeterminePivot should be set on the first keyframe, since it causes the hand rig to reset to the PivotPosition. RotateToTarget should be set on the keyframe where you want the rig to begin rotating around the CenteredParent. This is how the script functionality is used in the provided prefabs.

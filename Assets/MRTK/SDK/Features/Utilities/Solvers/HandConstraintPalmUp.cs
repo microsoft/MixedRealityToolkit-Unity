@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
@@ -355,6 +355,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     {
                         return false;
                     }
+                case SolverSafeZone.AtopPalm:
+                    referenceJoint1 = TrackedHandJoint.Palm;
+                    referenceJoint2 = TrackedHandJoint.Palm;
+                    break;
                 case SolverSafeZone.RadialSide:
                     referenceJoint1 = TrackedHandJoint.IndexKnuckle;
                     referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;

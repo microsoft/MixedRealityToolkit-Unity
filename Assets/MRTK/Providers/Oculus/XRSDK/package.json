@@ -1,0 +1,34 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.oculus",
+    "displayName": "Mixed Reality Toolkit Oculus",
+    "version": "%version%",
+    "unity": "2019.4",
+    "description": "Platform support for Oculus based devices on the Microsoft Mixed Reality Toolkit",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "quest",
+        "windows",
+        "immersive",
+        "xrsdk"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "%version%",
+        "com.microsoft.mixedreality.toolkit.xrplugin": "%version%",
+        "com.unity.xr.oculus": "1.3.4"
+    }
+}
