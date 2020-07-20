@@ -1,0 +1,34 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.wmr",
+    "displayName": "Mixed Reality Toolkit Windows Mixed Reality",
+    "version": "%version%",
+    "unity": "2019.4",
+    "description": "Platform support for Windows Mixed Reality devices on the Microsoft Mixed Reality Toolkit",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens",
+        "windows",
+        "immersive"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "%version%",
+        "com.microsoft.mixedreality.toolkit.wmr.shared": "%version%",
+        "com.microsoft.mixedreality.toolkit.xrplugin": "%version%",
+        "com.unity.xr.windowsmr": "2.2.0"
+    }
+}

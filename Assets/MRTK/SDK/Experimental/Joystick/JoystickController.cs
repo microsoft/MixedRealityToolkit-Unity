@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
@@ -13,13 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
     /// </summary>
     public class JoystickController : MonoBehaviour
     {
-        [SerializeField]
+        [Experimental]
+        [SerializeField, FormerlySerializedAs("objectToManipulate")]
         [Tooltip("The large or small game object that receives manipulation by the joystick.")]
-        private GameObject objectToManipulate = null;
-        public GameObject ObjectToManipulate
+        private GameObject targetObject = null;
+        public GameObject TargetObject
         {
-            get => objectToManipulate;
-            set => objectToManipulate = value;
+            get => targetObject;
+            set => targetObject = value;
         }
 
         [SerializeField]
@@ -65,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
         public float MoveSpeed = 0.01f;
 
         [Tooltip("The rotation multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
-        [Range(0.001f, 0.1f)]
+        [Range(0.01f, 1f)]
         public float RotationSpeed = 0.05f;
 
         [Tooltip("The scale multiplier for joystick input. Customize this value to get the right feel for your scenario.")]
@@ -116,37 +118,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Joystick
 
         private void ApplyJoystickValues()
         {
-            if (ObjectToManipulate != null)
+            if (TargetObject != null)
             {
                 if(Mode == JoystickMode.Move)
                 {
-                    ObjectToManipulate.transform.position += (joystickGrabberPosition * MoveSpeed);
+                    TargetObject.transform.position += (joystickGrabberPosition * MoveSpeed);
                     if (debugText != null)
                     {
-                        debugText.text = ObjectToManipulate.transform.position.ToString();
+                        debugText.text = TargetObject.transform.position.ToString();
                     }
                 }
                 else if(Mode == JoystickMode.Rotate)
                 {
-                    Vector3 newRotation = ObjectToManipulate.transform.rotation.eulerAngles;
+                    Vector3 newRotation = TargetObject.transform.rotation.eulerAngles;
                     // only take the horizontal axis from the joystick
                     newRotation.y += (joystickGrabberPosition.x * RotationSpeed);
                     newRotation.x = 0;
                     newRotation.z = 0;
-                    ObjectToManipulate.transform.localRotation = Quaternion.Euler(newRotation);
+                    TargetObject.transform.localRotation = Quaternion.Euler(newRotation);
                     if (debugText != null)
                     {
-                        debugText.text = ObjectToManipulate.transform.localRotation.eulerAngles.ToString();
+                        debugText.text = TargetObject.transform.localRotation.eulerAngles.ToString();
                     }
                 }
                 else if(Mode == JoystickMode.Scale)
                 {
                     // TODO: Clamp above zero
                     Vector3 newScale = new Vector3(joystickGrabberPosition.x, joystickGrabberPosition.x, joystickGrabberPosition.x) * ScaleSpeed;
-                    ObjectToManipulate.transform.localScale += newScale;
+                    TargetObject.transform.localScale += newScale;
                     if (debugText != null)
                     {
-                        debugText.text = ObjectToManipulate.transform.localScale.ToString();
+                        debugText.text = TargetObject.transform.localScale.ToString();
                     }
                 }
             }

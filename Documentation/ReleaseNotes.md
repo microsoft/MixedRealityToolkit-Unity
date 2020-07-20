@@ -7,6 +7,27 @@
 
 ### What's new
 
+**Oculus Quest XRSDK support**
+
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
+
+**Input Simulation Cheat Sheet**
+The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
+
+![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
+
+**Input Simulation Eye Gaze with Mouse**
+Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation Mode` field in the input simulation profile and set it to Mouse. This replaces the previous `Simulate Eye Position` field 
+
+![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
+
+**Conical Grab Pointer**
+
+Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
+interface, which queries for nearby objects using a cone. The DefaultHoloLens2InputSystemProfile has also been adjusted to use the new `ConicalGrabPointer`.
+
 **TestUtilities package**
 
 There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
