@@ -52,23 +52,23 @@ $product = "toolkit"
 # These paths are projectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
-    # providers
-    "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
-    "unityar" = "Assets\MRTK\Providers\UnityAR";
-    "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
-    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
-    "xrplugin" = "Assets\MRTK\Providers\XRSDK";
-    # extensions
-    "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
-    "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
-    "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
-    # other packages
-    "tools" = "Assets\MRTK\Tools";
-    "testutilties" = "Assets\MRTK\Tests\TestUtilities";
+    # # providers
+    # "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
+    # "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
+    # "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
+    # "unityar" = "Assets\MRTK\Providers\UnityAR";
+    # "windows" = "Assets\MRTK\Providers\Windows";
+    # "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
+    # "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
+    # "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
+    # "xrplugin" = "Assets\MRTK\Providers\XRSDK";
+    # # extensions
+    # "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
+    # "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
+    # "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
+    # # other packages
+    # "tools" = "Assets\MRTK\Tools";
+    # "testutilties" = "Assets\MRTK\Tests\TestUtilities";
     "examples" = "Assets\MRTK\Examples";
 }
 
@@ -163,7 +163,8 @@ foreach ($entry in $packages.GetEnumerator()) {
      
     if ($packageName -eq "examples") {
         # The examples folder needs a custom setup step
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1" -NoNewWindow -Wait
+        # todo
+        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples

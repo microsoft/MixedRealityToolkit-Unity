@@ -3,16 +3,19 @@
     Prepares the MRTK\Examples folder for UPM packaging.
 .DESCRIPTION
     Prepares the MRTK\Examples folder for UPM packaging.
+.PARAMETER PackageRoot
+    The root folder containing the examples package contents. If not specified, the current folder is presumed.
 #>
-
-$packageRoot = "$(Get-Location)"
+param(
+    $PackageRoot = "$(Get-Location)"
+)
 
 # This hashtable contains mappings of the sample categories to the folder which contains
 # the code and assets.
 #
 # Note that capitalization below in the key itself is significant.
 #
-# These paths are packageRoot relative.
+# These paths are PackageRoot relative.
 $exampleFolders = [ordered]@{
     "Demos" = "Demos";
     "Experimental" = "Experimental";
@@ -28,7 +31,7 @@ $exampleFolders = [ordered]@{
 # 5) Overwrite the package.json file
 
 # Ensure the required folder exists
-$samplesFolder = "$packageRoot\Samples~"
+$samplesFolder = "$PackageRoot\Samples~"
 if (-not (Test-Path -Path $samplesFolder)) {
     New-Item $samplesFolder -ItemType Directory | Out-Null
 }
@@ -36,9 +39,9 @@ if (-not (Test-Path -Path $samplesFolder)) {
 # Copy each example folder
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     $sampleGroupName = $entry.Name
-    Write-Output "Copying $packageRoot\$sampleGroupName to $samplesFolder\$sampleGroupName"
-    Copy-Item -Path "$packageRoot\$sampleGroupName" -Destination "$samplesFolder\$sampleGroupName" -Recurse -Force
-    Copy-Item -Path "$packageRoot\$sampleGroupName.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
+    Write-Output "Copying $PackageRoot\$sampleGroupName to $samplesFolder\$sampleGroupName"
+    Copy-Item -Path "$PackageRoot\$sampleGroupName" -Destination "$samplesFolder\$sampleGroupName" -Recurse -Force
+    Copy-Item -Path "$PackageRoot\$sampleGroupName.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
 }
 
 # Create the samples data for the package.json file
@@ -79,7 +82,7 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
 $samples = $samples + "`n   ]"
 
 # Update the project.json file to specify the samples contanined in the package
-$packageJsonPath = "$packageRoot\package.json"
+$packageJsonPath = "$PackageRoot\package.json"
 $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
 $packageJson = ($packageJson -replace "%samples%", $samples)
 [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
