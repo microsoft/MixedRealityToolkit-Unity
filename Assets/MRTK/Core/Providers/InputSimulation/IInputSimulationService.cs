@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         MixedRealityInputSimulationProfile InputSimulationProfile { get; }
 
         /// <summary>
+        /// Simulated eye gaze behavior.
+        /// </summary>
+        EyeGazeSimulationMode EyeGazeSimulationMode { get; set; }
+
+        /// <summary>
         /// Simulated hand behavior.
         /// </summary>
         HandSimulationMode HandSimulationMode { get; set; }

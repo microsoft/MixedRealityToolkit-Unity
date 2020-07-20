@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             overlappingPositions.Clear();
+            dockingState = DockingState.Undocked;
         }
 
         /// <summary>

@@ -16,8 +16,9 @@ Three key steps are required to listen for touch and/or grab input events on a p
 
     ![Grab Pointer Profile Example](../Images/Input/Pointers/GrabPointer_MRTKProfile.png)
 
-    The default grab point will query for nearby objects in a sphere around the grab point. By replacing the prefab with the `ConicalGrabPointer` prefab
-    (Assets/MRTK/SDK/Features/UX/Prefabs/Pointers) , you can change the behavior to more closely resemble the default Hololens 2 interface, which queries for nearby objects using a cone.
+    The default grab pointer queries for nearby objects in a cone around the grab point to match the default Hololens 2 interface.
+
+    ![Conical Grab Pointer](https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png)
 
 1. On the GameObject that should be grabbable, add a [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable), as well as a collider.
 
