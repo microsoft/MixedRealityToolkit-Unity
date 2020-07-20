@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -1091,6 +1091,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
 
+        // Used to record the initial size of the bounds override, if it exists.
+        // Necessary because BoxPadding will destructively edit the size of the
+        // override BoxCollider, and repeated calls to BoxPadding will result
+        // in the override bounds growing continually larger/smaller.
+        private Vector3? initialBoundsOverrideSize = null;
+
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
         private static readonly string rigRootName = "rigRoot";
@@ -1196,6 +1202,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void CreateRig()
         {
+            // Record what the initial size of the bounds override
+            // was when we constructed the rig, so we can restore
+            // it after we destructively edit the size with the
+            // BoxPadding (#7997)
+            if (boundsOverride != null)
+            {
+                initialBoundsOverrideSize = boundsOverride.size;
+            }
             DestroyRig();
             SetMaterials();
             InitializeRigRoot();
@@ -1317,7 +1331,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                boundsOverride.size -= boxPadding;
+                // If we have previously logged an initial bounds size,
+                // reset the boundsOverride BoxCollider to the initial size.
+                // This is because the CalculateBoxPadding
+                if (initialBoundsOverrideSize.HasValue)
+                {
+                    boundsOverride.size = initialBoundsOverrideSize.Value;
+                }
 
                 if (TargetBounds != null)
                 {

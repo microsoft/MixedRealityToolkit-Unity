@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 name = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name
             };
 
-            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture?.index >= 0)
             {
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
@@ -273,13 +273,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
+            if (gltfMaterial.emissiveTexture?.index >= 0 && material.HasProperty("_EmissionMap"))
             {
                 material.EnableKeyword("_EMISSION");
                 material.SetColor(EmissiveColorId, gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture?.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
 
 
-            if (gltfMaterial.normalTexture.index >= 0)
+            if (gltfMaterial.normalTexture?.index >= 0)
             {
                 material.SetTexture(NormalMapId, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.SetFloat(NormalMapScaleId, (float)gltfMaterial.normalTexture.scale);
@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 name = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name
             };
 
-            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture?.index >= 0)
             {
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
@@ -387,7 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0)
+            if (gltfMaterial.emissiveTexture?.index >= 0)
             {
                 material.EnableKeyword("_EmissionMap");
                 material.EnableKeyword("_EMISSION");
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.SetColor(EmissionColorId, gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture?.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.EnableKeyword("_METALLICGLOSSMAP");
             }
 
-            if (gltfMaterial.normalTexture.index >= 0)
+            if (gltfMaterial.normalTexture?.index >= 0)
             {
                 material.SetTexture(BumpMapId, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.EnableKeyword("_BumpMap");

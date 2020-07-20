@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // release the click on the cube
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
@@ -109,7 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 1.2f);
+            cube.transform.localScale = Vector3.one * 0.3f;
+            cube.transform.position = new Vector3(-0.2f, 0.2f, 0.6f);
             yield return null;
 
             // Grab pointer is near grabbable

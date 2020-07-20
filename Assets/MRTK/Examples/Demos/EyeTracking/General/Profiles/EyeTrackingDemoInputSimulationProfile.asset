@@ -18,7 +18,11 @@ MonoBehaviour:
   mouseX: Mouse X
   mouseY: Mouse Y
   mouseScroll: Mouse ScrollWheel
+  interactionButton:
+    bindingType: 1
+    code: 0
   doublePressTime: 0.4
+  isHandsFreeInputEnabled: 1
   isCameraControlEnabled: 1
   mouseLookSpeed: 3
   mouseLookButton:
@@ -30,14 +34,14 @@ MonoBehaviour:
   fastControlKey:
     bindingType: 2
     code: 305
-  controlSlowSpeed: 0.1
-  controlFastSpeed: 1
+  controlSlowSpeed: 1
+  controlFastSpeed: 5
   moveHorizontal: Horizontal
   moveVertical: Vertical
   moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  simulateEyePosition: 1
+  defaultEyeGazeSimulationMode: 1
   defaultHandSimulationMode: 2
   toggleLeftHandKey:
     bindingType: 2

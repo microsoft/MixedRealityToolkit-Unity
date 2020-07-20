@@ -27,6 +27,6 @@
     <file src="..\..\MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Extensions.targets" />
 
     <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Extensions.*" target="Plugins\" />
-    <!-- <file src="..\..\..\Assets\MRTK\Extensions\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Extensions" /> -->
+    <file src="..\..\..\..\Assets\MRTK\Extensions\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Extensions" />
   </files>
 </package>
