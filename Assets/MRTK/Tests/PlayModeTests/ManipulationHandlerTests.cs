@@ -1305,7 +1305,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             // Should not have moved (yet!)
-            Assert.IsTrue(testObject.transform.position == initialObjectPosition);
+            TestUtilities.AssertAboutEqual(testObject.transform.position, initialObjectPosition, $"Object moved when it shouldn't have! Position: {testObject.transform.position:F5}", 0.00001f);
 
             // The ObjectManipulator should recognize that we've begun manipulation.
             Assert.IsTrue(manipulationStartedCount == 1);
@@ -1315,7 +1315,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.MoveTo(new Vector3(-0.2f, -0.1f, 0.8f));
 
             // Should *still* not have moved!
-            TestUtilities.AssertAboutEqual(testObject.transform.position, new Vector3(0, 0, 1), $"Object moved when it shouldn't have! Position: {testObject.transform.position:F5}", 0.00001f);
+            TestUtilities.AssertAboutEqual(testObject.transform.position, initialObjectPosition, $"Object moved when it shouldn't have! Position: {testObject.transform.position:F5}", 0.00001f);
 
             // Manipulation should not yet have ended.
             Assert.IsTrue(manipulationEndedCount == 0);
