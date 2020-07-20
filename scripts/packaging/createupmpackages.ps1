@@ -52,23 +52,23 @@ $product = "toolkit"
 # These paths are projectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
-    # # providers
-    # "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    # "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    # "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
-    # "unityar" = "Assets\MRTK\Providers\UnityAR";
-    # "windows" = "Assets\MRTK\Providers\Windows";
-    # "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    # "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
-    # "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
-    # "xrplugin" = "Assets\MRTK\Providers\XRSDK";
-    # # extensions
-    # "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
-    # "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
-    # "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
-    # # other packages
-    # "tools" = "Assets\MRTK\Tools";
-    # "testutilties" = "Assets\MRTK\Tests\TestUtilities";
+    # providers
+    "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
+    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
+    "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
+    "unityar" = "Assets\MRTK\Providers\UnityAR";
+    "windows" = "Assets\MRTK\Providers\Windows";
+    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
+    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
+    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
+    "xrplugin" = "Assets\MRTK\Providers\XRSDK";
+    # extensions
+    "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
+    "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
+    "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
+    # other packages
+    "tools" = "Assets\MRTK\Tools";
+    "testutilties" = "Assets\MRTK\Tests\TestUtilities";
     "examples" = "Assets\MRTK\Examples";
 }
 
