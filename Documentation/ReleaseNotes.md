@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.0 release notes
+# Microsoft Mixed Reality Toolkit 2.5.0 draft release notes
 
 - [What's new](#whats-new)
 - [Breaking changes](#breaking-changes)
@@ -18,7 +18,7 @@ The HandInteractionExamples scene now has a configurable shortcut to show a help
 
 ![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
 
-**Input Simulation Eye Gaze with Mouse**
+**Input Simulation Eye Gaze with mouse**
 Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation Mode` field in the input simulation profile and set it to Mouse. This replaces the previous `Simulate Eye Position` field 
 
 ![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
