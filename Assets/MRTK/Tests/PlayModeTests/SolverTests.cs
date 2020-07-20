@@ -1373,7 +1373,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Vector3 deltaPos = curPosition - prevPosition;
                     float actual = Vector3.Dot(deltaPos, CameraCache.Main.transform.forward);
                     string debugStr = $"forwardOffset: {palmConstraint.ForwardOffset} prevPosition: {prevPosition.ToString("0.0000")} curPosition: {curPosition.ToString("0.0000")}, {actual}";
-                    // Debug.Log("debugStr: " + debugStr);
                     Assert.True(actual < 0, $"Increasing forward offset is expected to move object toward camera. {debugStr}");
                 }
             }
