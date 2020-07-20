@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="message">The message to log.</param>
         public static void Log(string message)
         {
+            // Note that the naming of this function (DebugUtilities.Log instead of DebugUtilities.LogInfo)
+            // is to ensure consistency with the naming of Unity's Debug.Log function.
             if (LogLevel <= LoggingLevel.Information)
             {
                 Debug.Log(message);
@@ -120,7 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         /// <summary>
         /// Logs the given message to the Unity console and player log if verbose logging is enabled.
-        /// Note that verbose logs do not include the callstack
         /// </summary>
         /// <remarks>
         /// If you are doing string concatentation or manipulation, use LogVerboseFormat
@@ -131,6 +132,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         ///
         /// Do:
         /// Debug.LogVerbose("This is my message: {0}", text);
+        ///
+        /// Note that verbose logs do not include the callstack to reduce the noise in the generated
+        /// editor log. Even with default stack trace parameter (StackTraceLogType.ScriptOnly),
+        /// the editor logs will grow significantly (i.e. a 10x+ line growth factor).
         /// </remarks>
         public static void LogVerbose(string message)
         {
