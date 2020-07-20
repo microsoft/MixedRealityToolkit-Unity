@@ -172,16 +172,14 @@ foreach ($entry in $packages.GetEnumerator()) {
 
         $exampleFolder = "$packagePath\Examples"
         if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
-            if (Test-Path -Path $exampleFolder) {
-                # Ensure the required samples exists
-                if (-not (Test-Path -Path $samplesFolder)) {
-                    New-Item $samplesFolder -ItemType Directory | Out-Null
-                }
-
-                # Copy the examples
-                Write-Output "Copying $exampleFolder to $samplesFolder"
-                Copy-Item -Path $exampleFolder -Destination $samplesFolder -Recurse -Force
+            # Ensure the required samples exists
+            if (-not (Test-Path -Path $samplesFolder)) {
+                New-Item $samplesFolder -ItemType Directory | Out-Null
             }
+
+            # Copy the examples
+            Write-Output "Copying $exampleFolder to $samplesFolder"
+            Copy-Item -Path $exampleFolder -Destination $samplesFolder -Recurse -Force
         }
     }
 
