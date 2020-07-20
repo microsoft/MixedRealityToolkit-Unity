@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Enabling eye tracking data
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            inputSimulationService.SimulateEyePosition = true;
+            inputSimulationService.EyeGazeSimulationMode = EyeGazeSimulationMode.CameraForwardAxis;
             yield return null;
 
             // Eye based gaze cursor should still be invisible
