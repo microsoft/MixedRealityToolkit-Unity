@@ -265,14 +265,57 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => onHoverExited = value;
         }
 
+        [Header("Elastic")]
         [SerializeField]
         [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
-        private ElasticConfiguration elasticConfigurationObject = null;
+        private ElasticConfiguration translationElasticConfigurationObject = null;
 
-        public ElasticConfiguration ElasticConfigurationObject
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.
+        /// </summary>
+        public ElasticConfiguration TranslationElasticConfigurationObject
         {
-            get => elasticConfigurationObject;
-            set => elasticConfigurationObject = value;
+            get => translationElasticConfigurationObject;
+            set => translationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
+        private ElasticConfiguration rotationElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.
+        /// </summary>
+        public ElasticConfiguration RotationElasticConfigurationObject
+        {
+            get => rotationElasticConfigurationObject;
+            set => rotationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
+        private ElasticConfiguration scaleElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.
+        /// </summary>
+        public ElasticConfiguration ScaleElasticConfigurationObject
+        {
+            get => scaleElasticConfigurationObject;
+            set => scaleElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Indication of which manipulation types use elastic feedback.")]
+        private TransformFlags elasticTypes = 0; // Default to none enabled.
+
+        /// <summary>
+        /// Indication of which manipulation types use elastic feedback.
+        /// </summary>
+        public TransformFlags ElasticTypes
+        {
+            get => elasticTypes;
+            set => elasticTypes = value;
         }
         #endregion
 
