@@ -94,12 +94,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     EditorGUI.BeginChangeCheck();
 
                     EditorGUILayout.PropertyField(targetObject);
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField(new GUIContent("Behavior"), EditorStyles.boldLabel);
                     EditorGUILayout.PropertyField(activationType);
                     EditorGUILayout.PropertyField(boundsOverride);
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
 
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);
                     EditorGUILayout.PropertyField(smoothingActive);
                     EditorGUILayout.PropertyField(scaleLerpTime);
                     EditorGUILayout.PropertyField(rotateLerpTime);
@@ -109,26 +114,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
 
-                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(
-                            boxDisplayConfiguration, 
-                            "Box Configuration", 
-                            showBoxConfiguration);
-                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(
-                            scaleHandlesConfiguration, 
-                            "Scale Handles Configuration", 
-                            showScaleHandlesConfiguration);
-                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(
-                            rotationHandlesConfiguration, 
-                            "Rotation Handles Configuration", 
-                            showRotationHandlesConfiguration);
-                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(
-                            linksConfiguration, 
-                            "Links Configuration", 
-                            showLinksConfiguration);
-                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(
-                            proximityEffectConfiguration, 
-                            "Proximity Configuration", 
-                            showProximityConfiguration);
+                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
+                                                                                                                 "Box Configuration", 
+                                                                                                                 showBoxConfiguration);
+                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
+                                                                                                                            "Scale Handles Configuration", 
+                                                                                                                            showScaleHandlesConfiguration);
+                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, 
+                                                                                                                                  "Rotation Handles Configuration", 
+                                                                                                                                  showRotationHandlesConfiguration);
+                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
+                                                                                                              "Links Configuration", 
+                                                                                                              showLinksConfiguration);
+                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
+                                                                                                                            "Proximity Configuration", 
+                                                                                                                            showProximityConfiguration);
                     }
 
                     EditorGUILayout.Space();
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
         private void DrawRigidBodyWarning()
         {
-            // check if rigidbody is attached - if so show warning in case input profile is not configured for individual collider raycast
+            // Check if rigidbody is attached - if so show warning in case input profile is not configured for individual collider raycast
             Rigidbody rigidBody = boundsControl.GetComponent<Rigidbody>();
 
             if (rigidBody != null)
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                 if (profile != null && profile.FocusIndividualCompoundCollider == false)
                 {
                     EditorGUILayout.Space();
-                    // show warning and button to reconfigure profile
+                    // Show warning and button to reconfigure profile
                     EditorGUILayout.HelpBox($"When using Bounds Control in combination with Rigidbody 'Focus Individual Compound Collider' must be enabled in Input Profile.", UnityEditor.MessageType.Warning);
                     if (GUILayout.Button($"Enable 'Focus Individual Compound Collider' in Input Profile"))
                     {

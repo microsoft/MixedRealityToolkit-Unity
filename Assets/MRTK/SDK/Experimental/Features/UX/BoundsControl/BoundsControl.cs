@@ -107,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Behavior")]
         [SerializeField]
         [Tooltip("Type of activation method for showing/hiding bounds control handles and controls")]
         private BoundsControlActivationType activation = BoundsControlActivationType.ActivateOnStart;
@@ -262,7 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = false;
