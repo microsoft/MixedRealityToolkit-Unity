@@ -1358,23 +1358,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
-            // Test forward offset 
             var palmConstraint = testObjects.solver as HandConstraint;
+            // Test forward offset 
+            palmConstraint.ForwardOffset = -0.6f;
+            yield return null;
+            for(float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
+            {
+                Vector3 prevPosition = testObjects.target.transform.position;
+                palmConstraint.ForwardOffset = forwardOffset;
+                yield return null;
+                Vector3 curPosition = testObjects.target.transform.position;
+                Vector3 deltaPos = curPosition - prevPosition;
+                float actual = Vector3.Dot(deltaPos, CameraCache.Main.transform.forward);
+                string debugStr = $"forwardOffset: {palmConstraint.ForwardOffset} prevPosition: {prevPosition.ToString("0.0000")} curPosition: {curPosition.ToString("0.0000")}, {actual}";
+                Assert.True(actual < 0, $"Increasing forward offset is expected to move object toward camera. {debugStr}");
+            }
+
+            palmConstraint.ForwardOffset = 0;
+            palmConstraint.SafeZoneAngleOffset = 0;
+            yield return null;
+            // test that increasing SafeZoneAngleOffset moves in clockwise direction
             if (safeZone != HandConstraint.SolverSafeZone.AtopPalm)
             {
-                palmConstraint.ForwardOffset = -0.6f;
-                yield return null;
-                for(float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
+                int delta = 30;
+                for(int angle = delta; angle < 180; angle += delta) 
                 {
-                    Vector3 prevPosition = testObjects.target.transform.position;
-                    palmConstraint.ForwardOffset = forwardOffset;
+                    Vector3 prevPalmToObj = testObjects.target.transform.position - handTestPos;
+                    palmConstraint.SafeZoneAngleOffset = angle;
                     yield return null;
-                    Vector3 curPosition = testObjects.target.transform.position;
-                    Vector3 deltaPos = curPosition - prevPosition;
-                    float actual = Vector3.Dot(deltaPos, CameraCache.Main.transform.forward);
-                    string debugStr = $"forwardOffset: {palmConstraint.ForwardOffset} prevPosition: {prevPosition.ToString("0.0000")} curPosition: {curPosition.ToString("0.0000")}, {actual}";
-                    Assert.True(actual < 0, $"Increasing forward offset is expected to move object toward camera. {debugStr}");
+                    Vector3 curPalmToObj = testObjects.target.transform.position - handTestPos;
+                    float signedAngle = Vector3.SignedAngle(prevPalmToObj, curPalmToObj, -CameraCache.Main.transform.forward);
+                    if (targetHandedness == Handedness.Right) 
+                    {
+                        signedAngle *= -1;
+                    }
+                    Assert.True(signedAngle < 0, $"Increasing SolverSafeZoneAngleOffset should move menu in clockwise direction in left hand, anti-clockwise in right hand");
                 }
+
             }
 
             yield return hand.Hide();
