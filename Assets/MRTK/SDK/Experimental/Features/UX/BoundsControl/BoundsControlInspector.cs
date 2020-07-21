@@ -3,10 +3,8 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit;
 
-[CustomEditor(typeof(BoundsControl))]
+[CustomEditor(typeof(BoundsControl), true)]
 [CanEditMultipleObjects]
 public class BoundsControlInspector : Editor
 {
@@ -29,7 +27,6 @@ public class BoundsControlInspector : Editor
     private SerializedProperty proximityEffectConfiguration;
 
     // debug
-    private SerializedProperty debugText;
     private SerializedProperty hideElementsInHierarchyEditor;
 
     // events
@@ -38,9 +35,7 @@ public class BoundsControlInspector : Editor
     private SerializedProperty scaleStartedEvent;
     private SerializedProperty scaleStoppedEvent;
 
-
     private BoundsControl boundsControl;
-
 
     private static bool showBoxConfiguration = false;
     private static bool showScaleHandlesConfiguration = false;
@@ -69,15 +64,12 @@ public class BoundsControlInspector : Editor
         rotationHandlesConfiguration = serializedObject.FindProperty("rotationHandlesConfiguration");
         proximityEffectConfiguration = serializedObject.FindProperty("handleProximityEffectConfiguration");
 
-        debugText = serializedObject.FindProperty("debugText");
         hideElementsInHierarchyEditor = serializedObject.FindProperty("hideElementsInInspector");
 
         rotateStartedEvent = serializedObject.FindProperty("rotateStarted");
         rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
         scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
         scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
-
-
     }
 
     public override void OnInspectorGUI()
@@ -92,8 +84,7 @@ public class BoundsControlInspector : Editor
 
             //data section
             {
-                //needed? serializedObject.Update();
-                // EditorGUI.BeginChangeCheck();
+                EditorGUI.BeginChangeCheck();
 
                 EditorGUILayout.PropertyField(targetObject);
                 EditorGUILayout.PropertyField(activationType);
@@ -108,15 +99,15 @@ public class BoundsControlInspector : Editor
                 EditorGUILayout.PropertyField(rotateLerpTime);
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField(new GUIContent("Visuals Configuration", "Bounds Control Visual configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                 using (new EditorGUI.IndentLevelScope())
-                {
-
-                    showBoxConfiguration = DrawConfigFoldout(boxDisplayConfiguration, "Box Configuration", showBoxConfiguration);
-                    showScaleHandlesConfiguration = DrawConfigFoldout(scaleHandlesConfiguration, "Scale Handles Configuration", showScaleHandlesConfiguration);
-                    showRotationHandlesConfiguration = DrawConfigFoldout(rotationHandlesConfiguration, "Rotation Handles Configuration", showRotationHandlesConfiguration);
-                    showLinksConfiguration = DrawConfigFoldout(linksConfiguration, "Links Configuration", showLinksConfiguration);
-                    showProximityConfiguration = DrawConfigFoldout(proximityEffectConfiguration, "Proximity Configuration", showProximityConfiguration);
+                { 
+                    
+                    showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, "Box Configuration", showBoxConfiguration);
+                    showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, "Scale Handles Configuration", showScaleHandlesConfiguration);
+                    showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, "Rotation Handles Configuration", showRotationHandlesConfiguration);
+                    showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, "Links Configuration", showLinksConfiguration);
+                    showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, "Proximity Configuration", showProximityConfiguration);
                 }
 
                 EditorGUILayout.Space();
@@ -129,37 +120,17 @@ public class BoundsControlInspector : Editor
                 }
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField(new GUIContent("Debug", "Bounds Control Debug section"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(new GUIContent("Debug", "Bounds Control Debug Section"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                 {
-                    //EditorGUILayout.PropertyField(debugText);
                     EditorGUILayout.PropertyField(hideElementsInHierarchyEditor);
                 }
-            }
-        }
-    }
 
-
-    private bool DrawConfigFoldout(SerializedProperty configuration, string description, bool isCollapsed)
-    {
-        isCollapsed = EditorGUILayout.Foldout(isCollapsed, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
-        if (isCollapsed)
-        {
-            using (new EditorGUI.IndentLevelScope())
-            {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(configuration);
-                if (!configuration.objectReferenceValue.IsNull())
-                {
-                    MixedRealityInspectorUtility.DrawSubProfileEditor(configuration.objectReferenceValue, true);
-                }
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
                 }
             }
         }
-
-        return isCollapsed;
     }
 
     private void DrawRigidBodyWarning()

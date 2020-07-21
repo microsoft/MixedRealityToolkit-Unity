@@ -604,5 +604,58 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             return 0;
         }
+
+        /// <summary>
+        /// Draws the contents of a scriptable inline inside a foldout. Depending on if there's an actual scriptable
+        /// linked, the values will be greyed out or editable in case the scriptable is created inside the serialized object.
+        /// </summary>
+        static public bool DrawScriptableFoldout<T>(SerializedProperty scriptable, string description, bool isExpanded) where T : ScriptableObject
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
+            if (isExpanded)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    if (scriptable.objectReferenceValue == null)
+                    {
+                        scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
+                    }
+
+                    bool isStoredAsset = AssetDatabase.Contains(scriptable.objectReferenceValue);
+                    if (isStoredAsset)
+                    {
+                        var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                        EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
+
+                        GUI.enabled = false;
+                        DrawScriptableSubEditor(scriptable);
+                        GUI.enabled = true;
+                    }
+                    else
+                    {
+                        EditorGUILayout.HelpBox("Editing a local version of "+ scriptable.displayName +".", MessageType.Info);
+                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
+                        DrawScriptableSubEditor(scriptable);
+                    }
+                }
+            }
+
+            return isExpanded;
+        }
+
+
+        static private void DrawScriptableSubEditor(SerializedProperty scriptable)
+        {
+            if (scriptable.objectReferenceValue != null)
+            {
+                UnityEditor.Editor configEditor = UnityEditor.Editor.CreateEditor(scriptable.objectReferenceValue);
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                EditorGUILayout.Space();
+                configEditor.OnInspectorGUI();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
+            }
+        }
     }
 }
