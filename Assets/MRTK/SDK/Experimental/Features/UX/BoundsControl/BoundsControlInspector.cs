@@ -82,7 +82,7 @@ public class BoundsControlInspector : Editor
             // help url
             InspectorUIUtility.RenderHelpURL(target.GetType());
 
-            //data section
+            // data section
             {
                 EditorGUI.BeginChangeCheck();
 
