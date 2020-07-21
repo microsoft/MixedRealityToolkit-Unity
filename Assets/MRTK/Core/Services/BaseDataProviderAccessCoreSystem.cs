@@ -193,6 +193,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
+                DebugUtilities.LogVerboseFormat(
+                    "Not registering data provider of type {0} with name {1} because the current platform is not in supported platforms {2}",
+                    concreteType,
+                    providerName,
+                    supportedPlatforms);
                 return false;
             }
 

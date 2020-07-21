@@ -105,6 +105,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            DebugUtilities.LogVerboseFormat("GetOrAddHandDevice: Adding a new simulated hand of handedness {0} and simulation mode {1}", handedness, simulationMode);
+
             SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
             IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
 
@@ -150,6 +152,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var controller = GetHandDevice(handedness);
             if (controller != null)
             {
+                DebugUtilities.LogVerboseFormat("RemoveHandDevice: Removing simulated hand of handedness", handedness);
+
                 Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 RecyclePointers(controller.InputSource);
