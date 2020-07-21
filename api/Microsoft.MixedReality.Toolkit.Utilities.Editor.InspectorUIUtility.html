@@ -1060,6 +1060,76 @@ Displays prefab pending updates</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawScriptableFoldout_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawScriptableFoldout*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawScriptableFoldout__1_SerializedProperty_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawScriptableFoldout``1(SerializedProperty,System.String,System.Boolean)">DrawScriptableFoldout&lt;T&gt;(SerializedProperty, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Draws the contents of a scriptable inline inside a foldout. Depending on if there's an actual scriptable
+linked, the values will be greyed out or editable in case the scriptable is created inside the serialized object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DrawScriptableFoldout&lt;T&gt;(SerializedProperty scriptable, string description, bool isExpanded)
+    where T : ScriptableObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">scriptable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">description</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isExpanded</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldout_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldout*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldout_System_String_System_Boolean_GUIStyle_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldout(System.String,System.Boolean,GUIStyle)">DrawSectionFoldout(String, Boolean, GUIStyle)</h4>
   <div class="markdown level1 summary"><p>Draws a section start (initiated by the Header attribute)</p>
