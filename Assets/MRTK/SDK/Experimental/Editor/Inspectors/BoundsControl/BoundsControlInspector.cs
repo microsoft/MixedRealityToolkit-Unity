@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
     [CustomEditor(typeof(BoundsControl), true)]
     [CanEditMultipleObjects]
