@@ -690,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "XIBTHXY8tf3e1Ijho7sI6w=="
+          "hash": "lNiykmhnyGc8EX2uNlislg=="
         }
       },
       "is_incremental": false,
@@ -834,7 +834,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.html",
-          "hash": "AX3kC7RJvCPYnK0lDyGg+g=="
+          "hash": "J5mENsSKcrze3OQ0CN2iOw=="
         }
       },
       "is_incremental": false,
@@ -846,7 +846,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html",
-          "hash": "E61cDUaRQL0EdaYAy514vA=="
+          "hash": "uyN+2/R5EUydkRfeG28Srg=="
         }
       },
       "is_incremental": false,
@@ -2719,17 +2719,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png",
       "output": {
         "resource": {
@@ -2745,17 +2734,6 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png"
         }
       },
       "is_incremental": false,
@@ -17662,7 +17640,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html",
-          "hash": "C90cqAf7z+0vF3gye3i8Sg=="
+          "hash": "gzZpiNn1e7W1b9q+HDvzJA=="
         }
       },
       "is_incremental": false,
@@ -24678,11 +24656,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LoggingLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LoggingLevel.html",
+          "hash": "zQyiJ44bvICQl2yCdcOMnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html",
-          "hash": "pm2U24UlzpMMqck3J0VnqA=="
+          "hash": "K0CUPDMGgbAq+PZXf/p7qQ=="
         }
       },
       "is_incremental": false,
@@ -27478,7 +27468,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "rMf1BAB2+zi9AT5Ztsc3Rw=="
+          "hash": "pDcACEq8MXp95apdMEcyOg=="
         }
       },
       "is_incremental": false,
@@ -28450,7 +28440,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "/NQhtHQ5hQ2bwdsa82R2ug=="
+          "hash": "Manq3Yz70QlwLLedYTzvJg=="
         }
       },
       "is_incremental": false,
@@ -28502,9 +28492,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -28518,12 +28508,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1642,
+          "total_file_count": 1643,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

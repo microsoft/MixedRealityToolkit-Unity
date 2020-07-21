@@ -123,6 +123,33 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class DebugUtilities</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogLevel" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogLevel">LogLevel</h4>
+  <div class="markdown level1 summary"><p>This helper defaults to showing all messages of information and above (i.e. including warnings and errors)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DebugUtilities.LoggingLevel LogLevel</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LoggingLevel.html">DebugUtilities.LoggingLevel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -198,7 +225,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DebugLog(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Deprecated. Use Log instead.&quot;)]
+public static void DebugLog(string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -227,7 +255,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DebugLogError(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Deprecated. Use LogError instead.&quot;)]
+public static void DebugLogError(string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -256,7 +285,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DebugLogWarning(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Deprecated. Use LogWarning instead.&quot;)]
+public static void DebugLogWarning(string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -392,6 +422,166 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td><span class="parametername">size</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_Log_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.Log*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_Log_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.Log(System.String)">Log(String)</h4>
+  <div class="markdown level1 summary"><p>Logs a message at the informational level.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Log(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to log.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogError_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogError*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogError_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogError(System.String)">LogError(String)</h4>
+  <div class="markdown level1 summary"><p>Logs an error message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LogError(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to log.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogVerbose_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogVerbose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogVerbose_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogVerbose(System.String)">LogVerbose(String)</h4>
+  <div class="markdown level1 summary"><p>Logs the given message to the Unity console and player log if verbose logging is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LogVerbose(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogVerbose_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If you are doing string concatentation or manipulation, use LogVerboseFormat
+that formats the string, as that will not allocate memory when verbose logging is enabled.</p>
+<p>For example, don't do:
+Debug.LogVerbose(&quot;This is my message: &quot; + text);</p>
+<p>Do:
+Debug.LogVerbose(&quot;This is my message: {0}&quot;, text);</p>
+<p>Note that verbose logs do not include the callstack to reduce the noise in the generated
+editor log. Even with default stack trace parameter (StackTraceLogType.ScriptOnly),
+the editor logs will grow significantly (i.e. a 10x+ line growth factor).</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogVerboseFormat_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogVerboseFormat*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogVerboseFormat_System_String_System_Object___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogVerboseFormat(System.String,System.Object[])">LogVerboseFormat(String, Object[])</h4>
+  <div class="markdown level1 summary"><p>Formats and logs the given message to the Unity console and player log if verbose logging is enabled.
+Note that verbose logs do not include the callstack</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LogVerboseFormat(string message, params object[] args)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogWarning_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogWarning*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_DebugUtilities_LogWarning_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LogWarning(System.String)">LogWarning(String)</h4>
+  <div class="markdown level1 summary"><p>Logs a warning message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void LogWarning(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to log.</p>
+</td>
       </tr>
     </tbody>
   </table>

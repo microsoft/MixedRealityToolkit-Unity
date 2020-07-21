@@ -205,6 +205,21 @@ public class MyNewComponent : MonoBehaviour
 <pre><code class="lang-c#">[CreateAssetMenu(fileName = &quot;MyNewProfile&quot;, menuName = &quot;Mixed Reality Toolkit/{Subfolder}/{MyNewService | MyNewProvider}/MyNewProfile&quot;)]
 public class MyNewProfile : ScriptableObject
 </code></pre>
+<h3 id="logging">Logging</h3>
+<p>When adding new features or updating existing features, consider adding DebugUtilities.LogVerbose
+logs to interesting code that may be useful for future debugging. There's a tradeoff here between
+adding logging and the added noise and not enough logging (which makes diagnosis difficult).</p>
+<p>An interesting example where having logging is useful (along with interesting payload):</p>
+<pre><code class="lang-c#">DebugUtilities.LogVerboseFormat(&quot;RaiseSourceDetected: Source ID: {0}, Source Type: {1}&quot;, source.SourceId, source.SourceType);
+</code></pre>
+<p>This type of logging can help catch issues like <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8016">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8016</a>,
+which were caused by mismatched source detected and source lost events.</p>
+<p>Avoid adding logs for data and events that are occurring on every frame - ideally logging should
+cover &quot;interesting&quot; events driven by distinct user inputs (i.e. a &quot;click&quot; by a user and the set of
+changes and events that come from that are interesting to log). The ongoing state of &quot;user is still
+holding a gesture&quot; logged every frame is not interesting and will overwhelm the logs.</p>
+<p>Note that this verbose logging is not turned on by default (it must be enabled in the
+<a href="../Diagnostics/ConfiguringDiagnostics.html#enable-verbose-logging">Diagnostic System settings</a>)</p>
 <h3 id="spaces-vs-tabs">Spaces vs tabs</h3>
 <p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
 <h3 id="spacing">Spacing</h3>
