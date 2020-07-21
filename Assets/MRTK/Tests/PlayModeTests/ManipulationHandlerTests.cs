@@ -26,18 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private readonly List<Action> cleanupAction = new List<Action>();
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             cleanupAction.ForEach(f => f?.Invoke());
 
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>

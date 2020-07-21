@@ -46,16 +46,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Drag = 0.2f
         };
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
-            PlayModeTestUtilities.TearDown();
+            TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
         }
         #endregion
 

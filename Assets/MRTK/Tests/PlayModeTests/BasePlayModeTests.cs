@@ -10,7 +10,8 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using NUnit.Framework;
+using System.Collections;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -19,16 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public abstract class BasePlayModeTests
     {
-        [SetUp]
-        public virtual void Setup()
+        [UnitySetUp]
+        public virtual IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public virtual void TearDown()
+        [UnityTearDown]
+        public virtual IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
     }
 }

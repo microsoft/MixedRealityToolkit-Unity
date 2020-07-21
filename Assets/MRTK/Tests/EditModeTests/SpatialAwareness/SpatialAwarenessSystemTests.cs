@@ -51,19 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
         }
 
         [Test]
-        public void TestEmptyDataProvider()
-        {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-
-            // Check for Spatial Awareness System
-            var spatialAwarenessSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessSystem>();
-            var dataProviderAccess = spatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-            Assert.IsNotNull(dataProviderAccess);
-            Assert.IsEmpty(dataProviderAccess.GetDataProviders());
-        }
-
-        [Test]
         public void TestDataProviderRegistration()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
