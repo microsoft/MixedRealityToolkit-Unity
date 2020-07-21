@@ -84,6 +84,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - TakahiroMiyaura
 - tarukosu
 - thalbern
+- tonyambrus
 - Troy-Ferrell
 - vaoliva
 - wassx
