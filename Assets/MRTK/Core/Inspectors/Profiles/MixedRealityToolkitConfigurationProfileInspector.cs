@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = true; // Force enable so we can view profile defaults
 
             int prefsSelectedTab = SessionState.GetInt(SelectedTabPreferenceKey, 0);
-            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, GUILayout.MaxWidth(125));
             if (SelectedProfileTab != prefsSelectedTab)
             {
                 SessionState.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);

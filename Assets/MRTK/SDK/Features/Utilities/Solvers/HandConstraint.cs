@@ -40,7 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// </summary>
             BelowWrist = 3,
             /// <summary>
-            /// Floating above the palm.
+            /// Floating above the palm, towards the "inside" of the hand (opposite side of knuckles),
+            /// based on the "down" vector of the palm joint (i.e., the grabbing-side of the hand)
             /// </summary>
             AtopPalm = 4
         }
@@ -347,28 +348,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Bounds trackedHandBounds;
 
             if (trackedController != null &&
-                handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
+                handBounds.LocalBounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
-                // If we are mounting to the palm, and don't want to use raycasting to find the
-                // palm goal position, we will calculate the goal position using the palm joint directly.
-                if (safeZone == SolverSafeZone.AtopPalm && !UsePalmRaycast)
-                {
-                    MixedRealityPose? palmPose = GetPalmPose(trackedController);
-                    if(palmPose.HasValue)
-                    {
-                        // We also apply the buffer value manually here.
-                        goalPosition = palmPose.Value.Position - palmPose.Value.Up * safeZoneBuffer;
-                    }
-                }
-                else
-                {
-                    float distance;
-                    Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
-                    trackedHandBounds.Expand(safeZoneBuffer);
+                MixedRealityPose? palmPose = GetPalmPose(trackedController);
 
-                    if (trackedHandBounds.IntersectRay(ray, out distance))
+                // If we somehow were unable to obtain a palm pose, we just quit;
+                // we require a valid palm pose to perform the hand-space transformations.
+                if (palmPose.HasValue == false)
+                {
+                    return goalPosition;
+                }
+
+                float distance;
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
+                trackedHandBounds.Expand(safeZoneBuffer);
+
+                // We need to transform the ray into hand-space before performing the AABB intersection.
+                ray.origin = Quaternion.Inverse(palmPose.Value.Rotation) * (ray.origin - palmPose.Value.Position);
+                ray.direction = Quaternion.Inverse(palmPose.Value.Rotation) * ray.direction;
+
+                if (trackedHandBounds.IntersectRay(ray, out distance))
+                {
+                    var localSpaceHit = ray.origin + ray.direction * distance;
+
+                    // As hand bounds are computed and raycasted in palm-relative space,
+                    // we must transform the hit target back into global space.
+                    if (palmPose.HasValue)
                     {
-                        goalPosition = ray.origin + ray.direction * distance;
+                        goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
                     }
                 }
             }
@@ -411,9 +418,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 goalRotation *= Quaternion.Euler(additionalRotation.x, additionalRotation.y, additionalRotation.z);
             }
-
-            //goalRotation = GetPalmPose(trackedController)?.Rotation ?? goalRotation;
-
             return goalRotation;
         }
 
@@ -558,15 +562,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private static bool IsPalmFacingCamera(IMixedRealityController hand)
         {
+            MixedRealityPose? palmPose = GetPalmPose(hand);
+
+            if (palmPose.HasValue)
+            {
+                return (Vector3.Dot(palmPose.Value.Up, CameraCache.Main.transform.forward) > 0.0f);
+            }
+
+            return false;
+        }
+
+        private static MixedRealityPose? GetPalmPose(IMixedRealityController hand)
+        {
             MixedRealityPose palmPose;
             var jointedHand = hand as IMixedRealityHand;
 
             if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
             {
-                return (Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f);
+                return palmPose;
             }
 
-            return false;
+            return null;
         }
 
         private static MixedRealityPose? GetPalmPose(IMixedRealityController hand)
