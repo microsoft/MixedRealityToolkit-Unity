@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -263,6 +264,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => onHoverExited;
             set => onHoverExited = value;
         }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
+        private ElasticConfiguration elasticConfigurationObject = null;
+
+        public ElasticConfiguration ElasticConfigurationObject
+        {
+            get => elasticConfigurationObject;
+            set => elasticConfigurationObject = value;
+        }
         #endregion
 
         #region Private Properties
@@ -314,6 +325,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
+
+            // If the user has not assigned a particular
+            // ElasticConfiguration, we will generate a default one.
+            // ElasticConfiguration has reasonable defaults specified.
+            //if (elasticConfigurationObject == null)
+            //{
+            //    elasticConfigurationObject = ScriptableObject.CreateInstance<ElasticConfiguration>();
+            //}
         }
         private void Start()
         {

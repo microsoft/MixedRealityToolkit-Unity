@@ -43,6 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// </value>
         [SerializeField]
         public T[] SnapPoints;
+
+        /// <value>
+        /// Extent at which snap points begin forcing the spring.
+        /// </value>
+        [SerializeField]
+        public float SnapRadius;
     }
 
     /// <summary>
@@ -74,12 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// </value>
         [SerializeField]
         public float SnapK;
-
-        /// <value>
-        /// Extent at which snap points begin forcing the spring.
-        /// </value>
-        [SerializeField]
-        public float SnapRadius;
 
         /// <value>
         /// Drag/damper factor, proportional to velocity.

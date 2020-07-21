@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             {
                 // Calculate distance from snapping point.
                 var distFromSnappingPoint = snappingPoint - currentValue;
-                force += computeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, elasticProperties.SnapRadius);
+                force += computeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extentInfo.SnapRadius);
             }
 
             // a = F/m
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             else
             {
                 // Otherwise, add standard bidirectional magnetic/snapping force towards the end marker. (optional)
-                return extentInfo.SnapToEnds ? computeSnapForce(current, elasticProperties.EndK, elasticProperties.SnapRadius) : 0.0f;
+                return extentInfo.SnapToEnds ? computeSnapForce(current, elasticProperties.EndK, extentInfo.SnapRadius) : 0.0f;
             }
         }
 

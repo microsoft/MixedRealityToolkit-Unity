@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             MaxStretch = 10.0f,
             SnapToEnds = false,
             SnapPoints = new float[0],
+            SnapRadius = 1.0f
         };
 
         // Some arbitrary, yet reasonable, values.
@@ -42,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             HandK = 4.0f,
             EndK = 2.0f,
             SnapK = 1.0f,
-            SnapRadius = 1.0f,
             Drag = 0.2f
         };
 
