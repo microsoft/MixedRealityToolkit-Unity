@@ -47,13 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         // Subtract one here because AtopPalm is not along the palm, in clockwise direction
-        private static readonly int SolverSafeZoneClockwiseCount = System.Enum.GetValues(typeof(SolverSafeZone)).Length - 1;
         private static readonly SolverSafeZone[] handSafeZonesClockWiseRightHand = new SolverSafeZone[] {
             SolverSafeZone.UlnarSide,
             SolverSafeZone.AboveFingerTips,
             SolverSafeZone.RadialSide,
-            SolverSafeZone.BelowWrist,
-            SolverSafeZone.AtopPalm
+            SolverSafeZone.BelowWrist
         };
 
         [Header("Hand Constraint")]
@@ -401,7 +399,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     if (palmPose.HasValue)
                     {
                         goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
-                        goalPosition += (CameraCache.Main.transform.position - goalPosition).normalized * ForwardOffset;
+                        Vector3 goalToCam = CameraCache.Main.transform.position - goalPosition;
+                        if (goalToCam.magnitude > Mathf.Epsilon)
+                        {
+                            goalPosition += (goalToCam).normalized * ForwardOffset;
+                        }
                     }
                 }
             }
@@ -603,19 +605,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 angleOffset = (angleOffset + 360) % 360;
             }
 
-            var offset = angleOffset / 90;
-            var intOffset = Mathf.FloorToInt(offset);
-            var fracOffset = offset - intOffset;
+            float offset = angleOffset / 90;
+            int intOffset = Mathf.FloorToInt(offset);
+            float fracOffset = offset - intOffset;
 
-            var currentSafeZoneClockwiseIdx = System.Array.IndexOf(handSafeZonesClockWiseRightHand, handSafeZone);
+            int currentSafeZoneClockwiseIdx = System.Array.IndexOf(handSafeZonesClockWiseRightHand, handSafeZone);
 
-            var intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % SolverSafeZoneClockwiseCount];
-            var fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % SolverSafeZoneClockwiseCount];
+            SolverSafeZone intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % handSafeZonesClockWiseRightHand.Length];
+            SolverSafeZone fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % handSafeZonesClockWiseRightHand.Length];
 
-            var intSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
-            var fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
+            Ray intSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
+            Ray fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
 
-            var direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
+            Vector3 direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
             return new Ray(origin + direction, -direction);
         }
 
