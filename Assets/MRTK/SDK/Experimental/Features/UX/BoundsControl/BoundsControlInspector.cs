@@ -26,17 +26,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
 
-        // configs
+        // Configs
         private SerializedProperty boxDisplayConfiguration;
         private SerializedProperty linksConfiguration;
         private SerializedProperty scaleHandlesConfiguration;
         private SerializedProperty rotationHandlesConfiguration;
         private SerializedProperty proximityEffectConfiguration;
 
-        // debug
+        // Debug
         private SerializedProperty hideElementsInHierarchyEditor;
 
-        // events
+        // Events
         private SerializedProperty rotateStartedEvent;
         private SerializedProperty rotateStoppedEvent;
         private SerializedProperty scaleStartedEvent;
@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         {
             if (target != null)
             {
-                // notification section - first thing to show in bounds control component
+                // Notification section - first thing to show in bounds control component
                 DrawRigidBodyWarning();
 
-                // help url
+                // Help url
                 InspectorUIUtility.RenderHelpURL(target.GetType());
 
-                // data section
+                // Data section
                 {
                     EditorGUI.BeginChangeCheck();
 
@@ -100,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
 
-
                     EditorGUILayout.PropertyField(smoothingActive);
                     EditorGUILayout.PropertyField(scaleLerpTime);
                     EditorGUILayout.PropertyField(rotateLerpTime);
@@ -110,11 +109,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
 
-                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, "Box Configuration", showBoxConfiguration);
-                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, "Scale Handles Configuration", showScaleHandlesConfiguration);
-                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, "Rotation Handles Configuration", showRotationHandlesConfiguration);
-                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, "Links Configuration", showLinksConfiguration);
-                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, "Proximity Configuration", showProximityConfiguration);
+                        showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(
+                            boxDisplayConfiguration, 
+                            "Box Configuration", 
+                            showBoxConfiguration);
+                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(
+                            scaleHandlesConfiguration, 
+                            "Scale Handles Configuration", 
+                            showScaleHandlesConfiguration);
+                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(
+                            rotationHandlesConfiguration, 
+                            "Rotation Handles Configuration", 
+                            showRotationHandlesConfiguration);
+                        showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(
+                            linksConfiguration, 
+                            "Links Configuration", 
+                            showLinksConfiguration);
+                        showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(
+                            proximityEffectConfiguration, 
+                            "Proximity Configuration", 
+                            showProximityConfiguration);
                     }
 
                     EditorGUILayout.Space();

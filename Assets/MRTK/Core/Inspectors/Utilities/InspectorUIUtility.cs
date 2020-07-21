@@ -618,9 +618,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     if (scriptable.objectReferenceValue == null)
                     {
+                        // If there's no scriptable linked we're creating a local instance that allows to store a 
+                        // local version of the scriptable in the serialized object owning the scriptable property.
                         scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
                     }
 
+                    // This checks if the scriptable object reference is linking to an asset.
+                    // A local version of the scriptable won't be associated to an asset.
+                    // Depending on having a scriptable asset linked or referring to a local version of the scriptable
+                    // we're displaying different information as guidance for the user.
                     bool isStoredAsset = AssetDatabase.Contains(scriptable.objectReferenceValue);
                     if (isStoredAsset)
                     {
@@ -628,6 +634,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
                         EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
 
+                        // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
+                        // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
                         GUI.enabled = false;
                         DrawScriptableSubEditor(scriptable);
                         GUI.enabled = true;
