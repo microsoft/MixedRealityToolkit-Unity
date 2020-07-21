@@ -231,7 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => handleProximityEffectConfiguration = value;
         }
 
-        //[Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
         private TextMesh debugText;
         /// <summary>
@@ -305,7 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleLerpTime = value;
         }
 
-        //[Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
