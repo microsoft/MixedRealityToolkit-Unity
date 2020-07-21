@@ -32,17 +32,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return null;
         }
 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             defaultRaycastProvider = new DefaultRaycastProvider(null);
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
     }
 }

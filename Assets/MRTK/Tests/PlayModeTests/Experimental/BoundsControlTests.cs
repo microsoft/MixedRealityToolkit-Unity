@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
 
@@ -45,12 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
+            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
