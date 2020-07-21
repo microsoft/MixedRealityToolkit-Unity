@@ -52,6 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 autoFollowAtDistance = value;
 
+                if (!enabled || !gameObject.activeInHierarchy)
+                {
+                    return;
+                }
+
                 if (autoFollowAtDistance)
                 {
                     if (autoFollowDistanceCheck == null)
@@ -65,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         StopCoroutine(autoFollowDistanceCheck);
                         autoFollowDistanceCheck = null;
+                        SetFollowMeBehavior(false);
                     }
                 }
             }
@@ -133,6 +139,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AutoFollowAtDistance = autoFollowAtDistance;
             }
+        }
+
+        private void OnEnable()
+        {
+            // Begin the follow coroutine when enabled.
+            AutoFollowAtDistance = autoFollowAtDistance;
         }
 
         #endregion MonoBehaviour Implementation
