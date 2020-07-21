@@ -585,19 +585,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return null;
         }
 
-        private static MixedRealityPose? GetPalmPose(IMixedRealityController hand)
-        {
-            MixedRealityPose palmPose;
-            var jointedHand = hand as IMixedRealityHand;
-
-            if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
-            {
-                return palmPose;
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Returns true if the given controller is a valid target for this solver.
         /// </summary>
