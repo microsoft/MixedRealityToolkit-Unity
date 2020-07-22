@@ -268,12 +268,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Header("Elastic")]
         [SerializeField]
         [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
-        private ElasticConfiguration translationElasticConfigurationObject = null;
+        private TranslationElasticConfiguration translationElasticConfigurationObject = null;
 
         /// <summary>
         /// Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.
         /// </summary>
-        public ElasticConfiguration TranslationElasticConfigurationObject
+        public TranslationElasticConfiguration TranslationElasticConfigurationObject
         {
             get => translationElasticConfigurationObject;
             set => translationElasticConfigurationObject = value;
@@ -281,12 +281,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
-        private ElasticConfiguration rotationElasticConfigurationObject = null;
+        private RotationElasticConfiguration rotationElasticConfigurationObject = null;
 
         /// <summary>
         /// Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.
         /// </summary>
-        public ElasticConfiguration RotationElasticConfigurationObject
+        public RotationElasticConfiguration RotationElasticConfigurationObject
         {
             get => rotationElasticConfigurationObject;
             set => rotationElasticConfigurationObject = value;
@@ -294,12 +294,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Reference to the ScriptableObject which holds the relevant elastic system configuration.")]
-        private ElasticConfiguration scaleElasticConfigurationObject = null;
+        private LinearElasticConfiguration scaleElasticConfigurationObject = null;
 
         /// <summary>
         /// Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.
         /// </summary>
-        public ElasticConfiguration ScaleElasticConfigurationObject
+        public LinearElasticConfiguration ScaleElasticConfigurationObject
         {
             get => scaleElasticConfigurationObject;
             set => scaleElasticConfigurationObject = value;
@@ -324,6 +324,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
+
+        // These are instantiated by the factory methods
+        // within the respective elastic configuration objects.
+        private ElasticSystem<Vector3> translationElastic;
+        private ElasticSystem<Quaternion> rotationElastic;
+        private ElasticSystem<float> scaleElastic;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray 
@@ -369,13 +375,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
 
-            // If the user has not assigned a particular
-            // ElasticConfiguration, we will generate a default one.
-            // ElasticConfiguration has reasonable defaults specified.
-            //if (elasticConfigurationObject == null)
-            //{
-            //    elasticConfigurationObject = ScriptableObject.CreateInstance<ElasticConfiguration>();
-            //}
+            // Initialize our elastic systems with the factory methods from our configuration objects.
+            // These systems may not end up being used, depending on the current state of elasticTypes.
+            translationElastic = translationElasticConfigurationObject.MakeElasticSystem(Vector3.zero, Vector3.zero);
+            rotationElastic = rotationElasticConfigurationObject.MakeElasticSystem(Quaternion.identity, Quaternion.identity);
+            scaleElastic = scaleElasticConfigurationObject.MakeElasticSystem(0.0f, 0.0f);
         }
         private void Start()
         {
@@ -769,6 +773,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigidBody == null)
             {
+                if (elasticTypes.HasFlag(TransformFlags.Move))
+                {
+                    HostTransform.position = translationElastic.ComputeIteration(targetTransform.Position, Time.deltaTime);
+                }
                 HostTransform.position = smoothingActive ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 HostTransform.rotation = smoothingActive ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
                 HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;

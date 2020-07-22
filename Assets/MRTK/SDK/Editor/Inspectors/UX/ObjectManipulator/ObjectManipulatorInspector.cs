@@ -43,7 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty onHoverEntered;
         private SerializedProperty onHoverExited;
 
-        private SerializedProperty elasticConfigurationObject;
+        private SerializedProperty elasticTypes;
+        private SerializedProperty translationElasticConfigurationObject;
+        private SerializedProperty rotationElasticConfigurationObject;
+        private SerializedProperty scaleElasticConfigurationObject;
 
         bool oneHandedFoldout = true;
         bool twoHandedFoldout = true;
@@ -51,7 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
         bool elasticsFoldout = true;
-        //bool sharedElasticConfigurationFoldout = false;
+        bool translationElasticFoldout,
+             rotationElasticFoldout,
+             scaleElasticFoldout = false;
         bool eventsFoldout = true;
 
         public void OnEnable()
@@ -84,7 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             onHoverExited = serializedObject.FindProperty("onHoverExited");
 
             // Elastic configuration (ScriptableObject)
-            elasticConfigurationObject = serializedObject.FindProperty("elasticConfigurationObject");
+            translationElasticConfigurationObject = serializedObject.FindProperty("translationElasticConfigurationObject");
+            rotationElasticConfigurationObject = serializedObject.FindProperty("rotationElasticConfigurationObject");
+            scaleElasticConfigurationObject = serializedObject.FindProperty("scaleElasticConfigurationObject");
+            elasticTypes = serializedObject.FindProperty("elasticTypes");
         }
 
         public override void OnInspectorGUI()
@@ -202,45 +210,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (elasticsFoldout)
             {
+                // This two-way enum cast is required because EnumFlagsField does not play nicely with
+                // SerializedProperties and custom enum flags.
+                var newElasticTypesValue = EditorGUILayout.EnumFlagsField("Manipulation types using elastic feedback: ", (TransformFlags)elasticTypes.intValue);
+                elasticTypes.intValue = (int)(TransformFlags)newElasticTypesValue;
 
-                // If no ScriptableObject is currently assigned...
-                if(elasticConfigurationObject.objectReferenceValue == null)
-                {
-                    // We just create a fresh one. This will be populated
-                    // by the default values specified by the ScriptableObject.
+                // If the particular elastic type is requested, we offer the user the ability
+                // to configure the elastic system.
+                TransformFlags currentFlags = (TransformFlags)elasticTypes.intValue;
 
-                    // This will NOT be backed by a file/asset until we tell it to be.
+                translationElasticFoldout = DrawElasticConfiguration<TranslationElasticConfiguration>("Translation Elastic",
+                                                                                                      translationElasticFoldout,
+                                                                                                      translationElasticConfigurationObject,
+                                                                                                      TransformFlags.Move,
+                                                                                                      currentFlags);
 
-                    // It WILL, however, be automatically serialized along with the rest
-                    // of the properties of our object! Yay, exactly what we want.
-                    elasticConfigurationObject.objectReferenceValue = ScriptableObject.CreateInstance<ElasticConfiguration>();
-                }
+                rotationElasticFoldout = DrawElasticConfiguration<RotationElasticConfiguration>("Rotation Elastic",
+                                                                                                rotationElasticFoldout,
+                                                                                                rotationElasticConfigurationObject,
+                                                                                                TransformFlags.Rotate,
+                                                                                                currentFlags);
 
-                // Determine whether the current ScriptableObject configuration is actually an asset/file in the project.
-                bool isAssetBacked = AssetDatabase.Contains(elasticConfigurationObject.objectReferenceValue);
-
-                // If the ScriptableObject configuration is actually backed by a real asset/file in the user's project...
-                if (isAssetBacked)
-                {
-                    // It is a shared configuration! We don't want to let them edit it from this inspector, because may
-                    // mess up other objects that are sharing this configuration asset.
-
-                    var sharedAssetPath = AssetDatabase.GetAssetPath(elasticConfigurationObject.objectReferenceValue);
-                    EditorGUILayout.HelpBox("Editing a shared configuration asset file, located at " + sharedAssetPath, MessageType.Warning);
-                    EditorGUILayout.PropertyField(elasticConfigurationObject, new GUIContent("Configuration slot (shared asset!):"));
-                }
-                else
-                {
-                    // If this ScriptableObject configuration is not actually an asset/file, then it is just an individual
-                    // config that is serialized along with the component; the user can feel free to edit as they please.
-
-                    EditorGUILayout.HelpBox("Editing a per-object configuration.", MessageType.Info);
-                    EditorGUILayout.PropertyField(elasticConfigurationObject, new GUIContent("Configuration slot (currently non-asset):"));
-                    using (new EditorGUI.IndentLevelScope())
-                    {
-                        MixedRealityInspectorUtility.DrawSubProfileEditor(elasticConfigurationObject.objectReferenceValue, true);
-                    }
-                }
+                scaleElasticFoldout = DrawElasticConfiguration<LinearElasticConfiguration>("Scale Elastic",
+                                                                                           scaleElasticFoldout,
+                                                                                           scaleElasticConfigurationObject,
+                                                                                           TransformFlags.Scale,
+                                                                                           currentFlags);
             }
 
             EditorGUILayout.Space();
@@ -258,6 +253,27 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             style.fontStyle = previousStyle;
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private bool DrawElasticConfiguration<T>(string name, bool expanded, SerializedProperty property,
+                                                 TransformFlags requiredFlag,
+                                                 TransformFlags providedFlags) where T : ElasticConfiguration
+        {
+            if (providedFlags.HasFlag(requiredFlag))
+            {
+                bool result = false;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    result = InspectorUIUtility.DrawScriptableFoldout<T>(property,
+                                                                         name,
+                                                                         expanded);
+                }
+                return result;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool DrawConfigFoldout(SerializedProperty configuration, string description, bool isCollapsed)
