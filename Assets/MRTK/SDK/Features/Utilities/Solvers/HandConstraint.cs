@@ -385,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
 
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(
+                Ray ray = CalculateGoalPositionRay(
                     goalPosition, SolverHandler.TransformTarget, 
                     trackedController, safeZone, OffsetBehavior, safeZoneAngleOffset);
                 trackedHandBounds.Expand(safeZoneBuffer);
@@ -506,8 +506,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(
-            Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
+        private static Ray CalculateRayForSafeZone(
+            Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset = 0)
         {
             Vector3 direction;
             Vector3 lookAtCamera = targetTransform.transform.position - CameraCache.Main.transform.position;
@@ -585,7 +585,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         // the up vector away from the palm pose, regardless of the desired
                         // rotation behavior. If no palm pose is available, we use the
                         // camera view vector as an approximation.
-                        direction = -GetPalmPose(hand)?.Up ?? -lookAtCamera;
+                        MixedRealityPose? palmPose = GetPalmPose(hand);
+                        if (palmPose.HasValue)
+                        {
+                            direction = Quaternion.AngleAxis(hand.ControllerHandedness.IsLeft() ? -angleOffset : angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
+                        }
+                        else
+                        {
+                            direction = -lookAtCamera;
+                        }
                     }
                     break;
             }
@@ -593,20 +601,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return new Ray(origin + direction, -direction);
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(
-            Vector3 origin, Transform targetTransform, IMixedRealityController hand,
+        /// <summary>
+        /// Compute a ray from the target's previous position to its desired position
+        /// </summary>
+        private static Ray CalculateGoalPositionRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand,
             SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset)
         {
-            // Ignore the angle offset if safe zone is atop palm, does not apply in that case.
-            if (angleOffset == 0 || handSafeZone == SolverSafeZone.AtopPalm)
+            if (angleOffset == 0)
             {
-                return CalculateProjectedSafeZoneRay(origin, targetTransform, hand, handSafeZone, offsetBehavior);
+                return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior);
             }
 
             angleOffset = angleOffset % 360;
             while (angleOffset < 0)
             {
                 angleOffset = (angleOffset + 360) % 360;
+            }
+
+            if (handSafeZone == SolverSafeZone.AtopPalm)
+            {
+                return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior, angleOffset);
             }
 
             float offset = angleOffset / 90;
@@ -618,12 +632,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             SolverSafeZone intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % handSafeZonesClockWiseRightHand.Length];
             SolverSafeZone fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % handSafeZonesClockWiseRightHand.Length];
 
-            Ray intSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
-            Ray fracPartSafeZoneRay = CalculateProjectedSafeZoneRay(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
+            Ray intSafeZoneRay = CalculateRayForSafeZone(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
+            Ray fracPartSafeZoneRay = CalculateRayForSafeZone(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
 
             Vector3 direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
-            return new Ray(origin + direction, -direction);
-        }
+            return new Ray(origin + direction, -direction);        }
 
         private static bool IsPalmFacingCamera(IMixedRealityController hand)
         {
