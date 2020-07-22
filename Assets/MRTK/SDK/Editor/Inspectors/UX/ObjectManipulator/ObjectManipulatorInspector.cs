@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty translationElasticConfigurationObject;
         private SerializedProperty rotationElasticConfigurationObject;
         private SerializedProperty scaleElasticConfigurationObject;
+        private SerializedProperty translationElasticExtent;
+        private SerializedProperty rotationElasticExtent;
+        private SerializedProperty scaleElasticExtent;
 
         bool oneHandedFoldout = true;
         bool twoHandedFoldout = true;
@@ -92,6 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             translationElasticConfigurationObject = serializedObject.FindProperty("translationElasticConfigurationObject");
             rotationElasticConfigurationObject = serializedObject.FindProperty("rotationElasticConfigurationObject");
             scaleElasticConfigurationObject = serializedObject.FindProperty("scaleElasticConfigurationObject");
+            translationElasticExtent = serializedObject.FindProperty("translationElasticExtent");
+            rotationElasticExtent = serializedObject.FindProperty("rotationElasticExtent");
+            scaleElasticExtent = serializedObject.FindProperty("scaleElasticExtent");
             elasticTypes = serializedObject.FindProperty("elasticTypes");
         }
 
@@ -219,23 +225,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // to configure the elastic system.
                 TransformFlags currentFlags = (TransformFlags)elasticTypes.intValue;
 
-                translationElasticFoldout = DrawElasticConfiguration<TranslationElasticConfiguration>("Translation Elastic",
-                                                                                                      translationElasticFoldout,
-                                                                                                      translationElasticConfigurationObject,
-                                                                                                      TransformFlags.Move,
-                                                                                                      currentFlags);
+                translationElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>("Translation Elastic",
+                                                                                            translationElasticFoldout,
+                                                                                            translationElasticConfigurationObject,
+                                                                                            translationElasticExtent,
+                                                                                            TransformFlags.Move,
+                                                                                            currentFlags);
 
-                rotationElasticFoldout = DrawElasticConfiguration<RotationElasticConfiguration>("Rotation Elastic",
-                                                                                                rotationElasticFoldout,
-                                                                                                rotationElasticConfigurationObject,
-                                                                                                TransformFlags.Rotate,
-                                                                                                currentFlags);
+                rotationElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>("Rotation Elastic",
+                                                                                         rotationElasticFoldout,
+                                                                                         rotationElasticConfigurationObject,
+                                                                                         rotationElasticExtent,
+                                                                                         TransformFlags.Rotate,
+                                                                                         currentFlags);
 
-                scaleElasticFoldout = DrawElasticConfiguration<LinearElasticConfiguration>("Scale Elastic",
-                                                                                           scaleElasticFoldout,
-                                                                                           scaleElasticConfigurationObject,
-                                                                                           TransformFlags.Scale,
-                                                                                           currentFlags);
+                scaleElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>("Scale Elastic",
+                                                                                     scaleElasticFoldout,
+                                                                                     scaleElasticConfigurationObject,
+                                                                                     scaleElasticExtent,
+                                                                                     TransformFlags.Scale,
+                                                                                     currentFlags);
             }
 
             EditorGUILayout.Space();
@@ -255,7 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        private bool DrawElasticConfiguration<T>(string name, bool expanded, SerializedProperty property,
+        private bool DrawElasticConfiguration<T>(string name, bool expanded,
+                                                 SerializedProperty elasticProperty,
+                                                 SerializedProperty extentProperty,
                                                  TransformFlags requiredFlag,
                                                  TransformFlags providedFlags) where T : ElasticConfiguration
         {
@@ -264,9 +275,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 bool result = false;
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    result = InspectorUIUtility.DrawScriptableFoldout<T>(property,
+                    result = InspectorUIUtility.DrawScriptableFoldout<T>(elasticProperty,
                                                                          name,
                                                                          expanded);
+                    EditorGUILayout.PropertyField(extentProperty, includeChildren: true);
                 }
                 return result;
             }
@@ -274,31 +286,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return false;
             }
-        }
-
-        private bool DrawConfigFoldout(SerializedProperty configuration, string description, bool isCollapsed)
-        {
-            isCollapsed = EditorGUILayout.Foldout(isCollapsed, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
-            if (isCollapsed)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    EditorGUI.BeginChangeCheck();
-                    EditorGUILayout.PropertyField(configuration);
-                    if (!configuration.objectReferenceValue.IsNull())
-                    {
-                        MixedRealityInspectorUtility.DrawSubProfileEditor(configuration.objectReferenceValue, true);
-                    }
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        serializedObject.ApplyModifiedProperties();
-                    }
-                }
-            }
-
-
-
-            return isCollapsed;
         }
     }
 }

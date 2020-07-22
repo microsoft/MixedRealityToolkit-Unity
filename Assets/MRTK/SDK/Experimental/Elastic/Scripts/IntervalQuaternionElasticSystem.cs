@@ -7,30 +7,33 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    internal class ElasticSystemQuaternion : ElasticSystem<Quaternion>
+    public class QuaternionElasticSystem : ElasticSystem<Quaternion>
     {
-        public ElasticSystemQuaternion(Quaternion initialValue,
+        private Quaternion currentValue;
+        private Quaternion currentVelocity;
+
+        private QuaternionElasticExtent extent;
+        private ElasticProperties elasticProperties;
+
+        public QuaternionElasticSystem(Quaternion initialValue,
                                        Quaternion initialVelocity,
-                                       ElasticExtentProperties<Quaternion> extentInfo,
+                                       QuaternionElasticExtent extentInfo,
                                        ElasticProperties elasticProperties)
-                                       : base(initialValue, initialVelocity,
-                                              extentInfo, elasticProperties)
         {
+            currentValue = initialValue;
+            currentVelocity = initialVelocity;
+            this.extent = extentInfo;
+            this.elasticProperties = elasticProperties;
         }
 
-        /// <summary>
-        /// Update the internal state of the damped harmonic oscillator, given the forcing/desired value.
-        /// </summary>
-        /// <param name="forcingValue">Forcing function, for example, a desired manipulation position.
-        /// See https://en.wikipedia.org/wiki/Forcing_function_(differential_equations). It is a non-time-dependent
-        /// input function to a differential equation; in our situation, it is the "input position" to the spring.</param>
-        /// <param name="deltaTime">Amount of time that has passed since the last update.</param>
+        /// <inheritdoc/>
         public override Quaternion ComputeIteration(Quaternion forcingValue, float deltaTime)
         {
             if (Quaternion.Dot(forcingValue, currentValue) < 0)
             {
                 forcingValue = new Quaternion(-forcingValue.x, -forcingValue.y, -forcingValue.z, -forcingValue.w);
             }
+
             // For clarity and conciseness
             var k = elasticProperties.HandK;
             var d = elasticProperties.Drag;
@@ -43,9 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             var eulers = currentValue.eulerAngles;
 
             
-            foreach (var interval in extentInfo.SnapPoints )
+            foreach (var interval in extent.SnapPoints )
             {
-                var nearest = GetNearest(eulers, interval.eulerAngles);
+                var nearest = extent.repeatSnapPoints ? GetNearest(eulers, interval.eulerAngles) : interval.eulerAngles;
                 var nearestQuat = Quaternion.Euler(nearest.x, nearest.y, nearest.z);
 
                 if (Quaternion.Dot(nearestQuat, currentValue) < 0)
@@ -55,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 var snapDisplacement = Quaternion.Inverse(currentValue) * nearestQuat;
                 var snapAngle = Quaternion.Angle(currentValue, nearestQuat);
 
-                var snapFactor = ComputeSnapFactor(snapAngle, extentInfo.SnapRadius);
+                var snapFactor = ComputeSnapFactor(snapAngle, extent.SnapRadius);
 
                 force = Add(force, Scale(snapDisplacement, elasticProperties.SnapK * snapFactor));
             }
@@ -67,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
             return currentValue;
         }
+
+        /// <inheritdoc/>
+        public override Quaternion GetCurrentValue() => currentValue;
+
+        /// <inheritdoc/>
+        public override Quaternion GetCurrentVelocity() => currentVelocity;
 
         private Vector3 GetNearest(Vector3 target, Vector3 interval)
         {

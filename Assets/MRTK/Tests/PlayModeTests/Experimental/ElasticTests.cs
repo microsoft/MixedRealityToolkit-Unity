@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         #region Utilities
 
         // Some arbitrary, yet reasonable, values.
-        ElasticExtentProperties<float> extentProperties = new ElasticExtentProperties<float>
+        LinearElasticExtent extentProperties = new LinearElasticExtent
         {
             MinStretch = 0.0f,
             MaxStretch = 10.0f,

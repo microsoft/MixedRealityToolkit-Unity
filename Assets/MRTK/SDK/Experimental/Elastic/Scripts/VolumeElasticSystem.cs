@@ -10,35 +10,37 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    internal class ElasticSystem3D : ElasticSystem<Vector3>
+    public class VolumeElasticSystem : ElasticSystem<Vector3>
     {
-        public ElasticSystem3D(Vector3 initialValue, Vector3 initialVelocity,
-                                   ElasticExtentProperties<Vector3> extentInfo,
-                                   ElasticProperties elasticProperties)
-                                   : base(initialValue, initialVelocity,
-                                          extentInfo, elasticProperties) { }
+        private Vector3 currentValue;
+        private Vector3 currentVelocity;
 
-        /// <summary>
-        /// Update the internal state of the damped harmonic oscillator, given the forcing/desired value.
-        /// </summary>
-        /// <param name="forcingValue">Forcing function, for example, a desired manipulation position.
-        /// See https://en.wikipedia.org/wiki/Forcing_function_(differential_equations). It is a non-time-dependent
-        /// input function to a differential equation; in our situation, it is the "input position" to the spring.</param>
-        /// <param name="deltaTime">Amount of time that has passed since the last update.</param>
+        private VolumeElasticExtent extent;
+        private ElasticProperties elasticProperties;
+
+        public VolumeElasticSystem(Vector3 initialValue, Vector3 initialVelocity,
+                                   VolumeElasticExtent extentInfo,
+                                   ElasticProperties elasticProperties)
+        {
+            currentValue = initialValue;
+            currentVelocity = initialVelocity;
+            this.extent = extentInfo;
+            this.elasticProperties = elasticProperties;
+        }
+
+        /// <inheritdoc/>
         public override Vector3 ComputeIteration(Vector3 forcingValue, float deltaTime)
         {
             // F = -kx - (drag * v)
             var force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
 
-
-
             // Iterate over each snapping point, and apply forces as necessary.
-            foreach (Vector3 interval in extentInfo.SnapPoints)
+            foreach (Vector3 snapPoint in extent.SnapPoints)
             {
-                Vector3 closestPoint = FindNearest(currentValue, interval);
+                Vector3 closestPoint = extent.repeatSnapPoints ? FindNearest(currentValue, snapPoint) : snapPoint;
                 // Calculate distance from snapping point.
                 var distFromSnappingPoint = closestPoint - currentValue;
-                force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extentInfo.SnapRadius);
+                force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extent.SnapRadius);
             }
 
             // a = F/m
@@ -52,8 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             return currentValue;
         }
 
+        public override Vector3 GetCurrentValue() => currentValue;
+        public override Vector3 GetCurrentVelocity() => currentVelocity;
+
         private Vector3 FindNearest(Vector3 value, Vector3 interval)
         {
+            Debug.Assert(interval != Vector3.zero, "Zero vector used for repeating snapping interval; divide by zero!");
             return new Vector3(Mathf.Round(value.x / interval.x) * interval.x,
                                Mathf.Round(value.y / interval.y) * interval.y,
                                Mathf.Round(value.z / interval.z) * interval.z);

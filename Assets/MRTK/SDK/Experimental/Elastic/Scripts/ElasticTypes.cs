@@ -9,24 +9,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-
     /// <summary>
-    /// Properties of the extent in which a damped
-    /// harmonic oscillator is free to move.
+    /// Properties of a linear, one-dimensional extent
+    /// in which a damped harmonic oscillator is free to move.
     /// </summary>
     [Serializable]
-    public struct ElasticExtentProperties<T>
+    public struct LinearElasticExtent
     {
         /// <value>
-        /// Represents the lower bound of the extent,
-        /// specified as the norm of the n-dimensional extent
+        /// Represents the lower bound of the extent.
         /// </value>
         [SerializeField]
         public float MinStretch;
 
         /// <value>
-        /// Represents the upper bound of the extent,
-        /// specified as the norm of the n-dimensional extent
+        /// Represents the upper bound of the extent.
         /// </value>
         [SerializeField]
         public float MaxStretch;
@@ -42,10 +39,75 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// Points inside the extent to which the system will snap.
         /// </value>
         [SerializeField]
-        public T[] SnapPoints;
+        public float[] SnapPoints;
 
         /// <value>
-        /// Extent at which snap points begin forcing the spring.
+        /// Distance at which snap points begin forcing the spring.
+        /// </value>
+        [SerializeField]
+        public float SnapRadius;
+    }
+
+    /// <summary>
+    /// Properties of a three-dimensional extent
+    /// in which a damped harmonic oscillator is free to move.
+    /// </summary>
+    [Serializable]
+    public struct VolumeElasticExtent
+    {
+        /// <value>
+        /// Represents the lower bound of the extent.
+        /// </value>
+        [SerializeField]
+        public Bounds StretchBounds;
+
+        /// <value>
+        /// Whether the system, when approaching the extent bounds,
+        /// will treat the bounds like snap points and magnetize to them.
+        /// </value>
+        [SerializeField]
+        public bool SnapToEnds;
+
+        /// <value>
+        /// Points inside the extent to which the system will snap.
+        /// </value>
+        [SerializeField]
+        public Vector3[] SnapPoints;
+
+        /// <value>
+        /// Should the SnapPoints be repeated to infinity to serve
+        /// as regular snapping intervals?
+        /// </value>
+        public bool repeatSnapPoints;
+
+        /// <value>
+        /// Distance at which snap points begin forcing the spring.
+        /// </value>
+        [SerializeField]
+        public float SnapRadius;
+    }
+
+    /// <summary>
+    /// Properties of a four-dimensional extent
+    /// in which a damped harmonic oscillator is free to rotate.
+    /// </summary>
+    [Serializable]
+    public struct QuaternionElasticExtent
+    {
+        /// <value>
+        /// Points inside the extent to which the system will snap.
+        /// </value>
+        [SerializeField]
+        public Quaternion[] SnapPoints;
+
+        /// <value>
+        /// Should the SnapPoints be repeated to infinity to serve
+        /// as regular snapping intervals?
+        /// </value>
+        public bool repeatSnapPoints;
+
+        /// <value>
+        /// Distance at which snap points begin forcing the spring.
         /// </value>
         [SerializeField]
         public float SnapRadius;

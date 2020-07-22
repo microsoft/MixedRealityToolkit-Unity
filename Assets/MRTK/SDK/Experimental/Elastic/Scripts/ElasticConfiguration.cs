@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         {
             // Reasonable default values that should work sufficiently for
             // many simple use cases.
-            Mass = 1.0f,
+            Mass = 0.02f,
             HandK = 3.0f,
             EndK = 4.0f,
             SnapK = 2.0f,
