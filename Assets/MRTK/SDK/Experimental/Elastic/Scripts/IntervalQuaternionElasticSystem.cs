@@ -1,28 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    internal class IntervalQuaternionElasticSystem : ElasticSystem<Quaternion>
+    internal class ElasticSystemQuaternion : ElasticSystem<Quaternion>
     {
-        private Vector3 snapAxis;
-
-        public IntervalQuaternionElasticSystem(Quaternion initialValue, Quaternion initialVelocity,
-                                                Vector3 snapAxis,
-                                   ElasticExtentProperties<Quaternion> extentInfo,
-                                   ElasticProperties elasticProperties)
-                                   : base(initialValue, initialVelocity,
-                                          extentInfo, elasticProperties)
+        public ElasticSystemQuaternion(Quaternion initialValue,
+                                       Quaternion initialVelocity,
+                                       ElasticExtentProperties<Quaternion> extentInfo,
+                                       ElasticProperties elasticProperties)
+                                       : base(initialValue, initialVelocity,
+                                              extentInfo, elasticProperties)
         {
-            this.snapAxis = snapAxis;
         }
 
         /// <summary>
@@ -53,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             foreach (var interval in extentInfo.SnapPoints )
             {
                 var nearest = GetNearest(eulers, interval.eulerAngles);
-
                 var nearestQuat = Quaternion.Euler(nearest.x, nearest.y, nearest.z);
 
                 if (Quaternion.Dot(nearestQuat, currentValue) < 0)
@@ -62,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 }
                 var snapDisplacement = Quaternion.Inverse(currentValue) * nearestQuat;
                 var snapAngle = Quaternion.Angle(currentValue, nearestQuat);
-                Debug.Log("Snapangle = " + snapAngle);
+
                 var snapFactor = ComputeSnapFactor(snapAngle, extentInfo.SnapRadius);
 
                 force = Add(force, Scale(snapDisplacement, elasticProperties.SnapK * snapFactor));
@@ -104,10 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             return new Quaternion(p.x * t, p.y * t, p.z * t, p.w * t);
         }
     }
-
-    public static class QuaternionExtras
+    internal static class QuaternionExtras
     {
-        public static Quaternion Lerp(Quaternion p, Quaternion q, float t, bool shortWay)
+        internal static Quaternion Lerp(Quaternion p, Quaternion q, float t, bool shortWay)
         {
             if (shortWay)
             {
@@ -124,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             return r;
         }
 
-        public static Quaternion Slerp(Quaternion p, Quaternion q, float t, bool shortWay)
+        internal static Quaternion Slerp(Quaternion p, Quaternion q, float t, bool shortWay)
         {
             float dot = Quaternion.Dot(p, q);
             if (shortWay)
@@ -141,12 +132,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
 
-        public static Quaternion ScalarMultiply(Quaternion input, float scalar)
+        internal static Quaternion ScalarMultiply(Quaternion input, float scalar)
         {
             return new Quaternion(input.x * scalar, input.y * scalar, input.z * scalar, input.w * scalar);
         }
 
-        public static Quaternion Add(Quaternion p, Quaternion q)
+        internal static Quaternion Add(Quaternion p, Quaternion q)
         {
             return new Quaternion(p.x + q.x, p.y + q.y, p.z + q.z, p.w + q.w);
         }

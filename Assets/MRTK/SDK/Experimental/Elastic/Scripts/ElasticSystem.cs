@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// This extensibility allows not just for 1, 2, and 3-D springs, but
     /// allows for 4-dimensional quaternion springs.
     /// </summary>
-    internal abstract class ElasticSystem<T>
+    public abstract class ElasticSystem<T>
     {
         protected ElasticExtentProperties<T> extentInfo;
         protected ElasticProperties elasticProperties;

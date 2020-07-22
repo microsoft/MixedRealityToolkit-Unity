@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     {
         [SerializeField]
         [Tooltip("Physical properties of the elastic simulation system.")]
-        public ElasticProperties elasticProperties = new ElasticProperties
+        protected ElasticProperties elasticProperties = new ElasticProperties
         {
             // Reasonable default values that should work sufficiently for
             // many simple use cases.
@@ -24,14 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             Drag = 0.1f
         };
 
-        /// <summary>
-        /// Physical properties of the elastic simulation system.
-        /// </summary>
-        //public ElasticProperties ElasticProperties
-        //{
-        //    get => elasticProperties;
-        //    set => elasticProperties = value;
-        //}
+        // <summary>
+        // Physical properties of the elastic simulation system.
+        // </summary>
+        public ElasticProperties ElasticProperties
+        {
+            get => elasticProperties;
+            set => elasticProperties = value;
+        }
     }
 }
 

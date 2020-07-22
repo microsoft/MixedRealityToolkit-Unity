@@ -10,9 +10,9 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    internal class Interval3DElasticSystem : ElasticSystem<Vector3>
+    internal class ElasticSystem3D : ElasticSystem<Vector3>
     {
-        public Interval3DElasticSystem(Vector3 initialValue, Vector3 initialVelocity,
+        public ElasticSystem3D(Vector3 initialValue, Vector3 initialVelocity,
                                    ElasticExtentProperties<Vector3> extentInfo,
                                    ElasticProperties elasticProperties)
                                    : base(initialValue, initialVelocity,
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 Vector3 closestPoint = FindNearest(currentValue, interval);
                 // Calculate distance from snapping point.
                 var distFromSnappingPoint = closestPoint - currentValue;
-                force += computeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extentInfo.SnapRadius);
+                force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extentInfo.SnapRadius);
             }
 
             // a = F/m
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         // Helper function to reduce force calculation copypasta.
-        private Vector3 computeSnapForce(Vector3 distFromPoint, float k, float radius)
+        private Vector3 ComputeSnapForce(Vector3 distFromPoint, float k, float radius)
         {
             // Snap force is calculated by multiplying the "-kx" factor by
             // a clamped distance factor. This results in an overall
