@@ -328,6 +328,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Functions
 
         #region Private Methods
+
+        /// <summary>
+        /// Calculates the unweighted average, or centroid, of all pointers'
+        /// grab points, as defined by the PointerData.GrabPoint property.
+        /// Does not use the rotation of each pointer; represents a pure
+        /// geometric centroid  of the grab points in world space.
+        /// </summary>
+        /// <returns>
+        /// Worldspace grab point centroid of all pointers 
+        /// in pointerIdToPointerMap.
+        /// </returns>
         private Vector3 GetPointersCentroid()
         {
             Vector3 sum = Vector3.zero;
@@ -340,6 +351,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, count);
         }
 
+        /// <summary>
+        /// Calculates the multiple-handed pointer pose, used for
+        /// far-interaction hand-ray-based manipulations. Uses the
+        /// unweighted vector average of the pointers' forward vectors
+        /// to calculate a compound pose that takes into account the
+        /// pointing direction of each pointer.
+        /// </summary>
+        /// <returns>
+        /// Compound pose calculated as the average of the poses
+        /// corresponding to all of the pointers in pointerIdToPointerMap.
+        /// </returns>
         private MixedRealityPose GetAveragePointerPose()
         {
             Vector3 sumPos = Vector3.zero;
@@ -660,7 +682,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if ((currentState & State.Moving) > 0)
             {
-                MixedRealityPose pose = GetAveragePointerPose();
+                // If near manipulation, a pure grabpoint centroid is used for
+                // the initial pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
                 targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
@@ -748,7 +773,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if ((newState & State.Moving) > 0)
             {
-                MixedRealityPose pointerPose = GetAveragePointerPose();
+                // If near manipulation, a pure grabpoint centroid is used for
+                // the initial pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pointerPose = IsNearManipulation() ? new MixedRealityPose(GetPointersCentroid()) : GetAveragePointerPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersCentroid(), hostPose, hostTransform.localScale);
             }

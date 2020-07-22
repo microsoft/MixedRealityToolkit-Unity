@@ -45,15 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private List<SetupData> setupDataList = new List<SetupData>();
 
-        [TearDown]
-        public override void TearDown()
+        [UnityTearDown]
+        public override IEnumerator TearDown()
         {
             foreach (var setupData in setupDataList)
             {
                 Object.Destroy(setupData?.target);
             }
 
-            base.TearDown();
+            return base.TearDown();
         }
 
         /// <summary>

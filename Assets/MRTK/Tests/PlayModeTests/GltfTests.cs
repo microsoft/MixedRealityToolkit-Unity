@@ -28,18 +28,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string CubeCustomAttrGuid = "f0bb9fb635c69be4e8526b0fb6b48f39";
 
         private AsyncCoroutineRunner asyncCoroutineRunner;
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
             GameObject.Destroy(asyncCoroutineRunner.gameObject);
+            yield return null;
         }
 
         private IEnumerator WaitForTask(Task task)

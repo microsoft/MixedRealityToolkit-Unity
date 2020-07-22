@@ -141,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class ExamplePlayModeTests
     {
-
         // This method is called once before we enter play mode and execute any of the tests
         // do any kind of setup here that can't be done in playmode
         public void Setup()
@@ -152,18 +151,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         // Do common setup for each of your tests here - this will be called for each individual test after entering playmode
-        [Setup]
-        public void Init()
+        // Note that this uses UnitySetUp instead of [SetUp] because the init function needs to await a frame passing
+        // to ensure that the MRTK system has had the chance to fully set up before the test runs.
+        [UnitySetUp]
+        public IEnumerator Init()
         {
             // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
             TestUtilities.InitializeMixedRealityToolkit(true);
+            yield return null;
         }
 
         // Destroy the scene - this method is called after each test listed below has completed
-        [TearDown]
-        public void TearDown()
+        // Note that this uses UnityTearDown instead of [TearDown] because the init function needs to await a frame passing
+        // to ensure that the MRTK system has fully torn down before the next test setup->run cycle starts.
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests

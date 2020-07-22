@@ -424,6 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (handDataProvider == null)
             {
+                DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 handDataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
         }
@@ -434,6 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (handDataProvider != null)
             {
+                DebugUtilities.LogVerbose("Destroying the hand simulation data provider");
                 handDataProvider = null;
             }
         }

@@ -71,16 +71,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             public bool IsInPointingPose => throw new System.NotImplementedException();
         }
 
-        [SetUp]
-        public void Init()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void Shutdown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
         }
 
         /// <summary>
