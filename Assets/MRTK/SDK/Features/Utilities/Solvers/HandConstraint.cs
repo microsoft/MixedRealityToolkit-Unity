@@ -177,8 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float ForwardOffset
         {
-            get { return forwardOffset; }
-            set { forwardOffset = value; }
+            get => forwardOffset;
+            set => forwardOffset = value;
         }
 
         [SerializeField]
@@ -192,8 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float SafeZoneAngleOffset
         {
-            get { return safeZoneAngleOffset; }
-            set { safeZoneAngleOffset = value; }
+            get => safeZoneAngleOffset;
+            set => safeZoneAngleOffset = value;
         }
 
         [SerializeField]
@@ -247,8 +247,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => onLastHandLost;
             set => onLastHandLost = value;
         }
-
+        
         private Handedness previousHandedness = Handedness.None;
+        
+        public Handedness Handedness => previousHandedness;
+        
         protected IMixedRealityController trackedController = null;
         protected HandBounds handBounds = null;
 
@@ -305,6 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Toggle cursor off for hand that is going to suppor the hand menu
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
+                previousHandedness = newHandedness;
                 OnFirstHandDetected.Invoke();
                 OnHandActivate.Invoke();
             }
@@ -313,6 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Toggle cursors back on for the hand that is no longer supporting the solver
                 StartCoroutine(ToggleCursors(prevTrackedController, true));
 
+                previousHandedness = newHandedness;
                 // toggle cursor on for trackedHand
                 OnLastHandLost.Invoke();
                 OnHandDeactivate.Invoke();
@@ -324,10 +329,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
                 OnHandDeactivate.Invoke();
+                previousHandedness = newHandedness;
                 OnHandActivate.Invoke();
             }
-
-            previousHandedness = newHandedness;
 
             UpdateWorkingPositionToGoal();
             UpdateWorkingRotationToGoal();
