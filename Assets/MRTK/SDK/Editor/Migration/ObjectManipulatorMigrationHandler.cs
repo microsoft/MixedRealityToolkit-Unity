@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
                 case ManipulationHandler.HandMovementType.OneAndTwoHanded:
                     objManip.ManipulationType = ManipulationHandFlags.OneHanded |
-                        ManipulationHandFlags.TwoHanded;
+                                                ManipulationHandFlags.TwoHanded;
                     break;
             }
 
@@ -64,20 +64,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveScale:
                     objManip.TwoHandedManipulationType = TransformFlags.Move |
-                        TransformFlags.Scale;
+                                                         TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotate:
                     objManip.TwoHandedManipulationType = TransformFlags.Move |
-                        TransformFlags.Rotate;
+                                                         TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.RotateScale:
                     objManip.TwoHandedManipulationType = TransformFlags.Rotate |
-                        TransformFlags.Scale;
+                                                         TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotateScale:
                     objManip.TwoHandedManipulationType = TransformFlags.Move |
-                        TransformFlags.Rotate |
-                        TransformFlags.Scale;
+                                                         TransformFlags.Rotate |
+                                                         TransformFlags.Scale;
                     break;
             }
 
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 moveConstraint.ConstraintTransform = CameraCache.Main.transform;
             }
 
-            objManip.SmoothingActive = manipHandler.SmoothingActive;
+            objManip.SmoothingFar = manipHandler.SmoothingActive;
             objManip.MoveLerpTime = manipHandler.SmoothingAmoutOneHandManip;
             objManip.RotateLerpTime = manipHandler.SmoothingAmoutOneHandManip;
             objManip.ScaleLerpTime = manipHandler.SmoothingAmoutOneHandManip;
