@@ -54,8 +54,8 @@
       "_appTitle": "Mixed Reality Toolkit Documentation",
       "_enableSearch": true,
       "_disableNavbar": false,
-      "_appLogoPath": "../../Documentation/Images/mrt_logo_icon.png",
-      "_appFaviconPath": "../../Documentation/Images/favicon.ico",
+      "_appLogoPath": "./Documentation/Images/mrt_logo_icon.png",
+      "_appFaviconPath": "./Documentation/Images/favicon.ico",
       // section contribute start
 	  // remove this section if you want to restore default behavior which publishes a version of the docs that keeps the "improve this doc" link pointing to the publishing branch
       "_gitContribute": {
