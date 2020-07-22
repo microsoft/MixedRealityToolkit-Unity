@@ -2035,13 +2035,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (scaleConstraint == null)
                 {
                     scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
-
-                    scaleConstraint.TargetTransform = Target.transform;
 #pragma warning disable 0618
                     scaleConstraint.ScaleMinimum = scaleMinimum;
                     scaleConstraint.ScaleMaximum = scaleMaximum;
 #pragma warning restore 0618
                 }
+
+                scaleConstraint.Initialize(new MixedRealityTransform(transform));
             }
         }
 

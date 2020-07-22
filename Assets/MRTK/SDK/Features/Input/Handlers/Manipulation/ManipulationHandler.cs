@@ -315,11 +315,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             moveConstraint = this.EnsureComponent<FixedDistanceConstraint>();
-            moveConstraint.TargetTransform = hostTransform;
             moveConstraint.ConstraintTransform = CameraCache.Main.transform;
 
             rotateConstraint = this.EnsureComponent<RotationAxisConstraint>();
-            rotateConstraint.TargetTransform = hostTransform;
             rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(constraintOnRotation);
             rotateConstraint.UseLocalSpaceForConstraint = useLocalSpaceForConstraint;
 
@@ -841,7 +839,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
-            var pose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
+            var pose = new MixedRealityTransform(hostTransform);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.Initialize(pose);

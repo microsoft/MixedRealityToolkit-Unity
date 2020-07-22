@@ -669,7 +669,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.isKinematic = false;
             }
 
-            constraints.Initialize(new MixedRealityPose(HostTransform.position, HostTransform.rotation));
+            constraints.Initialize(new MixedRealityTransform(HostTransform));
         }
 
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)

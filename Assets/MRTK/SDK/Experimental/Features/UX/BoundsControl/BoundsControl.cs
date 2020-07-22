@@ -536,6 +536,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         public void RegisterTransformScaleHandler(MinMaxScaleConstraint transformScaleHandler)
         {
             scaleConstraint = transformScaleHandler;
+            if (scaleConstraint)
+            {
+                scaleConstraint.Initialize(new MixedRealityTransform(transform));
+            }
         }
 
         #endregion
