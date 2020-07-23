@@ -46,6 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AtopPalm = 4
         }
 
+        // Subtract one here because AtopPalm is not along the palm, in clockwise direction
+        private static readonly SolverSafeZone[] handSafeZonesClockWiseRightHand = new SolverSafeZone[] {
+            SolverSafeZone.UlnarSide,
+            SolverSafeZone.AboveFingerTips,
+            SolverSafeZone.RadialSide,
+            SolverSafeZone.BelowWrist
+        };
+
         [Header("Hand Constraint")]
         [SerializeField]
         [Tooltip("Which part of the hand to move the solver towards. The ulnar side of the hand is recommended for most situations.")]
@@ -142,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// </summary>
             LookAtCameraRotation,
             /// <summary>
-            /// Uses the object-to-head vector to compute an offset independent of look at camera rotation.
+            /// Uses the hand rotation to compute an offset independent of look at camera rotation.
             /// </summary>
             TrackedObjectRotation
         }
@@ -158,6 +166,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get => offsetBehavior;
             set => offsetBehavior = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Additional offset to apply towards the user.")]
+        private float forwardOffset = 0;
+
+        /// <summary>
+        /// Additional offset to apply towards the user.
+        /// </summary>
+        public float ForwardOffset
+        {
+            get => forwardOffset;
+            set => forwardOffset = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Additional degree offset to apply from the stated SafeZone. Ignored if Safe Zone is Atop Palm." + 
+        " Direction is clockwise on the left hand and anti-clockwise on the right hand.")]
+        private float safeZoneAngleOffset = 0;
+
+        /// <summary>
+        /// Additional degree offset to apply clockwise from the stated SafeZone.
+        /// Direction is clockwise on the left hand and anti-clockwise on the right hand.
+        /// </summary>
+        public float SafeZoneAngleOffset
+        {
+            get => safeZoneAngleOffset;
+            set => safeZoneAngleOffset = value;
         }
 
         [SerializeField]
@@ -211,8 +247,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => onLastHandLost;
             set => onLastHandLost = value;
         }
-
+        
         private Handedness previousHandedness = Handedness.None;
+        
+        public Handedness Handedness => previousHandedness;
+        
         protected IMixedRealityController trackedController = null;
         protected HandBounds handBounds = null;
 
@@ -269,6 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Toggle cursor off for hand that is going to suppor the hand menu
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
+                previousHandedness = newHandedness;
                 OnFirstHandDetected.Invoke();
                 OnHandActivate.Invoke();
             }
@@ -277,6 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // Toggle cursors back on for the hand that is no longer supporting the solver
                 StartCoroutine(ToggleCursors(prevTrackedController, true));
 
+                previousHandedness = newHandedness;
                 // toggle cursor on for trackedHand
                 OnLastHandLost.Invoke();
                 OnHandDeactivate.Invoke();
@@ -288,10 +329,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 StartCoroutine(ToggleCursors(trackedController, false, true));
 
                 OnHandDeactivate.Invoke();
+                previousHandedness = newHandedness;
                 OnHandActivate.Invoke();
             }
-
-            previousHandedness = newHandedness;
 
             UpdateWorkingPositionToGoal();
             UpdateWorkingRotationToGoal();
@@ -345,7 +385,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
 
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
+                Ray ray = CalculateGoalPositionRay(
+                    goalPosition, SolverHandler.TransformTarget, 
+                    trackedController, safeZone, OffsetBehavior, safeZoneAngleOffset);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 // We need to transform the ray into hand-space before performing the AABB intersection.
@@ -361,6 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     if (palmPose.HasValue)
                     {
                         goalPosition = palmPose.Value.Rotation * (localSpaceHit) + palmPose.Value.Position;
+                        Vector3 goalToCam = CameraCache.Main.transform.position - goalPosition;
+                        if (goalToCam.magnitude > Mathf.Epsilon)
+                        {
+                            goalPosition += (goalToCam).normalized * ForwardOffset;
+                        }
                     }
                 }
             }
@@ -459,7 +506,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
+        private static Ray CalculateRayForSafeZone(
+            Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset = 0)
         {
             Vector3 direction;
             Vector3 lookAtCamera = targetTransform.transform.position - CameraCache.Main.transform.position;
@@ -537,13 +585,58 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         // the up vector away from the palm pose, regardless of the desired
                         // rotation behavior. If no palm pose is available, we use the
                         // camera view vector as an approximation.
-                        direction = -GetPalmPose(hand)?.Up ?? -lookAtCamera;
+                        MixedRealityPose? palmPose = GetPalmPose(hand);
+                        if (palmPose.HasValue)
+                        {
+                            direction = Quaternion.AngleAxis(hand.ControllerHandedness.IsLeft() ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
+                        }
+                        else
+                        {
+                            direction = -lookAtCamera;
+                        }
                     }
                     break;
             }
 
             return new Ray(origin + direction, -direction);
         }
+
+        /// <summary>
+        /// Compute a ray from the target's previous position to its desired position
+        /// </summary>
+        private static Ray CalculateGoalPositionRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand,
+            SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior, float angleOffset)
+        {
+            if (angleOffset == 0)
+            {
+                return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior);
+            }
+
+            angleOffset = angleOffset % 360;
+            while (angleOffset < 0)
+            {
+                angleOffset = (angleOffset + 360) % 360;
+            }
+
+            if (handSafeZone == SolverSafeZone.AtopPalm)
+            {
+                return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior, angleOffset);
+            }
+
+            float offset = angleOffset / 90;
+            int intOffset = Mathf.FloorToInt(offset);
+            float fracOffset = offset - intOffset;
+
+            int currentSafeZoneClockwiseIdx = System.Array.IndexOf(handSafeZonesClockWiseRightHand, handSafeZone);
+
+            SolverSafeZone intPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset) % handSafeZonesClockWiseRightHand.Length];
+            SolverSafeZone fracPartSafeZoneClockwise = handSafeZonesClockWiseRightHand[(currentSafeZoneClockwiseIdx + intOffset + 1) % handSafeZonesClockWiseRightHand.Length];
+
+            Ray intSafeZoneRay = CalculateRayForSafeZone(origin, targetTransform, hand, intPartSafeZoneClockwise, offsetBehavior);
+            Ray fracPartSafeZoneRay = CalculateRayForSafeZone(origin, targetTransform, hand, fracPartSafeZoneClockwise, offsetBehavior);
+
+            Vector3 direction = Vector3.Lerp(-intSafeZoneRay.direction, -fracPartSafeZoneRay.direction, fracOffset).normalized;
+            return new Ray(origin + direction, -direction);        }
 
         private static bool IsPalmFacingCamera(IMixedRealityController hand)
         {

@@ -92,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             InputSimulationWindow window = GetWindow<InputSimulationWindow>();
             window.titleContent = new GUIContent("Input Simulation");
-            window.minSize = new Vector2(380.0f, 680.0f);
             window.Show();
         }
 
@@ -123,7 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
             }
 
-            EditorGUILayout.Space();
 
             // XXX Reloading the scene is currently not supported,
             // due to the life cycle of the MRTK "instance" object (see #4530).

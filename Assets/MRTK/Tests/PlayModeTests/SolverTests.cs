@@ -1332,6 +1332,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handConstraintSolver.UseGazeActivation = true;
 
             handConstraintSolver.SafeZone = safeZone;
+            testObjects.solver.Smoothing = false;
 
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
             Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
@@ -1354,15 +1355,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.SetRotation(handRotation);
             yield return null;
 
-            var delta = new Vector3(0.5f, 0.5f, 0f);
-            yield return hand.Move(delta, 5);
-            yield return null;
-
             // Ensure Activation occurred by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
-            yield return hand.Hide();
+            var palmConstraint = testObjects.solver as HandConstraint;
+            // Test forward offset 
+            palmConstraint.ForwardOffset = -0.6f;
             yield return null;
+            for (float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
+            {
+                Vector3 prevPosition = testObjects.target.transform.position;
+                palmConstraint.ForwardOffset = forwardOffset;
+                yield return null;
+                Vector3 curPosition = testObjects.target.transform.position;
+                Vector3 deltaPos = curPosition - prevPosition;
+                float actual = Vector3.Dot(deltaPos, CameraCache.Main.transform.forward);
+                string debugStr = $"forwardOffset: {palmConstraint.ForwardOffset} prevPosition: {prevPosition.ToString("0.0000")} curPosition: {curPosition.ToString("0.0000")}, {actual}";
+                Assert.True(actual < 0, $"Increasing forward offset is expected to move object toward camera. {debugStr}");
+            }
+
+            palmConstraint.ForwardOffset = 0;
+            palmConstraint.SafeZoneAngleOffset = 0;
+            yield return null;
+            int delta = 30;
+            for (int angle = delta; angle <= 90; angle += delta)
+            {
+                Vector3 prevPalmToObj = testObjects.target.transform.position - handTestPos;
+                palmConstraint.SafeZoneAngleOffset = angle;
+                yield return null;
+                Vector3 curPalmToObj = testObjects.target.transform.position - handTestPos;
+                Vector3 rotationAxis = -cameraTransform.forward;
+                if (safeZone == HandConstraint.SolverSafeZone.AtopPalm)
+                {
+                    HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, targetHandedness, out MixedRealityPose palmPose);
+                    rotationAxis = -palmPose.Forward;
+                }
+                float signedAngle = Vector3.SignedAngle(prevPalmToObj, curPalmToObj, rotationAxis);
+
+                if (targetHandedness == Handedness.Right)
+                {
+                    signedAngle *= -1;
+                }
+                Assert.True(signedAngle < 0, $"Increasing SolverSafeZoneAngleOffset should move menu in clockwise direction in left hand, anti-clockwise in right hand {signedAngle}");
+            }
+
+
+            yield return hand.Hide();
         }
 
         /// <summary>
