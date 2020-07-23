@@ -61,12 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         [SerializeField]
         public Bounds StretchBounds;
 
-        /// <value>
-        /// Whether the system, when approaching the extent bounds,
-        /// will treat the bounds like snap points and magnetize to them.
-        /// </value>
+        /// <summary>
+        /// Whether the bounds should be respected by the system.
+        /// </summary>
         [SerializeField]
-        public bool SnapToEnds;
+        public bool UseBounds;
 
         /// <value>
         /// Points inside the extent to which the system will snap.
@@ -95,10 +94,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     public struct QuaternionElasticExtent
     {
         /// <value>
-        /// Points inside the extent to which the system will snap.
+        /// Euler angles to which the system will snap.
         /// </value>
         [SerializeField]
-        public Quaternion[] SnapPoints;
+        public Vector3[] SnapPoints;
 
         /// <value>
         /// Should the SnapPoints be repeated to infinity to serve

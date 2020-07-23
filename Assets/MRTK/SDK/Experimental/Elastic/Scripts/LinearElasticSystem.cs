@@ -12,9 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
     public class LinearElasticSystem : ElasticSystem<float>
     {
+        // Internal system state.
         private float currentValue;
         private float currentVelocity;
 
+        // Configuration of extent and spring properties.
         private LinearElasticExtent extent;
         private ElasticProperties elasticProperties;
 

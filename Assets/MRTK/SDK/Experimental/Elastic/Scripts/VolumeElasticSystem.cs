@@ -12,9 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
     public class VolumeElasticSystem : ElasticSystem<Vector3>
     {
+        // Internal system state.
         private Vector3 currentValue;
         private Vector3 currentVelocity;
 
+        // Configuration of extent and spring properties.
         private VolumeElasticExtent extent;
         private ElasticProperties elasticProperties;
 
@@ -43,6 +45,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                 force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extent.SnapRadius);
             }
 
+            // Check if our current value is within the specified bounds.
+            // If outside, we will apply the end-force (if the bounds are enabled)
+            if (extent.StretchBounds.Contains(currentValue) == false && extent.UseBounds)
+            {
+                var closestPoint = extent.StretchBounds.ClosestPoint(currentValue);
+                var displacementFromEdge = closestPoint - currentValue;
+
+                // Apply the force (F = kx)
+                force += displacementFromEdge * elasticProperties.EndK;
+            }
+
             // a = F/m
             var accel = force / elasticProperties.Mass;
 
@@ -57,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public override Vector3 GetCurrentValue() => currentValue;
         public override Vector3 GetCurrentVelocity() => currentVelocity;
 
+        // Find the nearest snapping point to the given value, on a repeated
+        // snapping interval.
         private Vector3 FindNearest(Vector3 value, Vector3 interval)
         {
             Debug.Assert(interval != Vector3.zero, "Zero vector used for repeating snapping interval; divide by zero!");
