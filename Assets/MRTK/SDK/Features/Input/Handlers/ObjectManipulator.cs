@@ -368,6 +368,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ElasticSystem<Quaternion> rotationElastic;
         private ElasticSystem<Vector3> scaleElastic;
 
+        // Magnitude of the velocity at which the elastic systems will
+        // cease being simulated (if enabled) and the object will stop updating/moving.
+        private readonly static float elasticVelocityThreshold = 0.001f;
+
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray 
         /// with the object on pointer down in pointer space
@@ -423,15 +427,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isManipulationStarted)
             {
-                if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > 0.001f)
+                if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
                 {
                     HostTransform.position = translationElastic.ComputeIteration(HostTransform.position, Time.deltaTime);
                 }
-                if (elasticTypes.HasFlag(TransformFlags.Rotate) && rotationElastic != null && rotationElastic.GetCurrentVelocity().eulerAngles.magnitude > 0.001f)
+                if (elasticTypes.HasFlag(TransformFlags.Rotate) && rotationElastic != null && rotationElastic.GetCurrentVelocity().eulerAngles.magnitude > elasticVelocityThreshold)
                 {
                     HostTransform.rotation = rotationElastic.ComputeIteration(HostTransform.rotation, Time.deltaTime);
                 }
-                if (elasticTypes.HasFlag(TransformFlags.Scale) && scaleElastic != null && scaleElastic.GetCurrentVelocity().magnitude > 0.001f)
+                if (elasticTypes.HasFlag(TransformFlags.Scale) && scaleElastic != null && scaleElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
                 {
                     HostTransform.localScale = scaleElastic.ComputeIteration(HostTransform.localScale, Time.deltaTime);
                 }
