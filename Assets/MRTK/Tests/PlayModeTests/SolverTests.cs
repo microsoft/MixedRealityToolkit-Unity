@@ -19,7 +19,6 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -103,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 yield return WaitForFrames(2);
 
-                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+                TestUtilities.AssertLessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
             }
 
             // Test orbital around custom override
@@ -113,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 yield return WaitForFrames(2);
 
-                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
+                TestUtilities.AssertLessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
                 yield return WaitForFrames(2);
             }
@@ -152,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
 
             Vector3 handOrbitalPos = testObjects.target.transform.position;
-            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, leftHandPos), DistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(handOrbitalPos, leftHandPos), DistanceThreshold);
         }
 
         /// <summary>
@@ -188,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
 
             // Confirm that the surfacemagnetic cube is about on the wall straight ahead
-            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, wall.transform.position), DistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(targetTransform.position, wall.transform.position), DistanceThreshold);
 
             // Rotate the camera
             Vector3 cameraDir = Vector3.forward + Vector3.right;
@@ -206,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
 
             // Confirm that the surfacemagnetic cube is on the wall with camera rotated
-            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, hitInfo.point), DistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(targetTransform.position, hitInfo.point), DistanceThreshold);
 
             // Default orientation mode is TrackedTarget, test object should be facing camera
             Assert.IsTrue(Mathf.Approximately(-1.0f, Vector3.Dot(targetTransform.forward.normalized, cameraTransform.forward.normalized)));
@@ -287,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertNotAboutEqual(testObjects.target.transform.position, handPosition, "HandConstraint solver is in the same location of the hand when it should be slightly offset from the hand.");
 
             // Make sure the solver is near the hand.
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
 
             // Hide the right hand and create a left hand.
             yield return rightHand.Hide();
@@ -298,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
             // Make sure the solver is now near the other hand.
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
         }
 
         /// <summary>
@@ -971,14 +970,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test that solver points to the right and is visible
             yield return WaitForFrames(2);
-            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            TestUtilities.AssertLessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
             Assert.IsTrue(indicatorMesh.enabled);
 
             directionTarget.transform.position = -10.0f * Vector3.right;
 
             // Test that solver points to the left now and is visible
             yield return WaitForFrames(2);
-            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            TestUtilities.AssertLessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
             Assert.IsTrue(indicatorMesh.enabled);
 
             // Test that the solver is invisible
@@ -990,7 +989,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Get back to a position where the directional indicator should be visible
             directionTarget.transform.position = -10.0f * Vector3.right;
             yield return WaitForFrames(2);
-            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            TestUtilities.AssertLessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
             Assert.IsTrue(indicatorMesh.enabled);
 
             // Destroy the object and then validate that the mesh is no longer visible
@@ -1021,8 +1020,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test distance remains within min/max bounds
             float distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
-            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
-            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+            TestUtilities.AssertLessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            TestUtilities.AssertGreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
 
             MixedRealityPlayspace.PerformTransformation(p =>
             {
@@ -1033,8 +1032,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(followWaitTime);
 
             distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
-            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
-            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+            TestUtilities.AssertLessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            TestUtilities.AssertGreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
 
             MixedRealityPlayspace.PerformTransformation(p =>
             {
@@ -1045,8 +1044,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(followWaitTime);
 
             distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
-            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
-            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+            TestUtilities.AssertLessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            TestUtilities.AssertGreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
 
             // Test VerticalMaxDistance
             followSolver.VerticalMaxDistance = 0.1f;
@@ -1152,32 +1151,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
-            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
 
             // Test y axis rotation
             MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 45));
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
-            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
 
             // Test x axis rotation
             MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.right, 45));
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
-            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
 
             // Test translation
             MixedRealityPlayspace.PerformTransformation(p => p.Translate(Vector3.back, Space.World));
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
-            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            TestUtilities.AssertLessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
 
             // Test renderer bounds clamp mode.
             followSolver.AngularClampMode = Follow.AngularClampType.RendererBounds;
@@ -1244,7 +1243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForFrames(2);
 
             Vector3 handOrbitalPos = testData.target.transform.position;
-            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
+            TestUtilities.AssertLessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
 
             Transform expectedTransform = null;
             if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
