@@ -425,6 +425,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private void Update()
         {
+            // If the user is not actively interacting with the object,
+            // we let the elastic systems continue simulating, to allow
+            // the object to naturally come to rest.
             if (!isManipulationStarted)
             {
                 if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
