@@ -588,7 +588,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         MixedRealityPose? palmPose = GetPalmPose(hand);
                         if (palmPose.HasValue)
                         {
-                            direction = Quaternion.AngleAxis(hand.ControllerHandedness.IsLeft() ? -angleOffset : angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
+                            direction = Quaternion.AngleAxis(hand.ControllerHandedness.IsLeft() ? angleOffset : -angleOffset, palmPose.Value.Forward) * -palmPose.Value.Up;
                         }
                         else
                         {

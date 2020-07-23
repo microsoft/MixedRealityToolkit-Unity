@@ -1362,7 +1362,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Test forward offset 
             palmConstraint.ForwardOffset = -0.6f;
             yield return null;
-            for(float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
+            for (float forwardOffset = -0.5f; forwardOffset < 0; forwardOffset += 0.1f)
             {
                 Vector3 prevPosition = testObjects.target.transform.position;
                 palmConstraint.ForwardOffset = forwardOffset;
@@ -1377,25 +1377,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             palmConstraint.ForwardOffset = 0;
             palmConstraint.SafeZoneAngleOffset = 0;
             yield return null;
-            // test that increasing SafeZoneAngleOffset moves in clockwise direction
-            if (safeZone != HandConstraint.SolverSafeZone.AtopPalm)
+            int delta = 30;
+            for (int angle = delta; angle <= 90; angle += delta)
             {
-                int delta = 30;
-                for(int angle = delta; angle < 180; angle += delta) 
+                Vector3 prevPalmToObj = testObjects.target.transform.position - handTestPos;
+                palmConstraint.SafeZoneAngleOffset = angle;
+                yield return null;
+                Vector3 curPalmToObj = testObjects.target.transform.position - handTestPos;
+                Vector3 rotationAxis = -cameraTransform.forward;
+                if (safeZone == HandConstraint.SolverSafeZone.AtopPalm)
                 {
-                    Vector3 prevPalmToObj = testObjects.target.transform.position - handTestPos;
-                    palmConstraint.SafeZoneAngleOffset = angle;
-                    yield return null;
-                    Vector3 curPalmToObj = testObjects.target.transform.position - handTestPos;
-                    float signedAngle = Vector3.SignedAngle(prevPalmToObj, curPalmToObj, -CameraCache.Main.transform.forward);
-                    if (targetHandedness == Handedness.Right) 
-                    {
-                        signedAngle *= -1;
-                    }
-                    Assert.True(signedAngle < 0, $"Increasing SolverSafeZoneAngleOffset should move menu in clockwise direction in left hand, anti-clockwise in right hand");
+                    HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, targetHandedness, out MixedRealityPose palmPose);
+                    rotationAxis = -palmPose.Forward;
                 }
+                float signedAngle = Vector3.SignedAngle(prevPalmToObj, curPalmToObj, rotationAxis);
 
+                if (targetHandedness == Handedness.Right)
+                {
+                    signedAngle *= -1;
+                }
+                Assert.True(signedAngle < 0, $"Increasing SolverSafeZoneAngleOffset should move menu in clockwise direction in left hand, anti-clockwise in right hand {signedAngle}");
             }
+
 
             yield return hand.Hide();
         }
