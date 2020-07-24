@@ -57,9 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
         bool elasticsFoldout = true;
-        bool translationElasticFoldout,
-             rotationElasticFoldout,
-             scaleElasticFoldout = false;
+        bool translationElasticFoldout = false;
+        bool rotationElasticFoldout = false;
+        bool scaleElasticFoldout = false;
         bool eventsFoldout = true;
 
         public void OnEnable()
