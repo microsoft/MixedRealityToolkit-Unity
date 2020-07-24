@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         [SerializeField]
         [Tooltip("Optional value to clamp the beginning / end of the slider touch area so it snaps to zero or one with ease")]
+        [Range(0, 0.5f)]
         private float snapValue = 0.05f;
 
         private float colliderWidth;
