@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 
             // Check if our current value is within the specified bounds.
             // If outside, we will apply the end-force (if the bounds are enabled)
-            if (extent.StretchBounds.Contains(currentValue) == false && extent.UseBounds)
+            if (!extent.StretchBounds.Contains(currentValue) && extent.UseBounds)
             {
                 var closestPoint = extent.StretchBounds.ClosestPoint(currentValue);
                 var displacementFromEdge = closestPoint - currentValue;
