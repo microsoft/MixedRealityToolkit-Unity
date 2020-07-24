@@ -15,6 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         private QuaternionElasticExtent extent;
         private ElasticProperties elasticProperties;
 
+        /// <summary>
+        /// Default constructor; initializes the elastic system with the specified
+        /// initial value, velocity, extent, and elastic properties.
+        /// </summary>
         public QuaternionElasticSystem(Quaternion initialValue,
                                        Quaternion initialVelocity,
                                        QuaternionElasticExtent extentInfo,

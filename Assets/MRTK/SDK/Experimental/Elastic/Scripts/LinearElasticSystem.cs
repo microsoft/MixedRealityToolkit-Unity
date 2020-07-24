@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         private LinearElasticExtent extent;
         private ElasticProperties elasticProperties;
 
+        /// <summary>
+        /// Default constructor; initializes the elastic system with the specified
+        /// initial value, velocity, extent, and elastic properties.
+        /// </summary>
         public LinearElasticSystem(float initialValue, float initialVelocity,
                                    LinearElasticExtent extentInfo,
                                    ElasticProperties elasticProperties)
