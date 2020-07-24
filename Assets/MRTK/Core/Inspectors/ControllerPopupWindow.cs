@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Vector2 horizontalScrollPosition;
 
         private SerializedProperty currentInteractionList;
+        private static List<string> mappedControllerList;
 
         private ControllerPopupWindow thisWindow;
 
@@ -186,12 +187,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None, List<string> mappedControllers = null)
         {
             if (window != null)
             {
                 window.Close();
             }
+            
+            if (mappedControllers != null)
+                mappedControllerList = mappedControllers;
 
             window = null;
 
@@ -276,10 +280,51 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             try
             {
                 RenderInteractionList(currentInteractionList, currentControllerMapping.HasCustomInteractionMappings);
+                RenderMappingList(mappedControllerList);
             }
             catch (Exception)
             {
                 thisWindow.Close();
+            }
+        }
+
+        private void RenderMappingList(List<string> controllerList)
+        {
+            GUIStyle headerStyle = new GUIStyle();
+            headerStyle.richText = true;
+
+            if (currentControllerOption == null || currentControllerTexture == null)
+            {
+                GUILayout.BeginVertical();
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.LabelField("<b>Controllers affected by this mapping</b>", headerStyle);
+                    for (int i = 0; i < controllerList.Count; i++)
+                    {
+                        EditorGUILayout.LabelField(controllerList[i]);
+                    }
+                }
+                GUILayout.EndVertical();
+            }
+            else
+            {
+                float max_y = currentControllerOption.InputLabelPositions.Max(x => x.y);
+
+                var titleRectPosition = Vector2.up * (max_y + 4 * EditorGUIUtility.singleLineHeight);
+                var titleRectSize = new Vector2(500, EditorGUIUtility.singleLineHeight);
+
+                var titleRect = new Rect(titleRectPosition, titleRectSize);
+                EditorGUI.LabelField(titleRect, "<b>Controllers affected by this mapping</b>", headerStyle);
+
+                for (int i = 0; i < controllerList.Count; i++)
+                {
+                    var rectPosition = Vector2.up * (max_y + (i+5) * EditorGUIUtility.singleLineHeight);
+                    var rectSize = new Vector2(1000, EditorGUIUtility.singleLineHeight);
+
+                    var labelRect = new Rect(rectPosition, rectSize);
+                    EditorGUI.LabelField(labelRect, controllerList[i]);
+                }
             }
         }
 
@@ -697,7 +742,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.EndScrollView();
                 interactionList.serializedObject.ApplyModifiedProperties();
-            }
+            } 
 
             GUILayout.EndVertical();
         }
