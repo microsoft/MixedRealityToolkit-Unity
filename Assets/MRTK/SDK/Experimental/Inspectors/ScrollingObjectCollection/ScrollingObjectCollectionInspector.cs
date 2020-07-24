@@ -222,16 +222,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             if (showDebugOptions)
             {
-                using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    visibleDebugPlanes = EditorGUILayout.Toggle("Show Event Planes", visibleDebugPlanes);
+                    using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
+                    {
+                        visibleDebugPlanes = EditorGUILayout.Toggle("Show Event Planes", visibleDebugPlanes);
+                    }
                 }
-
-                EditorGUILayout.Space();
 
                 using (new EditorGUI.DisabledGroupScope(!EditorApplication.isPlaying))
                 {
-
                     using (new EditorGUI.IndentLevelScope())
                     {
                         animateTransition = EditorGUILayout.Toggle("Animate", animateTransition);
