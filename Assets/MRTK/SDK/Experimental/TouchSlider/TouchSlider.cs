@@ -17,28 +17,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Experimental]
         [SerializeField]
         [Tooltip("The pinch slider that will be receiving touch input")]
-        private PinchSlider Slider = null;
+        private PinchSlider slider = null;
+
         [SerializeField]
         [Tooltip("Optional TextMeshPro that displays the slider value to the end user")]
-        private TextMeshPro SliderValue = null;
+        private TextMeshPro sliderValue = null;
+
         [SerializeField]
         [Tooltip("The collider object that receives touch input")]
-        private BoxCollider TouchableCollider = null;
+        private BoxCollider touchableCollider = null;
+
         [SerializeField]
         [Tooltip("Optional value to clamp the beginning / end of the slider touch area so it snaps to zero or one with ease")]
-        private float SnapValue = 0.05f;
-        private float ColliderWidth;
-        private float ColliderPosition;
-        private float ColliderLeft;
-        private float ColliderRight;
+        private float snapValue = 0.05f;
+
+        private float colliderWidth;
+        private float colliderPosition;
+        private float colliderLeft;
+        private float colliderRight;
+
         /// <summary>
         /// This can get called from a pinch slider's OnValueChanged event to display the text value
         /// </summary>
         public void UpdateSliderText()
         {
-            if (SliderValue != null)
+            if (sliderValue != null)
             {
-                SliderValue.text = Slider.SliderValue.ToString();
+                sliderValue.text = slider.SliderValue.ToString();
             }
         }
         public void OnTouchStarted(HandTrackingInputEventData eventData)
@@ -57,18 +62,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
         private void CalculateSliderValueBasedOnTouchPoint(float touchPoint) {
             // The collider's anchor is at the centerpoint, so convert the touchpoint to slider value
-            ColliderWidth = TouchableCollider.bounds.size.x;
-            ColliderPosition = TouchableCollider.gameObject.transform.position.x;
-            ColliderLeft = ColliderPosition - ColliderWidth / 2;
-            ColliderRight = ColliderPosition + ColliderWidth / 2;
-            float result = (touchPoint - ColliderLeft) / (ColliderRight - ColliderLeft);
+            colliderWidth = touchableCollider.bounds.size.x;
+            colliderPosition = touchableCollider.gameObject.transform.position.x;
+            colliderLeft = colliderPosition - colliderWidth / 2;
+            colliderRight = colliderPosition + colliderWidth / 2;
+            float result = (touchPoint - colliderLeft) / (colliderRight - colliderLeft);
             // clamp the value between zero and one, and also trim out the SnapValue
             float clampedResult;
-            if (result < SnapValue)
+            if (result < snapValue)
             {
                 clampedResult = 0;
             }
-            else if (result > (1 - SnapValue))
+            else if (result > (1 - snapValue))
             {
                 clampedResult = 1;
             }
@@ -76,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 clampedResult = result;
             }
-            Slider.SliderValue = clampedResult;
+            slider.SliderValue = clampedResult;
         }
     }
 }

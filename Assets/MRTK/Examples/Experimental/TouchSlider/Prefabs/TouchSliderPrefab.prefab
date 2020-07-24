@@ -1570,8 +1570,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.132, y: -0.023991518, z: 0.60831225}
-  - {x: -0.006869737, y: -0.023991533, z: 0.60831225}
+  - {x: -0.126, y: 0, z: -0.0077181123}
+  - {x: -0.0008697361, y: -0.000000014901161, z: -0.0077181123}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -1755,6 +1755,84 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeLine: {fileID: 2880327761009942673}
+--- !u!65 &2880327762598670683
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880327761053621694}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.032, y: 0.032, z: 0.0394858}
+  m_Center: {x: 0, y: 0, z: 0.0048665213}
+--- !u!114 &2880327762598670660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880327761053621694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
+--- !u!114 &2880327762598670680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880327761053621694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  InputActionId: 0
+  isGlobal: 0
+  Dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
+  CanSelect: 1
+  CanDeselect: 1
+  VoiceCommand: 
+  voiceRequiresFocus: 1
+  profiles:
+  - Target: {fileID: 2880327761053621694}
+    Themes:
+    - {fileID: 11400000, guid: ab3c6aa1de7cedb40b747c9e47d76af1, type: 2}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  Events: []
+  resetOnDestroy: 0
+  enabledOnStart: 1
+--- !u!114 &2880327762598670687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880327761053621694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
+  localForward: {x: -0, y: -0, z: -1}
+  localUp: {x: 0, y: 1, z: 0}
+  localCenter: {x: 0, y: 0, z: -0.014876379}
+  bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 2880327762598670683}
 --- !u!1 &2880327761571872589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,83 +2036,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!65 &2880327762598670683
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880327761053621694}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.032, y: 0.032, z: 0.0394858}
-  m_Center: {x: 0, y: 0, z: 0.0048665213}
---- !u!114 &2880327762598670660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880327761053621694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 0
---- !u!114 &2880327762598670680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880327761053621694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputActionId: 0
-  isGlobal: 0
-  Dimensions: 1
-  dimensionIndex: 0
-  startDimensionIndex: 0
-  CanSelect: 1
-  CanDeselect: 1
-  VoiceCommand: 
-  voiceRequiresFocus: 1
-  profiles:
-  - Target: {fileID: 2880327761053621694}
-    Themes:
-    - {fileID: 11400000, guid: ab3c6aa1de7cedb40b747c9e47d76af1, type: 2}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
-  Events: []
-  resetOnDestroy: 0
-  enabledOnStart: 1
---- !u!114 &2880327762598670687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880327761053621694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventsToReceive: 0
-  debounceThreshold: 0.01
-  localForward: {x: -0, y: -0, z: -1}
-  localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: -0.014876379}
-  bounds: {x: 0.032, y: 0.032}
-  touchableCollider: {fileID: 2880327762598670683}
 --- !u!1 &2880327762802431237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,22 +2199,22 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.131975, y: -0.023991518, z: 0.6117798}
-  - {x: -0.115294285, y: -0.023991518, z: 0.6117798}
-  - {x: -0.09861358, y: -0.023991518, z: 0.6117798}
-  - {x: -0.08193289, y: -0.023991525, z: 0.6117798}
-  - {x: -0.065252185, y: -0.023991525, z: 0.6117798}
-  - {x: -0.048571486, y: -0.023991525, z: 0.6117798}
-  - {x: -0.031890783, y: -0.023991533, z: 0.6117798}
-  - {x: -0.015210088, y: -0.023991533, z: 0.6117798}
-  - {x: 0.0014706217, y: -0.023991533, z: 0.6117798}
-  - {x: 0.01815131, y: -0.023991533, z: 0.6117798}
-  - {x: 0.03483201, y: -0.023991533, z: 0.6117798}
-  - {x: 0.051512696, y: -0.023991533, z: 0.6117798}
-  - {x: 0.06819341, y: -0.023991548, z: 0.6117798}
-  - {x: 0.0848741, y: -0.023991548, z: 0.6117798}
-  - {x: 0.1015548, y: -0.023991548, z: 0.6117798}
-  - {x: 0.11823549, y: -0.023991548, z: 0.6117798}
+  - {x: -0.12597498, y: -3.637979e-12, z: -0.004250512}
+  - {x: -0.10929428, y: -0.0000000018626451, z: -0.004250512}
+  - {x: -0.09261358, y: -0.0000000037252903, z: -0.004250512}
+  - {x: -0.07593288, y: -0.000000007450581, z: -0.004250512}
+  - {x: -0.05925218, y: -0.000000007450581, z: -0.004250512}
+  - {x: -0.042571485, y: -0.000000007450581, z: -0.004250512}
+  - {x: -0.025890782, y: -0.000000014901161, z: -0.004250512}
+  - {x: -0.009210087, y: -0.000000014901161, z: -0.004250512}
+  - {x: 0.0074706227, y: -0.000000014901161, z: -0.004250512}
+  - {x: 0.02415131, y: -0.000000014901161, z: -0.004250512}
+  - {x: 0.040832013, y: -0.000000014901161, z: -0.004250512}
+  - {x: 0.0575127, y: -0.000000014901161, z: -0.004250512}
+  - {x: 0.07419342, y: -0.000000029802322, z: -0.004250512}
+  - {x: 0.090874106, y: -0.000000029802322, z: -0.004250512}
+  - {x: 0.10755481, y: -0.000000029802322, z: -0.004250512}
+  - {x: 0.124235496, y: -0.000000029802322, z: -0.004250512}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -2409,7 +2410,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8185673684607940321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.008100003, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1512855025627315586}
@@ -2429,10 +2430,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b3a424ed5c2c1429c1f947ddded634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Slider: {fileID: 1512855025627315585}
-  SliderValue: {fileID: 2880327761571872579}
-  TouchableCollider: {fileID: 8185673685398452861}
-  SnapValue: 0.05
+  slider: {fileID: 1512855025627315585}
+  sliderValue: {fileID: 2880327761571872579}
+  touchableCollider: {fileID: 8185673685398452861}
+  snapValue: 0.05
 --- !u!1 &8185673685398452801
 GameObject:
   m_ObjectHideFlags: 0
