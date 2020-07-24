@@ -1,11 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.UI;
 using TMPro;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -46,21 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 sliderValue.text = slider.SliderValue.ToString();
             }
         }
-        public void OnTouchStarted(HandTrackingInputEventData eventData)
-        {
-        }
 
-        public void OnTouchCompleted(HandTrackingInputEventData eventData)
-        {
-        }
+        public void OnTouchStarted(HandTrackingInputEventData eventData) { }
+
+        public void OnTouchCompleted(HandTrackingInputEventData eventData) { }
+
         /// <summary>
         /// When the collider is touched, use the touch point to Calculate the Slider value
         /// </summary>
-        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        public void OnTouchUpdated(HandTrackingInputEventData eventData) => CalculateSliderValueBasedOnTouchPoint(eventData.InputData.x);
+
+        private void CalculateSliderValueBasedOnTouchPoint(float touchPoint)
         {
-            CalculateSliderValueBasedOnTouchPoint(eventData.InputData.x);
-        }
-        private void CalculateSliderValueBasedOnTouchPoint(float touchPoint) {
             // The collider's anchor is at the centerpoint, so convert the touchpoint to slider value
             colliderWidth = touchableCollider.bounds.size.x;
             colliderPosition = touchableCollider.gameObject.transform.position.x;
