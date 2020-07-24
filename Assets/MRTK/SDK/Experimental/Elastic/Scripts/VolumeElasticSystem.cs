@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -34,14 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public override Vector3 ComputeIteration(Vector3 forcingValue, float deltaTime)
         {
             // F = -kx - (drag * v)
-            var force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
+            Vector3 force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
 
             // Iterate over each snapping point, and apply forces as necessary.
             foreach (Vector3 snapPoint in extent.SnapPoints)
             {
                 Vector3 closestPoint = extent.RepeatSnapPoints ? FindNearest(currentValue, snapPoint) : snapPoint;
                 // Calculate distance from snapping point.
-                var distFromSnappingPoint = closestPoint - currentValue;
+                Vector3 distFromSnappingPoint = closestPoint - currentValue;
                 force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extent.SnapRadius);
             }
 
@@ -49,15 +49,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             // If outside, we will apply the end-force (if the bounds are enabled)
             if (!extent.StretchBounds.Contains(currentValue) && extent.UseBounds)
             {
-                var closestPoint = extent.StretchBounds.ClosestPoint(currentValue);
-                var displacementFromEdge = closestPoint - currentValue;
+                Vector3 closestPoint = extent.StretchBounds.ClosestPoint(currentValue);
+                Vector3 displacementFromEdge = closestPoint - currentValue;
 
                 // Apply the force (F = kx)
                 force += displacementFromEdge * elasticProperties.EndK;
             }
 
             // a = F/m
-            var accel = force / elasticProperties.Mass;
+            Vector3 accel = force / elasticProperties.Mass;
 
             // Integrate our acceleration over time.
             currentVelocity += accel * deltaTime;

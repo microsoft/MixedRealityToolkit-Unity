@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public override float ComputeIteration(float forcingValue, float deltaTime)
         {
             // F = -kx - (drag * v)
-            var force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
+            float force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
 
             // Distance that the current stretch value is from the end limit.
             float distFromEnd = extent.MaxStretch - currentValue;
@@ -51,12 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             foreach (float snappingPoint in extent.SnapPoints)
             {
                 // Calculate distance from snapping point.
-                var distFromSnappingPoint = snappingPoint - currentValue;
+                float distFromSnappingPoint = snappingPoint - currentValue;
                 force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extent.SnapRadius);
             }
 
             // a = F/m
-            var accel = force / elasticProperties.Mass;
+            float accel = force / elasticProperties.Mass;
 
             // Integrate our acceleration over time.
             currentVelocity += accel * deltaTime;

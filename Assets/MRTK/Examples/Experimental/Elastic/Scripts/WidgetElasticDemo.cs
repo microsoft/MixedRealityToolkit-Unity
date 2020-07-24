@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.Physics;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
         // Is the widget inflated or not?
         private bool isInflated = false;
 
-        void Start()
+        private void Start()
         {
             for (var i = 0; i < FlipPanels.Count; i++)
             {
@@ -83,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             backplateGoal = DeflateScale;
         }
 
-        void Update()
+        private void Update()
         {
             // Compute an iteration for all elastic systems, and apply
             // to the relevant transforms.
