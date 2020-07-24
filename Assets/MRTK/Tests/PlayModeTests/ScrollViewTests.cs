@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 2;
             scrollView.UpdateCollection();
             scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x * scale;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y * scale;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 1;
             scrollView.UpdateCollection();
             scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x * scale;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y * scale;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 2;
             scrollView.UpdateCollection();
             scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
-            scrollView.Tiers = 2;
+            scrollView.ItemsPerTier = 2;
             scrollView.ViewableArea = 1;
             scrollView.UpdateCollection();
             scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 1;
             scrollView.UpdateCollection();
             scrollObject.transform.position = Vector3.forward;
@@ -552,7 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 1;
             scrollView.UpdateCollection();
             scrollView.TypeOfVelocity = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem;
@@ -695,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
             scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
             scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
-            scrollView.Tiers = 1;
+            scrollView.ItemsPerTier = 1;
             scrollView.ViewableArea = 1;
             scrollView.UpdateCollection();
             scrollObject.transform.position = Vector3.forward;
@@ -768,6 +768,232 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is engaged.");
 
             yield return hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests if updating the collection after scaling the scroll object does not alter clipping box local scale.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollViewCanBeScaled()
+        {
+            // Setting up one pressable button as scroll item
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            // Setting up a vertical 1x1 scroll view. 
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.ItemsPerTier = 1;
+            scrollView.ViewableArea = 1;
+            scrollView.UpdateCollection();
+
+            GameObject ClippingObject = scrollView.ClippingObject;
+
+            // Clipping box dimensions should match the unique scroll item dimensions
+            Assert.IsNotNull(ClippingObject);
+            Assert.AreEqual(ClippingObject.transform.localScale.x, scrollView.CellWidth, 0.001, "Clipping box width did not scale as expected");
+            Assert.AreEqual(ClippingObject.transform.localScale.y, scrollView.CellHeight, 0.001, "Clipping box height did not scale as expected");
+            Assert.AreEqual(ClippingObject.transform.localScale.z, scrollView.CellWidth / 2, 0.001, "Clipping box depth did not scale as expected");
+
+            // Doubling the scroll object scale should not alter the clipping box local scale
+            float newScrollScale = 2.0f;
+            scrollObject.transform.localScale *= newScrollScale;
+
+            yield return null;
+            scrollView.UpdateCollection();
+            yield return null;
+
+            Assert.AreEqual(ClippingObject.transform.localScale.x, scrollView.CellWidth, 0.001, "Clipping box width did not scale as expected");
+            Assert.AreEqual(ClippingObject.transform.localScale.y, scrollView.CellHeight, 0.001, "Clipping box height did not scale as expected");
+            Assert.AreEqual(ClippingObject.transform.localScale.z, scrollView.CellWidth / 2, 0.001, "Clipping box depth did not scale as expected");
+        }
+
+        /// <summary>
+        /// Tests if scroll behaves as expected if scroll object is rotated.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScrollViewCanbeRotated()
+        {
+            // Setting up two pressable buttons as scroll items
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            GameObject button2 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button2.transform.parent = scrollObject.transform;
+
+            // Setting up a vertical 1x1 scroll view. 
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.ItemsPerTier = 1;
+            scrollView.ViewableArea = 1;
+            scrollView.UpdateCollection();
+            scrollObject.transform.position = - Vector3.up;
+            scrollObject.transform.rotation = Quaternion.LookRotation(-Vector3.up);
+
+            // Setting up camera to look down
+            MixedRealityPlayspace.Position = Vector3.zero;
+            MixedRealityPlayspace.Rotation = Quaternion.LookRotation(-Vector3.up);
+
+            PressableButton button1Component = button1.GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonPressPos = button1Component.transform.position - new Vector3(0, button1Component.StartPushDistance - offset, 0);
+            Vector3 pastButtonPressPos = button1Component.transform.position - new Vector3(0, button1Component.PressDistance + 0.03f, 0);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.forward * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+
+            // Moving hand along z axis should still engage an up-down scroll view rotated 90 degrees around x
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonPressPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+
+            yield return hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests if scroll can be moved by page, by tier or to make specific element to be presented in the first visible tier.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CanBeScrolledByTierOrIndexOrPage()
+        {
+            // Setting up nine pressable buttons as scroll items
+            GameObject scrollObject = new GameObject();
+
+            GameObject button1 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button1.transform.parent = scrollObject.transform;
+
+            GameObject button2 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button2.transform.parent = scrollObject.transform;
+
+            GameObject button3 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button3.transform.parent = scrollObject.transform;
+
+            GameObject button4 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button4.transform.parent = scrollObject.transform;
+
+            GameObject button5 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button5.transform.parent = scrollObject.transform;
+
+            GameObject button6 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button6.transform.parent = scrollObject.transform;
+
+            GameObject button7 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button7.transform.parent = scrollObject.transform;
+
+            GameObject button8 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button8.transform.parent = scrollObject.transform;
+
+            GameObject button9 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            button9.transform.parent = scrollObject.transform;
+
+            // Setting up a horizontal 2x2 scroll view 
+            var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+            scrollView.ScrollDirection = ScrollingObjectCollection.ScrollDirectionType.LeftAndRight;
+            scrollView.CellWidth = button1.GetComponent<NearInteractionTouchable>().Bounds.x;
+            scrollView.CellHeight = button1.GetComponent<NearInteractionTouchable>().Bounds.y;
+            scrollView.ItemsPerTier = 2;
+            scrollView.ViewableArea = 2;
+            scrollView.UpdateCollection();
+            scrollObject.transform.position = Vector3.forward;
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return null;
+
+            // Initial scroll state
+            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving to second tier
+            scrollView.MoveByTiers(1, false);
+            yield return null;
+
+            Assert.AreEqual(2, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving to fourth tier
+            scrollView.MoveByTiers(2, false);
+            yield return null;
+
+            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Scroll container should not move beyond its min position
+            scrollView.MoveByTiers(1, false);
+            yield return null;
+
+            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving back to first tier
+            scrollView.MoveByTiers(-4, false);
+            yield return null;
+
+            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving one page to third tier
+            scrollView.MoveByPages(1, false);
+            yield return null;
+
+            Assert.AreEqual(4, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(8, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving half page to fourth tier as scroll container hits its min position
+            scrollView.MoveByPages(1, false);
+            yield return null;
+
+            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving one page and a half back to first tier
+            scrollView.MoveByPages(-2, false);
+            yield return null;
+
+            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Second item is already in first visible tier
+            scrollView.MoveToIndex(1, false);
+            yield return null;
+
+            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving to second tier making fourth element to be on first visible tier
+            scrollView.MoveToIndex(3, false);
+            yield return null;
+
+            Assert.AreEqual(2, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving to fourth tier as scroll container hits its min position
+            scrollView.MoveToIndex(8, false); // should move to 6 as max
+            yield return null;
+
+            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex,  "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+
+            // Moving to back to first tier. Negative argument should not cause any errors
+            scrollView.MoveToIndex(-1, false); 
+            yield return null;
+
+            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
         }
 
         #endregion Tests
