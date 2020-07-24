@@ -115,6 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             for (var i = 0; i < flipElastics.Count; i++)
             {
                 flipGoals[i] = DeflateAngle;
+
+                // Yield for dramatic effect!
                 yield return new WaitForSeconds(0.1f);
             }
             backplateGoal = DeflateScale;
@@ -129,6 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             for (var i = 0; i < flipElastics.Count; i++)
             {
                 flipGoals[i] = InflateAngle;
+
+                // Yield for dramatic effect!
                 yield return new WaitForSeconds(0.1f);
             }
         }
