@@ -370,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // Magnitude of the velocity at which the elastic systems will
         // cease being simulated (if enabled) and the object will stop updating/moving.
-        private readonly static float elasticVelocityThreshold = 0.001f;
+        private const float elasticVelocityThreshold = 0.001f;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray 
