@@ -442,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else
                 {
-                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * ItemsPerTier);
+                    return ((int)Mathf.Ceil(Mathf.Abs(scrollContainer.transform.localPosition.x / CellWidth)) * ItemsPerTier);
                 }
             }
         }
