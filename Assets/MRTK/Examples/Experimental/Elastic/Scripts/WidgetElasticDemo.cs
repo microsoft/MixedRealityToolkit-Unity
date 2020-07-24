@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
     public class WidgetElasticDemo : MonoBehaviour
     {
         // The backplate, which will scale horizontally.
-        public Transform backplateTransform;
+        public Transform BackplateTransform;
 
         // A list of the panels that will flip up. These will be
         // inflated in the order that they're listed.
-        public List<Transform> flipPanels = new List<Transform>();
+        public List<Transform> FlipPanels = new List<Transform>();
 
         // Internal list of of the elastic systems. Each ElasticSystem holds its
         // own state. We use a LinearElasticSystem because we are only controlling
@@ -63,35 +63,34 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
         // Allow the user to configure the enabled/disabled states of the
         // elements controlled by our elastic systems.
-        public float inflateAngle = -170.0f;
-        public float deflateAngle = -20.0f;
-        public float inflateScale = 1.0f;
-        public float deflateScale = 0.1f;
+        public float InflateAngle = -170.0f;
+        public float DeflateAngle = -20.0f;
+        public float InflateScale = 1.0f;
+        public float DeflateScale = 0.1f;
 
-        // Is the doodad inflated or not?
+        // Is the widget inflated or not?
         private bool isInflated = false;
 
-        // Start is called before the first frame update
         void Start()
         {
-            for (var i = 0; i < flipPanels.Count; i++)
+            for (var i = 0; i < FlipPanels.Count; i++)
             {
-                flipElastics.Add(new LinearElasticSystem(deflateAngle, 0.0f, flipExtent, elasticProperties));
-                flipGoals.Add(deflateAngle);
+                flipElastics.Add(new LinearElasticSystem(DeflateAngle, 0.0f, flipExtent, elasticProperties));
+                flipGoals.Add(DeflateAngle);
             }
 
-            backplateElastic = new LinearElasticSystem(deflateScale, 0.0f, scaleExtent, elasticProperties);
-            backplateGoal = deflateScale;
+            backplateElastic = new LinearElasticSystem(DeflateScale, 0.0f, scaleExtent, elasticProperties);
+            backplateGoal = DeflateScale;
         }
 
-        // Update is called once per frame
         void Update()
         {
-            backplateTransform.localScale = new Vector3(Mathf.Clamp01(backplateElastic.ComputeIteration(backplateGoal, Time.deltaTime)), backplateTransform.localScale.y, backplateTransform.localScale.z);
-
+            // Compute an iteration for all elastic systems, and apply
+            // to the relevant transforms.
+            BackplateTransform.localScale = new Vector3(Mathf.Clamp01(backplateElastic.ComputeIteration(backplateGoal, Time.deltaTime)), BackplateTransform.localScale.y, BackplateTransform.localScale.z);
             for (var i = 0; i < flipElastics.Count; i++)
             {
-                flipPanels[i].localEulerAngles = new Vector3(Mathf.Clamp(flipElastics[i].ComputeIteration(flipGoals[i], Time.deltaTime), -360, 0), flipPanels[i].localRotation.y, flipPanels[i].localRotation.z);
+                FlipPanels[i].localEulerAngles = new Vector3(Mathf.Clamp(flipElastics[i].ComputeIteration(flipGoals[i], Time.deltaTime), -360, 0), FlipPanels[i].localRotation.y, FlipPanels[i].localRotation.z);
             }
         }
 
@@ -115,21 +114,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
         {
             for (var i = 0; i < flipElastics.Count; i++)
             {
-                flipGoals[i] = deflateAngle;
+                flipGoals[i] = DeflateAngle;
                 yield return new WaitForSeconds(0.1f);
             }
-            backplateGoal = deflateScale;
+            backplateGoal = DeflateScale;
         }
 
         // Iterates through the elastic systems, and sets their
         // goal-values to the inflated state. 
         public IEnumerator InflateCoroutine()
         {
-            backplateGoal = inflateScale;
+            backplateGoal = InflateScale;
             yield return new WaitForSeconds(0.1f);
             for (var i = 0; i < flipElastics.Count; i++)
             {
-                flipGoals[i] = inflateAngle;
+                flipGoals[i] = InflateAngle;
                 yield return new WaitForSeconds(0.1f);
             }
         }
