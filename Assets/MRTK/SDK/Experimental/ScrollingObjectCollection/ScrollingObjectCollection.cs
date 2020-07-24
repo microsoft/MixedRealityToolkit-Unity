@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             LeftAndRight,
         }
 
-        [Experimental]
         [SerializeField]
         [Tooltip("Enables/disables scrolling with near/far interaction.")]
         private bool canScroll = true;
@@ -71,11 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Number of lines visible in scroller. Orthogonal to tiers.")]
+        [Tooltip("Number of visible tiers in the scrolling area.")]
         private int viewableArea = 4;
 
         /// <summary>
-        /// Number of lines visible in scroller. Orthogonal to <see cref="tiers"/>.
+        /// Number of visible tiers in the scrolling area.
         /// </summary>
         public int ViewableArea
         {
@@ -279,18 +278,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { animationLength = value; }
         }
 
-        [Tooltip("Number of columns or rows in respect to ViewableArea and ScrollDirection.")]
+        [Tooltip("Number of items in a line on up-down scroll direction or number of items in a column on left-right scroll direction.")]
         [SerializeField]
-        [Range(1, 500)]
-        private int tiers = 2;
+        private int itemsPerTier = 1;
 
         /// <summary>
-        /// Number of columns or rows in respect to <see cref="ViewableArea"/> and <see cref="ScrollDirection"/>.
+        /// Number of items in a line on up-down scroll direction or number of items in a column on left-right scroll direction.
         /// </summary>
-        public int Tiers
+        public int ItemsPerTier
         {
-            get { return (tiers > 0) ? tiers : 1; }
-            set { tiers = value; }
+            get { return (itemsPerTier > 0) ? itemsPerTier : 1; }
+            set { itemsPerTier = value; }
         }
 
         [SerializeField]
@@ -398,24 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
         public UnityEvent ListMomentumBegin = new UnityEvent();
 
-        /// <summary>
-        /// First item (visible) in the <see cref="ViewableArea"/>. 
-        /// </summary>
-        public int FirstItemInViewIndex
-        {
-            get
-            {
-                if (scrollDirection == ScrollDirectionType.UpAndDown)
-                {
-                    return (scrollContainer.transform.localPosition.y != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) : 0;
-                }
-                else
-                {
-                    return (scrollContainer.transform.localPosition.x != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) : 0;
-                }
-            }
-        }
-
         [SerializeField]
         [HideInInspector]
         private CameraEventRouter cameraMethods;
@@ -425,8 +405,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                int hasMod = (ModuloCheck(NodeList.Count, Tiers) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? (StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + hasMod) * CellHeight : 0.0f;
+                int remainder = (SafeModulo(NodeList.Count, ItemsPerTier) != 0) ? 1 : 0;
+                return NodeList.Count != 0 ? (SafeDivision(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier) + remainder) * CellHeight : 0.0f;
             }
         }
 
@@ -444,43 +424,44 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                int hasMod = (ModuloCheck(NodeList.Count, Tiers) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + hasMod) * CellWidth) : 0.0f;
+                int remainder = (SafeModulo(NodeList.Count, ItemsPerTier) != 0) ? 1 : 0;
+                return NodeList.Count != 0 ? -((SafeDivision(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier) + remainder) * CellWidth) : 0.0f;
             }
-
         }
 
-        // Item index for items that should be visible
-        private int numItemsPrevView
+        /// <summary>
+        // Index of the first visible item in the nodes list
+        /// </summary>
+        public int FirstVisibleItemIndex
         {
             get
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) * Tiers;
+                    return (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) * ItemsPerTier;
                 }
                 else
                 {
-                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * Tiers);
+                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * ItemsPerTier);
                 }
             }
         }
 
-        // Take the previous view and then subtract the column remainder and we add the viewable area as a multiplier (minus 1 since the index is zero based).
-        // The first item not visible in the list
-        private int numItemsPostView
+        /// <summary>
+        // Index of the first not visible item in the nodes list
+        /// </summary>
+        public int FirstHiddenItemIndex
         {
             get
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return ((int)Mathf.Floor((scrollContainer.transform.localPosition.y + occlusionPositionPadding.y) / CellHeight) * Tiers) + (ViewableArea * Tiers) - 1;
+                    return ((int)Mathf.Floor((scrollContainer.transform.localPosition.y + occlusionPositionPadding.y) / CellHeight) * ItemsPerTier) + (ViewableArea * ItemsPerTier);
                 }
                 else
                 {
-                    return ((int)Mathf.Floor((-(scrollContainer.transform.localPosition.x) + occlusionPositionPadding.x) / CellWidth) * Tiers) + (ViewableArea * Tiers) - 1;
+                    return ((int)Mathf.Floor((-(scrollContainer.transform.localPosition.x) + occlusionPositionPadding.x) / CellWidth) * ItemsPerTier) + (ViewableArea * ItemsPerTier);
                 }
-
             }
         }
 
@@ -574,15 +555,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         // Hand position previous frame
         private Vector3 lastPointerPos;
-
-        [SerializeField]
-        [HideInInspector]
-        /// <summary>
-        /// The distance in front of the scroller, in local space, for a touch release.
-        /// We serialize and then hide this because we want to use the value
-        /// when drawing the touch plane, but not actually expose the value publicly.
-        /// </summary>
-        private float releaseDistance;
 
         // Current time at initial press
         private float initialPressTime;
@@ -779,35 +751,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // Setting up a collider and a near interaction touchable to allow interaction with empty spaces like corners or in between children items
         private void SetupScrollingBackground()
         {
-            if (scrollingBackground == null)
+            scrollingBackground = gameObject.EnsureComponent<BoxCollider>();
+
+            if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                scrollingBackground = GetComponent<BoxCollider>();
-                if (scrollingBackground == null)
-                {
-                    scrollingBackground = gameObject.AddComponent<BoxCollider>();
-                }
-
-                if (scrollDirection == ScrollDirectionType.UpAndDown)
-                {
-                    scrollingBackground.size = new Vector3(CellWidth * Tiers, CellHeight * ViewableArea, scrollingBackgroundDepth);
-                }
-                else
-                {
-                    scrollingBackground.size = new Vector3(CellWidth * ViewableArea, CellHeight * Tiers, scrollingBackgroundDepth);
-                }
-
-                Vector3 position;
-                position.x = scrollingBackground.size.x / 2;
-                position.y = -scrollingBackground.size.y / 2;
-                position.z = 0.01f;
-                scrollingBackground.center = position;
-
-                var touchable = gameObject.AddComponent<NearInteractionTouchable>();
-                Vector2 size = new Vector2(
-                            Math.Abs(Vector3.Dot(scrollingBackground.size, touchable.LocalRight)),
-                            Math.Abs(Vector3.Dot(scrollingBackground.size, touchable.LocalUp)));
-                touchable.SetBounds(size);
+                scrollingBackground.size = new Vector3(CellWidth * ItemsPerTier, CellHeight * ViewableArea, scrollingBackgroundDepth);
             }
+            else
+            {
+                scrollingBackground.size = new Vector3(CellWidth * ViewableArea, CellHeight * ItemsPerTier, scrollingBackgroundDepth);
+            }
+
+            Vector3 position;
+            position.x = scrollingBackground.size.x / 2;
+            position.y = -scrollingBackground.size.y / 2;
+            position.z = 0.01f;
+            scrollingBackground.center = position;
+
+            var touchable = gameObject.AddComponent<NearInteractionTouchable>();
+            Vector2 size = new Vector2(
+                        Math.Abs(Vector3.Dot(scrollingBackground.size, touchable.LocalRight)),
+                        Math.Abs(Vector3.Dot(scrollingBackground.size, touchable.LocalUp)));
+
+            touchable.SetBounds(size);
         }
 
         /// <summary>
@@ -832,15 +798,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    newPos.x = (ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellWidth) + halfCell.x : halfCell.x;
-                    newPos.y = ((StepMultiplier(i, Tiers) * CellHeight) + halfCell.y) * -1;
+                    newPos.x = (SafeModulo(i, ItemsPerTier) != 0) ? (SafeModulo(i, ItemsPerTier) * CellWidth) + halfCell.x : halfCell.x;
+                    newPos.y = ((SafeDivision(i, ItemsPerTier) * CellHeight) + halfCell.y) * -1;
                     newPos.z = 0.0f;
 
                 }
                 else // Left or right
                 {
-                    newPos.x = (StepMultiplier(i, Tiers) * CellWidth) + halfCell.x;
-                    newPos.y = ((ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellHeight) + halfCell.y : halfCell.y) * -1;
+                    newPos.x = (SafeDivision(i, ItemsPerTier) * CellWidth) + halfCell.x;
+                    newPos.y = ((SafeModulo(i, ItemsPerTier) != 0) ? (SafeModulo(i, ItemsPerTier) * CellHeight) + halfCell.y : halfCell.y) * -1;
                     newPos.z = 0.0f;
                 }
                 node.Transform.localPosition = newPos;
@@ -864,34 +830,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             // temporarily turn on the first item in the list if its inactive
             bool resetActiveState = false;
-            if (!NodeList[FirstItemInViewIndex].Transform.gameObject.activeSelf)
+            if (!NodeList[FirstVisibleItemIndex].Transform.gameObject.activeSelf)
             {
                 resetActiveState = true;
-                NodeList[FirstItemInViewIndex].Transform.gameObject.SetActive(true);
+                NodeList[FirstVisibleItemIndex].Transform.gameObject.SetActive(true);
             }
-
-            // create the offset for our thresholdCalculation -- grab the first item in the list
-
-            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInViewIndex].Transform, out Vector3 offsetSize);
-            releaseDistance = offsetSize.z * 0.5f;
 
             // Use the first element for collection bounds for occluder positioning
             // temporarily zero out the rotation so we can get an accurate bounds
-            Quaternion origRot = NodeList[FirstItemInViewIndex].Transform.rotation;
-            NodeList[FirstItemInViewIndex].Transform.rotation = Quaternion.identity;
+            Quaternion origRot = NodeList[FirstVisibleItemIndex].Transform.rotation;
+            NodeList[FirstVisibleItemIndex].Transform.rotation = Quaternion.identity;
 
             // The bounds of the clipping object, this is to make helper math easier later, it doesn't matter that its AABB since we're really not using it for bounds operations
             Bounds clippingBounds = new Bounds();
             clippingBounds.size = Vector3.zero;
 
             List<Vector3> boundsPoints = new List<Vector3>();
-            BoundsExtensions.GetColliderBoundsPoints(NodeList[FirstItemInViewIndex].Transform.gameObject, boundsPoints, 0);
+            BoundsExtensions.GetColliderBoundsPoints(NodeList[FirstVisibleItemIndex].Transform.gameObject, boundsPoints, 0);
             clippingBounds.center = boundsPoints[0];
 
             foreach (Vector3 point in boundsPoints)
             {
                 clippingBounds.Encapsulate(point);
             }
+
+            // Adjusting for possible scale of scrolling object or its parents
+            Vector3 adjustedSize = new Vector3(SafeDivision(clippingBounds.size.x, transform.lossyScale.x),
+                                               SafeDivision(clippingBounds.size.y, transform.lossyScale.y),
+                                               SafeDivision(clippingBounds.size.z, transform.lossyScale.z));
+            clippingBounds.size = adjustedSize;
 
             // lets check whether the collection cell dimensions are a better fit
             // this prevents negative offset from ruining the scroll effect
@@ -904,12 +871,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             clippingBounds.center = clippingBounds.size * 0.5f;
 
             // put the rotation back
-            NodeList[FirstItemInViewIndex].Transform.rotation = origRot;
+            NodeList[FirstVisibleItemIndex].Transform.rotation = origRot;
 
             // Set the first item back to its original state
             if (resetActiveState)
             {
-                NodeList[FirstItemInViewIndex].Transform.gameObject.SetActive(false);
+                NodeList[FirstVisibleItemIndex].Transform.gameObject.SetActive(false);
             }
 
             Vector3 viewableCenter = new Vector3();
@@ -922,7 +889,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     // Apply the viewable area and column/row multiplier
                     // Use a dummy bounds of one to get the local scale to match;
-                    clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
+                    clippingBounds.size = new Vector3((clippingBounds.size.x * ItemsPerTier), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
                     clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds, OcclusionScalePadding);
 
                     // Adjust where the center of the clipping box is
@@ -934,7 +901,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 case ScrollDirectionType.LeftAndRight:
 
                     // Same as above for L <-> R
-                    clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Tiers, clippingBounds.size.z);
+                    clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * ItemsPerTier, clippingBounds.size.z);
                     clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds, OcclusionScalePadding);
 
                     // Same as above for L <-> R
@@ -995,7 +962,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Early bail, the component isn't set up properly
             if (scrollContainer == null) { return; }
 
-            bool nodeLengthCheck = NodeList.Count > (ViewableArea * Tiers);
+            bool nodeLengthCheck = NodeList.Count > (ViewableArea * ItemsPerTier);
 
             // Force the position if the total number of items in the list is less than the scrollable area
             if (!nodeLengthCheck)
@@ -1307,8 +1274,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.y > maxY + (frontPlaneDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (frontPlaneDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
@@ -1323,8 +1290,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.x > maxX + (frontPlaneDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (frontPlaneDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
@@ -1380,8 +1347,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.y > maxY + (frontPlaneDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (frontPlaneDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1398,8 +1365,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.x > maxX + (frontPlaneDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (frontPlaneDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1499,7 +1466,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// The Animation Override to position our scroller based on manual movement <see cref="PageBy(int, bool)"/>, <see cref="MoveTo(int, bool)"/>,
-        /// <see cref="MoveByItems(int, bool)"/>, or <see cref="MoveByTiers(int, bool)"/>
         /// </summary>
         /// <param name="initialPos">The start position of the scrollContainer</param>
         /// <param name="finalPos">Where we want the scrollContainer to end up, typically this should be <see cref="workingScrollerPos"/></param>
@@ -1635,29 +1601,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Helper to get the remainder from an itemindex in the list in relation to rows/columns
+        /// Helper to perform modulo operation and prevent division by 0.
         /// </summary>
-        /// <param name="itemIndex">Index of node item in 
-        /// <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> 
-        /// to be compared</param>
-        /// <param name="divisor">Rows / Columns</param>
-        /// <returns>The remainder from the divisor</returns>
-        public static int ModuloCheck(int itemIndex, int divisor)
+        private int SafeModulo(int numerator, int denominator)
         {
-            // Prevent divide by 0
-            return (divisor > 0) ? itemIndex % divisor : 0;
+            return (denominator > 0) ? numerator % denominator : 0;
         }
 
         /// <summary>
-        /// Helper to get the number of rows / columns deep the item is
+        /// Helper to perform division operations and prevent division by 0.
         /// </summary>
-        /// <param name="itemIndex">Index of node item in <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> to be compared</param>
-        /// <param name="divisor">Rows / Columns</param>
-        /// <returns>The multiplier to get the row / column index the item is in</returns>
-        public static int StepMultiplier(int itemIndex, int divisor)
+        private int SafeDivision(int numerator, int denominator)
         {
-            // Prevent divide by 0
-            return (divisor != 0) ? itemIndex / divisor : 0;
+            return (denominator != 0) ? numerator / denominator : 0;
+        }
+
+        private float SafeDivision(float numerator, float denominator)
+        {
+            return (denominator != 0) ? numerator / denominator : 0;
         }
 
         /// <summary>
@@ -1671,9 +1632,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Early Bail - our list is empty
             if (NodeList.Count == 0) { return; }
 
-            // Stash the values from numItems to cut down on redundant calculations
-            int prevItems = numItemsPrevView;
-            int postItems = numItemsPostView;
+            // Cache the values to avoid redundant calculations
+            int indexOfFirstVisible = FirstVisibleItemIndex;
+            int indexOfFirstHidden = FirstHiddenItemIndex;
 
             int listLength = NodeList.Count;
 
@@ -1688,7 +1649,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
 
                 // Hide the items that have no chance of being seen
-                if (i < prevItems - Tiers || i > postItems + Tiers)
+                if (i < indexOfFirstVisible - ItemsPerTier || i >= indexOfFirstHidden + ItemsPerTier)
                 {
                     // Quick check to cut down on the redundant calls
                     if (node.Transform.gameObject.activeSelf)
@@ -1705,9 +1666,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else
                 {
-                    bool disableNode =  i < prevItems - Tiers || i > postItems + Tiers;
-
                     // Disable colliders on items that will be scrolling in and out of view
+                    bool disableNode =  i < indexOfFirstVisible ||
+                                        i >= indexOfFirstHidden && indexOfFirstHidden != indexOfFirstVisible;
+
                     // During drag all visible children should also has its colliders disabled 
                     if (disableNode || isDragging)
                     {
@@ -1822,88 +1784,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void ResetScrollOffset()
         {
-            MoveTo(0, false);
+            MoveToIndex(0, false);
             workingScrollerPos = Vector3.zero;
             ApplyPosition(workingScrollerPos);
         }
 
-        #endregion private methods
-
-        #region public methods
-
         /// <summary>
-        /// Checks whether the given item is visible in the list
+        /// Moves the scroll container to the position that makes the tier with the tierIndex the first in the viewable area
         /// </summary>
-        /// <param name="indexOfItem">the index of the item in the list</param>
-        /// <returns>true when item is visible</returns>
-        public bool IsItemVisible(int indexOfItem)
-        {
-            bool itemLoc = true;
-
-            if (indexOfItem < numItemsPrevView)
-            {
-                // It's above the visible area
-                itemLoc = false;
-            }
-            else if (indexOfItem > numItemsPostView)
-            {
-                // It's below the visible area
-                itemLoc = false;
-            }
-            return itemLoc;
-        }
-
-        /// <summary>
-        /// Moves scroller by a multiplier of <see cref="ViewableArea"/>
-        /// </summary>
-        /// <param name="numOfPages">number of <see cref="ViewableArea"/> to move scroller by</param>
-        /// <param name="animateToPage">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void PageBy(int numOfPages, bool animateToPage = true, System.Action callback = null)
+        private void MoveToTier(int tierIndex, bool animateToPosition = true, System.Action callback = null)
         {
             StopAllCoroutines();
             velocityState = VelocityState.None;
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = Mathf.Clamp((FirstItemInViewIndex + (numOfPages * ViewableArea)) * CellHeight, minY, maxY);
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = Mathf.Clamp((FirstItemInViewIndex + (numOfPages * ViewableArea)) * CellWidth, minX, maxX);
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPage)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Moves scroller a relative number of items
-        /// </summary>
-        /// <param name="numberOfItemsToMove">number of items to move by</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
-        public void MoveByItems(int numberOfItemsToMove, bool animateToPosition = true, System.Action callback = null)
-        {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
-
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = (FirstItemInViewIndex + StepMultiplier(numberOfItemsToMove, Tiers)) * CellHeight;
+                workingScrollerPos.y = tierIndex * CellHeight;
 
                 // Clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
@@ -1913,104 +1809,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
             else
             {
-                workingScrollerPos.x = ((FirstItemInViewIndex + StepMultiplier(numberOfItemsToMove, Tiers)) * CellWidth) * -1.0f;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPosition)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Moves scroller a relative number of <see cref="Tiers"/> of items.
-        /// </summary>
-        /// <param name="numberOfLinesToMove">number of lines to move by</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void MoveByLines(int numberOfLinesToMove, bool animateToPosition = true, System.Action callback = null)
-        {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
-
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = (FirstItemInViewIndex + numberOfLinesToMove) * CellHeight;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = ((FirstItemInViewIndex + numberOfLinesToMove) * CellWidth) * -1.0f;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPosition)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Moves scroller to an absolute position where indexOfItem 
-        /// is in the first column of the viewable area
-        /// </summary>
-        /// <param name="indexOfItem">Item to move to, will be first (or closest to in respect to scroll maximum) in viewable area</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
-        public void MoveTo(int indexOfItem, bool animateToPosition = true, System.Action callback = null)
-        {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
-
-            indexOfItem = (indexOfItem < 0) ? 0 : indexOfItem;
-
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = StepMultiplier(indexOfItem, Tiers) * CellHeight;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = (StepMultiplier(indexOfItem, Tiers) * CellWidth) * -1.0f;
+                workingScrollerPos.x = tierIndex * CellWidth * -1.0f;
 
                 // Clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
@@ -2033,88 +1832,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     callback?.Invoke();
                 }
             }
-        }
-
-        /// <summary>
-        /// Finds the object-aligned size of a <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see>.
-        /// </summary>
-        /// <param name="obj">Transform representing the object to get offset from</param>
-        /// <param name="alignedSize">the object-aligned size of obj</param>
-        /// <returns>true if alignedSize is valid</returns>
-        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
-        {
-            Collider c = obj.GetComponentInChildren<Collider>();
-            alignedSize = Vector3.zero;
-
-            // Store and clear the original rotation
-            Quaternion origRot = obj.rotation;
-            obj.rotation = Quaternion.identity;
-
-            bool canGetSize = false;
-
-            if (c != null)
-            {
-                if (c.GetType() == typeof(BoxCollider))
-                {
-                    BoxCollider bC = c as BoxCollider;
-                    alignedSize = bC.bounds.size;
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(SphereCollider))
-                {
-                    SphereCollider sC = c as SphereCollider;
-                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(CapsuleCollider))
-                {
-                    CapsuleCollider cc = c as CapsuleCollider;
-                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                    switch (cc.direction)
-                    {
-                        case 0:
-                            alignedSize = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                            break;
-
-                        case 1:
-                            alignedSize = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                            break;
-
-                        case 2:
-                            alignedSize = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                            break;
-                    }
-                }
-                else
-                {
-                    canGetSize = false;
-                }
-
-            }
-            else if (obj.GetComponentInChildren<Renderer>() != null)
-            {
-                List<Vector3> points = new List<Vector3>();
-                Bounds rendBound = new Bounds();
-                BoundsExtensions.GetRenderBoundsPoints(obj.gameObject, points, 0);
-                rendBound.center = points[0];
-
-                foreach (Vector3 p in points)
-                {
-                    rendBound.Encapsulate(p);
-                }
-
-                alignedSize = rendBound.size;
-                canGetSize = true;
-            }
-            else
-            {
-                canGetSize = false;
-            }
-
-            // Reapply our rotation
-            obj.rotation = origRot;
-
-            return (canGetSize) ? true : false;
         }
 
         /// <summary>
@@ -2123,7 +1840,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public bool AddItem(GameObject item)
         {
             if (!ContainsNode(item.transform, out int nodeIndex))
-            {               
+            {
                 item.transform.parent = transform;
                 Reset();
 
@@ -2132,6 +1849,63 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             return false;
         }
+
+        #endregion private methods
+
+        #region public methods
+
+        /// <summary>
+        /// Checks whether the given item is visible in the list.
+        /// </summary>
+        /// <param name="indexOfItem">the index of the item in the list</param>
+        /// <returns>true when item is visible</returns>
+        public bool IsItemVisible(int indexOfItem)
+        {
+            bool itemVisible = true;
+
+            if (indexOfItem < FirstVisibleItemIndex)
+            {
+                // It's above the visible area
+                itemVisible = false;
+            }
+            else if (indexOfItem >= FirstHiddenItemIndex)
+            {
+                // It's below the visible area
+                itemVisible = false;
+            }
+            return itemVisible;
+        }
+
+        /// <summary>
+        /// Moves scroller container by a multiplier of the number of tiers in the viewable area.
+        /// </summary>
+        public void MoveByPages(int numberOfPages, bool animate = true, System.Action callback = null)
+        {
+            int tierIndex = SafeDivision(FirstVisibleItemIndex, ItemsPerTier) + (numberOfPages * ViewableArea);
+
+            MoveToTier(tierIndex, animate, callback);
+        }
+
+        /// <summary>
+        /// Moves scroller container a relative number of tiers of items.
+        /// </summary>
+        public void MoveByTiers(int numberOfTiers, bool animate = true, System.Action callback = null)
+        {
+            int tierIndex = SafeDivision(FirstVisibleItemIndex, ItemsPerTier) + numberOfTiers ;
+
+            MoveToTier(tierIndex, animate, callback);
+        }
+
+        /// <summary>
+        /// Moves scroller container to a position where indexOfItem is in the first tier of the viewable area.
+        /// </summary>
+        public void MoveToIndex(int indexOfItem, bool animateToPosition = true, System.Action callback = null)
+        {
+            indexOfItem = (indexOfItem < 0) ? 0 : indexOfItem;
+            int tierIndex = SafeDivision(indexOfItem, ItemsPerTier);
+
+            MoveToTier(tierIndex, animateToPosition, callback);
+        }      
 
         /// <summary>
         /// Safely removes a child game object from scroll collection.

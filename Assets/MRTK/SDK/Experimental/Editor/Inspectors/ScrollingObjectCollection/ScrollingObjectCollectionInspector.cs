@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -13,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
     public class ScrollingObjectCollectionInspector : UnityEditor.Editor
     {
         private bool animateTransition = true;
-        private int amountOfItemsToMoveBy = 1;
-        private int amountOfLinesToMoveTo = 1;
+        private int amountOfTiersToMove = 1;
+        private int amountOfPagesToMove = 1;
         private int indexToMoveTo = 1;
 
         private SerializedProperty sorting;
@@ -23,16 +22,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
         private SerializedProperty canScroll;
         private SerializedProperty scrollDirection;
-        private SerializedProperty useNearScrollBoundary;
         private SerializedProperty viewableArea;
-        private SerializedProperty tiers;
+        private SerializedProperty itemsPerTier;
         private SerializedProperty useCameraPreRender;
 
         private SerializedProperty setupAtRuntime;
         private SerializedProperty occlusionPositionPadding;
         private SerializedProperty occlusionScalePadding;
         private SerializedProperty handDeltaMagThreshold;
-        private SerializedProperty snapListItems;
 
         private SerializedProperty velocityType;
         private SerializedProperty velocityMultiplier;
@@ -47,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty momentumEvent;
         private SerializedProperty disableClippedItems;
 
-        private bool showOverrideButtons = true;
+        private bool showDebugOptions = true;
         private bool showUnityEvents = false;
 
         // Serialized properties purely for inspector visualization
@@ -59,13 +56,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty frontPlaneDistance;
         private Shader MRTKtmp;
 
+        private ScrollingObjectCollection scrollView;
+
+        private static bool visibleDebugPlanes = false;
+
+        private Color touchPlaneColor = Color.cyan;
+        private Color releasePlaneColor = Color.magenta;
+        private static GUIStyle labelStyle;
+        private Vector3 mouseScreenPosition;
+        private float smallestMouseHandleDistance;
+
+        private const string TouchPlaneDescription = "Touch plane";
+        private const string LeftReleasePlaneDescription = "Left Release Plane";
+        private const string RightReleasePlaneDescription = "Right Release Plane";
+        private const string TopReleasePlaneDescription = "Top release Plane";
+        private const string BottomReleasePlaneDescription = "Bottom Release Plane";
+        private const string BackReleasePlaneDescription = "Back release Plane";
+        private const string FrontReleasePlaneDescription = "Front Release Plane";
+
         private void OnEnable()
         {
             sorting = serializedObject.FindProperty("sortType");
             cellHeight = serializedObject.FindProperty("cellHeight");
             cellWidth = serializedObject.FindProperty("cellWidth");
 
-            tiers = serializedObject.FindProperty("tiers");
+            itemsPerTier = serializedObject.FindProperty("itemsPerTier");
             canScroll = serializedObject.FindProperty("canScroll");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
             viewableArea = serializedObject.FindProperty("viewableArea");
@@ -77,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             handDeltaMagThreshold = serializedObject.FindProperty("handDeltaMagThreshold");
 
-            snapListItems = serializedObject.FindProperty("snapListItems");
             velocityType = serializedObject.FindProperty("typeOfVelocity");
             velocityMultiplier = serializedObject.FindProperty("velocityMultiplier");
             velocityDampen = serializedObject.FindProperty("velocityDampen");
@@ -97,6 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             releaseThresholdLeftRight = serializedObject.FindProperty("releaseThresholdLeftRight");
             releaseThresholdTopBottom = serializedObject.FindProperty("releaseThresholdTopBottom");
             frontPlaneDistance = serializedObject.FindProperty("frontPlaneDistance");
+
+            scrollView = (ScrollingObjectCollection)target;
+
+            if (labelStyle == null)
+            {
+                labelStyle = new GUIStyle();
+                labelStyle.normal.textColor = Color.white;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -106,6 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             EditorGUI.BeginChangeCheck();
 
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
@@ -124,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 EditorGUILayout.PropertyField(sorting);
                 EditorGUILayout.PropertyField(cellWidth);
                 EditorGUILayout.PropertyField(cellHeight);
-                EditorGUILayout.PropertyField(tiers);
+                EditorGUILayout.PropertyField(itemsPerTier);
                 EditorGUILayout.PropertyField(viewableArea);
                 EditorGUILayout.Space();
             }
@@ -138,23 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             }
 
             EditorGUILayout.Space();
-
-            EditorGUILayout.HelpBox("In order for a ScrollableObjectCollection to work properly with PressableButton, ReleaseOnTouchEnd must be inactive.", MessageType.Info);
-
-            if (GUILayout.Button("Set Up PressableButtons"))
-            {
-                PressableButton[] pBs = scrollContainer.transform.GetComponentsInChildren<PressableButton>();
-                foreach (PressableButton p in pBs)
-                {
-                    p.ReleaseOnTouchEnd = false;
-                }
-
-                PhysicalPressEventRouter[] routers = scrollContainer.transform.GetComponentsInChildren<PhysicalPressEventRouter>();
-                foreach (PhysicalPressEventRouter r in routers)
-                {
-                    r.InteractableOnClick = PhysicalPressEventRouter.PhysicalPressEventBehavior.EventOnClickCompletion;
-                }
-            }
 
             EditorGUILayout.LabelField("Scrolling Properties", EditorStyles.boldLabel);
 
@@ -195,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             EditorGUILayout.Space();
 
-            showUnityEvents = EditorGUILayout.Foldout(showUnityEvents, "Unity Events: ", true);
+            showUnityEvents = EditorGUILayout.Foldout(showUnityEvents, "Unity Events", true);
 
             if (showUnityEvents)
             {
@@ -210,55 +218,49 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             EditorGUILayout.Space();
 
-            showOverrideButtons = EditorGUILayout.Foldout(showOverrideButtons, "Scrolling debug buttons", true);
+            showDebugOptions = EditorGUILayout.Foldout(showDebugOptions, "Debug Options", true);
 
-            EditorGUILayout.Space();
-
-            if (showOverrideButtons)
+            if (showDebugOptions)
             {
-                using (new EditorGUI.IndentLevelScope())
+                using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
                 {
-                    animateTransition = EditorGUILayout.Toggle("Animate", animateTransition);
+                    visibleDebugPlanes = EditorGUILayout.Toggle("Show Event Planes", visibleDebugPlanes);
+                }
 
-                    using (new EditorGUILayout.HorizontalScope())
+                EditorGUILayout.Space();
+
+                using (new EditorGUI.DisabledGroupScope(!EditorApplication.isPlaying))
+                {
+
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        if (GUILayout.Button("Page Up"))
+                        animateTransition = EditorGUILayout.Toggle("Animate", animateTransition);
+
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            scrollContainer.PageBy(1, animateTransition);
+                            amountOfPagesToMove = EditorGUILayout.IntField(amountOfPagesToMove);
+                            if (GUILayout.Button("Move By Pages"))
+                            {
+                                scrollContainer.MoveByPages(amountOfPagesToMove, animateTransition);
+                            }
                         }
-                        if (GUILayout.Button("Page Down"))
+
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            scrollContainer.PageBy(-1, animateTransition);
+                            amountOfTiersToMove = EditorGUILayout.IntField(amountOfTiersToMove);
+                            if (GUILayout.Button("Move By Tiers"))
+                            {
+                                scrollContainer.MoveByTiers(amountOfTiersToMove, animateTransition);
+                            }
                         }
-                    }
 
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-
-                        amountOfLinesToMoveTo = EditorGUILayout.IntField(amountOfLinesToMoveTo);
-                        if (GUILayout.Button("Move By Tiers"))
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            scrollContainer.MoveByLines(amountOfLinesToMoveTo, animateTransition);
-                        }
-                    }
-
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-
-                        amountOfItemsToMoveBy = EditorGUILayout.IntField(amountOfItemsToMoveBy);
-                        if (GUILayout.Button("Move By Items"))
-                        {
-                            scrollContainer.MoveByItems(amountOfItemsToMoveBy, animateTransition);
-                        }
-                    }
-
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-
-                        indexToMoveTo = EditorGUILayout.IntField(indexToMoveTo);
-                        if (GUILayout.Button("Move To Index"))
-                        {
-                            scrollContainer.MoveTo(indexToMoveTo, animateTransition);
+                            indexToMoveTo = EditorGUILayout.IntField(indexToMoveTo);
+                            if (GUILayout.Button("Move To Index"))
+                            {
+                                scrollContainer.MoveToIndex(indexToMoveTo, animateTransition);
+                            }
                         }
                     }
                 }
@@ -286,14 +288,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
-            ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
             MRTKtmp = Shader.Find("Mixed Reality Toolkit/TextMeshPro");
 
-            if (scrollContainer.ClippingObject == null) { return; }
+            if (scrollView.ClippingObject == null) { return; }
 
             if (Event.current.type == EventType.Repaint)
             {
-                DisplayTouchPlane(scrollContainer);
+                if (visibleDebugPlanes)
+                {
+                    GetMouseViewportPosition();
+
+                    smallestMouseHandleDistance = float.PositiveInfinity;
+
+                    DrawAllDebugPlanes();
+                }
 
                 // Display the item number on the list items
                 for (int i = 0; i <= nodeList.arraySize - 1; i++)
@@ -311,43 +319,147 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         }
 
         /// <summary>
-        /// Displays the touch plane used for scrolling (and releasing).
+        /// Draws the touch plane used for scroll engage detection.
         /// </summary>
-        private void DisplayTouchPlane(ScrollingObjectCollection container)
+        private void DrawTouchPlane()
         {
-            Color arrowColor = Color.cyan;
-            Vector3 center;
-            if (container.ClippingObject == null)
-            {
-                return;
-            }
+            Vector3 planeLocalPosition = Vector3.forward * frontPlaneDistance.floatValue * -1.0f;
+            Vector3 widthHalfExtent = scrollView.transform.right * scrollView.ClippingObject.transform.lossyScale.x / 2;
+            Vector3 heightHalfExtent = scrollView.transform.up * scrollView.ClippingObject.transform.lossyScale.y / 2;
 
-            var scrollContainer = (ScrollingObjectCollection)target;
-            // now that its running lets show the press plane so users have feedback about touch
-            center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * releaseThresholdFront.floatValue);
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.forward * -1.0f);
 
-            UnityEditor.Handles.color = arrowColor;
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, touchPlaneColor, TouchPlaneDescription);
+        }
 
-            float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
+        /// <summary>
+        /// Draws the front release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawFrontReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.forward * releaseThresholdFront.floatValue * -1.0f;
+            Vector3 widthHalfExtent = scrollView.transform.right * scrollView.ClippingObject.transform.lossyScale.x / 2;
+            Vector3 heightHalfExtent = scrollView.transform.up * scrollView.ClippingObject.transform.lossyScale.y / 2;
 
-            container.transform.rotation.ToAngleAxis(out float ang, out Vector3 currRotAxis);
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.forward);
 
-            Vector3 rightDelta = container.transform.right * container.ClippingObject.transform.localScale.x;
-            Vector3 upDelta = container.transform.up * container.ClippingObject.transform.localScale.y;
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, FrontReleasePlaneDescription);
+        }
 
-            Quaternion rot = Quaternion.LookRotation(container.transform.forward * -1.0f, container.transform.up);
-            UnityEditor.Handles.ArrowHandleCap(0, center + (rightDelta * 0.5f) - (upDelta * 0.5f), rot, arrowSize, EventType.Repaint);
+        /// <summary>
+        /// Draws the back release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawBackReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.forward * releaseThresholdBack.floatValue;
+            Vector3 widthHalfExtent = scrollView.transform.right * scrollView.ClippingObject.transform.lossyScale.x / 2;
+            Vector3 heightHalfExtent = scrollView.transform.up * scrollView.ClippingObject.transform.lossyScale.y / 2;
+
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.forward * -1.0f);
+
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, BackReleasePlaneDescription);
+        }
+
+        /// <summary>
+        /// Draws the right release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawRightReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.right * releaseThresholdLeftRight.floatValue;
+            Vector3 widthHalfExtent = scrollView.transform.forward * scrollView.ClippingObject.transform.lossyScale.z / 2;
+            Vector3 heightHalfExtent = scrollView.transform.up * scrollView.ClippingObject.transform.lossyScale.y / 2;
+
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.right * -1.0f);
+
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, RightReleasePlaneDescription);
+        }
+
+        /// <summary>
+        /// Draws the left release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawLeftReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.right * releaseThresholdLeftRight.floatValue * -1.0f;
+            Vector3 widthHalfExtent = scrollView.transform.forward * scrollView.ClippingObject.transform.lossyScale.z / 2;
+            Vector3 heightHalfExtent = scrollView.transform.up * scrollView.ClippingObject.transform.lossyScale.y / 2;
+
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.right);
+
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, LeftReleasePlaneDescription);
+        }
+
+        /// <summary>
+        /// Draws the top release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawTopReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.up * releaseThresholdTopBottom.floatValue;
+            Vector3 widthHalfExtent = scrollView.transform.right * scrollView.ClippingObject.transform.lossyScale.x / 2;
+            Vector3 heightHalfExtent = scrollView.transform.forward * scrollView.ClippingObject.transform.lossyScale.z / 2;
+
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.up * -1.0f);
+
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, TopReleasePlaneDescription);
+        }
+
+        /// <summary>
+        /// Draws the top release plane used for scroll engage release detection.
+        /// </summary>
+        private void DrawBottomReleasePlane()
+        {
+            Vector3 planeLocalPosition = Vector3.up * releaseThresholdTopBottom.floatValue * -1.0f;
+            Vector3 widthHalfExtent = scrollView.transform.right * scrollView.ClippingObject.transform.lossyScale.x / 2;
+            Vector3 heightHalfExtent = scrollView.transform.forward * scrollView.ClippingObject.transform.lossyScale.z / 2;
+
+            Quaternion handleRotation = Quaternion.LookRotation(scrollView.transform.up);
+
+            DrawPlaneAndHandle(planeLocalPosition, widthHalfExtent, heightHalfExtent, handleRotation, releasePlaneColor, BottomReleasePlaneDescription);
+        }
+
+        /// <summary>
+        /// Draws the scroll interaction debug planes.
+        /// </summary>
+        private void DrawPlaneAndHandle(Vector3 planeLocalPosition, Vector3 widthHalfExtent, Vector3 hightHalfExtent, Quaternion handleRotation, Color color, string labelText)
+        {
+            Vector3 planePosition = scrollView.ClippingObject.transform.position + scrollView.ClippingObject.transform.TransformDirection(planeLocalPosition);
 
             Vector3[] points = new Vector3[4];
-            points[0] = center;
-            points[1] = center + rightDelta;
-            points[2] = center + rightDelta - upDelta;
-            points[3] = center - upDelta;
+            points[0] = planePosition - widthHalfExtent + hightHalfExtent;
+            points[1] = planePosition + widthHalfExtent + hightHalfExtent;
+            points[2] = planePosition + widthHalfExtent - hightHalfExtent;
+            points[3] = planePosition - widthHalfExtent - hightHalfExtent;
 
-            UnityEditor.Handles.DrawSolidRectangleWithOutline(points, new Color(0.85f, 1.0f, 1.0f, 0.1f), arrowColor);
-            GUIStyle labelStyle = new GUIStyle();
-            labelStyle.normal.textColor = Color.white;
-            UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll or release."), labelStyle);
+            float handleSize = HandleUtility.GetHandleSize(planePosition) * 0.30f;
+
+            // Draw handle and plane
+            Handles.color = color;
+            Handles.ArrowHandleCap(0, planePosition, handleRotation, handleSize, EventType.Repaint);
+            Handles.DrawSolidRectangleWithOutline(points, Color.Lerp(color, Color.clear, 0.5f), color);
+
+            // Draw label if handle has smallest vieport distance from the mouse pointer
+            Vector3 handleViewportPosition = SceneView.currentDrawingSceneView.camera.WorldToScreenPoint(planePosition);
+            handleViewportPosition = SceneView.currentDrawingSceneView.camera.ScreenToViewportPoint(handleViewportPosition);
+
+            float mouseHandleDistance = Vector2.Distance(mouseScreenPosition, handleViewportPosition);
+
+            if (mouseHandleDistance < handleSize * 10.0f && mouseHandleDistance < smallestMouseHandleDistance)
+            {
+                smallestMouseHandleDistance = mouseHandleDistance;
+
+                Handles.Label(planePosition + (Vector3.up * handleSize * 3.0f), new GUIContent(labelText), labelStyle);
+                Handles.DrawDottedLine(planePosition + (Vector3.up * handleSize * 2.0f) + (Vector3.right * handleSize), planePosition, 5f);
+            }
+        }
+
+        private void DrawAllDebugPlanes()
+        {
+            DrawTouchPlane();
+            DrawFrontReleasePlane();
+            DrawBackReleasePlane();
+            DrawRightReleasePlane();
+            DrawLeftReleasePlane();
+            DrawTopReleasePlane();
+            DrawBottomReleasePlane();
         }
 
         /// <summary>
@@ -367,5 +479,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             return true;
         }
 
+        private void GetMouseViewportPosition()
+        {
+            mouseScreenPosition = HandleUtility.GUIPointToScreenPixelCoordinate(Event.current.mousePosition);
+            mouseScreenPosition = SceneView.currentDrawingSceneView.camera.ScreenToViewportPoint(mouseScreenPosition);
+        }
     }
 }
