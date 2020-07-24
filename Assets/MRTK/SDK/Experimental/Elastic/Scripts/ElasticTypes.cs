@@ -110,7 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public bool RepeatSnapPoints;
 
         /// <value>
-        /// Arc-angle at which snap points begin forcing the spring.
+        /// Arc-angle at which snap points begin forcing the spring,
+        /// in euler degrees.
         /// </value>
         [SerializeField]
         public float SnapRadius;
