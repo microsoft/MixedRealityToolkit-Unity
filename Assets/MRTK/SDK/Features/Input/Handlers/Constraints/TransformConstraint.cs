@@ -63,5 +63,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public abstract void ApplyConstraint(ref MixedRealityTransform transform);
 
         #endregion Public Methods
+
+
+        #region Deprecated
+
+        /// <summary>
+        /// Intended to be called on manipulation started
+        /// </summary>
+        [System.Obsolete("Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.")]
+        public virtual void Initialize(MixedRealityPose worldPose)
+        {
+            Initialize(new MixedRealityTransform(worldPose.Position, worldPose.Rotation, Vector3.one));
+        }
+
+        /// <summary>	
+        /// Transform that we intend to apply constraints to	
+        /// </summary>	
+        [System.Obsolete("Deprecated: Get component transform instead.")]
+        public Transform TargetTransform { get; set; } = null;
+
+        #endregion
     }
 }
