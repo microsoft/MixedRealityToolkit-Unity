@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             }
         }
 
-        public void Inflate()
+        public void ToggleInflate()
         {
             if (!isInflated)
             {
@@ -109,6 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             }
         }
 
+        // Iterates through the elastic systems, and sets their
+        // goal-values to the deflated state. 
         public IEnumerator DeflateCoroutine()
         {
             for (var i = 0; i < flipElastics.Count; i++)
@@ -119,6 +121,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
             backplateGoal = deflateScale;
         }
 
+        // Iterates through the elastic systems, and sets their
+        // goal-values to the inflated state. 
         public IEnumerator InflateCoroutine()
         {
             backplateGoal = inflateScale;
