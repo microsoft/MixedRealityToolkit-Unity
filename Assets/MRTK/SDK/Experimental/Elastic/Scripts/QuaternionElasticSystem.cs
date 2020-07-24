@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             
             foreach (var interval in extent.SnapPoints )
             {
-                var nearest = extent.repeatSnapPoints ? GetNearest(eulers, interval) : interval;
+                var nearest = extent.RepeatSnapPoints ? GetNearest(eulers, interval) : interval;
                 var nearestQuat = Quaternion.Euler(nearest.x, nearest.y, nearest.z);
 
                 if (Quaternion.Dot(nearestQuat, currentValue) < 0)

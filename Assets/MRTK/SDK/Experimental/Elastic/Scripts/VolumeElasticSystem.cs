@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             // Iterate over each snapping point, and apply forces as necessary.
             foreach (Vector3 snapPoint in extent.SnapPoints)
             {
-                Vector3 closestPoint = extent.repeatSnapPoints ? FindNearest(currentValue, snapPoint) : snapPoint;
+                Vector3 closestPoint = extent.RepeatSnapPoints ? FindNearest(currentValue, snapPoint) : snapPoint;
                 // Calculate distance from snapping point.
                 var distFromSnappingPoint = closestPoint - currentValue;
                 force += ComputeSnapForce(distFromSnappingPoint, elasticProperties.SnapK, extent.SnapRadius);

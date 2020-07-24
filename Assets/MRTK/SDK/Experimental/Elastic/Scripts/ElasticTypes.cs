@@ -74,10 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public Vector3[] SnapPoints;
 
         /// <value>
-        /// Should the SnapPoints be repeated to infinity to serve
-        /// as regular snapping intervals?
+        /// Should the SnapPoints be "tiled" to infinity? If so,
+        /// the existing snap points will serve as "modulo" values,
+        /// where the actual snap points that are used are simply
+        /// the closest integer multiples of every SnapPoint.
         /// </value>
-        public bool repeatSnapPoints;
+        public bool RepeatSnapPoints;
 
         /// <value>
         /// Distance at which snap points begin forcing the spring.
@@ -100,13 +102,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         public Vector3[] SnapPoints;
 
         /// <value>
-        /// Should the SnapPoints be repeated to infinity to serve
-        /// as regular snapping intervals?
+        /// Should the SnapPoints be "tiled" across the sphere? If so,
+        /// the existing snap points will serve as "modulo" values,
+        /// where the actual snap points that are used are simply
+        /// the closest integer multiples of every SnapPoint.
         /// </value>
-        public bool repeatSnapPoints;
+        public bool RepeatSnapPoints;
 
         /// <value>
-        /// Distance at which snap points begin forcing the spring.
+        /// Arc-angle at which snap points begin forcing the spring.
         /// </value>
         [SerializeField]
         public float SnapRadius;
