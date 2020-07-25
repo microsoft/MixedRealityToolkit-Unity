@@ -320,6 +320,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
                 dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
                 dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
+
+                dictationRecognizer.Dispose();
             }
         }
 
