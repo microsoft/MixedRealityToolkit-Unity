@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -27,12 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         #region Utilities
 
         // Some arbitrary, yet reasonable, values.
-        ElasticExtentProperties<float> extentProperties = new ElasticExtentProperties<float>
+        LinearElasticExtent extentProperties = new LinearElasticExtent
         {
             MinStretch = 0.0f,
             MaxStretch = 10.0f,
             SnapToEnds = false,
             SnapPoints = new float[0],
+            SnapRadius = 1.0f
         };
 
         // Some arbitrary, yet reasonable, values.
@@ -42,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             HandK = 4.0f,
             EndK = 2.0f,
             SnapK = 1.0f,
-            SnapRadius = 1.0f,
             Drag = 0.2f
         };
 
