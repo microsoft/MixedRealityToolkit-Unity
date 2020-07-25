@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 {
     /// <summary>
-    /// Demonstration script to show how <see cref="ElasticSystem{T}"/> can be used to drive
+    /// Demonstration script to show how ElasticSystem can be used to drive
     /// a satisfying UI inflation/deflation effect of an example UI widget.
     /// </summary>
     public class WidgetElasticDemo : MonoBehaviour
