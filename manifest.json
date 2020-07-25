@@ -11852,11 +11852,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos.WidgetElasticDemo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos.WidgetElasticDemo.html",
+          "hash": "mtp2/8qxVhTI2wX6HYpzBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos.html",
-          "hash": "TnT/i0K1i873waxgBdLXyQ=="
+          "hash": "3Ru3+M9nV6/vGzbb9JqWjA=="
         }
       },
       "is_incremental": false,
@@ -12500,11 +12512,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticExtentProperties-1.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticConfiguration.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticExtentProperties-1.html",
-          "hash": "0iE9759No2MDOsHFJbe/Lw=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticConfiguration.html",
+          "hash": "GDc7gbSSjBwua/OyHSOUnw=="
         }
       },
       "is_incremental": false,
@@ -12516,7 +12528,91 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticProperties.html",
-          "hash": "S4Vfia8iMuLWm8BeeqakXA=="
+          "hash": "lQmBpFdVb7znHZ2mp7ExsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.IElasticSystem-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.IElasticSystem-1.html",
+          "hash": "3zC+BDPDcpiM88adwzS7MA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.LinearElasticExtent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.LinearElasticExtent.html",
+          "hash": "hyCcW9HPKPlwWB9C6xghjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.LinearElasticSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.LinearElasticSystem.html",
+          "hash": "HNcjhJbyLgaXfbOA6KCb3Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticExtent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticExtent.html",
+          "hash": "10nxUUNF6GW5PV8e0B5R8A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.html",
+          "hash": "qBsMo4qYGZ2NtJx9yLtb/w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticExtent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticExtent.html",
+          "hash": "zEoUMeTbyKNATQJdDJrJfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticSystem.html",
+          "hash": "c/fOWeOjo2+Vff84Y4MILQ=="
         }
       },
       "is_incremental": false,
@@ -12528,7 +12624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.html",
-          "hash": "r2nG6WjIMOhpzFvMAoq5ew=="
+          "hash": "plAEyd0zdkz4gXHTV9Mwyg=="
         }
       },
       "is_incremental": false,
@@ -23748,7 +23844,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html",
-          "hash": "/JIDWCkls+YWzI0xJ9AFhQ=="
+          "hash": "E04047j1ENujPhhwlAY1wA=="
         }
       },
       "is_incremental": false,
@@ -28452,7 +28548,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "OSojXjCBtThOrNfnV7zniA=="
+          "hash": "5jWOlKfDrywWB/fzgW/Odg=="
         }
       },
       "is_incremental": false,
@@ -28511,16 +28607,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1652,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 166,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1644,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
