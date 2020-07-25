@@ -1,11 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
@@ -17,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// This extensibility allows not just for 1, 2, and 3-D springs, but
     /// allows for 4-dimensional quaternion springs.
     /// </summary>
-    public abstract class ElasticSystem<T>
+    public interface IElasticSystem<T>
     {
         /// <summary>
         /// Update the internal state of the damped harmonic oscillator,
@@ -28,18 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// input function to a differential equation; in our situation, it is the "input position" to the spring.</param>
         /// <param name="deltaTime">Amount of time that has passed since the last update.</param>
         /// <returns>The new value of the system.</returns>
-        public abstract T ComputeIteration(T forcingValue, float deltaTime);
+        T ComputeIteration(T forcingValue, float deltaTime);
 
         /// <summary>
         /// Query the elastic system for the current instantaneous value
         /// </summary>
         /// <returns>Current value of the elastic system</returns>
-        public abstract T GetCurrentValue();
+        T GetCurrentValue();
 
         /// <summary>
         /// Query the elastic system for the current instantaneous velocity
         /// </summary>
         /// <returns>Current value of the elastic system</returns>
-        public abstract T GetCurrentVelocity();
+        T GetCurrentVelocity();
     }
 }

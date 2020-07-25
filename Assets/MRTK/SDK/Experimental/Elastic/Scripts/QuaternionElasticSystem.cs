@@ -7,7 +7,7 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    public class QuaternionElasticSystem : ElasticSystem<Quaternion>
+    public class QuaternionElasticSystem : IElasticSystem<Quaternion>
     {
         private Quaternion currentValue;
         private Quaternion currentVelocity;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         /// <inheritdoc/>
-        public override Quaternion ComputeIteration(Quaternion forcingValue, float deltaTime)
+        public Quaternion ComputeIteration(Quaternion forcingValue, float deltaTime)
         {
             // If the dot product is negative, we need to negate the forcing
             // quaternion so that the force is coherent/wraps correctly.
@@ -99,10 +99,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         /// <inheritdoc/>
-        public override Quaternion GetCurrentValue() => currentValue;
+        public Quaternion GetCurrentValue() => currentValue;
 
         /// <inheritdoc/>
-        public override Quaternion GetCurrentVelocity() => currentVelocity;
+        public Quaternion GetCurrentVelocity() => currentVelocity;
 
         // Find the nearest integer multiple of the specified interval
         private Vector3 GetNearest(Vector3 target, Vector3 interval)

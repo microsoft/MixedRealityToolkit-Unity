@@ -10,7 +10,7 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    public class VolumeElasticSystem : ElasticSystem<Vector3>
+    public class VolumeElasticSystem : IElasticSystem<Vector3>
     {
         // Internal system state.
         private Vector3 currentValue;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         /// <inheritdoc/>
-        public override Vector3 ComputeIteration(Vector3 forcingValue, float deltaTime)
+        public Vector3 ComputeIteration(Vector3 forcingValue, float deltaTime)
         {
             // F = -kx - (drag * v)
             Vector3 force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
@@ -71,8 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             return currentValue;
         }
 
-        public override Vector3 GetCurrentValue() => currentValue;
-        public override Vector3 GetCurrentVelocity() => currentVelocity;
+        public Vector3 GetCurrentValue() => currentValue;
+        public Vector3 GetCurrentVelocity() => currentVelocity;
 
         // Find the nearest snapping point to the given value, on a repeated
         // snapping interval.

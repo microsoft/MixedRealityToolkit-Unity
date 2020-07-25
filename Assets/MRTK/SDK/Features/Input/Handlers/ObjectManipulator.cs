@@ -364,9 +364,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
 
-        private ElasticSystem<Vector3> translationElastic;
-        private ElasticSystem<Quaternion> rotationElastic;
-        private ElasticSystem<Vector3> scaleElastic;
+        private IElasticSystem<Vector3> translationElastic;
+        private IElasticSystem<Quaternion> rotationElastic;
+        private IElasticSystem<Vector3> scaleElastic;
 
         // Magnitude of the velocity at which the elastic systems will
         // cease being simulated (if enabled) and the object will stop updating/moving.

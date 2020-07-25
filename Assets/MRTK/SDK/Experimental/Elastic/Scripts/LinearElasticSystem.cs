@@ -10,7 +10,7 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
-    public class LinearElasticSystem : ElasticSystem<float>
+    public class LinearElasticSystem : IElasticSystem<float>
     {
         // Internal system state.
         private float currentValue;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         }
 
         /// <inheritdoc/>
-        public override float ComputeIteration(float forcingValue, float deltaTime)
+        public float ComputeIteration(float forcingValue, float deltaTime)
         {
             // F = -kx - (drag * v)
             float force = (forcingValue - currentValue) * elasticProperties.HandK - elasticProperties.Drag * currentVelocity;
@@ -70,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             return currentValue;
         }
 
-        public override float GetCurrentValue() => currentValue;
-        public override float GetCurrentVelocity() => currentVelocity;
+        public float GetCurrentValue() => currentValue;
+        public float GetCurrentVelocity() => currentVelocity;
 
         // Helper function to reduce force calculation copypasta.
         private float ComputeEndForce(float current)
