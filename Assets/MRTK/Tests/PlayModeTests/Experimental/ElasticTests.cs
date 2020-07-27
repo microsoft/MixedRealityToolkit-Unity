@@ -22,17 +22,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     /// <summary>
     /// Tests for runtime behavior of the ElasticSystem.
     /// </summary>
-    public class LinearElasticSystemTests
+    public class ElasticSystemTests
     {
         #region Utilities
 
         // Some arbitrary, yet reasonable, values.
-        LinearElasticExtent extentProperties = new LinearElasticExtent
+        LinearElasticExtent linearExtent = new LinearElasticExtent
         {
             MinStretch = 0.0f,
             MaxStretch = 10.0f,
             SnapToEnds = false,
             SnapPoints = new float[0],
+            SnapRadius = 1.0f
+        };
+
+        // Some arbitrary, yet reasonable, values.
+        VolumeElasticExtent volumeExtent = new VolumeElasticExtent
+        {
+            StretchBounds = new Bounds(Vector3.zero, Vector3.one),
+            UseBounds = true,
+            SnapPoints = new Vector3[0],
             SnapRadius = 1.0f
         };
 
@@ -65,9 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests the sign of the force applied when stretched beyond the endpoints.
         /// </summary>
         [UnityTest]
-        public IEnumerator EndcapForceSign()
+        public IEnumerator LinearEndcapForceSign()
         {
-            LinearElasticSystem les = new LinearElasticSystem(0.0f, 0.0f, extentProperties, elasticProperties);
+            LinearElasticSystem les = new LinearElasticSystem(0.0f, 0.0f, linearExtent, elasticProperties);
 
             // Goal position for the elastic system to stretch towards
             var goalValue = 15.0f;
@@ -133,10 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests that snap forces at the endpoint behave correctly according to the SnapToEnd property.
         /// </summary>
         [UnityTest]
-        public IEnumerator EndpointSnapping()
+        public IEnumerator LinearEndpointSnapping()
         {
             // Default extent properties have SnapToEnd set to false.
-            LinearElasticSystem les = new LinearElasticSystem(0.0f, 0.0f, extentProperties, elasticProperties);
+            LinearElasticSystem les = new LinearElasticSystem(0.0f, 0.0f, linearExtent, elasticProperties);
 
             // Goal position for the elastic system to seek.
             // We will let the system settle to right next to the endpoint.
@@ -163,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.AreApproximatelyEqual(les.GetCurrentVelocity(), 0.0f, $"Elastic system should have zero velocity, actual velocity: {les.GetCurrentVelocity()}");
 
             // Copy the extent properties, but now we enable end snapping.
-            var newExtentProperties = extentProperties;
+            var newExtentProperties = linearExtent;
             newExtentProperties.SnapToEnds = true;
 
             // Create new system.
@@ -192,6 +201,205 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Debug.Assert(les.GetCurrentVelocity() > 0.0f, $"Elastic system should have positive velocity, actual velocity: {les.GetCurrentVelocity()}");
 
             yield return null;
+        }
+
+        /// <summary>
+        /// Tests that snap forces at the snap points behave correctly.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator LinearSnapPointSnapping()
+        {
+            // Make a copy of the default linear elastic extent.
+            var snappingExtent = linearExtent;
+
+            // Set some decent snap points
+            snappingExtent.SnapPoints = new float[] { 2.0f, 5.0f };
+
+            // Construct our system.
+            LinearElasticSystem les = new LinearElasticSystem(0.0f, 0.0f, snappingExtent, elasticProperties);
+
+            // Goal position for the elastic system to seek.
+            // We will let the system settle to right next to one of the snapping point.
+            var goalValue = 4.5f;
+
+            // Let the elastic system come to an equilibrium.
+            // No need for yielding for new frames because the elastic system
+            // simlulates independently from Unity's frame system.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            var equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(equilibrium > goalValue, $"Equilibrium should be slightly greater than goal value. Goal: {goalValue}, Current: {equilibrium}");
+            Debug.Assert(equilibrium < 5.0f, $"Equilibrium should still be less than the snapping value");
+
+            // Move the goal value to slightly more than the other snapping point (2.0)
+            goalValue = 2.5f;
+
+            // Let the elastic system come to an equilibrium.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(equilibrium < goalValue, $"Equilibrium should be slightly less than goal value. Goal: {goalValue}, Current: {equilibrium}");
+            Debug.Assert(equilibrium > 2.0f, $"Equilibrium should still be greater than the snapping value");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests the direction of the force applied when stretched beyond the bounds.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator VolumeBoundsForce()
+        {
+            // VolumeExtent is configured with bounds centered at (0,0,0), with size (1,1,1)
+            VolumeElasticSystem ves = new VolumeElasticSystem(Vector3.zero, Vector3.zero, volumeExtent, elasticProperties);
+
+            // Goal position for the elastic system to stretch towards.
+            // Will be beyond the configured bounds!
+            var goalValue = 15.0f * Vector3.one;
+
+            // Let the elastic system come to an equilibrium.
+            // No need for yielding for new frames because the elastic system
+            // simlulates independently from Unity's frame system.
+            for (int i = 0; i < 50; i++)
+            {
+                ves.ComputeIteration(goalValue, 0.1f);
+            }
+
+            // Get the equilibrium value from the system.
+            var equilibrium = ves.GetCurrentValue();
+            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Stretching beyond max limit should result in equilibrium value less than goal value, equilibrium: {equilibrium}");
+
+            // Compute one small iteration, covering 50 milliseconds.
+            var newValue = ves.ComputeIteration(equilibrium, 0.05f);
+
+            // The system should have shrunk back towards the endpoint.
+            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
+            Debug.Assert(SignedVectorLessThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should now have negative velocity, actual velocity: {ves.GetCurrentVelocity()}");
+
+            // Compute one more small iteration (50 milliseconds)
+            var secondNewValue = ves.ComputeIteration(equilibrium, 0.05f);
+
+            // The system should have shrunk back towards the endpoint.
+            Debug.Assert(secondNewValue.magnitude < equilibrium.magnitude, $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
+            Debug.Assert(secondNewValue.magnitude < newValue.magnitude, $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
+            Debug.Assert(ves.GetCurrentVelocity().x < 0.0f && ves.GetCurrentVelocity().y < 0.0f && ves.GetCurrentVelocity().z < 0.0f, $"Elastic system should still have negative velocity, actual velocity: {ves.GetCurrentVelocity()}");
+
+            // Now, we test pulling the elastic negative, and performing similar checks.
+            goalValue = -5.0f * Vector3.one;
+
+            // Let the elastic system come to an equilibrium
+            for (int i = 0; i < 50; i++)
+            {
+                ves.ComputeIteration(goalValue, 0.1f);
+            }
+
+            // Get the equilibrium value from the system.
+            equilibrium = ves.GetCurrentValue();
+            Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Stretching beyond minimum limit should result in equilibrium value greater than goal value, equilibrium: {equilibrium}");
+
+            // Compute one small iteration, covering 50 milliseconds.
+            newValue = ves.ComputeIteration(equilibrium, 0.05f);
+
+            // The system should have shrunk back towards the endpoint.
+            Debug.Assert(SignedVectorGreaterThan(newValue, equilibrium), $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
+            Debug.Assert(SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should now have positive velocity, actual velocity: {ves.GetCurrentVelocity()}");
+
+            // Compute one more small iteration (50 milliseconds)
+            secondNewValue = ves.ComputeIteration(equilibrium, 0.05f);
+
+            // The system should have shrunk back towards the endpoint.
+            Debug.Assert(SignedVectorGreaterThan(secondNewValue, equilibrium), $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
+            Debug.Assert(SignedVectorGreaterThan(secondNewValue, newValue), $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
+            Debug.Assert(SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should still have positive velocity, actual velocity: {ves.GetCurrentVelocity()}");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that snap forces at the snap points behave correctly.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator VolumeSnapPointSnapping()
+        {
+            // Make a copy of the default volume elastic extent.
+            var snappingExtent = volumeExtent;
+
+            // Set some decent snap points
+            snappingExtent.SnapPoints = new Vector3[]
+            {
+                new Vector3(-0.5f,-0.5f,-0.5f),
+                new Vector3(0.4f, 0.4f, 0.4f)
+            };
+
+            snappingExtent.SnapRadius = 0.5f;
+
+            // Construct our system.
+            VolumeElasticSystem les = new VolumeElasticSystem(Vector3.zero, Vector3.zero, snappingExtent, elasticProperties);
+
+            // Goal position for the elastic system to seek.
+            // We will let the system settle to right next to one of the snapping point.
+            var goalValue = new Vector3(0.3f, 0.3f, 0.3f);
+
+            // Let the elastic system come to an equilibrium.
+            // No need for yielding for new frames because the elastic system
+            // simlulates independently from Unity's frame system.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            var equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue}, Current: {equilibrium}");
+            Debug.Assert(SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[1]), $"Equilibrium should still be less than the snapping value");
+
+            // Move the goal value to next to the other snapping point (-0.5,-0.5,-0.5)
+            goalValue = new Vector3(-0.4f, -0.4f, -0.4f);
+
+            // Let the elastic system come to an equilibrium.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Equilibrium should be slightly less than goal value. Goal: {goalValue}, Current: {equilibrium}");
+            Debug.Assert(SignedVectorGreaterThan(equilibrium, snappingExtent.SnapPoints[0]), $"Equilibrium should still be greater than the snapping value");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Returns true if every component of a is greater than every component of b.
+        /// </summary>
+        private bool SignedVectorGreaterThan(Vector3 a, Vector3 b)
+        {
+            return a.x > b.x && a.y > b.y && a.z > b.z;
+        }
+
+        /// <summary>
+        /// Returns true if every component of a is less than every component of b.
+        /// </summary>
+        private bool SignedVectorLessThan(Vector3 a, Vector3 b)
+        {
+            return !SignedVectorGreaterThan(a, b) && (a != b);
         }
     }
 }
