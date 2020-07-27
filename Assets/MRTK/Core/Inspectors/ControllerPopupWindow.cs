@@ -195,7 +195,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             
             if (mappedControllers != null)
+            {
                 mappedControllerList = mappedControllers;
+            }
 
             window = null;
 
@@ -742,7 +744,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.EndScrollView();
                 interactionList.serializedObject.ApplyModifiedProperties();
-            } 
+            }
 
             GUILayout.EndVertical();
         }
