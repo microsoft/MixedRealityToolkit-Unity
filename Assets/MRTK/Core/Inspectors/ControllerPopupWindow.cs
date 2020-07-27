@@ -744,7 +744,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.EndScrollView();
                 interactionList.serializedObject.ApplyModifiedProperties();
-            } 
+            }
 
             GUILayout.EndVertical();
         }
