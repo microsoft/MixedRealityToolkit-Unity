@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <inheritdoc />
-        public override void Initialize(MixedRealityPose worldPose)
+        public override void Initialize(MixedRealityTransform worldPose)
         {
             base.Initialize(worldPose);
 

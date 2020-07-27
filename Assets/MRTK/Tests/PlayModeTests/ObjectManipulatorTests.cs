@@ -461,7 +461,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.AllowFarManipulation = false;
 
             var rotateConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
-            rotateConstraint.TargetTransform = testObject.transform;
             rotateConstraint.ConstraintOnRotation = 0; // No constraint
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand

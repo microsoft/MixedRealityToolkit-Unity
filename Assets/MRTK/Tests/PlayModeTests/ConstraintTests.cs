@@ -564,8 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
+            manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -773,7 +772,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
             var rotConstraint = manipHandler.EnsureComponent<FaceUserConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
             rotConstraint.FaceAway = false;
 
             // Face user first
@@ -833,8 +831,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToWorldConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
+            manipHandler.EnsureComponent<FixedRotationToWorldConstraint>();
 
             // Face user first
             const int numHandSteps = 1;
