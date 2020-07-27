@@ -99,9 +99,6 @@ or BoundsControl</p>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_TargetTransform">TransformConstraint.TargetTransform</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_HandType">TransformConstraint.HandType</a>
     </div>
     <div>
@@ -109,6 +106,12 @@ or BoundsControl</p>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_worldPoseOnManipulationStart">TransformConstraint.worldPoseOnManipulationStart</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Initialize_MixedRealityPose_">TransformConstraint.Initialize(MixedRealityPose)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_TargetTransform">TransformConstraint.TargetTransform</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
@@ -208,13 +211,13 @@ the ConstraintTransform does not change from manipulation start</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_FixedDistanceConstraint_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.UI.FixedDistanceConstraint.Initialize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_FixedDistanceConstraint_Initialize_MixedRealityPose_" data-uid="Microsoft.MixedReality.Toolkit.UI.FixedDistanceConstraint.Initialize(MixedRealityPose)">Initialize(MixedRealityPose)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_FixedDistanceConstraint_Initialize_MixedRealityTransform_" data-uid="Microsoft.MixedReality.Toolkit.UI.FixedDistanceConstraint.Initialize(MixedRealityTransform)">Initialize(MixedRealityTransform)</h4>
   <div class="markdown level1 summary"><p>Intended to be called on manipulation started</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Initialize(MixedRealityPose worldPose)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Initialize(MixedRealityTransform worldPose)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -227,14 +230,14 @@ the ConstraintTransform does not change from manipulation start</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MixedRealityPose</span></td>
+        <td><span class="xref">MixedRealityTransform</span></td>
         <td><span class="parametername">worldPose</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Initialize_MixedRealityPose_">TransformConstraint.Initialize(MixedRealityPose)</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Initialize_MixedRealityTransform_">TransformConstraint.Initialize(MixedRealityTransform)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_FixedDistanceConstraint_Start_" data-uid="Microsoft.MixedReality.Toolkit.UI.FixedDistanceConstraint.Start*"></a>
@@ -243,10 +246,8 @@ the ConstraintTransform does not change from manipulation start</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Start()</code></pre>
+    <pre><code class="lang-csharp hljs">public void Start()</code></pre>
   </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.html#Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Start">TransformConstraint.Start()</a></div>
 </article>
           </div>
           

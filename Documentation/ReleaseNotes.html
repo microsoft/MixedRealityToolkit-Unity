@@ -137,6 +137,9 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 </code></pre>
 <p><strong>Link.xml</strong></p>
 <p>If an application was previously using the NuGet distribution of the MRTK, the <code>link.xml</code> file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default <code>link.xml</code> file in <code>Assets/MixedRealityToolkit.Generated</code>. It is recommended that this file (and <code>link.xml.meta</code>) be added to source control.</p>
+<p><strong>Transform Constraint Changes</strong>
+TargetTransform property has been marked as obsolete as it wasn't used by constraint system. Constraint logic is based on the transform passed into Initialize and Apply methods. Derived user constraints that rely on this property can cache the TargetTransform in their implementation by storing the transform of the constraint component to achieve the same behavior.</p>
+<p>The stored initial world pose <code>worldPoseOnManipulationStart</code> data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.</p>
 <h3 id="known-issues">Known issues</h3>
 </article>
           </div>
