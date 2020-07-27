@@ -195,7 +195,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             
             if (mappedControllers != null)
+            {
                 mappedControllerList = mappedControllers;
+            }
 
             window = null;
 
