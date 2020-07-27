@@ -96,22 +96,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Get the equilibrium value from the system.
             var equilibrium = les.GetCurrentValue();
-            Debug.Assert(equilibrium < goalValue, $"Stretching beyond max limit should result in equilibrium value less than goal value, equilibrium: {equilibrium}");
+            Debug.Assert(
+                equilibrium < goalValue,
+                $"Stretching beyond max limit should result in equilibrium value less than goal value, equilibrium: {equilibrium}"
+            );
 
             // Compute one small iteration, covering 50 milliseconds.
             var newValue = les.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(newValue < equilibrium, $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
-            Debug.Assert(les.GetCurrentVelocity() < 0.0f, $"Elastic system should now have negative velocity, actual velocity: {les.GetCurrentVelocity()}");
+            Debug.Assert(
+                newValue < equilibrium,
+                $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                les.GetCurrentVelocity() < 0.0f,
+                $"Elastic system should now have negative velocity, actual velocity: {les.GetCurrentVelocity()}"
+            );
 
             // Compute one more small iteration (50 milliseconds)
             var secondNewValue = les.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(secondNewValue < equilibrium, $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
-            Debug.Assert(secondNewValue < newValue, $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
-            Debug.Assert(les.GetCurrentVelocity() < 0.0f, $"Elastic system should still have negative velocity, actual velocity: {les.GetCurrentVelocity()}");
+            Debug.Assert(
+                secondNewValue < equilibrium,
+                $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                secondNewValue < newValue,
+                $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}"
+            );
+            Debug.Assert(
+                les.GetCurrentVelocity() < 0.0f,
+                $"Elastic system should still have negative velocity, actual velocity: {les.GetCurrentVelocity()}"
+            );
 
             // Now, we test pulling the elastic negative, and performing similar checks.
             goalValue = -5.0f;
@@ -124,22 +142,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Get the equilibrium value from the system.
             equilibrium = les.GetCurrentValue();
-            Debug.Assert(equilibrium > goalValue, $"Stretching beyond minimum limit should result in equilibrium value greater than goal value, equilibrium: {equilibrium}");
+            Debug.Assert(
+                equilibrium > goalValue,
+                $"Stretching beyond minimum limit should result in equilibrium value greater than goal value, equilibrium: {equilibrium}"
+            );
 
             // Compute one small iteration, covering 50 milliseconds.
             newValue = les.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(newValue > equilibrium, $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
-            Debug.Assert(les.GetCurrentVelocity() > 0.0f, $"Elastic system should now have positive velocity, actual velocity: {les.GetCurrentVelocity()}");
+            Debug.Assert(
+                newValue > equilibrium,
+                $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                les.GetCurrentVelocity() > 0.0f,
+                $"Elastic system should now have positive velocity, actual velocity: {les.GetCurrentVelocity()}"
+            );
 
             // Compute one more small iteration (50 milliseconds)
             secondNewValue = les.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(secondNewValue > equilibrium, $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
-            Debug.Assert(secondNewValue > newValue, $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
-            Debug.Assert(les.GetCurrentVelocity() > 0.0f, $"Elastic system should still have positive velocity, actual velocity: {les.GetCurrentVelocity()}");
+            Debug.Assert(
+                secondNewValue > equilibrium,
+                $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                secondNewValue > newValue,
+                $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}"
+            );
+            Debug.Assert(
+                les.GetCurrentVelocity() > 0.0f,
+                $"Elastic system should still have positive velocity, actual velocity: {les.GetCurrentVelocity()}"
+            );
 
             yield return null;
         }
@@ -168,14 +204,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // Get the equilibrium value from the system.
             // It should be basically equal to the goal value, given that endpoint snapping is disabled.
             var equilibrium = les.GetCurrentValue();
-            Assert.AreApproximatelyEqual(goalValue, les.GetCurrentValue(), $"Equilibrium should be roughly equal to goal value. Goal: {goalValue}");
+            Assert.AreApproximatelyEqual(
+                goalValue,
+                les.GetCurrentValue(),
+                $"Equilibrium should be roughly equal to goal value. Goal: {goalValue}"
+            );
 
             // Compute one small iteration, covering 50 milliseconds.
             var newValue = les.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have stayed still.
-            Assert.AreApproximatelyEqual(newValue, equilibrium, $"Elastic system should have stayed mostly still when released, actual value: {newValue}, equilibrium: {equilibrium}");
-            Assert.AreApproximatelyEqual(les.GetCurrentVelocity(), 0.0f, $"Elastic system should have zero velocity, actual velocity: {les.GetCurrentVelocity()}");
+            Assert.AreApproximatelyEqual(
+                newValue,
+                equilibrium,
+                $"Elastic system should have stayed mostly still when released, actual value: {newValue}, equilibrium: {equilibrium}"
+            );
+            Assert.AreApproximatelyEqual(
+                les.GetCurrentVelocity(),
+                0.0f,
+                $"Elastic system should have zero velocity, actual velocity: {les.GetCurrentVelocity()}"
+            );
 
             // Copy the extent properties, but now we enable end snapping.
             var newExtentProperties = linearExtent;
@@ -285,22 +333,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Get the equilibrium value from the system.
             var equilibrium = ves.GetCurrentValue();
-            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Stretching beyond max limit should result in equilibrium value less than goal value, equilibrium: {equilibrium}");
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium, goalValue),
+                $"Stretching beyond max limit should result in equilibrium value less than goal value, equilibrium: {equilibrium}"
+            );
 
             // Compute one small iteration, covering 50 milliseconds.
             var newValue = ves.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
-            Debug.Assert(SignedVectorLessThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should now have negative velocity, actual velocity: {ves.GetCurrentVelocity()}");
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium, goalValue),
+                $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                SignedVectorLessThan(ves.GetCurrentVelocity(), Vector3.zero),
+                $"Elastic system should now have negative velocity, actual velocity: {ves.GetCurrentVelocity()}"
+            );
 
             // Compute one more small iteration (50 milliseconds)
             var secondNewValue = ves.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(secondNewValue.magnitude < equilibrium.magnitude, $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
-            Debug.Assert(secondNewValue.magnitude < newValue.magnitude, $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
-            Debug.Assert(ves.GetCurrentVelocity().x < 0.0f && ves.GetCurrentVelocity().y < 0.0f && ves.GetCurrentVelocity().z < 0.0f, $"Elastic system should still have negative velocity, actual velocity: {ves.GetCurrentVelocity()}");
+            Debug.Assert(
+                secondNewValue.magnitude < equilibrium.magnitude,
+                $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                secondNewValue.magnitude < newValue.magnitude,
+                $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}"
+            );
+            Debug.Assert(
+                ves.GetCurrentVelocity().x < 0.0f &&
+                ves.GetCurrentVelocity().y < 0.0f &&
+                ves.GetCurrentVelocity().z < 0.0f,
+                $"Elastic system should still have negative velocity, actual velocity: {ves.GetCurrentVelocity()}"
+            );
 
             // Now, we test pulling the elastic negative, and performing similar checks.
             goalValue = -5.0f * Vector3.one;
@@ -313,22 +381,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // Get the equilibrium value from the system.
             equilibrium = ves.GetCurrentValue();
-            Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Stretching beyond minimum limit should result in equilibrium value greater than goal value, equilibrium: {equilibrium}");
+            Debug.Assert(
+                SignedVectorGreaterThan(equilibrium, goalValue),
+                $"Stretching beyond minimum limit should result in equilibrium value greater than goal value, equilibrium: {equilibrium}"
+            );
 
             // Compute one small iteration, covering 50 milliseconds.
             newValue = ves.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(SignedVectorGreaterThan(newValue, equilibrium), $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}");
-            Debug.Assert(SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should now have positive velocity, actual velocity: {ves.GetCurrentVelocity()}");
+            Debug.Assert(
+                SignedVectorGreaterThan(newValue, equilibrium),
+                $"Elastic system should have contracted towards endpoint when released, actual value: {newValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero),
+                $"Elastic system should now have positive velocity, actual velocity: {ves.GetCurrentVelocity()}"
+            );
 
             // Compute one more small iteration (50 milliseconds)
             secondNewValue = ves.ComputeIteration(equilibrium, 0.05f);
 
             // The system should have shrunk back towards the endpoint.
-            Debug.Assert(SignedVectorGreaterThan(secondNewValue, equilibrium), $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}");
-            Debug.Assert(SignedVectorGreaterThan(secondNewValue, newValue), $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}");
-            Debug.Assert(SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero), $"Elastic system should still have positive velocity, actual velocity: {ves.GetCurrentVelocity()}");
+            Debug.Assert(
+                SignedVectorGreaterThan(secondNewValue, equilibrium),
+                $"Elastic system should have contracted towards endpoint when released, actual value: {secondNewValue}, equilibrium: {equilibrium}"
+            );
+            Debug.Assert(
+                SignedVectorGreaterThan(secondNewValue, newValue),
+                $"Elastic system should have contracted further towards endpoint, new value: {secondNewValue}, last value: {newValue}"
+            );
+            Debug.Assert
+                (SignedVectorGreaterThan(ves.GetCurrentVelocity(), Vector3.zero),
+                $"Elastic system should still have positive velocity, actual velocity: {ves.GetCurrentVelocity()}"
+            );
 
             yield return null;
         }
@@ -370,8 +456,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // It should be near the goal value, but slightly pulled towards the snapping point.
             var equilibrium = les.GetCurrentValue();
 
-            Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue}, Current: {equilibrium}");
-            Debug.Assert(SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[1]), $"Equilibrium should still be less than the snapping value");
+            Debug.Assert(
+                SignedVectorGreaterThan(equilibrium, goalValue),
+                $"Equilibrium should be slightly greater than goal value. Goal: {goalValue}, Current: {equilibrium}"
+            );
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[1]),
+                $"Equilibrium should still be less than the snapping value"
+            );
 
             // Move the goal value to next to the other snapping point (-0.5,-0.5,-0.5)
             goalValue = new Vector3(-0.4f, -0.4f, -0.4f);
@@ -386,8 +478,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // It should be near the goal value, but slightly pulled towards the snapping point.
             equilibrium = les.GetCurrentValue();
 
-            Debug.Assert(SignedVectorLessThan(equilibrium, goalValue), $"Equilibrium should be slightly less than goal value. Goal: {goalValue}, Current: {equilibrium}");
-            Debug.Assert(SignedVectorGreaterThan(equilibrium, snappingExtent.SnapPoints[0]), $"Equilibrium should still be greater than the snapping value");
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium, goalValue),
+                $"Equilibrium should be slightly less than goal value. Goal: {goalValue}, Current: {equilibrium}"
+            );
+            Debug.Assert(
+                SignedVectorGreaterThan(equilibrium, snappingExtent.SnapPoints[0]),
+                $"Equilibrium should still be greater than the snapping value"
+            );
 
             yield return null;
         }
@@ -437,8 +535,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
                 // Get the equilibrium value from the system.
                 // It should be near the goal value, but slightly pulled towards the snapping point.
                 var equilibrium = les.GetCurrentValue();
-                Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.ToString("F4")}, Current: {equilibrium.ToString("F4")}");
-                Debug.Assert(SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[0] * j), $"Equilibrium should still be less than the snapping value. Equilibrium");
+                Debug.Assert(
+                    SignedVectorGreaterThan(equilibrium, goalValue),
+                    $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.ToString("F4")}, Current: {equilibrium.ToString("F4")}"
+                );
+                Debug.Assert(
+                    SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[0] * j),
+                    $"Equilibrium should still be less than the snapping value. Equilibrium"
+                );
             }
 
             yield return null;
@@ -479,8 +583,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // It should be near the goal value, but slightly pulled towards the snapping point.
             var equilibrium = les.GetCurrentValue();
 
-            Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}");
-            Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]), $"Equilibrium should still be less than the snapping value");
+            Debug.Assert(
+                SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles),
+                $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}"
+            );
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]),
+                $"Equilibrium should still be less than the snapping value"
+            );
 
             // Move the goal value to next to the other snapping point (-45,-45,-45)
             goalValue = Quaternion.Euler(new Vector3(-35, -35, -35));
@@ -495,8 +605,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // It should be near the goal value, but slightly pulled towards the snapping point.
             equilibrium = les.GetCurrentValue();
 
-            Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly less than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}");
-            Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]), $"Equilibrium should still be greater than the snapping value");
+            Debug.Assert(
+                SignedVectorLessThan(equilibrium.eulerAngles, goalValue.eulerAngles),
+                $"Equilibrium should be slightly less than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}"
+            );
+            Debug.Assert(
+                SignedVectorGreaterThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]),
+                $"Equilibrium should still be greater than the snapping value"
+            );
 
             yield return null;
         }
@@ -542,8 +658,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
                 // Get the equilibrium value from the system.
                 // It should be near the goal value, but slightly pulled towards the snapping point.
                 var equilibrium = les.GetCurrentValue();
-                Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.ToString("F4")}, Current: {equilibrium.eulerAngles.ToString("F4")}");
-                Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, Vector3.one * 360.0f + snappingExtent.SnapPoints[0] * j), $"Equilibrium should still be less than the snapping value.");
+                Debug.Assert(
+                    SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles),
+                    $"Equilibrium should be slightly greater than goal value. Goal: {goalValue:F4}, Current: {equilibrium.eulerAngles:F4}"
+                );
+                Debug.Assert(
+                    SignedVectorLessThan(equilibrium.eulerAngles, Vector3.one * 360.0f + snappingExtent.SnapPoints[0] * j),
+                    $"Equilibrium should still be less than the snapping value."
+                );
             }
 
             yield return null;
