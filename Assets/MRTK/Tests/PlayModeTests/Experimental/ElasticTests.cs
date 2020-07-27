@@ -12,7 +12,6 @@
 
 using Assert = UnityEngine.Assertions.Assert;
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
-using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -43,6 +42,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             UseBounds = true,
             SnapPoints = new Vector3[0],
             SnapRadius = 1.0f
+        };
+
+        // Some arbitrary, yet reasonable, values.
+        QuaternionElasticExtent quatExtent = new QuaternionElasticExtent
+        {
+            SnapPoints = new Vector3[0],
+            SnapRadius = 45.0f
         };
 
         // Some arbitrary, yet reasonable, values.
@@ -385,6 +391,164 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return null;
         }
+
+        /// <summary>
+        /// Tests that the repeating snap intervals behave correctly.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator VolumeIntervalSnapping()
+        {
+            // Make a copy of the default volume elastic extent.
+            var snappingExtent = volumeExtent;
+
+            // Set some decent snap points
+            snappingExtent.SnapPoints = new Vector3[]
+            {
+                new Vector3(0.2f, 0.2f, 0.2f)
+            };
+
+            // Expand the bounds a bit
+            snappingExtent.StretchBounds = new Bounds(Vector3.zero, 2.0f * Vector3.one);
+
+            // Set a good snap radius.
+            snappingExtent.SnapRadius = 0.1f;
+
+            // Enable interval snapping.
+            snappingExtent.RepeatSnapPoints = true;
+
+            // Construct our system.
+            VolumeElasticSystem les = new VolumeElasticSystem(Vector3.zero, Vector3.zero, snappingExtent, elasticProperties);
+
+            // Loop over a range of negative and positive integer multiples of the snap interval.
+            for (int j = -3; j < 6; j++)
+            {
+                // Goal position for the elastic system to seek.
+                // We will let the system settle to right next to an integer multiple of the snap point.
+                var goalValue = (snappingExtent.SnapPoints[0] * j) - (new Vector3(0.03f, 0.03f, 0.03f));
+
+                // Let the elastic system come to an equilibrium.
+                // No need for yielding for new frames because the elastic system
+                // simlulates independently from Unity's frame system.
+                for (int i = 0; i < 1000; i++)
+                {
+                    les.ComputeIteration(goalValue, 0.05f);
+                }
+
+                // Get the equilibrium value from the system.
+                // It should be near the goal value, but slightly pulled towards the snapping point.
+                var equilibrium = les.GetCurrentValue();
+                Debug.Assert(SignedVectorGreaterThan(equilibrium, goalValue), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.ToString("F4")}, Current: {equilibrium.ToString("F4")}");
+                Debug.Assert(SignedVectorLessThan(equilibrium, snappingExtent.SnapPoints[0] * j), $"Equilibrium should still be less than the snapping value. Equilibrium");
+            }
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that snap forces at the snap points behave correctly.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator QuaternionSnapPointSnapping()
+        {
+            // Make a copy of the default volume elastic extent.
+            var snappingExtent = quatExtent;
+
+            // Set some decent snap points
+            snappingExtent.SnapPoints = new Vector3[]
+            {
+                new Vector3(45.0f, 45.0f, 45.0f),
+                new Vector3(-45.0f, -45.0f, -45.0f)
+            };
+
+            // Construct our system.
+            QuaternionElasticSystem les = new QuaternionElasticSystem(Quaternion.identity, Quaternion.identity, snappingExtent, elasticProperties);
+
+            // Goal position for the elastic system to seek.
+            // We will let the system settle to right next to one of the snapping point.
+            var goalValue = Quaternion.Euler(new Vector3(40, 40, 40));
+
+            // Let the elastic system come to an equilibrium.
+            // No need for yielding for new frames because the elastic system
+            // simlulates independently from Unity's frame system.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            var equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}");
+            Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]), $"Equilibrium should still be less than the snapping value");
+
+            // Move the goal value to next to the other snapping point (-45,-45,-45)
+            goalValue = Quaternion.Euler(new Vector3(-35, -35, -35));
+
+            // Let the elastic system come to an equilibrium.
+            for (int i = 0; i < 1000; i++)
+            {
+                les.ComputeIteration(goalValue, 0.05f);
+            }
+
+            // Get the equilibrium value from the system.
+            // It should be near the goal value, but slightly pulled towards the snapping point.
+            equilibrium = les.GetCurrentValue();
+
+            Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly less than goal value. Goal: {goalValue.eulerAngles:F4}, Current: {equilibrium.eulerAngles:F4}");
+            Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, snappingExtent.SnapPoints[0]), $"Equilibrium should still be greater than the snapping value");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that the repeating snap intervals behave correctly.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator QuaternionIntervalSnapping()
+        {
+            // Make a copy of the default quaternion elastic extent.
+            var snappingExtent = quatExtent;
+
+            // Set some decent snap points
+            snappingExtent.SnapPoints = new Vector3[]
+            {
+                new Vector3(10,10,10)
+            };
+            // Set a good snap radius.
+            snappingExtent.SnapRadius = 5f;
+
+            // Enable interval snapping.
+            snappingExtent.RepeatSnapPoints = true;
+
+            // Construct our system.
+            QuaternionElasticSystem les = new QuaternionElasticSystem(Quaternion.identity, Quaternion.identity, snappingExtent, elasticProperties);
+
+            // Loop over a range of negative and positive integer multiples of the snap interval.
+            for (int j = -3; j < 6; j++)
+            {
+                // Goal position for the elastic system to seek.
+                // We will let the system settle to right next to an integer multiple of the snap point.
+                var goalValue = Quaternion.Euler((snappingExtent.SnapPoints[0] * j) - (new Vector3(0.03f, 0.03f, 0.03f)));
+
+                // Let the elastic system come to an equilibrium.
+                // No need for yielding for new frames because the elastic system
+                // simlulates independently from Unity's frame system.
+                for (int i = 0; i < 1000; i++)
+                {
+                    les.ComputeIteration(goalValue, 0.05f);
+                }
+
+                // Get the equilibrium value from the system.
+                // It should be near the goal value, but slightly pulled towards the snapping point.
+                var equilibrium = les.GetCurrentValue();
+                Debug.Assert(SignedVectorGreaterThan(equilibrium.eulerAngles, goalValue.eulerAngles), $"Equilibrium should be slightly greater than goal value. Goal: {goalValue.ToString("F4")}, Current: {equilibrium.eulerAngles.ToString("F4")}");
+                Debug.Assert(SignedVectorLessThan(equilibrium.eulerAngles, Vector3.one * 360.0f + snappingExtent.SnapPoints[0] * j), $"Equilibrium should still be less than the snapping value.");
+            }
+
+            yield return null;
+        }
+
 
         /// <summary>
         /// Returns true if every component of a is greater than every component of b.
