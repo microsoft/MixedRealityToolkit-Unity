@@ -73,8 +73,6 @@ $packages = [ordered]@{
     "examples" = "Assets\MRTK\Examples";
 }
 
-$npmPath = "npm"
-
 # Ensure we can call npm.cmd to package and publish
 [boolean]$nodejsInstalled = $false
 try {
@@ -106,7 +104,6 @@ if ($nodejsInstalled -eq $false)
 # 4) Cleanup files created and/or modified
 
 $cmdFullPath = "$env:systemroot\system32\cmd.exe"
-$updateAuth = $true
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
@@ -153,7 +150,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmPath pack" -NoNewWindow -Wait
+    npm pack
 
     # Move package file to OutputFolder
     Move-Item -Path ".\*.tgz" $OutputDirectory -Force
