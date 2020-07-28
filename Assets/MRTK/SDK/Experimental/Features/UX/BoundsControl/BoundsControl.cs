@@ -1472,13 +1472,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
 
                         // Initialize our quaternion oscillator system
-                        translationElastic = null;
-                        rotationElastic = new QuaternionElasticSystem(
-                            Quaternion.identity,
-                            Quaternion.identity,
-                            rotationElasticExtent,
-                            rotationElasticConfigurationObject.ElasticProperties
-                        );
+                        if (elasticTypes.HasFlag(TransformFlags.Rotate))
+                        {
+                            translationElastic = null;
+                            rotationElastic = new QuaternionElasticSystem(
+                                Quaternion.identity,
+                                Quaternion.identity,
+                                rotationElasticExtent,
+                                rotationElasticConfigurationObject.ElasticProperties
+                            );
+                        }
 
                         RotateStarted?.Invoke();
 
@@ -1492,13 +1495,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         currentTranslationAxis = GetTranslationAxis(grabbedHandleTransform);
 
                         // Immediately stop the rotational elastic system.
-                        rotationElastic = null;
-                        translationElastic = new VolumeElasticSystem(
-                            Target.transform.localPosition,
-                            Vector3.zero,
-                            translationElasticExtent,
-                            translationElasticConfigurationObject.ElasticProperties
-                        );
+                        if (elasticTypes.HasFlag(TransformFlags.Move))
+                        {
+                            rotationElastic = null;
+                            translationElastic = new VolumeElasticSystem(
+                                Target.transform.localPosition,
+                                Vector3.zero,
+                                translationElasticExtent,
+                                translationElasticConfigurationObject.ElasticProperties
+                            );
+                        }
 
                         TranslateStarted?.Invoke();
 

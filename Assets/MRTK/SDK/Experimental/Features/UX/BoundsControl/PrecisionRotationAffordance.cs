@@ -87,9 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         // Update is called once per frame
         void Update()
         {
-            //if(ProgressLineDataProvider != null)
-            //{
-
             if(targetObject != null && targetHandle != null){
                 endDegrees = Vector3.SignedAngle(originalVector, targetHandle.position - transform.position, transform.up);
                 transform.position = targetObject.position;
