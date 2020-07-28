@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             affordance.transform.rotation = Quaternion.LookRotation(attachTarget.position - objectRoot.position, attachTarget.up);
 
-            affordance.manipulationScale = (attachTarget.position - objectRoot.position).magnitude + 0.05f;
+            affordance.ManipulationScale = (attachTarget.position - objectRoot.position).magnitude + 0.05f;
 
             affordance.SetTrackingTarget(attachTarget, objectRoot, objectRoot.rotation * Quaternion.Inverse(affordance.transform.rotation));
 
