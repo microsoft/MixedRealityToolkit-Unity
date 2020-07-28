@@ -8,6 +8,8 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -25,6 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
+
+        // Elastics
+        private SerializedProperty elasticTypes;
+        private SerializedProperty translationElasticConfigurationObject;
+        private SerializedProperty rotationElasticConfigurationObject;
+        private SerializedProperty scaleElasticConfigurationObject;
+        private SerializedProperty translationElasticExtent;
+        private SerializedProperty rotationElasticExtent;
+        private SerializedProperty scaleElasticExtent;
+        
 
         // Configs
         private SerializedProperty boxDisplayConfiguration;
@@ -49,6 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool showRotationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
+
+        private static bool elasticsFoldout = true;
+        private static bool translationElasticFoldout = false;
+        private static bool rotationElasticFoldout = false;
+        private static bool scaleElasticFoldout = false;
 
         private void OnEnable()
         {
@@ -77,6 +94,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
             scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
+
+            // Elastic configuration (ScriptableObject)
+            translationElasticConfigurationObject = serializedObject.FindProperty("translationElasticConfigurationObject");
+            rotationElasticConfigurationObject = serializedObject.FindProperty("rotationElasticConfigurationObject");
+            scaleElasticConfigurationObject = serializedObject.FindProperty("scaleElasticConfigurationObject");
+            translationElasticExtent = serializedObject.FindProperty("translationElasticExtent");
+            rotationElasticExtent = serializedObject.FindProperty("rotationElasticExtent");
+            scaleElasticExtent = serializedObject.FindProperty("scaleElasticExtent");
+            elasticTypes = serializedObject.FindProperty("elasticTypes");
         }
 
         public override void OnInspectorGUI()
@@ -130,6 +156,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
                     }
+                    EditorGUILayout.Space();
+                    elasticsFoldout = EditorGUILayout.Foldout(elasticsFoldout, "Elastics", true);
+
+                    if (elasticsFoldout)
+                    {
+                        // This two-way enum cast is required because EnumFlagsField does not play nicely with
+                        // SerializedProperties and custom enum flags.
+                        var newElasticTypesValue = EditorGUILayout.EnumFlagsField("Manipulation types using elastic feedback: ", (TransformFlags)elasticTypes.intValue);
+                        elasticTypes.intValue = (int)(TransformFlags)newElasticTypesValue;
+
+                        // If the particular elastic type is requested, we offer the user the ability
+                        // to configure the elastic system.
+                        TransformFlags currentFlags = (TransformFlags)elasticTypes.intValue;
+
+                        translationElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>(
+                            "Translation Elastic",
+                            translationElasticFoldout,
+                            translationElasticConfigurationObject,
+                            translationElasticExtent,
+                            TransformFlags.Move,
+                            currentFlags);
+
+                        rotationElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>(
+                            "Rotation Elastic",
+                            rotationElasticFoldout,
+                            rotationElasticConfigurationObject,
+                            rotationElasticExtent,
+                            TransformFlags.Rotate,
+                            currentFlags);
+
+                        scaleElasticFoldout = DrawElasticConfiguration<ElasticConfiguration>(
+                            "Scale Elastic",
+                            scaleElasticFoldout,
+                            scaleElasticConfigurationObject,
+                            scaleElasticExtent,
+                            TransformFlags.Scale,
+                            currentFlags);
+                    }
+
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
@@ -176,5 +241,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 }
             }
         }
+        private bool DrawElasticConfiguration<T>(
+            string name,
+            bool expanded,
+            SerializedProperty elasticProperty,
+            SerializedProperty extentProperty,
+            TransformFlags requiredFlag,
+            TransformFlags providedFlags) where T : ElasticConfiguration
+        {
+            if (providedFlags.HasFlag(requiredFlag))
+            {
+                bool result = false;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    result = InspectorUIUtility.DrawScriptableFoldout<T>(
+                        elasticProperty,
+                        name,
+                        expanded);
+                    EditorGUILayout.PropertyField(extentProperty, includeChildren: true);
+                }
+                return result;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

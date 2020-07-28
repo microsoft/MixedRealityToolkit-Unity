@@ -362,20 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get => translateLerpTime;
             set => translateLerpTime = value;
         }
-        
-        [Header("Elastic")]
-        [SerializeField]
-        [Tooltip("Check to enable frame-rate independent damped elastic feedback for rotation handles.")]
-        private bool elasticActive = false;
-
-        /// <summary>
-        /// Check to enable frame-rate independent damped elastic feedback for rotation handles.
-        /// </summary>
-        public bool ElasticActive
-        {
-            get => elasticActive;
-            set => elasticActive = value;
-        }
 
         [SerializeField]
         [Range(0, 180)]
@@ -879,7 +865,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Target.transform.hasChanged = false;
                 }
 
-                if (elasticActive && rotationElastic != null && currentPointer == null)
+                if (currentPointer == null && elasticTypes.HasFlag(TransformFlags.Rotate) && rotationElastic != null)
                 {
                     // Only continue to compute elastic sim if angular velocity is (effectively) nonzero.
                     if (Mathf.Abs(rotationElastic.GetCurrentVelocity().eulerAngles.magnitude) > 0.000005f)
@@ -888,7 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                 }
 
-                if (elasticActive && translationElastic != null && currentPointer == null)
+                if (currentPointer == null && elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null)
                 {
                     // Only continue to compute elastic sim if velocity is (effectively) nonzero.
                     if (translationElastic.GetCurrentVelocity().magnitude > 0.000005f)
@@ -1312,7 +1298,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Quaternion localDelta = Quaternion.FromToRotation(initDir, currentDir);
 
                     // Elastic takes higher priority over smoothing, as it itself is a kind of smoothing!
-                    if (elasticActive)
+                    if (elasticTypes.HasFlag(TransformFlags.Rotate))
                     {
                         // Compute and apply elastic result.
                         Quaternion elasticResult = rotationElastic.ComputeIteration(localDelta, Time.deltaTime);
@@ -1373,7 +1359,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                     var goal = initialPositionOnGrabStart + translateVectorAlongAxis - accumulatedPrecisionDamping * currentTranslationAxis;
 
-                    if(elasticActive)
+                    if(elasticTypes.HasFlag(TransformFlags.Scale))
                     {
                         Vector3 localGoal = Target.transform.parent.InverseTransformPoint(goal);
                         Target.transform.localPosition = translationElastic.ComputeIteration(localGoal, Time.deltaTime);
