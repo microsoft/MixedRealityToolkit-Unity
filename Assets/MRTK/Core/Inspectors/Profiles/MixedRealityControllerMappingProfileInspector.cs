@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private readonly struct ControllerMappingSignature
         {
-            public SupportedControllerType SupportedControllerType;
-            public Handedness Handedness;
+            public SupportedControllerType SupportedControllerType { get; }
+            public Handedness Handedness { get; }
 
             public ControllerMappingSignature(SupportedControllerType supportedControllerType, Handedness handedness)
             {
