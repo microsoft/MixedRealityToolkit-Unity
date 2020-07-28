@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 activePrecisionAffordance = CreatePrecisionAffordance(handleToHighlight.GetChild(0), handleToHighlight.parent);
             }
 
+            // If we have an active precision affordance/widget, we set the associated pointer.
             if (activePrecisionAffordance != null)
             {
                 activePrecisionAffordance.SetAssociatedPointer(associatedPointer);
@@ -50,6 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override void ResetHandles()
         {
             base.ResetHandles();
+
+            // If we have an active precision affordance,
+            // we destroy it on a timer (and let it perform
+            // the deflation/fade out transition.)
             if(activePrecisionAffordance != null)
             {
                 activePrecisionAffordance.DestroySelf();
@@ -57,20 +62,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         protected PrecisionRotationAffordance CreatePrecisionAffordance(Transform attachTarget, Transform objectRoot){
+
+            // If no precision widget is specified, we won't create one.
             if (precisionConfig.PrecisionWidgetPrefab == null || attachTarget == null)
             {
                 return null;
             }
 
+            // Create the precision affordance from the specified precision widget prefab.
             PrecisionRotationAffordance affordance = GameObject.Instantiate(precisionConfig.PrecisionWidgetPrefab).GetComponent<PrecisionRotationAffordance>();
             
             // Precision affordances are centered on the parent object's origin.
             affordance.transform.position = objectRoot.position;
 
+            // The precision affordance is initialized to a look-rotation away from the center of the object, pointing
+            // in the direction of attachTarget, with the same up-vector as the attachTarget.
             affordance.transform.rotation = Quaternion.LookRotation(attachTarget.position - objectRoot.position, attachTarget.up);
 
-            //affordance.ManipulationScale = (attachTarget.position - objectRoot.position).magnitude + 0.05f;
-
+            // Initialize the affordance's tracking target.
             affordance.SetTrackingTarget(attachTarget, objectRoot, objectRoot.rotation * Quaternion.Inverse(affordance.transform.rotation));
 
             return affordance;

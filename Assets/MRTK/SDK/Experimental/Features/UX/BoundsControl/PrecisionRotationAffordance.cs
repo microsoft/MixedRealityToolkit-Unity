@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         #region Public Properties
 
         // The current manipulation scale of the affordance; typically, the distance
-        // of the manipulation point from the root/center of the manipulated object
+        // of the manipulation point from the root/center of the manipulated object.
         public float ManipulationScale = 0.2f;
 
         // Whether this affordance is currently "deployed", i.e. inflated and active.
@@ -305,38 +305,58 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             // Controls the value display fade.
             valueDisplay.alpha = Mathf.Lerp(valueDisplay.alpha, deployed ? 1.0f : 0.0f, Time.deltaTime / 0.1f);
 
+            // Calculate the normalized start and end positions for the progress line/arc.
             float startNormalized = (-startDegrees / 360.0f) + 0.5f;
             float endNormalized = (-endDegrees / 360.0f) + 0.5f;
 
+            // Apply the start/end clamp to the tickmarks; this inflates/deflates
+            // the tickmarks in a pleasing animation.
             TickmarksDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, Time.deltaTime / 0.1f);
             TickmarksDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, Time.deltaTime / 0.1f);
 
+            // Apply the proper radius to the tickmarks.
             TickmarksDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale);
+
+            // Apply the radius + the radius offset to the progress line and its background line.
             ProgressLineDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale) + Vector2.one * progressLineRadiusOffset;
             ProgressBackgroundLineDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale) + Vector2.one * progressLineRadiusOffset;
 
+            // Apply the start/end clamp to the progress line and the progress background line.
             ProgressBackgroundLineDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, Time.deltaTime / 0.1f);
             ProgressBackgroundLineDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, Time.deltaTime / 0.1f);
-
             ProgressLineDataProvider.LineStartClamp = startNormalized;
             ProgressLineDataProvider.LineEndClamp = endNormalized;
+
+            // Rotate the entire marker assembly around the pivot.
             markerPivot.localRotation = Quaternion.Euler(0, endDegrees, 0);
 
-            // We want to have a specified point distribution for a given unit of arclength.
-            var arclength = (Mathf.Abs(startDegrees - endDegrees) / 360.0f) * 2.0f * Mathf.PI * (ManipulationScale + progressLineRadiusOffset) * transform.lossyScale.x;
-            var degreesPerStep = Mathf.Abs(startDegrees - endDegrees) / 50.0f;
-            var lengthPerDegree = arclength / Mathf.Abs(startDegrees - endDegrees);
-            var lengthPerStep = lengthPerDegree * degreesPerStep;
-
+            // Assign the custom point distribution of the progress line depending on the arclength of the line.
+            // We want fewer points as the arclength decreases, and more points as the arclength increases.
             ProgressLine.CustomPointDistributionLength = (0.1f / Mathf.Abs(startNormalized - endNormalized)) * ManipulationScale;
-            valueDisplay.text = (startDegrees - endDegrees).ToString("F2") + "°";
+
+            // Display text.
+            valueDisplay.text = (startDegrees - endDegrees).ToString("F1") + "°";
+
+            // Rotate the display text to billboard to the user's head.
             valueDisplay.transform.rotation = Quaternion.LookRotation(valueDisplay.transform.position - Camera.main.transform.position, Vector3.up);
+
+            // Apply the proper radius/offset to the value display text
             valueDisplay.transform.localPosition = new Vector3(0, 0, ManipulationScale + markerRadiusOffset + textLabelRadiusOffset);
+
+            // Apply the proper radius/offset to the marker icon.
             marker.localPosition = new Vector3(0,0, ManipulationScale + markerRadiusOffset);
+
+            // The marker icon is semi-billboarded; it remains aligned along the radial axis, but tilts to face the user.
             marker.rotation = Quaternion.LookRotation(marker.position - Camera.main.transform.position, markerPivot.forward);
+
+            // Set the tether line's endpoint to the tip of the progress line.
             TetherLine.EndPoint = new MixedRealityPose(Quaternion.Euler(0, endDegrees, 0) * (Vector3.forward * (ManipulationScale + progressLineRadiusOffset)));
         }
 
+        /// <summary>
+        /// Destroys the affordance after a set time, as well as marking the affordance as non-deployed,
+        /// which triggers the deflation/fadeout effect.
+        /// </summary>
         internal void DestroySelf()
         {
             if(gameObject != null)
