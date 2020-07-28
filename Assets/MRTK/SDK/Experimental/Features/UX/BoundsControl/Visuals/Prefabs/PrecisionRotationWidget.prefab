@@ -96,7 +96,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762910067178537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762910067178537}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
@@ -318,7 +318,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  lineMaterial: {fileID: 2100000, guid: 84c359cdf88ace548a17f00f7f041362, type: 2}
+  lineMaterial: {fileID: 0}
   roundedEdges: 0
   roundedCaps: 1
   fadeLineBrightnessOnEnable: 0
@@ -450,25 +450,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 4331762910483171970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac851a4ed4aa04f44983289d156a5193, type: 3}
+  m_Script: {fileID: 11500000, guid: 767ae08ef60bae14799bc93480b3cf92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tickmarks: {fileID: 4331762911375304892}
-  TetherLine: {fileID: 4331762910561158554}
-  ProgressLine: {fileID: 4331762910067178535}
-  TickmarksDataProvider: {fileID: 4331762911375304893}
-  ProgressLineDataProvider: {fileID: 4331762910067178536}
-  ProgressBackgroundLineDataProvider: {fileID: 4331762912066944040}
-  marker: {fileID: 4331762910142311250}
-  markerPivot: {fileID: 4331762911180747188}
-  valueDisplay: {fileID: 4331762911009485538}
+  Tickmarks: {fileID: 0}
+  TetherLine: {fileID: 0}
+  ProgressLine: {fileID: 0}
+  TickmarksDataProvider: {fileID: 0}
+  ProgressLineDataProvider: {fileID: 0}
+  ProgressBackgroundLineDataProvider: {fileID: 0}
+  marker: {fileID: 0}
+  markerPivot: {fileID: 0}
+  valueDisplay: {fileID: 0}
   startDegrees: 0
-  endDegrees: 62
-  manipulationScale: 0.223
-  markerRadiusOffset: 0.0145
-  progressLineRadiusOffset: -0.0107
-  textLabelRadiusOffset: 0.0148
-  deployed: 1
+  endDegrees: 0
+  manipulationScale: 0
+  markerRadiusOffset: 0
+  progressLineRadiusOffset: 0
+  textLabelRadiusOffset: 0
+  deployed: 0
 --- !u!1 &4331762910561158556
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762910561158556}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b50a81c1a64f4ab6a511959e70fe72aa, type: 3}
   m_Name: 
@@ -1283,12 +1283,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762911375304894}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ca0566c128f4864bb320d65ec91fb2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3531ae116b16eec4789b14273eda934c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineDataSource: {fileID: 4331762911375304893}
+  lineDataSource: {fileID: 0}
   lineColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1323,7 +1323,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5807465
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1332,7 +1332,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.5807465
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1346,18 +1346,18 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 122
-  pointDistributionMode: 3
-  customPointDistributionLength: 0.04
+  lineStepCount: 16
+  pointDistributionMode: 1
+  customPointDistributionLength: 0.1
   customPointDistributionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
+      inSlope: 0
       outSlope: 1
-      tangentMode: 34
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -1365,20 +1365,20 @@ MonoBehaviour:
       time: 1
       value: 1
       inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  majorLineMesh: {fileID: 4300000, guid: f6091c1224d2a43449cb3686ee773c5b, type: 3}
-  minorLineMesh: {fileID: 4300000, guid: f565d394eb0f96b4fa73f0002b20d028, type: 3}
-  lineMaterial: {fileID: 2100000, guid: f293a5f6cb85c5248b87fbf7b4a03da6, type: 2}
+  majorLineMesh: {fileID: 0}
+  minorLineMesh: {fileID: 0}
+  lineMaterial: {fileID: 0}
   colorProperty: _Color
-  majorLineStepSkip: 10
-  minorLineStepSkip: 2
+  majorLineStepSkip: 0
+  minorLineStepSkip: 0
   useVertexColors: 1
 --- !u!1 &4331762912066944044
 GameObject:
@@ -1476,7 +1476,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762912066944044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1648,7 +1648,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762912066944044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
@@ -1738,7 +1738,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  lineMaterial: {fileID: 2100000, guid: b709e69ee746df04a9e6149f32bf60d2, type: 2}
+  lineMaterial: {fileID: 0}
   roundedEdges: 1
   roundedCaps: 1
   fadeLineBrightnessOnEnable: 1
