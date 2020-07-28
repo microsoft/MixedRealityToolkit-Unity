@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         }
 
         [SerializeField]
-        [Tooltip("Line renderer controlling the tether line, connecting the widget to the center of the object.")]
+        [Tooltip("Line renderer controlling the tether line, connecting the affordance to the center of the object.")]
         private SimpleLineDataProvider tetherLine;
 
         /// <summary>
-        /// Line renderer controlling the tether line, connecting the widget to the center of the object.
+        /// Line renderer controlling the tether line, connecting the affordance to the center of the object.
         /// </summary>
         public SimpleLineDataProvider TetherLine
         {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private BaseMixedRealityLineRenderer progressLine;
 
         /// <summary>
-        /// Line renderer controlling the tether line, connecting the widget to the center of the object.
+        /// Line renderer controlling the tether line, connecting the affordance to the center of the object.
         /// </summary>
         public BaseMixedRealityLineRenderer ProgressLine
         {
@@ -134,11 +134,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         [Header("Visual Configuration")]
         [SerializeField]
         [Range(-180.0f, 180.0f)]
-        [Tooltip("Beginning of the total range of the rotation widget, in degrees.")]
+        [Tooltip("Beginning of the total range of the rotation affordance, in degrees.")]
         private float startDegrees;
 
         /// <summary>
-        /// Beginning of the total range of the rotation widget, in degrees.
+        /// Beginning of the total range of the rotation affordance, in degrees.
         /// </summary>
         public float StartDegrees
         {
@@ -148,11 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         [SerializeField]
         [Range(-180.0f, 180.0f)]
-        [Tooltip("End of the total range of the rotation widget, in degrees.")]
+        [Tooltip("End of the total range of the rotation affordance, in degrees.")]
         private float endDegrees;
 
         /// <summary>
-        /// End of the total range of the rotation widget, in degrees.
+        /// End of the total range of the rotation affordance, in degrees.
         /// </summary>
         public float EndDegrees
         {
@@ -162,11 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         [SerializeField]
         [Range(-0.1f, 0.1f)]
-        [Tooltip("The radial offset of the marker from the edge of the rotation widget.")]
+        [Tooltip("The radial offset of the marker from the edge of the rotation affordance.")]
         private float markerRadiusOffset;
 
         /// <summary>
-        /// The radial offset of the marker from the edge of the rotation widget.
+        /// The radial offset of the marker from the edge of the rotation affordance.
         /// </summary>
         public float MarkerRadiusOffset
         {
@@ -176,11 +176,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         [SerializeField]
         [Range(-0.1f, 0.1f)]
-        [Tooltip("The radial offset of the progress line from the edge of the rotation widget.")]
+        [Tooltip("The radial offset of the progress line from the edge of the rotation affordance.")]
         private float progressLineRadiusOffset;
 
         /// <summary>
-        /// The radial offset of the progress line from the edge of the rotation widget.
+        /// The radial offset of the progress line from the edge of the rotation affordance.
         /// </summary>
         public float ProgressLineRadiusOffset
         {
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         [SerializeField]
         [Range(0.0f, 0.1f)]
-        [Tooltip("The radial offset of the text label from the edge of the rotation widget.")]
+        [Tooltip("The radial offset of the text label from the edge of the rotation affordance.")]
         private float textLabelRadiusOffset;
 
         public float TextLabelRadiusOffset
@@ -203,11 +203,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         #region Public Properties
 
-        // The current manipulation scale of the widget; typically, the distance
+        // The current manipulation scale of the affordance; typically, the distance
         // of the manipulation point from the root/center of the manipulated object
         public float ManipulationScale = 0.2f;
 
-        // Whether this widget is currently "deployed", i.e. inflated and active.
+        // Whether this affordance is currently "deployed", i.e. inflated and active.
         public bool deployed = false;
 
         #endregion
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         // Transform of the object that is being manipulated.
         private Transform targetObject;
 
-        // The handle of the BoundsControl that spawned this widget.
+        // The handle of the BoundsControl that spawned this affordance.
         private Transform targetHandle;
 
         private Quaternion rotationOffset;
@@ -249,47 +249,74 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         #endregion
 
-        public void SetAssociatedPointer(IMixedRealityPointer pointer)
+        internal void SetAssociatedPointer(IMixedRealityPointer pointer)
         {
+            // Store the associated pointer. Stored in a PointerData struct
+            // so that we can get the precise GrabPoint in the future.
             associatedPointer = new PointerData(pointer, targetHandle.position);
+
+            // Initializes ManipulationScale to the calculated value.
+            ManipulationScale = (associatedPointer.Value.GrabPoint - transform.position).magnitude;
         }
 
-        public void SetTrackingTarget(Transform targetHandle, Transform targetObject, Quaternion rotationOffset){
+        internal void SetTrackingTarget(Transform targetHandle, Transform targetObject, Quaternion rotationOffset){
             this.targetObject = targetObject;
             this.targetHandle = targetHandle;
             this.rotationOffset = rotationOffset;
+
+            // Store the original handle-to-object vector.
+            // This is the basis on which the rotation amount
+            // is calculated.
             originalVector = targetHandle.position - transform.position;
+
+            // The affordance starts out with no "progress".
             startDegrees = endDegrees = 0;
+
+            // Deploy the affordance.
             deployed = true;
+
+            // Display text fades in.
+            valueDisplay.alpha = 0.0f;
+
+            // Initialize the tickmarks start/end clamp values.
             TickmarksDataProvider.LineStartClamp = (-startDegrees / 360.0f) + 0.5f;
             TickmarksDataProvider.LineEndClamp = (-endDegrees / 360.0f) + 0.5f;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if(targetObject != null && targetHandle != null){
+
+                // If we have an assigned target object and handle, we calculate
+                // the endpoint of the affordance lines (endDegrees)
                 endDegrees = Vector3.SignedAngle(originalVector, targetHandle.position - transform.position, transform.up);
+
+                // The affordance is always rigidly attached to the target object's position.
                 transform.position = targetObject.position;
                 
-                if(associatedPointer != null)
+                // If we have an assigned pointer, and the affordance is actively deployed,
+                // we calculate the manipulation scale of the affordance based on the grab point.
+                if(associatedPointer != null && deployed)
                 {
                     ManipulationScale = Smoothing.SmoothTo(ManipulationScale, (associatedPointer.Value.GrabPoint - transform.position).magnitude, 0.001f, Time.deltaTime);
                 }
             }
+            
+            // Controls the value display fade.
+            valueDisplay.alpha = Mathf.Lerp(valueDisplay.alpha, deployed ? 1.0f : 0.0f, Time.deltaTime / 0.1f);
 
-            var startNormalized = (-startDegrees / 360.0f) + 0.5f;
-            var endNormalized = (-endDegrees / 360.0f) + 0.5f;
+            float startNormalized = (-startDegrees / 360.0f) + 0.5f;
+            float endNormalized = (-endDegrees / 360.0f) + 0.5f;
 
-            TickmarksDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, 0.2f);
-            TickmarksDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, 0.2f);
+            TickmarksDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, Time.deltaTime / 0.1f);
+            TickmarksDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, Time.deltaTime / 0.1f);
 
             TickmarksDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale);
             ProgressLineDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale) + Vector2.one * progressLineRadiusOffset;
             ProgressBackgroundLineDataProvider.Radius = new Vector2(ManipulationScale, ManipulationScale) + Vector2.one * progressLineRadiusOffset;
 
-            ProgressBackgroundLineDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, 0.2f);
-            ProgressBackgroundLineDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, 0.2f);
+            ProgressBackgroundLineDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, Time.deltaTime / 0.1f);
+            ProgressBackgroundLineDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, Time.deltaTime / 0.1f);
 
             ProgressLineDataProvider.LineStartClamp = startNormalized;
             ProgressLineDataProvider.LineEndClamp = endNormalized;
@@ -310,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             TetherLine.EndPoint = new MixedRealityPose(Quaternion.Euler(0, endDegrees, 0) * (Vector3.forward * (ManipulationScale + progressLineRadiusOffset)));
         }
 
-        public void DestroySelf()
+        internal void DestroySelf()
         {
             if(gameObject != null)
                 Destroy(gameObject, 0.5f);

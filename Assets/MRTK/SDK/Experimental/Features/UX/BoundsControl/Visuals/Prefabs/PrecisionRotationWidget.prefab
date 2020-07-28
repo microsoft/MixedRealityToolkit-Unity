@@ -463,8 +463,8 @@ MonoBehaviour:
   valueDisplay: {fileID: 4331762911009485538}
   startDegrees: 0
   endDegrees: 62
-  markerRadiusOffset: 0.0145
-  progressLineRadiusOffset: -0.0107
+  markerRadiusOffset: 0.019
+  progressLineRadiusOffset: -0.0151
   textLabelRadiusOffset: 0.0148
   ManipulationScale: 0.2
   deployed: 1
