@@ -10,8 +10,6 @@
 .PARAMETER PackageVersion
     What version of the artifacts should we build? If unspecified, the highest
     git tag pointing to HEAD is searched. If none is found, an error is reported.
-.PARAMETER OutputTarget
-    What is the target for the artifacts? To the Official server ("official"), test server ("test") or local folder ("local")?
 .PARAMETER ProjectRoot
     The root folder of the project.
 #>
@@ -21,7 +19,6 @@ param(
     [string]$OutputDirectory = ".\artifacts\upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
     [string]$PackageVersion,
-    [string]$OutputTarget = "local",
     [string]$ProjectRoot
 )
 
@@ -29,12 +26,10 @@ if (-not $PackageVersion) {
         throw "Unknown package version. Please specify -PackageVersion when building."
 }
 
-if ($OutputTarget -eq "local") {
-    if (-not (Test-Path $OutputDirectory -PathType Container)) {
-        New-Item $OutputDirectory -ItemType Directory | Out-Null
-    }
-    $OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
+if (-not (Test-Path $OutputDirectory -PathType Container)) {
+    New-Item $OutputDirectory -ItemType Directory | Out-Null
 }
+$OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
 
 if (-not $ProjectRoot) {
     # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
@@ -78,8 +73,6 @@ $packages = [ordered]@{
     "examples" = "Assets\MRTK\Examples";
 }
 
-$npmPath = "npm"
-
 # Ensure we can call npm.cmd to package and publish
 [boolean]$nodejsInstalled = $false
 try {
@@ -105,48 +98,20 @@ if ($nodejsInstalled -eq $false)
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 1) Copy the appropriate publishing (.npmrc) file and set the npm command
-# 2) Replace the %version% token in the package.json file with the value of PackageVersion
-# 3) Overwrite the package.json file
-# 4) Create and publish the packages (local publishing copies the package to the OutputFolder)
-# 5) Cleanup files created and/or modified
+# 1) Replace the %version% token in the package.json file with the value of PackageVersion
+# 2) Overwrite the package.json file
+# 3) Create and the packages and copy to the OutputFolder
+# 4) Cleanup files created and/or modified
 
-$npmrcFile = ".npmrc"
-$npmrcFileFullPath = "$scriptPath\$npmrcFile.$OutputTarget"
 $cmdFullPath = "$env:systemroot\system32\cmd.exe"
-$npmCommand = "pack"
-$updateAuth = $true
-$isLocalBuild = ($OutputTarget -eq "local")
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = "$ProjectRoot\$packageFolder"
-    $npmrcBackup = "$npmrcFile.mrtk-bak"
   
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
-
-    # Backup any existing .npmrc file
-    if (Test-Path -Path $npmrcFile ) {
-        Rename-Item -Path $npmrcFile  -NewName $npmrcBackup
-    }
-
-    if (-not ($isLocalBuild)) {
-        # Copy the appropriate .nmprc file
-        Copy-Item -Path $npmrcFileFullPath -Destination ".\$npmrcFile" -Force
-
-        # Set the npm command to "publish"
-        $npmCommand = "publish"
-    }
-
-    # Get/update the credentials needed to access the server.
-    # This only needs to happen when credentials are updated. We run this script
-    # once per build to ensure the machine is ready to publish.
-    if (($updateAuth -eq $true) -and (Test-Path -Path $npmrcFile )) {
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "vsts-npm-auth.ps1 -config $npmrcFile" -NoNewWindow -Wait
-        $updateAuth = $false
-    }
 
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath\package.json"
@@ -157,13 +122,6 @@ foreach ($entry in $packages.GetEnumerator()) {
     # Create and publish the package
     $packageName = $entry.Name
     $registryName = $OutputPath
-
-    if ($isLocalBuild) {
-        $registryName = $OutputDirectory
-    }
-    else {
-        $registryName = "the $OutputTarget registry"
-    }
 
     $samplesFolder = "$packagePath\Samples~"
      
@@ -190,14 +148,12 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
 
     Write-Output "======================="
-    Write-Output "Creating $scope.$product.$packageName and publishing to $registryName"
+    Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmPath $npmCommand" -NoNewWindow -Wait
+    npm pack
 
-    if ($isLocalBuild) {
-        # Move package file to OutputFolder
-        Move-Item -Path ".\*.tgz" $OutputDirectory -Force
-    }
+    # Move package file to OutputFolder
+    Move-Item -Path ".\*.tgz" $OutputDirectory -Force
 
     # ======================
     # Cleanup the changes we have made
@@ -211,14 +167,6 @@ foreach ($entry in $packages.GetEnumerator()) {
     
     # Restore the package.json file
     Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
-
-    # Delete the .npmrc file
-    Remove-Item -ErrorAction SilentlyContinue $npmrcFile
-
-    # Restore any backup file that we may have made
-    if (Test-Path -Path "$npmrcBackup") {
-         Rename-Item -Path "$npmrcBackup" -NewName $npmrcFile 
-    }
 }
 
 # Return the the scripts\packaging folder
