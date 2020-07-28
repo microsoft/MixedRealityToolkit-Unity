@@ -153,6 +153,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Tooltip("Minimum distance between points distributed along curve. Used when PointDistributionMode is set to DistanceSingleValue. Total points capped by LineStepCount.")]
         private float customPointDistributionLength = 0.1f;
 
+        /// <summary>
+        /// Minimum distance between points distributed along curve. Used when PointDistributionMode is set to DistanceSingleValue. Total points capped by LineStepCount.
+        /// </summary>
+        public float CustomPointDistributionLength
+        {
+            get => customPointDistributionLength;
+            set => customPointDistributionLength = value;
+        }
+
         [SerializeField]
         [Tooltip("Custom function for distributing points along curve.Used when DistanceCurveValue is set to Distance. Total points set by LineStepCount.")]
         private AnimationCurve customPointDistributionCurve = AnimationCurve.Linear(0, 0, 1, 1);

@@ -211,6 +211,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return Vector3.zero;
         }
 
+        /// <summary>
+        /// Util function for retrieving a position for the given face index of a box.
+        /// This method makes sure all visual components are having the same definition of face centers.
+        /// </summary>
+        /// <param name="faceIndex">Index of the face the position is queried for.</param>
+        /// <param name="cornerPoints">Corner points array of the box.</param>
+        /// <returns>Center position of face.</returns>
+        static internal Vector3 GetFaceCenterPosition(int faceIndex, ref Vector3[] cornerPoints)
+        {
+            Debug.Assert(cornerPoints != null && cornerPoints.Length == 8, "Invalid corner points array passed");
+            if (cornerPoints != null && cornerPoints.Length == 8)
+            {
+                switch (faceIndex)
+                {
+                    case 0:
+                        return (cornerPoints[0] + cornerPoints[2] + cornerPoints[4] + cornerPoints[6]) * 0.25f;
+                    case 1:
+                        return (cornerPoints[1] + cornerPoints[3] + cornerPoints[5] + cornerPoints[7]) * 0.25f;
+                    case 2:
+                        return (cornerPoints[0] + cornerPoints[1] + cornerPoints[2] + cornerPoints[3]) * 0.25f;
+                    case 3:
+                        return (cornerPoints[4] + cornerPoints[5] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
+                    case 4:
+                        return (cornerPoints[0] + cornerPoints[1] + cornerPoints[4] + cornerPoints[5]) * 0.25f;
+                    case 5:
+                        return (cornerPoints[2] + cornerPoints[3] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
+                }
+            }
+            return Vector3.zero;
+        }
+
         static readonly int[] flattenedIndicesX = new int[] { 0, 4, 2, 6 };
         static readonly int[] flattenedIndicesY = new int[] { 1, 3, 5, 7 };
         static readonly int[] flattenedIndicesZ = new int[] { 9, 10, 8, 11 };
