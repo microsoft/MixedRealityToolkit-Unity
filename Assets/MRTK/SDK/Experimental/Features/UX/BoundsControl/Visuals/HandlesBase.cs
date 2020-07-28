@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         internal protected List<Transform> handles = new List<Transform>();
-        private Transform highlightedHandle = null;
+        protected Transform highlightedHandle = null;
 
         ProximityObjectsChangedEvent IProximityEffectObjectProvider.ProximityObjectsChanged => objectsChangedEvent;
         protected ProximityObjectsChangedEvent objectsChangedEvent = new ProximityObjectsChangedEvent();

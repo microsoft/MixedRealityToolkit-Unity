@@ -478,6 +478,98 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => translateStopped = value;
         }
 
+        [Header("Elastic")]
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.")]
+        private ElasticConfiguration translationElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.
+        /// </summary>
+        public ElasticConfiguration TranslationElasticConfigurationObject
+        {
+            get => translationElasticConfigurationObject;
+            set => translationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.")]
+        private ElasticConfiguration rotationElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.
+        /// </summary>
+        public ElasticConfiguration RotationElasticConfigurationObject
+        {
+            get => rotationElasticConfigurationObject;
+            set => rotationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.")]
+        private ElasticConfiguration scaleElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.
+        /// </summary>
+        public ElasticConfiguration ScaleElasticConfigurationObject
+        {
+            get => scaleElasticConfigurationObject;
+            set => scaleElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the translation elastic.")]
+        private VolumeElasticExtent translationElasticExtent;
+
+        /// <summary>
+        /// Extent of the translation elastic.
+        /// </summary>
+        public VolumeElasticExtent TranslationElasticExtent
+        {
+            get => translationElasticExtent;
+            set => translationElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the rotation elastic.")]
+        private QuaternionElasticExtent rotationElasticExtent;
+
+        /// <summary>
+        /// Extent of the rotation elastic.
+        /// </summary>
+        public QuaternionElasticExtent RotationElasticExtent
+        {
+            get => rotationElasticExtent;
+            set => rotationElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the scale elastic.")]
+        private VolumeElasticExtent scaleElasticExtent;
+
+        /// <summary>
+        /// Extent of the scale elastic.
+        /// </summary>
+        public VolumeElasticExtent ScaleElasticExtent
+        {
+            get => scaleElasticExtent;
+            set => scaleElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Indication of which manipulation types use elastic feedback.")]
+        private TransformFlags elasticTypes = 0; // Default to none enabled.
+
+        /// <summary>
+        /// Indication of which manipulation types use elastic feedback.
+        /// </summary>
+        public TransformFlags ElasticTypes
+        {
+            get => elasticTypes;
+            set => elasticTypes = value;
+        }
+
         #endregion Serialized Fields
 
         #region Private Fields
@@ -489,6 +581,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private TranslationHandles translationHandles;
         private BoxDisplay boxDisplay;
         private ProximityEffect proximityEffect;
+        
+        // Elastic sims
+        private IElasticSystem<Vector3> translationElastic;
+        private IElasticSystem<Quaternion> rotationElastic;
+        private IElasticSystem<Vector3> scaleElastic;
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         public bool WireframeOnly { get => wireframeOnly; }
@@ -571,38 +668,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
-
-        // Properties for the quaternion elastic system.
-        public ElasticExtentProperties<Quaternion> extentProperties = new ElasticExtentProperties<Quaternion>
-        {
-            MinStretch = 0, // Not used in a Quaternion elastic system.
-            MaxStretch = 0,
-            SnapToEnds = false,
-            SnapPoints = new Quaternion[] { } // Will be set to the specified snap interval at runtime
-        };
-
-        // Properties for the 3D elastic system.
-        public ElasticExtentProperties<Vector3> volumeExtentProperties = new ElasticExtentProperties<Vector3>
-        {
-            MinStretch = 0, // Not used in a Quaternion elastic system.
-            MaxStretch = 0,
-            SnapToEnds = false,
-            SnapPoints = new Vector3[] { new Vector3(0.2f, 0.2f, 0.2f) } // Will be set to the specified snap interval at runtime
-        };
-
-        // Tested and verified "good" values.
-        public ElasticProperties elasticProperties = new ElasticProperties
-        {
-            Mass = 0.005f,
-            HandK = 4.0f,
-            EndK = 0.0f, // Unused
-            SnapK = 7.0f,
-            SnapRadius = 10.0f, // In degrees; will be set at runtime
-            Drag = 0.08f
-        };
-
-        private IntervalQuaternionElasticSystem rotationElastic = null;
-        private Interval3DElasticSystem translationElastic = null;
 
         #endregion
 
@@ -1213,7 +1278,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-
         private void InitializeRigRoot()
         {
             var rigRootObj = new GameObject(rigRootName);
@@ -1421,13 +1485,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     {
                         currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
 
-                        // Set the snap point to the desired interval, as well as update the desired snap radius.
-                        extentProperties.SnapPoints = new Quaternion[] { Quaternion.Euler(elasticInterval, elasticInterval, elasticInterval) };
-                        elasticProperties.SnapRadius = elasticRadius;
-
                         // Initialize our quaternion oscillator system
                         translationElastic = null;
-                        rotationElastic = new IntervalQuaternionElasticSystem(Quaternion.identity, Quaternion.identity, Vector3.up, extentProperties, elasticProperties);
+                        rotationElastic = new QuaternionElasticSystem(
+                            Quaternion.identity,
+                            Quaternion.identity,
+                            rotationElasticExtent,
+                            rotationElasticConfigurationObject.ElasticProperties
+                        );
 
                         RotateStarted?.Invoke();
 
@@ -1442,8 +1507,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                         // Immediately stop the rotational elastic system.
                         rotationElastic = null;
-                        elasticProperties.SnapRadius = volumeExtentProperties.SnapPoints[0].x / 2.0f;
-                        translationElastic = new Interval3DElasticSystem(Target.transform.localPosition, Vector3.zero, volumeExtentProperties, elasticProperties);
+                        translationElastic = new VolumeElasticSystem(
+                            Target.transform.localPosition,
+                            Vector3.zero,
+                            translationElasticExtent,
+                            translationElasticConfigurationObject.ElasticProperties
+                        );
 
                         TranslateStarted?.Invoke();
 
