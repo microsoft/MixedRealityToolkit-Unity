@@ -6,11 +6,6 @@ using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    private enum LoadOptions
-    {
-        LoadOnDeviceAndInEditor,
-        LoadOnlyOnDevice,
-    }
 
     /// <summary>
     /// When the button is selected, it triggers starting the specified scene.
@@ -18,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     [AddComponentMenu("Scripts/MRTK/Examples/OnLoadStartScene")]
     public class OnLoadStartScene : MonoBehaviour
     {
+        private enum LoadOptions
+        {
+            LoadOnDeviceAndInEditor,
+            LoadOnlyOnDevice,
+        }
         [SerializeField]
         [Tooltip("Name of the scene to be loaded when the button is selected.")]
         private string SceneToBeLoaded = "";
@@ -40,9 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void LoadOnDevice()
         {
-#if WINDOWS_UWP
-            LoadNewScene();
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            if (!Application.isEditor)
+            {
+                LoadNewScene();
+            }
         }
 
         private void LoadNewScene()
