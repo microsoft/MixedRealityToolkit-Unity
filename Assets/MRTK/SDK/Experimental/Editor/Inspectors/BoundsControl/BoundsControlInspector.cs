@@ -11,6 +11,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using System;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
+        private SerializedProperty enabledHandles;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -70,13 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool rotationElasticFoldout = false;
         private static bool scaleElasticFoldout = false;
 
-        private static HandleType rotationType = HandleType.Basic;
-        private static HandleType translationType = HandleType.Basic;
+        private static HandlePrecisionLevel rotationType = HandlePrecisionLevel.Basic;
+        private static HandlePrecisionLevel translationType = HandlePrecisionLevel.Basic;
 
         // Used to manage user input for basic/precision
         // ScriptableObject management.
         // Hardcoded values for GUILayout.Toolbar.
-        private enum HandleType
+        private enum HandlePrecisionLevel
         {
             Basic = 0, Precision = 1
         }
@@ -91,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
+            enabledHandles = serializedObject.FindProperty("enabledHandles");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
@@ -143,6 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
+                    enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles: ", (HandleFlags)enabledHandles.intValue);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);
@@ -161,22 +165,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
                                                                                                                             "Scale Handles Configuration", 
                                                                                                                             showScaleHandlesConfiguration);
-                        EditorGUILayout.Separator();
-                        showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
-                            "Basic Rotation",
-                            "Precision Rotation",
-                            rotationHandlesConfiguration,
-                            ref rotationType,
-                            showRotationHandlesConfiguration);
+                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Rotation))
+                        {
+                            EditorGUILayout.Separator();
+                            showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
+                                "Basic Rotation",
+                                "Precision Rotation",
+                                rotationHandlesConfiguration,
+                                ref rotationType,
+                                showRotationHandlesConfiguration);
+                        }
 
-                        EditorGUILayout.Separator();
-                        showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
-                            "Basic Translation",
-                            "Precision Translation",
-                            translationHandlesConfiguration,
-                            ref translationType,
-                            showTranslationHandlesConfiguration);
-                        EditorGUILayout.Separator();
+                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Translation))
+                        {
+                            EditorGUILayout.Separator();
+                            showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
+                                "Basic Translation",
+                                "Precision Translation",
+                                translationHandlesConfiguration,
+                                ref translationType,
+                                showTranslationHandlesConfiguration);
+                            EditorGUILayout.Separator();
+                        }
 
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
@@ -265,15 +275,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             string basicString,
             string precisionString,
             SerializedProperty property,
-            ref HandleType toolbarSelection,
+            ref HandlePrecisionLevel toolbarSelection,
             bool showFoldout) where BasicType : HandlesBaseConfiguration
                               where PrecisionType : HandlesBaseConfiguration
         {
             // Allow the user to pick whether the ScriptableObject slot will specify a basic or precision affordance/handle config.
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Handle type: ");
-            toolbarSelection = (HandleType)GUILayout.Toolbar((int)toolbarSelection, new string[] { basicString, precisionString });
+            toolbarSelection = (HandlePrecisionLevel)GUILayout.Toolbar((int)toolbarSelection, new string[] { basicString, precisionString });
             EditorGUILayout.EndHorizontal();
+
             // Verify that the config has an assigned handle prefab, and warn the user if not.
             // HandleConfigurations will misbehave if no prefab is assigned.
             if (property.objectReferenceValue != null && (property.objectReferenceValue as HandlesBaseConfiguration).HandlePrefab == null)
@@ -281,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 EditorGUILayout.HelpBox("No handle prefab assigned! Assign a prefab, or consider using a shared configuration asset.", MessageType.Info);
             }
 
-            if (toolbarSelection == HandleType.Basic)
+            if (toolbarSelection == HandlePrecisionLevel.Basic)
             {
                 // If the user currently has a precision manipulation config assigned,
                 // but has selected the basic config option in the toolbar,
@@ -291,14 +302,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     property.objectReferenceValue = CreateInstance<BasicType>();
                 }
 
-                
-
                 return InspectorUIUtility.DrawScriptableFoldout<BasicType>(
                     property,
                     basicString + " Configuration",
                     showFoldout);
             }
-            else
+            else if (toolbarSelection == HandlePrecisionLevel.Precision)
             {
                 // If the user currently has a basic manipulation config assigned,
                 // but has selected the precision config option in the toolbar,
@@ -312,6 +321,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     property,
                     precisionString + " Configuration",
                     showFoldout);
+            }
+            else
+            {
+                return false;
             }
         }
 

@@ -40,6 +40,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     }
 
     /// <summary>
+    /// Flags which determine which handle type is enabled.
+    /// </summary>
+    [System.Flags]
+    public enum HandleFlags
+    {
+        Rotation = 1 << 0,
+        Scale = 1 << 1,
+        Translation = 1 << 2
+    }
+
+    /// <summary>
     /// This enum describes which primitive type the wireframe portion of the bounds control
     /// consists of. 
     /// </summary>

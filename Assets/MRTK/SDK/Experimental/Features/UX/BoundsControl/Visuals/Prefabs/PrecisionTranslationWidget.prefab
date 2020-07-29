@@ -396,7 +396,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 792803155895297565}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0516, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4269397415154542188}
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 792803156375784125}
   - component: {fileID: 792803156375784124}
   m_Layer: 0
-  m_Name: Line (2)
+  m_Name: ProgressLineBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,8 +510,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.1199, y: 0.1615, z: 0.507}
-  - {x: 0.12010001, y: 0.1615, z: 0.507}
+  - {x: -0.1199, y: 0.21310002, z: 0.507}
+  - {x: 0.12010001, y: 0.21310002, z: 0.507}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -785,13 +785,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 792803156412167364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8eed9d35e00d374a87d2e1f5e4b2715, type: 3}
+  m_Script: {fileID: 11500000, guid: cf55b381802f2a740bbb88068dc57506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TetherLine: {fileID: 0}
-  ProgressLine: {fileID: 0}
+  TetherLine: {fileID: 3122717269936539797}
+  ProgressLine: {fileID: 792803157078734216}
   ProgressLineDataProvider: {fileID: 792803157078734231}
-  ProgressBackgroundLineDataProvider: {fileID: 0}
+  ProgressBackgroundLineDataProvider: {fileID: 792803156375784124}
   CircleLineProvider: {fileID: 792803155561709916}
   TetherLineProvider: {fileID: 3122717269936539797}
   tolerance:
@@ -809,21 +809,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0.01
       value: 0
-      inSlope: -0.00769078
-      outSlope: -0.00769078
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.02
-      value: 1
-      inSlope: -0.0022582505
-      outSlope: -0.0022582505
+      inSlope: -0.022089384
+      outSlope: -0.022089384
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.08594264
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.02
+      value: 1
+      inSlope: -0.007278577
+      outSlope: -0.007278577
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.29332682
     - serializedVersion: 3
       time: 1
       value: 1
@@ -839,20 +839,21 @@ MonoBehaviour:
   rulerContainer: {fileID: 792803155895297566}
   TickmarksProvider: {fileID: 947514330872931873}
   Tickmarks: {fileID: 193170260696665674}
-  marker: {fileID: 0}
+  marker: {fileID: 792803155696207803}
   markerPivot: {fileID: 792803155911363837}
   TickmarkPivot: {fileID: 3624348411590268637}
   valueDisplay: {fileID: 792803157353235851}
   scaleDisplay: {fileID: 529568984}
   start: 0
   end: 0
+  logisticSlope: 0
   manipulationScale: 0
   markerOffset: 0.0176
   upperTicksOffset: 0.0156
   textLabelOffset: 0
   manipAmount: 0
   handleAmount: 0
-  distanceFromAxis: 0
+  distanceFromAxis: 0.0516
   deployed: 0
 --- !u!1 &792803157078734229
 GameObject:
@@ -867,7 +868,7 @@ GameObject:
   - component: {fileID: 792803157078734216}
   - component: {fileID: 792803157078734231}
   m_Layer: 0
-  m_Name: Line (1)
+  m_Name: ProgressLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -925,8 +926,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.00009998679, y: 0.1615, z: 0.507}
-  - {x: 0.00009998679, y: 0.1615, z: 0.507}
+  - {x: 0.00009998679, y: 0.21310002, z: 0.507}
+  - {x: 0.00009998679, y: 0.21310002, z: 0.507}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -1433,7 +1434,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1407898748835479825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ca0566c128f4864bb320d65ec91fb2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3531ae116b16eec4789b14273eda934c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lineDataSource: {fileID: 947514330872931873}
@@ -1457,7 +1458,7 @@ MonoBehaviour:
     ctime7: 0
     atime0: 0
     atime1: 65535
-    atime2: 65535
+    atime2: 0
     atime3: 0
     atime4: 0
     atime5: 0
@@ -1503,9 +1504,9 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
+      inSlope: 0
       outSlope: 1
-      tangentMode: 34
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -1513,8 +1514,8 @@ MonoBehaviour:
       time: 1
       value: 1
       inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -1964,7 +1965,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7656196039908250902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ca0566c128f4864bb320d65ec91fb2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3531ae116b16eec4789b14273eda934c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lineDataSource: {fileID: 3803672702537678424}
@@ -1972,7 +1973,7 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0.1451273, b: 1, a: 0}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1980,7 +1981,7 @@ MonoBehaviour:
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
-    ctime2: 65535
+    ctime2: 0
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -1988,7 +1989,7 @@ MonoBehaviour:
     ctime7: 0
     atime0: 0
     atime1: 65535
-    atime2: 65535
+    atime2: 0
     atime3: 0
     atime4: 0
     atime5: 0
@@ -2034,9 +2035,9 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
+      inSlope: 0
       outSlope: 1
-      tangentMode: 34
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -2044,8 +2045,8 @@ MonoBehaviour:
       time: 1
       value: 1
       inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -2207,7 +2208,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   uniformDistortionStrength: 1
   resolution: 32
-  radius: {x: 0, y: 0}
+  radius: {x: 0.0516, y: 0.0516}
 --- !u!120 &792803155561709915
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2246,38 +2247,38 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
-  - {x: 0.0001, y: 0.1613, z: 0.507}
+  - {x: 0.0001, y: 0.2129, z: 0.50703245}
+  - {x: 0.0001, y: 0.21183763, z: 0.5174167}
+  - {x: 0.0001, y: 0.2087071, z: 0.52737474}
+  - {x: 0.0001, y: 0.20363645, z: 0.5364989}
+  - {x: 0.0001, y: 0.19683325, z: 0.5444159}
+  - {x: 0.0001, y: 0.18857591, z: 0.5508017}
+  - {x: 0.0001, y: 0.17920232, z: 0.55539495}
+  - {x: 0.0001, y: 0.16909611, z: 0.5580077}
+  - {x: 0.0001, y: 0.15867084, z: 0.558533}
+  - {x: 0.0001, y: 0.14835317, z: 0.5569494}
+  - {x: 0.0001, y: 0.13856535, z: 0.55332166}
+  - {x: 0.0001, y: 0.12970789, z: 0.5477983}
+  - {x: 0.0001, y: 0.12214331, z: 0.5406053}
+  - {x: 0.0001, y: 0.11618118, z: 0.532037}
+  - {x: 0.0001, y: 0.11206548, z: 0.5224442}
+  - {x: 0.0001, y: 0.10996464, z: 0.51221925}
+  - {x: 0.0001, y: 0.10996464, z: 0.50178075}
+  - {x: 0.0001, y: 0.11206548, z: 0.4915559}
+  - {x: 0.0001, y: 0.11618117, z: 0.48196304}
+  - {x: 0.0001, y: 0.12214331, z: 0.47339475}
+  - {x: 0.0001, y: 0.12970789, z: 0.46620178}
+  - {x: 0.0001, y: 0.13856533, z: 0.4606784}
+  - {x: 0.0001, y: 0.14835317, z: 0.45705065}
+  - {x: 0.0001, y: 0.15867084, z: 0.45546705}
+  - {x: 0.0001, y: 0.16909611, z: 0.45599237}
+  - {x: 0.0001, y: 0.1792023, z: 0.4586051}
+  - {x: 0.0001, y: 0.1885759, z: 0.46319836}
+  - {x: 0.0001, y: 0.19683327, z: 0.46958417}
+  - {x: 0.0001, y: 0.20363645, z: 0.47750112}
+  - {x: 0.0001, y: 0.20870708, z: 0.4866253}
+  - {x: 0.0001, y: 0.21183763, z: 0.4965833}
+  - {x: 0.0001, y: 0.2129, z: 0.5069676}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
