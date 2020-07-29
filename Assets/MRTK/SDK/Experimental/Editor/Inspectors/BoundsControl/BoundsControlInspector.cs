@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Experimental.Physics;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -43,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty linksConfiguration;
         private SerializedProperty scaleHandlesConfiguration;
         private SerializedProperty rotationHandlesConfiguration;
+        private SerializedProperty translationHandlesConfiguration;
         private SerializedProperty proximityEffectConfiguration;
 
         // Debug
@@ -59,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool showBoxConfiguration = false;
         private static bool showScaleHandlesConfiguration = false;
         private static bool showRotationHandlesConfiguration = false;
+        private static bool showTranslationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
 
@@ -66,6 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool translationElasticFoldout = false;
         private static bool rotationElasticFoldout = false;
         private static bool scaleElasticFoldout = false;
+
+        private static HandleType rotationType = HandleType.Basic;
+        private static HandleType translationType = HandleType.Basic;
+
+        // Used to manage user input for basic/precision
+        // ScriptableObject management.
+        // Hardcoded values for GUILayout.Toolbar.
+        private enum HandleType
+        {
+            Basic = 0, Precision = 1
+        }
 
         private void OnEnable()
         {
@@ -86,6 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             linksConfiguration = serializedObject.FindProperty("linksConfiguration");
             scaleHandlesConfiguration = serializedObject.FindProperty("scaleHandlesConfiguration");
             rotationHandlesConfiguration = serializedObject.FindProperty("rotationHandlesConfiguration");
+            translationHandlesConfiguration = serializedObject.FindProperty("translationHandlesConfiguration");
             proximityEffectConfiguration = serializedObject.FindProperty("handleProximityEffectConfiguration");
 
             hideElementsInHierarchyEditor = serializedObject.FindProperty("hideElementsInInspector");
@@ -146,9 +161,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
                                                                                                                             "Scale Handles Configuration", 
                                                                                                                             showScaleHandlesConfiguration);
-                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, 
-                                                                                                                                  "Rotation Handles Configuration", 
-                                                                                                                                  showRotationHandlesConfiguration);
+                        EditorGUILayout.Separator();
+                        showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
+                            "Basic Rotation",
+                            "Precision Rotation",
+                            rotationHandlesConfiguration,
+                            ref rotationType,
+                            showRotationHandlesConfiguration);
+
+                        EditorGUILayout.Separator();
+                        showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
+                            "Basic Translation",
+                            "Precision Translation",
+                            translationHandlesConfiguration,
+                            ref translationType,
+                            showTranslationHandlesConfiguration);
+                        EditorGUILayout.Separator();
+
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
@@ -216,6 +245,73 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         serializedObject.ApplyModifiedProperties();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Draws a multi-type selection box that will draw one of two
+        /// ScriptableObjectFoldouts, depending on whether the user has selected
+        /// the basic or precision variant of the handle config.
+        /// </summary>
+        /// <typeparam name="BasicType">The HandlesBaseConfiguration representing the "basic" option.</typeparam>
+        /// <typeparam name="PrecisionType">The HandlesBaseConfiguration representing the "precision" option.</typeparam>
+        /// <param name="basicString">Description string for the basic option</param>
+        /// <param name="precisionString">Description string for the precision option</param>
+        /// <param name="property">SerializedProperty holding the configuration reference to be modified</param>
+        /// <param name="toolbarSelection">Result of the user's selection (Basic or Precision) from the toolbar</param>
+        /// <param name="showFoldout">Result of the ScriptableObject foldout itself.</param>
+        /// <returns>Result of the ScriptableObject foldout.</returns>
+        private bool DrawMultiTypeConfigSlot<BasicType,PrecisionType>(
+            string basicString,
+            string precisionString,
+            SerializedProperty property,
+            ref HandleType toolbarSelection,
+            bool showFoldout) where BasicType : HandlesBaseConfiguration
+                              where PrecisionType : HandlesBaseConfiguration
+        {
+            // Allow the user to pick whether the ScriptableObject slot will specify a basic or precision affordance/handle config.
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Handle type: ");
+            toolbarSelection = (HandleType)GUILayout.Toolbar((int)toolbarSelection, new string[] { basicString, precisionString });
+            EditorGUILayout.EndHorizontal();
+            // Verify that the config has an assigned handle prefab, and warn the user if not.
+            // HandleConfigurations will misbehave if no prefab is assigned.
+            if (property.objectReferenceValue != null && (property.objectReferenceValue as HandlesBaseConfiguration).HandlePrefab == null)
+            {
+                EditorGUILayout.HelpBox("No handle prefab assigned! Assign a prefab, or consider using a shared configuration asset.", MessageType.Info);
+            }
+
+            if (toolbarSelection == HandleType.Basic)
+            {
+                // If the user currently has a precision manipulation config assigned,
+                // but has selected the basic config option in the toolbar,
+                // we will generate a new "fresh" basic config object.
+                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() == typeof(PrecisionType))
+                {
+                    property.objectReferenceValue = CreateInstance<BasicType>();
+                }
+
+                
+
+                return InspectorUIUtility.DrawScriptableFoldout<BasicType>(
+                    property,
+                    basicString + " Configuration",
+                    showFoldout);
+            }
+            else
+            {
+                // If the user currently has a basic manipulation config assigned,
+                // but has selected the precision config option in the toolbar,
+                // we will generate a new "fresh" precision config object.
+                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() == typeof(BasicType))
+                {
+                    property.objectReferenceValue = CreateInstance<PrecisionType>();
+                }
+
+                return InspectorUIUtility.DrawScriptableFoldout<PrecisionType>(
+                    property,
+                    precisionString + " Configuration",
+                    showFoldout);
             }
         }
 
