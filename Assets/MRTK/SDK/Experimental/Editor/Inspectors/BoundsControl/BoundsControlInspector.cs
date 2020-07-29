@@ -167,8 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                                                                                                                             showScaleHandlesConfiguration);
                         if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Rotation))
                         {
-                            EditorGUILayout.Separator();
                             showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
+                                "Rotation Handles Configuration",
                                 "Basic Rotation",
                                 "Precision Rotation",
                                 rotationHandlesConfiguration,
@@ -178,15 +178,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
                         if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Translation))
                         {
-                            EditorGUILayout.Separator();
                             showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
+                                "Translation Handles Configuration",
                                 "Basic Translation",
                                 "Precision Translation",
                                 translationHandlesConfiguration,
                                 ref translationType,
                                 showTranslationHandlesConfiguration);
-                            EditorGUILayout.Separator();
-                        }
+                        }   
 
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
@@ -234,7 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                             currentFlags);
                     }
 
-
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     {
@@ -272,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         /// <param name="showFoldout">Result of the ScriptableObject foldout itself.</param>
         /// <returns>Result of the ScriptableObject foldout.</returns>
         private bool DrawMultiTypeConfigSlot<BasicType,PrecisionType>(
+            string foldoutString,
             string basicString,
             string precisionString,
             SerializedProperty property,
@@ -279,53 +278,58 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             bool showFoldout) where BasicType : HandlesBaseConfiguration
                               where PrecisionType : HandlesBaseConfiguration
         {
-            // Allow the user to pick whether the ScriptableObject slot will specify a basic or precision affordance/handle config.
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Handle type: ");
-            toolbarSelection = (HandlePrecisionLevel)GUILayout.Toolbar((int)toolbarSelection, new string[] { basicString, precisionString });
-            EditorGUILayout.EndHorizontal();
+            showFoldout = EditorGUILayout.Foldout(showFoldout, foldoutString, true, MixedRealityStylesUtility.BoldFoldoutStyle);
 
-            // Verify that the config has an assigned handle prefab, and warn the user if not.
-            // HandleConfigurations will misbehave if no prefab is assigned.
-            if (property.objectReferenceValue != null && (property.objectReferenceValue as HandlesBaseConfiguration).HandlePrefab == null)
+            if (showFoldout)
             {
-                EditorGUILayout.HelpBox("No handle prefab assigned! Assign a prefab, or consider using a shared configuration asset.", MessageType.Info);
-            }
+                // Allow the user to pick whether the ScriptableObject slot will specify a basic or precision affordance/handle config.
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PrefixLabel("Handle Type: ");
+                toolbarSelection = (HandlePrecisionLevel)GUILayout.Toolbar((int)toolbarSelection, new string[] { basicString, precisionString });
+                EditorGUILayout.EndHorizontal();
 
-            if (toolbarSelection == HandlePrecisionLevel.Basic)
-            {
-                // If the user currently has a precision manipulation config assigned,
-                // but has selected the basic config option in the toolbar,
-                // we will generate a new "fresh" basic config object.
-                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() == typeof(PrecisionType))
+                // Determine what type of ScriptableObject is desired, based on the toolbar input.
+                Type selectedType = toolbarSelection == HandlePrecisionLevel.Basic ? typeof(BasicType) : typeof(PrecisionType);
+
+                // If the user has dragged in a configuration asset whose type *does not* match the toolbar selection...
+                if (property.objectReferenceValue != null &&
+                    AssetDatabase.Contains(property.objectReferenceValue) &&
+                    property.objectReferenceValue.GetType() != selectedType)
                 {
-                    property.objectReferenceValue = CreateInstance<BasicType>();
+                    // Override the toolbar selection to whatever the type of the dragged-in config asset is.
+                    toolbarSelection = property.objectReferenceValue.GetType() == typeof(BasicType) ? HandlePrecisionLevel.Basic : HandlePrecisionLevel.Precision;
                 }
 
-                return InspectorUIUtility.DrawScriptableFoldout<BasicType>(
-                    property,
-                    basicString + " Configuration",
-                    showFoldout);
-            }
-            else if (toolbarSelection == HandlePrecisionLevel.Precision)
-            {
-                // If the user currently has a basic manipulation config assigned,
-                // but has selected the precision config option in the toolbar,
-                // we will generate a new "fresh" precision config object.
-                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() == typeof(BasicType))
+                // If the user currently has a non-asset-backed manipulation config assigned
+                // that does not match the type specified in the toolbar, we create a fresh config of whatever
+                // type is specified in the toolbar.
+                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() != selectedType)
                 {
-                    property.objectReferenceValue = CreateInstance<PrecisionType>();
+                    // This generic could be called with the runtime type (selectedType)
+                    // but would require reflection.
+                    if (toolbarSelection == HandlePrecisionLevel.Basic)
+                    {
+                        property.objectReferenceValue = CreateInstance<BasicType>();
+                    }
+                    if (toolbarSelection == HandlePrecisionLevel.Precision)
+                    {
+                        property.objectReferenceValue = CreateInstance<PrecisionType>();
+                    }
                 }
 
-                return InspectorUIUtility.DrawScriptableFoldout<PrecisionType>(
-                    property,
-                    precisionString + " Configuration",
-                    showFoldout);
+                if (toolbarSelection == HandlePrecisionLevel.Basic)
+                {
+                    InspectorUIUtility.DrawScriptable<BasicType>(
+                        property);
+                }
+                else if (toolbarSelection == HandlePrecisionLevel.Precision)
+                {
+                    InspectorUIUtility.DrawScriptable<PrecisionType>(
+                        property);
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return showFoldout;
         }
 
         private void DrawRigidBodyWarning()
