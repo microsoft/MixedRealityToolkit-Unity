@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
-    public enum LoadOptions
+    private enum LoadOptions
     {
         LoadOnDeviceAndInEditor,
         LoadOnlyOnDevice,
