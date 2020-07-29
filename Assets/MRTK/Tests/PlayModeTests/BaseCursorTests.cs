@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -30,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject cube;
 
         // Initializes MRTK, instantiates the test content prefab 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -53,13 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             Object.Destroy(cube);
             TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
         }
 
         private void VerifyCursorStateFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorStateEnum state)

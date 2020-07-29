@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
@@ -52,6 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 autoFollowAtDistance = value;
 
+                if (!enabled || !gameObject.activeInHierarchy)
+                {
+                    return;
+                }
+
                 if (autoFollowAtDistance)
                 {
                     if (autoFollowDistanceCheck == null)
@@ -65,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         StopCoroutine(autoFollowDistanceCheck);
                         autoFollowDistanceCheck = null;
+                        SetFollowMeBehavior(false);
                     }
                 }
             }
@@ -133,6 +139,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AutoFollowAtDistance = autoFollowAtDistance;
             }
+        }
+
+        private void OnEnable()
+        {
+            // Begin the follow coroutine when enabled.
+            AutoFollowAtDistance = autoFollowAtDistance;
         }
 
         #endregion MonoBehaviour Implementation

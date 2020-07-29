@@ -181,6 +181,29 @@ In the example below, the *MyNewService | MyNewProvider* should be filled with t
 public class MyNewProfile : ScriptableObject
 ```
 
+### Logging
+
+When adding new features or updating existing features, consider adding DebugUtilities.LogVerbose
+logs to interesting code that may be useful for future debugging. There's a tradeoff here between
+adding logging and the added noise and not enough logging (which makes diagnosis difficult).
+
+An interesting example where having logging is useful (along with interesting payload):
+
+```c#
+DebugUtilities.LogVerboseFormat("RaiseSourceDetected: Source ID: {0}, Source Type: {1}", source.SourceId, source.SourceType);
+```
+
+This type of logging can help catch issues like https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8016,
+which were caused by mismatched source detected and source lost events.
+
+Avoid adding logs for data and events that are occurring on every frame - ideally logging should
+cover "interesting" events driven by distinct user inputs (i.e. a "click" by a user and the set of
+changes and events that come from that are interesting to log). The ongoing state of "user is still
+holding a gesture" logged every frame is not interesting and will overwhelm the logs.
+
+Note that this verbose logging is not turned on by default (it must be enabled in the
+[Diagnostic System settings](../Diagnostics/ConfiguringDiagnostics.md#enable-verbose-logging))
+
 ### Spaces vs tabs
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.

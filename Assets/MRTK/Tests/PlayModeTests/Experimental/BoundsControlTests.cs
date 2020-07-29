@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     /// <summary>
     /// Tests for runtime behavior of bounds control
     /// </summary>
-    public class BoundsControlTests
+    public class PlayModeBoundsControlTests
     {
         private Material testMaterial;
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
 
@@ -45,12 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
+            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
@@ -222,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.Show(new Vector3(0, 0, 1));
             
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            
+
             // Check for a few loops that the hand is not flickering between states
             // number of iterations is an arbirary number to check that the box isn't flickering
             int iterations = 15;

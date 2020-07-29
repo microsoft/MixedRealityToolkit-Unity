@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Input;
@@ -32,17 +32,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return null;
         }
 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             defaultRaycastProvider = new DefaultRaycastProvider(null);
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
     }
 }

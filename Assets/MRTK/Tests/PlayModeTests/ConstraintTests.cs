@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -23,16 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ConstraintTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -562,8 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
+            manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -771,7 +772,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
             var rotConstraint = manipHandler.EnsureComponent<FaceUserConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
             rotConstraint.FaceAway = false;
 
             // Face user first
@@ -831,8 +831,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToWorldConstraint>();
-            rotConstraint.TargetTransform = manipHandler.HostTransform;
+            manipHandler.EnsureComponent<FixedRotationToWorldConstraint>();
 
             // Face user first
             const int numHandSteps = 1;

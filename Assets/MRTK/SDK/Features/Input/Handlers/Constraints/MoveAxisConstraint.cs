@@ -1,5 +1,5 @@
 // Copyright,orld (c.Right) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("Constrain movement along an axis")]
-        private AxisFlags constraintOnMovement = 0;
+        private AxisFlags constraintOnMovement = AxisFlags.None;
 
         /// <summary>
         /// Constrain movement along an axis

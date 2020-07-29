@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -216,6 +216,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected float DoubleClickTimeout = 0.5f;
 
+        // Used to mark whether Start() has been called.
+        private bool startCalled;
+
+        // Used to mark whether StartPlacement() is called before Start() is called.
+        private bool placementRequested;
+
         #region MonoBehaviour Implementation
         protected override void Start()
         {
@@ -230,7 +236,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
-            if (AutoStart)
+            startCalled = true;
+
+            if (AutoStart || placementRequested)
             {
                 StartPlacement();
             }
@@ -255,6 +263,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public void StartPlacement()
         {
+            // Check to see if Start() has been called, if not set placementRequested to true. This will make sure StartPlacement() will be
+            // called again when Start() is called.
+            if (!startCalled)
+            {
+                placementRequested = true;
+                return;
+            }
+
             // Added for code configurability to avoid multiple calls to StartPlacement in a row
             if (!IsBeingPlaced)
             {

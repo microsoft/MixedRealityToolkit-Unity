@@ -48,12 +48,5 @@
     <!-- Assemblies and Sources that are built from the Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
     <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" />
-    
-    <!-- 
-      link.xml is copied to the root location, so that it can catch IL2CPP
-      bytecode stripping issues for all scripts included in this package.
-    -->
-    <file src="link.xml" target="" />
-    <file src="link.xml.meta" target="" />
   </files>
 </package>

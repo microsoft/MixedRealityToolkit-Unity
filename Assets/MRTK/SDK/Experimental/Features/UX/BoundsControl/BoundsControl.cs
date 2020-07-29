@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
@@ -107,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Behavior")]
         [SerializeField]
         [Tooltip("Type of activation method for showing/hiding bounds control handles and controls")]
         private BoundsControlActivationType activation = BoundsControlActivationType.ActivateOnStart;
@@ -128,8 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
-
-        [Header("Visuals")]
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -233,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => handleProximityEffectConfiguration = value;
         }
 
-        [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
         private TextMesh debugText;
         /// <summary>
@@ -265,7 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = false;
@@ -307,7 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleLerpTime = value;
         }
 
-        [Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
@@ -542,6 +536,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         public void RegisterTransformScaleHandler(MinMaxScaleConstraint transformScaleHandler)
         {
             scaleConstraint = transformScaleHandler;
+            if (scaleConstraint)
+            {
+                scaleConstraint.Initialize(new MixedRealityTransform(transform));
+            }
         }
 
         #endregion
