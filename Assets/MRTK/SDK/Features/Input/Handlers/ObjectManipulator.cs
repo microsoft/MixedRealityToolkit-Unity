@@ -115,17 +115,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip(
-             "Whether physics forces are applied during near manipulations. " +
+             "Whether physics forces are used to move the object when performing near manipulations. " +
              "Off will make the object feel more directly connected to the hand. On will honor the mass and inertia of the object. " +
              "The default is off.")]
         private bool useForcesForNearManipulation = false;
 
         /// <summary>
-        /// Whether physics forces are applied during near manipulations.
+        /// Whether physics forces are used to move the object when performing near manipulations.
         /// </summary>
         /// <remarks>
-        /// Setting this to <c>false</c> will make the object feel more directly connected to the hand. Setting this to <c>true</c>
-        /// will honor the mass and inertia of the object. The default is <c>false</c>.
+        /// Setting this to <c>false</c> will make the object feel more directly connected to the
+        /// users hand. Setting this to <c>true</c> will honor the mass and inertia of the object,
+        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.
         /// </remarks>
         public bool UseForcesForNearManipulation
         {
@@ -173,14 +174,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => releaseBehavior = value;
         }
 
+        /// <summary>
+        /// Obsolete: Whether to enable frame-rate independent smoothing.
+        /// </summary>
+        [Obsolete("SmoothingActive is obsolete and will be removed in a future version. Applications should use SmoothingFar, SmoothingNear or a combination of the two.")]
+        public bool SmoothingActive
+        {
+            get => smoothingFar;
+            set => smoothingFar = value;
+        }
+
         [FormerlySerializedAs("smoothingActive")]
         [SerializeField]
-        [Tooltip("Frame-rate independent smoothing for far interactions.")]
+        [Tooltip("Frame-rate independent smoothing for far interactions. Far smoothing is enabled by default.")]
         private bool smoothingFar = true;
 
         /// <summary>
         /// Whether to enable frame-rate independent smoothing for far interactions.
         /// </summary>
+        /// <remarks>
+        /// Far smoothing is enabled by default.
+        /// </remarks>
         public bool SmoothingFar
         {
             get => smoothingFar;
@@ -188,12 +202,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Frame-rate independent smoothing for near interactions.")]
+        [Tooltip("Frame-rate independent smoothing for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.")]
         private bool smoothingNear = false;
 
         /// <summary>
         /// Whether to enable frame-rate independent smoothing for near interactions.
         /// </summary>
+        /// <remarks>
+        /// Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.
+        /// </remarks>
         public bool SmoothingNear
         {
             get => smoothingNear;
