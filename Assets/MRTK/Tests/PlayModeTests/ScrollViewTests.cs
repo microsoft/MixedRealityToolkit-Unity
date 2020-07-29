@@ -514,12 +514,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(scrollEngagedInsideTopBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideTopBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand outside bottom boundary should halt scroll drag engagement            
@@ -528,12 +528,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(scrollEngagedInsideBottomBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideBottomBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand outside left boundary should halt scroll drag engagement
@@ -543,12 +543,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
             yield return hand.MoveTo(scrollEngagedInsideLeftBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideLeftBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand outside right boundary should halt scroll drag engagement
@@ -558,12 +558,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
             yield return hand.MoveTo(scrollEngagedInsideRightBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideRightBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand outside front boundary should halt scroll drag engagement
@@ -573,12 +573,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
             yield return hand.MoveTo(scrollEngagedInsideFrontBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideFrontBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand outside back boundary should halt scroll drag engagement
@@ -588,12 +588,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
             yield return hand.MoveTo(scrollEngagedInsideBackBound);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is not engaged.");
 
             yield return hand.MoveTo(scrollEngagedOutsideBackBound);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             yield return hand.Hide();
@@ -637,13 +637,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(offTopPos);
             yield return hand.MoveTo(offBottomPos);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand from outside bottom boundary should not trigger drag engagement
             yield return hand.MoveTo(offTopPos);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand from outside right boundary should not trigger drag engagement
@@ -652,7 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(offTopPos);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand from outside left boundary should not trigger drag engagement
@@ -661,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(offTopPos);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand from outside back boundary should not trigger drag engagement
@@ -669,7 +669,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(offTopPos);
 
-            Assert.IsFalse(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
 
             // Moving hand from outside front boundary should trigger drag engagement
@@ -678,7 +678,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(offTopPos);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is engaged.");
 
             yield return hand.Hide();
@@ -758,7 +758,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(pastButtonPressPos);
             yield return hand.MoveTo(scrollEngagedPos);
 
-            Assert.IsTrue(scrollView.isDragging, "Scroll view is not being dragged.");
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
 
             yield return hand.Hide();
         }
@@ -862,6 +862,104 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
             Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+        }
+
+        /// <summary>
+        /// Tests if far interaction with GGV pointer can engage the scroll drag.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GGVScroll()
+        {
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            // Setting up a horizontal 1x1 scroll view with two pressable buttons items
+            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
+                                                                                2,
+                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                                1,
+                                                                                1,
+                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity);
+            float scale = 10f;
+            scrollView.transform.localScale *= scale;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = new Vector3(0.13f, -0.17f, 0.5f); // Far pointer focus is on button       
+            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight * scale + offset);
+
+            // Interaction with child button should behave normally if scroll drag not yet engaged
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.IsTrue(scrollView.IsDragging, "Scroll drag was not triggered.");
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.Hide();
+
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Articulated);
+        }
+
+        /// <summary>
+        /// Tests if it is possible to ensure that children click only happens on touch up by changing children configuration.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ContentClickHappensOnTouchUp()
+        {
+            // Setting up a horizontal 1x1 scroll view with two pressable buttons items
+            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
+                                                                                2,
+                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                                1,
+                                                                                1,
+                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity);
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
+            button1Component.ReleaseOnTouchEnd = false;
+
+            bool button1PressCompleted = false;
+            button1Component.ButtonReleased.AddListener(() =>
+            {
+                button1PressCompleted = true;
+            });
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 pastButtonReleasePos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance - button1Component.ReleaseDistanceDelta - offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+
+            // Button click is not completed without passing release plane or if scroll view is engaged in a drag
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+            yield return hand.MoveTo(pastButtonReleasePos);
+
+            Assert.IsTrue(scrollView.IsDragging, "Scroll drag begin was not triggered.");
+            Assert.IsFalse(button1PressCompleted, "Button1 press release was triggered.");
+
+            // Button click is only completed if passing release plane or if scroll view is not engaged in a drag
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(pastButtonReleasePos);
+
+            Assert.IsFalse(scrollView.IsDragging, "Scroll drag was triggered.");
+            Assert.IsTrue(button1PressCompleted, "Button1 press release was not triggered.");
+
+            yield return hand.Hide();
         }
 
         #endregion Tests
