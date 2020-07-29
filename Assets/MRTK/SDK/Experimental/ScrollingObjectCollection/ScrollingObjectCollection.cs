@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")] 
+        [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")]
         [Range(0.0f, 0.30f)]
         private float releaseThresholdFront = 0.03f;
         /// <summary>
@@ -301,9 +301,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 Debug.Assert(itemsPerTier > 0);
                 return itemsPerTier;
             }
-            set 
-            { 
-                itemsPerTier = value; 
+            set
+            {
+                itemsPerTier = value;
             }
         }
 
@@ -533,7 +533,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Tracks whether a movement action resulted in dragging the list  
         /// </summary>
-        public bool isDragging { get; private set; } = false;
+        public bool IsDragging { get; private set; } = false;
 
         // we need to know if the pointer was a touch so we can do the threshold test (dot product test)
         private bool isTouched = false;
@@ -992,14 +992,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 Vector3 handDelta = initialPointerPos - currentPointerPos;
                 handDelta = transform.InverseTransformDirection(handDelta);
 
-                if (isDragging && currentPointer != null) // Changing lock after drag started frame to allow for focus provider to move pointer focus to scroll background before locking
+                if (IsDragging && currentPointer != null) // Changing lock after drag started frame to allow for focus provider to move pointer focus to scroll background before locking
                 {
                     currentPointer.IsFocusLocked = true;
                 }
 
                 // Lets see if this is gonna be a click or a drag
                 // Check the scroller's length state to prevent resetting calculation
-                if (!isDragging && nodeLengthCheck)
+                if (!IsDragging && nodeLengthCheck)
                 {
                     // Grab the delta value we care about
                     float absAxisHandDelta = (scrollDirection == ScrollDirectionType.UpAndDown) ? Mathf.Abs(handDelta.y) : Mathf.Abs(handDelta.x);
@@ -1010,7 +1010,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         scrollVelocity = 0.0f;
                         avgVelocity = 0.0f;
 
-                        isDragging = true;
+                        IsDragging = true;
                         handDelta = Vector3.zero;
 
                         ListMomentumBegin.Invoke();
@@ -1025,7 +1025,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (isTouched && DetectScrollRelease(currentPointerPos))
                 {
                     // We're on the other side of the original touch position. This is a release.
-                    if (isDragging)
+                    if (IsDragging)
                     {
                         // Its a drag release
                         initialScrollerPos = workingScrollerPos;
@@ -1054,7 +1054,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     ResetInteraction();
 
                 }
-                else if (isDragging && canScroll)
+                else if (IsDragging && canScroll)
                 {
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
@@ -1148,8 +1148,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// Gets the cursor position (pointer end point) on the scrollable plane,
-        /// projected onto the direction being scrolled.
-        /// Returns false if the pointer is null or pointer details is null.
+        /// projected onto the direction being scrolled if far pointer.
+        /// Returns false if the pointer is null.
         /// </summary>
         private bool TryGetPointerPositionOnPlane(out Vector3 result)
         {
@@ -1164,15 +1164,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 result = currentPointer.Position;
                 return true;
             }
-            if (currentPointer.Result?.Details != null)
-            {
-                var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
-                var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
-                result = pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
-                return true;
-            }
 
-            return false;
+            var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
+
+            result = transform.position + Vector3.Project(currentPointer.Position - transform.position, scrollVector);
+            return true;
         }
 
         /// <summary>
@@ -1530,25 +1526,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Checks to see if the engaged joint has released the scrollable list
+        /// Checksif the engaged joint has released the scrollable list
         /// </summary>
-         private bool DetectScrollRelease(Vector3 pointerPos)
+        private bool DetectScrollRelease(Vector3 pointerPos)
         {
-            Vector3 projectedPointerPos = transform.InverseTransformPoint(pointerPos);
-            bool isScrollRelease = projectedPointerPos.y > clipBox.transform.localPosition.y + clipBox.transform.lossyScale.y / 2 + releaseThresholdTopBottom
-                                || projectedPointerPos.y < clipBox.transform.localPosition.y - clipBox.transform.lossyScale.y / 2 - releaseThresholdTopBottom
-                                || projectedPointerPos.x > clipBox.transform.localPosition.x + clipBox.transform.lossyScale.x / 2 + releaseThresholdLeftRight 
-                                || projectedPointerPos.x < clipBox.transform.localPosition.x - clipBox.transform.lossyScale.x / 2 - releaseThresholdLeftRight
-                                || projectedPointerPos.z > clipBox.transform.localPosition.z + clipBox.transform.lossyScale.z / 2 + releaseThresholdBack
-                                || projectedPointerPos.z < clipBox.transform.localPosition.z - clipBox.transform.lossyScale.z / 2 - releaseThresholdFront;
+            Vector3 scrollToPointerVector = pointerPos - clipBox.transform.position;
 
+            // Projecting vector onto every clip box space coordinated and using clip box lossy scale as refrence to dimensions to scroll visible bounds
+            // Using dot product to check if pointer is in the front or behind the scroll view plane
+            bool isScrollRelease = Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.up)) > clipBox.transform.lossyScale.y / 2 + releaseThresholdTopBottom
+                                || Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.right)) > clipBox.transform.lossyScale.x / 2 + releaseThresholdLeftRight
+                              
+                                || (Vector3.Dot(scrollToPointerVector, transform.forward) > 0 ? 
+                                        Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.forward)) > clipBox.transform.lossyScale.z / 2 + releaseThresholdBack :
+                                        Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.forward)) > clipBox.transform.lossyScale.z / 2 + releaseThresholdFront);
             return isScrollRelease;
         }
 
         private bool HasPassedThroughFrontPlane(PokePointer pokePointer)
         {
             var p = transform.InverseTransformPoint(pokePointer.PreviousPosition);
-            return p.z <= - frontPlaneDistance;
+            return p.z <= -frontPlaneDistance;
         }
 
         /// <summary>
@@ -1682,11 +1680,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 else
                 {
                     // Disable colliders on items that will be scrolling in and out of view
-                    bool disableNode =  i < indexOfFirstVisible ||
+                    bool disableNode = i < indexOfFirstVisible ||
                                         i >= indexOfFirstHidden && indexOfFirstHidden != indexOfFirstVisible;
 
                     // During drag all visible children should also has its colliders disabled 
-                    if (disableNode || isDragging)
+                    if (disableNode || IsDragging)
                     {
                         foreach (Collider c in node.Colliders)
                         {
@@ -1791,7 +1789,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Clear our states
             isTouched = false;
             IsEngaged = false;
-            isDragging = false;
+            IsDragging = false;
         }
 
         /// <summary>
@@ -1912,7 +1910,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveByTiers(int numberOfTiers, bool animate = true, System.Action callback = null)
         {
-            int tierIndex = SafeDivisionInt(FirstVisibleItemIndex, ItemsPerTier) + numberOfTiers ;
+            int tierIndex = SafeDivisionInt(FirstVisibleItemIndex, ItemsPerTier) + numberOfTiers;
 
             MoveToTier(tierIndex, animate, callback);
         }
@@ -1929,7 +1927,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             int tierIndex = SafeDivisionInt(indexOfItem, ItemsPerTier);
 
             MoveToTier(tierIndex, animateToPosition, callback);
-        }      
+        }
 
         /// <summary>
         /// Safely removes a child game object from scroll collection.
@@ -1969,7 +1967,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (!isTouched && IsEngaged && animateScroller == null)
             {
-                if (isDragging)
+                if (IsDragging)
                 {
                     eventData.Use();
                     // Its a drag release
@@ -2008,9 +2006,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 currentPointer.IsTargetPositionLockedOnFocusLock = false;
             }
 
-            pointerHitPoint = currentPointer.Result.Details.Point;
-            pointerHitDistance = currentPointer.Result.Details.RayDistance;
-
             initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
             currentPointer.IsFocusLocked = false; // Unwanted focus locked on children items
 
@@ -2019,13 +2014,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (TryGetPointerPositionOnPlane(out initialPointerPos))
             {
-                initialPressTime = Time.time;
                 initialScrollerPos = scrollContainer.transform.localPosition;
                 velocityState = VelocityState.None;
 
                 isTouched = false;
                 IsEngaged = true;
-                isDragging = false;
+                IsDragging = false;
 
                 TouchStarted?.Invoke(initialFocusedObject);
             }
@@ -2054,7 +2048,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 return;
             }
 
-            if (isDragging || initialFocusedObject)
+            if (IsDragging || initialFocusedObject)
             {
                 eventData.Use();
                 return;
@@ -2068,13 +2062,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (!isTouched && !IsEngaged)
             {
                 initialPointerPos = currentPointer.Position;
-                initialPressTime = Time.time;
                 initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
                 initialScrollerPos = scrollContainer.transform.localPosition;
 
                 isTouched = true;
                 IsEngaged = true;
-                isDragging = false;
+                IsDragging = false;
 
                 TouchStarted?.Invoke(initialFocusedObject);
             }
@@ -2084,7 +2077,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            if (isDragging)
+            if (IsDragging)
             {
                 eventData.Use();
             }
@@ -2095,7 +2088,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             IMixedRealityPointer pointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
 
-            if (pointer == currentPointer && isDragging)
+            if (pointer == currentPointer && IsDragging)
             {
                 eventData.Use();
             }
@@ -2112,7 +2105,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // We'll consider this a drag release
             if (IsEngaged && animateScroller == null && currentPointer != null && currentPointer.InputSourceParent.SourceId == eventData.SourceId)
             {
-                if (isTouched || isDragging)
+                if (isTouched || IsDragging)
                 {
                     // Its a drag release
                     initialScrollerPos = workingScrollerPos;
