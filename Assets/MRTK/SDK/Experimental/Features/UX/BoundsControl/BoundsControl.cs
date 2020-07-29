@@ -137,7 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => precisionLogisticSlope = value;
         }
 
-        [Header("Behavior")]
         [SerializeField]
         [Tooltip("Type of activation method for showing/hiding bounds control handles and controls")]
         private BoundsControlActivationType activation = BoundsControlActivationType.ActivateOnStart;
@@ -158,8 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
-
-        [Header("Visuals")]
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -320,7 +317,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = false;
