@@ -442,6 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             float mouseHandleDistance = Vector2.Distance(mouseScreenPosition, handleViewportPosition);
 
+            // Check if mouse is hovering circle centered on plane center. Keep circle ratio as a multiple of the current unity handle size.
             if (mouseHandleDistance < handleSize * 10.0f && mouseHandleDistance < smallestMouseHandleDistance)
             {
                 smallestMouseHandleDistance = mouseHandleDistance;

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -78,8 +79,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public int ViewableArea
         {
-            get { return (viewableArea > 0) ? viewableArea : 1; }
-            set { viewableArea = value; }
+            get
+            {
+                Debug.Assert(viewableArea > 0);
+                return viewableArea;
+            }
+            set
+            {
+                viewableArea = value;
+            }
         }
 
         [SerializeField]
@@ -278,17 +286,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { animationLength = value; }
         }
 
-        [Tooltip("Number of items in a line on up-down scroll direction or number of items in a column on left-right scroll direction.")]
+        [Tooltip("Number of items in a row on up-down scroll direction or number of items in a column on left-right scroll direction.")]
         [SerializeField]
+        [FormerlySerializedAs("tiers")]
         private int itemsPerTier = 1;
 
         /// <summary>
-        /// Number of items in a line on up-down scroll direction or number of items in a column on left-right scroll direction.
+        /// Number of items in a row on up-down scroll direction or number of items in a column on left-right scroll direction.
         /// </summary>
         public int ItemsPerTier
         {
-            get { return (itemsPerTier > 0) ? itemsPerTier : 1; }
-            set { itemsPerTier = value; }
+            get
+            {
+                Debug.Assert(itemsPerTier > 0);
+                return itemsPerTier;
+            }
+            set 
+            { 
+                itemsPerTier = value; 
+            }
         }
 
         [SerializeField]
@@ -405,8 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                int remainder = (SafeModulo(NodeList.Count, ItemsPerTier) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? (SafeDivision(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier) + remainder) * CellHeight : 0.0f;
+                return NodeList.Count != 0 ? Mathf.Ceil(SafeDivisionFloat(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier)) * CellHeight : 0.0f;
             }
         }
 
@@ -424,8 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                int remainder = (SafeModulo(NodeList.Count, ItemsPerTier) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? -((SafeDivision(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier) + remainder) * CellWidth) : 0.0f;
+                return NodeList.Count != 0 ? Mathf.Ceil(SafeDivisionFloat(NodeList.Count - (ViewableArea * ItemsPerTier), ItemsPerTier)) * CellWidth * -1.0f : 0.0f;
             }
         }
 
@@ -442,6 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else
                 {
+                    // Scroll container most to the right local position has x component equals to zero. This value goes negative as scroll container moves to the left. 
                     return ((int)Mathf.Ceil(Mathf.Abs(scrollContainer.transform.localPosition.x / CellWidth)) * ItemsPerTier);
                 }
             }
@@ -799,13 +814,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
                     newPos.x = (SafeModulo(i, ItemsPerTier) != 0) ? (SafeModulo(i, ItemsPerTier) * CellWidth) + halfCell.x : halfCell.x;
-                    newPos.y = ((SafeDivision(i, ItemsPerTier) * CellHeight) + halfCell.y) * -1;
+                    newPos.y = ((SafeDivisionInt(i, ItemsPerTier) * CellHeight) + halfCell.y) * -1;
                     newPos.z = 0.0f;
 
                 }
                 else // Left or right
                 {
-                    newPos.x = (SafeDivision(i, ItemsPerTier) * CellWidth) + halfCell.x;
+                    newPos.x = (SafeDivisionInt(i, ItemsPerTier) * CellWidth) + halfCell.x;
                     newPos.y = ((SafeModulo(i, ItemsPerTier) != 0) ? (SafeModulo(i, ItemsPerTier) * CellHeight) + halfCell.y : halfCell.y) * -1;
                     newPos.z = 0.0f;
                 }
@@ -855,9 +870,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             // Adjusting for possible scale of scrolling object or its parents
-            Vector3 adjustedSize = new Vector3(SafeDivision(clippingBounds.size.x, transform.lossyScale.x),
-                                               SafeDivision(clippingBounds.size.y, transform.lossyScale.y),
-                                               SafeDivision(clippingBounds.size.z, transform.lossyScale.z));
+            Vector3 adjustedSize = new Vector3(SafeDivisionFloat(clippingBounds.size.x, transform.lossyScale.x),
+                                               SafeDivisionFloat(clippingBounds.size.y, transform.lossyScale.y),
+                                               SafeDivisionFloat(clippingBounds.size.z, transform.lossyScale.z));
             clippingBounds.size = adjustedSize;
 
             // lets check whether the collection cell dimensions are a better fit
@@ -1603,7 +1618,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Helper to perform modulo operation and prevent division by 0.
         /// </summary>
-        private int SafeModulo(int numerator, int denominator)
+        private static int SafeModulo(int numerator, int denominator)
         {
             return (denominator > 0) ? numerator % denominator : 0;
         }
@@ -1611,12 +1626,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Helper to perform division operations and prevent division by 0.
         /// </summary>
-        private int SafeDivision(int numerator, int denominator)
+        private static int SafeDivisionInt(int numerator, int denominator)
         {
             return (denominator != 0) ? numerator / denominator : 0;
         }
 
-        private float SafeDivision(float numerator, float denominator)
+        private float SafeDivisionFloat(float numerator, float denominator)
         {
             return (denominator != 0) ? numerator / denominator : 0;
         }
@@ -1879,9 +1894,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Moves scroller container by a multiplier of the number of tiers in the viewable area.
         /// </summary>
+        /// <param name="numberOfPages">Amount of pages to move by</param>
+        /// <param name="animate"> If true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveByPages(int numberOfPages, bool animate = true, System.Action callback = null)
         {
-            int tierIndex = SafeDivision(FirstVisibleItemIndex, ItemsPerTier) + (numberOfPages * ViewableArea);
+            int tierIndex = SafeDivisionInt(FirstVisibleItemIndex, ItemsPerTier) + (numberOfPages * ViewableArea);
 
             MoveToTier(tierIndex, animate, callback);
         }
@@ -1889,9 +1907,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Moves scroller container a relative number of tiers of items.
         /// </summary>
+        /// <param name="numberOfTiers">Amount of tiers to move by</param>
+        /// <param name="animate">if true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveByTiers(int numberOfTiers, bool animate = true, System.Action callback = null)
         {
-            int tierIndex = SafeDivision(FirstVisibleItemIndex, ItemsPerTier) + numberOfTiers ;
+            int tierIndex = SafeDivisionInt(FirstVisibleItemIndex, ItemsPerTier) + numberOfTiers ;
 
             MoveToTier(tierIndex, animate, callback);
         }
@@ -1899,10 +1920,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Moves scroller container to a position where indexOfItem is in the first tier of the viewable area.
         /// </summary>
+        /// <param name="indexOfItem">Index of the item to move to</param>
+        /// <param name="animate">if true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveToIndex(int indexOfItem, bool animateToPosition = true, System.Action callback = null)
         {
             indexOfItem = (indexOfItem < 0) ? 0 : indexOfItem;
-            int tierIndex = SafeDivision(indexOfItem, ItemsPerTier);
+            int tierIndex = SafeDivisionInt(indexOfItem, ItemsPerTier);
 
             MoveToTier(tierIndex, animateToPosition, callback);
         }      
