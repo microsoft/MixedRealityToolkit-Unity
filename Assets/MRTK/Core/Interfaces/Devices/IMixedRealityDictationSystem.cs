@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Task<AudioClip> StopRecordingAsync();
 
         /// <summary>
-        /// Get the audio clip associated with the current session.	+-	 
+        /// Get the audio clip associated with the current session.
         /// </summary>	 	 
         AudioClip GetAudioClip();
     }
