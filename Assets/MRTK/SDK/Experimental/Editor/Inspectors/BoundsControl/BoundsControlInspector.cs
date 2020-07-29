@@ -145,8 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.PropertyField(boundsOverride);
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
-                    EditorGUILayout.PropertyField(flattenAxis);
-                    enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles: ", (HandleFlags)enabledHandles.intValue);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);
@@ -158,6 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
+                        EditorGUILayout.PropertyField(flattenAxis);
+                        enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles ", (HandleFlags)enabledHandles.intValue);
 
                         showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
                                                                                                                  "Box Configuration", 
