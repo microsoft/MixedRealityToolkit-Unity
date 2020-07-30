@@ -571,9 +571,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // Hand position previous frame
         private Vector3 lastPointerPos;
 
-        // Current time at initial press
-        private float initialPressTime;
-
         #endregion drag position calculation variables
 
         #region velocity calculation variables
