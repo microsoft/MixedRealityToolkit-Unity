@@ -1185,10 +1185,8 @@ MonoBehaviour:
   majorLineMesh: {fileID: 4300000, guid: f6091c1224d2a43449cb3686ee773c5b, type: 3}
   minorLineMesh: {fileID: 4300000, guid: f565d394eb0f96b4fa73f0002b20d028, type: 3}
   lineMaterial: {fileID: 2100000, guid: f293a5f6cb85c5248b87fbf7b4a03da6, type: 2}
-  colorProperty: _Color
   majorLineStepSkip: 10
   minorLineStepSkip: 2
-  useVertexColors: 1
 --- !u!1 &4331762912066944044
 GameObject:
   m_ObjectHideFlags: 0
