@@ -199,6 +199,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             set => textLabelRadiusOffset = value;
         }
 
+        [SerializeField]
+        [Range(100, 1000)]
+        [Tooltip("Number of vertices per normalized unit for the progress line.")]
+        private int progressLineVerticesPerUnit;
+
+        public int ProgressLineVerticesPerUnit
+        {
+            get => progressLineVerticesPerUnit;
+            set => progressLineVerticesPerUnit = value;
+        }
+
         #endregion Serialized Fields
 
         #region Public Properties
@@ -223,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         // The handle of the BoundsControl that spawned this affordance.
         private Transform targetHandle;
 
-        private Quaternion rotationOffset;
         private Vector3 originalVector;
 
         /// <summary>
@@ -262,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         internal void SetTrackingTarget(Transform targetHandle, Transform targetObject, Quaternion rotationOffset){
             this.targetObject = targetObject;
             this.targetHandle = targetHandle;
-            this.rotationOffset = rotationOffset;
 
             // Store the original handle-to-object vector.
             // This is the basis on which the rotation amount
@@ -330,9 +339,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             // Rotate the entire marker assembly around the pivot.
             markerPivot.localRotation = Quaternion.Euler(0, endDegrees, 0);
 
-            // Assign the custom point distribution of the progress line depending on the arclength of the line.
             // We want fewer points as the arclength decreases, and more points as the arclength increases.
-            ProgressLine.CustomPointDistributionLength = (0.1f / Mathf.Abs(startNormalized - endNormalized)) * ManipulationScale;
+            ProgressLine.LineStepCount = Mathf.RoundToInt(Mathf.Abs(startNormalized - endNormalized) * ManipulationScale * progressLineVerticesPerUnit);
 
             // Display text.
             valueDisplay.text = (startDegrees - endDegrees).ToString("F1") + "°";

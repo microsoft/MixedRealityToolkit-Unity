@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineStartClamp: 0.5
-  lineEndClamp: 0.32777777
+  lineEndClamp: 0.41111112
   customLineTransform: {fileID: 0}
   loops: 0
   transformMode: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   uniformDistortionStrength: 1
-  resolution: 65
+  resolution: 5
   radius: {x: 0.1893, y: 0.1893}
 --- !u!120 &4331762910067178533
 LineRenderer:
@@ -128,35 +128,14 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: -0.0019999854, y: -0.08000002, z: 0.68755174}
-  - {x: 0.018300638, y: -0.08000003, z: 0.6865614}
-  - {x: 0.038408436, y: -0.08000003, z: 0.6835996}
-  - {x: 0.05813246, y: -0.08000003, z: 0.6786946}
-  - {x: 0.077285305, y: -0.08000003, z: 0.67189294}
-  - {x: 0.09568516, y: -0.08000003, z: 0.66325915}
-  - {x: 0.113157235, y: -0.08000004, z: 0.6528754}
-  - {x: 0.12953554, y: -0.08000003, z: 0.6408402}
-  - {x: 0.14466457, y: -0.08000003, z: 0.62726784}
-  - {x: 0.15840057, y: -0.08000003, z: 0.6122873}
-  - {x: 0.17061314, y: -0.08000003, z: 0.5960408}
-  - {x: 0.18118627, y: -0.08000003, z: 0.5786826}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
-  - {x: 0.18214028, y: -0.08000003, z: 0.5769091}
+  - {x: 0.012547867, y: -0.08000003, z: 0.6870438}
+  - {x: 0.027024778, y: -0.08000003, z: 0.68552214}
+  - {x: 0.04136035, y: -0.08000003, z: 0.6829944}
+  - {x: 0.05548467, y: -0.08000003, z: 0.6794728}
+  - {x: 0.0693289, y: -0.08000003, z: 0.67497456}
+  - {x: 0.08282565, y: -0.08000003, z: 0.6695215}
+  - {x: 0.09590914, y: -0.08000003, z: 0.6631403}
+  - {x: 0.10851559, y: -0.08000004, z: 0.6558619}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -291,9 +270,9 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 30
-  pointDistributionMode: 2
-  customPointDistributionLength: 0.11612903
+  lineStepCount: 9
+  pointDistributionMode: 0
+  customPointDistributionLength: 0.07003891
   customPointDistributionCurve:
     serializedVersion: 2
     m_Curve:
@@ -352,7 +331,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762910142311251}
-  m_LocalRotation: {x: 0.2833845, y: -0.23490252, z: -0.59337145, w: 0.71583825}
+  m_LocalRotation: {x: 0.15829071, y: -0.116309725, z: -0.5805888, w: 0.7901473}
   m_LocalPosition: {x: 0, y: 0, z: 0.21450001}
   m_LocalScale: {x: 0.008, y: 0.01, z: 0.008}
   m_Children: []
@@ -462,10 +441,11 @@ MonoBehaviour:
   markerPivot: {fileID: 4331762911180747188}
   valueDisplay: {fileID: 4331762911009485538}
   startDegrees: 0
-  endDegrees: 62
+  endDegrees: 32
   markerRadiusOffset: 0.0145
   progressLineRadiusOffset: -0.0107
   textLabelRadiusOffset: 0.0148
+  progressLineVerticesPerUnit: 500
   ManipulationScale: 0.2
   deployed: 1
 --- !u!1 &4331762910561158556
@@ -660,7 +640,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   endPoint:
-    position: {x: 0.16714197, y: 0, z: 0.08887097}
+    position: {x: 0.100313716, y: 0, z: 0.1605355}
     rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &4331762911003474813
 GameObject:
@@ -788,7 +768,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762911009485540}
-  m_LocalRotation: {x: 0.05832314, y: -0.35523438, z: 0.022213545, w: 0.9326916}
+  m_LocalRotation: {x: 0.055447858, y: -0.18391341, z: 0.010391699, w: 0.9813223}
   m_LocalPosition: {x: 0, y: 0, z: 0.2293}
   m_LocalScale: {x: 0.9076884, y: 0.9076884, z: 0.90768844}
   m_Children:
@@ -872,7 +852,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "-62.0\xB0"
+  m_text: "-32.0\xB0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
   m_sharedMaterial: {fileID: 21433621844796372, guid: f137eba12ee10834cb19632437cfdb2e,
@@ -988,7 +968,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4331762911180747189}
-  m_LocalRotation: {x: 0, y: 0.5150381, z: 0, w: 0.8571673}
+  m_LocalRotation: {x: 0, y: 0.27563736, z: 0, w: 0.9612617}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1045,7 +1025,7 @@ MonoBehaviour:
   lineEndClamp: 0.75
   customLineTransform: {fileID: 0}
   loops: 0
-  transformMode: 0
+  transformMode: 1
   rotationMode: 2
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
