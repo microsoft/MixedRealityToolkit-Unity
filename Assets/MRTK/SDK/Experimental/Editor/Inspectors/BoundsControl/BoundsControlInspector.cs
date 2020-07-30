@@ -299,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     AssetDatabase.Contains(property.objectReferenceValue) &&
                     property.objectReferenceValue.GetType() != selectedType)
                 {
-                    Debug.Log("Overriding toolbar!");
                     // Override the toolbar selection to whatever the type of the dragged-in config asset is.
                     toolbarSelection = property.objectReferenceValue.GetType() == typeof(BasicType) ? HandlePrecisionLevel.Basic : HandlePrecisionLevel.Precision;
                 }
