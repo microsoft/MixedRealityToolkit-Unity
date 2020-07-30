@@ -22,14 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that changing the active profile at runtime results in
     // the MRTK being correctly reconfigured.
-    public class ChangeActiveProfileTests
+    public class ChangeActiveProfileTests : BasePlayModeTests
     {
-        [TearDown]
-        public void TearDown()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
-        }
-
+        
         #region Utility methods
 
         private void InitializeTest(MixedRealityToolkitConfigurationProfile profile)

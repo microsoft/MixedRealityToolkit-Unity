@@ -93,7 +93,15 @@ namespace Microsoft.MixedReality.Toolkit
             }
             set
             {
-                ResetConfiguration(value);
+                if(Application.isPlaying && activeProfile != null && value != null && activeProfile != value)
+                {
+                    newProfile = value;
+                }
+                else
+                {
+                    ResetConfiguration(value);
+                }
+                
             }
         }
 
@@ -101,6 +109,22 @@ namespace Microsoft.MixedReality.Toolkit
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
+        {
+            RemoveCurrentProfile(profile);
+            InitializeNewProfile(profile);
+        }
+
+        private void InitializeNewProfile(MixedRealityToolkitConfigurationProfile profile)
+        {
+            InitializeServiceLocator();
+
+            if (profile != null && Application.IsPlaying(profile))
+            {
+                EnableAllServices();
+            }
+        }
+
+        private void RemoveCurrentProfile(MixedRealityToolkitConfigurationProfile profile)
         {
             if (activeProfile != null)
             {
@@ -122,15 +146,10 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 DestroyAllServices();
             }
-
-            InitializeServiceLocator();
-
-            if (profile != null && Application.IsPlaying(profile))
-            {
-                EnableAllServices();
-            }
         }
 
+        private MixedRealityToolkitConfigurationProfile newProfile;
+        
         #endregion Mixed Reality Toolkit Profile configuration
 
         #region Mixed Reality runtime service registry
@@ -629,6 +648,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (IsActiveInstance)
             {
+                if (newProfile != null)
+                {
+                    InitializeNewProfile(newProfile);
+                    newProfile = null;
+                }
                 UpdateAllServices();
             }
         }
@@ -638,6 +662,10 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsActiveInstance)
             {
                 LateUpdateAllServices();
+                if (newProfile != null)
+                {
+                    RemoveCurrentProfile(newProfile);
+                }
             }
         }
 
@@ -1031,18 +1059,12 @@ namespace Microsoft.MixedReality.Toolkit
 
                 var services = MixedRealityServiceRegistry.GetAllServices();
                 int length = services.Count;
-                try
+                
+                for (int i = 0; i < length; i++)
                 {
-                    for (int i = 0; i < length; i++)
-                    {
-                        execute(services[i]);
-                    }
+                    execute(services[i]);
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Debug.LogWarning($"Service collection changed during {execute.Method.Name}.");
-                }
-
+                
                 return true;
             }
         }
@@ -1061,16 +1083,9 @@ namespace Microsoft.MixedReality.Toolkit
                 var services = MixedRealityServiceRegistry.GetAllServices();
                 int length = services.Count;
 
-                try
+                for (int i = length - 1; i >= 0; i--)
                 {
-                    for (int i = length - 1; i >= 0; i--)
-                    {
-                        execute(services[i]);
-                    }
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Debug.LogWarning($"Service collection changed during {execute.Method.Name}.");
+                    execute(services[i]);
                 }
 
                 return true;

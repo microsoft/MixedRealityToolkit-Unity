@@ -46,16 +46,9 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 base.Update();
 
-                try
+                foreach (var provider in dataProviders)
                 {
-                    foreach (var provider in dataProviders)
-                    {
-                        provider.Update();
-                    }
-                }
-                catch(InvalidOperationException)
-                {
-                    Debug.Log("Data provider collection was changed during Update.");
+                    provider.Update();
                 }
             }
         }
@@ -69,16 +62,9 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 base.LateUpdate();
 
-                try
+                foreach (var provider in dataProviders)
                 {
-                    foreach (var provider in dataProviders)
-                    {
-                        provider.LateUpdate();
-                    }
-                }
-                catch(InvalidOperationException)
-                {
-                    Debug.Log("Data provider collection was changed during LateUpdate.");
+                    provider.LateUpdate();
                 }
             }
         }
