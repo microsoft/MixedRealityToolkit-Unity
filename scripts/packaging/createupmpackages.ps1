@@ -28,7 +28,6 @@ if (-not $PackageVersion) {
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
 }
-$OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
 
 if (-not $ProjectRoot) {
     # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
