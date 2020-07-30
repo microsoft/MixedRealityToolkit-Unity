@@ -35,10 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject overlapRect;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
-        [SetUp]
-        public override void Setup()
+        [UnitySetUp]
+        public override IEnumerator Setup()
         {
-            base.Setup();
+            yield return base.Setup();
 
             float centerZ = 2.0f;
             float scale = 0.2f;
@@ -64,13 +64,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var overlapGrabbable = overlapRect.AddComponent<NearInteractionGrabbable>();
             Assert.IsNotNull(overlapGrabbable);
+            yield return null;
         }
 
-        [TearDown]
-        public override void TearDown()
+        [UnityTearDown]
+        public override IEnumerator TearDown()
         {
             GameObject.Destroy(cube);
-            base.TearDown();
+            return base.TearDown();
         }
 
         /// <summary>

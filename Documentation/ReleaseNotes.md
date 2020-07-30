@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.0 release notes
+# Microsoft Mixed Reality Toolkit 2.5.0 draft release notes
 
 - [What's new](#whats-new)
 - [Breaking changes](#breaking-changes)
@@ -18,7 +18,7 @@ The HandInteractionExamples scene now has a configurable shortcut to show a help
 
 ![Input Simulation Cheat Sheet](https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif)
 
-**Input Simulation Eye Gaze with Mouse**
+**Input Simulation Eye Gaze with mouse**
 Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation Mode` field in the input simulation profile and set it to Mouse. This replaces the previous `Simulate Eye Position` field 
 
 ![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
@@ -90,5 +90,11 @@ DevicePortal.UseSSL = true
 **Link.xml**
 
 If an application was previously using the NuGet distribution of the MRTK, the `link.xml` file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default `link.xml` file in `Assets/MixedRealityToolkit.Generated`. It is recommended that this file (and `link.xml.meta`) be added to source control.
+
+**Transform Constraint Changes**
+TargetTransform property has been marked as obsolete as it wasn't used by constraint system. Constraint logic is based on the transform passed into Initialize and Apply methods. Derived user constraints that rely on this property can cache the TargetTransform in their implementation by storing the transform of the constraint component to achieve the same behavior.
+
+The stored initial world pose `worldPoseOnManipulationStart` data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.
+
 
 ### Known issues

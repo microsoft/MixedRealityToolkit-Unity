@@ -30,21 +30,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject panObject;
         private HandInteractionPanZoom panZoom;
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.PushHandSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
             PlayModeTestUtilities.PopHandSimulationProfile();
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>

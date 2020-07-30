@@ -20,16 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class DisableEnableInputSystemTest
     {
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         [UnityTest]

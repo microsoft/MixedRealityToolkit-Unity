@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         GameObject cube;
         Interactable interactable;
 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
 
@@ -43,13 +43,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             interactable = cube.AddComponent<Interactable>();
 
             KeyInputSystem.StartKeyInputStimulation();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             KeyInputSystem.StopKeyInputSimulation();
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         [UnityTest]

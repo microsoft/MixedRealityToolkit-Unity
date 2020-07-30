@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionTouchableTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureInputModule();
@@ -44,12 +44,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             pokeMaterial = new Material(shader);
             pokeMaterial.color = Color.green;
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
