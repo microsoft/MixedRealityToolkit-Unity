@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
+        private SerializedProperty translateLerpTime;
 
         // Elastics
         private SerializedProperty elasticTypes;
@@ -98,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
+            translateLerpTime = serializedObject.FindProperty("translateLerpTime");
 
             boxDisplayConfiguration = serializedObject.FindProperty("boxDisplayConfiguration");
             linksConfiguration = serializedObject.FindProperty("linksConfiguration");
@@ -151,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.PropertyField(smoothingActive);
                     EditorGUILayout.PropertyField(scaleLerpTime);
                     EditorGUILayout.PropertyField(rotateLerpTime);
+                    EditorGUILayout.PropertyField(translateLerpTime);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
@@ -296,6 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     AssetDatabase.Contains(property.objectReferenceValue) &&
                     property.objectReferenceValue.GetType() != selectedType)
                 {
+                    Debug.Log("Overriding toolbar!");
                     // Override the toolbar selection to whatever the type of the dragged-in config asset is.
                     toolbarSelection = property.objectReferenceValue.GetType() == typeof(BasicType) ? HandlePrecisionLevel.Basic : HandlePrecisionLevel.Precision;
                 }
@@ -303,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 // If the user currently has a non-asset-backed manipulation config assigned
                 // that does not match the type specified in the toolbar, we create a fresh config of whatever
                 // type is specified in the toolbar.
-                if (property.objectReferenceValue == null || property.objectReferenceValue.GetType() != selectedType)
+                if (property.objectReferenceValue == null || (!AssetDatabase.Contains(property.objectReferenceValue) && property.objectReferenceValue.GetType() != selectedType))
                 {
                     // This generic could be called with the runtime type (selectedType)
                     // but would require reflection.
