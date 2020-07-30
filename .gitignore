@@ -17,6 +17,8 @@ UnityPackageManager/
 project.json
 project.lock.json
 *.package
+Assets/XR/
+Assets/XR.meta
 
 # ============ #
 # Certificates #

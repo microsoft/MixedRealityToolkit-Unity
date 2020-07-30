@@ -86,14 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (manipHandler.ConstraintOnRotation != RotationConstraintType.None)
             {
                 var rotateConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
-                rotateConstraint.TargetTransform = manipHandler.HostTransform;
                 rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(manipHandler.ConstraintOnRotation);
             }
 
             if (manipHandler.ConstraintOnMovement == MovementConstraintType.FixDistanceFromHead)
             {
                 var moveConstraint = objManip.EnsureComponent<FixedDistanceConstraint>();
-                moveConstraint.TargetTransform = manipHandler.HostTransform;
                 moveConstraint.ConstraintTransform = CameraCache.Main.transform;
             }
 
@@ -129,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
                         var constraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
-                        constraint.TargetTransform = objManip.HostTransform;
                         constraint.HandType = ManipulationHandFlags.OneHanded;
                         constraint.ProximityType = proximity;
                         break;
@@ -139,12 +136,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
                         var rotConstraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
-                        rotConstraint.TargetTransform = objManip.HostTransform;
                         rotConstraint.HandType = ManipulationHandFlags.OneHanded;
                         rotConstraint.ProximityType = proximity;
 
                         var axisConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
-                        axisConstraint.TargetTransform = objManip.HostTransform;
                         axisConstraint.HandType = ManipulationHandFlags.OneHanded;
                         axisConstraint.ProximityType = proximity;
                         axisConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
@@ -155,7 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
                         var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
-                        rotConstraint.TargetTransform = objManip.HostTransform;
                         rotConstraint.HandType = ManipulationHandFlags.OneHanded;
                         rotConstraint.ProximityType = proximity;
                         rotConstraint.FaceAway = false;
@@ -166,7 +160,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
                         var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
-                        rotConstraint.TargetTransform = objManip.HostTransform;
                         rotConstraint.HandType = ManipulationHandFlags.OneHanded;
                         rotConstraint.ProximityType = proximity;
                         rotConstraint.FaceAway = true;
@@ -177,7 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                         newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
                         var rotConstraint = objManip.EnsureComponent<FixedRotationToWorldConstraint>();
-                        rotConstraint.TargetTransform = objManip.HostTransform;
                         rotConstraint.HandType = ManipulationHandFlags.OneHanded;
                         rotConstraint.ProximityType = proximity;
                         break;

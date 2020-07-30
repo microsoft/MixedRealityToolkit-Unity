@@ -10,6 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [Serializable]
     public struct MixedRealityTransform : IEqualityComparer
     {
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public MixedRealityTransform(Transform transform)
+        {
+            this.pose = new MixedRealityPose(transform.position, transform.rotation);
+            this.scale = transform.localScale;
+        }
+
         /// <summary>
         /// Constructor.
         /// </summary>
