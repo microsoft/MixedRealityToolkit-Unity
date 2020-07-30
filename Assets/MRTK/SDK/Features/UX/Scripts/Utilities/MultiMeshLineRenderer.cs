@@ -78,10 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
         }
-
-        private int colorId;
-        private List<Vector4> majorColorValues = new List<Vector4>();
-        private List<Vector4> minorColorValues = new List<Vector4>();
         private List<Matrix4x4> majorMeshTransforms = new List<Matrix4x4>();
         private List<Matrix4x4> minorMeshTransforms = new List<Matrix4x4>();
 
@@ -111,8 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 majorMeshTransforms.Clear();
                 minorMeshTransforms.Clear();
-                majorColorValues.Clear();
-                minorColorValues.Clear();
 
                 for (int i = 0; i < LineStepCount; i++)
                 {

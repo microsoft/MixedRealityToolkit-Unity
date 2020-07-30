@@ -236,6 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         private Vector3 originalVector;
 
+        private Material markerMaterial;
+        private Color markerColor;
+
+        private Material tickmarkMaterial;
+        private Color tickmarkColor;
+
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray 
         /// with the object on pointer down in pointer space
@@ -267,6 +273,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             // Initializes ManipulationScale to the calculated value.
             ManipulationScale = (associatedPointer.Value.GrabPoint - transform.position).magnitude;
+
+            // Run a single frame update ahead of time.
+            Update();
         }
 
         internal void SetTrackingTarget(Transform targetHandle, Transform targetObject, Quaternion rotationOffset){
@@ -286,6 +295,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             // Display text fades in.
             valueDisplay.alpha = 0.0f;
+
+            // Cache material reference to marker material.
+            markerMaterial = marker.GetComponent<MeshRenderer>().material;
+
+            // Set marker color alpha to begin at zero.
+            markerColor = markerMaterial.color;
+            markerColor.a = 0.0f;
+            markerMaterial.color = markerColor;
+
+            // Cache material reference to tickmark material.
+            tickmarkMaterial = tickmarks.GetComponent<MultiMeshLineRenderer>().LineMaterial;
+
+            // Set tickmark color alpha to begin at zero.
+            tickmarkColor = tickmarkMaterial.color;
+            tickmarkColor.a = 0.0f;
+            tickmarkMaterial.color = tickmarkColor;
 
             // Initialize the tickmarks start/end clamp values.
             TickmarksDataProvider.LineStartClamp = (-startDegrees / 360.0f) + 0.5f;
@@ -314,6 +339,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             // Controls the value display fade.
             valueDisplay.alpha = Mathf.Lerp(valueDisplay.alpha, deployed ? 1.0f : 0.0f, Time.deltaTime / 0.1f);
 
+            if (markerMaterial != null && tickmarkMaterial != null)
+            {
+                // Controls the marker color fade.
+                markerColor.a = valueDisplay.alpha;
+                markerMaterial.color = markerColor;
+
+                // Controls the marker color fade.
+                tickmarkColor.a = valueDisplay.alpha;
+                tickmarkMaterial.color = tickmarkColor;
+            }
+
             // Calculate the normalized start and end positions for the progress line/arc.
             float startNormalized = (-startDegrees / 360.0f) + 0.5f;
             float endNormalized = (-endDegrees / 360.0f) + 0.5f;
@@ -333,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             // Apply the start/end clamp to the progress line and the progress background line.
             ProgressBackgroundLineDataProvider.LineStartClamp = Mathf.Lerp(TickmarksDataProvider.LineStartClamp, deployed ? 0.25f : endNormalized, Time.deltaTime / 0.1f);
             ProgressBackgroundLineDataProvider.LineEndClamp = Mathf.Lerp(TickmarksDataProvider.LineEndClamp, deployed ? 0.75f : endNormalized, Time.deltaTime / 0.1f);
-            ProgressLineDataProvider.LineStartClamp = startNormalized;
+            ProgressLineDataProvider.LineStartClamp = Mathf.Lerp(ProgressLineDataProvider.LineStartClamp, deployed ? startNormalized : endNormalized, Time.deltaTime / 0.1f);
             ProgressLineDataProvider.LineEndClamp = endNormalized;
 
             // Rotate the entire marker assembly around the pivot.
@@ -359,6 +395,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             // Set the tether line's endpoint to the tip of the progress line.
             TetherLine.EndPoint = new MixedRealityPose(Quaternion.Euler(0, endDegrees, 0) * (Vector3.forward * (ManipulationScale + progressLineRadiusOffset)));
+
+            // If the manipulation scale is large enough,
+            // increase the frequency of the small/minor tick marks.
+            if (ManipulationScale > 0.2f)
+            {
+                Tickmarks.minorLineStepSkip = 1;
+            }
+            else
+            {
+                Tickmarks.minorLineStepSkip = 2;
+            }
         }
 
         /// <summary>

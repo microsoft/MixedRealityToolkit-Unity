@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
-using UnityEngine.SocialPlatforms;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 {
@@ -68,9 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         private Vector3 smoothedGrabPoint;
 
-        private float initialGrabOffset;
+        private Material markerMaterial;
+        private Color markerColor;
 
-        private Material rulerMaterial;
+        private Material tickmarkMaterial;
+        private Color tickmarkColor;
 
         public bool deployed = false;
 
@@ -110,12 +111,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             this.targetObject = targetObject;
             this.targetHandle = targetHandle;
             this.rotationOffset = rotationOffset;
+
+            // Initialize the handle position and the specified translation axis.
             initialHandlePosition = targetHandle.position;
             translationAxis = (targetHandle.position - targetObject.position).normalized;
-            deployed = true;
-
-            //transform.right = translationAxis;
-            //transform.forward = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
+            
             Vector3 eyeVector = Vector3.ProjectOnPlane((transform.position - Camera.main.transform.position), translationAxis);
 
             Vector3 cameraAxis = Camera.main.transform.InverseTransformVector(translationAxis);
@@ -123,7 +123,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
             Vector3 crossAxis = Vector3.Cross(eyeVector, isNegative ? -translationAxis : translationAxis);
             transform.rotation = Quaternion.LookRotation(eyeVector, crossAxis);
-            
+
+            // Display text fades in.
+            valueDisplay.alpha = 0.0f;
+
+            // Cache material reference to marker material.
+            markerMaterial = marker.GetComponent<MeshRenderer>().material;
+
+            // Set marker color alpha to begin at zero.
+            markerColor = markerMaterial.color;
+            markerColor.a = 0.0f;
+            markerMaterial.color = markerColor;
+
+            // Cache material reference to tickmark material.
+            tickmarkMaterial = Tickmarks.GetComponent<MultiMeshLineRenderer>().LineMaterial;
+
+            // Set tickmark color alpha to begin at zero.
+            tickmarkColor = tickmarkMaterial.color;
+            tickmarkColor.a = 0.0f;
+            tickmarkMaterial.color = tickmarkColor;
+
+            deployed = true;
         }
 
         // Update is called once per frame
@@ -131,9 +151,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
             if (targetObject != null && targetHandle != null && associatedPointer != null)
             {
+                // We smooth the pointer's grab point for a smoother visualization.
                 smoothedGrabPoint = Smoothing.SmoothTo(smoothedGrabPoint, associatedPointer.Value.GrabPoint, 0.001f, Time.deltaTime);
+
+                // Project the grab delta along the translation axis.
                 Vector3 translateVectorAlongAxis = Vector3.Project(smoothedGrabPoint - initialGrabPoint, translationAxis);
+
+                // How far is the current grab point away from the translation axis?
                 distanceFromAxis = ((smoothedGrabPoint - initialGrabPoint) - translateVectorAlongAxis).magnitude;
+
+                // Calculate handle position delta along the translation axis.
                 Vector3 handleVectorAlongAxis = Vector3.Project(targetHandle.position - initialHandlePosition, translationAxis);
 
                 manipAmount = Vector3.Dot(translateVectorAlongAxis, translationAxis);
@@ -145,19 +172,46 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             }
             else
             {
+                // If we have no active target object, handle, or pointer, we simply
+                // position the container ruler at its current distance off-axis.
                 rulerContainer.localPosition = new Vector3(0, distanceFromAxis, 0);
             }
+
+            // Controls the value display fade.
+            valueDisplay.alpha = Mathf.Lerp(valueDisplay.alpha, deployed ? 1.0f : 0.0f, Time.deltaTime / 0.1f);
+            scaleDisplay.alpha = valueDisplay.alpha;
+
+            if (markerMaterial != null && tickmarkMaterial != null)
+            {
+                // Controls the marker color fade.
+                markerColor.a = valueDisplay.alpha;
+                markerMaterial.color = markerColor;
+
+                // Controls the marker color fade.
+                tickmarkColor.a = valueDisplay.alpha;
+                tickmarkMaterial.color = tickmarkColor;
+            }
+
+            // Determine the translation axis, relative to the widget's transform.
             Vector3 localTranslationAxis = transform.InverseTransformDirection(translationAxis);
 
-            if(localTranslationAxis == Vector3.zero) { localTranslationAxis = Vector3.right; }
-
+            // Fallback/default axis.
+            if(localTranslationAxis == Vector3.zero)
+            {
+                localTranslationAxis = Vector3.right;
+            }
             
-            // Sigmoid logistic function
+            // Sigmoid logistic activation function: as the distance from the axis increases,
+            // the "sensitivity" of the manipulation decreases along a sigmoid curve,
+            // configured by logisticSlope.
             float damperFactor = (2 / (1 + Mathf.Exp(logisticSlope * -distanceFromAxis))) - 1;
 
+            // Compute the manipulation scale from the current damperFactor.
             float scale = 1.0f - damperFactor;
             scale = Mathf.Clamp(scale, 0.001f, 1.0f);
 
+            // If the manipulation scale is small enough,
+            // increase the frequency of the small/minor tick marks.
             if (scale < 0.5f)
             {
                 Tickmarks.minorLineStepSkip = 1;
@@ -167,14 +221,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 Tickmarks.minorLineStepSkip = 2;
             }
 
+            // Move the tickmark pivot along the translation axis by the manipulation amount.
             TickmarkPivot.localPosition = localTranslationAxis * (manipAmount);
 
-            TickmarksProvider.transform.localPosition = (Vector3.right * -0.5f) - (localTranslationAxis * handleAmount) + Vector3.up * upperTicksOffset;
+            // Position the tickmarks thsemselves along the localTranslationAxis by the
+            // handle amount and shift them upwards by the upperTicksOffset.
+            Tickmarks.transform.localPosition = (Vector3.right * -0.5f) - (localTranslationAxis * handleAmount) + Vector3.up * upperTicksOffset;
             TickmarkPivot.localScale = new Vector3(1.0f/scale, 1.0f, 1.0f);
 
-            markerPivot.localPosition = localTranslationAxis * manipAmount + Vector3.up * (markerOffset+ upperTicksOffset);
+            markerPivot.localPosition = localTranslationAxis * manipAmount + Vector3.up * (markerOffset + upperTicksOffset);
 
-            ProgressLineDataProvider.LineStartClamp = 0.5f;
+            ProgressLineDataProvider.LineStartClamp = Mathf.Lerp(ProgressLineDataProvider.LineStartClamp, deployed ? 0.5f : 0.5f + localTranslationAxis.x * handleAmount, Time.deltaTime / 0.1f);
             ProgressLineDataProvider.LineEndClamp = 0.5f + localTranslationAxis.x * handleAmount;
 
             CircleLineProvider.Radius = Vector2.one * distanceFromAxis;
