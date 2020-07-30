@@ -27,17 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string defaultPinchSliderPrefabGuid = "1093263a89abe47499cccf7dcb08effb";
         private static readonly string defaultPinchSliderPrefabPath = AssetDatabase.GUIDToAssetPath(defaultPinchSliderPrefabGuid);
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests

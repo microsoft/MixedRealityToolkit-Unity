@@ -23,17 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // Tests to verify that the ray utilities methods are functioning correctly
     public class InputRayUtilsTests
     {
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         [UnityTest]

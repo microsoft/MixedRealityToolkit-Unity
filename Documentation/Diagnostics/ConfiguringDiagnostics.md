@@ -4,6 +4,17 @@
 
 ![Diagnostics General Settings](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
 
+### Enable verbose logging
+
+Indicates whether or not verbose MRTK logging will be enabled. This defaults to false, but can be
+turned on to take detailed traces that allow the MRTK team to debug/dig into issues. For example,
+when filing an issue, attaching the Unity player logs (either from the editor or from the player)
+can help narrow down the source of bugs and issues.
+
+Note that this option is independent of whether or not diagnostics system is enabled - this shows
+up under the diagnostics system because it's a logging option, but ultimately operates at a higher
+level because it affects logging across the entire MRTK codebase.
+
 ### Show diagnostics
 
 Indicates whether or not the diagnostics system is to display the configured diagnostic options.

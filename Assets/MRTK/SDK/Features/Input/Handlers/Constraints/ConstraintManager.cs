@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Move);
         }
 
-        public void Initialize(MixedRealityPose worldPose)
+        public void Initialize(MixedRealityTransform worldPose)
         {
             foreach (var constraint in constraints)
             {

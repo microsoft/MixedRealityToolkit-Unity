@@ -228,6 +228,53 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
+        /// <summary>
+        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// applies a slight tolerance on the equality check.
+        /// </summary>
+        /// <remarks>
+        /// This allows for things like LessThanOrEqual(2.00000024, 2.0) to still pass.
+        /// </remarks>
+        public static void AssertLessOrEqual(float observed, float expected, float tolerance = 0.01f)
+        {
+            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.LessThan(expected));
+        }
+
+        /// <summary>
+        /// Equvalent to NUnit.Framework.Assert.LessOrEqual, except this also
+        /// applies a slight tolerance on the equality check.
+        /// </summary>
+        /// <remarks>
+        /// This allows for things like LessThanOrEqual(2.00000024, 2.0) to still pass.
+        /// </remarks>
+        public static void AssertLessOrEqual(float observed, float expected, string message, float tolerance = 0.01f)
+        {
+            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.LessThan(expected), message);
+        }
+
+        /// <summary>
+        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// applies a slight tolerance on the equality check.
+        /// </summary>
+        /// <remarks>
+        /// This allows for things like GreaterThanOrEqual(1.999999999, 2.0) to still pass.
+        /// </remarks>
+        public static void AssertGreaterOrEqual(float observed, float expected, float tolerance = 0.01f)
+        {
+            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.GreaterThan(expected));
+        }
+        /// <summary>
+        /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
+        /// applies a slight tolerance on the equality check.
+        /// </summary>
+        /// <remarks>
+        /// This allows for things like GreaterThanOrEqual(1.999999999, 2.0) to still pass.
+        /// </remarks>
+        public static void AssertGreaterOrEqual(float observed, float expected, string message, float tolerance = 0.01f)
+        {
+            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.GreaterThan(expected), message);
+        }
+
 #if UNITY_EDITOR
         [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
