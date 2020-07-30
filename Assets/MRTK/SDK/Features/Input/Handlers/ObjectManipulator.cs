@@ -914,7 +914,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private methods
 
-         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
+        private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
             if (rigidBody == null)
             {
@@ -978,7 +978,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
 
-                HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                HostTransform.localScale = isSmoothing ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
             }
         }
 
