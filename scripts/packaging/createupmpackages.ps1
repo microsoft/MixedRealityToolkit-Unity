@@ -8,8 +8,7 @@
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER PackageVersion
-    What version of the artifacts should we build? If unspecified, the highest
-    git tag pointing to HEAD is searched. If none is found, an error is reported.
+    What version of the artifacts should we build?
 .PARAMETER ProjectRoot
     The root folder of the project.
 #>
@@ -17,13 +16,13 @@ param(
     [ValidatePattern("^\d+\.\d+\.\d+")]
     [string]$NodejsVersion = "12.18.0",
     [string]$OutputDirectory = ".\artifacts\upm",
-    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$PackageVersion,
     [string]$ProjectRoot
 )
 
 if (-not $PackageVersion) {
-        throw "Unknown package version. Please specify -PackageVersion when building."
+    throw "Unknown package version. Please specify -PackageVersion when building."
 }
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {

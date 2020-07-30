@@ -1,0 +1,18 @@
+# [Template] Builds and publishes UPM .tgz packages
+parameters:
+  version: '$(MRTKVersion)-preview.$(Build.BuildNumber)'
+
+steps:
+- task: PowerShell@2
+  displayName: 'Build UPM pacakges'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/createupmpackages.ps1
+    arguments: >
+      -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
+      -PackageVersion ${{ parameters.version }}
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish UPM packages'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
+    ArtifactName: 'mrtk-upm'
