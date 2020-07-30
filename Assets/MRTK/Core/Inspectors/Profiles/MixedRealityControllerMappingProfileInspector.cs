@@ -104,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             controllerRenderList.Clear();
 
-            // Generating the set of controllers that belong to each mapping
-            Dictionary<ControllerMappingSignature, List<string>> mappingSignatureDictionary = new Dictionary<ControllerMappingSignature, List<string>>();
-            List<ControllerMappingSignature> mappingSignatureList = new List<ControllerMappingSignature>();
+            // Generating the set of controllers that belong to each Controller Mapping Signature
+            Dictionary<ControllerMappingSignature, List<string>> controllersAffectedByMappingSignatures = new Dictionary<ControllerMappingSignature, List<string>>();
+            List<ControllerMappingSignature> ControllerMappingSignatureList = new List<ControllerMappingSignature>();
             for (int i = 0; i < thisProfile.MixedRealityControllerMappings.Length; i++)
             {
                 MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappings[i];
@@ -121,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var handednessProperty = controllerMappingProperty.FindPropertyRelative("handedness");
 
                 ControllerMappingSignature currentSignature = new ControllerMappingSignature(supportedControllerType, handedness);
-                if(!mappingSignatureDictionary.ContainsKey(currentSignature))
+                if(!controllersAffectedByMappingSignatures.ContainsKey(currentSignature))
                 {
-                    mappingSignatureDictionary.Add(currentSignature, new List<string>());
+                    controllersAffectedByMappingSignatures.Add(currentSignature, new List<string>());
                 }
-                mappingSignatureDictionary[currentSignature].Add(controllerType.ToString());
+                controllersAffectedByMappingSignatures[currentSignature].Add(controllerType.ToString());
             }
 
             showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions", true);
@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             if (GUILayout.Button(buttonContent, MixedRealityStylesUtility.ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                             {
                                 ControllerMappingSignature buttonSignature = new ControllerMappingSignature(supportedControllerType, handedness);
-                                ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness, mappingSignatureDictionary[buttonSignature]);
+                                ControllerPopupWindow.Show(controllerMapping, interactionsProperty, handedness, controllersAffectedByMappingSignatures[buttonSignature]);
                             }
                         }
                     }

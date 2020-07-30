@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Vector2 horizontalScrollPosition;
 
         private SerializedProperty currentInteractionList;
-        private static List<string> mappedControllerList;
+        private List<string> mappedControllerList = new List<string>();
 
         private ControllerPopupWindow thisWindow;
 
@@ -193,17 +193,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 window.Close();
             }
-            
-            if (mappedControllers != null)
-            {
-                mappedControllerList = mappedControllers;
-            }
 
             window = null;
+
+            if (mappedControllers == null)
+            {
+                mappedControllers = new List<string>();
+            }
+
 
             window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
             window.titleContent = new GUIContent($"{controllerMapping.Description} - Input Action Assignment");
+            window.mappedControllerList = mappedControllers;
             window.currentControllerMapping = controllerMapping;
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
