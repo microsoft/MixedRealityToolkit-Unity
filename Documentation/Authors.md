@@ -37,6 +37,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - jganser
 - johnppella
 - JonathanPalmerGD
+- JoeyBytes
 - julenka
  -julianloehr-kg
 - jwittner
@@ -74,6 +75,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - RogPodge
 - Rosthouse
 - ryzngard
+- safacero
 - sgwin
 - SimonDarksideJ
 - sloh-ms
