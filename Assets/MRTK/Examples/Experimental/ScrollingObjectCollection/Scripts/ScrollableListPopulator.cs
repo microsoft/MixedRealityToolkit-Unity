@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 scrollCollection.SetupAtRuntime = false;
                 scrollCollection.CellHeight = 0.032f;
                 scrollCollection.CellWidth = 0.032f;
-                scrollCollection.Tiers = 3;
+                scrollCollection.ItemsPerTier = 3;
                 scrollCollection.ViewableArea = 5;
                 scrollCollection.HandDeltaMagThreshold = 0.02f;
                 scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
