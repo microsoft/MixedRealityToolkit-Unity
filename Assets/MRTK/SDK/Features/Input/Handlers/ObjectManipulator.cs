@@ -970,10 +970,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
                     relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
-                    if (angle > 180f)
-                        angle -= 360f;
+                    
                     if (axis.IsValidVector())
                     {
+                        if (angle > 180f)
+                        {
+                            angle -= 360f;
+                        }
                         rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
                     }
                 }
