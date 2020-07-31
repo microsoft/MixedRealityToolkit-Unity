@@ -581,12 +581,13 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
   
   <a id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingActive_" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingActive*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingActive" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingActive">SmoothingActive</h4>
-  <div class="markdown level1 summary"><p>Check to enable frame-rate independent smoothing.</p>
+  <div class="markdown level1 summary"><p>Obsolete: Whether to enable frame-rate independent smoothing.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SmoothingActive { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;SmoothingActive is obsolete and will be removed in a future version. Applications should use SmoothingFar, SmoothingNear or a combination of the two.&quot;)]
+public bool SmoothingActive { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -603,6 +604,64 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingFar_" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingFar*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingFar" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingFar">SmoothingFar</h4>
+  <div class="markdown level1 summary"><p>Whether to enable frame-rate independent smoothing for far interactions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SmoothingFar { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingFar_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Far smoothing is enabled by default.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingNear_" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingNear*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingNear" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.SmoothingNear">SmoothingNear</h4>
+  <div class="markdown level1 summary"><p>Whether to enable frame-rate independent smoothing for near interactions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SmoothingNear { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingNear_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_TranslationElasticConfigurationObject_" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.TranslationElasticConfigurationObject*"></a>
@@ -681,6 +740,37 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_UseForcesForNearManipulation_" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.UseForcesForNearManipulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_UseForcesForNearManipulation" data-uid="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.UseForcesForNearManipulation">UseForcesForNearManipulation</h4>
+  <div class="markdown level1 summary"><p>Whether physics forces are used to move the object when performing near manipulations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseForcesForNearManipulation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_UseForcesForNearManipulation_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Setting this to <code>false</code> will make the object feel more directly connected to the
+users hand. Setting this to <code>true</code> will honor the mass and inertia of the object,
+but may feel as though the object is connected through a spring. The default is <code>false</code>.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
