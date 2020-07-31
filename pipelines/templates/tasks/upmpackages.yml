@@ -9,6 +9,7 @@ steps:
     targetType: filePath
     filePath: ./scripts/packaging/createupmpackages.ps1
     arguments: >
+      -ProjectRoot ./
       -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -PackageVersion ${{ parameters.version }}
 - task: PublishBuildArtifacts@1
