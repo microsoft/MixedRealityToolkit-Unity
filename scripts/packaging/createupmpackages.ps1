@@ -26,7 +26,7 @@ if (-not $PackageVersion) {
 }
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
-    New-Item $OutputDirectory -ItemType Directory | Out-Nul
+    New-Item $OutputDirectory -ItemType Directory | Out-Null
 }
 
 if (-not $ProjectRoot) {
