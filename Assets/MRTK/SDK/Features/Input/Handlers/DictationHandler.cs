@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the listening state
+        /// Get the listening state
         /// </summary>
         public bool IsListening
         {
@@ -85,11 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the last audio clip from the dictation session
+        /// Get the last audio clip from the dictation session
         /// </summary>
-        public AudioClip GetAudioClip()
+        public AudioClip AudioClip
         {
-            return dictationSystem.GetAudioClip();
+            get { return dictationSystem.AudioClip; }
         }
         
         #region InputSystemGlobalHandlerListener Implementation
@@ -155,6 +155,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion MonoBehaviour implementation
-
     }
 }
