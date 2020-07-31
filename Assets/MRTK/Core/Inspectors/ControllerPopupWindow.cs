@@ -289,7 +289,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderMappingList(List<string> controllerList)
         {
             if (controllerList == null)
+            {
                 return;
+            }
 
             GUIStyle headerStyle = new GUIStyle();
             headerStyle.richText = true;
