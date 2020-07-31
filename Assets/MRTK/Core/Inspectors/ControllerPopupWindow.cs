@@ -196,12 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             window = null;
 
-            if (mappedControllers == null)
-            {
-                mappedControllers = new List<string>();
-            }
-
-
             window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
             window.titleContent = new GUIContent($"{controllerMapping.Description} - Input Action Assignment");
@@ -294,6 +288,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void RenderMappingList(List<string> controllerList)
         {
+            if (controllerList == null)
+            {
+                return;
+            }
+
             GUIStyle headerStyle = new GUIStyle();
             headerStyle.richText = true;
 

@@ -106,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             // Generating the set of controllers that belong to each Controller Mapping Signature
             Dictionary<ControllerMappingSignature, List<string>> controllersAffectedByMappingSignatures = new Dictionary<ControllerMappingSignature, List<string>>();
-            List<ControllerMappingSignature> ControllerMappingSignatureList = new List<ControllerMappingSignature>();
             for (int i = 0; i < thisProfile.MixedRealityControllerMappings.Length; i++)
             {
                 MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappings[i];
