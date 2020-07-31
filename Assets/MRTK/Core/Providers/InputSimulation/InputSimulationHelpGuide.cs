@@ -69,12 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             if (shortcutPressed && shortcutDown)
             {
-                HelpGuideVisual.transform.parent = CameraCache.Main.transform;
-                HelpGuideVisual.transform.rotation = CameraCache.Main.transform.rotation;
-                HelpGuideVisual.transform.localPosition = helpDisplayOffset;
-
-                HelpGuideVisual.transform.parent = null;
-
                 HelpGuideVisual.SetActive(!HelpGuideVisual.activeSelf);
                 HelpGuideShortcutTip.SetActive(false);
             }
