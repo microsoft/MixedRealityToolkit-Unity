@@ -196,7 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void RecreateVisuals()
         {
-            Debug.Log("RecreateVisuals");
             for (int i = 0; i < handles.Count; ++i)
             {
                 // get parent of visual
@@ -209,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
                 else
                 {
-                    Debug.LogError("couldn't find translation visual on recreating visuals");
+                    Debug.LogError($"Couldn't find translation visual on recreating visuals, index {i}");
                 }
 
                 // create new visual
@@ -224,7 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            Debug.Log("UpdateColliderBounds");
             var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
@@ -270,7 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 Quaternion realignment = Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.forward);
                 midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
-            } else if (faceAxes[handleIndex] == CardinalAxisType.Y)
+            }
+            else if (faceAxes[handleIndex] == CardinalAxisType.Y)
             {
                 Quaternion realignment = Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.up);
                 midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
