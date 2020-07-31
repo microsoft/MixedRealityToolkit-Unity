@@ -26,7 +26,7 @@ if (-not $PackageVersion) {
 }
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
-    New-Item $OutputDirectory -ItemType Directory | Out-Null
+    New-Item $OutputDirectory -ItemType Directory | Out-Nul
 }
 
 if (-not $ProjectRoot) {
@@ -79,6 +79,8 @@ try {
 }
 catch {}
 
+$npmCommand = "npm"
+
 if ($nodejsInstalled -eq $false)
 {
     # Acquire and unpack node.js
@@ -90,7 +92,7 @@ if ($nodejsInstalled -eq $false)
     Write-Output "Extracting $archiveFile"
     Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
 
-    $npmPath = "$scriptPath\$archiveName\$npmPath"
+    $npmCommand = "$scriptPath\$archiveName\$npmPath\$npmCommand"
 }
 
 # Beginning of the upm packaging script main section
@@ -148,7 +150,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    npm pack
+    $npmCommand pack
 
     # Move package file to OutputFolder
     Move-Item -Path ".\*.tgz" $OutputDirectory -Force
