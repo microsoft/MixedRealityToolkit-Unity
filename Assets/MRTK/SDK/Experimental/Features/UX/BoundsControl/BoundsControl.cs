@@ -151,6 +151,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
+        [Tooltip("Which handles are visible and enabled.")]
+        private HandleFlags enabledHandles = HandleFlags.Rotation | HandleFlags.Scale;
+
+        /// <summary>
+        /// Which handles are visible and enabled.
+        /// </summary>
+        public HandleFlags EnabledHandles
+        {
+            get => enabledHandles;
+            set => enabledHandles = value;
+        }
+
+        [SerializeField]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
 
@@ -216,6 +229,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             get => rotationHandlesConfiguration;
             set => rotationHandlesConfiguration = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Configuration of the translation handles.")]
+        private TranslationHandlesConfiguration translationHandlesConfiguration;
+        /// <summary>
+        /// Configuration of the translation handles.
+        /// </summary>
+        public TranslationHandlesConfiguration TranslationHandlesConfig
+        {
+            get => translationHandlesConfiguration;
+            set => translationHandlesConfiguration = value;
         }
 
         [SerializeField]
@@ -303,6 +328,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float translateLerpTime = 0.001f;
+
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
+        public float TranslateLerpTime
+        {
+            get => translateLerpTime;
+            set => translateLerpTime = value;
+        }
+
+        [Header("Events")]
+        [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
         /// <summary>
@@ -350,6 +390,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleStopped = value;
         }
 
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a translation handle starts.")]
+        private UnityEvent translateStarted = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a translation handle starts.
+        /// </summary>
+        public UnityEvent TranslateStarted
+        {
+            get => translateStarted;
+            set => translateStarted = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a translation handle stops.")]
+        private UnityEvent translateStopped = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a translation handle stops.
+        /// </summary>
+        public UnityEvent TranslateStopped
+        {
+            get => translateStopped;
+            set => translateStopped = value;
+        }
+
         #endregion Serialized Fields
 
         #region Private Fields
@@ -358,6 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Links links;
         private ScaleHandles scaleHandles;
         private RotationHandles rotationHandles;
+        private TranslationHandles translationHandles;
         private BoxDisplay boxDisplay;
         private ProximityEffect proximityEffect;
 
@@ -380,6 +445,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         // Current axis of rotation about the center of the rig root
         private Vector3 currentRotationAxis;
+
+        // Current axis of translation about the center of the rig root
+        private Vector3 currentTranslationAxis;
 
         // Scale of the target at the beginning of the current manipulation
         private Vector3 initialScaleOnGrabStart;
@@ -469,8 +537,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             get
             {
-                return scaleHandles != null &&
-                    rotationHandles != null &&
+                return rotationHandles != null &&
+                    scaleHandles != null &&
+                    translationHandles != null &&
                     boxDisplay != null &&
                     links != null &&
                     proximityEffect != null;
@@ -552,15 +621,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 targetObject = gameObject;
 
             // ensure we have a default configuration in case there's none set by the user
+            // Translation handles are optional; we will leave the config object null if the
+            // user has not assigned one.
             scaleHandlesConfiguration = EnsureScriptable(scaleHandlesConfiguration);
             rotationHandlesConfiguration = EnsureScriptable(rotationHandlesConfiguration);
+            translationHandlesConfiguration = EnsureScriptable(translationHandlesConfiguration);
             boxDisplayConfiguration = EnsureScriptable(boxDisplayConfiguration);
             linksConfiguration = EnsureScriptable(linksConfiguration);
             handleProximityEffectConfiguration = EnsureScriptable(handleProximityEffectConfiguration);
 
             // instantiate runtime classes for visuals
-            scaleHandles = new ScaleHandles(scaleHandlesConfiguration);
-            rotationHandles = new RotationHandles(rotationHandlesConfiguration);
+            scaleHandles = scaleHandlesConfiguration.ConstructInstance();
+            rotationHandles = rotationHandlesConfiguration.ConstructInstance();
+            translationHandles = translationHandlesConfiguration.ConstructInstance();
+            
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
@@ -605,9 +679,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 Active = false;
             }
-
-
-
         }
 
         private void OnDisable()
@@ -840,6 +911,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 return scaleHandles.GetHandleType();
             }
+            else if (translationHandles.IsHandleType(handle))
+            {
+                return translationHandles.GetHandleType();
+            }
             else
             {
                 return HandleType.None;
@@ -921,6 +996,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (debugText != null) debugText.text = "OnPointerUp:RotateStopped";
                 RotateStopped?.Invoke();
             }
+            else if (lastHandleType == HandleType.Translation)
+            {
+                if (debugText != null) debugText.text = "OnPointerUp:TranslateStopped";
+                TranslateStopped?.Invoke();
+            }
         }
 
         private void DestroyRig()
@@ -994,6 +1074,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return rigRoot.transform.forward;
             }
         }
+        private Vector3 GetTranslationAxis(Transform handle)
+        {
+            CardinalAxisType axisType = translationHandles.GetAxisType(handle);
+            if (axisType == CardinalAxisType.X)
+            {
+                return rigRoot.transform.right;
+            }
+            else if (axisType == CardinalAxisType.Y)
+            {
+                return rigRoot.transform.up;
+            }
+            else
+            {
+                return rigRoot.transform.forward;
+            }
+        }
 
         private void InitializeRigRoot()
         {
@@ -1047,6 +1143,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                     Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
+                }
+                else if (transformType == HandleType.Translation)
+                {
+                    Vector3 translateVectorAlongAxis = Vector3.Project(currentGrabPoint - initialGrabPoint, currentTranslationAxis);
+
+                    var goal = initialPositionOnGrabStart + translateVectorAlongAxis;
+                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
                 }
             }
         }
@@ -1125,7 +1228,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
                     // todo: move this out?
-                    SetHighlighted(grabbedHandleTransform);
+                    SetHighlighted(grabbedHandleTransform, eventData.Pointer);
 
                     if (currentHandleType == HandleType.Scale)
                     {
@@ -1149,6 +1252,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         if (debugText != null)
                         {
                             debugText.text = "OnPointerDown:RotateStarted";
+                        }
+                    }
+                    else if (currentHandleType == HandleType.Translation)
+                    {
+                        currentTranslationAxis = GetTranslationAxis(grabbedHandleTransform);
+
+                        TranslateStarted?.Invoke();
+
+                        if (debugText != null)
+                        {
+                            debugText.text = "OnPointerDown:TranslateStarted";
                         }
                     }
 
@@ -1201,6 +1315,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (debugText != null) debugText.text = "OnSourceLost:RotateStopped";
                     RotateStopped?.Invoke();
                 }
+                else if (lastHandleType == HandleType.Translation)
+                {
+                    if (debugText != null) debugText.text = "OnSourceLost:TranslateStopped";
+                    TranslateStopped?.Invoke();
+                }
             }
         }
 
@@ -1215,10 +1334,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #region BoundsControl Visuals Private Methods
 
-        private void SetHighlighted(Transform activeHandle)
+        private void SetHighlighted(Transform activeHandle, IMixedRealityPointer pointer = null)
         {
-            scaleHandles.SetHighlighted(activeHandle);
-            rotationHandles.SetHighlighted(activeHandle);
+            if (enabledHandles.HasFlag(HandleFlags.Scale))
+            {
+                scaleHandles.SetHighlighted(activeHandle, pointer);
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Rotation))
+            {
+                rotationHandles.SetHighlighted(activeHandle, pointer);
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Translation))
+            {
+                translationHandles.SetHighlighted(activeHandle, pointer);
+            }
+
             boxDisplay.SetHighlighted();
         }
 
@@ -1229,27 +1361,63 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return;
             }
 
-            links.Reset(active, flattenAxis);
+            
 
             boxDisplay.Reset(active);
             boxDisplay.UpdateFlattenAxis(flattenAxis);
 
             bool isVisible = (active == true && wireframeOnly == false);
-            rotationHandles.Reset(isVisible, flattenAxis);
-            scaleHandles.Reset(isVisible, flattenAxis);
+
+            if (enabledHandles.HasFlag(HandleFlags.Rotation))
+            {
+                rotationHandles.Reset(isVisible, flattenAxis);
+
+                // Links depend on rotation handles for position calculations.
+                links.Reset(active, flattenAxis);
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Scale))
+            {
+                scaleHandles.Reset(isVisible, flattenAxis);
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Translation))
+            {
+                translationHandles.Reset(isVisible, flattenAxis);
+            }
         }
 
         private void CreateVisuals()
         {
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-            scaleHandles.Create(ref boundsCorners, rigRoot, isFlattened);
-            proximityEffect.RegisterObjectProvider(scaleHandles);
 
-            // add links
-            rotationHandles.Create(ref boundsCorners, rigRoot);
-            proximityEffect.RegisterObjectProvider(rotationHandles);
-            links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
+            // Add scale handles
+            if (enabledHandles.HasFlag(HandleFlags.Scale))
+            {
+                scaleHandles.Create(ref boundsCorners, rigRoot, isFlattened);
+                proximityEffect.RegisterObjectProvider(scaleHandles);
+            }
+
+            // Add rotation handles
+            if (enabledHandles.HasFlag(HandleFlags.Rotation))
+            {
+                rotationHandles.Create(ref boundsCorners, rigRoot);
+                proximityEffect.RegisterObjectProvider(rotationHandles);
+
+                // Links require rotation handles to calculate their position.
+                // This should not be a dependency; edge center calculations can
+                // decoupled from the rotation handles.
+                // TODO: Decouple these
+                links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
+            }
+
+            // Add translation handles
+            if (enabledHandles.HasFlag(HandleFlags.Translation))
+            {
+                translationHandles.Create(ref boundsCorners, rigRoot);
+                proximityEffect.RegisterObjectProvider(translationHandles);
+            }
 
             // add box display
             boxDisplay.AddBoxDisplay(rigRoot.transform, currentBoundsExtents, flattenAxis);
@@ -1262,8 +1430,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             proximityEffect.ClearObjects();
             links.Clear();
-            scaleHandles.DestroyHandles();
-            rotationHandles.DestroyHandles();
+
+            if (enabledHandles.HasFlag(HandleFlags.Scale))
+            {
+                scaleHandles.DestroyHandles();
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Rotation))
+            {
+                rotationHandles.DestroyHandles();
+            }
+
+            if (enabledHandles.HasFlag(HandleFlags.Translation))
+            {
+                translationHandles.DestroyHandles();
+            }
         }
 
         private void UpdateVisuals()
@@ -1278,10 +1459,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 rigRoot.position = Vector3.zero;
                 rigRoot.localScale = Vector3.one;
 
-                rotationHandles.CalculateEdgeCenters(ref boundsCorners);
-                scaleHandles.UpdateHandles(ref boundsCorners);
-                links.UpdateLinkPositions(ref boundsCorners);
-                links.UpdateLinkScales(currentBoundsExtents);
+                if (enabledHandles.HasFlag(HandleFlags.Rotation))
+                {
+                    rotationHandles.CalculateEdgeCenters(ref boundsCorners);
+
+                    // Links depend on rotation handles for position calculations.
+                    links.UpdateLinkPositions(ref boundsCorners);
+                    links.UpdateLinkScales(currentBoundsExtents);
+                }
+
+                if (enabledHandles.HasFlag(HandleFlags.Translation))
+                {
+                    translationHandles.CalculateFaceCenters(ref boundsCorners);
+                }
+
+                if (enabledHandles.HasFlag(HandleFlags.Scale))
+                {
+                    scaleHandles.UpdateHandles(ref boundsCorners);
+                }
+
                 boxDisplay.UpdateDisplay(currentBoundsExtents, flattenAxis);
 
                 // move rig into position and rotation

@@ -35,7 +35,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     {
         None = 0,
         Rotation,
-        Scale
+        Scale,
+        Translation
+    }
+
+    /// <summary>
+    /// Flags which determine which handle type is enabled.
+    /// </summary>
+    [System.Flags]
+    public enum HandleFlags
+    {
+        Rotation = 1 << 0,
+        Scale = 1 << 1,
+        Translation = 1 << 2
     }
 
     /// <summary>
@@ -51,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         Cubic = 0,
         Cylindrical
     }
-
 
     /// <summary>
     /// This enum defines what volume type the bound calculation depends on and its priority

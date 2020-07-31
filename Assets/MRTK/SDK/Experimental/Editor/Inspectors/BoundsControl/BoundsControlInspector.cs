@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -21,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
+        private SerializedProperty enabledHandles;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -31,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty linksConfiguration;
         private SerializedProperty scaleHandlesConfiguration;
         private SerializedProperty rotationHandlesConfiguration;
+        private SerializedProperty translationHandlesConfiguration;
         private SerializedProperty proximityEffectConfiguration;
 
         // Debug
@@ -41,12 +44,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty rotateStoppedEvent;
         private SerializedProperty scaleStartedEvent;
         private SerializedProperty scaleStoppedEvent;
+        private SerializedProperty translateStartedEvent;
+        private SerializedProperty translateStoppedEvent;
 
         private BoundsControl boundsControl;
 
         private static bool showBoxConfiguration = false;
         private static bool showScaleHandlesConfiguration = false;
         private static bool showRotationHandlesConfiguration = false;
+        private static bool showTranslationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
 
@@ -60,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
+            enabledHandles = serializedObject.FindProperty("enabledHandles");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
@@ -69,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             linksConfiguration = serializedObject.FindProperty("linksConfiguration");
             scaleHandlesConfiguration = serializedObject.FindProperty("scaleHandlesConfiguration");
             rotationHandlesConfiguration = serializedObject.FindProperty("rotationHandlesConfiguration");
+            translationHandlesConfiguration = serializedObject.FindProperty("translationHandlesConfiguration");
             proximityEffectConfiguration = serializedObject.FindProperty("handleProximityEffectConfiguration");
 
             hideElementsInHierarchyEditor = serializedObject.FindProperty("hideElementsInInspector");
@@ -77,6 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
             scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
+            translateStartedEvent = serializedObject.FindProperty("scaleStarted");
+            translateStoppedEvent = serializedObject.FindProperty("scaleStopped");
         }
 
         public override void OnInspectorGUI()
@@ -113,16 +123,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
+                        enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles ", (HandleFlags)enabledHandles.intValue);
 
                         showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
                                                                                                                  "Box Configuration", 
                                                                                                                  showBoxConfiguration);
-                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
-                                                                                                                            "Scale Handles Configuration", 
+
+                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Scale))
+                        {
+                            showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
+                                                                                                                            "Scale Handles Configuration",
                                                                                                                             showScaleHandlesConfiguration);
-                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, 
-                                                                                                                                  "Rotation Handles Configuration", 
+                        }
+
+                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Rotation))
+                        {
+                            showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration,
+                                                                                                                                  "Rotation Handles Configuration",
                                                                                                                                   showRotationHandlesConfiguration);
+                        }
+
+                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Translation))
+                        {
+                            showTranslationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<TranslationHandlesConfiguration>(translationHandlesConfiguration,
+                                                                                                                                  "Translation Handles Configuration",
+                                                                                                                                  showTranslationHandlesConfiguration);
+                        }
+
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
@@ -138,6 +165,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         EditorGUILayout.PropertyField(rotateStoppedEvent);
                         EditorGUILayout.PropertyField(scaleStartedEvent);
                         EditorGUILayout.PropertyField(scaleStoppedEvent);
+                        EditorGUILayout.PropertyField(translateStartedEvent);
+                        EditorGUILayout.PropertyField(translateStoppedEvent);
                     }
 
                     EditorGUILayout.Space();
