@@ -160,11 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 IsListening = false;
                 isTransitioning = true;
 
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
                 if (hasListener)
                 {
-                    inputSystem?.PopModalInputHandler();
+                    Service?.PopModalInputHandler();
                     hasListener = false;
                 }
 
