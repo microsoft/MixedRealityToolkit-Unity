@@ -8341,7 +8341,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "eJvVDsHVeVvqVf4bzFSthw=="
+          "hash": "YXG8f3bMYb+Eryr3njfDKw=="
         }
       },
       "is_incremental": false,
@@ -14556,7 +14556,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.html",
-          "hash": "NJJCIcFzNZvinYHkvvk88g=="
+          "hash": "GcEezxcP9s+/smir4NNLIA=="
         }
       },
       "is_incremental": false,
@@ -15132,7 +15132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html",
-          "hash": "v8jkQuOdahLi99fGCskp5w=="
+          "hash": "W9M/gEks2QxMJ8wMaOhghQ=="
         }
       },
       "is_incremental": false,
@@ -27624,7 +27624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider.html",
-          "hash": "a+XBvrsWGQs0sV7jk5gI7Q=="
+          "hash": "ywFunOmPA3vNtx4htlxeng=="
         }
       },
       "is_incremental": false,
