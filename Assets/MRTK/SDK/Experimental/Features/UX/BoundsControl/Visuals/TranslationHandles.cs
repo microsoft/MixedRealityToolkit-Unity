@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
-    /// Translation handles for <see cref="BoundsControl"/> that are used for rotating the
+    /// Translation handles for <see cref="BoundsControl"/> that are used for translating the
     /// Gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
     public class TranslationHandles : HandlesBase
