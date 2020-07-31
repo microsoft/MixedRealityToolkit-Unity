@@ -87,8 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
             scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
-            translateStartedEvent = serializedObject.FindProperty("scaleStarted");
-            translateStoppedEvent = serializedObject.FindProperty("scaleStopped");
+            translateStartedEvent = serializedObject.FindProperty("translateStarted");
+            translateStoppedEvent = serializedObject.FindProperty("translateStopped");
         }
 
         public override void OnInspectorGUI()
@@ -131,27 +131,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                                                                                                                  "Box Configuration", 
                                                                                                                  showBoxConfiguration);
 
-                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Scale))
-                        {
-                            showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
+                        HandleFlags handles = (HandleFlags)enabledHandles.intValue;
+
+                        GUI.enabled = handles.HasFlag(HandleFlags.Scale);
+                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
                                                                                                                             "Scale Handles Configuration",
                                                                                                                             showScaleHandlesConfiguration);
-                        }
 
-                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Rotation))
-                        {
-                            showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration,
+                        GUI.enabled = handles.HasFlag(HandleFlags.Rotation);
+                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration,
                                                                                                                                   "Rotation Handles Configuration",
                                                                                                                                   showRotationHandlesConfiguration);
-                        }
 
-                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Translation))
-                        {
-                            showTranslationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<TranslationHandlesConfiguration>(translationHandlesConfiguration,
+
+                        GUI.enabled = handles.HasFlag(HandleFlags.Translation);
+                        showTranslationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<TranslationHandlesConfiguration>(translationHandlesConfiguration,
                                                                                                                                   "Translation Handles Configuration",
                                                                                                                                   showTranslationHandlesConfiguration);
-                        }
 
+                        GUI.enabled = true;
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
