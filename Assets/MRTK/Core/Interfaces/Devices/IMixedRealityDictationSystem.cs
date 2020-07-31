@@ -50,6 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Get the audio clip associated with the current session.
         /// </summary>	 	 
-        AudioClip GetAudioClip();
+        AudioClip AudioClip { get; }
     }
 }
