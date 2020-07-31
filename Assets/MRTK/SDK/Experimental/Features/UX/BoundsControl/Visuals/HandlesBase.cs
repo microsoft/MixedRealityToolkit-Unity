@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
         protected abstract void RecreateVisuals();
 
-        protected void ResetHandles()
+        protected virtual void ResetHandles()
         {
             if (handles != null)
             {
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         internal protected List<Transform> handles = new List<Transform>();
-        private Transform highlightedHandle = null;
+        protected Transform highlightedHandle = null;
 
         ProximityObjectsChangedEvent IProximityEffectObjectProvider.ProximityObjectsChanged => objectsChangedEvent;
         protected ProximityObjectsChangedEvent objectsChangedEvent = new ProximityObjectsChangedEvent();
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get { return handles; }
         }
 
-        internal void SetHighlighted(Transform handleToHighlight)
+        internal virtual void SetHighlighted(Transform handleToHighlight, IMixedRealityPointer associatedPointer = null)
         {
             // turn off all handles that aren't the handle we want to highlight
             if (handles != null)
