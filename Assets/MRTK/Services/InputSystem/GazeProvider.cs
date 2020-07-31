@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         private void OnDestroy()
         {
-            if (GazeCursor != null)
+            if (GazeCursor != null && !GazeCursor.Equals(null))
             {
                 Destroy(GazeCursor.GameObjectReference);
             }
