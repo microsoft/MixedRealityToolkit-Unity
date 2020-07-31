@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     public class TranslationHandles : HandlesBase
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
-        protected TranslationHandlesConfiguration config;
-        protected FlattenModeType cachedFlattenAxis;
+        private TranslationHandlesConfiguration config;
+        private FlattenModeType cachedFlattenAxis;
 
         internal TranslationHandles(TranslationHandlesConfiguration configuration)
         {
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.colliderTypeChanged.RemoveListener(UpdateColliderType);
         }
 
-        protected void UpdateColliderType()
+        private void UpdateColliderType()
         {
             foreach (var handle in handles)
             {
@@ -134,7 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             UpdateHandles();
         }
 
-
         internal void InitEdgeAxis()
         {
             faceAxes = new CardinalAxisType[NumFaces];
@@ -172,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             CreateHandles(parent);
         }
 
-        protected virtual void CreateHandles(Transform parent)
+        private void CreateHandles(Transform parent)
         {
             for (int i = 0; i < faceCenters.Length; ++i)
             {
@@ -243,8 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-
-        protected Bounds CreateVisual(int handleIndex, GameObject parent)
+        private Bounds CreateVisual(int handleIndex, GameObject parent)
         {
             GameObject midpointVisual;
             GameObject prefabType = config.HandlePrefab;

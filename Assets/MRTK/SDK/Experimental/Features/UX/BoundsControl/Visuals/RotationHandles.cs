@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     public class RotationHandles : HandlesBase
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
-        protected RotationHandlesConfiguration config;
+        private RotationHandlesConfiguration config;
         private FlattenModeType cachedFlattenAxis;
 
         internal RotationHandles(RotationHandlesConfiguration configuration)
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.colliderTypeChanged.RemoveListener(UpdateColliderType);
         }
 
-        protected void UpdateColliderType()
+        private void UpdateColliderType()
         {
             foreach (var handle in handles)
             {
