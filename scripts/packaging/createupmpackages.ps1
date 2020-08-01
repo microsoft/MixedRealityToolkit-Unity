@@ -150,7 +150,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    $npmCommand pack
+    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmCommand pack" -NoNewWindow -Wait
 
     # Move package file to OutputFolder
     Move-Item -Path ".\*.tgz" $OutputDirectory -Force
