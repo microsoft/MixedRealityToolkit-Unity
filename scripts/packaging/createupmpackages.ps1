@@ -20,8 +20,7 @@ param(
 $startPath = "$(Get-Location)"
 
 if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$startPath\..\.." 
+    throw "Unknown project root path. Please specify -ProjectRoot when building."
 }
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
 Write-Output "Project root: $ProjectRoot"
