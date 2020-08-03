@@ -7,7 +7,7 @@ steps:
   inputs:
     versionSpec: '12.18.0' 
 - task: PowerShell@2
-  displayName: 'Build UPM pacakges'
+  displayName: 'Build UPM packages'
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/createupmpackages.ps1
