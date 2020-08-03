@@ -3,8 +3,6 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER NodejsVersion
-    The desired version of node.js to use when packaging. If not specified, a known good version will be used.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER PackageVersion
@@ -13,8 +11,6 @@
     The root folder of the project.
 #>
 param(
-    [ValidatePattern("^\d+\.\d+\.\d+")]
-    [string]$NodejsVersion = "12.18.0",
     [string]$OutputDirectory = ".\artifacts\upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$PackageVersion,
@@ -24,8 +20,7 @@ param(
 $startPath = "$(Get-Location)"
 
 if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$startPath\..\.." 
+    throw "Unknown project root path. Please specify -ProjectRoot when building."
 }
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
 Write-Output "Project root: $ProjectRoot"
@@ -78,29 +73,7 @@ $packages = [ordered]@{
     "examples" = "Assets\MRTK\Examples";
 }
 
-# Ensure we can call npm.cmd to package and publish
-[boolean]$nodejsInstalled = $false
-try {
-    node.exe -v > $null 2> $null
-    $nodejsInstalled = $true
-}
-catch {}
-
 $npmCommand = "npm"
-
-if ($nodejsInstalled -eq $false)
-{
-    # Acquire and unpack node.js
-    $archiveName = "node-v$NodejsVersion-win-x64"
-    $archiveFile = ".\$archiveName.zip"
-    $downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
-    Write-Output "Downloading node.js v$NodejsVersion"
-    Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
-    Write-Output "Extracting $archiveFile"
-    Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
-
-    $npmCommand = "$scriptPath\$archiveName\$npmPath\$npmCommand"
-}
 
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
@@ -174,15 +147,6 @@ foreach ($entry in $packages.GetEnumerator()) {
     
     # Restore the package.json file
     Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
-}
-
-# Return the the scripts\packaging folder
-Set-Location -Path $scriptPath
-
-if ($nodejsInstalled -eq $false) {
-    # Cleanup the node.js "installation"
-    Remove-Item ".\$archiveName" -Recurse -Force
-    Remove-Item $archiveFile -Force
 }
 
 # Return to the starting path
