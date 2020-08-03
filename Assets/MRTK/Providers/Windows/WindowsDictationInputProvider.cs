@@ -418,7 +418,14 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />	 	 
         public AudioClip AudioClip
         {
-            get { return dictationAudioClip; }
+            get
+            {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+                return dictationAudioClip;
+#else
+                return null;
+#endif
+            }
         }
     }
 }
