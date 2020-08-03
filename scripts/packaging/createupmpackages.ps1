@@ -21,6 +21,15 @@ param(
     [string]$ProjectRoot
 )
 
+$startPath = "$(Get-Location)"
+
+if (-not $ProjectRoot) {
+    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
+    $ProjectRoot = Resolve-Path "$startPath\..\.." 
+}
+$ProjectRoot = Resolve-Path -Path $ProjectRoot
+Write-Output "Project root: $ProjectRoot"
+
 if (-not $PackageVersion) {
     throw "Unknown package version. Please specify -PackageVersion when building."
 }
@@ -28,11 +37,9 @@ if (-not $PackageVersion) {
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
 }
+$OutputDirectory = Resolve-Path -Path $OutputDirectory
+Write-Output "OutputDirectory: $OutputDirectory"
 
-if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$(Get-Location)\..\.." 
-}
 $scriptPath = "$ProjectRoot\scripts\packaging"
 
 $scope = "com.microsoft.mixedreality"
@@ -108,7 +115,7 @@ $cmdFullPath = "$env:systemroot\system32\cmd.exe"
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
-    $packagePath = "$ProjectRoot\$packageFolder"
+    $packagePath = Resolve-Path -Path "$ProjectRoot\$packageFolder"
   
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
@@ -177,3 +184,6 @@ if ($nodejsInstalled -eq $false) {
     Remove-Item ".\$archiveName" -Recurse -Force
     Remove-Item $archiveFile -Force
 }
+
+# Return to the starting path
+Set-Location $startPath
