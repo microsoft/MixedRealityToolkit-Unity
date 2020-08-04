@@ -1,6 +1,6 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.foundation",
-    "displayName": "Mixed Reality Toolkit Foundation",
+    "name": "com.microsoft.mixedreality.toolkit.foundation.xr2018",
+    "displayName": "Mixed Reality Toolkit Foundation (Unity 2018 XR API)",
     "version": "%version%",
     "unity": "2018.4",
     "description": "The Mixed Reality Toolkit a set of foundational components and features to accelerate mixed reality app development in Unity. This package supports the Unity 2018 XR API and is not supported on Unity 2020 and newer.",
