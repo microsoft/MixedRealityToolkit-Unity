@@ -97,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal Vector3 GetEdgeCenter(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumEdges, "Edge center index out of bounds");
+            Debug.Assert(index >= 0 && index < NumEdges, "Edge center index out of bounds");
             return edgeCenters[index];
         }
 
         internal CardinalAxisType GetAxisType(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumEdges, "Edge axes index out of bounds");
+            Debug.Assert(index >= 0 && index < NumEdges, "Edge axes index out of bounds");
             return edgeAxes[index];
         }
 
