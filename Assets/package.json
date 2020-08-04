@@ -26,5 +26,12 @@
     "dependencies": {
         "com.unity.xr.openvr.standalone": "1.0.5",
         "com.unity.xr.windowsmr.metro": "1.0.21"
-    }
+    },
+    "files":[
+        "Core*",
+        "SDK*",
+        "Services*",
+        "Providers*",
+        "package.json.meta"
+    ]
 }
