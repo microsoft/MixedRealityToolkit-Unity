@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             };
 
             /// Preserve local transform when attaching to parent.
-            newMesh.GameObject.transform.SetParent(meshParent?.transform, false);
+            newMesh.GameObject.transform.SetParent(meshParent != null ? meshParent.transform : null, false);
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;

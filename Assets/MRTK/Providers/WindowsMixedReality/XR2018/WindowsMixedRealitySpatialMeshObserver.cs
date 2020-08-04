@@ -689,7 +689,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 meshes.Add(cookedData.id.handle, meshObject);
 
                 /// Preserve local transform relative to parent.
-                meshObject.GameObject.transform.SetParent(ObservedObjectParent?.transform, false);
+                meshObject.GameObject.transform.SetParent(ObservedObjectParent != null 
+                        ? ObservedObjectParent.transform
+                        : null,
+                    false);
 
                 meshEventData.Initialize(this, cookedData.id.handle, meshObject);
                 if (sendUpdatedEvent)
