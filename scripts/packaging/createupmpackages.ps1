@@ -3,18 +3,25 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER OutputDirectory
-    Where should we place the output? Defaults to ".\artifacts"
-.PARAMETER PackageVersion
-    What version of the artifacts should we build?
 .PARAMETER ProjectRoot
     The root folder of the project.
+.PARAMETER OutputDirectory
+    Where should we place the output? Defaults to ".\artifacts"
+.PARAMETER Version
+    What version of the artifacts should we build?
+.PARAMETER BuildNumber
+    The build number to append to the version. Note: This value is only used if the IsPreview parameter is set to true.
+.PARAMETER IsPreview
+    Are we creating preview packages? If so, the version of the artifiacts will be formatted as "<$Version>-preview.<BuildNumber>".
 #>
 param(
+    [string]$ProjectRoot,
     [string]$OutputDirectory = ".\artifacts\upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
-    [string]$PackageVersion,
-    [string]$ProjectRoot
+    [string]$Version,
+    [ValidatePattern("^\d+?[\.\d+]*$")]
+    [string]$BuildNumber,
+    [bool]$IsPreview = $False
 )
 
 $startPath = "$(Get-Location)"
@@ -25,9 +32,17 @@ if (-not $ProjectRoot) {
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
 Write-Output "Project root: $ProjectRoot"
 
-if (-not $PackageVersion) {
-    throw "Unknown package version. Please specify -PackageVersion when building."
+if (-not $Version) {
+    throw "Unknown package version. Please specify -Version when building."
 }
+
+if ($IsPreview) {
+    if (-not $BuildNumber) {
+        throw "Unknown build number. Please specify -BuildNumber when setting IsPreview to true."
+    }
+    $Version = "$Version-preview.$BuildNumber"
+}
+Write-Output "Package version: $Version"
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
@@ -78,7 +93,7 @@ $npmCommand = "npm"
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 1) Replace the %version% token in the package.json file with the value of PackageVersion
+# 1) Replace the %version% token in the package.json file with the value of Version
 # 2) Overwrite the package.json file
 # 3) Create and the packages and copy to the OutputFolder
 # 4) Cleanup files created and/or modified
@@ -96,7 +111,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath\package.json"
     $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
-    $packageJson = ($packageJson -replace "%version%", $PackageVersion)
+    $packageJson = ($packageJson -replace "%version%", $Version)
     [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
 
     # Create and publish the package
