@@ -1,0 +1,30 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.foundation",
+    "displayName": "Mixed Reality Toolkit Foundation",
+    "version": "%version%",
+    "unity": "2018.4",
+    "description": "The Mixed Reality Toolkit a set of foundational components and features to accelerate mixed reality app development in Unity. This package supports the Unity 2018 XR API and is not supported on Unity 2020 and newer.",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens"
+    ],
+    "author": "Microsoft Corporation",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.unity.xr.openvr.standalone": "1.0.5",
+        "com.unity.xr.windowsmr.metro": "1.0.21"
+    }
+}
