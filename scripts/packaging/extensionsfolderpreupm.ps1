@@ -49,12 +49,12 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
 }
 
 # Create the samples data for the package.json file
-$samplesCount = 0
+$sampleCount = 0
 $samples = "`"samples`": ["
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     # Since we need to place appropriate separator characters between entries, we need to
     # keep track of how many folders we have processed
-    $samplesCount++
+    $sampleCount++
 
     $folderName = $entry.Name
 
@@ -69,9 +69,6 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
     $samples = $samples + "      }"
     if (-not ($sampleCount -eq $exampleFolders.keys.count)) {
             $samples = $samples + ","
-    }
-    else {
-        $samples = $samples + ","
     }
 }
 $samples = $samples + "`n   ]"
