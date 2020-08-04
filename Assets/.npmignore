@@ -2,7 +2,7 @@ MRTK/Examples*
 MRTK/Extensions*
 MRTK/Providers/Oculus*
 MRTK/Providers/UnityAR*
-MRTK/Providers/WindowsMixedReality/XRSDK/*
+MRTK/Providers/WindowsMixedReality/XRSDK*
 MRTK/Providers/XRSDK*
 MRTK/Tests*
 MRTK/Tools*
