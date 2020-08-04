@@ -22,6 +22,6 @@ MonoBehaviour:
   drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
   translationHandlePrefabColliderType: 1
-  showTranslationHandleForX: 1
-  showTranslationHandleForY: 1
-  showTranslationHandleForZ: 1
+  showTranslationHandleForX: 0
+  showTranslationHandleForY: 0
+  showTranslationHandleForZ: 0

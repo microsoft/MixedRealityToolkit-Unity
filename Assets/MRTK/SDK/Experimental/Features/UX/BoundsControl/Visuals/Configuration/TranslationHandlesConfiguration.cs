@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [SerializeField]
         [Tooltip("Check to show translation handles for the X axis")]
-        private bool showTranslationHandleForX = true;
+        private bool showTranslationHandleForX = false;
 
         /// <summary>
         /// Check to show translation handles for the X axis
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [SerializeField]
         [Tooltip("Check to show translation handles for the Y axis")]
-        private bool showTranslationHandleForY = true;
+        private bool showTranslationHandleForY = false;
 
         /// <summary>
         /// Check to show translation handles for the Y axis
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [SerializeField]
         [Tooltip("Check to show translation handles for the Z axis")]
-        private bool showTranslationHandleForZ = true;
+        private bool showTranslationHandleForZ = false;
 
         /// <summary>
         /// Check to show translation handles for the Z axis
