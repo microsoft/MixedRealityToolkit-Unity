@@ -1,6 +1,7 @@
 # [Template] Builds and publishes UPM .tgz packages
 parameters:
-  version: '$(MRTKVersion)-preview.$(Build.BuildNumber)'
+  version: $(MRTKVersion)
+  buildNumber: $(Build.BuildNumber)
 
 steps:
 - task: NodeTool@0
@@ -12,9 +13,10 @@ steps:
     targetType: filePath
     filePath: ./scripts/packaging/createupmpackages.ps1
     arguments: >
-      -ProjectRoot ./
+      -ProjectRoot $(Get-Location)
       -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-      -PackageVersion ${{ parameters.version }}
+      -Version ${{ parameters.version }}
+      -BuildNumber ${{ parameters.buildNumber }}
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM packages'
   inputs:

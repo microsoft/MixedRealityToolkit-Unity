@@ -11,8 +11,8 @@
     What version of the artifacts should we build?
 .PARAMETER BuildNumber
     The build number to append to the version. Note: This value is only used if the IsPreview parameter is set to true.
-.PARAMETER IsPreview
-    Are we creating preview packages? If so, the version of the artifiacts will be formatted as "<$Version>-preview.<BuildNumber>".
+.PARAMETER IsOfficial
+    Are we creating official packages? If not, the version of the artifiacts will be formatted as "<$Version>-preview.<BuildNumber>".
 #>
 param(
     [string]$ProjectRoot,
@@ -21,7 +21,7 @@ param(
     [string]$Version,
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$BuildNumber,
-    [bool]$IsPreview = $False
+    [bool]$IsOfficial = $False
 )
 
 $startPath = "$(Get-Location)"
@@ -36,9 +36,9 @@ if (-not $Version) {
     throw "Unknown package version. Please specify -Version when building."
 }
 
-if ($IsPreview) {
+if (-not $IsOfficial) {
     if (-not $BuildNumber) {
-        throw "Unknown build number. Please specify -BuildNumber when setting IsPreview to true."
+        throw "Unknown build number. Please specify -BuildNumber when setting IsOfficial to false."
     }
     $Version = "$Version-preview.$BuildNumber"
 }
