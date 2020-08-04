@@ -2,8 +2,8 @@
     "name": "com.microsoft.mixedreality.toolkit.foundation",
     "displayName": "Mixed Reality Toolkit Foundation",
     "version": "%version%",
-    "unity": "2018.4",
-    "description": "MRTK-Unity provides a set of foundational components and features to accelerate MR app development in Unity.",
+    "unity": "2019.4",
+    "description": "The Mixed Reality Toolkit a set of foundational components and features to accelerate mixed reality app development in Unity.",
     "keywords": [
         "mrtk",
         "microsoft",
@@ -23,11 +23,9 @@
     "bugs": {
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
       },
-    "dependencies": {},
-    "files": [
-        "Core*",
-        "SDK*",
-        "Services*",
-        "package.json.meta"
-    ]
+    "dependencies": {
+        "com.unity.xr.management": "3.2.13",
+        "com.unity.xr.oculus": "1.3.4",
+        "com.unity.xr.windowsmr": "2.2.0"
+    }
 }
