@@ -68,23 +68,16 @@ $product = "toolkit"
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
+    "foundation.xr2018" = "Assets"; 
     # providers
-    "leapmotion" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    "openvr.xr2108" = "Assets\MRTK\Providers\OpenVR";
     "unityar" = "Assets\MRTK\Providers\UnityAR";
-    "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr.xr2018" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
-    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
-    "xrplugin" = "Assets\MRTK\Providers\XRSDK";
     # extensions
-    "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
-    "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
-    "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
-    # other packages
+    "extensions" = "Assets\MRTK\Extensions";
+    # tools
     "tools" = "Assets\MRTK\Tools";
+    # tests
     "testutilties" = "Assets\MRTK\Tests\TestUtilities";
+    # examples
     "examples" = "Assets\MRTK\Examples";
 }
 
@@ -126,6 +119,13 @@ foreach ($entry in $packages.GetEnumerator()) {
         # the folder.
         Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
+    elseif ($packageName -eq "extensions") {
+        # The extensions folder contains one or more folders that provide their own examples. In order
+        # to perform the necessary preparation, without overly complicating this script, we will use a
+        # helper script to prepare the folder.
+        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+    }
+    # todo: similar script for extensions
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         # are packaged in the examples package.

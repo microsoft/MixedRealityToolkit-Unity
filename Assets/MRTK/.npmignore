@@ -3,6 +3,7 @@ Extensions/*
 Providers/OpenVR*
 Providers/UnityAR*
 Providers/WindowsMixedReality/XR2018/*
-Tests/*
-Tools/*
+Services/BoundarySystem*
+Tests*
+Tools*
 *.tgz
