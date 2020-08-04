@@ -97,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal Vector3 GetFaceCenter(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumFaces, "Face center index out of bounds");
+            Debug.Assert(index >= 0 && index < NumFaces, "Face center index out of bounds");
             return faceCenters[index];
         }
 
         internal CardinalAxisType GetAxisType(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumFaces, "Face axes index out of bounds");
+            Debug.Assert(index >= 0 && index < NumFaces, "Face axes index out of bounds");
             return faceAxes[index];
         }
 
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent)
         {
-            faceCenters = new Vector3[6];
+            faceCenters = new Vector3[NumFaces];
             CalculateFaceCenters(ref boundsCorners);
             InitEdgeAxis();
             CreateHandles(parent);
