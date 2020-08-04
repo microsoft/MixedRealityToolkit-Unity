@@ -147,8 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(button2PressBegin, "Button2 press begin did not trigger.");
             Assert.IsTrue(button2PressCompleted, "Button2 press release did not trigger.");
             Assert.IsTrue(button2TouchEnd, "Button2 touch end did not trigger.");
-
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -228,9 +226,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interactable2.HasFocus, "Interactable2 does not have far pointer focus.");
             Assert.IsTrue(interactable2.HasPress, "Interactable2 did not get press from far interaction.");
-
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -273,9 +268,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsFalse(scrollDragBegin, "Scroll drag begin was triggered.");
             Assert.AreEqual(scrollView.ScrollContainerPosition.y, 0, "Scroll container has moved.");
-
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -326,8 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(scrollDragBegin, "Scroll drag begin was triggered.");
             Assert.AreEqual(scrollView.ScrollContainerPosition.y, 0, 0.001, "Scroll container has not moved to first row.");
-
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -463,8 +453,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(button1TouchBegin, "Button1 touch begin was triggered.");
             Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
             Assert.IsTrue(button4TouchBegin, "Button4 touch begin was not triggered.");
-
-            hand.Hide();
         }
 
         /// <summary>
@@ -595,8 +583,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsFalse(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsFalse(scrollView.IsEngaged, "Scroll view is engaged.");
-
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -680,8 +666,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(scrollView.IsDragging, "Scroll view is being dragged.");
             Assert.IsTrue(scrollView.IsEngaged, "Scroll view is engaged.");
-
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -759,8 +743,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedPos);
 
             Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
-
-            yield return hand.Hide();
         }
 
         /// <summary>
@@ -898,11 +880,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedPos);
 
             Assert.IsTrue(scrollView.IsDragging, "Scroll drag was not triggered.");
-
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.Hide();
-
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Articulated);
         }
 
         /// <summary>
@@ -958,8 +935,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsFalse(scrollView.IsDragging, "Scroll drag was triggered.");
             Assert.IsTrue(button1PressCompleted, "Button1 press release was not triggered.");
-
-            yield return hand.Hide();
         }
 
         #endregion Tests

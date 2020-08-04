@@ -1523,14 +1523,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Checksif the engaged joint has released the scrollable list
+        /// Checks if the engaged joint has released the scrollable list
         /// </summary>
         private bool DetectScrollRelease(Vector3 pointerPos)
         {
             Vector3 scrollToPointerVector = pointerPos - clipBox.transform.position;
 
-            // Projecting vector onto every clip box space coordinated and using clip box lossy scale as refrence to dimensions to scroll visible bounds
-            // Using dot product to check if pointer is in the front or behind the scroll view plane
+            // Projecting vector onto every clip box space coordinate and using clip box lossy scale as reference to dimensions to scroll view visible bounds
+            // Using dot product to check if pointer is in front or behind the scroll view plane
             bool isScrollRelease = Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.up)) > clipBox.transform.lossyScale.y / 2 + releaseThresholdTopBottom
                                 || Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBox.transform.right)) > clipBox.transform.lossyScale.x / 2 + releaseThresholdLeftRight
                               
