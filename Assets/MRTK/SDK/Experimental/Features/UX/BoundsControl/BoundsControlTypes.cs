@@ -28,8 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     }
 
     /// <summary>
-    /// Enum which describes whether a bounds control handle which has been grabbed, is 
-    /// a Rotation Handle (sphere) or a Scale Handle( cube)
+    /// Enum describing the type of handle grabbed; can be a rotation (edge-mounted)
+    /// handle, a scaling (corner-mounted) handle, or a translation (face-mounted)
+    /// handle.
     /// </summary>
     public enum HandleType
     {
@@ -37,17 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         Rotation,
         Scale,
         Translation
-    }
-
-    /// <summary>
-    /// Flags which determine which handle type is enabled.
-    /// </summary>
-    [System.Flags]
-    public enum HandleFlags
-    {
-        Rotation = 1 << 0,
-        Scale = 1 << 1,
-        Translation = 1 << 2
     }
 
     /// <summary>
@@ -63,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         Cubic = 0,
         Cylindrical
     }
-
 
     /// <summary>
     /// This enum defines what volume type the bound calculation depends on and its priority

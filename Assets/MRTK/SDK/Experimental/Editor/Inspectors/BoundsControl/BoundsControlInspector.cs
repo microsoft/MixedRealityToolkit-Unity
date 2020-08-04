@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
-        private SerializedProperty enabledHandles;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -58,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty rotateStoppedEvent;
         private SerializedProperty scaleStartedEvent;
         private SerializedProperty scaleStoppedEvent;
+        private SerializedProperty translateStartedEvent;
+        private SerializedProperty translateStoppedEvent;
 
         private BoundsControl boundsControl;
 
@@ -94,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
-            enabledHandles = serializedObject.FindProperty("enabledHandles");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
@@ -114,6 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
             scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
+            translateStartedEvent = serializedObject.FindProperty("translateStarted");
+            translateStoppedEvent = serializedObject.FindProperty("translateStopped");
 
             // Elastic configuration (ScriptableObject)
             translationElasticConfigurationObject = serializedObject.FindProperty("translationElasticConfigurationObject");
@@ -160,39 +162,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     using (new EditorGUI.IndentLevelScope())
                     {
                         EditorGUILayout.PropertyField(flattenAxis);
-                        enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles ", (HandleFlags)enabledHandles.intValue);
 
                         showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
                                                                                                                  "Box Configuration", 
                                                                                                                  showBoxConfiguration);
-                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
-                                                                                                                            "Scale Handles Configuration", 
+
+                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
+                                                                                                                            "Scale Handles Configuration",
                                                                                                                             showScaleHandlesConfiguration);
-                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Rotation))
-                        {
-                            showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
+
+                        showRotationHandlesConfiguration = DrawMultiTypeConfigSlot<RotationHandlesConfiguration, PrecisionRotationHandlesConfiguration>(
                                 "Rotation Handles Configuration",
                                 "Basic Rotation",
                                 "Precision Rotation",
                                 rotationHandlesConfiguration,
                                 ref rotationType,
                                 showRotationHandlesConfiguration);
-                        }
 
-                        if (((HandleFlags)enabledHandles.intValue).HasFlag(HandleFlags.Translation))
-                        {
-                            showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
+                        showTranslationHandlesConfiguration = DrawMultiTypeConfigSlot<TranslationHandlesConfiguration, PrecisionTranslationHandlesConfiguration>(
                                 "Translation Handles Configuration",
                                 "Basic Translation",
                                 "Precision Translation",
                                 translationHandlesConfiguration,
                                 ref translationType,
                                 showTranslationHandlesConfiguration);
-                        }   
 
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
+
                         showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
@@ -243,6 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         EditorGUILayout.PropertyField(rotateStoppedEvent);
                         EditorGUILayout.PropertyField(scaleStartedEvent);
                         EditorGUILayout.PropertyField(scaleStoppedEvent);
+                        EditorGUILayout.PropertyField(translateStartedEvent);
+                        EditorGUILayout.PropertyField(translateStoppedEvent);
                     }
 
                     EditorGUILayout.Space();

@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected RotationHandlesConfiguration config;
         private FlattenModeType cachedFlattenAxis;
 
+        internal const int NumEdges = 12;
+
+        private Vector3[] edgeCenters = new Vector3[NumEdges];
+        private CardinalAxisType[] edgeAxes;
+
         internal RotationHandles(RotationHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlRotationHandles without valid configuration");
@@ -77,11 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal const int NumEdges = 12;
-
-        private Vector3[] edgeCenters = new Vector3[NumEdges];
-        private CardinalAxisType[] edgeAxes;
-
         internal int GetRotationHandleIdx(Transform handle)
         {
             for (int i = 0; i < handles.Count; ++i)
@@ -97,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal Vector3 GetEdgeCenter(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumEdges, "Edge center index out of bounds");
+            Debug.Assert(index >= 0 && index < NumEdges, "Edge center index out of bounds");
             return edgeCenters[index];
         }
 
         internal CardinalAxisType GetAxisType(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumEdges, "Edge axes index out of bounds");
+            Debug.Assert(index >= 0 && index < NumEdges, "Edge axes index out of bounds");
             return edgeAxes[index];
         }
 
