@@ -123,34 +123,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        enabledHandles.intValue = (int)(HandleFlags)EditorGUILayout.EnumFlagsField("Enabled Handles ", (HandleFlags)enabledHandles.intValue);
-
                         showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
                                                                                                                  "Box Configuration", 
                                                                                                                  showBoxConfiguration);
 
-                        HandleFlags handles = (HandleFlags)enabledHandles.intValue;
-
-                        GUI.enabled = handles.HasFlag(HandleFlags.Scale);
                         showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
                                                                                                                             "Scale Handles Configuration",
                                                                                                                             showScaleHandlesConfiguration);
 
-                        GUI.enabled = handles.HasFlag(HandleFlags.Rotation);
                         showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration,
                                                                                                                                   "Rotation Handles Configuration",
                                                                                                                                   showRotationHandlesConfiguration);
 
-
-                        GUI.enabled = handles.HasFlag(HandleFlags.Translation);
                         showTranslationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<TranslationHandlesConfiguration>(translationHandlesConfiguration,
-                                                                                                                                  "Translation Handles Configuration",
-                                                                                                                                  showTranslationHandlesConfiguration);
+                                                                                                                                        "Translation Handles Configuration",
+                                                                                                                                        showTranslationHandlesConfiguration);
 
-                        GUI.enabled = true;
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
+
                         showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
