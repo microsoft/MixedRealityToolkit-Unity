@@ -28,8 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     }
 
     /// <summary>
-    /// Enum which describes whether a bounds control handle which has been grabbed, is 
-    /// a Rotation Handle (sphere) or a Scale Handle( cube)
+    /// Enum describing the type of handle grabbed; can be a rotation (edge-mounted)
+    /// handle, a scaling (corner-mounted) handle, or a translation (face-mounted)
+    /// handle.
     /// </summary>
     public enum HandleType
     {
