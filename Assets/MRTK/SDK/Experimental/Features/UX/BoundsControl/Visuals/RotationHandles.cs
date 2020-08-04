@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private RotationHandlesConfiguration config;
         private FlattenModeType cachedFlattenAxis;
 
+        internal const int NumEdges = 12;
+
+        private Vector3[] edgeCenters = new Vector3[NumEdges];
+        private CardinalAxisType[] edgeAxes;
+
         internal RotationHandles(RotationHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlRotationHandles without valid configuration");
@@ -76,11 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             }
         }
-
-        internal const int NumEdges = 12;
-
-        private Vector3[] edgeCenters = new Vector3[NumEdges];
-        private CardinalAxisType[] edgeAxes;
 
         internal int GetRotationHandleIdx(Transform handle)
         {
