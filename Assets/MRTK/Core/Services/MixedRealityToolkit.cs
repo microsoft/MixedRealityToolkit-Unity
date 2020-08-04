@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             set
             {
-                if(Application.isPlaying && activeProfile != null && value != null && activeProfile != value)
+                if (Application.isPlaying && activeProfile != null && value != null && activeProfile != value)
                 {
                     newProfile = value;
                 }
