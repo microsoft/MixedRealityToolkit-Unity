@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private TranslationHandlesConfiguration config;
         private FlattenModeType cachedFlattenAxis;
 
+        internal const int NumFaces = 6;
+
+        private Vector3[] faceCenters = new Vector3[NumFaces];
+        private CardinalAxisType[] faceAxes;
+
         internal TranslationHandles(TranslationHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlTranslationHandles without valid configuration");
@@ -76,11 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             }
         }
-
-        internal const int NumFaces = 6;
-
-        private Vector3[] faceCenters = new Vector3[NumFaces];
-        private CardinalAxisType[] faceAxes;
 
         internal int GetTranslationHandleIdx(Transform handle)
         {
