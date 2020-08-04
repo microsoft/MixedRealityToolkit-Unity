@@ -38,7 +38,7 @@ if (-not $Version) {
 
 if (-not $IsOfficial) {
     if (-not $BuildNumber) {
-        throw "Unknown build number. Please specify -BuildNumber when setting IsOfficial to false."
+        throw "Unknown build number. Please specify -BuildNumber when IsOfficial is false."
     }
     $Version = "$Version-preview.$BuildNumber"
 }
@@ -69,13 +69,13 @@ $product = "toolkit"
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
     # providers
-    "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
+    "leapmotion" = "Assets\MRTK\Providers\LeapMotion";
+    "oculus" = "Assets\MRTK\Providers\Oculus\XRSDK"
+    "openvr.xr2108" = "Assets\MRTK\Providers\OpenVR";
     "unityar" = "Assets\MRTK\Providers\UnityAR";
     "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
+    "wmr.xr2018" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
+    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
     "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
     "xrplugin" = "Assets\MRTK\Providers\XRSDK";
     # extensions
