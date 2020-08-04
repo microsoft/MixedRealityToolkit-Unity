@@ -1,5 +1,5 @@
-MRTK/Examples/*
-MRTK/Extensions/*
+MRTK/Examples*
+MRTK/Extensions*
 MRTK/Providers/Oculus*
 MRTK/Providers/UnityAR*
 MRTK/Providers/WindowsMixedReality/XRSDK/*
