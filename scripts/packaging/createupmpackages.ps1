@@ -12,7 +12,8 @@
 .PARAMETER BuildNumber
     The build number to append to the version. Note: This value is only used if the IsPreview parameter is set to true.
 .PARAMETER IsOfficial
-    Are we creating official packages? If not, the version of the artifiacts will be formatted as "<$Version>-preview.<BuildNumber>".
+    Are we creating official packages? If not, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
+
 #>
 param(
     [string]$ProjectRoot,
