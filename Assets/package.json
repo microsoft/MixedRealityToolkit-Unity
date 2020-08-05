@@ -28,10 +28,10 @@
         "com.unity.xr.windowsmr.metro": "1.0.21"
     },
     "files":[
-        "Core*",
-        "SDK*",
-        "Services*",
-        "Providers*",
+        "MRTK/Core*",
+        "MRTK/SDK*",
+        "MRTK/Services*",
+        "MRTK/Providers*",
         "package.json.meta"
     ]
 }
