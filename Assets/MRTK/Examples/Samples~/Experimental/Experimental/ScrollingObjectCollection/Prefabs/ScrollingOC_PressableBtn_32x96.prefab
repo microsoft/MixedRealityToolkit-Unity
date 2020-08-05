@@ -1,0 +1,399 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &266051739895710290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147502590132549430}
+  - component: {fileID: 5011088486699496924}
+  - component: {fileID: 1628734463045448090}
+  m_Layer: 0
+  m_Name: ScrollingOC_PressableBtn_32x96
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2147502590132549430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266051739895710290}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5011088486699496924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266051739895710290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56169ecd78a05704da66b00826221a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeList:
+  - Name: PressableButtonHoloLens2_32x96
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (1)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (2)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (3)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (4)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (5)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 1
+  - Name: PressableButtonHoloLens2_32x96 (6)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (7)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (8)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (9)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (10)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (11)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (12)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (13)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (14)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (15)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (16)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  - Name: PressableButtonHoloLens2_32x96 (17)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 0}
+    GameObject: {fileID: 0}
+    Collider: {fileID: 0}
+    Colliders:
+    - {fileID: 0}
+    isClipped: 0
+  ignoreInactiveTransforms: 0
+  sortType: 0
+  canScroll: 1
+  setUpAtRuntime: 1
+  viewableArea: 5
+  handDeltaMagThreshold: 0.4
+  dragTimeThreshold: 0.75
+  useNearScrollBoundary: 0
+  scrollDirection: 0
+  useOnPreRender: 0
+  velocityMultiplier: 0.8
+  velocityDampen: 0.9
+  typeOfVelocity: 0
+  paginationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationLength: 0.25
+  tiers: 1
+  disableClippedItems: 1
+  occlusionScalePadding: {x: 0, y: 0, z: 0.001}
+  occlusionPositionPadding: {x: 0, y: 0, z: 0}
+  cellWidth: 0.096
+  cellHeight: 0.032
+  bounceMultiplier: 0.1
+  ClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
+      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  TouchStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1628734463045448090}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: ac992f1ec8cfba145b10655b334ec711,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
+      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  TouchEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1628734463045448090}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 45a90682f74bb0c41b65994c63b74e60,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
+      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  ListMomentumEnded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  cameraMethods: {fileID: 0}
+  scrollContainer: {fileID: 0}
+  clippingObject: {fileID: 0}
+  clipBox: {fileID: 0}
+  releaseDistance: 0.008000016
+--- !u!82 &1628734463045448090
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266051739895710290}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

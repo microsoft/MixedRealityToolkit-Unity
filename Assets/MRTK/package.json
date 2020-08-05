@@ -23,5 +23,11 @@
     "bugs": {
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
      },
-    "dependencies": { }
+    "dependencies": { },
+    "files": [
+        "Core*",
+        "Providers*",
+        "SDK*",
+        "Services*"
+    ]
 }

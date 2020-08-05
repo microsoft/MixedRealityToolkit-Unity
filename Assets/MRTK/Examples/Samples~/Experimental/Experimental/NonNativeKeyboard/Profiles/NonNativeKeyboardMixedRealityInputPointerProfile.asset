@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db393d206eab4604ab74278cb6cda355, type: 3}
+  m_Name: NonNativeKeyboardMixedRealityInputPointerProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 1
+  pointingExtent: 10
+  pointingRaycastLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 4294967291
+  debugDrawPointingRays: 1
+  debugDrawPointingRayColors:
+  - {r: 1, g: 0.58280706, b: 0, a: 1}
+  - {r: 0.86426115, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.2163105, a: 1}
+  - {r: 0, g: 0.3028021, b: 1, a: 1}
+  - {r: 0.44855833, g: 0, b: 1, a: 1}
+  gazeCursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
+    type: 3}
+  gazeProviderType:
+    reference: Microsoft.MixedReality.Toolkit.Input.GazeProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
+  useHeadGazeOverride: 0
+  isEyeTrackingEnabled: 0
+  pointerOptions:
+  - controllerType: 1071
+    handedness: 7
+    pointerPrefab: {fileID: 1247086986094436, guid: d5b94136462644c9873bb3347169ae7e,
+      type: 3}
+  - controllerType: 47
+    handedness: 7
+    pointerPrefab: {fileID: 1196247974088106, guid: c4fd3c6fc7ff484eb434775066e7f327,
+      type: 3}
+  - controllerType: 256
+    handedness: 7
+    pointerPrefab: {fileID: 1247086986094436, guid: 51e60b8742bc47640923ac9e75ea74e9,
+      type: 3}
+  - controllerType: 512
+    handedness: 7
+    pointerPrefab: {fileID: 8953170493194829522, guid: 840df22ff840d5540b58ca6088afde25,
+      type: 3}
+  - controllerType: 1024
+    handedness: 7
+    pointerPrefab: {fileID: 1507865967819406, guid: 38b548c6a2c270545a383296ad2bc4d5,
+      type: 3}
+  - controllerType: 1024
+    handedness: 7
+    pointerPrefab: {fileID: 1507865967819406, guid: 526b854247016cf47bc5c58e01d82407,
+      type: 3}
+  - controllerType: 2048
+    handedness: 7
+    pointerPrefab: {fileID: 1247086986094436, guid: 039b325c9e8fd0545a0475fd4aa35b10,
+      type: 3}
+  pointerMediator:
+    reference: Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator, Microsoft.MixedReality.Toolkit.SDK
+  primaryPointerSelector:
+    reference: Microsoft.MixedReality.Toolkit.Input.DefaultPrimaryPointerSelector,
+      Microsoft.MixedReality.Toolkit.SDK

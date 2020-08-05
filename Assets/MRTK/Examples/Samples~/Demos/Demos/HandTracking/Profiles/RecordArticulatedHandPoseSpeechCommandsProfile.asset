@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f18fec9b55c4f818e284af454161962, type: 3}
+  m_Name: RecordArticulatedHandPoseSpeechCommandsProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 1
+  startBehavior: 0
+  recognitionConfidenceLevel: 1
+  speechCommands:
+  - localizationKey: 
+    keyword: Menu
+    keyCode: 9
+    action:
+      id: 2
+      description: Menu
+      axisConstraint: 2
+  - localizationKey: 
+    keyword: Toggle Diagnostics
+    keyCode: 100
+    action:
+      id: 1
+      description: Toggle Diagnostics
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Toggle Profiler
+    keyCode: 112
+    action:
+      id: 7
+      description: Grip Press
+      axisConstraint: 3
+  - localizationKey: 
+    keyword: Record Right Hand
+    keyCode: 0
+    action:
+      id: 0
+      description: Grip Press
+      axisConstraint: 3
+  - localizationKey: 
+    keyword: Record Left Hand
+    keyCode: 0
+    action:
+      id: 0
+      description: Grip Press
+      axisConstraint: 3
+  - localizationKey: 
+    keyword: Stop
+    keyCode: 0
+    action:
+      id: 0
+      description: Grip Press
+      axisConstraint: 3
