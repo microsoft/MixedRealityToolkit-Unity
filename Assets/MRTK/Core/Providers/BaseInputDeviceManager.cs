@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
                 if (pointer == null)
                 {
-                    Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
+                    Debug.LogError($"Ensure that the prefab '{option.PointerPrefab.name}' listed under Input -> Pointers -> Pointer Options has an {typeof(IMixedRealityPointer).Name} component.\nThis prefab can't be used as a pointer as configured and won't be instantiated.");
 
                     GameObjectExtensions.DestroyGameObject(pointerObject);
                 }

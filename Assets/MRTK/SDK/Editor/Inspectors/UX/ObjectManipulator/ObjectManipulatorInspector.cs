@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
+        private SerializedProperty useForcesForNearManipulation;
 
         private SerializedProperty oneHandRotationModeNear;
         private SerializedProperty oneHandRotationModeFar;
@@ -31,7 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private SerializedProperty releaseBehavior;
 
-        private SerializedProperty smoothingActive;
+        private SerializedProperty smoothingFar;
+        private SerializedProperty smoothingNear;
         private SerializedProperty moveLerpTime;
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
@@ -76,9 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
+            useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
 
             // Smoothing
-            smoothingActive = serializedObject.FindProperty("smoothingActive");
+            smoothingFar = serializedObject.FindProperty("smoothingFar");
+            smoothingNear = serializedObject.FindProperty("smoothingNear");
             moveLerpTime = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
@@ -156,8 +160,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     var type = typeof(TransformConstraint);
                     var types = AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(s => s.GetLoadableTypes())
-                        .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
+                                .SelectMany(s => s.GetLoadableTypes())
+                                .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
 
                     foreach (var derivedType in types)
                     {
@@ -191,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (rb != null)
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
+                    EditorGUILayout.PropertyField(useForcesForNearManipulation);
                 }
                 else
                 {
@@ -203,7 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (smoothingFoldout)
             {
-                EditorGUILayout.PropertyField(smoothingActive);
+                EditorGUILayout.PropertyField(smoothingFar);
+                EditorGUILayout.PropertyField(smoothingNear);
                 EditorGUILayout.PropertyField(moveLerpTime);
                 EditorGUILayout.PropertyField(rotateLerpTime);
                 EditorGUILayout.PropertyField(scaleLerpTime);
