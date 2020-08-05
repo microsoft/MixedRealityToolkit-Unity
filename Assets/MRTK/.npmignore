@@ -1,2 +1,6 @@
 Core/StandardAssets*
+Examples/*
+Extensions/*
+Tests/*
+Tools/*
 *.tgz
