@@ -25,21 +25,21 @@ param(
     [bool]$IsOfficial = $False
 )
 
-$startPath = "$(Get-Location)"
+[string]$startPath = $(Get-Location)
 
 if (-not $ProjectRoot) {
-    throw "Unknown project root path. Please specify -ProjectRoot when building."
+    throw "Missing required parameter: -ProjectRoot."
 }
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
 Write-Output "Project root: $ProjectRoot"
 
 if (-not $Version) {
-    throw "Unknown package version. Please specify -Version when building."
+    throw "Missing required parameter: -Version."
 }
 
 if (-not $IsOfficial) {
     if (-not $BuildNumber) {
-        throw "Unknown build number. Please specify -BuildNumber when IsOfficial is false."
+        throw "Missing required parameter: -BuildNumber. This parameter is required when -IsOfficial is set to false."
     }
     $Version = "$Version-preview.$BuildNumber"
 }
@@ -69,7 +69,7 @@ $product = "toolkit"
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets\MRTK";
-    "foundation.xr2018" = "Assets"; 
+    "foundation.xr2018" = "Assets"
     # providers
     "unityar" = "Assets\MRTK\Providers\UnityAR";
     # extensions
@@ -126,12 +126,11 @@ foreach ($entry in $packages.GetEnumerator()) {
         # helper script to prepare the folder.
         Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
-    # todo: similar script for extensions
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         # are packaged in the examples package.
         $exampleFolder = "$packagePath\Examples"
-        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
+        if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
                 New-Item $samplesFolder -ItemType Directory | Out-Null
