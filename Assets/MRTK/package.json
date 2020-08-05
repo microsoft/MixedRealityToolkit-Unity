@@ -25,12 +25,5 @@
      },
     "dependencies": { 
 
-    },
-    "files": [
-        "Core*",
-        "Providers*",
-        "SDK*",
-        "Services*",
-        "package.json.meta"
-    ]
+    }
 }
