@@ -90,7 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
         /// </summary>
-        public static void Setup()
+        /// <remarks>
+        /// Takes an optional MixedRealityToolkitConfigurationProfile used to initialize the MRTK.
+        /// </remarks>
+        public static void Setup(MixedRealityToolkitConfigurationProfile profile = null)
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
@@ -115,7 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Create an MRTK instance and set up playspace
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            if (profile == null)
+            {
+                TestUtilities.InitializeMixedRealityToolkit(true);
+            }
+            else
+            {
+                TestUtilities.InitializeMixedRealityToolkit(profile);
+            }
             TestUtilities.InitializePlayspace();
 
             // Ensure user input is disabled during the tests
