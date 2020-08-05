@@ -22,7 +22,7 @@ if (-not $PackageRoot) {
 # 
 # These paths are PackageRoot relative.
 $exampleFolders = [ordered]@{
-    "HandPhysicsService" = "HandPhysicsService\Examples";
+    "HandPhysicsService" = "HandPhysicsService/Examples";
 }
 
 # Beginning of the upm packaging script main section
@@ -44,9 +44,9 @@ if (-not (Test-Path -Path $samplesFolder)) {
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     $sampleGroupName = $entry.Name
     $sampleFolder = $entry.Value
-    Write-Output "Copying $PackageRoot\$sampleFolder to $samplesFolder\$sampleGroupName"
-    Copy-Item -Path "$PackageRoot\$sampleFolder" -Destination "$samplesFolder\$sampleGroupName" -Recurse -Force
-    Copy-Item -Path "$PackageRoot\$sampleFolder.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
+    Write-Output "Copying $PackageRoot/$sampleFolder to $samplesFolder/$sampleGroupName"
+    Copy-Item -Path "$PackageRoot/$sampleFolder" -Destination "$samplesFolder/$sampleGroupName" -Recurse -Force
+    Copy-Item -Path "$PackageRoot/$sampleFolder.meta"-Destination "$samplesFolder/$sampleGroupName.meta"
 }
 
 # Create the samples data for the package.json file
@@ -75,7 +75,7 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
 $samples = $samples + "`n   ]"
 
 # Update the project.json file to specify the samples contanined in the package
-$packageJsonPath = "$PackageRoot\package.json"
+$packageJsonPath = "$PackageRoot/package.json"
 $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
 $packageJson = ($packageJson -replace "%samples%", $samples)
 [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)

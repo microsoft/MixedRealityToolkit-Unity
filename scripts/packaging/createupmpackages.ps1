@@ -17,7 +17,7 @@
 #>
 param(
     [string]$ProjectRoot,
-    [string]$OutputDirectory = ".\artifacts\upm",
+    [string]$OutputDirectory = "./artifacts/upm",
     [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
     [string]$Version,
     [ValidatePattern("^\d+?[\.\d+]*$")]
@@ -51,7 +51,7 @@ if (-not (Test-Path $OutputDirectory -PathType Container)) {
 $OutputDirectory = Resolve-Path -Path $OutputDirectory
 Write-Output "OutputDirectory: $OutputDirectory"
 
-$scriptPath = "$ProjectRoot\scripts\packaging"
+$scriptPath = "$ProjectRoot/scripts/packaging"
 
 $scope = "com.microsoft.mixedreality"
 $product = "toolkit"
@@ -68,18 +68,17 @@ $product = "toolkit"
 #
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
-    "foundation" = "Assets\MRTK";
-    "foundation.xr2018" = "Assets"
+    "foundation" = "Assets/MRTK";
     # providers
-    "unityar" = "Assets\MRTK\Providers\UnityAR";
+    "unityar" = "Assets/MRTK/Providers/UnityAR";
     # extensions
-    "extensions" = "Assets\MRTK\Extensions";
+    "extensions" = "Assets/MRTK/Extensions";
     # tools
-    "tools" = "Assets\MRTK\Tools";
+    "tools" = "Assets/MRTK/Tools";
     # tests
-    "testutilties" = "Assets\MRTK\Tests\TestUtilities";
+    "testutilties" = "Assets/MRTK/Tests/TestUtilities";
     # examples
-    "examples" = "Assets\MRTK\Examples";
+    "examples" = "Assets/MRTK/Examples";
 }
 
 $npmCommand = "npm"
@@ -92,18 +91,18 @@ $npmCommand = "npm"
 # 3) Create and the packages and copy to the OutputFolder
 # 4) Cleanup files created and/or modified
 
-$cmdFullPath = "$env:systemroot\system32\cmd.exe"
+$cmdFullPath = "$env:systemroot/system32/cmd.exe"
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
-    $packagePath = Resolve-Path -Path "$ProjectRoot\$packageFolder"
+    $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
     # Apply the version number to the package json file
-    $packageJsonPath = "$packagePath\package.json"
+    $packageJsonPath = "$packagePath/package.json"
     $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
     $packageJson = ($packageJson -replace "%version%", $Version)
     [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
@@ -112,24 +111,23 @@ foreach ($entry in $packages.GetEnumerator()) {
     $packageName = $entry.Name
     $registryName = $OutputPath
 
-    $samplesFolder = "$packagePath\Samples~"
-     
     if ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
         # the folder.
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     elseif ($packageName -eq "extensions") {
         # The extensions folder contains one or more folders that provide their own examples. In order
         # to perform the necessary preparation, without overly complicating this script, we will use a
         # helper script to prepare the folder.
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         # are packaged in the examples package.
-        $exampleFolder = "$packagePath\Examples"
+        $samplesFolder = "$packagePath/Samples~"
+        $exampleFolder = "$packagePath/Examples"
         if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
@@ -148,7 +146,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmCommand pack" -NoNewWindow -Wait
 
     # Move package file to OutputFolder
-    Move-Item -Path ".\*.tgz" $OutputDirectory -Force
+    Move-Item -Path "./*.tgz" $OutputDirectory -Force
 
     # ======================
     # Cleanup the changes we have made

@@ -11,7 +11,7 @@ param(
 )
 
 if (-not $PackageRoot) {
-    throw "Unknown package root path. Please specify -PackageRoot when building."
+    throw "Missing required parameter: -PackageRoot."
 }
 
 # This hashtable contains mappings of the sample categories to the folder which contains
@@ -35,7 +35,7 @@ $exampleFolders = [ordered]@{
 # 5) Overwrite the package.json file
 
 # Ensure the required folder exists
-$samplesFolder = "$PackageRoot\Samples~"
+$samplesFolder = "$PackageRoot/Samples~"
 if (-not (Test-Path -Path $samplesFolder)) {
     New-Item $samplesFolder -ItemType Directory | Out-Null
 }
@@ -43,9 +43,9 @@ if (-not (Test-Path -Path $samplesFolder)) {
 # Copy each example folder
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     $sampleGroupName = $entry.Name
-    Write-Output "Copying $PackageRoot\$sampleGroupName to $samplesFolder\$sampleGroupName"
-    Copy-Item -Path "$PackageRoot\$sampleGroupName" -Destination "$samplesFolder\$sampleGroupName" -Recurse -Force
-    Copy-Item -Path "$PackageRoot\$sampleGroupName.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
+    Write-Output "Copying $PackageRoot/$sampleGroupName to $samplesFolder/$sampleGroupName"
+    Copy-Item -Path "$PackageRoot/$sampleGroupName" -Destination "$samplesFolder/$sampleGroupName" -Recurse -Force
+    Copy-Item -Path "$PackageRoot/$sampleGroupName.meta"-Destination "$samplesFolder/$sampleGroupName.meta"
 }
 
 # Create the samples data for the package.json file
@@ -86,7 +86,7 @@ foreach ($entry in $exampleFolders.GetEnumerator()) {
 $samples = $samples + "`n   ]"
 
 # Update the project.json file to specify the samples contanined in the package
-$packageJsonPath = "$PackageRoot\package.json"
+$packageJsonPath = "$PackageRoot/package.json"
 $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
 $packageJson = ($packageJson -replace "%samples%", $samples)
 [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
