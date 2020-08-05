@@ -22,7 +22,7 @@
     },
     "bugs": {
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
-      },
+     },
     "dependencies": {
         "com.unity.xr.openvr.standalone": "1.0.5",
         "com.unity.xr.windowsmr.metro": "1.0.21"
