@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Returns reference to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> component and Transform to movable object that transforms on press 
         /// </summary>
         /// <remarks>
-        /// The button will be instantiated relative to the current MRTKPlayspace. The is, its world transform
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
         /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
         /// See <see cref="InstantiateInteractableFromPath(Vector3, Quaternion, string)"/>
         /// </remarks>
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> prefab from provided asset database path at given position and rotation
         /// </summary>
         /// <remarks>
-        /// The button will be instantiated relative to the current MRTKPlayspace. The is, its world transform
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
         /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
         /// </remarks>
         public static GameObject InstantiateInteractableFromPath(Vector3 position, Quaternion rotation, string path)
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates Pressable Button based on list of arguments provided
         /// </summary>
         /// <remarks>
-        /// The button will be instantiated relative to the current MRTKPlayspace. The is, its world transform
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
         /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
         /// See <see cref="InstantiateInteractableFromPath(Vector3, Quaternion, string)"/>
         /// </remarks>
