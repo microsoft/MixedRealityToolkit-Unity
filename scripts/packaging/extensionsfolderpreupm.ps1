@@ -11,14 +11,15 @@ param(
 )
 
 if (-not $PackageRoot) {
-    throw "Unknown package root path. Please specify -PackageRoot when building."
+    throw "Missing required parameter: -PackageRoot."
 }
 
-# This hashtable contains mappings of the sample categories to the folder which contains
-# the code and assets.
+# This hashtable contains the folders containing the code and assets for the extensions
+# that have example folders that need processing.
 #
-# Note that capitalization below in the key itself is significant.
-#
+# While key captialization is not significant for finding the folders, it is used in the sample
+# description that will be written to the package manifest.
+# 
 # These paths are PackageRoot relative.
 $exampleFolders = [ordered]@{
     "HandPhysicsService" = "HandPhysicsService\Examples";
@@ -43,7 +44,7 @@ if (-not (Test-Path -Path $samplesFolder)) {
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     $sampleGroupName = $entry.Name
     $sampleFolder = $entry.Value
-    Write-Output "Copying $PackageRoot\$sampleGFolder to $samplesFolder\$sampleGroupName"
+    Write-Output "Copying $PackageRoot\$sampleFolder to $samplesFolder\$sampleGroupName"
     Copy-Item -Path "$PackageRoot\$sampleFolder" -Destination "$samplesFolder\$sampleGroupName" -Recurse -Force
     Copy-Item -Path "$PackageRoot\$sampleFolder.meta"-Destination "$samplesFolder\$sampleGroupName.meta"
 }
