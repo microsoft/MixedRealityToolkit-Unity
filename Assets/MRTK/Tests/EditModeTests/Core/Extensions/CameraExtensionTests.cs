@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Extensions
             /// (fSz.x,fSz.y,far) is right on the upper right corner midway up the frustum. Numerical precision can
             /// put it either in or out of frustum. Subtract a small epsilon to bring it inside.
             float eps = 1.0e-5f;
-            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f - eps, frustrumSize.y / 2.0f - eps, far / 2.0f)));
+            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f - eps, frustrumSize.y / 2.0f - eps, far / 2.0f + eps)));
         }
 
         /// <summary>
