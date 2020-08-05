@@ -2,7 +2,7 @@
     "name": "com.microsoft.mixedreality.toolkit.testutilities",
     "displayName": "Mixed Reality Toolkit Test Utilities",
     "version": "%version%",
-    "unity": "2018.4",
+    "unity": "2019.4",
     "description": "Test utilities for use with the Microsoft Mixed Reality Toolkit",
     "keywords": [
         "mrtk",
