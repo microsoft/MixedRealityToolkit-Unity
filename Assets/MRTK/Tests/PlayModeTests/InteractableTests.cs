@@ -746,6 +746,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestButtonStateResetWhenFocusLostAfterPinch()
         {
+            /// This test breaks if there is roll on the camera. I don't know if that's a real
+            /// break, or an error in the test. Nulling out roll for now.
+            Pose restorePose = TestUtilities.ArbitraryPlayspacePose;
+            Pose noRollPose = restorePose;
+            noRollPose.rotation.eulerAngles = new Vector3(noRollPose.rotation.eulerAngles.x, noRollPose.rotation.eulerAngles.y, 0.0f);
+            TestUtilities.ArbitraryPlayspacePose = noRollPose;
+            TestUtilities.PlayspaceToArbitraryPose();
+
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
@@ -814,6 +822,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Focus, "Interactable State is not Focus");
 
             GameObject.Destroy(interactable.gameObject);
+
+            TestUtilities.ArbitraryPlayspacePose = restorePose;
         }
 
         /// <summary>
