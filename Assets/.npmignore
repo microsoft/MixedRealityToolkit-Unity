@@ -4,6 +4,4 @@ MRTK/Providers/Oculus*
 MRTK/Providers/UnityAR*
 MRTK/Providers/WindowsMixedReality/XRSDK*
 MRTK/Providers/XRSDK*
-MRTK/Tests*
-MRTK/Tools*
 *.tgz
