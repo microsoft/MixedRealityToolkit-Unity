@@ -3,7 +3,7 @@
     "displayName": "Mixed Reality Toolkit Extensions",
     "version": "%version%",
     "unity": "2018.4",
-    "description": "Extensions to the Microsoft Mixed Reality Toolkit. This package includes; Hand Physics Service, Lost Tracking Service and Scene Transition Service.",
+    "description": "Extensions to the Microsoft Mixed Reality Toolkit. This package includes: Hand Physics Service, Lost Tracking Service and Scene Transition Service.",
     "keywords": [
         "mrtk",
         "microsoft",
