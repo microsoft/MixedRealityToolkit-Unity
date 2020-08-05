@@ -91,9 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This should not throw exception
             InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -194,9 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.ThumbVisuals = null;
 
             // Test that the slider still works
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);

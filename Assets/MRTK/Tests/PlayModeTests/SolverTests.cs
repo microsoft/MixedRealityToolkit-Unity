@@ -628,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Make sure the target obj has followed the head
-            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, 1.0e-5f, "The tap to place object position.x does not match the camera position.x");
 
             // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
             // We need to wait at least 0.5 secs until another click is called or tap to place will ignore the action
@@ -743,7 +743,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Make sure the target obj is following the head
-            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, 1.0e-5f, "The tap to place object position.x does not match the camera position.x");
 
             // Stop the placement via code instead of click from the hand
             tapToPlace.StopPlacement();
@@ -1118,12 +1118,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             followSolver.FaceUserDefinedTargetTransform = true;
             followSolver.TargetToFace = CameraCache.Main.transform;
 
-            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+            TestUtilities.AssertAboutEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation, "Target expected to be facing camera.");
 
             yield return hand.MoveTo(Vector3.forward + Vector3.left, 1);
             yield return null;
 
-            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+            TestUtilities.AssertAboutEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation, "Target expected to be facing camera.");
         }
 
         /// <summary>
