@@ -1,14 +1,18 @@
 # How to configure Oculus Quest in MRTK using the XRSDK pipeline
 
-A [Oculus Quest](https://www.oculus.com/quest/?locale=en_US) is required to use this data provider.
+A [Oculus Quest](https://www.oculus.com/quest/?locale=en_US) is required.
 
-The Oculus XRSDK Data Provider enables the use of the Oculus Quest with MRTK using [Unity's XR Pipeline](https://docs.unity3d.com/Manual/XR.html).
+MRTK's support for the Oculus Quest comes in the form of two data providers, the **Oculus XRSDK Data Provider** and the **MRTK-Quest** data provider. 
+
+The **Oculus XRSDK Data Provider** enables the use of the Oculus Quest with MRTK via the [Unity's XR Pipeline](https://docs.unity3d.com/Manual/XR.html).
 This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using **Unity 2019.3 or newer**
+Specifically, this pipeline currently allows for the use of Oculus Touch controllers and head tracking with the Oculus Quest.
 
-In Oculus XRSDK Data Provider does not currently support hand tracking. In order to use handtracking with the Oculus Quest, follow the instructiosn on using the **MRTK-Quest Data Provider**. It is recommended to use this
-provider in conjunction with the Oculus XRSDK Data Provider.
+The **MRTK-Quest Data Provider** enables the use of the Oculus Quest via the **Oculus Integration** Unity package. Specifically, this data provider has the additional benefit of 
+supporting **hand tracking** with the Oculus Quest. This data provider does **NOT** use the **XRSDK pipeline**, so it is recommended to set up this data provider after the 
+**Setting up the project for the Oculus Quest** to avoid potential issues with your project targeting the to-be-deprecated **Legacy XR Pipeline**.
 
-## Deploying to Oculus Quest
+## Setting up project for the Oculus Quest
 
 1. Follow [these steps](https://developer.oculus.com/documentation/unity/book-unity-gsg/) to ensure that your project is ready to deploy on Oculus Quest.
     - Make sure that the Oculus Plug-in Provider is included in your project by going to **Edit --> Project Settings --> XR Plug-in Management --> Plug-in Providers**
@@ -21,29 +25,80 @@ provider in conjunction with the Oculus XRSDK Data Provider.
 
 1. Ensure that [developer mode](https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
-1. Adding the Oculus XRSDK Data Provider
+## Setting up the scene
     - Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
+    
     - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
 
-    To get started quickly just change your profile to DefaultXRSDKInputSystemProfile
+## Using the Oculus XRSDK Data Provider
 
-    - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
+1. Configure your profile to use the **Oculus XRSDK Data Provider**
+    - If not intending to modify the configuration profiles
+        - Change your profile to DefaultXRSDKInputSystemProfile and go to **Build and deploy your project to Oculus Quest**
 
-    ![CloneProfile](../Images/CrossPlatform/CloneProfile.png)
+    - Otherwise follow the following:
+        - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
 
-    - Select the **Input** Configuration Profile
+        ![CloneProfile](../Images/CrossPlatform/CloneProfile.png)
 
-    ![InputConfigurationProfile](../Images/CrossPlatform/InputConfigurationProfile.png)
+        - Select the **Input** Configuration Profile
 
-    - Select **Clone** in the input system profile to enable modification.
+        ![InputConfigurationProfile](../Images/CrossPlatform/InputConfigurationProfile.png)
 
-    ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
+        - Select **Clone** in the input system profile to enable modification.
 
-    - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
+        ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
-    ![OculusAddDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png)
+        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
 
-1. Building your project to deploy on Oculus Quest
+        ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddXRSDKDataProvider.png)
+
+
+## Using the MRTK-Quest Data Provider for handtracking
+1. Prepare MRTK project for MRTK-Quest
+
+    - This step only applies for the Oculus Integration Assets version 1.7.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. 
+    If the MRTK source is going to be from the Unity packages, start at the next step
+
+    - Navigate to Mixed Reality Toolkit > Utilities > Oculus > Configure CSC File for Oculus. Updating the csc file filters out the obsolete warnings produced by the Oculus Integration Assets. 
+    The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-quest configuration process. The obsolete warnings issue is tracked here.
+
+    ![OculusIntegrationCsc](../Images/CrossPlatform/OculusQuest/OculusIntegrationCsc.png)
+
+1. Importing MRTK and the Core Assets from Oculus Integration Assets version 1.7.0
+
+Import the Microsoft.MixedReality.Toolkit.Foundation package into the Unity project.
+Download and import [Oculus Integration version 1.7.0](https://developer.oculus.com/downloads/package/unity-integration-archive/)
+Download and import the MRTK-Quest\_v101\_Core.unitypackage from the [MRTK-Quest release page](https://github.com/provencher/MRTK-Quest/releases)
+
+1. Configure your project to use handtracking
+
+In the imported Oculus (assets/Oculus) folder, there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport to "Controllers and Hands".
+
+1. Configure your profile to use the **MRTK-Quest Data Provider**
+
+    - If not intending to modify the configuration profiles
+        - Change your profile to MRTK-Quest_Profile and go to **Build and deploy your project to Oculus Quest**
+
+    - Otherwise follow the following:
+        - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the DefaultXRSDKInputSystemProfile profile.
+            - This ensures that the controller and headtracking input data uses the **XRSDK Pipeline** rather than the deprecated **Legacy XR Pipeline**
+
+        ![CloneProfile](../Images/CrossPlatform/CloneProfile.png)
+
+        - Select the **Input** Configuration Profile
+
+        ![InputConfigurationProfile](../Images/CrossPlatform/InputConfigurationProfile.png)
+
+        - Select **Clone** in the input system profile to enable modification.
+
+        ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
+
+        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **prvncher.MixedReality.Toolkit.OculusQuestInput > OculusQuestInputManager**
+
+        ![OculusAddMrtkQuestDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddMrtkQuestDataProvider.png)
+
+## Build and deploy your project to Oculus Quest
     - Plug in your Oculus Quest via a USB 3.0 -> USB C cable
     - Navigate to **File > Build Settings**
     - Change the deployment to **Android**
@@ -54,55 +109,6 @@ provider in conjunction with the Oculus XRSDK Data Provider.
     - Select Build and Run 
     - Accept the _Allow USB Debugging_ prompt from inside the quest
     - See your scene inside the Oculus Quest
-
-
-
-## Using Oculus Quest hand tracking in MRTK
-After setting up the Oculus XRSDK Data Provider, you need to do the following steps to enable handtracking. Following these steps without setting up the Oculus XRSDK Data Provider may make your project
-dependent on the **Legacy XR Pipeline**, which is not supported by Unity after Unity 2019.4
-
-1. Prepare MRTK project for MRTK-Quest
-
-    - This step only applies for the Oculus Integration Assets version 1.7.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. 
-    If the MRTK source is going to be from the Unity packages, start at the next step
-
-    - Navigate to Mixed Reality Toolkit > Utilities > Oculus > Configure CSC File for Oculus. Updating the csc file filters out the obsolete warnings produced by the Oculus Integration Assets. 
-    The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-quest configuration process. The obsolete warnings issue is tracked here.
-
-[Insert image here]
-
-1. Importing MRTK and the Core Assets from Oculus Integration Assets version 1.7.0
-
-Import the Microsoft.MixedReality.Toolkit.Foundation package into the Unity project.
-Download and import Oculus Integration version 1.7.0 (https://developer.oculus.com/downloads/package/unity-integration-archive/)
-Download and import the MRTK-Quest.unitypackage from the MRTK-Quest release page: https://github.com/provencher/MRTK-Quest/releases
-
-1. Configuring your scene to use the data provider
-
-In the imported Oculus (assets/Oculus) folder, there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport to "Controllers and Hands".
-
-Ultimately the same/similar to using the XRSDK data provider
-
-To get started quickly just change your profile to MRTK-Quest_InputProfile
-
-. Adding the Oculus XRSDK Data Provider
-    - Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
-    - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
-    - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
-
-    ![CloneProfile](../Images/CrossPlatform/CloneProfile.png)
-
-    - Select the **Input** Configuration Profile
-
-    ![InputConfigurationProfile](../Images/CrossPlatform/InputConfigurationProfile.png)
-
-    - Select **Clone** in the input system profile to enable modification.
-
-    ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
-
-    - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
-
-    ![OculusAddDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png)
 
 
 ## Common errors
