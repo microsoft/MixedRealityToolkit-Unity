@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.standardassets",
-    "displayName": "Mixed Reality Toolkit Standard Assets",
-    "version": "0.0.0-preview.0",
+    "name": "com.microsoft.mixedreality.toolkit.extensions",
+    "displayName": "Mixed Reality Toolkit Extensions",
+    "version": "%version%",
     "unity": "2019.4",
-    "description": "Mixed Reality Toolkit standard assets, including; shaders, common materials and fonts.",
+    "description": "Extensions to the Microsoft Mixed Reality Toolkit. This package includes: Hand Physics Service, Lost Tracking Service and Scene Transition Service.",
     "keywords": [
         "mrtk",
         "microsoft",
@@ -11,11 +11,9 @@
         "reality",
         "augmented",
         "virtual",
-        "xr",
         "hololens",
-        "assets",
-        "standardassets",
-        "coreassets"
+        "xr",
+        "extensions"
     ],
     "author": "Microsoft Corporation",
     "license": "MIT",
@@ -26,5 +24,8 @@
     "bugs": {
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
       },
-    "dependencies": { }
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "%version%"
+    },
+    %samples%
 }
