@@ -440,6 +440,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        private void OnDestroy()
+        {
+            // Because GazeCursor is not derived from UnityEngine.Object, we need to manually perform null check against Unity's null
+            if (GazeCursor != null && !GazeCursor.Equals(null))
+            {
+                Destroy(GazeCursor.GameObjectReference);
+            }
+        }
+
         #endregion MonoBehaviour Implementation
 
         #region InputSystemGlobalHandlerListener Implementation

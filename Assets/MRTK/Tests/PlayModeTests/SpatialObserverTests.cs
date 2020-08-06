@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Test class that validates observers start and stop based on right configuration in editor. 
     /// </summary>
-    public class SpatialObserverTests
+    public class SpatialObserverTests : BasePlayModeTests
     {
         // Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset
         private const string TestSpatialAwarenessSystemProfileGuid = "c992bdb3ac45cd44d856b0198a3ee85d";
