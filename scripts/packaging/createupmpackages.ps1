@@ -100,6 +100,11 @@ foreach ($entry in $packages.GetEnumerator()) {
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
+    # The package manifest files what we use are actually templates,
+    # rename the files so that npm can consume them.
+    Rename-Item -Path "$packagePath/packagetemplate.json" -NewName "$packagePath/package.json"
+    Rename-Item -Path "$packagePath/packagetemplate.json.meta" -NewName "$packagePath/package.json.meta"
+
     # Apply the version number to the package json file
     $packageJsonPath = "$packagePath/package.json"
     $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
@@ -156,8 +161,12 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
-    # Restore the package.json file
-    Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
+    # Delete the renamed package.json.* files
+    Remove-Item -Path "$packagePath/package.json"
+    Remove-Item -Path "$packagePath/package.json.meta"
+
+    # Restore the original template files
+    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
 }
 
 # Return to the starting path
