@@ -1,6 +1,6 @@
-# Mixed Reality Toolkit - Resources
+# Mixed Reality Toolkit - Standard Assets
 
-A unique set of critical resources to the Mixed Reality Toolkit's operation.
+The assets contained here include a set of shaders, materials, fonts, audio and other resoruces that are optimized for the Microsoft Mixed Reality Toolkt.
 
-> Note
-> This should contain standard or reusable assets, as they should be catered for within the SDK project's "Standard Assets" Folder
+> [!IMPORTANT]
+> For best performance and consistency of experiences, it is highly recommended that applications use these assets, especially the Mixed Reality Toolkit Standard shader.
