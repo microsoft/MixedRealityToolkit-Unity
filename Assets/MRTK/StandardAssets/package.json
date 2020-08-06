@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.coreassets",
-    "displayName": "Mixed Reality Toolkit core Assets",
+    "name": "com.microsoft.mixedreality.toolkit.standardassets",
+    "displayName": "Mixed Reality Toolkit Standard Assets",
     "version": "%version%",
     "unity": "2019.4",
-    "description": "Mixed Reality Toolkit core assets, including; shaders, common materials and fonts.",
+    "description": "Mixed Reality Toolkit standard assets, including; shaders, common materials and fonts.",
     "keywords": [
         "mrtk",
         "microsoft",
