@@ -17736,7 +17736,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html",
-          "hash": "YPeFu2jJCx37oOzbubchTA=="
+          "hash": "lxtLmigH3oGXsyyYLoN8tA=="
         }
       },
       "is_incremental": false,
@@ -21480,7 +21480,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html",
-          "hash": "XBfFVpk2IivXlVtf+PGFbQ=="
+          "hash": "j087TilxvzcG9XyghalwMw=="
         }
       },
       "is_incremental": false,
@@ -21505,6 +21505,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ButtonConfigHelperTests.html",
           "hash": "1dKSE0AapmjIIjNGK4JzHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ChangeActiveProfileTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ChangeActiveProfileTests.html",
+          "hash": "DN8gniaLK6u97P4maXoyHg=="
         }
       },
       "is_incremental": false,
@@ -22272,7 +22284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SpatialObserverTests.html",
-          "hash": "wbPfjt36Spf0QZCv29T5Mg=="
+          "hash": "lCzrXoDPblV6Ezro4n7OQg=="
         }
       },
       "is_incremental": false,
@@ -22380,7 +22392,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "8WMN0b4CfzibJTJyiwqLGA=="
+          "hash": "00l3NMtG9Pvg3Tm12TzGwg=="
         }
       },
       "is_incremental": false,
@@ -22440,7 +22452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "blj1pt+ie/W0rOb2I/4cVg=="
+          "hash": "qktjJYS3MEq8PYFjGSnQkw=="
         }
       },
       "is_incremental": false,
@@ -28548,7 +28560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "2fq+IeUdOdqGnCDOR9GMlA=="
+          "hash": "9lra4bIZNSdOW2E5iJd9/w=="
         }
       },
       "is_incremental": false,
@@ -28600,28 +28612,28 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1652,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 166,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1653,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
