@@ -22,5 +22,16 @@ To use eyes and hands as described above in your app, please also make sure that
 
 You can also check out, how the input profile _EyeTrackingDemoPointerProfile_ from the eye tracking sample package is set up as a reference.
 
+### How to keep gaze pointer always on
+
+To avoid having the head or eye gaze pointers automatically suppressed once a hand is detected, the gaze [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) can be specified to control whether it should be on or off.
+
+```c#
+// Turn on gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
+```
+
+See [`Controllers Pointers and Focus`](../Architecture/InputSystem/ControllersPointersAndFocus.md)
+
 ---
 [Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
