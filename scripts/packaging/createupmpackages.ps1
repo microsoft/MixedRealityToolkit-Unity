@@ -69,8 +69,7 @@ $product = "toolkit"
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
     "foundation" = "Assets/MRTK";
-    # providers
-    "unityar" = "Assets/MRTK/Providers/UnityAR";
+    "standardassets" = "Assets/MRTK/StandardAssets";
     # extensions
     "extensions" = "Assets/MRTK/Extensions";
     # tools
@@ -109,7 +108,8 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     # Create and publish the package
     $packageName = $entry.Name
-    $registryName = $OutputPath
+
+    $samplesFolder = "$packagePath/Samples~"
 
     if ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
@@ -125,8 +125,6 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
-        # are packaged in the examples package.
-        $samplesFolder = "$packagePath/Samples~"
         $exampleFolder = "$packagePath/Examples"
         if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
