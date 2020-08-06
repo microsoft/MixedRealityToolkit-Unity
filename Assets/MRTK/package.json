@@ -25,5 +25,12 @@
      },
     "dependencies": { 
         "com.microsoft.mixedreality.toolkit.coreassets": "%version%"
-    }
+    },
+    "files": [
+        "Core*",
+        "Providers*",
+        "SDK*",
+        "Services*",
+        "package.json.meta"
+    ]
 }
