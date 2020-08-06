@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty displayOption;
         private SerializedProperty visibleMaterial;
         private SerializedProperty occlusionMaterial;
+        private SerializedProperty physicsMaterial;
 
         private readonly GUIContent displayOptionContent = new GUIContent("Display Option");
         private readonly GUIContent lodContent = new GUIContent("Level of Detail");
@@ -60,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             displayOption = serializedObject.FindProperty("displayOption");
             visibleMaterial = serializedObject.FindProperty("visibleMaterial");
             occlusionMaterial = serializedObject.FindProperty("occlusionMaterial");
+            physicsMaterial = serializedObject.FindProperty("physicsMaterial");
+
         }
 
         public override void OnInspectorGUI()
@@ -119,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(displayOption, displayOptionContent);
                     EditorGUILayout.PropertyField(visibleMaterial);
                     EditorGUILayout.PropertyField(occlusionMaterial);
+                    EditorGUILayout.PropertyField(physicsMaterial);
                 }
 
                 serializedObject.ApplyModifiedProperties();

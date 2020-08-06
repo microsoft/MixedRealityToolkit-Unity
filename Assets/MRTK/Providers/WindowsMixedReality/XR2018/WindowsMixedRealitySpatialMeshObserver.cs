@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -661,6 +661,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
                         VisibleMaterial :
                         OcclusionMaterial;
+
+                    if (PhysicsMaterial != null)
+                    {
+                        meshObject.Collider.material = PhysicsMaterial;
+                    }
                 }
                 else
                 {
