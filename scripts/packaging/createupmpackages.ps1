@@ -80,8 +80,6 @@ $packages = [ordered]@{
     "examples" = "Assets/MRTK/Examples";
 }
 
-$npmCommand = "npm"
-
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
@@ -89,8 +87,6 @@ $npmCommand = "npm"
 # 2) Overwrite the package.json file
 # 3) Create and the packages and copy to the OutputFolder
 # 4) Cleanup files created and/or modified
-
-$cmdFullPath = "$env:systemroot/system32/cmd.exe"
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
@@ -146,7 +142,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Write-Output "======================="
     Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmCommand pack" -NoNewWindow -Wait
+    npm pack
 
     # Move package file to OutputFolder
     Move-Item -Path "./*.tgz" $OutputDirectory -Force
