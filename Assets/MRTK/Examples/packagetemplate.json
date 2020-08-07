@@ -25,14 +25,6 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
-    },
-    "files": [
-        "Samples~*",
-        "StandardAssets~*",
-        "MRTK.Examples*",
-        "License*",
-        "toc*",
-        "package.json.meta"
-    ],
+    }
     %samples%
 }
