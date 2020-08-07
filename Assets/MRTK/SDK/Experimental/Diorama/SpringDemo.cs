@@ -1,4 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
+﻿using Microsoft.MixedReality.Toolkit.Experimental.Physics;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,19 +18,21 @@ public class SpringDemo : MonoBehaviour
     public TextMeshProUGUI dampingLabel;
     public TextMeshProUGUI massLabel;
 
+    public ElasticConfiguration elasticConfiguration;
+
     private float newHandK => Mathf.Lerp(0.1f, 10.0f, handK.SliderValue);
     private float newSnapK => Mathf.Lerp(0.1f, 10.0f, snapK.SliderValue);
     private float newDamping => Mathf.Lerp(0.0f, 0.15f, damping.SliderValue);
 
-    private float newMass => Mathf.Lerp(0.0001f, 0.01f, mass.SliderValue);
+    private float newMass => Mathf.Lerp(0.0001f, 0.02f, mass.SliderValue);
 
     // Start is called before the first frame update
     void Start()
     {
-        handK.SliderValue = Mathf.InverseLerp(0.1f, 10.0f, 4.0f);
+        handK.SliderValue = Mathf.InverseLerp(0.1f, 10.0f, 1.0f);
         snapK.SliderValue = Mathf.InverseLerp(0.1f, 10.0f, 7.0f);
         damping.SliderValue = Mathf.InverseLerp(0.0f, 0.15f, 0.08f);
-        mass.SliderValue = Mathf.InverseLerp(0.0001f, 0.01f, 0.005f);
+        mass.SliderValue = Mathf.InverseLerp(0.0001f, 0.02f, 0.002f);
 
         handK.OnInteractionEnded.AddListener(UpdateSprings);
         snapK.OnInteractionEnded.AddListener(UpdateSprings);
@@ -55,12 +58,17 @@ public class SpringDemo : MonoBehaviour
 
     public void UpdateSprings(SliderEventData s)
     {
-        foreach (var bc in FindObjectsOfType<BoundsControl>())
+        if (elasticConfiguration != null)
         {
-            bc.elasticProperties.HandK = newHandK;
-            bc.elasticProperties.SnapK = newSnapK;
-            bc.elasticProperties.Drag = newDamping;
-            bc.elasticProperties.Mass = newMass;
+            var temp = elasticConfiguration.ElasticProperties;
+
+            temp.HandK = newHandK;
+            temp.SnapK = newSnapK;
+            temp.Drag = newDamping;
+            temp.Mass = newMass;
+
+            elasticConfiguration.ElasticProperties = temp;
         }
+        
     }
 }

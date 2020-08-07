@@ -623,38 +623,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
-        // Properties for the quaternion elastic system.
-        public ElasticExtentProperties<Quaternion> extentProperties = new ElasticExtentProperties<Quaternion>
-        {
-            MinStretch = 0, // Not used in a Quaternion elastic system.
-            MaxStretch = 0,
-            SnapToEnds = false,
-            SnapPoints = new Quaternion[] { } // Will be set to the specified snap interval at runtime
-        };
-
-        // Properties for the 3D elastic system.
-        public ElasticExtentProperties<Vector3> volumeExtentProperties = new ElasticExtentProperties<Vector3>
-        {
-            MinStretch = 0, // Not used in a Quaternion elastic system.
-            MaxStretch = 0,
-            SnapToEnds = false,
-            SnapPoints = new Vector3[] { new Vector3(0.2f, 0.2f, 0.2f) } // Will be set to the specified snap interval at runtime
-        };
-
-        // Tested and verified "good" values.
-        public ElasticProperties elasticProperties = new ElasticProperties
-        {
-            Mass = 0.005f,
-            HandK = 4.0f,
-            EndK = 0.0f, // Unused
-            SnapK = 7.0f,
-            SnapRadius = 10.0f, // In degrees; will be set at runtime
-            Drag = 0.08f
-        };
-
-        private IntervalQuaternionElasticSystem rotationElastic = null;
-        private Interval3DElasticSystem translationElastic = null;
-
         #endregion
 
         #region public Properties

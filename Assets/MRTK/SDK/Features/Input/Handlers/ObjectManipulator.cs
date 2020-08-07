@@ -421,29 +421,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
-
-        // Properties for the position elastic system.
-        public ElasticExtentProperties<Vector3> extentProperties = new ElasticExtentProperties<Vector3>
-        {
-            MinStretch = 0,
-            MaxStretch = 0,
-            SnapToEnds = false,
-            SnapPoints = new Vector3[] { new Vector3(0.2f,0.2f,0.2f) } // Will be set to the specified snap interval at runtime
-        };
-
-        // Tested and verified "good" values.
-        public ElasticProperties elasticProperties = new ElasticProperties
-        {
-            Mass = 0.005f,
-            HandK = 4.0f,
-            EndK = 0.0f, // Unused
-            SnapK = 7.0f,
-            SnapRadius = 0.1f, // In degrees; will be set at runtime
-            Drag = 0.08f
-        };
-
-        private Interval3DElasticSystem translationElastic = null;
-
         #endregion
 
         #region MonoBehaviour Functions
@@ -854,8 +831,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     PointerAngularVelocity = GetPointersAngularVelocity()
                 });
             }
-
-            translationElastic = new Interval3DElasticSystem(HostTransform.localPosition, Vector3.zero, extentProperties, elasticProperties);
 
             if (rigidBody != null)
             {
