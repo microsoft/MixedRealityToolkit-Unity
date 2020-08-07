@@ -38,18 +38,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/Core/StandardAssets/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/Core/StandardAssets/README.html",
-          "hash": "nWE0Z4ixn5EbdMGLjcD5Uw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Assets/MRTK/Core/Utilities/Async/License.md",
       "output": {
         ".html": {
@@ -90,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/Core/toc.html",
-          "hash": "5/EZG53sCTgzOsroemCRlw=="
+          "hash": "EKtm48idIMCSCJ47EZjnlw=="
         }
       },
       "is_incremental": false,
@@ -373,84 +361,24 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Audio/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Audio/README.html",
-          "hash": "D8+h2rWAZO1CzFcHJlu7EQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Fonts/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Fonts/README.html",
-          "hash": "O5d1cyiA54KlK1FeLxnblQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Materials/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Materials/README.html",
-          "hash": "8LtrsweD0kxXgVi2JgkgKQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Models/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Models/README.html",
-          "hash": "o4uJdvEppCPkm/7aJlTmjg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Shaders/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Shaders/README.html",
-          "hash": "6lB/z5GyXebDcVRH2ljeMQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MRTK/SDK/StandardAssets/Textures/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/StandardAssets/Textures/README.html",
-          "hash": "DFR8Nb+7/12nYbvy/BJ2kg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
       "type": "Toc",
       "source_relative_path": "Assets/MRTK/SDK/toc.yml",
       "output": {
         ".html": {
           "relative_path": "Assets/MRTK/SDK/toc.html",
-          "hash": "o1ih/q/z+Pj2mgu2IceiCw=="
+          "hash": "4gh3Neip6hLExO+lx/ohVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/StandardAssets/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/StandardAssets/README.html",
+          "hash": "/AwL5UQ6svwxMGgLO4DgkA=="
         }
       },
       "is_incremental": false,
@@ -28612,16 +28540,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 166,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1653,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 160,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
