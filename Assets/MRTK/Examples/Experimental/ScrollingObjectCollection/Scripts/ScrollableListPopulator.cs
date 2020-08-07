@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -15,15 +16,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
     {
         [SerializeField]
         [Tooltip("The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.")]
-        private ScrollingObjectCollection scrollCollection;
+        private ScrollingObjectCollection scrollView;
+
+        private GridObjectCollection gridObjectCollection;
 
         /// <summary>
         /// The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.
         /// </summary>
-        public ScrollingObjectCollection ScrollCollection
+        public ScrollingObjectCollection ScrollView
         {
-            get { return scrollCollection; }
-            set { scrollCollection = value; }
+            get { return scrollView; }
+            set { scrollView = value; }
         }
 
         [SerializeField]
@@ -31,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         private GameObject dynamicItem;
 
         /// <summary>
-        /// Object to duplicate in <see cref="ScrollCollection"/>. 
+        /// Object to duplicate in <see cref="ScrollView"/>. 
         /// </summary>
         public GameObject DynamicItem
         {
@@ -82,6 +85,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         [Tooltip("Indeterminate loader to hide / show for LazyLoad")]
         private GameObject loader;
 
+        [SerializeField]
+        private float cellWidth = 0.032f;
+
+        [SerializeField]
+        private float cellHeight = 0.032f;
+
+        [SerializeField]
+        private float cellDepth = 0.032f;
+
+        [SerializeField]
+        private int cellsPerTier = 3;
+
+        [SerializeField]
+        private int tiersPerPage = 5;
+
+        [SerializeField]
+        private Transform scrollPositionRef = null;
+
         /// <summary>
         /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
         /// </summary>
@@ -94,41 +115,58 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         private void OnEnable()
         {
             // Make sure we find a collection
-            if (scrollCollection == null)
+            if (scrollView == null)
             {
-                scrollCollection = GetComponentInChildren<ScrollingObjectCollection>();
+                scrollView = GetComponentInChildren<ScrollingObjectCollection>();
             }
         }
 
         public void MakeScrollingList()
         {
-            if (scrollCollection == null)
+            if (scrollView == null)
             {
                 GameObject newScroll = new GameObject("Scrolling Object Collection");
                 newScroll.transform.parent = transform;
-                newScroll.transform.localPosition = new Vector3(-0.0178f, 0.0165f, -0.0047f);
-                newScroll.transform.localRotation = Quaternion.identity;
+                newScroll.transform.localPosition = scrollPositionRef ? scrollPositionRef.localPosition : Vector3.zero;
+                newScroll.transform.localRotation = scrollPositionRef ? scrollPositionRef.rotation : Quaternion.identity;
                 newScroll.SetActive(false);
-                scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
+                scrollView = newScroll.AddComponent<ScrollingObjectCollection>();
 
                 // Prevent the scrolling collection from running until we're done dynamically populating it.
-                scrollCollection.SetupAtRuntime = false;
-                scrollCollection.CellHeight = 0.032f;
-                scrollCollection.CellWidth = 0.032f;
-                scrollCollection.ItemsPerTier = 3;
-                scrollCollection.ViewableArea = 5;
-                scrollCollection.HandDeltaMagThreshold = 0.02f;
-                scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
+                scrollView.CellWidth = cellWidth;
+                scrollView.CellHeight = cellHeight;
+                scrollView.CellDepth = cellDepth;
+                scrollView.CellsPerTier = cellsPerTier;
+                scrollView.TiersPerPage = tiersPerPage;
+            }
+
+            gridObjectCollection = scrollView.GetComponentInChildren<GridObjectCollection>();
+
+            if (gridObjectCollection == null)
+            {
+                GameObject collectionGameObject = new GameObject("Grid Object Collection");
+                collectionGameObject.transform.position = scrollView.transform.position;
+                collectionGameObject.transform.rotation = scrollView.transform.rotation;
+
+                gridObjectCollection = collectionGameObject.AddComponent<GridObjectCollection>();
+                gridObjectCollection.CellWidth = cellWidth;
+                gridObjectCollection.CellHeight = cellHeight;
+                gridObjectCollection.SurfaceType = ObjectOrientationSurfaceType.Plane;
+                gridObjectCollection.Layout = LayoutOrder.ColumnThenRow;
+                gridObjectCollection.Columns = cellsPerTier;
+                gridObjectCollection.Anchor = LayoutAnchor.UpperLeft;
+
+                scrollView.AddContent(collectionGameObject);
             }
 
             if (!lazyLoad)
             {
                 for (int i = 0; i < numItems; i++)
                 {
-                    MakeItem(dynamicItem, scrollCollection.transform);
+                    MakeItem(dynamicItem);
                 }
-                scrollCollection.gameObject.SetActive(true);
-                scrollCollection.UpdateCollection();
+                scrollView.gameObject.SetActive(true);
+                gridObjectCollection.UpdateCollection();
             }
             else
             {
@@ -143,38 +181,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         private IEnumerator UpdateListOverTime(GameObject loaderViz, int instancesPerFrame)
         {
-            int currItemCount = 0;
-
-            while (currItemCount < numItems)
+            for (int currItemCount = 0; currItemCount < numItems; currItemCount++)
             {
                 for (int i = 0; i < instancesPerFrame; i++)
                 {
-                    MakeItem(dynamicItem, scrollCollection.transform);
-
-                    currItemCount++;
+                    MakeItem(dynamicItem);
                 }
-
                 yield return null;
             }
 
             // Now that the list is populated, hide the loader and show the list
             loaderViz.SetActive(false);
-            scrollCollection.gameObject.SetActive(true);
+            scrollView.gameObject.SetActive(true);
 
             // Finally, manually call UpdateCollection to set up the collection
-            scrollCollection.UpdateCollection();
+            gridObjectCollection.UpdateCollection();
         }
 
-        private void MakeItem(GameObject item, Transform newItemParent)
+        private void MakeItem(GameObject item)
         {
-            GameObject g = Instantiate(item);
-
-            g.transform.parent = newItemParent.transform;
-
-            g.transform.localPosition = Vector3.zero;
-            g.transform.localRotation = Quaternion.identity;
+            GameObject itemInstance = Instantiate(item, gridObjectCollection.transform);
+            itemInstance.SetActive(true);
         }
-
     }
-
 }

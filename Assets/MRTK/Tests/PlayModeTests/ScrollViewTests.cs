@@ -7,6 +7,8 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -15,6 +17,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ScrollViewTests : BasePlayModeTests
     {
+        private Material mrtkMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+
+        // SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_32x96.prefab
+        private const string PressableHololens2_32x96_PrefabGuid = "4f44c0d070528944c9bff425c6932763";
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+            TestUtilities.PlayspaceToOriginLookingForward();
+        }
+
         #region Tests
 
         /// <summary>
@@ -25,18 +39,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsNearInteractionWithChildren()
         {
             // Setting up a vertical 1x2 scroll view with three pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                3,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
-                                                                                1,
-                                                                                2,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
-                                                                                Vector3.forward,
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
 
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
-            PressableButton button2Component = scrollItems[1].GetComponentInChildren<PressableButton>();
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+            PressableButton button2Component = contentItems[1].GetComponentInChildren<PressableButton>();
 
             Assert.IsNotNull(button1Component);
             Assert.IsNotNull(button2Component);
@@ -90,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             bool scrollDragBegin = false;
-            scrollView.ListMomentumBegin.AddListener(() =>
+            scrollView.OnMomentumStarted.AddListener(() =>
             {
                 scrollDragBegin = true;
             });
@@ -100,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
             Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
-            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
@@ -157,27 +181,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsFarInteractionWithChildren()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                2,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
             float scale = 10f;
             scrollView.transform.localScale *= scale;
 
-            TestUtilities.PlayspaceToOriginLookingForward();
-
-            Interactable interactable1 = scrollItems[0].GetComponent<Interactable>();
-            Interactable interactable2 = scrollItems[1].GetComponent<Interactable>();
+            Interactable interactable1 = contentItems[0].GetComponent<Interactable>();
+            Interactable interactable2 = contentItems[1].GetComponent<Interactable>();
 
             Assert.IsNotNull(interactable1);
             Assert.IsNotNull(interactable2);
 
             bool scrollDragBegin = false;
-            scrollView.ListMomentumBegin.AddListener(() =>
+            scrollView.OnMomentumStarted.AddListener(() =>
             {
                 scrollDragBegin = true;
             });
@@ -185,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = new Vector3(0.13f, -0.17f, 0.5f); // Far pointer focus is on button       
-            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight * scale + offset);
+            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight * scale + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
@@ -217,7 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(interactable1.HasPress, "Interactable1 still have press from far interaction.");
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-
             Assert.IsFalse(scrollView.IsEngaged);
 
             // Interaction with other children buttons should behave normally after scroll drag engage is finished
@@ -235,22 +268,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NoJumpsWhenInteractingWithChildren()
         {
             // Setting up a vertical 1x2 scroll view with three pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                3,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                2,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
             float scale = 10f;
             scrollView.transform.localScale *= scale;
- 
-
-            TestUtilities.PlayspaceToOriginLookingForward();
 
             bool scrollDragBegin = false;
-            scrollView.ListMomentumBegin.AddListener(() =>
+            scrollView.OnMomentumStarted.AddListener(() =>
             {
                 scrollDragBegin = true;
             });
@@ -258,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = new Vector3(0.13f, -0.17f, 0.5f); // Far pointer focus is on button       
-            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
@@ -267,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(1.0f); // Waiting for possible timed drag trigger
 
             Assert.IsFalse(scrollDragBegin, "Scroll drag begin was triggered.");
-            Assert.AreEqual(scrollView.ScrollContainerPosition.y, 0, "Scroll container has moved.");
+            Assert.AreEqual(0, scrollView.ScrollContainerPosition.y, "Scroll container has moved.");
         }
 
         /// <summary>
@@ -277,18 +319,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator InteractionWithBackgroundEmptySpace()
         {
             // Setting up a vertical 2x1 scroll view with three pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                3,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 2,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(2,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
 
             bool scrollDragBegin = false;
-            scrollView.ListMomentumBegin.AddListener(() =>
+            scrollView.OnMomentumStarted.AddListener(() =>
             {
                 scrollDragBegin = true;
             });
@@ -296,9 +348,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = Vector3.zero;
-            Vector3 scrollTouchPos = scrollItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second colum slot        
-            Vector3 scrollEngagedUpPos = scrollTouchPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset); // Scrolls up one row
-            Vector3 scrollEngagedDownPos = scrollTouchPos - Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset); // Scrolls down one row
+            Vector3 scrollTouchPos = contentItems[1].transform.position + Vector3.forward * 0.015f; // Touching scroll second colum slot        
+            Vector3 scrollEngagedUpPos = scrollTouchPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls up one row
+            Vector3 scrollEngagedDownPos = scrollTouchPos - Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset); // Scrolls down one row
 
             // Scrolls up from button to reveal second row with empty slot 
             TestHand hand = new TestHand(Handedness.Right);
@@ -327,21 +379,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ChildrenCanBeAddedAndDeleted()
         {
             // Setting up a vertical 1x1 scroll view with three pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                3,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.FalloffPerItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
             // This button will be added later to the scroll collection
             GameObject button4 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
 
-            TestUtilities.PlayspaceToOriginLookingForward();
-
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
-            PressableButton button3Component = scrollItems[2].GetComponentInChildren<PressableButton>();
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+            PressableButton button3Component = contentItems[2].GetComponentInChildren<PressableButton>();
             PressableButton button4Component = button4.GetComponentInChildren<PressableButton>();
 
             Assert.IsNotNull(button1Component);
@@ -349,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(button4Component);
 
             bool scrollDragBegin = false;
-            scrollView.ListMomentumBegin.AddListener(() =>
+            scrollView.OnMomentumStarted.AddListener(() =>
             {
                 scrollDragBegin = true;
             });
@@ -377,9 +439,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
             Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
-            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight / 2 + offset);
-            Vector3 scrollEngagedOnePageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
-            Vector3 scrollEngagedTwoPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight * 2 + offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight / 2 + offset);
+            Vector3 scrollEngagedOnePageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
+            Vector3 scrollEngagedTwoPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight * 2 + offset);
 
             // Scrolling half of the row width
             TestHand hand = new TestHand(Handedness.Right);
@@ -393,9 +455,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(button3TouchBegin, "Button3 touch begin was triggered.");
             Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
 
-            // Removing scroll item while scroll is engaged
-            scrollView.RemoveItem(scrollItems[1]);
-            GameObject.Destroy(scrollItems[1]);
+            // Removing scroll item from collection while scroll is engaged
+            scrollView.RemoveItem(contentItems[1]);
+            GameObject.Destroy(contentItems[1]);
+            objectCollection.UpdateCollection();
 
             // Scrolling to second row
             scrollDragBegin = false;
@@ -430,7 +493,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(button4TouchBegin, "Button4 touch begin was triggered.");
 
             // Adding scroll item while scroll is engaged
-            scrollView.AddItem(button4);
+            button4.transform.parent = objectCollection.transform;
+            objectCollection.UpdateCollection();
+            scrollView.Reset();
 
             // Scrolling to third row
             yield return hand.Show(initialPos);
@@ -462,17 +527,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsWhenOutOfBoundaryThreshold()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                2,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
-                                                                                1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
-                                                                                Vector3.forward,
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
 
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
 
             Assert.IsNotNull(button1Component);
 
@@ -481,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
             Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
-            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight / 2 + offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight / 2 + offset);
             Vector3 scrollEngagedInsideTopBound = pastButtonPressPos + Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom - offset);
             Vector3 scrollEngagedOutsideTopBound = pastButtonPressPos + Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom + offset);
             Vector3 scrollEngagedInsideBottomBound = pastButtonPressPos - Vector3.up * (scrollView.CellHeight / 2 + scrollView.ReleaseThresholdTopBottom - offset);
@@ -592,17 +667,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageOnlyFromFrontInteraction()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                2,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
-                                                                                1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.FalloffPerItem,
-                                                                                Vector3.forward,
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
 
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerItem);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
 
             Assert.IsNotNull(button1Component);
 
@@ -675,14 +762,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollViewCanBeScaled()
         {
             // Setting up a vertical 1x1 scroll view with one single pressable button item
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 1);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
-                                                                                1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.FalloffPerItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerItem);
+            scrollView.AddContent(objectCollection.gameObject);
 
             GameObject ClippingObject = scrollView.ClippingObject;
 
@@ -697,7 +797,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.transform.localScale *= newScrollScale;
 
             yield return null;
-            scrollView.UpdateCollection();
+            scrollView.UpdateContent();
             yield return null;
 
             Assert.AreEqual(ClippingObject.transform.localScale.x, scrollView.CellWidth, 0.001, "Clipping box width did not scale as expected");
@@ -712,19 +812,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollViewCanbeRotated()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems, 
-                                                                                2, 
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown, 
-                                                                                1, 
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                ScrollingObjectCollection.VelocityType.FalloffPerItem,
                                                                                 Vector3.up * -1.0f,
-                                                                                Quaternion.LookRotation(-Vector3.up));
+                                                                                Quaternion.LookRotation(-Vector3.up),
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.up * -1.0f,
+                                                                         Quaternion.LookRotation(-Vector3.up),
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerItem);
+            scrollView.AddContent(objectCollection.gameObject);
+
             // Setting up camera to look down
             MixedRealityPlayspace.Position = Vector3.zero;
             MixedRealityPlayspace.Rotation = Quaternion.LookRotation(-Vector3.up);
 
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
 
             Assert.IsNotNull(button1Component);
 
@@ -732,8 +846,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float offset = 0.001f;
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonPressPos = button1Component.transform.position - new Vector3(0, button1Component.StartPushDistance - offset, 0);
-            Vector3 pastButtonPressPos = button1Component.transform.position - new Vector3(0, button1Component.PressDistance + 0.03f, 0);
-            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.forward * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position - new Vector3(0, button1Component.PressDistance + offset, 0);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.forward * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
 
             // Moving hand along z axis should still engage an up-down scroll view rotated 90 degrees around x
             TestHand hand = new TestHand(Handedness.Right);
@@ -743,6 +857,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.MoveTo(scrollEngagedPos);
 
             Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
+
+            yield return hand.Show(initialPos);
+
+            Assert.AreEqual(0.032f, scrollView.ScrollContainerPosition.y, 0.0005, "Scroll container should be on second tier");
         }
 
         /// <summary>
@@ -752,98 +870,108 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator CanBeScrolledByTierOrIndexOrPage()
         {
             // Setting up a horizontal 2x2 scroll view with nine pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems, 
-                                                                                9, 
-                                                                                ScrollingObjectCollection.ScrollDirectionType.LeftAndRight, 
-                                                                                2, 
-                                                                                2, 
-                                                                                ScrollingObjectCollection.VelocityType.FalloffPerItem, 
-                                                                                Vector3.forward, 
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 9);
 
-            yield return null;
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.RowThenColumn,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                2,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(2,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.LeftAndRight,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerItem);
+            scrollView.AddContent(objectCollection.gameObject);
 
             // Initial scroll state
-            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(0, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving to second tier
             scrollView.MoveByTiers(1, false);
             yield return null;
 
-            Assert.AreEqual(2, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(6, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(2, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving to fourth tier
             scrollView.MoveByTiers(2, false);
             yield return null;
 
-            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Scroll container should not move beyond its min position
             scrollView.MoveByTiers(1, false);
             yield return null;
 
-            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving back to first tier
             scrollView.MoveByTiers(-4, false);
             yield return null;
 
-            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(0, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving one page to third tier
             scrollView.MoveByPages(1, false);
             yield return null;
 
-            Assert.AreEqual(4, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(8, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(8, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving half page to fourth tier as scroll container hits its min position
             scrollView.MoveByPages(1, false);
             yield return null;
 
-            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving one page and a half back to first tier
             scrollView.MoveByPages(-2, false);
             yield return null;
 
-            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(0, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Second item is already in first visible tier
             scrollView.MoveToIndex(1, false);
             yield return null;
 
-            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(0, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving to second tier making fourth element to be on first visible tier
             scrollView.MoveToIndex(3, false);
             yield return null;
 
-            Assert.AreEqual(2, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(6, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(2, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving to fourth tier as scroll container hits its min position
             scrollView.MoveToIndex(8, false); // should move to 6 as max
             yield return null;
 
-            Assert.AreEqual(6, scrollView.FirstVisibleItemIndex,  "First visible item is different from the expected");
-            Assert.AreEqual(10, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(6, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(10, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
 
             // Moving to back to first tier. Negative argument should not cause any errors
-            scrollView.MoveToIndex(-1, false); 
+            scrollView.MoveToIndex(-1, false);
             yield return null;
 
-            Assert.AreEqual(0, scrollView.FirstVisibleItemIndex, "First visible item is different from the expected");
-            Assert.AreEqual(4, scrollView.FirstHiddenItemIndex, "First hidden item is different from the expected");
+            Assert.AreEqual(0, scrollView.FirstVisibleCellIndex, "First visible item is different from the expected");
+            Assert.AreEqual(4, scrollView.FirstHiddenCellIndex, "First hidden item is different from the expected");
         }
 
         /// <summary>
@@ -855,23 +983,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             // Setting up a horizontal 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                2,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
                                                                                 1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
                                                                                 Vector3.forward,
-                                                                                Quaternion.identity);
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
             float scale = 10f;
             scrollView.transform.localScale *= scale;
-
-            TestUtilities.PlayspaceToOriginLookingForward();
 
             // Hand positions
             float offset = 0.001f;
             Vector3 initialPos = new Vector3(0.13f, -0.17f, 0.5f); // Far pointer focus is on button       
-            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight * scale + offset);
+            Vector3 scrollEngagedPos = initialPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight * scale + offset);
 
             // Interaction with child button should behave normally if scroll drag not yet engaged
             TestHand hand = new TestHand(Handedness.Right);
@@ -889,17 +1027,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ContentClickHappensOnTouchUp()
         {
             // Setting up a horizontal 1x1 scroll view with two pressable buttons items
-            ScrollingObjectCollection scrollView = InstantiateScrollAndChildren(out GameObject[] scrollItems,
-                                                                                2,
-                                                                                ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
-                                                                                1,
-                                                                                1,
-                                                                                ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
-                                                                                Vector3.forward,
-                                                                                Quaternion.identity);
-            TestUtilities.PlayspaceToOriginLookingForward();
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
 
-            PressableButton button1Component = scrollItems[0].GetComponentInChildren<PressableButton>();
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
             button1Component.ReleaseOnTouchEnd = false;
 
             bool button1PressCompleted = false;
@@ -914,7 +1062,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
             Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
             Vector3 pastButtonReleasePos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance - button1Component.ReleaseDistanceDelta - offset);
-            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaMagThreshold + scrollView.CellHeight + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
 
             // Button click is not completed without passing release plane or if scroll view is engaged in a drag
             TestHand hand = new TestHand(Handedness.Right);
@@ -937,46 +1085,326 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(button1PressCompleted, "Button1 press release was not triggered.");
         }
 
+        /// <summary>
+        /// Tests correct clipping logic for visible, partially visible and hidden content.
+        /// Ensures best performance of the clipping primitive component by disabling renderers that are hidden.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ClipOnlyVisibleContent()
+        {
+            // Setting up a vertical 1x1 scroll view with three sphere primitive items
+            float sphereItemScale = 0.032f;
+            var contentItems = InstantiatePrimitiveItems(PrimitiveType.Sphere, 3, sphereItemScale);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                sphereItemScale,
+                                                                                sphereItemScale);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         sphereItemScale,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerFrame);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preTouchPos = contentItems[0].transform.position + new Vector3(0, 0, sphereItemScale / 2 - offset);
+            Vector3 pastTouchPos = preTouchPos + new Vector3(0, 0, offset);
+            Vector3 scrollEngagedHalfPageUpPos = pastTouchPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight / 2 + offset);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+
+            List<Renderer> clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            var renderer0 = contentItems[0].GetComponent<Renderer>();
+            var renderer1 = contentItems[1].GetComponent<Renderer>();
+            var renderer2 = contentItems[2].GetComponent<Renderer>();
+
+            var collider0 = contentItems[0].GetComponent<Collider>();
+            var collider1 = contentItems[1].GetComponent<Collider>();
+            var collider2 = contentItems[2].GetComponent<Collider>();
+
+            // Completely visible items should have renderers enabled. Colliders should remain enabled for interaction.
+            Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
+            Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
+
+            // Barelly visible content should still have renderers enabled. Colliders should be disabled for interaction.
+            Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
+            Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
+
+            // Hidden content should have renderers disabled. Colliders should be disabled for interaction.
+            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is being clipped");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
+
+            // Scrolling half item up
+            yield return hand.MoveTo(preTouchPos);
+            yield return hand.MoveTo(pastTouchPos);
+            yield return hand.MoveTo(scrollEngagedHalfPageUpPos);
+            yield return hand.MoveTo(initialPos);
+
+            clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            // Partially visible content should have renderers enabled. Colliders should be enabled for interaction.
+            Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
+            Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
+
+            Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
+            Assert.IsTrue(collider1.enabled, "Collider 1 is disabled");
+
+            // Hidden content should have renderers disabled. Colliders should be disabled for interaction.
+            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
+
+            // Removing content from scroll content should also remove its renderers from the scroll clipping box.
+            scrollView.RemoveItem(contentItems[0]);
+            clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
+
+            // Object is still visible, but renderer should not be clipped.
+            Assert.IsFalse(clippedRenderers.Contains(renderer0), "Renderer 0 is being clipped");
+        }
+
+        /// <summary>
+        /// Tests if component can scroll content made of objects layouted manually without a BaseObjectCollection.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CanScrollNonCollectionContent()
+        {
+            // Setting up a vertical 1x1 scroll view with two pressable buttons items
+            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+
+            var cellWidth = contentItems[0].GetComponent<NearInteractionTouchable>().Bounds.x;
+            var cellHeight = contentItems[0].GetComponent<NearInteractionTouchable>().Bounds.y;
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         cellWidth,
+                                                                         cellHeight,
+                                                                         cellWidth,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity,
+                                                                         ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                         ScrollingObjectCollection.VelocityType.FalloffPerItem);
+            scrollView.AddContent(contentItems[0]);
+            scrollView.AddContent(contentItems[1]);
+
+            contentItems[0].transform.localPosition = new Vector3(cellWidth * 0.5f, cellHeight * -0.5f, 0f);
+            contentItems[1].transform.localPosition = new Vector3(cellWidth * 0.5f, cellHeight * -1.5f, 0f);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
+
+            // Moving hand along y axis should engage an up-down scroll drag
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonPressPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
+
+            yield return hand.Show(initialPos);
+
+            Assert.AreEqual(0.032f, scrollView.ScrollContainerPosition.y, 0.0005, "Scroll container should be on second tier");
+        }
+
+        /// <summary>
+        /// Tests if content made of objects of different sizes can be scrolled.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CanScrollDifferentSizesContent()
+        {
+            // Setting up a vertical 1x1 scroll view with four pressable buttons items with two different sizes
+            // Buttons are layouted in two grid object collection
+            var contentItems1 = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems2 = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2_32x96_PrefabGuid), 2);
+
+            GridObjectCollection objectCollection1 = InstantiateObjectCollection(contentItems1,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            GridObjectCollection objectCollection2 = InstantiateObjectCollection(contentItems2,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                objectCollection1.transform.position + Vector3.right * objectCollection1.CellWidth,
+                                                                                Quaternion.identity,
+                                                                                0.096f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         1,
+                                                                         objectCollection2.CellWidth + objectCollection1.CellWidth,
+                                                                         objectCollection1.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection1.gameObject);
+            scrollView.AddContent(objectCollection2.gameObject);
+            PressableButton button1Component = contentItems1[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.001f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * (scrollView.HandDeltaScrollThreshold + scrollView.CellHeight + offset);
+
+            // Moving hand along y axis should engage an up-down scroll drag
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonPressPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.IsTrue(scrollView.IsDragging, "Scroll view is not being dragged.");
+
+            yield return hand.Show(initialPos);
+
+            Assert.AreEqual(0.032f, scrollView.ScrollContainerPosition.y, 0.0005, "Scroll container should be on second tier");
+        }
+
         #endregion Tests
 
         #region Utilities
 
-        private GameObject InstantiatePrefab(string path)
+        private GameObject[] InstantiatePrefabItems(string path, int numberOfItems)
         {
-            Object buttonPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
-            GameObject button = Object.Instantiate(buttonPrefab) as GameObject;
+            var items = new GameObject[numberOfItems];
 
-            return button;
-        }
-
-        private ScrollingObjectCollection InstantiateScrollAndChildren(out GameObject[] scrollItems, 
-                                                                       int numberOfItems, 
-                                                                       ScrollingObjectCollection.ScrollDirectionType scrollDirection, 
-                                                                       int itemsPerTier, 
-                                                                       int viewableArea,
-                                                                       ScrollingObjectCollection.VelocityType velocityType,
-                                                                       Vector3 position,
-                                                                       Quaternion rotation)
-        {
-            Debug.Assert(numberOfItems > 0);
-
-            GameObject scrollObject = new GameObject();
-
-            scrollItems = new GameObject[numberOfItems];
             for (int i = 0; i < numberOfItems; i++)
             {
-                scrollItems[i] = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
-                scrollItems[i].transform.parent = scrollObject.transform;
+                items[i] = InstantiatePrefab(path);
             }
 
+            return items;
+        }
+
+        private GameObject InstantiatePrefab(string path)
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+
+            return Object.Instantiate(prefab) as GameObject;
+        }
+
+        private GameObject[] InstantiatePrimitiveItems(PrimitiveType primitiveType, int numberOfItems, float scale)
+        {
+            var items = new GameObject[numberOfItems];
+
+            for (int i = 0; i < numberOfItems; i++)
+            {
+                items[i] = GameObject.CreatePrimitive(primitiveType);
+                items[i].transform.localScale *= scale;
+
+                // Primitives used in the scroll test class should use mrtk standard material in order to be masked correctly
+                items[i].GetComponent<Renderer>().sharedMaterial = mrtkMaterial;
+            }
+
+            return items;
+        }
+
+        private GridObjectCollection InstantiateObjectCollection(GameObject[] items,
+                                                                 LayoutOrder layoutOrder,
+                                                                 LayoutAnchor layoutAnchor,
+                                                                 int itemsPerTier,
+                                                                 Vector3 position,
+                                                                 Quaternion rotation,
+                                                                 float cellWidth,
+                                                                 float cellHight)
+        {
+            Debug.Assert(items != null && items.Length > 0, "Number of items in object collection should not be null or empty");
+
+            GameObject collectionGameObject = new GameObject();
+
+            foreach (var item in items)
+            {
+                item.transform.parent = collectionGameObject.transform;
+            }
+
+            var objectCollection = collectionGameObject.AddComponent<GridObjectCollection>();
+            objectCollection.Layout = layoutOrder;
+            objectCollection.Anchor = layoutAnchor;
+            objectCollection.SortType = CollationOrder.ChildOrder;
+            objectCollection.CellWidth = cellWidth;
+            objectCollection.CellHeight = cellHight;
+
+            switch (layoutOrder)
+            {
+                case LayoutOrder.ColumnThenRow:
+                    objectCollection.Columns = itemsPerTier;
+                    break;
+                case LayoutOrder.RowThenColumn:
+                    objectCollection.Rows = itemsPerTier;
+                    break;
+                default:
+                    break;
+            }
+
+            objectCollection.UpdateCollection();
+
+            collectionGameObject.transform.position = position;
+            collectionGameObject.transform.rotation = rotation;
+
+            return objectCollection;
+        }
+
+        private ScrollingObjectCollection InstantiateScrollView(int cellsPerTier,
+                                                                int tiersPerPage,
+                                                                float cellWidth,
+                                                                float cellHeight,
+                                                                float cellDepth,
+                                                                Vector3 position,
+                                                                Quaternion rotation,
+                                                                ScrollingObjectCollection.ScrollDirectionType scrollDirection = ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
+                                                                ScrollingObjectCollection.VelocityType velocityType = ScrollingObjectCollection.VelocityType.NoVelocitySnapToItem,
+                                                                ScrollingObjectCollection.EditMode maskEditMode = ScrollingObjectCollection.EditMode.Auto)
+        {
+            GameObject scrollObject = new GameObject();
+
             var scrollView = scrollObject.AddComponent<ScrollingObjectCollection>();
+
+            scrollView.CellsPerTier = cellsPerTier;
+            scrollView.TiersPerPage = tiersPerPage;
+            scrollView.CellWidth = cellWidth;
+            scrollView.CellHeight = cellHeight;
+            scrollView.CellDepth = cellDepth;
             scrollView.ScrollDirection = scrollDirection;
-            scrollView.CellWidth = scrollItems[0].GetComponent<NearInteractionTouchable>().Bounds.x;
-            scrollView.CellHeight = scrollItems[0].GetComponent<NearInteractionTouchable>().Bounds.y;
             scrollView.TypeOfVelocity = velocityType;
-            scrollView.ItemsPerTier = itemsPerTier;
-            scrollView.ViewableArea = viewableArea;
-            scrollView.UpdateCollection();
+            scrollView.MaskEditMode = maskEditMode;
+
+            scrollView.UpdateContent();
 
             scrollObject.transform.position = position;
             scrollObject.transform.rotation = rotation;
