@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         #region Properties
 
-        private Vector3 initialScale;
-
         [SerializeField]
         [Tooltip("Minimum scaling allowed")]
         private float scaleMinimum = 0.2f;
@@ -76,19 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Properties
 
-        #region MonoBehaviour Methods
-
-        public override void Start()
+        #region Public Methods
+        public override void Initialize(MixedRealityTransform worldPose)
         {
-            base.Start();
-
-            initialScale = TargetTransform.localScale;
+            base.Initialize(worldPose);
             SetScaleLimits();
         }
-
-        #endregion MonoBehaviour Methods
-
-        #region Public Methods
 
         /// <summary>
         /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
@@ -157,8 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (relativeToInitialState)
             {
-                minimumScale = initialScale * scaleMinimum;
-                maximumScale = initialScale * scaleMaximum;
+                minimumScale = worldPoseOnManipulationStart.Scale * scaleMinimum;
+                maximumScale = worldPoseOnManipulationStart.Scale * scaleMaximum;
             }
             else
             {

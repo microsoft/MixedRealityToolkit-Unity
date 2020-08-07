@@ -7,12 +7,13 @@ using UnityEngine;
 public class TrackboxHydration : MonoBehaviour
 {
     #region Elastic Properties
-    private static ElasticExtentProperties<float> elasticExtent = new ElasticExtentProperties<float>
+    private static LinearElasticExtent elasticExtent = new LinearElasticExtent
     {
         SnapToEnds = false,
         SnapPoints = new float[] { },
         MaxStretch = 1.0f,
-        MinStretch = -1.0f
+        MinStretch = -1.0f,
+        SnapRadius = 1.0f
     };
 
     private static ElasticProperties boxElasticProperties = new ElasticProperties
@@ -20,7 +21,6 @@ public class TrackboxHydration : MonoBehaviour
         Mass = 0.02f,
         HandK = 4.0f,
         EndK = 2.0f,
-        SnapRadius = 1.0f,
         Drag = 0.25f
     };
     
@@ -29,7 +29,6 @@ public class TrackboxHydration : MonoBehaviour
         Mass = 0.015f,
         HandK = 4.0f,
         EndK = 2.0f,
-        SnapRadius = 1.0f,
         Drag = 0.15f
     };
     #endregion

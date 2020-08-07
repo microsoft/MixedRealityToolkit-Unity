@@ -127,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const int numFramesPerMove = 1;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -147,12 +147,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(collider);
 
             handler = collider.gameObject.AddComponent<PointerHandler>();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
         }
 
         [UnityTest]

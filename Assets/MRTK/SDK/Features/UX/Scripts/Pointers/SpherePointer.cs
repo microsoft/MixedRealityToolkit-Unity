@@ -163,10 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Test if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
-        /// Uses SphereCastRadius + NearObjectMargin to determine if near an object.
+        /// Uses SphereCastRadius + NearObjectMargin to determine if near an object within the sector angle
+        /// Also returns true of any grabable objects are within SphereCastRadius even if they aren't within the sector angle
+        /// Ignores bounds handlers for the IsNearObject check.
         /// </summary>
         /// <returns>True if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.</returns>
-        public bool IsNearObject => queryBufferNearObjectRadius.ContainsGrabbable;
+        public bool IsNearObject => queryBufferNearObjectRadius.ContainsGrabbable || queryBufferInteractionRadius.NearObjectDetected;
 
         /// <summary>
         /// Test if the pointer is within the grabbable radius of collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
@@ -491,6 +493,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Returns true if any of the objects inside QueryBuffer contain a grabbable
             /// </summary>
             public bool ContainsGrabbable => grabbable != null;
+
+            /// <summary>
+            /// Returns true if any of the objects inside QueryBuffer contain a grabbable that is not a bounds handle
+            /// </summary>
+            public bool NearObjectDetected => ContainsGrabbable && !grabbable.IsBoundsHandles;
         }
 
     #if UNITY_EDITOR

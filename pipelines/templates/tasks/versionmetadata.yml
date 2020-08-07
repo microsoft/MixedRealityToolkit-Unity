@@ -10,4 +10,4 @@ steps:
     filePath: ./scripts/packaging/versionmetadata.ps1
     arguments: >
       -Directory: '$(Build.SourcesDirectory)'
-      -Version: '$(parameters.MRTKVersion)'
+      -Version: '${{ parameters.MRTKVersion }}'

@@ -6,6 +6,8 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 
 ![LeapMotionIntroGif](../Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif)
 
+This provider can be used in editor and on device while on the Standalone platform.  It can also be used in editor while on the UWP platform but NOT in a UWP build.
+
 ## Using Leap Motion (by Ultraleap) hand tracking in MRTK
 
 1. Prepare MRTK project for Leap Motion

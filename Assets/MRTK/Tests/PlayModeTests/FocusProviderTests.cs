@@ -24,16 +24,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class FocusProviderTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -83,7 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 4.72f);
+            cube.transform.localScale = Vector3.one * 0.35f;
+            cube.transform.position = new Vector3(-0.2f, 0.3f, 4.2f);
             yield return null;
 
             // No hands, default cursor should be visible
@@ -104,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Enabling eye tracking data
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            inputSimulationService.SimulateEyePosition = true;
+            inputSimulationService.EyeGazeSimulationMode = EyeGazeSimulationMode.CameraForwardAxis;
             yield return null;
 
             // Eye based gaze cursor should still be invisible

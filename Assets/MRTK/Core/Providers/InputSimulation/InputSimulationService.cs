@@ -134,7 +134,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// If true then camera forward direction is used to simulate eye tracking data.    
         /// </summary>
-        public bool SimulateEyePosition { get; set; }
+        [Obsolete("Check the EyeGazeSimulationMode instead")]
+        public bool SimulateEyePosition
+        {
+            get
+            {
+                return eyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+            }
+            set
+            {
+                eyeGazeSimulationMode = value ? EyeGazeSimulationMode.CameraForwardAxis : EyeGazeSimulationMode.Disabled;
+            }
+        }
+
+        private EyeGazeSimulationMode eyeGazeSimulationMode;
+        /// <inheritdoc />
+        public EyeGazeSimulationMode EyeGazeSimulationMode
+        {
+            get => eyeGazeSimulationMode;
+            set
+            {
+                eyeGazeSimulationMode = value;
+            }
+        }
+
 
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
@@ -207,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return (HandSimulationMode != HandSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
-                    return SimulateEyePosition;
+                    return EyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
             }
 
             return false;
@@ -219,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Initialize();
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
-            SimulateEyePosition = InputSimulationProfile.SimulateEyePosition;
+            EyeGazeSimulationMode = InputSimulationProfile.DefaultEyeGazeSimulationMode;
         }
 
         /// <inheritdoc />
@@ -306,13 +329,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (SimulateEyePosition)
+            switch (EyeGazeSimulationMode)
             {
-                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
-                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
-
-                // Update the simulated eye gaze with the current camera position and forward vector
-                Service?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
+                case EyeGazeSimulationMode.Disabled:
+                    break;
+                case EyeGazeSimulationMode.CameraForwardAxis:
+                    // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
+                    break;
+                case EyeGazeSimulationMode.Mouse:
+                    // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                    Service?.EyeGazeProvider?.UpdateEyeGaze(this, CameraCache.Main.ScreenPointToRay(UnityEngine.Input.mousePosition), DateTime.UtcNow);
+                    break;
             }
         }
 
@@ -394,6 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (handDataProvider == null)
             {
+                DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 handDataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
         }
@@ -404,6 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (handDataProvider != null)
             {
+                DebugUtilities.LogVerbose("Destroying the hand simulation data provider");
                 handDataProvider = null;
             }
         }
@@ -469,7 +501,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Viewport delta x and y can be computed from screen x/y.
                 // Note that the conversion functions do not change Z, it is expected to always be in world space units.
                 Vector3 viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta);
-
                 // Compute viewport-scale z delta
                 viewportDelta.z = WorldToViewport(worldDepthDelta).x;
 

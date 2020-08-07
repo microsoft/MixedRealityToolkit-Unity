@@ -79,18 +79,32 @@ All constraints found on the object wil be listed here with a *Go to component* 
 
 ### Physics
 
+Settings in this section appear only when the object has a RigidBody component.
+
 #### Release behavior
 
-Specify which physical properties a manipulated object should keep upon release. Requires a rigidbody component to be on that object. Because this property is a flag, both options can be selected.
+Specify which physical properties a manipulated object should keep upon release. Because this property is a flag, both options can be selected.
 
 * *Keep Velocity*: When the object is released, if this option is selected it will keep its linear velocity.
 * *Keep Angular Velocity*: When the object is released, if this option is selected it will keep its angular velocity.
 
+#### Use forces for near manipulation
+
+Whether physics forces are used to move the object when performing near manipulations. Setting this to *false* will make the object feel more directly connected to the users hand. Setting this to *true* will honor the mass and inertia of the object, but may feel as though the object is connected through a spring. The default is *false*. 
+
 ### Smoothing
+
+#### Smoothing far
+
+Whether frame-rate independent smoothing is enabled for far interactions. Far smoothing is enabled by default.
+
+#### Smoothing near
+
+Whether frame-rate independent smoothing is enabled for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.
 
 #### Smoothing active
 
-Specifies whether smoothing is active.
+Obsolete and will be removed in a future version. Applications should use SmoothingFar, SmoothingNear or a combination of the two.
 
 #### Move lerp time
 

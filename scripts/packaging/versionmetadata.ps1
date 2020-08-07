@@ -214,7 +214,7 @@ function CheckProjectSettings {
                 # For the metroPackageVersion (which is used to generate the MRTK project
                 # AppX versions, they need to have an additional .0 tacked onto the end)
                 if ($line -match " metroPackageVersion") {
-                    $expected = "$expected.0" 
+                    $expected = "$expected.0"
                 }
 
                 if ($expected -ne $version) {
