@@ -103,8 +103,9 @@ For more information on these changes and complete instructions for eye tracking
 
 ### Eye gaze pointer behavior in 2.4.0
 
-The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. 
-Details about gaze and hand setups can be found in the [eyes and hands](EyeTracking/EyeTracking_EyesAndHands.md) article.
+The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. The eye gaze pointer will become visible again after saying "Select".
+
+Details about gaze and hand setups can be found in the [eyes and hands](EyeTracking/EyeTracking_EyesAndHands.md#how-to-keep-gaze-pointer-always-on) article.
 
 ### API changes in 2.4.0
 

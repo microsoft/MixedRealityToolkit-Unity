@@ -10,7 +10,7 @@ In our [MRTK eye tracking demos](EyeTracking_ExamplesOverview.md), we describe s
 - [Navigation](EyeTracking_Navigation.md): Simply look at a location you want to zoom in, pinch your index finger and thumb together and _pull_ your hand toward you to zoom in.
 
 Please note that MRTK is currently designed in a way that at a distance hand rays act as the prioritized focus pointers.
-This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected.
+This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected and will become visible again after saying "Select".
 However, this may not be the way you would like to interact at a distance and rather favor a simple _'gaze and commit'_ interaction independent of the presence of hands in your view.
 
 ### How to disable the hand ray
