@@ -39,24 +39,5 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         {
             return originalObjectPose.Position + (grabPoint - originalGrabPosition) * manipulationScale;
         }
-
-        private float GetDistanceToBody(MixedRealityPose pointerCentroidPose)
-        {
-            // The body is treated as a ray, parallel to the y-axis, where the start is head position.
-            // This means that moving your hand down such that is the same distance from the body will
-            // not cause the manipulated object to move further away from your hand. However, when you
-            // move your hand upward, away from your head, the manipulated object will be pushed away.
-            if (pointerCentroidPose.Position.y > CameraCache.Main.transform.position.y)
-            {
-                return Vector3.Distance(pointerCentroidPose.Position, CameraCache.Main.transform.position);
-            }
-            else
-            {
-                Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
-                Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
-
-                return Vector2.Distance(pointerPosXZ, headPosXZ);
-            }
-        }
     }
 }
