@@ -31,7 +31,6 @@
         "StandardAssets~*",
         "MRTK.Examples*",
         "License*",
-        "toc*",
         "package.json.meta"
     ],
     %samples%
