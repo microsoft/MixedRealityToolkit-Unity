@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    Prepares the MRTK\Examples folder for UPM packaging.
+    Prepares the MRTK\Extensions folder for UPM packaging.
 .DESCRIPTION
-    Prepares the MRTK\Examples folder for UPM packaging.
+    Prepares the MRTK\Extensions folder for UPM packaging.
 .PARAMETER PackageRoot
     The root folder containing the examples package contents. If not specified, the current folder is presumed.
 #>
@@ -14,15 +14,15 @@ if (-not $PackageRoot) {
     throw "Missing required parameter: -PackageRoot."
 }
 
-# This hashtable contains mappings of the sample categories to the folder which contains
-# the code and assets.
+# This hashtable contains the folders containing the code and assets for the extensions
+# that have example folders that need processing.
 #
-# Note that capitalization below in the key itself is significant.
-#
+# While key captialization is not significant for finding the folders, it is used in the sample
+# description that will be written to the package manifest.
+# 
 # These paths are PackageRoot relative.
 $exampleFolders = [ordered]@{
-    "Demos" = "Demos";
-    "Experimental" = "Experimental";
+    "HandPhysicsService" = "HandPhysicsService/Examples";
 }
 
 # Beginning of the upm packaging script main section
@@ -35,7 +35,7 @@ $exampleFolders = [ordered]@{
 # 5) Overwrite the package.json file
 
 # Ensure the required folder exists
-$samplesFolder = "$PackageRoot/Samples~"
+$samplesFolder = "$PackageRoot\Samples~"
 if (-not (Test-Path -Path $samplesFolder)) {
     New-Item $samplesFolder -ItemType Directory | Out-Null
 }
@@ -43,44 +43,33 @@ if (-not (Test-Path -Path $samplesFolder)) {
 # Copy each example folder
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     $sampleGroupName = $entry.Name
-    Write-Output "Copying $PackageRoot/$sampleGroupName to $samplesFolder/$sampleGroupName"
-    Copy-Item -Path "$PackageRoot/$sampleGroupName" -Destination "$samplesFolder/$sampleGroupName" -Recurse -Force
-    Copy-Item -Path "$PackageRoot/$sampleGroupName.meta"-Destination "$samplesFolder/$sampleGroupName.meta"
+    $sampleFolder = $entry.Value
+    Write-Output "Copying $PackageRoot/$sampleFolder to $samplesFolder/$sampleGroupName"
+    Copy-Item -Path "$PackageRoot/$sampleFolder" -Destination "$samplesFolder/$sampleGroupName" -Recurse -Force
+    Copy-Item -Path "$PackageRoot/$sampleFolder.meta"-Destination "$samplesFolder/$sampleGroupName.meta"
 }
 
 # Create the samples data for the package.json file
-$sampleCategoryCount = 0
+$sampleCount = 0
 $samples = "`"samples`": ["
 foreach ($entry in $exampleFolders.GetEnumerator()) {
     # Since we need to place appropriate separator characters between entries, we need to
     # keep track of how many folders we have processed
-    $sampleCategoryCount++
+    $sampleCount++
 
     $folderName = $entry.Name
-    $subFolderList = Get-ChildItem -Path "$samplesFolder\$folderName" -Directory -Name
-    $sampleCount = 0
-    foreach ($n in $subFolderList) 
-    {
-        $sampleCount++
 
-        $displayName = "$folderName - $n"
-        $description = "MRTK Examples: $n ($folderName)"
-        $path = "Samples~/$folderName/$n"
-    
-        $samples = $samples + "`n      {`n"
-        $samples = $samples + "        `"displayName`": `"" + $displayName + "`",`n"
-        $samples = $samples + "        `"description`": `"" + $description + "`",`n"
-        $samples = $samples + "        `"path`": `"" + $path + "`"`n"
-        $samples = $samples + "      }"
-        if ($sampleCategoryCount -eq $exampleFolders.keys.count) {
-            if (-not ($sampleCount -eq $subFolderList.count)) {
-                $samples = $samples + ","
-            }
-        }
-        else {
+    $displayName = "$folderName"
+    $description = "MRTK Examples: $folderName"
+    $path = "Samples~/$folderName"
+
+    $samples = $samples + "`n      {`n"
+    $samples = $samples + "        `"displayName`": `"" + $displayName + "`",`n"
+    $samples = $samples + "        `"description`": `"" + $description + "`",`n"
+    $samples = $samples + "        `"path`": `"" + $path + "`"`n"
+    $samples = $samples + "      }"
+    if (-not ($sampleCount -eq $exampleFolders.keys.count)) {
             $samples = $samples + ","
-        }
-        
     }
 }
 $samples = $samples + "`n   ]"

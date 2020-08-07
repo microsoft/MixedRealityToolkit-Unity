@@ -1,9 +1,9 @@
 {
-    "name": "com.microsoft.mixedreality.toolkit.handphysicsservice",
-    "displayName": "Mixed Reality Toolkit Hand Physics Service",
+    "name": "com.microsoft.mixedreality.toolkit.extensions",
+    "displayName": "Mixed Reality Toolkit Extensions",
     "version": "%version%",
-    "unity": "2018.4",
-    "description": "Extension to the Microsoft Mixed Reality Toolkit providing support for hand physics.",
+    "unity": "2019.4",
+    "description": "Extensions to the Microsoft Mixed Reality Toolkit. This package includes: Hand Physics Service, Lost Tracking Service and Scene Transition Service.",
     "keywords": [
         "mrtk",
         "microsoft",
@@ -13,7 +13,7 @@
         "virtual",
         "hololens",
         "xr",
-        "extension"
+        "extensions"
     ],
     "author": "Microsoft Corporation",
     "license": "MIT",
@@ -27,11 +27,5 @@
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
     },
-    "samples": [
-        {
-            "displayName": "Hand Physics Examples",
-            "description": "Examples of using the MRTK Hand Physics service",
-            "path" : "Samples~/Examples"
-        }
-    ]
+    %samples%
 }
