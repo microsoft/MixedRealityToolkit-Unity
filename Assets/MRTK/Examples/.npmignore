@@ -1,3 +1,6 @@
 Demos*
 Experimental*
+Microsoft.MixedReality.Toolkit.Examples.asmdef*
+*.nuspec
+*.nuspec.meta
 *.tgz
