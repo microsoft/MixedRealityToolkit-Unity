@@ -124,7 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                     else
                     {
-                        Debug.Log($"Highlighting: {handleToHighlight.gameObject}");
                         VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
                         highlightedHandle = handleToHighlight;
                     }

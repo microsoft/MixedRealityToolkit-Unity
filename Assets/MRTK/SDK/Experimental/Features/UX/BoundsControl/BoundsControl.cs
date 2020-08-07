@@ -1580,8 +1580,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void CreateVisuals()
         {
-            Debug.Log("CreateVisuals");
-
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
 
