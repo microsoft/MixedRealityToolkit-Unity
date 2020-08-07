@@ -14,19 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Properties
 
         [SerializeField]
-        [Tooltip("Transform being constrained. Defaults to the object of the component.")]
-        private Transform targetTransform = null;
-
-        /// <summary>
-        /// Transform that we intend to apply constraints to
-        /// </summary>
-        public Transform TargetTransform
-        {
-            get => targetTransform;
-            set => targetTransform = value;
-        }
-
-        [SerializeField]
         [EnumFlags]
         [Tooltip("What type of manipulation this constraint applies to. Defaults to One Handed and Two Handed.")]
         private ManipulationHandFlags handType = ManipulationHandFlags.OneHanded | ManipulationHandFlags.TwoHanded;
@@ -54,30 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => proximityType = value;
         }
 
-        protected MixedRealityPose worldPoseOnManipulationStart;
+        protected MixedRealityTransform worldPoseOnManipulationStart;
 
         public abstract TransformFlags ConstraintType { get; }
 
         #endregion Properties
-
-        #region MonoBehaviour Methods
-
-        public virtual void Start()
-        {
-            if (TargetTransform == null)
-            {
-                TargetTransform = transform;
-            }
-        }
-
-        #endregion MonoBehaviour Methods
 
         #region Public Methods
 
         /// <summary>
         /// Intended to be called on manipulation started
         /// </summary>
-        public virtual void Initialize(MixedRealityPose worldPose)
+        public virtual void Initialize(MixedRealityTransform worldPose)
         {
             worldPoseOnManipulationStart = worldPose;
         }
@@ -88,5 +63,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public abstract void ApplyConstraint(ref MixedRealityTransform transform);
 
         #endregion Public Methods
+
+
+        #region Deprecated
+
+        /// <summary>
+        /// Intended to be called on manipulation started
+        /// </summary>
+        [System.Obsolete("Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.")]
+        public virtual void Initialize(MixedRealityPose worldPose)
+        {
+            Initialize(new MixedRealityTransform(worldPose.Position, worldPose.Rotation, Vector3.one));
+        }
+
+        /// <summary>	
+        /// Transform that we intend to apply constraints to	
+        /// </summary>	
+        [System.Obsolete("Deprecated: Get component transform instead.")]
+        public Transform TargetTransform { get; set; } = null;
+
+        #endregion
     }
 }

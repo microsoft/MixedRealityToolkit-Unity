@@ -279,6 +279,98 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => onHoverExited;
             set => onHoverExited = value;
         }
+
+        [Header("Elastic")]
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.")]
+        private ElasticConfiguration translationElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.
+        /// </summary>
+        public ElasticConfiguration TranslationElasticConfigurationObject
+        {
+            get => translationElasticConfigurationObject;
+            set => translationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.")]
+        private ElasticConfiguration rotationElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.
+        /// </summary>
+        public ElasticConfiguration RotationElasticConfigurationObject
+        {
+            get => rotationElasticConfigurationObject;
+            set => rotationElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.")]
+        private ElasticConfiguration scaleElasticConfigurationObject = null;
+
+        /// <summary>
+        /// Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.
+        /// </summary>
+        public ElasticConfiguration ScaleElasticConfigurationObject
+        {
+            get => scaleElasticConfigurationObject;
+            set => scaleElasticConfigurationObject = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the translation elastic.")]
+        private VolumeElasticExtent translationElasticExtent;
+
+        /// <summary>
+        /// Extent of the translation elastic.
+        /// </summary>
+        public VolumeElasticExtent TranslationElasticExtent
+        {
+            get => translationElasticExtent;
+            set => translationElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the rotation elastic.")]
+        private QuaternionElasticExtent rotationElasticExtent;
+
+        /// <summary>
+        /// Extent of the rotation elastic.
+        /// </summary>
+        public QuaternionElasticExtent RotationElasticExtent
+        {
+            get => rotationElasticExtent;
+            set => rotationElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Extent of the scale elastic.")]
+        private VolumeElasticExtent scaleElasticExtent;
+
+        /// <summary>
+        /// Extent of the scale elastic.
+        /// </summary>
+        public VolumeElasticExtent ScaleElasticExtent
+        {
+            get => scaleElasticExtent;
+            set => scaleElasticExtent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Indication of which manipulation types use elastic feedback.")]
+        private TransformFlags elasticTypes = 0; // Default to none enabled.
+
+        /// <summary>
+        /// Indication of which manipulation types use elastic feedback.
+        /// </summary>
+        public TransformFlags ElasticTypes
+        {
+            get => elasticTypes;
+            set => elasticTypes = value;
+        }
         #endregion
 
         #region Private Properties
@@ -286,6 +378,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
+
+        private IElasticSystem<Vector3> translationElastic;
+        private IElasticSystem<Quaternion> rotationElastic;
+        private IElasticSystem<Vector3> scaleElastic;
+
+        // Magnitude of the velocity at which the elastic systems will
+        // cease being simulated (if enabled) and the object will stop updating/moving.
+        private const float elasticVelocityThreshold = 0.001f;
 
         /// <summary>
         /// Holds the pointer and the initial intersection point of the pointer ray 
@@ -353,6 +453,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             moveLogic = new ManipulationMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
+
+            InitializeElastics();
         }
         private void Start()
         {
@@ -361,17 +463,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private void Update()
         {
-            if (elasticActive && pointerIdToPointerMap.Count == 0 && translationElastic != null)
+            // If the user is not actively interacting with the object,
+            // we let the elastic systems continue simulating, to allow
+            // the object to naturally come to rest.
+            if (!isManipulationStarted)
             {
-                if(translationElastic.GetCurrentVelocity().magnitude > 0.00001f)
+                if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
                 {
-                    HostTransform.localPosition = translationElastic.ComputeIteration(translationElastic.GetCurrentValue(), Time.deltaTime);
+                    HostTransform.position = translationElastic.ComputeIteration(HostTransform.position, Time.deltaTime);
+                }
+                if (elasticTypes.HasFlag(TransformFlags.Rotate) && rotationElastic != null && rotationElastic.GetCurrentVelocity().eulerAngles.magnitude > elasticVelocityThreshold)
+                {
+                    HostTransform.rotation = rotationElastic.ComputeIteration(HostTransform.rotation, Time.deltaTime);
+                }
+                if (elasticTypes.HasFlag(TransformFlags.Scale) && scaleElastic != null && scaleElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
+                {
+                    HostTransform.localScale = scaleElastic.ComputeIteration(HostTransform.localScale, Time.deltaTime);
                 }
             }
         }
+
         #endregion MonoBehaviour Functions
 
         #region Private Methods
+
+        /// <summary>
+        /// Calculates the unweighted average, or centroid, of all pointers'
+        /// grab points, as defined by the PointerData.GrabPoint property.
+        /// Does not use the rotation of each pointer; represents a pure
+        /// geometric centroid  of the grab points in world space.
+        /// </summary>
+        /// <returns>
+        /// Worldspace grab point centroid of all pointers 
+        /// in pointerIdToPointerMap.
+        /// </returns>
         private Vector3 GetPointersGrabPoint()
         {
             Vector3 sum = Vector3.zero;
@@ -384,6 +509,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return sum / Math.Max(1, count);
         }
 
+        /// <summary>
+        /// Calculates the multiple-handed pointer pose, used for
+        /// far-interaction hand-ray-based manipulations. Uses the
+        /// unweighted vector average of the pointers' forward vectors
+        /// to calculate a compound pose that takes into account the
+        /// pointing direction of each pointer.
+        /// </summary>
+        /// <returns>
+        /// Compound pose calculated as the average of the poses
+        /// corresponding to all of the pointers in pointerIdToPointerMap.
+        /// </returns>
         private MixedRealityPose GetPointersPose()
         {
             Vector3 sumPos = Vector3.zero;
@@ -446,6 +582,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return false;
         }
+
+        private void InitializeElastics()
+        {
+            if (elasticTypes.HasFlag(TransformFlags.Move))
+            {
+                translationElastic = new VolumeElasticSystem(HostTransform.position,
+                                                             translationElastic?.GetCurrentVelocity() ?? Vector3.zero,
+                                                             translationElasticExtent,
+                                                             translationElasticConfigurationObject.ElasticProperties);
+            }
+            if (elasticTypes.HasFlag(TransformFlags.Rotate))
+            {
+                rotationElastic = new QuaternionElasticSystem(HostTransform.rotation,
+                                                              rotationElastic?.GetCurrentVelocity() ?? Quaternion.identity,
+                                                              rotationElasticExtent,
+                                                              rotationElasticConfigurationObject.ElasticProperties);
+            }
+            if (elasticTypes.HasFlag(TransformFlags.Scale))
+            {
+                scaleElastic = new VolumeElasticSystem(HostTransform.localScale,
+                                                       scaleElastic?.GetCurrentVelocity() ?? Vector3.zero,
+                                                       scaleElasticExtent,
+                                                       scaleElasticConfigurationObject.ElasticProperties);
+            }
+        }
+
         #endregion Private Methods
 
         #region Public Methods
@@ -496,6 +658,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     // cache start ptr grab point
                     pointerIdToPointerMap.Add(id, new PointerData(eventData.Pointer, eventData.Pointer.Result.Details.Point));
+
+                    // Re-initialize elastic systems.
+                    InitializeElastics();
 
                     // Call manipulation started handlers
                     if (IsTwoHandedManipulationEnabled)
@@ -587,7 +752,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
-                MixedRealityPose pointerPose = GetPointersPose();
+                // If near manipulation, a pure grabpoint centroid is used for
+                // the initial pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pointerPose = IsNearManipulation() ? new MixedRealityPose(GetPointersGrabPoint()) : GetPointersPose();
                 MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, HostTransform.localScale);
             }
@@ -615,7 +783,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
-                MixedRealityPose pose = GetPointersPose();
+                // If near manipulation, a pure GrabPoint centroid is used for
+                // the pointer pose; if far manipulation, a more complex
+                // look-rotation-based pointer pose is used.
+                MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersGrabPoint()) : GetPointersPose();
                 targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
                 constraints.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
             }
@@ -692,7 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.isKinematic = false;
             }
 
-            constraints.Initialize(new MixedRealityPose(HostTransform.position, HostTransform.rotation));
+            constraints.Initialize(new MixedRealityTransform(HostTransform));
         }
 
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)
@@ -730,18 +901,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (rigidBody == null)
             {
-                if(elasticActive)
+                if (elasticTypes.HasFlag(TransformFlags.Move))
                 {
-                    Vector3 localTarget = HostTransform.parent.InverseTransformPoint(targetTransform.Position);
-                    HostTransform.localPosition = translationElastic.ComputeIteration(localTarget, Time.deltaTime);
+                    HostTransform.position = translationElastic.ComputeIteration(targetTransform.Position, Time.deltaTime);
                 }
                 else
                 {
                     HostTransform.position = smoothingActive ? Smoothing.SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime, Time.deltaTime) : targetTransform.Position;
                 }
-
-                HostTransform.rotation = smoothingActive ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
-                HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                if (elasticTypes.HasFlag(TransformFlags.Rotate))
+                {
+                    HostTransform.rotation = rotationElastic.ComputeIteration(targetTransform.Rotation, Time.deltaTime);
+                }
+                else
+                {
+                    HostTransform.rotation = smoothingActive ? Smoothing.SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime, Time.deltaTime) : targetTransform.Rotation;
+                }
+                if (elasticTypes.HasFlag(TransformFlags.Scale))
+                {
+                    HostTransform.localScale = scaleElastic.ComputeIteration(targetTransform.Scale, Time.deltaTime);
+                }
+                else
+                {
+                    HostTransform.localScale = smoothingActive ? Smoothing.SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime, Time.deltaTime) : targetTransform.Scale;
+                }
             }
             else
             {

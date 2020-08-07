@@ -52,11 +52,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
 
-        [SetUp]
-        public override void Setup()
+        [UnitySetUp]
+        public override IEnumerator Setup()
         {
-            base.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
         /// <summary>

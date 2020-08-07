@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Eye Gaze Simulation")]
         [SerializeField]
         [Tooltip("Enable eye gaze simulation")]
-        [FormerlySerializedAs("eyeGazeSimulationMode")]
+        [FormerlySerializedAs("simulateEyePosition")]
         private EyeGazeSimulationMode defaultEyeGazeSimulationMode = EyeGazeSimulationMode.Disabled;
 
         /// <summary>

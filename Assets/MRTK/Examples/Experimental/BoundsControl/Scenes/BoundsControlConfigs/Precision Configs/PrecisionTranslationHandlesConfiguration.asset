@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cf02ae5021e3449948a393cfe6e844, type: 3}
+  m_Name: PrecisionTranslationHandlesConfiguration
+  m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9,
+    type: 2}
+  handlePrefab: {fileID: 3868891704370700786, guid: f73c916a7266dd941a534f5f0f10a423,
+    type: 3}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  translationHandlePrefabColliderType: 1
+  showTranslationHandleForX: 1
+  showTranslationHandleForY: 1
+  showTranslationHandleForZ: 1
+  precisionWidgetPrefab: {fileID: 792803156412167364, guid: c82b77319cfd96a49b9d3ed010031e92,
+    type: 3}
+  logisticSlope: 10

@@ -21,17 +21,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionGrabbableTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureInputModule();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>

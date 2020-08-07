@@ -604,5 +604,74 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             return 0;
         }
+
+        /// <summary>
+        /// Draws the contents of a scriptable inline inside a foldout. Depending on if there's an actual scriptable
+        /// linked, the values will be greyed out or editable in case the scriptable is created inside the serialized object.
+        /// </summary>
+        static public bool DrawScriptableFoldout<T>(SerializedProperty scriptable, string description, bool isExpanded) where T : ScriptableObject
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
+            if (isExpanded)
+            {
+                DrawScriptable<T>(scriptable);
+            }
+
+            return isExpanded;
+        }
+
+        /// <summary>
+        /// Draws the contents of a scriptable, without a foldout. Used by DrawScriptableFoldout.
+        /// </summary>
+        static public void DrawScriptable<T>(SerializedProperty scriptable) where T : ScriptableObject
+        {
+            using (new EditorGUI.IndentLevelScope())
+            {
+                if (scriptable.objectReferenceValue == null)
+                {
+                    // If there's no scriptable linked we're creating a local instance that allows to store a 
+                    // local version of the scriptable in the serialized object owning the scriptable property.
+                    scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
+                }
+
+                // This checks if the scriptable object reference is linking to an asset.
+                // A local version of the scriptable won't be associated to an asset.
+                // Depending on having a scriptable asset linked or referring to a local version of the scriptable
+                // we're displaying different information as guidance for the user.
+                bool isStoredAsset = AssetDatabase.Contains(scriptable.objectReferenceValue);
+                if (isStoredAsset)
+                {
+                    var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                    EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                    EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
+
+                    // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
+                    // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
+                    GUI.enabled = false;
+                    DrawScriptableSubEditor(scriptable);
+                    GUI.enabled = true;
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
+                    EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
+                    DrawScriptableSubEditor(scriptable);
+                }
+            }
+        }
+
+
+        static private void DrawScriptableSubEditor(SerializedProperty scriptable)
+        {
+            if (scriptable.objectReferenceValue != null)
+            {
+                UnityEditor.Editor configEditor = UnityEditor.Editor.CreateEditor(scriptable.objectReferenceValue);
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                EditorGUILayout.Space();
+                configEditor.OnInspectorGUI();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
+            }
+        }
     }
 }

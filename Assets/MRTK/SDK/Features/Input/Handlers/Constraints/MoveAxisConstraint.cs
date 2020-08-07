@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("Constrain movement along an axis")]
-        private AxisFlags constraintOnMovement = 0;
+        private AxisFlags constraintOnMovement = AxisFlags.None;
 
         /// <summary>
         /// Constrain movement along an axis

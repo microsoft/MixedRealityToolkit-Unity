@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private float customPointDistributionLength = 0.1f;
 
         /// <summary>
-        /// Minimum distance between points distributed along curve.
+        /// Minimum distance between points distributed along curve. Used when PointDistributionMode is set to DistanceSingleValue. Total points capped by LineStepCount.
         /// </summary>
         public float CustomPointDistributionLength
         {

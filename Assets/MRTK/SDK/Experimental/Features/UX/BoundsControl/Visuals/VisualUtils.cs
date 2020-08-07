@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             Debug.Assert(cornerPoints != null && cornerPoints.Length == 8, "Invalid corner points array passed");
             if (cornerPoints != null && cornerPoints.Length == 8)
             {
-                switch(faceIndex)
+                switch (faceIndex)
                 {
                     case 0:
                         return (cornerPoints[0] + cornerPoints[2] + cornerPoints[4] + cornerPoints[6]) * 0.25f;

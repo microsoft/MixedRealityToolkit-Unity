@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
@@ -8,14 +8,19 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
-    /// Translation handles for <see cref="BoundsControl"/> that are used for rotating the
+    /// Translation handles for <see cref="BoundsControl"/> that are used for translating the
     /// Gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
     public class TranslationHandles : HandlesBase
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
         protected TranslationHandlesConfiguration config;
-        protected FlattenModeType cachedFlattenAxis;
+        private FlattenModeType cachedFlattenAxis;
+
+        internal const int NumFaces = 6;
+
+        private Vector3[] faceCenters = new Vector3[NumFaces];
+        private CardinalAxisType[] faceAxes;
 
         internal TranslationHandles(TranslationHandlesConfiguration configuration)
         {
@@ -77,11 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal const int NumFaces = 6;
-
-        private Vector3[] faceCenters = new Vector3[NumFaces];
-        private CardinalAxisType[] faceAxes;
-
         internal int GetTranslationHandleIdx(Transform handle)
         {
             for (int i = 0; i < handles.Count; ++i)
@@ -97,13 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal Vector3 GetFaceCenter(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumFaces, "Face center index out of bounds");
+            Debug.Assert(index >= 0 && index < NumFaces, "Face center index out of bounds");
             return faceCenters[index];
         }
 
         internal CardinalAxisType GetAxisType(int index)
         {
-            Debug.Assert(index >= 0 && index <= NumFaces, "Face axes index out of bounds");
+            Debug.Assert(index >= 0 && index < NumFaces, "Face axes index out of bounds");
             return faceAxes[index];
         }
 
@@ -133,7 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             UpdateHandles();
         }
-
 
         internal void InitEdgeAxis()
         {
@@ -166,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent)
         {
-            faceCenters = new Vector3[6];
+            faceCenters = new Vector3[NumFaces];
             CalculateFaceCenters(ref boundsCorners);
             InitEdgeAxis();
             CreateHandles(parent);
@@ -197,7 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void RecreateVisuals()
         {
-            Debug.Log("RecreateVisuals");
             for (int i = 0; i < handles.Count; ++i)
             {
                 // get parent of visual
@@ -210,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
                 else
                 {
-                    Debug.LogError("couldn't find translation visual on recreating visuals");
+                    Debug.LogError($"Couldn't find translation visual on recreating visuals, index {i}");
                 }
 
                 // create new visual
@@ -225,7 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            Debug.Log("UpdateColliderBounds");
             var invScale = visualSize.x == 0.0f ? 0.0f : config.HandleSize / visualSize.x;
             GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
@@ -272,7 +269,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 Quaternion realignment = Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.forward);
                 midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
-            } else if (faceAxes[handleIndex] == CardinalAxisType.Y)
+            }
+            else if (faceAxes[handleIndex] == CardinalAxisType.Y)
             {
                 Quaternion realignment = Quaternion.FromToRotation(Vector3.forward, directionSign * Vector3.up);
                 midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
