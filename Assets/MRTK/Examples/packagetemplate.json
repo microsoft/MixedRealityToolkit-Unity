@@ -25,6 +25,6 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
-    }
+    },
     %samples%
 }
