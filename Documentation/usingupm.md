@@ -1,6 +1,6 @@
 # Mixed Reality Toolkit and Unity Package Manager
 
-Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM). Using UPM, the MRTK gains dependency management and a simple update path, as will be described in the following sections.
+Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM), on Unity 2019.4 and newer. Using UPM, the MRTK gains dependency management and a simple update path, as will be described in the following sections.
 
 ## Installing Mixed Reality features using the Unity Package Manager
 
@@ -13,7 +13,7 @@ The Unity Package Mananger uses a manifest file (manifest.json) to determine whi
 
 For each project that will be using the Microsoft Mixed Realuty Toolkit, the `manifest.json` file (in the Packages folder) will need to have the Mixed Reality scoped registry added. The following illustrate how to properly modify `manfest.json` to support Mixed Reality.
 
-1. Open `<projectRoot>\Packages\manifest.json` in a text editor, such as [Visual Studio Code](https://code.visualstudio.com/).
+1. Open `<projectRoot>/Packages/manifest.json` in a text editor, such as [Visual Studio Code](https://code.visualstudio.com/).
 1. At the top of the manifest file, add the Mixed Reality server to the scoped registry section and save the file.
 
 ```
@@ -35,9 +35,9 @@ For each project that will be using the Microsoft Mixed Realuty Toolkit, the `ma
 
 Once the Microsoft Mixed Reality scoped registry has been added to the manifest, the MRTK packages can be specified.
 
-The [Unity Package Manager](Packaging\MRTK_Packages.md#unity-package-manager) section of the [Mixed Reality Toolkit package](Packaging\MRTK_Packages.md) article describes the avaiable MRTK packages, their contents and the scenarios for thir use.
+The [Unity Package Manager](Packaging/MRTK_Packages.md#unity-package-manager) section of the [Mixed Reality Toolkit package](Packaging/MRTK_Packages.md) article describes the avaiable MRTK packages, their contents and the scenarios for thir use.
 
-To add an MRTK package, modify the dependencies section of the manifest.json file as shown in the following example.
+To add an MRTK package, modify the dependencies section of the `Packages/manifest.json` file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation..
 
 ```
   "dependencies": {
@@ -66,11 +66,12 @@ To allow for these scenarios, MRTK packages that contain sample projects (`com.m
 When an example package is updated, Unity provides the option to update imported samples.
 
 > [!Note]
-> Updating an imported sample will overwrite any changes that have been made to that sample.
+> Updating an imported sample will overwrite any changes that have been made to that sample and it's assets.
 
 ## See Also
 
 - [Mixed Reality Toolkit packages](Packages/MRTK_Packages.md)
+- [Mixed Reality Toolkit package contents](MRTK_PackageContents.md)
 
 
 
