@@ -148,7 +148,6 @@ Some of the challenges are:
 > [!Note]
 > For a detailed listing of the contents of each package, please see << link to package contents page (make a reference to upm packages) >>
 
-
 ### Foundation package
 
 The foundation package (`com.microsoft.mixedreality.toolkit.foundation`) forms the basis of the Mixed Reality Toolkit. It contains the code defining interfaces, datatypes and utility functions upon which all MRTK components rely. It also contains the platform providers and core system implementations providing
@@ -156,7 +155,9 @@ the default MRTK functionality.
 
 The package contains:
 
-<< >>
+- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview)
+- Lost Tracking Service
+- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 
 Dependencies:
 
@@ -184,7 +185,10 @@ The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contain
 
 << >>
 
+![Extensions samples](../Images/Packages/Extensions_Samples.png)
+
 Dependencies:
+
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
 
 ### Tools package
@@ -192,6 +196,7 @@ Dependencies:
 The tools package (`com.microsoft.mixedreality.toolkit.tools)` contains tools that are useful for creating mixed reality experiences. In general, these tools are editor components and their code does not ship as part of an application.
 
 Dependencies:
+
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
 
 ### Test utilities package
@@ -205,11 +210,10 @@ Dependencies:
 
 The examples package (`com.microsoft.mixedreality.toolkit.examples`), is structured to allow developers to import only the examples of interest.
 
-<< >>
-
 More details on the process of using packages containing example projects can be found in the [Mixed Reality Toolkit and Unity Package Manager](usingupm.md#using-mixed-reality-toolkit-examples) article.
 
 Dependencies:
+
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
 
 ## See also
