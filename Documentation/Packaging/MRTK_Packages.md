@@ -35,7 +35,7 @@ The available packages are:
 - [Foundation](#foundation-package)
 - [Extensions](#extensions-package)
 - [Tools](#tools-package)
-- [Test utilties](#test-utitilies-package)
+- [Test utilities](#test-utilities-package)
 - [Examples](#examples-package)
 
 These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.

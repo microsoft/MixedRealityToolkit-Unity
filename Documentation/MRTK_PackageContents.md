@@ -3,7 +3,7 @@
 The Microsoft Mixed Reality Toolkit is provided as a collection of packages.
 
 - [Asset packages](#asset-packages)
-- [Unity Pacakge Manager](#unity-package-manager)
+- [Unity Package Manager](#unity-package-manager)
 
 ## Asset packages
 
@@ -86,14 +86,14 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 | | ScreenshotUtility | Enables capturing application images in the Unity editor. |
 | | TextureCombinerWindow | Utility to combine graphics textures. |
 
-### Test Utiltiies
+### Test Utilities
 
-The optional Microsocft.MixedRealityToolkit,.TestUtilties package includes a collection of utilities used by the Mixed Reality team to author unit and other validation tests.
+The optional Microsocft.MixedRealityToolkit,.TestUtilities package includes a collection of utilities used by the Mixed Reality team to author unit and other validation tests.
 
 | Folder | Component | Description |
 | --- | --- | --- |
 | MRTK/Tests | |
-| | TestUtilities | Methods to simplify creation of play mode tests, including hand simiulation utilities. |
+| | TestUtilities | Methods to simplify creation of play mode tests, including hand simulation utilities. |
 
 ### Examples
 
@@ -123,7 +123,7 @@ When using Unity 2019.4, or newer, the Microsoft Mixed Reality Toolkit is availa
 
 ### Foundation (UPM)
 
-The Unity Package Manager version of the MRTK foundation package (`com.microsoft.mixedreality.toolkit.foundation`) contains most of the same content as the [asset package version](#foundaton). 
+The Unity Package Manager version of the MRTK foundation package (`com.microsoft.mixedreality.toolkit.foundation`) contains most of the same content as the [asset package version](#foundation). 
 
 One notable exception is the MRTK/StandardAssets folder. This folder has been moved into the new [standard assets package](#standard-assets-upm).
 
@@ -165,7 +165,7 @@ The test utlities UPM package (`com.microsoft.mixedreality.toolkit.testutilities
 
 ### Examples (UPM)
 
-The examples UPM package (`com.microsoft.mixedreality.toolkit.examples`) contains the same content as the [examples asset package](#examples)y. 
+The examples UPM package (`com.microsoft.mixedreality.toolkit.examples`) contains the same content as the [examples asset package](#examples). 
 
 > [!Note]
 > When importing the examples UPM package, sample scenes are not imported by default.
