@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR;
-
-#if XR_MANAGEMENT_ENABLED
-using UnityEngine.XR.Management;
-#endif // XR_MANAGEMENT_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -15,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     public static class XRSDKSubsystemHelpers
     {
         private static XRInputSubsystem inputSubsystem = null;
+        private static readonly List<XRInputSubsystem> XRInputSubsystems = new List<XRInputSubsystem>();
 
         /// <summary>
         /// The XR SDK input subsystem for the currently loaded XR plug-in.
@@ -23,19 +22,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             get
             {
-#if XR_MANAGEMENT_ENABLED
-                if (inputSubsystem == null &&
-                    ActiveLoader != null)
+                if (inputSubsystem == null || !inputSubsystem.running)
                 {
-                    inputSubsystem = ActiveLoader.GetLoadedSubsystem<XRInputSubsystem>();
+                    inputSubsystem = null;
+                    SubsystemManager.GetInstances(XRInputSubsystems);
+                    foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                    {
+                        if (xrInputSubsystem.running)
+                        {
+                            inputSubsystem = xrInputSubsystem;
+                            break;
+                        }
+                    }
                 }
-#endif // XR_MANAGEMENT_ENABLED
 
                 return inputSubsystem;
             }
         }
 
         private static XRMeshSubsystem meshSubsystem = null;
+        private static readonly List<XRMeshSubsystem> XRMeshSubsystems = new List<XRMeshSubsystem>();
 
         /// <summary>
         /// The XR SDK mesh subsystem for the currently loaded XR plug-in.
@@ -44,19 +50,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             get
             {
-#if XR_MANAGEMENT_ENABLED
-                if (meshSubsystem == null &&
-                    ActiveLoader != null)
+                if (meshSubsystem == null || !meshSubsystem.running)
                 {
-                    meshSubsystem = ActiveLoader.GetLoadedSubsystem<XRMeshSubsystem>();
+                    meshSubsystem = null;
+                    SubsystemManager.GetInstances(XRMeshSubsystems);
+                    foreach (XRMeshSubsystem xrMeshSubsystem in XRMeshSubsystems)
+                    {
+                        if (xrMeshSubsystem.running)
+                        {
+                            meshSubsystem = xrMeshSubsystem;
+                            break;
+                        }
+                    }
                 }
-#endif // XR_MANAGEMENT_ENABLED
 
                 return meshSubsystem;
             }
         }
 
         private static XRDisplaySubsystem displaySubsystem = null;
+        private static readonly List<XRDisplaySubsystem> XRDisplaySubsystems = new List<XRDisplaySubsystem>();
 
         /// <summary>
         /// The XR SDK display subsystem for the currently loaded XR plug-in.
@@ -65,33 +78,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             get
             {
-#if XR_MANAGEMENT_ENABLED
-                if (displaySubsystem == null &&
-                    ActiveLoader != null)
+                if (displaySubsystem == null || !displaySubsystem.running)
                 {
-                    displaySubsystem = ActiveLoader.GetLoadedSubsystem<XRDisplaySubsystem>();
+                    displaySubsystem = null;
+                    SubsystemManager.GetInstances(XRDisplaySubsystems);
+                    foreach (XRDisplaySubsystem xrDisplaySubsystem in XRDisplaySubsystems)
+                    {
+                        if (xrDisplaySubsystem.running)
+                        {
+                            displaySubsystem = xrDisplaySubsystem;
+                            break;
+                        }
+                    }
                 }
-#endif // XR_MANAGEMENT_ENABLED
 
                 return displaySubsystem;
             }
         }
-
-#if XR_MANAGEMENT_ENABLED
-        private static XRLoader ActiveLoader
-        {
-            get
-            {
-                if (XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
-                {
-                    return XRGeneralSettings.Instance.Manager.activeLoader;
-                }
-
-                return null;
-            }
-        }
-#endif // XR_MANAGEMENT_ENABLED
     }
 }
