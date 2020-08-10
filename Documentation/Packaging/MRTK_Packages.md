@@ -185,7 +185,7 @@ The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contain
 
 << >>
 
-![Extensions samples](../Images/Packages/Extensions_Samples.png)
+![Extensions samples](../Images/Packaging/Extensions_Samples.png)
 
 Dependencies:
 
