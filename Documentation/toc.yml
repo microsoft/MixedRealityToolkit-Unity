@@ -13,8 +13,8 @@
     href: BuildAndDeploy.md
   - name: MRTK and Managed Code Stripping
     href: MRTK_and_managed_code_stripping.md
-  - name: NuGet Packages
-    href: MRTKNuGetPackage.md
+  - name: Using the Unity Package Manager packages
+    href: usingupm.md
   - name: MRTK configuration dialog
     href: MRTK_Configuration_Dialog.md
   - name: Getting started with MRTK and XR SDK
