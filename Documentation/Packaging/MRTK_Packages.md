@@ -41,7 +41,7 @@ The available packages are:
 These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
 > [!Note]
-> For a detailed listing of the contents of each package, please see << link to package contents page (make a reference to asset packages) >>
+> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents#asset-packages).
 
 ### Foundation package
 
@@ -146,18 +146,44 @@ Some of the challenges are:
 - MRTK does not support UPM packages with Unity 2018.4
 
 > [!Note]
-> For a detailed listing of the contents of each package, please see << link to package contents page (make a reference to upm packages) >>
+> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents#unity-package-manager).
 
 ### Foundation package
 
-The foundation package (`com.microsoft.mixedreality.toolkit.foundation`) forms the basis of the Mixed Reality Toolkit. It contains the code defining interfaces, datatypes and utility functions upon which all MRTK components rely. It also contains the platform providers and core system implementations providing
-the default MRTK functionality.
+The foundation package (`com.microsoft.mixedreality.toolkit.foundation`) forms the basis of the Mixed Reality Toolkit. 
+
+The Unity Package Manager version of the foundation differs slightly from the asset package version, in that it does not contain the MRTK/StandardAssets folder, rather it is imported as a dependency.
 
 The package contains:
 
-- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview)
-- Lost Tracking Service
-- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
+**Core**
+
+The core is comprised of the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.
+
+**Platform providers**
+
+The platform providers are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.
+
+Supported platforms include:
+
+- Windows Mixed Reality
+- Oculus
+- OpenVR
+- Mobile AR
+- Leap Motion
+
+**Services**
+
+The services folder contains the core systems that provide the default implementations for the system service interfaces.
+
+The MRTK foundation includes the following system services:
+
+- [Boundary System](../Boundary/BoundarySystemGettingStarted.md)
+- [Camera System](../CameraSystem/CameraSystemOverview.md)
+- [Diagnostic System](../Diagnostics/DiagnosticsSystemGettingStarted.md)
+- [Input System](..//OverviewInput.md)
+- [Spatial Awareness System](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
+- [Teleport System](../TeleportSystem/Overview.md)
 
 Dependencies:
 
@@ -183,9 +209,11 @@ Dependencies: none
 
 The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contains additional components that expand the functionality of the MRTK. 
 
-<< >>
+The package contains:
 
-![Extensions samples](../Images/Packages/Extensions_Samples.png)
+- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview)
+- Lost Tracking Service
+- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 
 Dependencies:
 
