@@ -61,7 +61,7 @@ Packages installed via the Unity Package Manager are immutable. Scripts, scenes 
 
 To allow for these scenarios, MRTK packages that contain sample projects (`com.microsoft.mixedreality.toolkit.examples` and `com.microsoft.mixedreality.toolkit.handphysicsservice`) have the ability to import specific samples into the Assets folder.
 
-![Importing samples](../Images/Packages/Examples_Samples.png)
+![Importing samples](Images/Packaging/MRTK_ExamplesUpm.png)
 
 When an example package is updated, Unity provides the option to update imported samples.
 
@@ -72,6 +72,4 @@ When an example package is updated, Unity provides the option to update imported
 
 - [Mixed Reality Toolkit packages](Packages/MRTK_Packages.md)
 - [Mixed Reality Toolkit package contents](MRTK_PackageContents.md)
-
-
 
