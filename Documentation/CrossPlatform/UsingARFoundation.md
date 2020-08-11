@@ -58,9 +58,9 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
     For more information about configuring the Unity AR camera settings provider: [Unity AR camera settings provider](../CameraSystem/UnityArCameraSettings.md).
 
 > [!NOTE]
->This installation check (when the application start) if there is the AR Foundation components on the scene, if not, they are automaticaly add to make it work with ARCore and ARKit.
->If you need to set a specific behaviour, you should add the components you need by yourself. 
->For more information about AR Foundation components ands installation, check this [documentation](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@2.2/manual/index.html#samples).
+> This installation check (when the application start) if there is the AR Foundation components on the scene, if not, they are automaticaly add to make it work with ARCore and ARKit.
+> If you need to set a specific behaviour, you should add the components you need by yourself. 
+> For more information about AR Foundation components ands installation, check this [documentation](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@2.2/manual/index.html#samples).
 
 ## Building a scene for Android and iOS devices
 
