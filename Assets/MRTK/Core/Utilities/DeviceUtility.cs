@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
+#if !UNITY_2020_1_OR_NEWER
 using UnityEngine.XR;
-
-#if UNITY_2019_3_OR_NEWER
-using System.Collections.Generic;
 #endif // UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -15,10 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     public static class DeviceUtility
     {
-#if UNITY_2019_3_OR_NEWER
-        private static readonly List<XRDisplaySubsystem> XRDisplaySubsystems = new List<XRDisplaySubsystem>();
-#endif // UNITY_2019_3_OR_NEWER
-
         /// <summary>
         /// If an HMD is present and running.
         /// </summary>
@@ -27,13 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get
             {
 #if UNITY_2019_3_OR_NEWER
-                SubsystemManager.GetInstances(XRDisplaySubsystems);
-                foreach (XRDisplaySubsystem xrDisplaySubsystem in XRDisplaySubsystems)
+                if (XRSubsystemHelpers.DisplaySubsystem != null)
                 {
-                    if (xrDisplaySubsystem.running)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
 #endif // UNITY_2019_3_OR_NEWER
 
