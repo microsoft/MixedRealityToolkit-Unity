@@ -72,7 +72,7 @@ To utilize one or more of the examples, please use the following steps:
 When an example package is updated, Unity provides the option to update imported samples.
 
 > [!Note]
-> Updating an imported sample will overwrite any changes that have been made to that sample and it's assets.
+> Updating an imported sample will overwrite any changes that have been made to that sample and the associated assets.
 
 ## See Also
 
