@@ -8,6 +8,8 @@ The Unity Package Manager uses a [manifest file](https://docs.unity3d.com/Manual
 
 > [!Note]
 > As of version 2.5.0 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
+> 
+> This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.
 
 ### Registering the Mixed Reality component server
 
