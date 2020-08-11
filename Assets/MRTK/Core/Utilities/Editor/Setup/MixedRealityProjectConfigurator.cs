@@ -286,7 +286,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IsVisibleMetaFiles()
         {
+#if UNITY_2020_2_OR_NEWER
+            return VersionControlSettings.mode.Equals("Visible Meta Files");
+#else
             return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
+#endif // UNITY_2020_2_OR_NEWER
         }
 
         /// <summary>
@@ -294,7 +298,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SetVisibleMetaFiles()
         {
+#if UNITY_2020_2_OR_NEWER
+            VersionControlSettings.mode = "Visible Meta Files";
+#else
             EditorSettings.externalVersionControl = "Visible Meta Files";
+#endif // UNITY_2020_2_OR_NEWER
         }
 
         /// <summary>
@@ -330,8 +338,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Discover and set the appropriate XR Settings for virtual reality supported for the current build target.
         /// </summary>
+        /// <remarks>Has no effect on Unity 2020 or newer. Will be updated if a replacement API is provided by Unity.</remarks>
         public static void ApplyXRSettings()
         {
+#if !UNITY_2020_1_OR_NEWER
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
 #pragma warning disable 0618
@@ -352,11 +362,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
 #pragma warning restore 0618
+#endif // !UNITY_2020_1_OR_NEWER
         }
 
         private static bool GetCapability(PlayerSettings.WSACapability capability)
         {
-            return MixedRealityOptimizeUtils.IsBuildTargetUWP() ? PlayerSettings.WSA.GetCapability(capability) : true;
+            return !MixedRealityOptimizeUtils.IsBuildTargetUWP() || PlayerSettings.WSA.GetCapability(capability);
         }
     }
 }
