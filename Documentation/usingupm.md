@@ -28,8 +28,7 @@ For each project that will be using the Microsoft Mixed Reality Toolkit, the `ma
       ]
     }
   ],
-  "dependencies": {
-  ```
+```
 
 ### Adding MRTK packages
 
