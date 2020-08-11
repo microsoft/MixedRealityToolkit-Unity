@@ -20,7 +20,7 @@
     | AR Foundation  <br/> Version: 2.1.8 |  AR Foundation  <br/> Version: 2.1.8 |
     | ARCore XR Plugin <br/> Version: 2.1.11 | ARKit XR Plugin <br/> Version: 2.1.9 |
 
-    **Unity 2020.1.x**
+    **Unity 2020.1.x (Not currently formally supported, included for informational purposes only)**
 
     | **Android** | **iOS** |
     | --- | --- |
