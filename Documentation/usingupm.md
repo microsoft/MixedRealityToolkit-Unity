@@ -37,7 +37,7 @@ Once the Microsoft Mixed Reality scoped registry has been added to the manifest,
 
 The [Unity Package Manager](Packaging/MRTK_Packages.md#unity-package-manager) section of the [Mixed Reality Toolkit package](Packaging/MRTK_Packages.md) article describes the avaiable MRTK packages, their contents and the scenarios for thir use.
 
-To add an MRTK package, modify the dependencies section of the `Packages/manifest.json` file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation..
+To add an MRTK package, modify the dependencies section of the `Packages/manifest.json` file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation.
 
 ```
   "dependencies": {
@@ -50,16 +50,21 @@ To add an MRTK package, modify the dependencies section of the `Packages/manifes
 
 Once a Mixed Reality Toolkit package has been added to the package manifest, it can be managed using the Unity Package Manager user interface.
 
-<< image of MRTK package in the UPM UI >>
+![MRTK Foundation UPM Pacakge](Images/Packaging/MRTK_FoundationUPM.png)
 
 > [!Note]
 > If a Mixed Reality Toolkit package is removed using the Unity Package Manager, it will have to be re-added using the [previously described steps](#adding-mrtk-packages).
 
 ### Using Mixed Reality Toolkit examples
 
-Packages installed via the Unity Package Manager are immutable. Scripts, scenes and other assets are read-only when installed via packages. Additionally, scenes that are contained within a UPM package cannot be selected in the Build Settings window.
+Unlike assetwhen using the (.unitypackage) files, `com.microsoft.mixedreality.toolkit.examples` and `com.microsoft.mixedreality.toolkit.handphysicsservice` do not automatically import the example scenes and assets.
 
-To allow for these scenarios, MRTK packages that contain sample projects (`com.microsoft.mixedreality.toolkit.examples` and `com.microsoft.mixedreality.toolkit.handphysicsservice`) have the ability to import specific samples into the Assets folder.
+To utilize one or more of the examples, please use the following steps:
+
+1. In the Unity Editor, navigate to `Window` > `Package Manager`
+1. In the list of packages, select `Mixed Reality Toolkit Examples`
+1. Locate the desired sample(s) in the `Samples` list
+1. Click `Import into Project`
 
 ![Importing samples](Images/Packaging/MRTK_ExamplesUpm.png)
 
