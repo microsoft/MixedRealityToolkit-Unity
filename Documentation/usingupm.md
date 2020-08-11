@@ -4,7 +4,7 @@ Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available us
 
 ## Installing Mixed Reality features using the Unity Package Manager
 
-The Unity Package Mananger uses a manifest file (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.
+The Unity Package Mananger uses a [manifest file](https://docs.unity3d.com/Manual/upm-manifestPkg.html) (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.
 
 > [!Note]
 > As of version 2.5.0 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
