@@ -205,6 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void SetPointerPreferences(IPointerPreferences pointerPreferences)
         {
             this.pointerPreferences = pointerPreferences;
