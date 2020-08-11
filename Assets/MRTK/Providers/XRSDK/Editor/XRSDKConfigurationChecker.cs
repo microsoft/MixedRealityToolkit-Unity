@@ -16,11 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     static class XRSDKConfigurationChecker
     {
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
-        private const string XRManagementReference = "Unity.XR.Management";
         private const string SpatialTrackingReference = "UnityEngine.SpatialTracking";
 
 #if UNITY_2019_3_OR_NEWER
-        private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
         private static readonly VersionDefine SpatialTrackingDefine = new VersionDefine("com.unity.xr.legacyinputhelpers", "", "SPATIALTRACKING_ENABLED");
 #endif // UNITY_2019_3_OR_NEWER
 
@@ -78,12 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 versionDefines.AddRange(asmDef.VersionDefines);
             }
 
-            if (!references.Contains(XRManagementReference))
-            {
-                // Add a reference to the ARFoundation assembly
-                references.Add(XRManagementReference);
-                changed = true; 
-            }
             if (!references.Contains(SpatialTrackingReference))
             {
                 // Add a reference to the spatial tracking assembly
@@ -91,12 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 changed = true;
             }
 
-            if (!versionDefines.Contains(XRManagementDefine))
-            {
-                // Add the XRManagement #define
-                versionDefines.Add(XRManagementDefine);
-                changed = true;
-            }
             if (!versionDefines.Contains(SpatialTrackingDefine))
             {
                 // Add the spatial tracking #define
@@ -104,12 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 changed = true;
             }
 #else
-            if (references.Contains(XRManagementReference))
-            {
-                // Remove the reference to the XRManagement assembly
-                references.Remove(XRManagementReference);
-                changed = true;
-            }
             if (references.Contains(SpatialTrackingReference))
             {
                 // Remove the reference to the spatial tracking assembly
