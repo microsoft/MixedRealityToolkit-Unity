@@ -1042,6 +1042,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
 
+            // test disabling all rotation handles before activating the gameobject
+            // verifies bug https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8239
+            boundsControl.gameObject.SetActive(false);
+            yield return null;
+            rotationHandlesConfig.ShowRotationHandleForX = false;
+            rotationHandlesConfig.ShowRotationHandleForY = false;
+            rotationHandlesConfig.ShowRotationHandleForZ = false;
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            boundsControl.gameObject.SetActive(true);
+            yield return null;
+            // refetch transforms
+            rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            rotationHandleAxisX = rigRoot.transform.Find("midpoint_0");
+            Assert.IsNotNull(rotationHandleAxisX, "rotation handle couldn't be found");
+            rotationHandleAxisY = rigRoot.transform.Find("midpoint_1");
+            Assert.IsNotNull(rotationHandleAxisY, "rotation handle couldn't be found");
+            rotationHandleAxisZ = rigRoot.transform.Find("midpoint_8");
+            Assert.IsNotNull(rotationHandleAxisZ, "rotation handle couldn't be found");
+            // check handle visibility
+            Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x active");
+            Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y active");
+            Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z active");
+
+
             yield return null;
         }
 
