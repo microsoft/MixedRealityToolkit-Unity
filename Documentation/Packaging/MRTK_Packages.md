@@ -41,7 +41,7 @@ The available packages are:
 These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
 > [!Note]
-> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents#asset-packages).
+> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents.md#asset-packages).
 
 ### Foundation package
 
@@ -77,7 +77,7 @@ The MRTK foundation includes the following system services:
 - [Boundary System](../Boundary/BoundarySystemGettingStarted.md)
 - [Camera System](../CameraSystem/CameraSystemOverview.md)
 - [Diagnostic System](../Diagnostics/DiagnosticsSystemGettingStarted.md)
-- [Input System](..//OverviewInput.md)
+- [Input System](../Input/Overview.md)
 - [Spatial Awareness System](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
 - [Teleport System](../TeleportSystem/Overview.md)
 
@@ -92,7 +92,7 @@ The MRTK standard assets is a collection of components that are recommended for 
 
 The extensions package contains additional services and components that extend the functionality of the MRTK.
 
-- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview)
+- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md)
 - Lost Tracking Service
 - [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 
@@ -146,7 +146,7 @@ Some of the challenges are:
 - MRTK does not support UPM packages with Unity 2018.4
 
 > [!Note]
-> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents#unity-package-manager).
+> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents.md#unity-package-manager).
 
 ### Foundation package
 
@@ -181,7 +181,7 @@ The MRTK foundation includes the following system services:
 - [Boundary System](../Boundary/BoundarySystemGettingStarted.md)
 - [Camera System](../CameraSystem/CameraSystemOverview.md)
 - [Diagnostic System](../Diagnostics/DiagnosticsSystemGettingStarted.md)
-- [Input System](..//OverviewInput.md)
+- [Input System](../Input/Overview.md)
 - [Spatial Awareness System](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
 - [Teleport System](../TeleportSystem/Overview.md)
 
@@ -211,7 +211,7 @@ The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contain
 
 The package contains:
 
-- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview)
+- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md)
 - Lost Tracking Service
 - [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 

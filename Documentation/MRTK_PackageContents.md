@@ -118,7 +118,7 @@ When using Unity 2019.4, or newer, the Microsoft Mixed Reality Toolkit is availa
 - [Standard Assets](#standard-assets-upm)
 - [Extensions](#extensions-upm)
 - [Tools](#tools-upm)
-- [Test Utilities](#test-utilties-upm)
+- [Test Utilities](#test-utilities-upm)
 - [Examples](#examples-upm)
 
 ### Foundation (UPM)
