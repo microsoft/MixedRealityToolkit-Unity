@@ -12,8 +12,6 @@ The MRTK asset (.unitypackage) can be downloaded from [GitHub](https://github.co
 Some of the benefits of using asset packages include:
 
 - Available for Unity 2018.4 and newer
-- Can configure which files are imported
-  - Package import allows for omitting one or more files
 - Easy to make changes to MRTK
   - MRTK is in the Assets folder
 
@@ -40,9 +38,6 @@ The available packages are:
 
 These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
-> [!Note]
-> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents.md#asset-packages).
-
 ### Foundation package
 
 The Mixed Reality Toolkit Foundation is the set of code that enables your application to leverage common functionality across Mixed Reality Platforms.
@@ -50,66 +45,84 @@ The Mixed Reality Toolkit Foundation is the set of code that enables your applic
 <img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;">  
 <sup>MRTK Foundation Package</sup>
 
-The MRTK Foundation is comprised of:
+The MRTK Foundation package contains the following.
 
-**Core**
-
-The core is comprised of the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.
-
-**Platform providers**
-
-The platform providers are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.
-
-Supported platforms include:
-
-- Windows Mixed Reality
-- Oculus
-- OpenVR
-- Mobile AR
-- Leap Motion
-
-**Services**
-
-The services folder contains the core systems that provide the default implementations for the system service interfaces.
-
-The MRTK foundation includes the following system services:
-
-- [Boundary System](../Boundary/BoundarySystemGettingStarted.md)
-- [Camera System](../CameraSystem/CameraSystemOverview.md)
-- [Diagnostic System](../Diagnostics/DiagnosticsSystemGettingStarted.md)
-- [Input System](../Input/Overview.md)
-- [Spatial Awareness System](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
-- [Teleport System](../TeleportSystem/Overview.md)
-
-**Standard Assets**
-
-The MRTK standard assets is a collection of components that are recommended for all mixed reality experiences, including:
-
-- MRTK Standard shader
-- Basic materials using the MRTK Standard shader 
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Core | | Interface and type definitions, base classes, standard shader. |
+| MRTK/Core/Providers | | Platform agnostic data providers |
+| | Hands | Base class support and services for hand tracking. |
+| | [InputAnimation](../InputSimulation/InputAnimationRecording.md) | Support for recording head movement and hand tracking data. |
+| | [InputSimulation](../InputSimulation/InputSimulationService.md) | Support for in-editor simulation of hand and eye input. |
+| | [ObjectMeshObserver](../SpatialAwareness/SpatialObjectMeshObserver.md) | Spatial awareness observer using a 3D model as the data. |
+| | UnityInput | Common input devices (joystick, mouse, etc.) implemented via Unity's input API. |
+| MRTK/Providers | | Platform specific data providers |
+| | LeapMotion | Support for the UltraLeap Leap Motion controller. |
+| | OpenVR | Support for OpenVR devices. |
+| | Oculus | Support for Oculus devices, such as the Quest. |
+| | [UnityAR](../CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
+| | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
+| | Windows | Support for Microsoft Windows specific APIs, for example speech and dictation. |
+| | XR SDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3 and newer. |
+| MRTK/SDK | | |
+| | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
+| | Features | Functionality that builds upon the Foundation package. |
+| | Profiles | Default profiles for the Microsoft Mixed Reality Toolkit systems and services. |
+| | StandardAssets | Common assets; models, textures, materials, etc. |
+| MRTK/Services | | |
+| | [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
+| | [CameraSystem](../CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |
+| | [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md) | System implementing in application diagnostics, for example a visual profiler. |
+? | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
+| | [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md) | System providing multi-scene application support. |
+| | [SpatialAwarenessSystem](../SpatialAwareness/SpatialAwarenessGettingStarted.md) | System providing support for awareness of the user's environment. |
+| | [TeleportSystem](../TeleportSystem/Overview.md) | System providing support for teleporting (moving about the experience in jumps). |
+| MRTK/StandardAssets | | MRTK Standard shader, basic materials and other standard assets for mixed reality experiences |
 
 ### Extensions package
 
-The extensions package contains additional services and components that extend the functionality of the MRTK.
+The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes additional services that extend the functionality of the Microsoft Mixed Reality Toolkit.
 
-- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md)
-- Lost Tracking Service
-- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
+> [!NOTE]
+> The extensions package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
+
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Extensions | |
+| | [HandPhysicsService](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md) | Service that adds physics support to articulated hands. |
+| | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
+| | [SceneTransitionService](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
 
 ### Tools package
 
-The tools package contains tools that are useful for creating mixed reality experiences. In general, these tools are editor components and their code does not ship as part of an application.
+The optional Microsoft.MixedRealityToolkit.Unity.Tools package includes helpful tools that enhance the mixed reality development experience using the Microsoft Mixed Reality Toolkit.
+These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the Unity Editor.
 
-Some of the tools in this package include:
+> [!NOTE]
+> The tools package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
-- [Dependency Window](../Tools/DependencyWindow.md)
-- [Extension Service Creation Wizard](../Tools/ExtensionServiceCreationWizard.md)
-- [Optimize Window](../Tools/OptimizeWindow.md)
-- [Screenshot Utility](../Tools/ScreenshotUtility.md)
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Tools | |
+| | BuildWindow | Tool that helps simplify the process of building and deploying UWP applications. |
+| | [DependencyWindow](../Tools/DependencyWindow.md) | Tool that creates a dependency graph of assets in a project. |
+| | [ExtensionServiceCreator](../Tools/ExtensionServiceCreationWizard.md) | Wizard to assist in creating extension services. |
+| | [MigrationWindow](../Tools/MigrationWindow.md) | Tool that assists in updating code that uses deprecated MRTK components.  |
+| | [OptimizeWindow](../Tools/OptimizeWindow.md) | Utility to help automate configuring a mixed reality project for the best performance in Unity. |
+| | ReserializeAssetsUtility | Provides support for reserializing specific Unity files. |
+| | [RuntimeTools/Tools/ControllerMappingTool](../Tools/ControllerMappingTool.md) | Utility enabling developers to quickly determine Unity mappings for hardware controllers. |
+| | ScreenshotUtility | Enables capturing application images in the Unity editor. |
+| | TextureCombinerWindow | Utility to combine graphics textures. |
+| | [Toolbox](../README_Toolbox.md) | UI that makes it easy to discover and use MRTK UX components. |
 
 ### Test utilities package
 
-The test utilities package contains a collection of helper scripts that enable developers to easily create play mode tests. These utilities are especially useful for developers creating MRTK components.
+The optional Microsoft.MixedRealityToolkit.TestUtilities package is a collection of helper scripts that enable developers to easily [create play mode tests](../Contributing/UnitTests.md#play-mode-tests). These utilities are especially useful for developers creating MRTK components.
+
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Tests | |
+| | TestUtilities | Methods to simplify creation of play mode tests, including hand simulation utilities. |
 
 ### Examples package
 
@@ -122,6 +135,16 @@ This package also contains eye tracking demos, which are [documented here](../Ey
 
 More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
 the same folder structure and location.
+
+> [!NOTE]
+> The examples package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
+
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Examples | | |
+| | Demos | Simple scenes illustrating one or two related features. |
+| | Experimental | Demo scenes illustrating experimental features. |
+| | StandardAssets | Common assets shared by multiple demo scenes. |
 
 ## Unity Package Manager
 
@@ -145,45 +168,40 @@ Some of the challenges are:
   - Cannot make changes without them being removed during package resolution
 - MRTK does not support UPM packages with Unity 2018.4
 
-> [!Note]
-> For a detailed listing of the contents of each package, please see the [MRTK Package contents article](../MRTK_PackageContents.md#unity-package-manager).
-
 ### Foundation package
 
 The foundation package (`com.microsoft.mixedreality.toolkit.foundation`) forms the basis of the Mixed Reality Toolkit. 
 
-The Unity Package Manager version of the foundation differs slightly from the asset package version, in that it does not contain the MRTK/StandardAssets folder, rather it is imported as a dependency.
-
-The package contains:
-
-**Core**
-
-The core is comprised of the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.
-
-**Platform providers**
-
-The platform providers are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.
-
-Supported platforms include:
-
-- Windows Mixed Reality
-- Oculus
-- OpenVR
-- Mobile AR
-- Leap Motion
-
-**Services**
-
-The services folder contains the core systems that provide the default implementations for the system service interfaces.
-
-The MRTK foundation includes the following system services:
-
-- [Boundary System](../Boundary/BoundarySystemGettingStarted.md)
-- [Camera System](../CameraSystem/CameraSystemOverview.md)
-- [Diagnostic System](../Diagnostics/DiagnosticsSystemGettingStarted.md)
-- [Input System](../Input/Overview.md)
-- [Spatial Awareness System](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
-- [Teleport System](../TeleportSystem/Overview.md)
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Core | | Interface and type definitions, base classes, standard shader. |
+| MRTK/Core/Providers | | Platform agnostic data providers |
+| | Hands | Base class support and services for hand tracking. |
+| | [InputAnimation](../InputSimulation/InputAnimationRecording.md) | Support for recording head movement and hand tracking data. |
+| | [InputSimulation](../InputSimulation/InputSimulationService.md) | Support for in-editor simulation of hand and eye input. |
+| | [ObjectMeshObserver](../SpatialAwareness/SpatialObjectMeshObserver.md) | Spatial awareness observer using a 3D model as the data. |
+| | UnityInput | Common input devices (joystick, mouse, etc.) implemented via Unity's input API. |
+| MRTK/Providers | | Platform specific data providers |
+| | LeapMotion | Support for the UltraLeap Leap Motion controller. |
+| | OpenVR | Support for OpenVR devices. |
+| | Oculus | Support for Oculus devices, such as the Quest. |
+| | [UnityAR](../CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
+| | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
+| | Windows | Support for Microsoft Windows specific APIs, for example speech and dictation. |
+| | XR SDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3 and newer. |
+| MRTK/SDK | | |
+| | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
+| | Features | Functionality that builds upon the Foundation package. |
+| | Profiles | Default profiles for the Microsoft Mixed Reality Toolkit systems and services. |
+| | StandardAssets | Common assets; models, textures, materials, etc. |
+| MRTK/Services | | |
+| | [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
+| | [CameraSystem](../CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |
+| | [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md) | System implementing in application diagnostics, for example a visual profiler. |
+? | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
+| | [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md) | System providing multi-scene application support. |
+| | [SpatialAwarenessSystem](../SpatialAwareness/SpatialAwarenessGettingStarted.md) | System providing support for awareness of the user's environment. |
+| | [TeleportSystem](../TeleportSystem/Overview.md) | System providing support for teleporting (moving about the experience in jumps). |
 
 Dependencies:
 
@@ -200,20 +218,24 @@ The standard assets package (`com.microsoft.mixedreality.toolkit.standardassets)
 - Textures
 - Icons
 
->[!Note]
-> To avoid breaking changes, based on assembly definitions, the scripts used to control some features of the MRTK Standard shader are not included in the standard assets package. These scripts can be found in the foundation package in the `MRTK/Core/Utilities/StandardShader` folder.
+> [!Note]
+> To avoid breaking changes based on assembly definitions, the scripts used to control some features of the MRTK Standard shader are not included in the standard assets package. These scripts can be found in the foundation package in the `MRTK/Core/Utilities/StandardShader` folder.
 
 Dependencies: none
 
 ### Extension packages
 
-The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contains additional components that expand the functionality of the MRTK. 
+The optional extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contains additional components that expand the functionality of the MRTK. 
 
-The package contains:
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Extensions | |
+| | [HandPhysicsService](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md) | Service that adds physics support to articulated hands. |
+| | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
+| | [SceneTransitionService](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
+| | Samples~ | A hidden (in the Unity Editor) folder that contains the sample scenes and assets. |
 
-- [Hand Physics Service](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md)
-- Lost Tracking Service
-- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
+More details on the process of using packages containing example projects can be found in the [Mixed Reality Toolkit and Unity Package Manager](../usingupm.md#using-mixed-reality-toolkit-examples) article.
 
 Dependencies:
 
@@ -221,7 +243,21 @@ Dependencies:
 
 ### Tools package
 
-The tools package (`com.microsoft.mixedreality.toolkit.tools)` contains tools that are useful for creating mixed reality experiences. In general, these tools are editor components and their code does not ship as part of an application.
+The optional tools package (`com.microsoft.mixedreality.toolkit.tools)` contains tools that are useful for creating mixed reality experiences. In general, these tools are editor components and their code does not ship as part of an application.
+
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Tools | |
+| | BuildWindow | Tool that helps simplify the process of building and deploying UWP applications. |
+| | [DependencyWindow](../Tools/DependencyWindow.md) | Tool that creates a dependency graph of assets in a project. |
+| | [ExtensionServiceCreator](../Tools/ExtensionServiceCreationWizard.md) | Wizard to assist in creating extension services. |
+| | [MigrationWindow](../Tools/MigrationWindow.md) | Tool that assists in updating code that uses deprecated MRTK components.  |
+| | [OptimizeWindow](../Tools/OptimizeWindow.md) | Utility to help automate configuring a mixed reality project for the best performance in Unity. |
+| | ReserializeAssetsUtility | Provides support for reserializing specific Unity files. |
+| | [RuntimeTools/Tools/ControllerMappingTool](../Tools/ControllerMappingTool.md) | Utility enabling developers to quickly determine Unity mappings for hardware controllers. |
+| | ScreenshotUtility | Enables capturing application images in the Unity editor. |
+| | TextureCombinerWindow | Utility to combine graphics textures. |
+| | [Toolbox](../README_Toolbox.md) | UI that makes it easy to discover and use MRTK UX components. |
 
 Dependencies:
 
@@ -229,8 +265,12 @@ Dependencies:
 
 ### Test utilities package
 
-The test utilities package (`com.microsoft.mixedreality.toolkit.testutilities`) contains a collection of helper scripts that enable developers to easily create play mode tests. These utilities are especially useful for developers creating MRTK components.
+The optional test utilities package (`com.microsoft.mixedreality.toolkit.testutilities`) contains a collection of helper scripts that enable developers to easily create play mode tests. These utilities are especially useful for developers creating MRTK components.
 
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Tests | |
+| | TestUtilities | Methods to simplify creation of play mode tests, including hand simulation utilities. |
 Dependencies:
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
 
@@ -239,6 +279,12 @@ Dependencies:
 The examples package (`com.microsoft.mixedreality.toolkit.examples`), is structured to allow developers to import only the examples of interest.
 
 More details on the process of using packages containing example projects can be found in the [Mixed Reality Toolkit and Unity Package Manager](../usingupm.md#using-mixed-reality-toolkit-examples) article.
+
+| Folder | Component | Description |
+| --- | --- | --- |
+| MRTK/Examples | | |
+| | Samples~ | A hidden (in the Unity Editor) folder that contains the sample scenes and assets. |
+| | StandardAssets | Common assets shared by multiple demo scenes. |
 
 Dependencies:
 
@@ -249,4 +295,3 @@ Dependencies:
 - [Architecture Overview](../Architecture/Overview.md)
 - [Systems, Extension Services and Data Providers](../Architecture/SystemsExtensionsProviders.md)
 - [Mixed Reality Toolkit and Unity Package Manager](../usingupm.md)
-- [MRTK Package Contents](../MRTK_PackageContents.md)

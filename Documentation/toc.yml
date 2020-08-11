@@ -3,8 +3,8 @@
   items:
   - name: Release Notes
     href: ReleaseNotes.md
-  - name: MRTK Package Contents
-    href: MRTK_PackageContents.md
+  - name: MRTK Packages
+    href: Packaging/MRTK_Packages.md
   - name: Updating from earlier versions
     href: Updating.md
   - name: Upgrading from HTK
@@ -13,7 +13,7 @@
     href: BuildAndDeploy.md
   - name: MRTK and Managed Code Stripping
     href: MRTK_and_managed_code_stripping.md
-  - name: Using the Unity Package Manager packages
+  - name: Using the Unity Package Manager
     href: usingupm.md
   - name: MRTK configuration dialog
     href: MRTK_Configuration_Dialog.md
