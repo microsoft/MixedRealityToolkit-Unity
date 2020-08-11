@@ -127,6 +127,14 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
 <p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
 <h3 id="breaking-changes">Breaking changes</h3>
+<p><strong>IMixedRealityPointerMediator</strong></p>
+<p>This interface has been updated to have a new function:</p>
+<pre><code class="lang-csharp">void SetPointerPreferences(IPointerPreferences pointerPreferences);
+</code></pre>
+<p>If you have a custom pointer mediator that doesn't subclass DefaultPointerMediator, you will need to implement this
+new function. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243">this issue</a> for more background
+on why this was added. This was added to ensure that pointer preferences would be explicitly passed to the mediator,
+rather than having it be implicitly done based on the presence of a constructor that took a IPointerPreferences.</p>
 <p><strong>Rest / Device Portal API</strong></p>
 <p>The <code>UseSSL</code> static property has been moved from <code>Rest</code> to <code>DevicePortal</code>.</p>
 <p>If you did this previously...</p>
