@@ -107,7 +107,7 @@ Some of the tools in this package include:
 - [Optimize Window](../Tools/OptimizeWindow.md)
 - [Screenshot Utility](../Tools/ScreenshotUtility.md)
 
-### Test utlities package
+### Test utilities package
 
 The test utilities package contains a collection of helper scripts that enable developers to easily create play mode tests. These utilities are especially useful for developers creating MRTK components.
 
@@ -205,7 +205,7 @@ The standard assets package (`com.microsoft.mixedreality.toolkit.standardassets)
 
 Dependencies: none
 
-### Extension pacakges
+### Extension packages
 
 The extensions package (`com.microsoft.mixedreality.toolkit.extensions)` contains additional components that expand the functionality of the MRTK. 
 

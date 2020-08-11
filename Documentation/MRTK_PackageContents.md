@@ -35,7 +35,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | [UnityAR](CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
 | | Windows | Support for Microsoft Windows specific APIs, for example speech and dictation. |
-| | XRSDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3. |
+| | XR SDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3 and newer. |
 | MRTK/SDK | | |
 | | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
 | | Features | Functionality that builds upon the Foundation package. |
@@ -88,7 +88,7 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 
 ### Test Utilities
 
-The optional Microsocft.MixedRealityToolkit,.TestUtilities package includes a collection of utilities used by the Mixed Reality team to author unit and other validation tests.
+The optional Microsoft.MixedRealityToolkit,.TestUtilities package includes a collection of utilities used by the Mixed Reality team to author unit and other validation tests.
 
 | Folder | Component | Description |
 | --- | --- | --- |
@@ -161,7 +161,7 @@ The tools UPM package (`com.microsoft.mixedreality.toolkit.tools`) contains the 
 
 ### Test Utilities (UPM)
 
-The test utlities UPM package (`com.microsoft.mixedreality.toolkit.testutilities`) contains the same content as the [test utiltiies asset package](#test-utilities). 
+The test utilities UPM package (`com.microsoft.mixedreality.toolkit.testutilities`) contains the same content as the [test utilities asset package](#test-utilities). 
 
 ### Examples (UPM)
 
