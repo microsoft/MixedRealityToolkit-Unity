@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db393d206eab4604ab74278cb6cda355, type: 3}
   m_Name: TestCustomPointerMediatorInputProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   pointingExtent: 10
   pointingRaycastLayerMasks:
   - serializedVersion: 2
