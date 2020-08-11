@@ -1,6 +1,6 @@
 # Mixed Reality Toolkit and Unity Package Manager
 
-Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM), on Unity 2019.4 and newer. Using UPM, the MRTK gains dependency management and a simple update path, as will be described in the following sections.
+Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM), on Unity 2019.4 and newer.
 
 ## Installing Mixed Reality features using the Unity Package Manager
 
