@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
         private const string XRManagementReference = "Unity.XR.Management";
         private const string SpatialTrackingReference = "UnityEngine.SpatialTracking";
+        private const string SessionStateKey = "XRSDKConfigurationCheckerSessionStateKey";
 
 #if UNITY_2019_3_OR_NEWER
         private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
@@ -26,7 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
         static XRSDKConfigurationChecker()
         {
-            UpdateAsmDef();
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (UpdateAsmDef) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                UpdateAsmDef();
+            }
         }
 
         /// <summary>

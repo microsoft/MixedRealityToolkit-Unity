@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
     {
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef";
         private const string OculusReference = "Unity.XR.Oculus";
+        private const string SessionStateKey = "OculusXRSDKConfigurationCheckerSessionStateKey";
 
 #if UNITY_2019_3_OR_NEWER
         private static readonly VersionDefine OculusDefine = new VersionDefine("com.unity.xr.oculus", "", "OCULUS_ENABLED");
@@ -24,7 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         static OculusXRSDKConfigurationChecker()
         {
-            UpdateAsmDef();
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (UpdateAsmDef) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                UpdateAsmDef();
+            }
         }
 
         /// <summary>
