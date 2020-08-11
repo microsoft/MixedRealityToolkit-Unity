@@ -70,6 +70,6 @@ When an example package is updated, Unity provides the option to update imported
 
 ## See Also
 
-- [Mixed Reality Toolkit packages](Packages/MRTK_Packages.md)
+- [Mixed Reality Toolkit packages](Packaging/MRTK_Packages.md)
 - [Mixed Reality Toolkit package contents](MRTK_PackageContents.md)
 

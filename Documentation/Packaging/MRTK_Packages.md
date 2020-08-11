@@ -238,7 +238,7 @@ Dependencies:
 
 The examples package (`com.microsoft.mixedreality.toolkit.examples`), is structured to allow developers to import only the examples of interest.
 
-More details on the process of using packages containing example projects can be found in the [Mixed Reality Toolkit and Unity Package Manager](usingupm.md#using-mixed-reality-toolkit-examples) article.
+More details on the process of using packages containing example projects can be found in the [Mixed Reality Toolkit and Unity Package Manager](../usingupm.md#using-mixed-reality-toolkit-examples) article.
 
 Dependencies:
 
@@ -248,5 +248,5 @@ Dependencies:
 
 - [Architecture Overview](../Architecture/Overview.md)
 - [Systems, Extension Services and Data Providers](../Architecture/SystemsExtensionsProviders.md)
-- [Mixed Reality Toolkit and Unity Package Manager](usingupm.md)
+- [Mixed Reality Toolkit and Unity Package Manager](../usingupm.md)
 - [MRTK Package Contents](../MRTK_PackageContents.md)
