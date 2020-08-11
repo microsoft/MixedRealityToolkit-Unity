@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
 using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA;
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public bool PersistentAnchors => persistentAnchors;
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
         /// <summary>
         /// The WorldAnchorStore for the current application.
         /// Can be null when the application starts.
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         #endregion // Event Callbacks
-#endif
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
         /// <summary>
         /// Attaches an anchor to the GameObject.
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>The name of the newly attached anchor.</returns>
         public string AttachAnchor(GameObject gameObjectToAnchor, string anchorName = null)
         {
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. AttachAnchor will not be called.");
             return null;
 #else
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             );
 
             return anchorName;
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
 #else
             // This case is unexpected, but just in case.
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     AnchorName = anchorName,
                     Operation = AnchorOperation.Delete
                 });
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public void RemoveAllAnchors()
         {
-#if !UNITY_WSA || UNITY_EDITOR
+#if !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             Debug.LogWarning("World Anchor Manager does not work for this build. RemoveAnchor will not be called.");
 #else
             // This case is unexpected, but just in case.
@@ -363,10 +363,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     Operation = AnchorOperation.Delete
                 });
             }
-#endif
+#endif // !UNITY_WSA || UNITY_EDITOR || UNITY_2020_1_OR_NEWER
         }
 
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
         /// <summary>
         /// Called before creating anchor.  Used to check if import required.
         /// </summary>
@@ -632,6 +632,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             return string.IsNullOrEmpty(proposedAnchorName) ? gameObjectToAnchor.name : proposedAnchorName;
         }
-#endif
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
     }
 }
