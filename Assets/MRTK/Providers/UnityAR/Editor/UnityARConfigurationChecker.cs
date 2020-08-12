@@ -41,12 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, definitions);
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, definitions);
                 return true;
             }
             else
             {
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, definitions);
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, definitions);
                 return false;
             }
         }
