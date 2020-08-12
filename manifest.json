@@ -3857,6 +3857,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/ArticulatedHandJoints.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/ArticulatedHandJoints.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/InputSimulation/InputSimulationSupportedPlatforms.gif",
       "output": {
         "resource": {
@@ -3905,17 +3916,6 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointNames_Dark.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png"
         }
       },
       "is_incremental": false,
@@ -7727,7 +7727,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/HandTracking.html",
-          "hash": "P4AzaCFCtCgkkuoc5vcz2A=="
+          "hash": "eS/g/0QQq+KvY2T/SPKumA=="
         }
       },
       "is_incremental": false,
