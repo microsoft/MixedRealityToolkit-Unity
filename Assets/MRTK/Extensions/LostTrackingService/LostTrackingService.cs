@@ -9,6 +9,10 @@ using UnityEngine;
 #if ARFOUNDATION_PRESENT
 using System.Collections.Generic;
 using UnityEngine.XR.ARSubsystems;
+
+#if UNITY_2018
+using UnityEngine.Experimental;
+#endif // UNITY_2018
 #endif // ARFOUNDATION_PRESENT
 
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
