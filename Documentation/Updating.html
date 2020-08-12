@@ -92,10 +92,6 @@
 </ul>
 <h2 id="upgrading-to-a-new-version-of-mrtk">Upgrading to a new version of MRTK</h2>
 <p>The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-230-to-240"><strong>Updating 2.3.0 to 2.4.0</strong></a> article.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>At this time, it is not supported to switch between using .unitypackage files and NuGet.</p>
-</div>
 <p><em>Starting with 2.4.0, it is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a>
 after getting the MRTK update</em>* to auto-fix and upgrade from deprecated components and adjust to
 breaking changes. The migration tool is part of the <strong>Tools</strong> package.</p>
@@ -159,22 +155,6 @@ asset database and reconcile existing custom profiles.</li>
 </ul>
 </li>
 <li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.</li>
-</ol>
-<h3 id="nuget-packages">NuGet packages</h3>
-<p>If your project was created using the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, please use the following steps.</p>
-<ol>
-<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
-<li>Select the <strong>Online</strong> tab and click <strong>Refresh</strong></li>
-<li>Select the <strong>Installed</strong> tab</li>
-<li>Click the <strong>Update</strong> button for each installed package
-<ul>
-<li>Microsoft.MixedReality.Toolkit.Foundation</li>
-<li>Microsoft.MixedReality.Toolkit.Tools</li>
-<li>Microsoft.MixedReality.Toolkit.Extensions</li>
-<li>Microsoft.MixedReality.Toolkit.Examples</li>
-</ul>
-</li>
-<li>Close and re-open the project in Unity</li>
 </ol>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
 <p><a href="#folder-renames-in-240">Folder renames</a>

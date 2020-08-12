@@ -738,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/UsingARFoundation.html",
-          "hash": "A9wpbSIqcs5JuVcPYBvBJA=="
+          "hash": "40ZJyd6Yzo/rkiMhLNd05Q=="
         }
       },
       "is_incremental": false,
@@ -966,7 +966,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "lvp38wVk80uluHIUZEOUTQ=="
+          "hash": "8UeTmwbwzNfZwgEuqzWHUg=="
         }
       },
       "is_incremental": false,
@@ -5958,6 +5958,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/MRTK_ExamplesUpm.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/MRTK_ExamplesUpm.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Packaging/MRTK_FoundationUPM.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/MRTK_FoundationUPM.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Performance/DepthBufferFixNow_After.PNG",
       "output": {
         "resource": {
@@ -7857,35 +7879,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/MRTKNuGetPackage.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "Ziec0vxGnpAMdtQLK3Uffg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/MRTK_Configuration_Dialog.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTK_Configuration_Dialog.html",
           "hash": "ELjf4xGzo//+b3EhWCyIqQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/MRTK_PackageContents.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/MRTK_PackageContents.html",
-          "hash": "TKb1WXe3x+9qKIXh+bCBKA=="
         }
       },
       "is_incremental": false,
@@ -7945,7 +7943,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "d0hhc8Nsz/4G2mNS05Z92g=="
+          "hash": "jWsPP4soAelJVKY8mI8dYQ=="
         }
       },
       "is_incremental": false,
@@ -8569,7 +8567,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "bedTaR2DmcYQ1ZT8nbTLIA=="
+          "hash": "47QkWDL4jXI57RfN2Q1KzA=="
         }
       },
       "is_incremental": false,
@@ -8605,7 +8603,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "mLNmRVphqg3mc7Bv4RgHMw=="
+          "hash": "0sfxkpYN3zh0CFdRBsflCg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/usingupm.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/usingupm.html",
+          "hash": "Lxji1dHNvHTrCPlS1tQptA=="
         }
       },
       "is_incremental": false,
@@ -28588,19 +28598,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 160,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -28608,10 +28605,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 159,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1657,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
