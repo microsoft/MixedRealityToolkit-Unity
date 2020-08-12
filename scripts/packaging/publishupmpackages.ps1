@@ -26,10 +26,11 @@ Write-Output "Public release: $IsPublicRelease"
 if (-not $env:TESTREGISTRY) {
     Write-Output "Environment not set"
 }
+Write-Output "$env:TESTREGISTRY"
 if (-not $TestRegistry) {
     Write-Output "Var not set"
 }
-Write-Output "$env:TESTREGISTRY"
+Write-Output "$TestRegistry"
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
