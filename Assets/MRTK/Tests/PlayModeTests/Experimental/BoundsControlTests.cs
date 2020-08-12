@@ -269,6 +269,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleNonUniform()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.scaleMode = BoundsControl.ScaleMode.Precise;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            // front right corner is corner 3
+            var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
+
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
+            int numSteps = 30;
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
+
+            var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.0f, 0.0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * .597f;
+            expectedSize.z = 0.5f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+            
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Test bounds control rotation via far interaction
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
