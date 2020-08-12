@@ -300,7 +300,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             else
             {
-
                 CardinalAxisType axisType = GetAxisType(handle);
                 switch (axisType)
                 {
