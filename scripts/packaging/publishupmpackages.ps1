@@ -23,8 +23,8 @@ $startPath = "$(Get-Location)"
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
-Write-Output "Test repository (env): $env:TESTREPOSITORY"
-Write-Output "Test repository (var): $TestRepository"
+Write-Output "Test registry (env): $env:TESTREGISTRY"
+Write-Output "Test registry (var): $TestRegistry"
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
