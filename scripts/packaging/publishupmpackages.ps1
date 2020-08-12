@@ -10,12 +10,16 @@
     The default value for this parameter is 0 (false).
 #>
 param(
-    [string]$PackageDirectory = ".\artifacts\upm",
+    [string]$PackageDirectory,
     [bool]$IsPublicRelease = $False
 )
 
-$startPath = "$(Get-Location)"
+if (-not $PackageDirectory) {
+    throw "Missing required parameter: -PackageDirectory."
+}
 $PackageDirectory = Resolve-Path -Path $PackageDirectory
+
+$startPath = "$(Get-Location)"
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
