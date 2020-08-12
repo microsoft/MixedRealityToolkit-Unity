@@ -19,7 +19,8 @@ $PackageDirectory = Resolve-Path -Path $PackageDirectory
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
-Write-Output "Test repository: $env:TESTREPOSITORY"
+Write-Output "Test repository (env): $env:TESTREPOSITORY"
+Write-Output "Test repository (var): $TestRepository"
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
