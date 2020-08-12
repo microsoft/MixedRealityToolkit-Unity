@@ -1,0 +1,15 @@
+{
+    "name": "prvncher.MRTKUtils",
+    "references": [
+        "GUID:a7a4c34601384f9389d5c4207f3c6331"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

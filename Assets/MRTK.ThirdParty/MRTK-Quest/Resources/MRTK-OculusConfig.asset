@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6233d32ffaff84b81845b7f68e8333, type: 3}
+  m_Name: MRTK-OculusConfig
+  m_EditorClassIdentifier: 
+  renderAvatarHandsInsteadOfControllers: 1
+  ovrCameraRigPrefab: {fileID: 2343937678411072827, guid: e855e4c2a827daf45be5e0ca86dd6d05,
+    type: 3}
+  allowDevToManageAvatarPrefab: 0
+  localAvatarPrefab: {fileID: 6297684789857299957, guid: bc9433565454e104f9ac73600c65a612,
+    type: 3}
+  teleportPointerMode: 0
+  customTeleportPointerPrefab: {fileID: 3315140749854082096, guid: 6f4e2804d6ac4944e99e1737f500bb7a,
+    type: 3}
+  useCustomHandMaterial: 1
+  customHandMaterial: {fileID: 2100000, guid: d8b2e8e40e412d04895b57cba8b9650d, type: 2}
+  updateMaterialPinchStrengthValue: 1
+  pinchStrengthMaterialProperty: _PressIntensity
+  _minimumHandConfidence: 0
+  _lowConfidenceTimeThreshold: 0.2
+  defaultCpuLevel: 4
+  defaultGpuLevel: 4
+  resolutionScale: 1.25
+  useDynamicFixedFoveatedRendering: 1
+  fixedFoveatedRenderingLevel: 3
