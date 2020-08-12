@@ -7,7 +7,6 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
-
 - task: PowerShell@2
   displayName: 'Build UPM packages'
   inputs:
@@ -18,17 +17,13 @@ steps:
       -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -Version ${{ parameters.version }}
       -BuildNumber ${{ parameters.buildNumber }}
-      
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM packages'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
     ArtifactName: 'mrtk-upm'
-    
 - task: PowerShell@2
   displayName: 'Publish UPM packages to internal server'
-  env:
-    TESTREGISTRY $(TestRegistry)
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1
