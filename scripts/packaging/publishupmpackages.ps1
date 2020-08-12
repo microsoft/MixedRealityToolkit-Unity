@@ -20,11 +20,7 @@ Write-Output $PackageDirectory
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
-[bool] $envSet = $False
-if ($env:TESTREGISTRY) {
-    $envSet = $True
-}
-Write-Output "Environment set: $envSet"
+Write-Output $env
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory

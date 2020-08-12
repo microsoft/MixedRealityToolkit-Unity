@@ -17,11 +17,11 @@ steps:
 
 - task: PowerShell@2
   displayName: 'Publish UPM packages to server'
-  env:
-    TESTREGISTRY $(TestRegistry)
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1
     arguments: >
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -IsPublicRelease 0
+  env:
+    TESTREGISTRY $(TestRegistry)
