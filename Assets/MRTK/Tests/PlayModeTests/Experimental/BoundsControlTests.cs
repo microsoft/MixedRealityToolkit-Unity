@@ -1061,6 +1061,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rotationHandleAxisY, "rotation handle couldn't be found");
             rotationHandleAxisZ = rigRoot.transform.Find("midpoint_8");
             Assert.IsNotNull(rotationHandleAxisZ, "rotation handle couldn't be found");
+            
             // check handle visibility
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x active");
             Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y active");
