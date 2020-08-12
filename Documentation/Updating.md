@@ -11,9 +11,6 @@
 
 The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
 
-> [!NOTE]
-> At this time, it is not supported to switch between using .unitypackage files and NuGet.
-
 *Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
 after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
 breaking changes. The migration tool is part of the **Tools** package.
@@ -56,20 +53,6 @@ For the smoothest upgrade path, please use the following steps.
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
 1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
-
-### NuGet packages
-
-If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
-
-1. Select **NuGet > Manage NuGet Packages**
-1. Select the **Online** tab and click **Refresh**
-1. Select the **Installed** tab
-1. Click the **Update** button for each installed package
-    - Microsoft.MixedReality.Toolkit.Foundation
-    - Microsoft.MixedReality.Toolkit.Tools
-    - Microsoft.MixedReality.Toolkit.Extensions
-    - Microsoft.MixedReality.Toolkit.Examples
-1. Close and re-open the project in Unity
 
 ## Updating 2.3.0 to 2.4.0
 

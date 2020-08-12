@@ -327,6 +327,82 @@ function IsNamespace {
     }
 }
 
+<#
+.SYNOPSIS
+    Given a full filename path, this returns the MRTK project relative path
+    of the file and normalizes the separators to /.
+    For example, given D:\src\MixedRealityToolkit-Unity\Assets\MRTK\Services\DiagnosticsSystem\File.cs,
+    this would return Assets/MRTK/Services/DiagnosticsSystem/File.cs.
+    Note that this function asssumes the Assets/MRTK prefix for all of the MRTK code,
+    and if this ever changes this function would need to be updated to accomodate that.
+#>
+function GetProjectRelativePath {
+    [CmdletBinding()]
+    param(
+        [string]$Filename
+    )
+    process {
+        $normalizedFileName = $FileName.Replace("\", "/")
+        $assetPathStartIndex = $normalizedFileName.IndexOf("Assets/MRTK")
+        $assetFileName = $normalizedFileName.SubString($assetPathStartIndex)
+        $assetFileName
+    }
+}
+
+# This set contains all of the currently allowed InitializeOnLoad handlers# in MRTK.
+# InitializeOnLoad handlers have a fairly dangerous impact on the inner loop speed of anyone
+# using the MRTK, as they add milliseconds of time after each compile and prior to entering play mode.
+# While individual handlers may not be that significant, the sum total of time across all handlers
+# (which run serially) causes noticable delays in responsiveness in the Unity editor.
+$InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
+    "Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs",
+    "Assets/MRTK/Core/Inspectors/PropertyDrawers/SceneInfoUtils.cs",
+    "Assets/MRTK/Core/Inspectors/ServiceInspectors/ServiceFacadeInspector.cs",
+    "Assets/MRTK/Core/Inspectors/Setup/MixedRealityEditorSettings.cs",
+    "Assets/MRTK/Core/Inspectors/Utilities/MixedRealityProfileUtility.cs",
+    "Assets/MRTK/Core/Services/MixedRealityToolkit.cs",
+    "Assets/MRTK/Core/Utilities/MixedRealityPlayspace.cs",
+    "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
+    "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
+    "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
+    "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
+    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
+    "Assets/MRTK/Providers/LeapMotion/Editor/LeapMotionConfigurationChecker.cs",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
+    "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
+    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
+    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
+)
+
+<#
+.SYNOPSIS
+    Checks if the given file (at the given line number) contains a non-exempt
+    InitializeOnLoad handler.
+#>
+function CheckInitializeOnLoad {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+        if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
+            $assetFileName = GetProjectRelativePath($FileName)
+            if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
+                #Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
+                #Write-Warning "to `$InitializeOnLoadExceptions after discussion with the rest of the team."
+                $hasIssue = $true
+
+                Write-Host "`"$assetFileName`","
+            }
+        }
+        $hasIssue
+    }
+}
+
 function CheckScript {
     [CmdletBinding()]
     param(
@@ -351,6 +427,9 @@ function CheckScript {
                 $containsIssue = $true
             }
             if (CheckSpacelessComments $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            if (CheckInitializeOnLoad $FileName $fileContent $i) {
                 $containsIssue = $true
             }
             $containsNamespaceDeclaration = $containsNamespaceDeclaration -or (IsNamespace $fileContent[$i])
@@ -435,28 +514,6 @@ function CheckUnityScene {
     }
 }
 
-<#
-.SYNOPSIS
-    Given a full filename path, this returns the MRTK project relative path
-    of the file and normalizes the separators to /.
-    For example, given D:\src\MixedRealityToolkit-Unity\Assets\MRTK\Services\DiagnosticsSystem\File.cs,
-    this would return Assets/MRTK/Services/DiagnosticsSystem/File.cs.
-    Note that this function asssumes the Assets/MRTK prefix for all of the MRTK code,
-    and if this ever changes this function would need to be updated to accomodate that.
-#>
-function GetProjectRelativePath {
-    [CmdletBinding()]
-    param(
-        [string]$Filename
-    )
-    process {
-        $normalizedFileName = $FileName.Replace("\", "/")
-        $assetPathStartIndex = $normalizedFileName.IndexOf("Assets/MRTK")
-        $assetFileName = $normalizedFileName.SubString($assetPathStartIndex)
-        $assetFileName
-    }
-}
-
 # This set contains all of the currently allowed asmdefs in the MRTK
 # If you're reading this, it's probably because you've added a new asmdef
 # and you're seeing a CI build/PR validation failure. This is because we've
@@ -538,7 +595,7 @@ function CheckAsmDef {
         $containsIssue = $false
         $assetFileName = GetProjectRelativePath($FileName)
         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
-            Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to $AsmDefExceptions "
+            Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
             Write-Warning "after a dicussion with the rest of the team determining if the asmdef is necessary."
             $containsIssue = $true
         }

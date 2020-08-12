@@ -61,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 {
                     Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
 
+#if !UNITY_2020_1_OR_NEWER
                     // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
                     // with legacy requirements.
 #pragma warning disable 0618
@@ -69,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                         currentDisplayType = DisplayType.Transparent;
                     }
 #pragma warning restore 0618
+#endif // !UNITY_2020_1_OR_NEWER
                 }
 #endif
 

@@ -28,7 +28,7 @@
     },
     "files": [
         "Samples~*",
-        "StandardAssets~*",
+        "StandardAssets*",
         "MRTK.Examples*",
         "License*",
         "package.json.meta"
