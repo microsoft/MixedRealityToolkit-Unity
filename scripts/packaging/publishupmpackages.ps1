@@ -15,7 +15,8 @@ param(
 )
 
 $startPath = "$(Get-Location)"
-$PackageDirectory = Resolve-Path -Path $PackageDirectory
+Write-Output $PackageDirectory
+# $PackageDirectory = Resolve-Path -Path $PackageDirectory
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
