@@ -18,7 +18,7 @@ steps:
 - task: PowerShell@2
   displayName: 'Publish UPM packages to server'
   env:
-    TESTREPOSITORY $(TestRepository)
+    TESTREGISTRY $(TestRegistry)
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1

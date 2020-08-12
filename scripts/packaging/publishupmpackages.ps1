@@ -18,34 +18,40 @@ $startPath = "$(Get-Location)"
 $PackageDirectory = Resolve-Path -Path $PackageDirectory
 
 Write-Output "Publishing packages from: $PackageDirectory"
-Write-Output "Public release: $IsPublicRelease"  
-
-# Change to the project root directory
-Set-Location $PackageDirectory
-
-# Create the .npmrc file
-$registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
-if (-not $IsPublicRelease) {
-    $registryPath = "$env:TESTREPOSITORY"
+Write-Output "Public release: $IsPublicRelease"
+[bool] $envSet = $False
+if ($env:TESTREGISTRY) {
+    $envSet = $True
 }
-$npmrcContents = "registry=$registryPath`n`nalways-auth=true"
+Write-Output "Environment set: $envSet"
 
-Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
+# # Change to the project root directory
+# Set-Location $PackageDirectory
 
-# Authenticate to the registry
-vsts-npm-auth -config .npmrc
+# # Create the .npmrc file
+# $registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
+# if (-not $IsPublicRelease) {
+#     $registryPath = "$env:TESTREGISTRY"
+# }
+# Write-Output $registryPath
+# $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
 
-# Get the list of package (.tgz) files
-$packages = Get-ChildItem -Name -Include "*.tgz"
-foreach ($package in $packages)
-{
-    Write-Output "======================="
-    Write-Output "Publishing: $package"
-    Write-Output "======================="
-    npm publish $package    
-}
+# Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
 
-Remove-Item -Path "./.npmrc"
+# # Authenticate to the registry
+# vsts-npm-auth -config .npmrc
+
+# # Get the list of package (.tgz) files
+# $packages = Get-ChildItem -Name -Include "*.tgz"
+# foreach ($package in $packages)
+# {
+#     Write-Output "======================="
+#     Write-Output "Publishing: $package"
+#     Write-Output "======================="
+#     npm publish $package    
+# }
+
+# Remove-Item -Path "./.npmrc"
 
 # Return to the starting path
 Set-Location $startPath
