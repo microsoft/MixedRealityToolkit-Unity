@@ -15,12 +15,11 @@ param(
 )
 
 $startPath = "$(Get-Location)"
-Write-Output $PackageDirectory
-# $PackageDirectory = Resolve-Path -Path $PackageDirectory
+$PackageDirectory = Resolve-Path -Path $PackageDirectory
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
-Write-Output $env
+Write-Output "Test repository: $env:TESTREPOSITORY"
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
