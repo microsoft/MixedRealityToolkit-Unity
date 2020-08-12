@@ -109,7 +109,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Unity 2019.3.x</strong></p>
+<p><strong>Unity 2019.4.x</strong></p>
 <table>
 <thead>
 <tr>
@@ -119,12 +119,31 @@
 </thead>
 <tbody>
 <tr>
-<td>AR Foundation  <br> Version: 2.1.4</td>
-<td>AR Foundation  <br> Version: 2.1.4</td>
+<td>AR Foundation  <br> Version: 2.1.8</td>
+<td>AR Foundation  <br> Version: 2.1.8</td>
 </tr>
 <tr>
-<td>ARCore XR Plugin <br> Version: 2.1.2</td>
-<td>ARKit XR Plugin <br> Version: 2.1.2</td>
+<td>ARCore XR Plugin <br> Version: 2.1.11</td>
+<td>ARKit XR Plugin <br> Version: 2.1.9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Unity 2020.1.x (Not currently formally supported, included for informational purposes only)</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Android</strong></th>
+<th><strong>iOS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AR Foundation  <br> Version: 3.1.3</td>
+<td>AR Foundation  <br> Version: 3.1.3</td>
+</tr>
+<tr>
+<td>ARCore XR Plugin <br> Version: 3.1.4</td>
+<td>ARKit XR Plugin <br> Version: 3.1.3</td>
 </tr>
 </tbody>
 </table>
@@ -153,6 +172,12 @@
 <p>For more information about configuring the Unity AR camera settings provider: <a href="../CameraSystem/UnityArCameraSettings.html">Unity AR camera settings provider</a>.</p>
 </li>
 </ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This installation checks (when the application starts) if the AR Foundation components are in the scene. If not, they are automatically added to make it work with ARCore and ARKit.
+If you need to set a specific behaviour, you should add the components you need by yourself.
+For more information about AR Foundation components and installation, check this <a href="https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@2.2/manual/index.html#samples">documentation</a>.</p>
+</div>
 <h2 id="building-a-scene-for-android-and-ios-devices">Building a scene for Android and iOS devices</h2>
 <ol>
 <li><p>Make sure you have added the UnityAR Camera Settings Provider to your scene.</p>
