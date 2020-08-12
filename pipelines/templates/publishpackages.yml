@@ -25,3 +25,4 @@ steps:
       -IsPublicRelease 0
   env:
     TESTREGISTRY $(TestRegistry)
+    
