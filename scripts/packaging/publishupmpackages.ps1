@@ -23,18 +23,23 @@ $startPath = "$(Get-Location)"
 
 Write-Output "Publishing packages from: $PackageDirectory"
 Write-Output "Public release: $IsPublicRelease"
-Write-Output "Test registry (env): $env:TESTREGISTRY"
-Write-Output "Test registry (var): $TestRegistry"
+if (-not $env:TESTREGISTRY) {
+    Write-Output "Environment not set"
+}
+if (-not $TestRegistry) {
+    Write-Output "Var not set"
+}
+Write-Output "$env:TESTREGISTRY"
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
 
-# # Create the .npmrc file
-# $registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
-# if (-not $IsPublicRelease) {
-#     $registryPath = "$env:TESTREGISTRY"
-# }
-# Write-Output $registryPath
+# Create the .npmrc file
+$registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
+if (-not $IsPublicRelease) {
+    $registryPath = "$env:TESTREGISTRY"
+}
+Write-Output $registryPath
 # $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
 
 # Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8

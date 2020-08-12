@@ -24,11 +24,11 @@ steps:
     ArtifactName: 'mrtk-upm'
 - task: PowerShell@2
   displayName: 'Publish UPM packages to internal server'
+  env:
+    TESTREGISTRY $TestRegistry
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1
-    env:
-      TESTREGISTRY $TestRegistry
     arguments: >
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -IsPublicRelease 0
