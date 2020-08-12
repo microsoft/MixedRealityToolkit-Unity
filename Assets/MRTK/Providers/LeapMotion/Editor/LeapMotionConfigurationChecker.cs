@@ -13,7 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
     /// <summary>
     /// Class that checks if the Leap Motion Core assets are present and configures the project if they are.
     /// </summary>
-    [InitializeOnLoad]
+    /// <remarks>
+    /// Note that the checks that this class runs are fairly expensive and are only done manually by the user
+    /// as part of their setup steps described here:
+    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html
+    /// </remarks>
     static class LeapMotionConfigurationChecker
     {
         // The presence of the LeapXRServiceProvider.cs is used to determine if the Leap Motion Core Assets are in the project.
@@ -62,14 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             { "LeapMotion.Core.Scripts.XR.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
             { "LeapMotion.Core.Tests.Editor", new string[] { "LeapMotion" } }
         };
-
-        static LeapMotionConfigurationChecker()
-        {
-            // Check if leap core is in the project
-            isLeapInProject = ReconcileLeapMotionDefine();
-
-            ConfigureLeapMotion(isLeapInProject);
-        }
 
         /// <summary>
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the Leap Motion Core Assets.
@@ -403,7 +399,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             Debug.Log($"Saving {cscFilePath}");
         }
 
-#if UNITY_2018       
         /// <summary>
         /// Force Leap Motion integration after the Leap Motion Core Assets import.  In Unity 2018.4, the configuration checker sometimes does not update after the 
         /// Leap Motion Core Assets import, this case only occurs if the MRTK source is from the unity packages. If the integration of leap and MRTK has not occurred, users can 
@@ -417,7 +412,5 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             ConfigureLeapMotion(isLeapInProject);
         }
-#endif
     }
 }
-
