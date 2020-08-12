@@ -78,7 +78,7 @@ Unity responsiveness improvements.
 
 In some cases there was a tradeoff that had to be made:
 For those who are using Leap Motion or ARFoundation, there's now an additional manual step in their respective getting
-started steps. See [Leap Motion](CrossPlatform/LeapMotionMRTK.md#using-leap-motion-by-ultraleap) and [ARFoundation]
+started steps. See [Leap Motion](CrossPlatform/LeapMotionMRTK.md#using-leap-motion-by-ultraleap-hand-tracking-in-mrtk) and [ARFoundation]
 (CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
 
 ### Breaking changes
