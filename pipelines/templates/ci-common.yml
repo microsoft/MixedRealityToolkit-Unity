@@ -17,9 +17,9 @@ steps:
 #   parameters:
 #     UnityVersion: ${{ parameters.UnityVersion }}
 - ${{ if eq(parameters.packagingEnabled, true) }}:
-  - template: tasks/unitypackages.yml
-    parameters:
-      UnityVersion: ${{ parameters.UnityVersion }}
+  # - template: tasks/unitypackages.yml
+  #   parameters:
+  #     UnityVersion: ${{ parameters.UnityVersion }}
   - template: tasks/upmpackages.yml
   - template: package.yml
   - ${{ if eq(parameters.packagePublishing, true) }}:
