@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             RecalculateNormals = profile.RecalculateNormals;
             TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
-            PhysicsMaterial = profile.PhysicsMaterial;
+            PhysicMaterial = profile.PhysicsMaterial;
         }
 
         private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshDisplayOption");
@@ -96,6 +96,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     }
 
                     meshObject.Renderer.enabled = enable;
+                }
+            }
+        }
+
+        private static readonly ProfilerMarker ApplyUpdatedMeshPhysicsOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshPhysicsOption");
+
+        /// <summary>
+        /// Applies the mesh display option to existing meshes when modified at runtime.
+        /// </summary>
+        /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> value to be used to determine the appropriate material.</param>
+        protected virtual void ApplyUpdatedMeshPhysicsOption(SpatialAwarenessMeshDisplayOptions option)
+        {
+            using (ApplyUpdatedMeshPhysicsOptionPerfMarker.Auto())
+            {
+
+                foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+                {
+                    if (meshObject?.Collider == null) { continue; }
+                    meshObject.Collider.material = physicMaterial;
                 }
             }
         }
@@ -282,7 +301,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        public PhysicMaterial PhysicsMaterial  { get; private set; }
+        private PhysicMaterial physicMaterial;
+ 
+
+        public PhysicMaterial PhysicMaterial
+        {
+            get { return physicMaterial; }
+            set
+            {
+                if (value != visibleMaterial)
+                {
+                    physicMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
+                    }
+                }
+            }
+        }
 
         private Material visibleMaterial = null;
 
