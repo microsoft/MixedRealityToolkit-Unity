@@ -100,17 +100,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        private static readonly ProfilerMarker ApplyUpdatedMeshPhysicsOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshPhysicsOption");
+        private static readonly ProfilerMarker ApplyUpdatedMeshPhysicsPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshPhysics");
 
         /// <summary>
-        /// Applies the mesh display option to existing meshes when modified at runtime.
+        /// Applies the physical material to existing meshes when modified at runtime.
         /// </summary>
-        /// <param name="option">The <see cref="SpatialAwarenessMeshDisplayOptions"/> value to be used to determine the appropriate material.</param>
-        protected virtual void ApplyUpdatedMeshPhysicsOption(SpatialAwarenessMeshDisplayOptions option)
+        protected virtual void ApplyUpdatedMeshPhysics()
         {
-            using (ApplyUpdatedMeshPhysicsOptionPerfMarker.Auto())
+            using (ApplyUpdatedMeshPhysicsPerfMarker.Auto())
             {
-
                 foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
                 {
                     if (meshObject?.Collider == null) { continue; }
@@ -302,21 +300,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         private PhysicMaterial physicMaterial;
- 
 
         public PhysicMaterial PhysicMaterial
         {
             get { return physicMaterial; }
             set
             {
-                if (value != visibleMaterial)
+                if (value != physicMaterial)
                 {
                     physicMaterial = value;
-
-                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
-                    {
-                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
-                    }
+                    ApplyUpdatedMeshPhysics();
                 }
             }
         }
