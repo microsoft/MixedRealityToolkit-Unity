@@ -14,3 +14,15 @@ steps:
     packagesToPush: '$(Build.SourcesDirectory)/artifacts/**/*.nupkg;!$(Build.SourcesDirectory)/artifacts/**/*.symbols.nupkg'
     publishVstsFeed: '$(NuGetFeedId)'
     buildProperties: 'version=$(MRTKVersion)-$(Build.BuildNumber)'
+
+- task: PowerShell@2
+  displayName: 'Publish UPM packages to server'
+  env:
+    TESTREPOSITORY $(TestRepository)
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/packaging/publishupmpackages.ps1
+    arguments: >
+      -ProjectRoot $(Get-Location)
+      -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
+      -IsPublicRelease 0

@@ -4,35 +4,36 @@
 .DESCRIPTION
     Publishes UPM packages for the Mixed Reality Toolkit.
 .PARAMETER PackageDirectory
-    Where should we find the packages to upload? Defaults to ".\artifacts"
-.PARAMETER ProjectRoot
-    The root folder of the project.
+    Where should we find the packages to upload? Defaults to ".\artifacts\upm"
+.PARAMETER IsPublicRelease
+    Is this a public release? If not, the packages will be published to an internal server for testing.
+    The default value for this parameter is 0 (false).
 #>
 param(
     [string]$PackageDirectory = ".\artifacts\upm",
-    [string]$ProjectRoot
+    [bool]$IsPublicRelease = $False
 )
 
 $startPath = "$(Get-Location)"
-
-if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$startPath\..\.." 
-}
-$ProjectRoot = Resolve-Path -Path $ProjectRoot
-Write-Output "Project root: $ProjectRoot"
-
 $PackageDirectory = Resolve-Path -Path $PackageDirectory
-Write-Output "Package directory: $PackageDirectory"
 
-$npmCommand = "npm"
+Write-Output "Publishing packages from: $PackageDirectory"
+Write-Output "Public release: $IsPublicRelease"  
 
-$cmdFullPath = "$env:systemroot\system32\cmd.exe"
-
-# Change to the package directory
+# Change to the project root directory
 Set-Location $PackageDirectory
 
-## todo - create the .npmrc file
+# Create the .npmrc file
+$registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
+if (-not $IsPublicRelease) {
+    $registryPath = "$env:TESTREPOSITORY"
+}
+$npmrcContents = "registry=$registryPath`n`nalways-auth=true"
+
+Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
+
+# Authenticate to the registry
+vsts-npm-auth -config .npmrc
 
 # Get the list of package (.tgz) files
 $packages = Get-ChildItem -Name -Include "*.tgz"
@@ -41,8 +42,10 @@ foreach ($package in $packages)
     Write-Output "======================="
     Write-Output "Publishing: $package"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmCommand publish $package" -NoNewWindow -Wait    
+    npm publish $package    
 }
+
+Remove-Item -Path "./.npmrc"
 
 # Return to the starting path
 Set-Location $startPath

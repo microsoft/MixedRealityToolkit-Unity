@@ -10,10 +10,10 @@
 .PARAMETER Version
     What version of the artifacts should we build?
 .PARAMETER BuildNumber
-    The build number to append to the version. Note: This value is only used if the IsPreview parameter is set to true.
-.PARAMETER IsOfficial
-    Are we creating official packages? If not, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
-
+    The build number to append to the version. Note: This value is required when the UseBuildNumber parameter is set to 1 (true).
+.PARAMETER UseBuildNumber
+    Should we append the build number to the version? If so, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
+    If omitted, this parameter defaults to 1 (true).
 #>
 param(
     [string]$ProjectRoot,
@@ -22,7 +22,7 @@ param(
     [string]$Version,
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$BuildNumber,
-    [bool]$IsOfficial = $False
+    [bool]$UseBuildNumber = $True
 )
 
 [string]$startPath = $(Get-Location)
@@ -31,16 +31,15 @@ if (-not $ProjectRoot) {
     throw "Missing required parameter: -ProjectRoot."
 }
 $ProjectRoot = Resolve-Path -Path $ProjectRoot
-Write-Output "Project root: $ProjectRoot"
 
 if (-not $Version) {
     throw "Missing required parameter: -Version."
 }
 
-if (-not $IsOfficial) {
-    if (-not $BuildNumber) {
-        throw "Missing required parameter: -BuildNumber. This parameter is required when -IsOfficial is set to false."
-    }
+if ((-not $BuildNumber) -and $useBuildNumber) {
+    throw "Missing required parameter: -BuildNumber. This parameter is required when -UseBuildNumber is set to 1."
+}
+if ($useBuildNumber) {
     $Version = "$Version-preview.$BuildNumber"
 }
 Write-Output "Package version: $Version"
