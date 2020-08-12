@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     {
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef";
         private const string WindowsMixedRealityReference = "Unity.XR.WindowsMixedReality";
+        private const string SessionStateKey = "WindowsMixedRealityXRSDKConfigurationCheckerSessionStateKey";
 
 #if UNITY_2019_3_OR_NEWER
         private static readonly VersionDefine WindowsMixedRealityDefine = new VersionDefine("com.unity.xr.windowsmr", "", "WMR_ENABLED");
@@ -24,7 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         static WindowsMixedRealityXRSDKConfigurationChecker()
         {
-            UpdateAsmDef();
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (UpdateAsmDef) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                UpdateAsmDef();
+            }
         }
 
         /// <summary>

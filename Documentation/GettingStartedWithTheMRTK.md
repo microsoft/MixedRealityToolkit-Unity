@@ -20,6 +20,9 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ## Add MRTK to your Unity project
 
+> [!Note]
+> Users of Unity 2019.4, and newer, can use the Unity Package Manager to import MRTK. Please see [Using the Unity Package Manager](usingupm.md) for more information.
+
 ### Required
 
 1. [Get the latest MRTK Unity packages](#get-the-latest-mrtk-unity-packages)
@@ -41,13 +44,10 @@ To get started with the Mixed Reality Toolkit, you will need:
     * **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage**
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
+    * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.TestUtilities.unitypackage
     * (**_Required for version-to-version upgrades, Optional otherwise_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
 
-For information on package contents, see [MRTK Package Contents](MRTK_PackageContents.md).
-
-The Mixed Reality Toolkit is also available for download on NuGet.org; for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
->[!NOTE]
-> As of MRTK 2.4.0, NuGet packages are no longer supported.
+For details on the packages and their contents, please see [MRTK Packages](Packaging/MRTK_Packages.md).
 
 ### Import MRTK packages into your Unity project
 

@@ -27,6 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class PointerBehaviorTests : BasePlayModeTests
     {
+        // Tests/PlayModeTests/TestProfiles/TestCustomPointerMediatorInputProfile.asset
+        private const string ProfileGuid = "f1bb9273769c84743a29dc206e284023";
+        private static readonly string ProfilePath = AssetDatabase.GUIDToAssetPath(ProfileGuid);
+
         /// <summary>
         /// Simple container for comparing expected pointer states to actual.
         /// if a bool? is null, this means pointer is null (doesn't exist)
@@ -225,6 +229,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRays()
         {
+            yield return TestRaysWorker();
+        }
+
+
+        /// <summary>
+        /// Tests that rays can be turned on and off even with a custom mediator.
+        /// </summary>
+        /// <remarks>
+        /// Added to ensure we don't regress https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243
+        /// </remarks>
+        [UnityTest]
+        public IEnumerator TestRaysCustomMediator()
+        {
+            // MRTK has already been created by SetUp prior to calling this,
+            // we have to shut it down to re-init with the custom input profile which
+            // replaces the default pointer mediator.
+            PlayModeTestUtilities.TearDown();
+            yield return null;
+
+            var profile = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+            profile.InputSystemProfile.PointerProfile = AssetDatabase.LoadAssetAtPath<MixedRealityPointerProfile>(ProfilePath);
+            PlayModeTestUtilities.Setup(profile);
+            yield return null;
+
+            yield return TestRaysWorker();
+        }
+
+        private IEnumerator TestRaysWorker()
+        {
             PointerStateContainer lineOn = new PointerStateContainer()
             {
                 GazePointerEnabled = false,
@@ -279,7 +312,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Right, lineOn);
             EnsurePointerStates(Handedness.Left, lineOn);
         }
-
     }
 }
 

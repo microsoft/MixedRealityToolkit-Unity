@@ -12,15 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public static class EditorProjectUtilities
     {
+        private const string SessionStateKey = "EditorProjectUtilitiesSessionStateKey";
+
         /// <summary>
         /// Static constructor that allows for executing code on project load.
         /// </summary>
         static EditorProjectUtilities()
         {
-            CheckMinimumEditorVersion();
-            ApplyARFoundationUWPCompileFix();
-            MixedRealityToolkitPreserveSettings.EnsureLinkXml();
-
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (UpdateAsmDef) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                CheckMinimumEditorVersion();
+                ApplyARFoundationUWPCompileFix();
+                MixedRealityToolkitPreserveSettings.EnsureLinkXml();
+            }
         }
 
         /// <summary>

@@ -798,6 +798,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     try
                     {
                         // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
+                        // This is a deprecated constructor - the method of passing the pointer preferences through a non
+                        // default constructor is a loose contract that breaks pointer preferences because it becomes extremely
+                        // unclear why the class never gets passed a pointer preferences object.
                         mediator = Activator.CreateInstance(mediatorType, this) as IMixedRealityPointerMediator;
                     }
                     catch (MissingMethodException)
@@ -805,6 +808,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // We are using custom mediator not provided by MRTK, instantiate with empty constructor
                         mediator = Activator.CreateInstance(mediatorType) as IMixedRealityPointerMediator;
                     }
+
+                    mediator.SetPointerPreferences(this);
                 }
 
                 if (mediator != null)

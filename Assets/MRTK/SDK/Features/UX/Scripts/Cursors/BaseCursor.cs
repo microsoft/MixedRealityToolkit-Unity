@@ -361,6 +361,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
+            // Skip Update if the input system is missing during a runtime profile switch
+            if ((CoreServices.InputSystem == null) ||
+                (CoreServices.InputSystem.FocusProvider == null))
+            {
+                return;
+            }
             if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
                 if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
