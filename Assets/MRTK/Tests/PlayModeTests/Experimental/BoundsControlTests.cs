@@ -1052,6 +1052,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
             boundsControl.gameObject.SetActive(true);
             yield return null;
+            
             // refetch transforms
             rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
