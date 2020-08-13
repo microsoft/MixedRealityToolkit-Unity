@@ -180,7 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             get
             {
                 GameObject newParent = new GameObject("Spatial Awareness System");
-                MixedRealityPlayspace.AddChild(newParent.transform);
+                /// Preserve local transform when attaching to playspace.
+                newParent.transform.SetParent(MixedRealityPlayspace.Transform, false);
 
                 return newParent;
             }
@@ -191,7 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             GameObject objectParent = new GameObject(name);
 
-            objectParent.transform.parent = SpatialAwarenessObjectParent.transform;
+            /// Preserve local transform when attaching to SA object parent.
+            objectParent.transform.SetParent(SpatialAwarenessObjectParent.transform, false);
 
             return objectParent;
         }
