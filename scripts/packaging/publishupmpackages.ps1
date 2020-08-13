@@ -5,13 +5,12 @@
     Publishes UPM packages for the Mixed Reality Toolkit.
 .PARAMETER PackageDirectory
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
-.PARAMETER IsPublicRelease
-    Is this a public release? If not, the packages will be published to an internal server for testing.
-    The default value for this parameter is 0 (false).
+.PARAMETER RegistryPath
+    To which registry should the packages be uploaded>
 #>
 param(
     [string]$PackageDirectory,
-    [bool]$IsPublicRelease = $False
+    [bool]$RegistryPath
 )
 
 if (-not $PackageDirectory) {
@@ -19,22 +18,22 @@ if (-not $PackageDirectory) {
 }
 $PackageDirectory = Resolve-Path -Path $PackageDirectory
 
+if (-not $RegistryPath) {
+    throw "Missing required parameter: -RegistryPath."
+}
+
 $startPath = "$(Get-Location)"
 
 Write-Output "Publishing packages from: $PackageDirectory"
-Write-Output "Public release: $IsPublicRelease"
+
 
 # # Change to the project root directory
 # Set-Location $PackageDirectory
 
 # Create the .npmrc file
 $npmrcFileName = "./.npmrc"
-$registryPath = $(PublicRegistry)
-# if (-not $IsPublicRelease) {
-#     $registryPath = $(TestRegistry)
-# }
-Write-Output $registryPath.Substring(0)
-$npmrcContents = "registry=$registryPath`n`nalways-auth=true"
+
+$npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
 # # Authenticate to the registry
