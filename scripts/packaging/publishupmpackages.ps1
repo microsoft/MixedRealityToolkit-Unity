@@ -5,34 +5,39 @@
     Publishes UPM packages for the Mixed Reality Toolkit.
 .PARAMETER PackageDirectory
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
-.PARAMETER IsPublicRelease
-    Is this a public release? If not, the packages will be published to an internal server for testing.
-    The default value for this parameter is 0 (false).
+.PARAMETER RegistryPath
+    To which registry should the packages be uploaded>
 #>
 param(
-    [string]$PackageDirectory = ".\artifacts\upm",
-    [bool]$IsPublicRelease = $False
+    [string]$PackageDirectory,
+    [string]$RegistryPath
 )
 
-$startPath = "$(Get-Location)"
+if (-not $PackageDirectory) {
+    throw "Missing required parameter: -PackageDirectory."
+}
 $PackageDirectory = Resolve-Path -Path $PackageDirectory
 
+if (-not $RegistryPath) {
+    throw "Missing required parameter: -RegistryPath."
+}
+
+$startPath = "$(Get-Location)"
+
 Write-Output "Publishing packages from: $PackageDirectory"
-Write-Output "Public release: $IsPublicRelease"  
+
 
 # Change to the project root directory
 Set-Location $PackageDirectory
 
 # Create the .npmrc file
-$registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
-if (-not $IsPublicRelease) {
-    $registryPath = "$env:TESTREPOSITORY"
-}
-$npmrcContents = "registry=$registryPath`n`nalways-auth=true"
+$npmrcFileName = "./.npmrc"
 
-Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
+$npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
+Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
 # Authenticate to the registry
+npm install -g vsts-npm-auth
 vsts-npm-auth -config .npmrc
 
 # Get the list of package (.tgz) files
@@ -45,7 +50,7 @@ foreach ($package in $packages)
     npm publish $package    
 }
 
-Remove-Item -Path "./.npmrc"
+Remove-Item -Path $npmrcFileName
 
 # Return to the starting path
 Set-Location $startPath
