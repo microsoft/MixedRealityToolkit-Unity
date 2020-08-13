@@ -107,4 +107,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         Y,
         Z
     }
+
+    /// <summary>
+    /// Scale mode that is used for scaling behavior of bounds control.
+    /// </summary>
+    public enum HandleScaleMode
+    {
+        /// <summary>
+        /// Control will be scaled uniformly.
+        /// </summary>
+        Uniform,
+        /// <summary>
+        /// Precise scaling scales non uniformly according to movement in 3d space.
+        /// </summary>
+        Precise
+    }
 }

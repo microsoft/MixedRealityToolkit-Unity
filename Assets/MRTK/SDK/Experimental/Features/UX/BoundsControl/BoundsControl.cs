@@ -170,15 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        public enum ScaleMode
-        {
-            Uniform,
-            Precise
-        }
-
-        public ScaleMode scaleMode;
-
-
         [SerializeField]
         [Tooltip("Bounds control box display configuration section.")]
         private BoxDisplayConfiguration boxDisplayConfiguration;
@@ -1021,7 +1012,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (transformType != HandleType.None)
             {
-                Vector3 prevGrabPoint = currentGrabPoint;
                 currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
 
                 if (transformType == HandleType.Rotation)
@@ -1033,56 +1023,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
                 else if (transformType == HandleType.Scale)
                 {
-                    if (scaleMode == ScaleMode.Uniform)
+                    Vector3 scaleFactor = Target.transform.localScale;
+                    if (ScaleHandlesConfig.ScaleBehavior == HandleScaleMode.Uniform)
                     {
                         float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
                         float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
-                        float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
-
-                        Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-
-                        MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
-                        if (scaleConstraint != null)
-                        {
-                            scaleConstraint.ApplyConstraint(ref clampedTransform);
-                            if (clampedTransform.Scale != newScale)
-                            {
-                                scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
-                            }
-                        }
-
-                        var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
-                        Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
-                        Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
+                        float scaleFactorUniform = 1 + (currentDist - initialDist) / initialDist;
+                        scaleFactor = new Vector3(scaleFactorUniform, scaleFactorUniform, scaleFactorUniform);
                     }
                     else
                     {
                         // get diff from center point of box
-                        //Vector3 grabDiff = (initialGrabPoint - oppositeCorner / 2) - (currentGrabPoint - oppositeCorner / 2);
-
                         Vector3 initialDist = (initialGrabPoint - oppositeCorner);
                         Vector3 currentDist = (currentGrabPoint - oppositeCorner);
                         Vector3 grabDiff = (currentDist - initialDist);
-                        Vector3 scaleFactor = Vector3.one + new Vector3(grabDiff.x / initialDist.x, grabDiff.y / initialDist.y, grabDiff.z / initialDist.z);
-                        Vector3 newScale = new Vector3(initialScaleOnGrabStart.x * scaleFactor.x, initialScaleOnGrabStart.y * scaleFactor.y, initialScaleOnGrabStart.z * scaleFactor.z);
+                        scaleFactor = Vector3.one + grabDiff.Div(initialDist);
 
-                        MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
-                        if (scaleConstraint != null)
-                        {
-                            scaleConstraint.ApplyConstraint(ref clampedTransform);
-                            if (clampedTransform.Scale != newScale)
-                            {
-                                scaleFactor = new Vector3(clampedTransform.Scale.x / initialScaleOnGrabStart.x, clampedTransform.Scale.y / initialScaleOnGrabStart.y, clampedTransform.Scale.z / initialScaleOnGrabStart.z);
-                            }
-                        }
-
-
-                       
-                        Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
-                       // var newPosition = initialPositionOnGrabStart.Mul(scaleFactor + (Vector3.one - scaleFactor).Mul(oppositeCorner));
-                        //Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                     }
-                    
+
+                    Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
+                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
+                    if (scaleConstraint != null)
+                    {
+                        scaleConstraint.ApplyConstraint(ref clampedTransform);
+                        if (clampedTransform.Scale != newScale)
+                        {
+                            scaleFactor = clampedTransform.Scale.Div(initialScaleOnGrabStart);
+                        }
+                    }
+
+                    Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
+                    var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
+                    var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
+                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
             }
         }

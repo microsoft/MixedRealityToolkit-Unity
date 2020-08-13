@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
-        private SerializedProperty scaleMode;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -61,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
-            scaleMode = serializedObject.FindProperty("scaleMode");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
@@ -104,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
-                    EditorGUILayout.PropertyField(scaleMode);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);

@@ -250,12 +250,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
-            int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
 
             var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
@@ -275,25 +276,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         public IEnumerator ScaleNonUniform()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            boundsControl.scaleMode = BoundsControl.ScaleMode.Precise;
+            boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.Precise;
             yield return VerifyInitialBoundsCorrect(boundsControl);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
 
-
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
-            int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
 
             var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
-            Vector3 expectedCenter = new Vector3(0.0f, 0.0f, 1.5f);
-            Vector3 expectedSize = Vector3.one * .597f;
+            Vector3 expectedCenter = new Vector3(0.05f, 0.05f, 1.5f);
+            Vector3 expectedSize = Vector3.one * .6f;
             expectedSize.z = 0.5f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
