@@ -36,7 +36,7 @@ if (-not $IsPublicRelease) {
 $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
-[string]$temp = Get-Contents -FilePath $npmrcFileName
+[string]$temp = Get-Content -FilePath $npmrcFileName
 Write-Output $temp
 
 # # Authenticate to the registry
