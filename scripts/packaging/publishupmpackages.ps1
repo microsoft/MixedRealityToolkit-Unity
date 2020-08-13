@@ -28,14 +28,15 @@ Write-Output "Public release: $IsPublicRelease"
 # Set-Location $PackageDirectory
 
 # Create the .npmrc file
+$npmrcFileName = "./.npmrc"
 $registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
 if (-not $IsPublicRelease) {
     $registryPath = $env:TESTREGISTRY
 }
 $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
-Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
+Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
-[string]$temp = Get-Contents -FilePath "./npmrc"
+[string]$temp = Get-Contents -FilePath $npmrcFileName
 Write-Output $temp
 
 # # Authenticate to the registry
@@ -51,7 +52,7 @@ Write-Output $temp
 #     npm publish $package    
 # }
 
-# Remove-Item -Path "./.npmrc"
+Remove-Item -Path $npmrcFileName
 
 # Return to the starting path
 Set-Location $startPath
