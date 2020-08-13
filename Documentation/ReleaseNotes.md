@@ -69,18 +69,6 @@ There is a confirmation dialog that will be displayed when selecting `Use MSBuil
 
 ![MSBuild for Unity confirmation](Images/ConfigurationDialog/EnableMSB4UPrompt.png)
 
-**Reduction in InitializeOnLoad overhead**
-
-We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
-improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
-to entering play mode, and also at editor launch. These handlers now run in far fewer cases, resulting in general
-Unity responsiveness improvements.
-
-In some cases there was a tradeoff that had to be made:
-For those who are using Leap Motion or ARFoundation, there's now an additional manual step in their respective getting
-started steps. See [Leap Motion](CrossPlatform/LeapMotionMRTK.md#using-leap-motion-by-ultraleap-hand-tracking-in-mrtk) and [ARFoundation]
-(CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
-
 ### Breaking changes
 
 **IMixedRealityPointerMediator**
