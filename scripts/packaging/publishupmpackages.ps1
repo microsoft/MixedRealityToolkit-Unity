@@ -33,10 +33,10 @@ if (-not $IsPublicRelease) {
     $registryPath = $env:TESTREGISTRY
 }
 $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
+Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
 
-Write-Output $npmrcContents
-
-# Out-File -FilePath "./.npmrc" -InputObject $npmrcContents -Encoding utf8
+[string]$temp = Get-Contents -FilePath "./npmrc"
+Write-Output $temp
 
 # # Authenticate to the registry
 # vsts-npm-auth -config .npmrc
