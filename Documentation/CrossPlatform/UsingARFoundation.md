@@ -27,8 +27,6 @@
     | AR Foundation  <br/> Version: 3.1.3 |  AR Foundation  <br/> Version: 3.1.3 |
     | ARCore XR Plugin <br/> Version: 3.1.4 | ARKit XR Plugin <br/> Version: 3.1.3 |
 
-1. Update the MRTK UnityAR assembly definitions by invoking the menu item: **Mixed Reality Toolkit > Utilities > UnityAR > Update Assembly Definitions**
-
 ## Enabling the Unity AR camera settings provider
 
 The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.

@@ -26,10 +26,10 @@ This provider can be used in editor and on device while on the Standalone platfo
         - If using Core Assets from Leap Motion Unity Modules version 4.5.0, import the **Core** package into the Unity project.
     > [!NOTE]
     > On import of the Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
+    - If using Unity 2018.4.x
+        - After the Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the [Leap Motion Common Errors](#leap-motion-has-not-integrated-with-mrtk). If the file is present, go to the next step.
 
-1. Update the MRTK assembly definition files to reference LeapMotion assembly definitions
-
-    This can be done by invoking the menu item: **Mixed Reality Toolkit > Utilities > Leap Motion > Configure Leap Motion**
+    - If using Unity 2019.3.x, go to the next step
 
 1. Adding the Leap Motion Data Provider
     - Create a new Unity scene
@@ -172,7 +172,7 @@ These errors appear if **Mixed Reality Toolkit > Utilities > Leap Motion > Confi
 
 ### Leap Motion has not integrated with MRTK
 
-This error can occur after the import of the Leap Motion Unity Core Assets if the "Configure Leap Motion" step is not followed.
+This error can occur if the Unity version is 2018.4.x, the MRTK source is from the Unity packages and after the import of the Leap Motion Unity Core Assets.
 
 To test if MRTK recognizes the presence of the Leap Motion Unity Core Assets, open the LeapMotionHandTrackingExample scene located in MRTK/Examples/Demos/HandTracking/ and press play.  If the Leap Motion Unity Core Assets are recognized a green message on the informational panel in the scene will appear.  If the Leap Motion Unity Core Assets are not recognized a red message will appear.
 
