@@ -35,17 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty lookHorizontal;
         private SerializedProperty lookVertical;
 
-        private SerializedProperty defaultHandSimulationMode;
+        private SerializedProperty defaultControllerSimulationMode;
 
         private SerializedProperty defaultEyeGazeSimulationMode;
 
-        private SerializedProperty toggleLeftHandKey;
-        private SerializedProperty toggleRightHandKey;
-        private SerializedProperty handHideTimeout;
-        private SerializedProperty leftHandManipulationKey;
-        private SerializedProperty rightHandManipulationKey;
-        private SerializedProperty mouseHandRotationSpeed;
-        private SerializedProperty handRotateButton;
+        private SerializedProperty toggleLeftControllerKey;
+        private SerializedProperty toggleRightControllerKey;
+        private SerializedProperty controllerHideTimeout;
+        private SerializedProperty leftControllerManipulationKey;
+        private SerializedProperty rightControllerManipulationKey;
+        private SerializedProperty mouseControllerRotationSpeed;
+        private SerializedProperty controllerRotateButton;
 
         private SerializedProperty defaultHandGesture;
         private SerializedProperty leftMouseHandGesture;
@@ -53,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty rightMouseHandGesture;
         private SerializedProperty handGestureAnimationSpeed;
 
-        private SerializedProperty defaultHandDistance;
-        private SerializedProperty handDepthMultiplier;
-        private SerializedProperty handJitterAmount;
+        private SerializedProperty defaultControllerDistance;
+        private SerializedProperty controllerDepthMultiplier;
+        private SerializedProperty controllerJitterAmount;
 
         private SerializedProperty holdStartDuration;
         private SerializedProperty navigationStartThreshold;
@@ -92,15 +92,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             lookVertical = serializedObject.FindProperty("lookVertical");
 
             defaultEyeGazeSimulationMode = serializedObject.FindProperty("defaultEyeGazeSimulationMode");
-            defaultHandSimulationMode = serializedObject.FindProperty("defaultHandSimulationMode");
+            defaultControllerSimulationMode = serializedObject.FindProperty("defaultControllerSimulationMode");
 
-            toggleLeftHandKey = serializedObject.FindProperty("toggleLeftHandKey");
-            toggleRightHandKey = serializedObject.FindProperty("toggleRightHandKey");
-            handHideTimeout = serializedObject.FindProperty("handHideTimeout");
-            leftHandManipulationKey = serializedObject.FindProperty("leftHandManipulationKey");
-            rightHandManipulationKey = serializedObject.FindProperty("rightHandManipulationKey");
-            mouseHandRotationSpeed = serializedObject.FindProperty("mouseHandRotationSpeed");
-            handRotateButton = serializedObject.FindProperty("handRotateButton");
+            toggleLeftControllerKey = serializedObject.FindProperty("toggleLeftControllerKey");
+            toggleRightControllerKey = serializedObject.FindProperty("toggleRightControllerKey");
+            controllerHideTimeout = serializedObject.FindProperty("controllerHideTimeout");
+            leftControllerManipulationKey = serializedObject.FindProperty("leftControllerManipulationKey");
+            rightControllerManipulationKey = serializedObject.FindProperty("rightControllerManipulationKey");
+            mouseControllerRotationSpeed = serializedObject.FindProperty("mouseControllerRotationSpeed");
+            controllerRotateButton = serializedObject.FindProperty("controllerRotateButton");
 
             defaultHandGesture = serializedObject.FindProperty("defaultHandGesture");
             leftMouseHandGesture = serializedObject.FindProperty("leftMouseHandGesture");
@@ -111,9 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             holdStartDuration = serializedObject.FindProperty("holdStartDuration");
             navigationStartThreshold = serializedObject.FindProperty("navigationStartThreshold");
 
-            defaultHandDistance = serializedObject.FindProperty("defaultHandDistance");
-            handDepthMultiplier = serializedObject.FindProperty("handDepthMultiplier");
-            handJitterAmount = serializedObject.FindProperty("handJitterAmount");
+            defaultControllerDistance = serializedObject.FindProperty("defaultControllerDistance");
+            controllerDepthMultiplier = serializedObject.FindProperty("controllerDepthMultiplier");
+            controllerJitterAmount = serializedObject.FindProperty("controllerJitterAmount");
         }
 
         public override void OnInspectorGUI()
@@ -170,13 +170,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     EditorGUILayout.BeginVertical("Label");
 
-                    EditorGUILayout.PropertyField(toggleLeftHandKey);
-                    EditorGUILayout.PropertyField(toggleRightHandKey);
-                    EditorGUILayout.PropertyField(handHideTimeout);
-                    EditorGUILayout.PropertyField(leftHandManipulationKey);
-                    EditorGUILayout.PropertyField(rightHandManipulationKey);
-                    EditorGUILayout.PropertyField(mouseHandRotationSpeed);
-                    EditorGUILayout.PropertyField(handRotateButton);
+                    EditorGUILayout.PropertyField(toggleLeftControllerKey);
+                    EditorGUILayout.PropertyField(toggleRightControllerKey);
+                    EditorGUILayout.PropertyField(controllerHideTimeout);
+                    EditorGUILayout.PropertyField(leftControllerManipulationKey);
+                    EditorGUILayout.PropertyField(rightControllerManipulationKey);
+                    EditorGUILayout.PropertyField(mouseControllerRotationSpeed);
+                    EditorGUILayout.PropertyField(controllerRotateButton);
                     EditorGUILayout.Space();
 
                     EditorGUILayout.PropertyField(defaultHandGesture);

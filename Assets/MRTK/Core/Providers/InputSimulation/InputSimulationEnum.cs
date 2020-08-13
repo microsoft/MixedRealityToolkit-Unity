@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -43,25 +44,58 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Defines for how input simulation handles hands
+    /// Defines for how input simulation handles controllers
     /// </summary>
-    public enum HandSimulationMode
+    public enum ControllerSimulationMode
     {
 
         /// <summary>
-        /// Disable hand simulation
+        /// Disable controller simulation
         /// </summary>
         Disabled,
 
         /// <summary>
-        /// Raises gesture events only
+        /// Raises hand gesture events only
         /// </summary>
-        Gestures,
+        HandGestures,
 
         /// <summary>
         /// Provide a fully articulated hand controller
         /// </summary>
-        Articulated,
+        ArticulatedHand,
+
+        /// <summary>
+        /// Provide a 6DoF motion controller
+        /// </summary>
+        MotionController,
+    }
+
+    /// <summary>
+    /// Defines for how input simulation handles controllers
+    /// </summary>
+    [Obsolete("Use ControllerSimulationMode instead.")]
+    public enum HandSimulationMode
+    {
+
+        /// <summary>
+        /// Disable controller simulation
+        /// </summary>
+        Disabled = ControllerSimulationMode.Disabled,
+
+        /// <summary>
+        /// Raises hand gesture events only
+        /// </summary>
+        Gestures = ControllerSimulationMode.HandGestures,
+
+        /// <summary>
+        /// Provide a fully articulated hand controller
+        /// </summary>
+        Articulated = ControllerSimulationMode.ArticulatedHand,
+
+        /// <summary>
+        /// Provide a 6DoF motion controller
+        /// </summary>
+        MotionController = ControllerSimulationMode.MotionController,
     }
 
 }
