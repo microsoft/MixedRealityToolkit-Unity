@@ -3,15 +3,23 @@
     Publishes the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Publishes UPM packages for the Mixed Reality Toolkit.
+.PARAMETER Publish
+    Indicates whether or not to publish the packages. If 0 (false), the script will immediately abort.
 .PARAMETER PackageDirectory
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
 .PARAMETER RegistryPath
     To which registry should the packages be uploaded>
 #>
 param(
+    [bool]$Publish,
     [string]$PackageDirectory,
     [string]$RegistryPath
 )
+
+if (-not $Publish) {
+    Write-Output "Not publishing.... Exiting"
+    return
+}
 
 if (-not $PackageDirectory) {
     throw "Missing required parameter: -PackageDirectory."
@@ -37,7 +45,7 @@ $npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
 # Authenticate to the registry
-npm install -g vsts-npm-auth
+npm install -g vsts-npm-auth    
 vsts-npm-auth -config .npmrc
 
 # Get the list of package (.tgz) files
