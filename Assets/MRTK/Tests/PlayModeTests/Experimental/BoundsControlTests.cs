@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - uniform scaling
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleViaNearInteraction()
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - precise scaling 
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleNonUniform()
