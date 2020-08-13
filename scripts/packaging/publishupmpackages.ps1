@@ -33,11 +33,9 @@ $registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_p
 if (-not $IsPublicRelease) {
     $registryPath = $env:TESTREGISTRY
 }
+Write-Output $registryPath.Substring(0)
 $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
-
-[string]$temp = Get-Content -Path $npmrcFileName
-Write-Output $temp
 
 # # Authenticate to the registry
 # vsts-npm-auth -config .npmrc
