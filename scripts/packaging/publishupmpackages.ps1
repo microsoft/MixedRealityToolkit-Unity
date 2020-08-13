@@ -27,8 +27,8 @@ $startPath = "$(Get-Location)"
 Write-Output "Publishing packages from: $PackageDirectory"
 
 
-# # Change to the project root directory
-# Set-Location $PackageDirectory
+# Change to the project root directory
+Set-Location $PackageDirectory
 
 # Create the .npmrc file
 $npmrcFileName = "./.npmrc"
@@ -36,18 +36,18 @@ $npmrcFileName = "./.npmrc"
 $npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
 Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
 
-# # Authenticate to the registry
-# vsts-npm-auth -config .npmrc
+# Authenticate to the registry
+vsts-npm-auth -config .npmrc
 
-# # Get the list of package (.tgz) files
-# $packages = Get-ChildItem -Name -Include "*.tgz"
-# foreach ($package in $packages)
-# {
-#     Write-Output "======================="
-#     Write-Output "Publishing: $package"
-#     Write-Output "======================="
-#     npm publish $package    
-# }
+# Get the list of package (.tgz) files
+$packages = Get-ChildItem -Name -Include "*.tgz"
+foreach ($package in $packages)
+{
+    Write-Output "======================="
+    Write-Output "Publishing: $package"
+    Write-Output "======================="
+    npm publish $package    
+}
 
 Remove-Item -Path $npmrcFileName
 

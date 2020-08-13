@@ -29,5 +29,5 @@ steps:
     filePath: ./scripts/packaging/publishupmpackages.ps1
     arguments: >
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-      -RegistryPath $(PublicRegistry)
+      -RegistryPath $(TestRegistry)
 
