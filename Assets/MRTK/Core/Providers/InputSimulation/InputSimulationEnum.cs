@@ -70,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         MotionController,
     }
 
+    #region Obsolete Enum
     /// <summary>
     /// Defines for how input simulation handles controllers
     /// </summary>
@@ -97,5 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         MotionController = ControllerSimulationMode.MotionController,
     }
+    #endregion
 
 }
