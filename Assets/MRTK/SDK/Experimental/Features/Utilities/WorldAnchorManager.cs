@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// Wrapper around Unity's WorldAnchorStore to simplify usage of persistence operations.
     /// </summary>
     /// <remarks>
-    /// This class only functions when built for the WSA platform. It uses APIs that are only present
-    /// on that platform.
+    /// This class only functions when built for the WSA platform using legacy XR.
+    /// It uses APIs that are only present on that platform.
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/SDK/WorldAnchorManager")]
     public class WorldAnchorManager : MonoBehaviour
