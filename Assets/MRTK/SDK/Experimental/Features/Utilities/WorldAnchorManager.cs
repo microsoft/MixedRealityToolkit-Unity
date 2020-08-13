@@ -105,12 +105,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// The queue for local device anchor operations.
         /// </summary>
-        private Queue<AnchorAttachmentInfo> LocalAnchorOperations = new Queue<AnchorAttachmentInfo>();
+        private readonly Queue<AnchorAttachmentInfo> localAnchorOperations = new Queue<AnchorAttachmentInfo>();
 
         /// <summary>
         /// Internal list of anchors and their GameObject references.
         /// </summary>
-        private Dictionary<string, GameObject> AnchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
+        private readonly Dictionary<string, GameObject> anchorGameObjectReferenceList = new Dictionary<string, GameObject>(0);
 
         #region Unity Methods
 
@@ -135,9 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-            if (LocalAnchorOperations.Count > 0)
+            if (localAnchorOperations.Count > 0)
             {
-                DoAnchorOperation(LocalAnchorOperations.Dequeue());
+                DoAnchorOperation(localAnchorOperations.Dequeue());
             }
         }
 
@@ -197,8 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 GameObject anchoredObject;
-                AnchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
-                AnchorGameObjectReferenceList.Remove(anchor.name);
+                anchorGameObjectReferenceList.TryGetValue(anchor.name, out anchoredObject);
+                anchorGameObjectReferenceList.Remove(anchor.name);
                 AttachAnchor(anchoredObject, anchor.name);
             }
 
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             anchorName = GenerateAnchorName(gameObjectToAnchor, anchorName);
 
-            LocalAnchorOperations.Enqueue(
+            localAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
                     AnchoredGameObject = gameObjectToAnchor,
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 Debug.LogWarning("[WorldAnchorManager] RemoveAnchor called before anchor store is ready.");
             }
 
-            LocalAnchorOperations.Enqueue(
+            localAnchorOperations.Enqueue(
                 new AnchorAttachmentInfo
                 {
                     AnchoredGameObject = gameObjectToUnanchor,
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 // Let's check to see if there are anchors we weren't accounting for.
                 // Maybe they were created without using the WorldAnchorManager.
-                if (!AnchorGameObjectReferenceList.ContainsKey(anchors[i].name))
+                if (!anchorGameObjectReferenceList.ContainsKey(anchors[i].name))
                 {
                     Debug.LogWarning("[WorldAnchorManager] Removing an anchor that was created outside of the WorldAnchorManager.  Please use the WorldAnchorManager to create or delete anchors.");
                     if (anchorDebugText != null)
@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
                 }
 
-                LocalAnchorOperations.Enqueue(new AnchorAttachmentInfo
+                localAnchorOperations.Enqueue(new AnchorAttachmentInfo
                 {
                     AnchorName = anchors[i].name,
                     AnchoredGameObject = anchors[i].gameObject,
@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
             }
 
-            AnchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
+            anchorGameObjectReferenceList.Add(anchorId, anchoredGameObject);
         }
 
         /// <summary>
@@ -484,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             // If we don't have a GameObject reference, let's try to get the GameObject reference from our dictionary.
             if (!string.IsNullOrEmpty(anchorId) && anchoredGameObject == null)
             {
-                AnchorGameObjectReferenceList.TryGetValue(anchorId, out anchoredGameObject);
+                anchorGameObjectReferenceList.TryGetValue(anchorId, out anchoredGameObject);
             }
 
             if (anchoredGameObject != null)
@@ -516,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (!string.IsNullOrEmpty(anchorId))
             {
-                AnchorGameObjectReferenceList.Remove(anchorId);
+                anchorGameObjectReferenceList.Remove(anchorId);
                 DeleteAnchor(anchorId);
             }
             else
