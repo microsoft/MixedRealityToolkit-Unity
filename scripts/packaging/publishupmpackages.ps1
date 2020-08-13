@@ -30,7 +30,7 @@ Write-Output "Public release: $IsPublicRelease"
 # Create the .npmrc file
 $registryPath = "https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/"
 if (-not $IsPublicRelease) {
-    $registryPath = "$env:TESTREGISTRY"
+    $registryPath = $env:TESTREGISTRY
 }
 $npmrcContents = "registry=$registryPath`n`nalways-auth=true"
 
