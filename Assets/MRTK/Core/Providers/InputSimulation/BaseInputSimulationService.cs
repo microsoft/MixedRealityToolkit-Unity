@@ -130,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
                     controllerType = typeof(SimulatedArticulatedHand);
                     break;
-                    break;
                 default:
                     controller = null;
                     break;

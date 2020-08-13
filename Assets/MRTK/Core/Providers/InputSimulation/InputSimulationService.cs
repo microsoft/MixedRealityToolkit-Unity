@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
-        private SimulatedDataProvider dataProvider = null;
+        private SimulatedHandDataProvider dataProvider = null;
 
         /// <inheritdoc />
         public ControllerSimulationMode ControllerSimulationMode { get; set; }
@@ -80,29 +80,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public Vector3 ControllerPositionLeft
         {
-            get { return dataProvider != null ? dataProvider.InputStateLeft.ViewportPosition : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.InputStateLeft.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerPositionRight
         {
-            get { return dataProvider != null ? dataProvider.InputStateRight.ViewportPosition : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.InputStateRight.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerRotationLeft
         {
-            get { return dataProvider != null ? dataProvider.InputStateLeft.ViewportRotation : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.InputStateLeft.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerRotationRight
         {
-            get { return dataProvider != null ? dataProvider.InputStateRight.ViewportRotation : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.InputStateRight.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (dataProvider != null)
             {
-                dataProvider.ResetInput(Handedness.Left);
+                dataProvider.ResetHand(Handedness.Left);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (dataProvider != null)
             {
-                dataProvider.ResetInput(Handedness.Right);
+                dataProvider.ResetHand(Handedness.Right);
             }
         }
 
@@ -422,15 +422,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
-            }
-        }
-
-        private void EnableControllerSimulation()
-        {
-            if (dataProvider == null)
-            {
-                DebugUtilities.LogVerbose("Creating a new controller simulation data provider");
-                dataProvider = new SimulatedControllerDataProvider(InputSimulationProfile);
             }
         }
 

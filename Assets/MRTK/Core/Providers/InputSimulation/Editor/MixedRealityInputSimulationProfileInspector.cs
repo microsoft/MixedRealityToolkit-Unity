@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.PropertyField(defaultEyeGazeSimulationMode);
 
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(defaultHandSimulationMode);
+                EditorGUILayout.PropertyField(defaultControllerSimulationMode);
                 {
                     EditorGUILayout.BeginVertical("Label");
 
@@ -190,9 +190,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(navigationStartThreshold);
                     EditorGUILayout.Space();
 
-                    EditorGUILayout.PropertyField(defaultHandDistance);
-                    EditorGUILayout.PropertyField(handDepthMultiplier);
-                    EditorGUILayout.PropertyField(handJitterAmount);
+                    EditorGUILayout.PropertyField(defaultControllerDistance);
+                    EditorGUILayout.PropertyField(controllerDepthMultiplier);
+                    EditorGUILayout.PropertyField(controllerJitterAmount);
                     EditorGUILayout.Space();
 
                     EditorGUILayout.EndVertical();

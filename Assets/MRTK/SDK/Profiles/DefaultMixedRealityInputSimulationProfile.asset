@@ -42,7 +42,7 @@ MonoBehaviour:
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
   defaultEyeGazeSimulationMode: 0
-  defaultControllerSimulationMode: 3
+  defaultControllerSimulationMode: 2
   toggleLeftControllerKey:
     bindingType: 2
     code: 116
@@ -70,12 +70,3 @@ MonoBehaviour:
   defaultControllerDistance: 0.5
   controllerDepthMultiplier: 0.03
   controllerJitterAmount: 0
-  motionControllerTriggerKey:
-    bindingType: 2
-    code: 104
-  motionControllerGrabKey:
-    bindingType: 2
-    code: 103
-  motionControllerMenuKey:
-    bindingType: 2
-    code: 109
