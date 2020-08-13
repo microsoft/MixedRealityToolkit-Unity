@@ -10,7 +10,7 @@
 #>
 param(
     [string]$PackageDirectory,
-    [bool]$RegistryPath
+    [string]$RegistryPath
 )
 
 if (-not $PackageDirectory) {
