@@ -22,12 +22,13 @@ steps:
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
     ArtifactName: 'mrtk-upm'
+- ${{ if eq($(PublishUpmPackages), true) }}:
 - task: PowerShell@2
-  displayName: 'Publish UPM packages to internal server'
+  displayName: 'Publish UPM packages to registry'
   inputs:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1
     arguments: >
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-      -RegistryPath $(TestRegistry)
+      -RegistryPath $(UpmRegistry)
 

@@ -6,22 +6,22 @@ parameters:
   MRTKVersion: ""
 
 steps:
-# - template: common.yml
-#   parameters:
-#     buildUWPDotNet: false
-#     UnityVersion: ${{ parameters.UnityVersion }}
-# - template: tasks/versionmetadata.yml
-#   parameters:
-#     MRTKVersion: ${{ parameters.MRTKVersion }}
-# - template: compilemsbuild.yml
-#   parameters:
-#     UnityVersion: ${{ parameters.UnityVersion }}
+- template: common.yml
+  parameters:
+    buildUWPDotNet: false
+    UnityVersion: ${{ parameters.UnityVersion }}
+- template: tasks/versionmetadata.yml
+  parameters:
+    MRTKVersion: ${{ parameters.MRTKVersion }}
+- template: compilemsbuild.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
 - ${{ if eq(parameters.packagingEnabled, true) }}:
-  # - template: tasks/unitypackages.yml
-  #   parameters:
-  #     UnityVersion: ${{ parameters.UnityVersion }}
+  - template: tasks/unitypackages.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
   - template: tasks/upmpackages.yml
   - template: package.yml
-  # - ${{ if eq(parameters.packagePublishing, true) }}:
-  #   - template: publishpackages.yml
+  - ${{ if eq(parameters.packagePublishing, true) }}:
+    - template: publishpackages.yml
 - template: end.yml
