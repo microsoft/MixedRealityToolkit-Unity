@@ -31,4 +31,4 @@ steps:
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -IsPublicRelease 0
   env:
-    TESTREGISTRY: $TestRegistry
+    TESTREGISTRY: $(TestRegistry)
