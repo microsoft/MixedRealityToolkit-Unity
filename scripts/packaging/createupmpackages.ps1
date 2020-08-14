@@ -13,7 +13,8 @@
     The build number to append to the version. Note: This value is required when the UseBuildNumber parameter is set to 1 (true).
 .PARAMETER UseBuildNumber
     Should we append the build number to the version? If so, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
-    If omitted, this parameter defaults to 1 (true).
+    If omitted, this parameter defaults to true.
+
 #>
 param(
     [string]$ProjectRoot,
