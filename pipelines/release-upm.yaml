@@ -1,0 +1,17 @@
+# Package and publicly release MRTK via UPM
+
+variables:
+- template: config/settings.yml
+- name: packagePublishing
+  value: false
+  #todo: replace the above with "true" when testing complete
+
+jobs:
+- job: PublicUPMPackageRelease
+  timeoutInMinutes: 30
+  pool:
+    name: On-Prem Unity
+  steps:
+    - template: tasks/upmpackages.yml
+      parameters:
+        publishUpm: ${{ parameters.packagePublishing }}
