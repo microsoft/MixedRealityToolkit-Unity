@@ -69,17 +69,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void EnsureNewConstraintsInitialized()
         {
             var currentConstraints = host.GetComponents<TransformConstraint>();
+            bool hasNewConstraint = false;
 
             foreach (var newConstraint in currentConstraints)
             {
                 if (constraints.IndexOf(newConstraint) < 0)
                 {
                     newConstraint.Initialize(initialWorldPose);
+                    hasNewConstraint = true;
                 }
             }
 
-
-            constraints = currentConstraints.ToList();
+            if (hasNewConstraint)
+            {
+                constraints = currentConstraints.ToList();
+            }
         }
     }
 }
