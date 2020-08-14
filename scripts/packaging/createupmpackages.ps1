@@ -38,7 +38,8 @@ if (-not $Version) {
 }
 
 if ((-not $BuildNumber) -and $useBuildNumber) {
-    throw "Missing required parameter: -BuildNumber. This parameter is required when -UseBuildNumber is set to 1."
+    throw "Missing required parameter: -BuildNumber. This parameter is required when -UseBuildNumber is used."
+
 }
 if ($useBuildNumber) {
     $Version = "$Version-preview.$BuildNumber"
