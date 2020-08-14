@@ -1011,6 +1011,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
                     MixedRealityTransform constraintRotation = MixedRealityTransform.NewRotate(goal);
                     constraints.ApplyRotationConstraints(ref constraintRotation, true, isNear);
+                    goal = constraintRotation.Rotation;
                     Target.transform.rotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.rotation, goal, rotateLerpTime, Time.deltaTime) : goal;
                 }
                 else if (transformType == HandleType.Scale)

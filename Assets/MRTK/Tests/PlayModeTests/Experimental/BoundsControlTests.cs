@@ -465,11 +465,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 axis = new Vector3();
             boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
             Assert.IsTrue(angle == 0f, "cube didn't constraint on rotation");
-            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
-            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube shouldn't move while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube shouldn't scale while rotating");
 
-            GameObject.Destroy(boundsControl.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
