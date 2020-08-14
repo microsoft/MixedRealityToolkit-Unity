@@ -29,6 +29,6 @@ steps:
     targetType: filePath
     filePath: ./scripts/packaging/publishupmpackages.ps1
     arguments: >
-      -Publish publishUpm
+      -Publish ${{ parameters.publishUpm }}
       -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
       -RegistryPath $(UpmRegistry)
