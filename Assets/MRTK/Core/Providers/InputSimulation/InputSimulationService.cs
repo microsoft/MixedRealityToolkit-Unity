@@ -45,18 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
-        private SimulatedHandDataProvider handDataProvider = null;
+        private SimulatedHandDataProvider dataProvider = null;
 
-        private HandSimulationMode handSimulationMode;
         /// <inheritdoc />
-        public HandSimulationMode HandSimulationMode
-        {
-            get => handSimulationMode;
-            set
-            {
-                handSimulationMode = value;
-            }
-        }
+        public ControllerSimulationMode ControllerSimulationMode { get; set; }
 
         /// <inheritdoc />
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
@@ -66,67 +58,67 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SimulatedHandData HandDataGaze { get; } = new SimulatedHandData();
 
         /// <inheritdoc />
-        public bool IsSimulatingHandLeft => (handDataProvider != null ? handDataProvider.IsSimulatingLeft : false);
+        public bool IsSimulatingControllerLeft => (dataProvider != null ? dataProvider.IsSimulatingLeft : false);
         /// <inheritdoc />
-        public bool IsSimulatingHandRight => (handDataProvider != null ? handDataProvider.IsSimulatingRight : false);
+        public bool IsSimulatingControllerRight => (dataProvider != null ? dataProvider.IsSimulatingRight : false);
 
         /// <inheritdoc />
-        public bool IsAlwaysVisibleHandLeft
+        public bool IsAlwaysVisibleControllerLeft
         {
-            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false; }
-            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleLeft = value; } }
+            get { return dataProvider != null ? dataProvider.IsAlwaysVisibleLeft : false; }
+            set { if (dataProvider != null) { dataProvider.IsAlwaysVisibleLeft = value; } }
         }
 
         /// <inheritdoc />
-        public bool IsAlwaysVisibleHandRight
+        public bool IsAlwaysVisibleControllerRight
         {
-            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false; }
-            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleRight = value; } }
+            get { return dataProvider != null ? dataProvider.IsAlwaysVisibleRight : false; }
+            set { if (dataProvider != null) { dataProvider.IsAlwaysVisibleRight = value; } }
         }
 
         /// <inheritdoc />
-        public Vector3 HandPositionLeft
+        public Vector3 ControllerPositionLeft
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
-            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
-        public Vector3 HandPositionRight
+        public Vector3 ControllerPositionRight
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
-            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
-        public Vector3 HandRotationLeft
+        public Vector3 ControllerRotationLeft
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
-            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
-        public Vector3 HandRotationRight
+        public Vector3 ControllerRotationRight
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
-            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
-        public void ResetHandLeft()
+        public void ResetControllerLeft()
         {
-            if (handDataProvider != null)
+            if (dataProvider != null)
             {
-                handDataProvider.ResetHand(Handedness.Left);
+                dataProvider.ResetHand(Handedness.Left);
             }
         }
 
         /// <inheritdoc />
-        public void ResetHandRight()
+        public void ResetControllerRight()
         {
-            if (handDataProvider != null)
+            if (dataProvider != null)
             {
-                handDataProvider.ResetHand(Handedness.Right);
+                dataProvider.ResetHand(Handedness.Right);
             }
         }
 
@@ -138,35 +130,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                return eyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+                return EyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
             }
             set
             {
-                eyeGazeSimulationMode = value ? EyeGazeSimulationMode.CameraForwardAxis : EyeGazeSimulationMode.Disabled;
+                EyeGazeSimulationMode = value ? EyeGazeSimulationMode.CameraForwardAxis : EyeGazeSimulationMode.Disabled;
             }
         }
 
-        private EyeGazeSimulationMode eyeGazeSimulationMode;
         /// <inheritdoc />
-        public EyeGazeSimulationMode EyeGazeSimulationMode
-        {
-            get => eyeGazeSimulationMode;
-            set
-            {
-                eyeGazeSimulationMode = value;
-            }
-        }
-
+        public EyeGazeSimulationMode EyeGazeSimulationMode { get; set; }
 
         /// <summary>
-        /// If true then keyboard and mouse input are used to simulate hands.
+        /// If true then keyboard and mouse input are used to simulate controllers.
         /// </summary>
         public bool UserInputEnabled { get; set; } = true;
 
         /// <summary>
-        /// Timestamp of the last hand device update
+        /// Timestamp of the last controller device update
         /// </summary>
-        private long lastHandUpdateTimestamp = 0;
+        private long lastControllerUpdateTimestamp = 0;
 
         /// <summary>
         /// Indicators to show input simulation state in the viewport.
@@ -222,11 +205,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (capability)
             {
                 case MixedRealityCapability.ArticulatedHand:
-                    return (HandSimulationMode == HandSimulationMode.Articulated);
+                    return (ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand);
 
                 case MixedRealityCapability.GGVHand:
                     // If any hand simulation is enabled, GGV interactions are supported.
-                    return (HandSimulationMode != HandSimulationMode.Disabled);
+                    return (ControllerSimulationMode != ControllerSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
                     return EyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
@@ -240,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Initialize();
 
-            HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
+            ControllerSimulationMode = InputSimulationProfile.DefaultControllerSimulationMode;
             EyeGazeSimulationMode = InputSimulationProfile.DefaultEyeGazeSimulationMode;
         }
 
@@ -276,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             DisableCameraControl();
-            DisableHandSimulation();
+            DisableControllerSimulation();
         }
 
         /// <inheritdoc />
@@ -286,14 +269,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var profile = InputSimulationProfile;
 
-            switch (HandSimulationMode)
+            switch (ControllerSimulationMode)
             {
-                case HandSimulationMode.Disabled:
-                    DisableHandSimulation();
+                case ControllerSimulationMode.Disabled:
+                    DisableControllerSimulation();
                     break;
 
-                case HandSimulationMode.Articulated:
-                case HandSimulationMode.Gestures:
+                case ControllerSimulationMode.ArticulatedHand:
+                case ControllerSimulationMode.HandGestures:
                     EnableHandSimulation();
                     break;
             }
@@ -317,9 +300,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (UserInputEnabled)
             {
-                if (handDataProvider != null)
+                if (dataProvider != null)
                 {
-                    handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, HandDataGaze, mouseDelta);
+                    if (dataProvider is SimulatedHandDataProvider handDataProvider)
+                    {
+                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, HandDataGaze, mouseDelta);
+                    }
                 }
 
                 if (cameraControl != null && CameraCache.Main)
@@ -354,24 +340,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
-            if (HandSimulationMode == HandSimulationMode.Disabled)
+            if (ControllerSimulationMode == ControllerSimulationMode.Disabled)
             {
-                RemoveAllHandDevices();
+                RemoveAllControllerDevices();
             }
             else
             {
                 DateTime currentTime = DateTime.UtcNow;
-                double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
+                double msSinceLastControllerUpdate = currentTime.Subtract(new DateTime(lastControllerUpdateTimestamp)).TotalMilliseconds;
                 // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
-                if (msSinceLastHandUpdate > 0)
+                if (msSinceLastControllerUpdate > 0)
                 {
-                    UpdateHandDevice(HandSimulationMode, Handedness.Left, HandDataLeft);
-                    UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
+                    object controllerDataLeft = null;
+                    object controllerDataRight = null;
+                    switch (ControllerSimulationMode)
+                    {
+                        case ControllerSimulationMode.ArticulatedHand:
+                        case ControllerSimulationMode.HandGestures:
+                            controllerDataLeft = HandDataLeft;
+                            controllerDataRight = HandDataRight;
+                            break;
+                    }
+                    UpdateControllerDevice(ControllerSimulationMode, Handedness.Left, controllerDataLeft);
+                    UpdateControllerDevice(ControllerSimulationMode, Handedness.Right, controllerDataRight);
 
                     // HandDataGaze is only enabled if the user is simulating via mouse and keyboard
                     if (UserInputEnabled && profile.IsHandsFreeInputEnabled)
-                        UpdateHandDevice(HandSimulationMode.Gestures, Handedness.None, HandDataGaze);
-                    lastHandUpdateTimestamp = currentTime.Ticks;
+                        UpdateControllerDevice(ControllerSimulationMode.HandGestures, Handedness.None, HandDataGaze);
+                    lastControllerUpdateTimestamp = currentTime.Ticks;
                 }
             }
         }
@@ -421,21 +417,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void EnableHandSimulation()
         {
-            if (handDataProvider == null)
+            if (dataProvider == null)
             {
                 DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
-                handDataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
+                dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
         }
 
-        private void DisableHandSimulation()
+        private void DisableControllerSimulation()
         {
-            RemoveAllHandDevices();
+            RemoveAllControllerDevices();
 
-            if (handDataProvider != null)
+            if (dataProvider != null)
             {
-                DebugUtilities.LogVerbose("Destroying the hand simulation data provider");
-                handDataProvider = null;
+                DebugUtilities.LogVerbose("Destroying the controller simulation data provider");
+                dataProvider = null;
             }
         }
 
@@ -485,7 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // Interpret scroll values as world space delta
-                worldDelta.z *= profile.HandDepthMultiplier;
+                worldDelta.z *= profile.ControllerDepthMultiplier;
 
                 Vector2 worldDepthDelta = new Vector2(worldDelta.z, 0);
 
@@ -550,5 +546,87 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return new Vector2(deltaViewport3D.x, deltaViewport3D.y);
         }
+
+        #region Obsolete Properties and Methods
+        /// <inheritdoc />
+        [Obsolete("Use ControllerSimulationMode instead.")]
+        public HandSimulationMode HandSimulationMode
+        {
+            get => (HandSimulationMode)ControllerSimulationMode;
+            set
+            {
+                ControllerSimulationMode = (ControllerSimulationMode)value;
+            }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use IsSimulatingControllerLeft instead.")]
+        public bool IsSimulatingHandLeft => IsSimulatingControllerLeft;
+        /// <inheritdoc />
+        [Obsolete("Use IsSimulatingControllerRight instead.")]
+        public bool IsSimulatingHandRight => IsSimulatingControllerRight;
+
+        /// <inheritdoc />
+        [Obsolete("Use IsAlwaysVisibleControllerLeft instead.")]
+        public bool IsAlwaysVisibleHandLeft
+        {
+            get => IsAlwaysVisibleControllerLeft;
+            set { IsAlwaysVisibleControllerLeft = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use IsAlwaysVisibleControllerRight instead.")]
+        public bool IsAlwaysVisibleHandRight
+        {
+            get => IsAlwaysVisibleControllerRight;
+            set { IsAlwaysVisibleControllerRight = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ControllerPositionLeft instead.")]
+        public Vector3 HandPositionLeft
+        {
+            get => ControllerPositionLeft;
+            set { ControllerPositionLeft = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ControllerPositionRight instead.")]
+        public Vector3 HandPositionRight
+        {
+            get => ControllerPositionRight;
+            set { ControllerPositionRight = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ControllerRotationLeft instead.")]
+        public Vector3 HandRotationLeft
+        {
+            get => ControllerRotationLeft;
+            set { ControllerRotationLeft = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ControllerRotationRight instead.")]
+        public Vector3 HandRotationRight
+        {
+            get => ControllerRotationRight;
+            set { ControllerRotationRight = value; }
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ResetControllerLeft instead.")]
+        public void ResetHandLeft()
+        {
+            ResetControllerLeft();
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use ResetControllerRight instead.")]
+        public void ResetHandRight()
+        {
+            ResetControllerRight();
+        }
+        #endregion
     }
 }

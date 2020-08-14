@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Set up ggv simulation
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);

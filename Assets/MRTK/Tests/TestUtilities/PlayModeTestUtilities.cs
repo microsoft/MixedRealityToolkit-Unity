@@ -293,10 +293,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.InputSimulationProfile = inputSimulationProfiles.Pop();
         }
 
-        public static void SetHandSimulationMode(HandSimulationMode mode)
+        public static void SetHandSimulationMode(ControllerSimulationMode mode)
         {
             var iss = GetInputSimulationService();
-            iss.HandSimulationMode = mode;
+            iss.ControllerSimulationMode = mode;
         }
 
         public static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
             InputSimulationService simulationService = GetInputSimulationService();
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             if (hand != null && hand.InputSource != null)
             {
                 foreach (var pointer in hand.InputSource.Pointers)

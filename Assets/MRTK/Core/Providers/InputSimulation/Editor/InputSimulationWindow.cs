@@ -189,28 +189,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void DrawHandsGUI()
         {
-            HandSimulationMode newHandSimMode = (HandSimulationMode)EditorGUILayout.EnumPopup("Hand Simulation Mode", SimulationService.HandSimulationMode);
+            ControllerSimulationMode newHandSimMode = (ControllerSimulationMode)EditorGUILayout.EnumPopup("Hand Simulation Mode", SimulationService.ControllerSimulationMode);
 
-            if (newHandSimMode != SimulationService.HandSimulationMode)
+            if (newHandSimMode != SimulationService.ControllerSimulationMode)
             {
-                SimulationService.HandSimulationMode = newHandSimMode;
+                SimulationService.ControllerSimulationMode = newHandSimMode;
             }
 
             using (new GUILayout.HorizontalScope())
             {
                 DrawHandGUI(
                     "Left",
-                    SimulationService.IsAlwaysVisibleHandLeft, v => SimulationService.IsAlwaysVisibleHandLeft = v,
-                    SimulationService.HandPositionLeft, v => SimulationService.HandPositionLeft = v,
-                    SimulationService.HandRotationLeft, v => SimulationService.HandRotationLeft = v,
-                    SimulationService.ResetHandLeft);
+                    SimulationService.IsAlwaysVisibleControllerLeft, v => SimulationService.IsAlwaysVisibleControllerLeft = v,
+                    SimulationService.ControllerPositionLeft, v => SimulationService.ControllerPositionLeft = v,
+                    SimulationService.ControllerRotationLeft, v => SimulationService.ControllerRotationLeft = v,
+                    SimulationService.ResetControllerLeft);
 
                 DrawHandGUI(
                     "Right",
-                    SimulationService.IsAlwaysVisibleHandRight, v => SimulationService.IsAlwaysVisibleHandRight = v,
-                    SimulationService.HandPositionRight, v => SimulationService.HandPositionRight = v,
-                    SimulationService.HandRotationRight, v => SimulationService.HandRotationRight = v,
-                    SimulationService.ResetHandRight);
+                    SimulationService.IsAlwaysVisibleControllerRight, v => SimulationService.IsAlwaysVisibleControllerRight = v,
+                    SimulationService.ControllerPositionRight, v => SimulationService.ControllerPositionRight = v,
+                    SimulationService.ControllerRotationRight, v => SimulationService.ControllerRotationRight = v,
+                    SimulationService.ResetControllerRight);
             }
         }
 

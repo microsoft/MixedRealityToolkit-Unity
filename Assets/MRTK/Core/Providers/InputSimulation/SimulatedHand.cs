@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
     public abstract class SimulatedHand : BaseHand
     {
-        public abstract HandSimulationMode SimulationMode { get; }
+        public abstract ControllerSimulationMode SimulationMode { get; }
 
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
