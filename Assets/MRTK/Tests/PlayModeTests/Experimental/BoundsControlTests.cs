@@ -236,26 +236,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - uniform scaling
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleViaNearInteraction()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
-            int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
 
             var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
@@ -263,8 +263,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
-            GameObject.Destroy(boundsControl.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - precise scaling 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleNonUniform()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.NonUniform;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // front right corner is corner 3
+            var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
+
+            var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.05f, 0.05f, 1.5f);
+            Vector3 expectedSize = Vector3.one * .6f;
+            expectedSize.z = 0.5f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
             yield return null;
         }
 
