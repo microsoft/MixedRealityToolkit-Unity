@@ -37,11 +37,11 @@ if (-not $Version) {
     throw "Missing required parameter: -Version."
 }
 
-if ((-not $BuildNumber) -and $useBuildNumber) {
+if ((-not $BuildNumber) -and $UseBuildNumber) {
     throw "Missing required parameter: -BuildNumber. This parameter is required when -UseBuildNumber is used."
 
 }
-if ($useBuildNumber) {
+if ($UseBuildNumber) {
     $Version = "$Version-preview.$BuildNumber"
 }
 Write-Output "Package version: $Version"
