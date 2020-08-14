@@ -1031,7 +1031,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         float scaleFactorUniform = 1 + (currentDist - initialDist) / initialDist;
                         scaleFactor = new Vector3(scaleFactorUniform, scaleFactorUniform, scaleFactorUniform);
                     }
-                    else
+                    else // non-uniform scaling
                     {
                         // get diff from center point of box
                         Vector3 initialDist = (initialGrabPoint - oppositeCorner);

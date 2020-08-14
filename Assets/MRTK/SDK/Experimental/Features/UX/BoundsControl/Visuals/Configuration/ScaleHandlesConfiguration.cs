@@ -58,11 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Scale mode that is applied when interacting with scale handles - default is uniform scaling. Precise mode scales the control non uniformly according to hand / controller movement in space.")]
+        [Tooltip("Scale mode that is applied when interacting with scale handles - default is uniform scaling. Non uniform mode scales the control according to hand / controller movement in space.")]
         private HandleScaleMode scaleBehavior = HandleScaleMode.Uniform;
 
         /// <summary>
-        /// Scale behavior that is applied when interacting with scale handles - default is uniform scaling. Precise mode scales the control non uniformly according to hand / controller movement in space.
+        /// Scale behavior that is applied when interacting with scale handles - default is uniform scaling. Non uniform mode scales the control according to hand / controller movement in space.
         /// </summary>
         public HandleScaleMode ScaleBehavior
         {

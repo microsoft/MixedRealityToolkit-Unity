@@ -118,8 +118,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         /// </summary>
         Uniform,
         /// <summary>
-        /// Precise scaling scales non uniformly according to movement in 3d space.
+        /// Scales non uniformly according to movement in 3d space.
         /// </summary>
-        Precise
+        NonUniform
     }
 }

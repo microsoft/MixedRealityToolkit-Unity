@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         public IEnumerator ScaleNonUniform()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.Precise;
+            boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.NonUniform;
             yield return VerifyInitialBoundsCorrect(boundsControl);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
