@@ -243,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
@@ -264,8 +263,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
-            GameObject.Destroy(boundsControl.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
@@ -278,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.NonUniform;
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
@@ -298,9 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             expectedSize.z = 0.5f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
-            
-            GameObject.Destroy(boundsControl.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+
             yield return null;
         }
 
