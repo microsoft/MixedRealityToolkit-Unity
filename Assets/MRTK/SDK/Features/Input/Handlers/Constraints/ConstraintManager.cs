@@ -15,9 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
     internal class ConstraintManager
     {
         private List<TransformConstraint> constraints;
+        private MixedRealityTransform initialWorldPose;
+        private GameObject host;
 
         public ConstraintManager(GameObject gameObject)
         {
+            host = gameObject;
             constraints = gameObject.GetComponents<TransformConstraint>().ToList();
         }
 
@@ -38,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void Initialize(MixedRealityTransform worldPose)
         {
+            initialWorldPose = worldPose;
             foreach (var constraint in constraints)
             {
                 constraint.Initialize(worldPose);
@@ -46,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void ApplyConstraintsForType(ref MixedRealityTransform transform, bool isOneHanded, bool isNear, TransformFlags transformType)
         {
+            EnsureNewConstraintsInitialized();
+
             ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
             ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
 
@@ -58,6 +64,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     constraint.ApplyConstraint(ref transform);
                 }
             }
+        }
+
+        private void EnsureNewConstraintsInitialized()
+        {
+            var currentConstraints = host.GetComponents<TransformConstraint>();
+
+            foreach (var newConstraint in currentConstraints)
+            {
+                if (constraints.IndexOf(newConstraint) < 0)
+                {
+                    newConstraint.Initialize(initialWorldPose);
+                }
+            }
+
+
+            constraints = currentConstraints.ToList();
         }
     }
 }

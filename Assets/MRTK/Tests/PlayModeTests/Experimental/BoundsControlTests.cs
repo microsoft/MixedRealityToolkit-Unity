@@ -575,7 +575,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var scaleHandler = boundsControl.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
-            boundsControl.RegisterTransformScaleHandler(scaleHandler);
 
             Vector3 initialScale = boundsControl.transform.localScale;
 
