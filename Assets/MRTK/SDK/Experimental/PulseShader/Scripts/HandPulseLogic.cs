@@ -20,12 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private void Start()
         {
-            MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>().RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+
         }
 
         private void OnDestroy()
         {
-            MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>().UnregisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         // Update is called once per frame
