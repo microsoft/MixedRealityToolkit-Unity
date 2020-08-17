@@ -23,6 +23,10 @@ Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation
 
 ![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
 
+**Input Simulation Motion Controller in Editor Play Mode**
+
+Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.
+
 **Conical Grab Pointer**
 
 Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
