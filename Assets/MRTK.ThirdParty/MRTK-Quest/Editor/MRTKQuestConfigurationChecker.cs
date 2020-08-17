@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,34 +11,37 @@ namespace prvncher.MixedReality.Toolkit.OculusQuestInput
     /// <summary>
     /// Class that checks if the Oculus Integration Assets are present and configures the project if they are.
     /// </summary>
-    [InitializeOnLoad]
+    /// <remarks>
+    /// Note that the checks that this class runs are fairly expensive and are only done manually by the user
+    /// as part of their setup steps described here:
+    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/OculusQuestMRTK.html
+    /// </remarks>
     static class OculusConfigurationChecker
     {
         // The presence of the OculusProjectConfig.asset is used to determine if the Oculus Integration Assets are in the project.
         private const string OculusIntegrationProjectConfig = "OculusProjectConfig.asset";
         private static readonly string[] Definitions = { "OCULUSINTEGRATION_PRESENT" };
 
-        static OculusConfigurationChecker()
+        /// <summary>
+        /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
+        /// </summary>
+        /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Update Assembly Definitions")]
+        private static bool UpdateAssemblyDefinitions()
         {
-            // Check if Oculus Integration Package is in the project
-            ReconcileOculusIntegrationDefine();
-        }
+            FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
-        //seems to work fine as is
-        private static bool ReconcileOculusIntegrationDefine()
-        {
-            FileInfo[] files = FindFilesInAssets(OculusIntegrationProjectConfig);
-
-            if (files.Length > 0)
+            if (files.Length > 0) 
             {
-                AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
-                AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ConfigureProfilesForHandtracking();
                 return true;
             }
             else
             {
-                RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
-                RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
                 return false;
             }
         }
@@ -45,13 +49,12 @@ namespace prvncher.MixedReality.Toolkit.OculusQuestInput
         /// <summary>
         /// Configures the project profiles to support handtracking
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Configure Oculus Profiles for Handtracking")]
         static void ConfigureProfilesForHandtracking()
         {
-            FileInfo[] files = FindFilesInAssets(OculusIntegrationProjectConfig);
+#if OCULUSINTEGRATION_PRESENT
+            FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
             // Make this set the application to controllers and hands on first setup
-#if OCULUSINTEGRATION_PRESENT
             string configPath = "";
             if (files[0].FullName.Replace("\\", "/").StartsWith(Application.dataPath))
             {
@@ -135,70 +138,6 @@ namespace prvncher.MixedReality.Toolkit.OculusQuestInput
                     }
                 }
             }
-
-            //Debug.Log($"Saving {cscFilePath}");
-        }
-
-
-        /// <summary>
-        /// Locates the files that match the specified name within the Assets folder structure.
-        /// </summary>
-        /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
-        /// <returns>Array of FileInfo objects representing the located file(s).</returns>
-        public static FileInfo[] FindFilesInAssets(string fileName)
-        {
-            // FindAssets doesn't take a file extension
-            string[] assetGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(fileName));
-
-            List<FileInfo> fileInfos = new List<FileInfo>();
-            for (int i = 0; i < assetGuids.Length; i++)
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
-                // Since this is an asset search without extension, some filenames may contain parts of other filenames.
-                // Therefore, double check that the path actually contains the filename with extension.
-                if (assetPath.Contains(fileName))
-                {
-                    fileInfos.Add(new FileInfo(assetPath));
-                }
-            }
-
-            return fileInfos.ToArray();
-        }
-
-        /// <summary>
-        /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
-        /// specified build target group.
-        /// </summary>
-        /// <param name="targetGroup">The build target group for which the symbols are to be defined.</param>
-        /// <param name="symbols">Array of symbols to define.</param>
-        public static void AppendScriptingDefinitions(
-            BuildTargetGroup targetGroup,
-            string[] symbols)
-        {
-            if (symbols == null || symbols.Length == 0) { return; }
-
-            List<string> toAdd = new List<string>(symbols);
-            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
-
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Union(toAdd).ToArray()));
-        }
-
-        /// <summary>
-        /// Removes a set of symbolic constant definitions to Unity's Scripting Define Symbols from the
-        /// specified build target group.
-        /// </summary>
-        /// <param name="targetGroup">The build target group for which the symbols are to be removed.</param>
-        /// <param name="symbols">Array of symbols to remove.</param>
-        public static void RemoveScriptingDefinitions(
-            BuildTargetGroup targetGroup,
-            string[] symbols)
-        {
-            if (symbols == null || symbols.Length == 0) { return; }
-
-            List<string> toRemove = new List<string>(symbols);
-            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
-
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Except(toRemove).ToArray()));
         }
     }
 }

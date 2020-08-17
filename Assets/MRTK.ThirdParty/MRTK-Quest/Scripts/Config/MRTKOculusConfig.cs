@@ -236,6 +236,7 @@ namespace prvncher.MixedReality.Toolkit.Config
 
         /// <summary>
         /// Accessor for the Oculus CPU power level.
+        /// https://developer.oculus.com/documentation/native/android/mobile-power-overview
         /// </summary>
         public int CPULevel
         {
