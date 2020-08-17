@@ -88,7 +88,7 @@
 <p>For example, on the Windows Mixed Reality platform, the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.html"><code>WindowsMixedRealityArticulatedHand</code></a> is a controller that is responsible for interfacing with the underlying Windows <a href="https://docs.microsoft.com/uwp/api/windows.ui.input.spatial.spatialinteractionsourcestate">hand tracking APIs</a> to get information about the joints, pose, and other properties of the hand. It is responsible for turning this data into relevant MRTK events (for example, by calling RaisePoseInputChanged or RaiseHandJointsUpdated) and by updating its own internal state so that queries for <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html#Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_TrackedHandJoint_Handedness_MixedRealityPose__"><code>TryGetJointPose</code></a> will return correct data.</p>
 <p>Generally, a controller's lifecycle will involve:</p>
 <ol>
-<li><p>A controller gets created by a device manager upon detection of a new source (for example, the detects and starts tracking a hand).</p>
+<li><p>A controller gets created by a device manager upon detection of a new source (for example, the device manager detects and starts tracking a hand).</p>
 </li>
 <li><p>In the controller's Update() loop, it calls into its underlying API system.</p>
 </li>
