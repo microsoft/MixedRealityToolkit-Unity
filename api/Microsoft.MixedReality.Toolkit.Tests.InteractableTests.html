@@ -135,7 +135,8 @@ Validates various forms of input (i.e speech etc) against various configurations
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.Setup*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.Setup">Setup()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Set initial state before each test.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -152,12 +153,24 @@ Validates various forms of input (i.e speech etc) against various configurations
     <tbody>
       <tr>
         <td><span class="xref">IEnumerator</span></td>
-        <td></td>
+        <td><p>enumerator</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html#Microsoft_MixedReality_Toolkit_Tests_BasePlayModeTests_Setup">BasePlayModeTests.Setup()</a></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that, in order to catch incorrect reliances on identity camera transforms early on,
+this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+appropriate for an individual test by starting off with, e.g., <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToOriginLookingForward">PlayspaceToOriginLookingForward()</a>.
+However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+to align test objects with the camera.
+For example, to place an object 8 meters in front of the camera, set its global position to:
+TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+See usage of these helpers throughout the tests within this file, e.g. <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.html#Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestHandInputOnRuntimeAssembled">TestHandInputOnRuntimeAssembled()</a>.
+See also comments at <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToArbitraryPose">PlayspaceToArbitraryPose()</a>.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestButtonStateResetWhenFocusLostAfterPinch_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestButtonStateResetWhenFocusLostAfterPinch*"></a>

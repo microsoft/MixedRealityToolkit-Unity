@@ -254,7 +254,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_BaseCursorTests_SetUp_" data-uid="Microsoft.MixedReality.Toolkit.Tests.BaseCursorTests.SetUp*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_BaseCursorTests_SetUp" data-uid="Microsoft.MixedReality.Toolkit.Tests.BaseCursorTests.SetUp">SetUp()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes MRTK, instantiates the test content prefab</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -271,10 +272,19 @@
     <tbody>
       <tr>
         <td><span class="xref">IEnumerator</span></td>
-        <td></td>
+        <td><p>enumerator</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_BaseCursorTests_SetUp_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that SetUp places the playspace directly, and so the camera indirectly, to
+an arbitrary non-identity pose. Use the helpers in TestUtilities to place test
+objects relative (e.g. in front of) the camera, using, e.g. <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PositionRelativeToPlayspace_Vector3_">PositionRelativeToPlayspace(Vector3)</a>.
+See test <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BaseCursorTests.html#Microsoft_MixedReality_Toolkit_Tests_BaseCursorTests_ArticulatedCursorState">ArticulatedCursorState()</a>, or most other tests within this file,
+for examples.
+See also comments at <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToArbitraryPose">PlayspaceToArbitraryPose()</a>.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_BaseCursorTests_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.BaseCursorTests.TearDown*"></a>
