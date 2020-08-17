@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Motion Controller Settings")]
         [SerializeField]
         [Tooltip("Key to simulate a trigger press (select) on the motion controller")]
-        private KeyBinding motionControllerTriggerKey = KeyBinding.FromKey(KeyCode.H);
+        private KeyBinding motionControllerTriggerKey = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Left);
         /// <summary>
         /// Key to simulate a trigger press (select) on the motion controller
         /// </summary>
