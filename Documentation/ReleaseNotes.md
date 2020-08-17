@@ -114,4 +114,10 @@ The stored initial world pose `worldPoseOnManipulationStart` data type has been 
 
 A new property `AudioClip` has been added to the IMixedRealityDictationSystem interface. The `AudioClip` property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.
 
+**Addition of Motion Controller to Input Simulation Service**
+
+Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, extensive naming changes have been made to input simulation related files, with `InputSimulationService.cs` and `MixedRealityInputSimulationProfile.cs` getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of naming changes are related to replacing reference to "hand" to the more generic term "controller" (e.g. from `DefaultHandSimulationMode` to `DefaultControllerSimulationMode`). The existing fields, properties and functions are marked obsolete. Besides renaming, the return type of certain functions are changed to match the name/behavior change (e.g. `GetControllerDevice` based on the original `GetHandDevice` now returns `BaseController` instead of `SimulatedHand`).
+
+`IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
+
 ### Known issues
