@@ -653,6 +653,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return isExpanded;
         }
 
+        /// <summary>
+        /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed gameobject.
+        /// Adds a button for adding any of the component (or dervied types) and a follow button to highlight existing attached components.
+        /// </summary>
         static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
         {
             isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
