@@ -23,7 +23,6 @@ namespace prvncher.MixedReality.Toolkit.OculusQuestInput
             ReconcileOculusIntegrationDefine();
         }
 
-        //seems to work fine as is
         private static bool ReconcileOculusIntegrationDefine()
         {
             FileInfo[] files = FindFilesInAssets(OculusIntegrationProjectConfig);
