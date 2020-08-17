@@ -348,7 +348,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Apply random offset to the controller position
         /// </summary>
         public float ControllerJitterAmount => controllerJitterAmount;
+
+        [Header("Motion Controller Settings")]
         [SerializeField]
+        [Tooltip("Key to simulate a trigger press (select) on the motion controller")]
+        private KeyBinding motionControllerTriggerKey = KeyBinding.FromKey(KeyCode.H);
+        /// <summary>
+        /// Key to simulate a trigger press (select) on the motion controller
+        /// </summary>
+        public KeyBinding MotionControllerTriggerKey => motionControllerTriggerKey;
+        [SerializeField]
+        [Tooltip("Key to simulate a grab on the motion controller")]
+        private KeyBinding motionControllerGrabKey = KeyBinding.FromKey(KeyCode.G);
+        /// <summary>
+        /// Key to simulate a grab on the motion controller
+        /// </summary>
+        public KeyBinding MotionControllerGrabKey => motionControllerGrabKey;
+        [SerializeField]
+        [Tooltip("Key to simulate a menu press on the motion controller")]
+        private KeyBinding motionControllerMenuKey = KeyBinding.FromKey(KeyCode.M);
+        /// <summary>
+        /// Key to simulate a menu press on the motion controller
+        /// </summary>
+        public KeyBinding MotionControllerMenuKey => motionControllerMenuKey;
 
         #region Obsolete Properties
         /// <summary>

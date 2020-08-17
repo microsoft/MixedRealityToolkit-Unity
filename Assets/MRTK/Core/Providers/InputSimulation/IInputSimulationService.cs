@@ -33,6 +33,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         SimulatedHandData HandDataRight { get; }
 
         /// <summary>
+        /// Pose data for the left motion controller.
+        /// </summary>
+        SimulatedMotionControllerData MotionControllerDataLeft { get; }
+        /// <summary>
+        /// Pose data for the right motion controller.
+        /// </summary>
+        SimulatedMotionControllerData MotionControllerDataRight { get; }
+
+        /// <summary>
         /// If true then keyboard and mouse input are used to simulate controllers.
         /// </summary>
         bool UserInputEnabled { get; set; }

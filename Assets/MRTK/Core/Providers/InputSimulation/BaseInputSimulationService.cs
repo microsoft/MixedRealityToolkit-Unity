@@ -80,6 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                     
                 }
+                else if(controllerData is SimulatedMotionControllerData motionControllerData && motionControllerData.IsTracked)
+                {
+                    SimulatedMotionController motionController = GetOrAddControllerDevice(handedness, simulationMode) as SimulatedMotionController;
+                    motionController.UpdateState(motionControllerData);
+                    return;
+                }
             }
             
             RemoveControllerDevice(handedness);
@@ -101,6 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controller != null)
             {
                 if (controller is SimulatedHand hand && hand.SimulationMode == simulationMode)
+                {
+                    return controller;
+                }
+                else if (controller is SimulatedMotionController && simulationMode == ControllerSimulationMode.MotionController)
                 {
                     return controller;
                 }
@@ -129,6 +139,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
                     controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
                     controllerType = typeof(SimulatedArticulatedHand);
+                    break;
+                case ControllerSimulationMode.MotionController:
+                    st = SupportedControllerType.WindowsMixedReality;
+                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} MotionController", RequestPointers(st, handedness), InputSourceType.Controller);
+                    controller = new SimulatedMotionController(TrackingState.Tracked, handedness, inputSource);
+                    controllerType = typeof(SimulatedMotionController);
                     break;
                 default:
                     controller = null;
