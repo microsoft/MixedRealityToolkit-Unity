@@ -263,11 +263,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float time = Time.time;
 
-            if (KeyInputSystem.GetKeyDown(profile.ToggleLeftHandKey))
+            if (KeyInputSystem.GetKeyDown(profile.ToggleLeftControllerKey))
             {
                 IsAlwaysVisibleLeft = !IsAlwaysVisibleLeft;
             }
-            if (KeyInputSystem.GetKeyDown(profile.ToggleRightHandKey))
+            if (KeyInputSystem.GetKeyDown(profile.ToggleRightControllerKey))
             {
                 IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (KeyInputSystem.GetKeyDown(profile.LeftHandManipulationKey))
+                if (KeyInputSystem.GetKeyDown(profile.LeftControllerManipulationKey))
                 {
                     isSimulatingLeft = true;
                     if (lastSimulationLeft > 0.0f && time - lastSimulationLeft <= profile.DoublePressTime)
@@ -288,12 +288,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     lastSimulationLeft = time;
                 }
-                if (KeyInputSystem.GetKeyUp(profile.LeftHandManipulationKey))
+                if (KeyInputSystem.GetKeyUp(profile.LeftControllerManipulationKey))
                 {
                     isSimulatingLeft = false;
                 }
 
-                if (KeyInputSystem.GetKeyDown(profile.RightHandManipulationKey))
+                if (KeyInputSystem.GetKeyDown(profile.RightControllerManipulationKey))
                 {
                     isSimulatingRight = true;
                     if (lastSimulationRight > 0.0f && time - lastSimulationRight <= profile.DoublePressTime)
@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     lastSimulationRight = time;
                 }
-                if (KeyInputSystem.GetKeyUp(profile.RightHandManipulationKey))
+                if (KeyInputSystem.GetKeyUp(profile.RightControllerManipulationKey))
                 {
                     isSimulatingRight = false;
                 }
@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     lastSimulationGaze = time;
             }
 
-            mouseRotation.Update(profile.HandRotateButton, cancelRotationKey, false);
+            mouseRotation.Update(profile.ControllerRotateButton, cancelRotationKey, false);
 
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isSimulating)
             {
-                state.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.MouseHandRotationSpeed, profile.HandJitterAmount);
+                state.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.MouseControllerRotationSpeed, profile.ControllerJitterAmount);
 
                 if (isAlwaysVisible)
                 {
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 float timeSinceTracking = (float)currentTime.Subtract(new DateTime(lastHandTrackedTimestamp)).TotalSeconds;
-                if (timeSinceTracking > profile.HandHideTimeout)
+                if (timeSinceTracking > profile.ControllerHideTimeout)
                 {
                     state.IsTracked = false;
                 }
@@ -394,11 +394,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Start at current mouse position
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
-                state.ResetPosition(CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance)));
+                state.ResetPosition(CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultControllerDistance)));
             }
             else
             {
-                state.ResetPosition(new Vector3(0.5f, 0.5f, profile.DefaultHandDistance));
+                state.ResetPosition(new Vector3(0.5f, 0.5f, profile.DefaultControllerDistance));
             }
 
             state.Gesture = profile.DefaultHandGesture;

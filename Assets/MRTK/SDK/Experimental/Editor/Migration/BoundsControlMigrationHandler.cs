@@ -55,12 +55,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 // migrate visuals
                 boundsControl.FlattenAxis = MigrateFlattenAxis(boundingBox.FlattenAxis);
                 boundsControl.BoxPadding = boundingBox.BoxPadding;
-                string configDir = GetBoundsControlConfigDirectory(boundingBox);
-                MigrateBoxDisplay(boundsControl, boundingBox, configDir);
-                MigrateLinks(boundsControl, boundingBox, configDir);
-                MigrateScaleHandles(boundsControl, boundingBox, configDir);
-                MigrateRotationHandles(boundsControl, boundingBox, configDir);
-                MigrateProximityEffect(boundsControl, boundingBox, configDir);
+                MigrateBoxDisplay(boundsControl, boundingBox);
+                MigrateLinks(boundsControl, boundingBox);
+                MigrateScaleHandles(boundsControl, boundingBox);
+                MigrateRotationHandles(boundsControl, boundingBox);
+                MigrateProximityEffect(boundsControl, boundingBox);
 
                 // debug properties
                 boundsControl.DebugText = boundingBox.debugText;
@@ -83,36 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        virtual protected string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
-        {
-            var scene = boundingBox.gameObject.scene;
-            if (scene != null)
-            {
-                string scenePath = scene.path;
-                string sceneDir = System.IO.Path.GetDirectoryName(scenePath);
-                // if empty we're creating the folder in the asset root.
-                // This should only happen if we're trying to migrate a dynamically created
-                // gameobject - which is usually only in test scenarios
-                if (sceneDir == "")
-                {
-                    sceneDir = "Assets";
-                }
-
-                const string configDir = "BoundsControlConfigs";
-                string configPath = System.IO.Path.Combine(sceneDir, configDir);
-                if (AssetDatabase.IsValidFolder(configPath))
-                {
-                    return configPath;
-                }
-                else
-                {
-                    string guid = AssetDatabase.CreateFolder(sceneDir, configDir);
-                    return AssetDatabase.GUIDToAssetPath(guid);
-                }
-            }
-
-            return "";
-        }
         private string GenerateUniqueConfigName(string directory, GameObject migratingFrom, string configName)
         {
             return directory + "/" + migratingFrom.name + migratingFrom.GetInstanceID() + configName + ".asset";
@@ -210,33 +179,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         #region Visuals Configuration Migration
 
-        private void MigrateBoxDisplay(BoundsControl control, BoundingBox box, string configAssetDirectory)
+        private T EnsureConfiguration<T>(T config) where T : ScriptableObject
         {
-            BoxDisplayConfiguration config = ScriptableObject.CreateInstance<BoxDisplayConfiguration>();
+            return config == null ? ScriptableObject.CreateInstance<T>() : config;
+        }
+
+        private void MigrateBoxDisplay(BoundsControl control, BoundingBox box)
+        {
+            BoxDisplayConfiguration config = EnsureConfiguration(control.BoxDisplayConfig);
             config.BoxMaterial = box.BoxMaterial;
             config.BoxGrabbedMaterial = box.BoxGrabbedMaterial;
             config.FlattenAxisDisplayScale = box.FlattenAxisDisplayScale;
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "BoxDisplayConfiguration"));
-
             control.BoxDisplayConfig = config;
         }
 
-        private void MigrateLinks(BoundsControl control, BoundingBox box, string configAssetDirectory)
+        private void MigrateLinks(BoundsControl control, BoundingBox box)
         {
-            LinksConfiguration config = ScriptableObject.CreateInstance<LinksConfiguration>();
+            LinksConfiguration config = EnsureConfiguration(control.LinksConfig);
             config.WireframeMaterial = box.WireframeMaterial;
             config.WireframeEdgeRadius = box.WireframeEdgeRadius;
             config.WireframeShape = MigrateWireframeShape(box.WireframeShape);
             config.ShowWireFrame = box.ShowWireFrame;
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "LinksConfiguration"));
-
             control.LinksConfig = config;
-
         }
 
-        private void MigrateScaleHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
+        private void MigrateScaleHandles(BoundsControl control, BoundingBox box)
         {
-            ScaleHandlesConfiguration config = ScriptableObject.CreateInstance<ScaleHandlesConfiguration>();
+            ScaleHandlesConfiguration config = EnsureConfiguration(control.ScaleHandlesConfig);
             config.HandleSlatePrefab = box.ScaleHandleSlatePrefab;
             config.ShowScaleHandles = box.ShowScaleHandles;
             config.HandleMaterial = box.HandleMaterial;
@@ -246,14 +215,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.ColliderPadding = box.ScaleHandleColliderPadding;
             config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
             config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
-
             control.ScaleHandlesConfig = config;
         }
 
-        private void MigrateRotationHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
+        private void MigrateRotationHandles(BoundsControl control, BoundingBox box)
         {
-            RotationHandlesConfiguration config = ScriptableObject.CreateInstance<RotationHandlesConfiguration>();
+            RotationHandlesConfiguration config = EnsureConfiguration(control.RotationHandlesConfig);
             config.RotationHandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
             config.ShowRotationHandleForX = box.ShowRotationHandleForX;
             config.ShowRotationHandleForY = box.ShowRotationHandleForY;
@@ -265,14 +232,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.ColliderPadding = box.RotateHandleColliderPadding;
             config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
             config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
-
             control.RotationHandlesConfig = config;
         }
 
-        private void MigrateProximityEffect(BoundsControl control, BoundingBox box, string configAssetDirectory)
+        private void MigrateProximityEffect(BoundsControl control, BoundingBox box)
         {
-            ProximityEffectConfiguration config = ScriptableObject.CreateInstance<ProximityEffectConfiguration>();
+            ProximityEffectConfiguration config = EnsureConfiguration(control.HandleProximityEffectConfig);
             config.ProximityEffectActive = box.ProximityEffectActive;
             config.ObjectMediumProximity = box.HandleMediumProximity;
             config.ObjectCloseProximity = box.HandleCloseProximity;
@@ -282,8 +247,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.FarGrowRate = box.FarGrowRate;
             config.MediumGrowRate = box.MediumGrowRate;
             config.CloseGrowRate = box.CloseGrowRate;
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
-
             control.HandleProximityEffectConfig = config;
         }
 

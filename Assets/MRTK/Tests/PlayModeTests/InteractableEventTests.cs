@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestClickEvents()
         {
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestToggleEvents()
         {
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;

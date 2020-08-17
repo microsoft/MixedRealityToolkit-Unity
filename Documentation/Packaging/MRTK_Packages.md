@@ -90,7 +90,7 @@ The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes add
 | --- | --- | --- |
 | MRTK/Extensions | |
 | | [HandPhysicsService](../Extensions/HandPhysicsService/HandPhysicsServiceOverview.md) | Service that adds physics support to articulated hands. |
-| | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
+| | LostTrackingService | Service that simplifies handling of tracking loss on Microsoft HoloLens devices. |
 | | [SceneTransitionService](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
 
 ### Tools package
