@@ -29,7 +29,7 @@
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace prvncher.MixedReality.Toolkit.Config
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoad]

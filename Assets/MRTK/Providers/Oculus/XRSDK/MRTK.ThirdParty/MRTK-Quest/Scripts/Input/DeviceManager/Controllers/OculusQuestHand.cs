@@ -30,7 +30,6 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using prvncher.MixedReality.Toolkit.Config;
 using prvncher.MixedReality.Toolkit.Input.Teleport;
 using prvncher.MixedReality.Toolkit.Utils;
 using UnityEngine;
@@ -40,9 +39,8 @@ using static OVRSkeleton;
 #endif
 
 using Object = UnityEngine.Object;
-using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
 
-namespace prvncher.MixedReality.Toolkit.OculusQuestInput
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
     [MixedRealityController(SupportedControllerType.ArticulatedHand, new[] { Handedness.Left, Handedness.Right })]
     public class OculusQuestHand : BaseHand, IMixedRealityHand
@@ -302,14 +300,6 @@ namespace prvncher.MixedReality.Toolkit.OculusQuestInput
                     anyPointersLockedWithHand |= nearPointer.IsNearObject;
                 }
                 anyPointersLockedWithHand |= InputSource.Pointers[i].IsFocusLocked;
-
-                // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
-                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.Official
-                    && InputSource.Pointers[i] is IMixedRealityTeleportPointer)
-                {
-                    teleportPointer = (TeleportPointer)InputSource.Pointers[i];
-                    teleportAction = ((TeleportPointer)teleportPointer).TeleportInputAction;
-                }
             }
 
             // We close middle finger to signal spider-man gesture, and as being ready for teleport
