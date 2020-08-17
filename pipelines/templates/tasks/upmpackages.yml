@@ -23,12 +23,4 @@ steps:
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
     ArtifactName: 'mrtk-upm'
-- task: PowerShell@2
-  displayName: 'Upload UPM packages to registry'
-  inputs:
-    targetType: filePath
-    filePath: ./scripts/packaging/publishupmpackages.ps1
-    arguments: >
-      -Publish ${{ parameters.publishUpm }}
-      -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-      -RegistryPath $(UpmRegistry)
+

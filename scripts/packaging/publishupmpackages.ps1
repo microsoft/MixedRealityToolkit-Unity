@@ -3,8 +3,6 @@
     Publishes the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Publishes UPM packages for the Mixed Reality Toolkit.
-.PARAMETER Publish
-    Indicates whether or not to publish the packages.
 .PARAMETER PackageDirectory
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
 .PARAMETER RegistryPath
@@ -12,15 +10,9 @@
 
 #>
 param(
-    [string]$Publish = "false",
     [string]$PackageDirectory,
     [string]$RegistryPath
 )
-
-if ($Publish -ne "true") {
-    Write-Output "Told not to publish... exiting"
-    return
-}
 
 if (-not $PackageDirectory) {
     throw "Missing required parameter: -PackageDirectory."
@@ -34,7 +26,6 @@ if (-not $RegistryPath) {
 $startPath = "$(Get-Location)"
 
 Write-Output "Publishing packages from: $PackageDirectory"
-
 
 # Change to the project root directory
 Set-Location $PackageDirectory
