@@ -29,7 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private GameObject cube;
 
-        // Initializes MRTK, instantiates the test content prefab 
+        /// <summary>
+        /// Initializes MRTK, instantiates the test content prefab  
+        /// </summary>
+        /// <returns>enumerator</returns>
+        /// <remarks>
+        /// Note that SetUp places the playspace directly, and so the camera indirectly, to
+        /// an arbitrary non-identity pose. Use the helpers in TestUtilities to place test
+        /// objects relative (e.g. in front of) the camera, using, e.g. <see cref="TestUtilities.PositionRelativeToPlayspace(Vector3)"/>. 
+        /// See test <see cref="ArticulatedCursorState"/>, or most other tests within this file,
+        /// for examples.
+        /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
+        /// </remarks>
         [UnitySetUp]
         public IEnumerator SetUp()
         {

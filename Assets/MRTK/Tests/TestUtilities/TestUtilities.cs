@@ -162,7 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Set the playspace to an arbitrary (but known) non-identity pose.
         /// </summary>
         /// <remarks>
-        /// No roll will be introduced, but anything else is fair game.
+        /// When using this arbitrary pose imposed on the playspace to better validate compliance with
+        /// real world scenarios, it can be convenient to use the *RelativeToPlayspace() helpers below.
+        /// For example, to place an object directly 8 meters in front of the camera, set its position
+        /// to TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f).
+        /// See also <see cref="PlaceRelativeToPlayspace(Transform)"/> to convert an object's local
+        /// transform into a transform relative to the playspace.
         /// </remarks>
         public static void PlayspaceToArbitraryPose()
         {

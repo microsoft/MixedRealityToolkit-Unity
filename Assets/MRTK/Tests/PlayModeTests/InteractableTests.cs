@@ -52,6 +52,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
 
+        /// <summary>
+        /// Set initial state before each test.
+        /// </summary>
+        /// <returns>enumerator</returns>
+        /// <remarks>
+        /// Note that, in order to catch incorrect reliances on identity camera transforms early on,
+        /// this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+        /// appropriate for an individual test by starting off with, e.g., <see cref="TestUtilities.PlayspaceToOriginLookingForward"/>.
+        /// However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+        /// to align test objects with the camera.
+        /// For example, to place an object 8 meters in front of the camera, set its global position to:
+        /// TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+        /// See usage of these helpers throughout the tests within this file, e.g. <see cref="TestHandInputOnRuntimeAssembled"/>.
+        /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
+        /// </remarks>
         [UnitySetUp]
         public override IEnumerator Setup()
         {
