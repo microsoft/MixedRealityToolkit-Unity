@@ -111,25 +111,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SimulateUserInput(mouseDelta);
 
-            SimulatedMotionControllerState MotionControllerStateLeft = InputStateLeft as SimulatedMotionControllerState;
-            SimulatedMotionControllerState MotionControllerStateRight = InputStateRight as SimulatedMotionControllerState;
+            SimulatedMotionControllerState motionControllerStateLeft = InputStateLeft as SimulatedMotionControllerState;
+            SimulatedMotionControllerState motionControllerStateRight = InputStateRight as SimulatedMotionControllerState;
             
-            MotionControllerStateLeft.Update();
-            MotionControllerStateRight.Update();
+            motionControllerStateLeft.Update();
+            motionControllerStateRight.Update();
             
             // Cache the generator delegates so we don't gc alloc every frame
             if (updaterLeft == null)
             {
-                updaterLeft = MotionControllerStateLeft.UpdateControllerPose;
+                updaterLeft = motionControllerStateLeft.UpdateControllerPose;
             }
 
             if (updaterRight == null)
             {
-                updaterRight = MotionControllerStateRight.UpdateControllerPose;
+                updaterRight = motionControllerStateRight.UpdateControllerPose;
             }
 
-            motionControllerDataLeft.Update(MotionControllerStateLeft.IsTracked, MotionControllerStateLeft.IsSelecting, MotionControllerStateLeft.IsGrabbing, MotionControllerStateLeft.IsPressingMenu, updaterLeft);
-            motionControllerDataRight.Update(MotionControllerStateRight.IsTracked, MotionControllerStateRight.IsSelecting, MotionControllerStateRight.IsGrabbing, MotionControllerStateRight.IsPressingMenu, updaterRight);
+            motionControllerDataLeft.Update(motionControllerStateLeft.IsTracked, motionControllerStateLeft.IsSelecting, motionControllerStateLeft.IsGrabbing, motionControllerStateLeft.IsPressingMenu, updaterLeft);
+            motionControllerDataRight.Update(motionControllerStateRight.IsTracked, motionControllerStateRight.IsSelecting, motionControllerStateRight.IsGrabbing, motionControllerStateRight.IsPressingMenu, updaterRight);
         }
 
         internal override void ResetInput(SimulatedControllerState state, bool isSimulating)

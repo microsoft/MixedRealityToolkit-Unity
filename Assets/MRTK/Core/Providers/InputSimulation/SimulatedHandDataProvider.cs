@@ -117,13 +117,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputStateRight = new SimulatedHandState(Handedness.Right);
             InputStateGaze = new SimulatedHandState(Handedness.None);
 
-            SimulatedHandState HandStateLeft = InputStateLeft as SimulatedHandState;
-            SimulatedHandState HandStateRight = InputStateRight as SimulatedHandState;
-            SimulatedHandState HandStateGaze = InputStateGaze as SimulatedHandState;
+            SimulatedHandState handStateLeft = InputStateLeft as SimulatedHandState;
+            SimulatedHandState handStateRight = InputStateRight as SimulatedHandState;
+            SimulatedHandState handStateGaze = InputStateGaze as SimulatedHandState;
 
-            HandStateLeft.Gesture = profile.DefaultHandGesture;
-            HandStateRight.Gesture = profile.DefaultHandGesture;
-            HandStateGaze.Gesture = profile.DefaultHandGesture;
+            handStateLeft.Gesture = profile.DefaultHandGesture;
+            handStateRight.Gesture = profile.DefaultHandGesture;
+            handStateGaze.Gesture = profile.DefaultHandGesture;
         }
 
         /// <summary>
@@ -133,35 +133,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SimulateUserInput(mouseDelta);
 
-            SimulatedHandState HandStateLeft = InputStateLeft as SimulatedHandState;
-            SimulatedHandState HandStateRight = InputStateRight as SimulatedHandState;
-            SimulatedHandState HandStateGaze = InputStateGaze as SimulatedHandState;
+            SimulatedHandState handStateLeft = InputStateLeft as SimulatedHandState;
+            SimulatedHandState handStateRight = InputStateRight as SimulatedHandState;
+            SimulatedHandState handStateGaze = InputStateGaze as SimulatedHandState;
 
-            HandStateLeft.Update();
-            HandStateRight.Update();
-            HandStateGaze.Update();
+            handStateLeft.Update();
+            handStateRight.Update();
+            handStateGaze.Update();
 
             bool handDataChanged = false;
 
             // Cache the generator delegates so we don't gc alloc every frame
             if (generatorLeft == null)
             {
-                generatorLeft = HandStateLeft.FillCurrentFrame;
+                generatorLeft = handStateLeft.FillCurrentFrame;
             }
 
             if (generatorRight == null)
             {
-                generatorRight = HandStateRight.FillCurrentFrame;
+                generatorRight = handStateRight.FillCurrentFrame;
             }
 
             if (generatorGaze == null)
             {
-                generatorGaze = HandStateGaze.FillCurrentFrame;
+                generatorGaze = handStateGaze.FillCurrentFrame;
             }
 
-            handDataChanged |= handDataLeft.Update(HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
-            handDataChanged |= handDataRight.Update(HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
-            handDataChanged |= handDataGaze.Update(HandStateGaze.IsTracked, HandStateGaze.IsPinching, generatorGaze);
+            handDataChanged |= handDataLeft.Update(handStateLeft.IsTracked, handStateLeft.IsPinching, generatorLeft);
+            handDataChanged |= handDataRight.Update(handStateRight.IsTracked, handStateRight.IsPinching, generatorRight);
+            handDataChanged |= handDataGaze.Update(handStateGaze.IsTracked, handStateGaze.IsPinching, generatorGaze);
 
             return handDataChanged;
         }
@@ -173,17 +173,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.SimulateUserInput(mouseDelta);
 
-            SimulatedHandState HandStateLeft = InputStateLeft as SimulatedHandState;
-            SimulatedHandState HandStateRight = InputStateRight as SimulatedHandState;
-            SimulatedHandState HandStateGaze = InputStateGaze as SimulatedHandState;
+            SimulatedHandState handStateLeft = InputStateLeft as SimulatedHandState;
+            SimulatedHandState handStateRight = InputStateRight as SimulatedHandState;
+            SimulatedHandState handStateGaze = InputStateGaze as SimulatedHandState;
 
             // This line explicitly uses unscaledDeltaTime because we don't want input simulation
             // to lag when the time scale is set to a value other than 1. Input should still continue
             // to move freely.
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
-            HandStateLeft.GestureBlending += gestureAnimDelta;
-            HandStateRight.GestureBlending += gestureAnimDelta;
-            HandStateGaze.GestureBlending = 1.0f;
+            handStateLeft.GestureBlending += gestureAnimDelta;
+            handStateRight.GestureBlending += gestureAnimDelta;
+            handStateGaze.GestureBlending = 1.0f;
         }
 
         /// Apply changes to one hand and update tracking
@@ -299,5 +299,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return ArticulatedHandPose.GestureId.None;
             }
         }
+
+        #region Obsolete Fields
+        [Obsolete("Use InputStateLeft instead.")]
+        internal SimulatedHandState HandStateLeft
+        {
+            get => InputStateLeft as SimulatedHandState;
+            set { InputStateLeft = value; }
+        }
+        [Obsolete("Use InputStateRight instead.")]
+        internal SimulatedHandState HandStateRight
+        {
+            get => InputStateRight as SimulatedHandState;
+            set { InputStateRight = value; }
+        }
+        [Obsolete("Use InputStateGaze instead.")]
+        internal SimulatedHandState HandStateGaze
+        {
+            get => InputStateGaze as SimulatedHandState;
+            set { InputStateGaze = value; }
+        }
+        #endregion
     }
 }
