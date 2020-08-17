@@ -10,11 +10,10 @@
 .PARAMETER Version
     What version of the artifacts should we build?
 .PARAMETER BuildNumber
-    The build number to append to the version. Note: This value is required when the UseBuildNumber parameter is set to 1 (true).
-.PARAMETER UseBuildNumber
-    Should we append the build number to the version? If so, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
-    If omitted, this parameter defaults to true.
-
+    The build number to append to the version. Note: This value is required when the ExcludeBuildNumber parameter is omitted.
+.PARAMETER ExcludeBuildNumber
+    Indicates that the build number should be excluded from the generated artifacts. If this parameter is specified, the version
+    of the artifacts will be formatted as "<$Version>", if omitted, the artifact version will be "<$Version>-preview.<BuildNumber>".
 #>
 param(
     [string]$ProjectRoot,
@@ -23,7 +22,8 @@ param(
     [string]$Version,
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$BuildNumber,
-    [bool]$UseBuildNumber = $True
+    [Parameter(Mandatory=$false)]
+    [Switch]$ExcludeBuildNumber
 )
 
 [string]$startPath = $(Get-Location)
@@ -37,11 +37,10 @@ if (-not $Version) {
     throw "Missing required parameter: -Version."
 }
 
-if ((-not $BuildNumber) -and $UseBuildNumber) {
-    throw "Missing required parameter: -BuildNumber. This parameter is required when -UseBuildNumber is used."
-
+if ((-not $BuildNumber) -and (-not $ExcludeBuildNumber)) {
+    throw "Missing required parameter: -BuildNumber. This parameter is required when -ExcludeBuildNumber is not specified."
 }
-if ($UseBuildNumber) {
+if (-not $ExcludeBuildNumber) {
     $Version = "$Version-preview.$BuildNumber"
 }
 Write-Output "Package version: $Version"

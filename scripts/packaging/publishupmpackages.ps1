@@ -4,7 +4,7 @@
 .DESCRIPTION
     Publishes UPM packages for the Mixed Reality Toolkit.
 .PARAMETER Publish
-    Indicates whether or not to publish the packages. If false, the script will immediately abort.
+    Indicates whether or not to publish the packages.
 .PARAMETER PackageDirectory
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
 .PARAMETER RegistryPath
@@ -12,14 +12,10 @@
 
 #>
 param(
-    [string]$Publish,
+    [string]$Publish = "false",
     [string]$PackageDirectory,
     [string]$RegistryPath
 )
-
-if (-not $Publish) {
-    throw "Missing required parameter: -Publish."
-}
 
 if ($Publish -ne "true") {
     Write-Output "Told not to publish... exiting"
