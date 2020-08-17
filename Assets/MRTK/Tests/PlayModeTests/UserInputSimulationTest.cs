@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Head gaze cursor should be visible");
 
             // Begin right hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightHandKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightControllerKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return null;
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
 
             // Begin right hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return null;
@@ -172,11 +172,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(!iss.HandDataLeft.IsPinching);
 
             // End right hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
             // Make sure right hand is not tracked
             Assert.True(!iss.HandDataRight.IsTracked);
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Repeat with left hand
             // Begin left hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -221,11 +221,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
 
             // End left hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
             // Make sure left hand is not tracked
             Assert.True(!iss.HandDataRight.IsTracked);
@@ -236,8 +236,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Lastly with 2 hands
             // Begin hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightHandManipulationKey);
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -271,12 +271,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
 
             // End hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightHandManipulationKey);
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
 
             // Make sure hands are not tracked

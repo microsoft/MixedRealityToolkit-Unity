@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class SimulatedArticulatedHand : SimulatedHand
     {
-        public override HandSimulationMode SimulationMode => HandSimulationMode.Articulated;
+        public override ControllerSimulationMode SimulationMode => ControllerSimulationMode.ArticulatedHand;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;

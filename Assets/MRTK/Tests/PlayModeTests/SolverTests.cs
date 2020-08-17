@@ -527,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.SetRotation(handRotation);
 
             yield return WaitForFrames(2);
-            var hand = PlayModeTestUtilities.GetInputSimulationService().GetHandDevice(Handedness.Left);
+            var hand = PlayModeTestUtilities.GetInputSimulationService().GetControllerDevice(Handedness.Left) as SimulatedHand;
             Assert.IsNotNull(hand);
             Assert.IsTrue(hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose pose));
 

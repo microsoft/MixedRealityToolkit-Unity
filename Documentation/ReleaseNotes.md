@@ -71,6 +71,19 @@ There is a confirmation dialog that will be displayed when selecting `Use MSBuil
 
 ### Breaking changes
 
+**IMixedRealityPointerMediator**
+
+This interface has been updated to have a new function:
+
+```csharp
+void SetPointerPreferences(IPointerPreferences pointerPreferences);
+```
+
+If you have a custom pointer mediator that doesn't subclass DefaultPointerMediator, you will need to implement this
+new function. See [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243) for more background
+on why this was added. This was added to ensure that pointer preferences would be explicitly passed to the mediator,
+rather than having it be implicitly done based on the presence of a constructor that took a IPointerPreferences.
+
 **Rest / Device Portal API**
 
 The `UseSSL` static property has been moved from `Rest` to `DevicePortal`.

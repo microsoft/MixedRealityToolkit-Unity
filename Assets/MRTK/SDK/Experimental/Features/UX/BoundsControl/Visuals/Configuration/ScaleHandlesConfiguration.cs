@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
@@ -55,6 +56,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
+
+        [SerializeField]
+        [Tooltip("Scale mode that is applied when interacting with scale handles - default is uniform scaling. Non uniform mode scales the control according to hand / controller movement in space.")]
+        private HandleScaleMode scaleBehavior = HandleScaleMode.Uniform;
+
+        /// <summary>
+        /// Scale behavior that is applied when interacting with scale handles - default is uniform scaling. Non uniform mode scales the control according to hand / controller movement in space.
+        /// </summary>
+        public HandleScaleMode ScaleBehavior
+        {
+            get
+            {
+                return scaleBehavior;
+            }
+            set
+            {
+                if (scaleBehavior != value)
+                {
+                    scaleBehavior = value;
+                }
+            }
+        }
+
 
         #endregion serialized fields
     }

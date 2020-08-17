@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
-        private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
+        public static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
         {
 #if UNITY_EDITOR
             return ScriptableObjectExtensions.GetAllInstances<T>().FirstOrDefault(profile => profile.name.Equals($"Default{typeof(T).Name}"));

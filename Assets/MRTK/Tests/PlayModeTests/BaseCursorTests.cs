@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             Vector3 underPointerPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, 0, 2));
             Vector3 abovePointerPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, -2, 2));
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 

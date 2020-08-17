@@ -1016,7 +1016,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (transformType != HandleType.None)
             {
-                Vector3 prevGrabPoint = currentGrabPoint;
                 currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
 
                 if (transformType == HandleType.Rotation)
@@ -1028,24 +1027,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
                 else if (transformType == HandleType.Scale)
                 {
-                    float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
-                    float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
-                    float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
+                    Vector3 scaleFactor = Target.transform.localScale;
+                    if (ScaleHandlesConfig.ScaleBehavior == HandleScaleMode.Uniform)
+                    {
+                        float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
+                        float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
+                        float scaleFactorUniform = 1 + (currentDist - initialDist) / initialDist;
+                        scaleFactor = new Vector3(scaleFactorUniform, scaleFactorUniform, scaleFactorUniform);
+                    }
+                    else // non-uniform scaling
+                    {
+                        // get diff from center point of box
+                        Vector3 initialDist = (initialGrabPoint - oppositeCorner);
+                        Vector3 currentDist = (currentGrabPoint - oppositeCorner);
+                        Vector3 grabDiff = (currentDist - initialDist);
+                        scaleFactor = Vector3.one + grabDiff.Div(initialDist);
 
-                    Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
+                    }
 
+                    Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
                     MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
                     if (scaleConstraint != null)
                     {
                         scaleConstraint.ApplyConstraint(ref clampedTransform);
                         if (clampedTransform.Scale != newScale)
                         {
-                            scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
+                            scaleFactor = clampedTransform.Scale.Div(initialScaleOnGrabStart);
                         }
                     }
 
-                    var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                     Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
+                    var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
+                    var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
             }
