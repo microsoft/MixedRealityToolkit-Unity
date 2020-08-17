@@ -10,7 +10,7 @@ For example, on the Windows Mixed Reality platform, the [`WindowsMixedRealityArt
 
 Generally, a controller's lifecycle will involve:
 
-1. A controller gets created by a device manager upon detection of a new source (for example, the detects and starts tracking a hand).
+1. A controller gets created by a device manager upon detection of a new source (for example, the device manager detects and starts tracking a hand).
 
 2. In the controller's Update() loop, it calls into its underlying API system.
 
