@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
-            if (XRSettingsUtilities.IsLegacyXRActive)
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
             {
 #pragma warning disable 0618
                 // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
