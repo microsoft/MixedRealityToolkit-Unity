@@ -21,8 +21,6 @@ steps:
     parameters:
       UnityVersion: ${{ parameters.UnityVersion }}
   - template: tasks/upmpackages.yml
-    parameters:
-      publishUpm: ${{ parameters.packagePublishing }}
   - template: package.yml
   - ${{ if eq(parameters.packagePublishing, true) }}:
     - template: publishpackages.yml
