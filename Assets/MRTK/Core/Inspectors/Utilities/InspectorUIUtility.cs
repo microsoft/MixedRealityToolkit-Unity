@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -646,6 +647,49 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
                         DrawScriptableSubEditor(scriptable);
                     }
+                }
+            }
+
+            return isExpanded;
+        }
+
+        static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
+
+            if (isExpanded)
+            { 
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add " + typeDescription), FocusType.Keyboard))
+                {
+                    // create the menu and add items to it
+                    GenericMenu menu = new GenericMenu();
+
+                    var type = typeof(T);
+                    var types = AppDomain.CurrentDomain.GetAssemblies()
+                                .SelectMany(s => s.GetLoadableTypes())
+                                .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
+
+                    foreach (var derivedType in types)
+                    {
+                        menu.AddItem(new GUIContent(derivedType.Name), false, t => gameObject.AddComponent((Type)t), derivedType);
+                    }
+
+                    menu.ShowAsContext();
+                }
+
+                var constraints = gameObject.GetComponents<T>();
+
+                foreach (var constraint in constraints)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    string constraintName = constraint.GetType().Name;
+                    EditorGUILayout.LabelField(constraintName);
+                    if (GUILayout.Button("Go to component"))
+                    {
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        EditorGUIUtility.ExitGUI();
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
             }
 
