@@ -4,35 +4,41 @@
 .DESCRIPTION
     Publishes UPM packages for the Mixed Reality Toolkit.
 .PARAMETER PackageDirectory
-    Where should we find the packages to upload? Defaults to ".\artifacts"
-.PARAMETER ProjectRoot
-    The root folder of the project.
+    Where should we find the packages to upload? Defaults to ".\artifacts\upm"
+.PARAMETER RegistryPath
+    To which registry should the packages be uploaded?
+
 #>
 param(
-    [string]$PackageDirectory = ".\artifacts\upm",
-    [string]$ProjectRoot
+    [string]$PackageDirectory,
+    [string]$RegistryPath
 )
+
+if (-not $PackageDirectory) {
+    throw "Missing required parameter: -PackageDirectory."
+}
+$PackageDirectory = Resolve-Path -Path $PackageDirectory
+
+if (-not $RegistryPath) {
+    throw "Missing required parameter: -RegistryPath."
+}
 
 $startPath = "$(Get-Location)"
 
-if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$startPath\..\.." 
-}
-$ProjectRoot = Resolve-Path -Path $ProjectRoot
-Write-Output "Project root: $ProjectRoot"
+Write-Output "Publishing packages from: $PackageDirectory"
 
-$PackageDirectory = Resolve-Path -Path $PackageDirectory
-Write-Output "Package directory: $PackageDirectory"
-
-$npmCommand = "npm"
-
-$cmdFullPath = "$env:systemroot\system32\cmd.exe"
-
-# Change to the package directory
+# Change to the project root directory
 Set-Location $PackageDirectory
 
-## todo - create the .npmrc file
+# Create the .npmrc file
+$npmrcFileName = "./.npmrc"
+
+$npmrcContents = "registry=$RegistryPath`n`nalways-auth=true"
+Out-File -FilePath $npmrcFileName -InputObject $npmrcContents -Encoding utf8
+
+# Authenticate to the registry
+npm install -g vsts-npm-auth    
+vsts-npm-auth -config .npmrc
 
 # Get the list of package (.tgz) files
 $packages = Get-ChildItem -Name -Include "*.tgz"
@@ -41,8 +47,10 @@ foreach ($package in $packages)
     Write-Output "======================="
     Write-Output "Publishing: $package"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmCommand publish $package" -NoNewWindow -Wait    
+    npm publish $package    
 }
+
+Remove-Item -Path $npmrcFileName
 
 # Return to the starting path
 Set-Location $startPath

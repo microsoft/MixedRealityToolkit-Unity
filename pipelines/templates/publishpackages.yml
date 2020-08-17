@@ -14,3 +14,4 @@ steps:
     packagesToPush: '$(Build.SourcesDirectory)/artifacts/**/*.nupkg;!$(Build.SourcesDirectory)/artifacts/**/*.symbols.nupkg'
     publishVstsFeed: '$(NuGetFeedId)'
     buildProperties: 'version=$(MRTKVersion)-$(Build.BuildNumber)'
+
