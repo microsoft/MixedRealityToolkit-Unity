@@ -3,39 +3,55 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER NodejsVersion
-    The desired version of node.js to use when packaging. If not specified, a known good version will be used.
-.PARAMETER OutputDirectory
-    Where should we place the output? Defaults to ".\artifacts"
-.PARAMETER PackageVersion
-    What version of the artifacts should we build? If unspecified, the highest
-    git tag pointing to HEAD is searched. If none is found, an error is reported.
 .PARAMETER ProjectRoot
     The root folder of the project.
+.PARAMETER OutputDirectory
+    Where should we place the output? Defaults to ".\artifacts"
+.PARAMETER Version
+    What version of the artifacts should we build?
+.PARAMETER BuildNumber
+    The build number to append to the version. Note: This value is only used if the IsPreview parameter is set to true.
+.PARAMETER IsOfficial
+    Are we creating official packages? If not, the version of the artifacts will be formatted as "<$Version>-preview.<BuildNumber>".
+
 #>
 param(
-    [ValidatePattern("^\d+\.\d+\.\d+")]
-    [string]$NodejsVersion = "12.18.0",
-    [string]$OutputDirectory = ".\artifacts\upm",
-    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
-    [string]$PackageVersion,
-    [string]$ProjectRoot
+    [string]$ProjectRoot,
+    [string]$OutputDirectory = "./artifacts/upm",
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
+    [string]$Version,
+    [ValidatePattern("^\d+?[\.\d+]*$")]
+    [string]$BuildNumber,
+    [bool]$IsOfficial = $False
 )
 
-if (-not $PackageVersion) {
-        throw "Unknown package version. Please specify -PackageVersion when building."
+[string]$startPath = $(Get-Location)
+
+if (-not $ProjectRoot) {
+    throw "Missing required parameter: -ProjectRoot."
 }
+$ProjectRoot = Resolve-Path -Path $ProjectRoot
+Write-Output "Project root: $ProjectRoot"
+
+if (-not $Version) {
+    throw "Missing required parameter: -Version."
+}
+
+if (-not $IsOfficial) {
+    if (-not $BuildNumber) {
+        throw "Missing required parameter: -BuildNumber. This parameter is required when -IsOfficial is set to false."
+    }
+    $Version = "$Version-preview.$BuildNumber"
+}
+Write-Output "Package version: $Version"
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
 }
-$OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
+$OutputDirectory = Resolve-Path -Path $OutputDirectory
+Write-Output "OutputDirectory: $OutputDirectory"
 
-if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$(Get-Location)\..\.." 
-}
-$scriptPath = "$ProjectRoot\scripts\packaging"
+$scriptPath = "$ProjectRoot/scripts/packaging"
 
 $scope = "com.microsoft.mixedreality"
 $product = "toolkit"
@@ -52,90 +68,66 @@ $product = "toolkit"
 #
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
-    "foundation" = "Assets\MRTK";
-    # providers
-    "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
-    "unityar" = "Assets\MRTK\Providers\UnityAR";
-    "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
-    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
-    "xrplugin" = "Assets\MRTK\Providers\XRSDK";
+    "foundation" = "Assets/MRTK";
+    "standardassets" = "Assets/MRTK/StandardAssets";
     # extensions
-    "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
-    "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
-    "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
-    # other packages
-    "tools" = "Assets\MRTK\Tools";
-    "testutilties" = "Assets\MRTK\Tests\TestUtilities";
-    "examples" = "Assets\MRTK\Examples";
-}
-
-# Ensure we can call npm.cmd to package and publish
-[boolean]$nodejsInstalled = $false
-try {
-    node.exe -v > $null 2> $null
-    $nodejsInstalled = $true
-}
-catch {}
-
-if ($nodejsInstalled -eq $false)
-{
-    # Acquire and unpack node.js
-    $archiveName = "node-v$NodejsVersion-win-x64"
-    $archiveFile = ".\$archiveName.zip"
-    $downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
-    Write-Output "Downloading node.js v$NodejsVersion"
-    Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
-    Write-Output "Extracting $archiveFile"
-    Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
-
-    $npmPath = "$scriptPath\$archiveName\$npmPath"
+    "extensions" = "Assets/MRTK/Extensions";
+    # tools
+    "tools" = "Assets/MRTK/Tools";
+    # tests
+    "testutilties" = "Assets/MRTK/Tests/TestUtilities";
+    # examples
+    "examples" = "Assets/MRTK/Examples";
 }
 
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 1) Replace the %version% token in the package.json file with the value of PackageVersion
+# 1) Replace the %version% token in the package.json file with the value of Version
 # 2) Overwrite the package.json file
 # 3) Create and the packages and copy to the OutputFolder
 # 4) Cleanup files created and/or modified
 
-$cmdFullPath = "$env:systemroot\system32\cmd.exe"
-
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
-    $packagePath = "$ProjectRoot\$packageFolder"
+    $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
+    # The package manifest files what we use are actually templates,
+    # rename the files so that npm can consume them.
+    Rename-Item -Path "$packagePath/packagetemplate.json" -NewName "$packagePath/package.json"
+    Rename-Item -Path "$packagePath/packagetemplate.json.meta" -NewName "$packagePath/package.json.meta"
+
     # Apply the version number to the package json file
-    $packageJsonPath = "$packagePath\package.json"
+    $packageJsonPath = "$packagePath/package.json"
     $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
-    $packageJson = ($packageJson -replace "%version%", $PackageVersion)
+    $packageJson = ($packageJson -replace "%version%", $Version)
     [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
 
     # Create and publish the package
     $packageName = $entry.Name
-    $registryName = $OutputPath
 
-    $samplesFolder = "$packagePath\Samples~"
-     
+    $samplesFolder = "$packagePath/Samples~"
+
     if ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
         # the folder.
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "extensions") {
+        # The extensions folder contains one or more folders that provide their own examples. In order
+        # to perform the necessary preparation, without overly complicating this script, we will use a
+        # helper script to prepare the folder.
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
-        # are packaged in the examples package.
-        $exampleFolder = "$packagePath\Examples"
-        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
+        $exampleFolder = "$packagePath/Examples"
+        if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
                 New-Item $samplesFolder -ItemType Directory | Out-Null
@@ -153,7 +145,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     npm pack
 
     # Move package file to OutputFolder
-    Move-Item -Path ".\*.tgz" $OutputDirectory -Force
+    Move-Item -Path "./*.tgz" $OutputDirectory -Force
 
     # ======================
     # Cleanup the changes we have made
@@ -165,15 +157,13 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
-    # Restore the package.json file
-    Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
+    # Delete the renamed package.json.* files
+    Remove-Item -Path "$packagePath/package.json"
+    Remove-Item -Path "$packagePath/package.json.meta"
+
+    # Restore the original template files
+    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
 }
 
-# Return the the scripts\packaging folder
-Set-Location -Path $scriptPath
-
-if ($nodejsInstalled -eq $false) {
-    # Cleanup the node.js "installation"
-    Remove-Item ".\$archiveName" -Recurse -Force
-    Remove-Item $archiveFile -Force
-}
+# Return to the starting path
+Set-Location $startPath

@@ -2,7 +2,7 @@
 
 ## Install required packages
 
-1. Download and import the **Microsoft.MixedReality.Toolkit.Unity.Foundation** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0) or [NuGet](../MRTKNuGetPackage.md)
+1. Download and import the **Microsoft.MixedReality.Toolkit.Unity.Foundation** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0) or the [Unity Package Manager](../usingupm.md)
 
 1. In the Unity Package Manager (UPM), install the following packages:
 
@@ -10,15 +10,22 @@
 
     | **Android** | **iOS** | Comments |
     | --- | --- | --- |
-    | AR Foundation  <br/> Version: 1.5.0 - preview 6 | AR Foundation  <br/> Version: 1.5.0 - preview 6 | For Unity 2018.4, this package is included as a preview. To view package: Window > Package Manager > Advanced > Show Preview Packages|
+    | AR Foundation  <br/> Version: 1.5.0 - preview 6 | AR Foundation  <br/> Version: 1.5.0 - preview 6 | For Unity 2018.4, this package is included as a preview. To view the package: `Window` > `Package Manager` > `Advanced` > `Show Preview Packages` |
     | ARCore XR Plugin <br/> Version: 2.1.2 | ARKit XR Plugin <br/> Version: 2.1.2 | |
 
-    **Unity 2019.3.x**
+    **Unity 2019.4.x**
 
     | **Android** | **iOS** |
     | --- | --- |
-    | AR Foundation  <br/> Version: 2.1.4 |  AR Foundation  <br/> Version: 2.1.4 |
-    | ARCore XR Plugin <br/> Version: 2.1.2 | ARKit XR Plugin <br/> Version: 2.1.2 |
+    | AR Foundation  <br/> Version: 2.1.8 |  AR Foundation  <br/> Version: 2.1.8 |
+    | ARCore XR Plugin <br/> Version: 2.1.11 | ARKit XR Plugin <br/> Version: 2.1.9 |
+
+    **Unity 2020.1.x (Not currently formally supported, included for informational purposes only)**
+
+    | **Android** | **iOS** |
+    | --- | --- |
+    | AR Foundation  <br/> Version: 3.1.3 |  AR Foundation  <br/> Version: 3.1.3 |
+    | ARCore XR Plugin <br/> Version: 3.1.4 | ARKit XR Plugin <br/> Version: 3.1.3 |
 
 ## Enabling the Unity AR camera settings provider
 
@@ -49,6 +56,11 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
     ![Select Unity AR settings provider](../Images/CameraSystem/SelectUnityArSettings.png)
 
     For more information about configuring the Unity AR camera settings provider: [Unity AR camera settings provider](../CameraSystem/UnityArCameraSettings.md).
+
+> [!NOTE]
+> This installation checks (when the application starts) if the AR Foundation components are in the scene. If not, they are automatically added to make it work with ARCore and ARKit.
+> If you need to set a specific behaviour, you should add the components you need by yourself. 
+> For more information about AR Foundation components and installation, check this [documentation](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@2.2/manual/index.html#samples).
 
 ## Building a scene for Android and iOS devices
 

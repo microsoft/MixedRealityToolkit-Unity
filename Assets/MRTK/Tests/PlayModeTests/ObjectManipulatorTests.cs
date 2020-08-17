@@ -754,8 +754,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -799,7 +799,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -817,8 +817,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -868,7 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -885,8 +885,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -928,7 +928,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(xPos, yPos, 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -1493,8 +1493,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.PlayspaceToOriginLookingForward();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // Track the gaze cursor
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
@@ -1568,7 +1568,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
     }

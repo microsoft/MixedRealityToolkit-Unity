@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public Vector3 GetVelocity()
         {
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             return hand.Velocity;
         }
 
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <typeparam name="T">Type of pointer to look for.</typeparam>
         public T GetPointer<T>() where T : class, IMixedRealityPointer
         {
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             foreach (var pointer in hand.InputSource.Pointers)
             {
                 if (pointer is T)

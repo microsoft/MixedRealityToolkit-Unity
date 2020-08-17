@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -19,15 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             Debug.Log($"LaunchUri: Launching {uri}");
 
-#if WINDOWS_UWP
-            UnityEngine.WSA.Application.InvokeOnUIThread(async () =>
-            {
-                bool result = await global::Windows.System.Launcher.LaunchUriAsync(new System.Uri(uri));
-                if (!result)
-                {
-                    Debug.LogError("Launching URI failed to launch.");
-                }
-            }, false);
+#if UNITY_WSA
+            UnityEngine.WSA.Launcher.LaunchUri(uri, false);
 #else
             Application.OpenURL(uri);
 #endif
