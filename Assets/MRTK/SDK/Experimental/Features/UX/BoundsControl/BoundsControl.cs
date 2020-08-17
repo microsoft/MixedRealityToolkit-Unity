@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -21,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Todo: replace doc link - point to BoundsControl docs
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [RequireComponent(typeof(ConstraintManager))]
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
 
-            constraints = new ConstraintManager(gameObject);
+            constraints = gameObject.EnsureComponent<ConstraintManager>();
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject

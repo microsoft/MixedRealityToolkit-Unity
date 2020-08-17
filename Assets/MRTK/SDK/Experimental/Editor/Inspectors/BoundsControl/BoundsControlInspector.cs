@@ -8,6 +8,8 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.UI;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -49,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool showRotationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
+        private static bool constraintsFoldout = true;
 
         private void OnEnable()
         {
@@ -129,6 +132,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
+                    }
+
+                    EditorGUILayout.Space();
+                    constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, "Constraints", true);
+
+                    if (constraintsFoldout)
+                    {
+                        if (EditorGUILayout.DropdownButton(new GUIContent("Add Constraint"), FocusType.Keyboard))
+                        {
+                            // create the menu and add items to it
+                            GenericMenu menu = new GenericMenu();
+
+                            var type = typeof(TransformConstraint);
+                            var types = System.AppDomain.CurrentDomain.GetAssemblies()
+                                        .SelectMany(s => s.GetLoadableTypes())
+                                        .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
+
+                            foreach (var derivedType in types)
+                            {
+                                menu.AddItem(new GUIContent(derivedType.Name), false, t => boundsControl.gameObject.AddComponent((System.Type)t), derivedType);
+                            }
+
+                            menu.ShowAsContext();
+                        }
+
+                        var constraints = boundsControl.GetComponents<TransformConstraint>();
+
+                        foreach (var constraint in constraints)
+                        {
+                            EditorGUILayout.BeginHorizontal();
+                            string constraintName = constraint.GetType().Name;
+                            EditorGUILayout.LabelField(constraintName);
+                            if (GUILayout.Button("Go to component"))
+                            {
+                                Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                                EditorGUIUtility.ExitGUI();
+                            }
+                            EditorGUILayout.EndHorizontal();
+                        }
                     }
 
                     EditorGUILayout.Space();
