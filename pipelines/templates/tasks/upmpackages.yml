@@ -2,7 +2,6 @@
 parameters:
   version: $(MRTKVersion)
   buildNumber: $(Build.BuildNumber)
-  publishUpm: 0
 
 steps:
 - task: NodeTool@0
