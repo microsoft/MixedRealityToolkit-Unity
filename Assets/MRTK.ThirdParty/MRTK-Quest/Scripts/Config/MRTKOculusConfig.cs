@@ -106,7 +106,7 @@ namespace prvncher.MixedReality.Toolkit.Config
         [Header("Pointer Configuration")]
         [SerializeField]
         [Tooltip("Controls which teleport mode is utilized by MRTK-Quest controllers." +
-                 "Note to use the official pointer, you must add a parabollic pointer to your pointer input profile that supports articulated hands.")]
+                 "Note to use the official pointer, you must add a parabolic pointer to your pointer input profile that supports articulated hands.")]
         private TeleportPointerMode teleportPointerMode = TeleportPointerMode.Custom;
 
         /// <summary>
