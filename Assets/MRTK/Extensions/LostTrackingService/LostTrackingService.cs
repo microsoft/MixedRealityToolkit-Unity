@@ -6,14 +6,14 @@ using System;
 using Unity.Profiling;
 using UnityEngine;
 
-#if ARFOUNDATION_PRESENT
+#if ARSUBSYSTEMS_ENABLED
 using System.Collections.Generic;
 using UnityEngine.XR.ARSubsystems;
 
 #if UNITY_2018
 using UnityEngine.Experimental;
 #endif // UNITY_2018
-#endif // ARFOUNDATION_PRESENT
+#endif // ARSUBSYSTEMS_ENABLED
 
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
 using UnityEngine.XR.WSA;
@@ -83,12 +83,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         {
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
             WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
-#elif !ARFOUNDATION_PRESENT
+#elif !ARSUBSYSTEMS_ENABLED
             Debug.LogWarning("This service is not supported on this platform.");
 #endif
         }
 
-#if ARFOUNDATION_PRESENT
+#if ARSUBSYSTEMS_ENABLED
         private UnityEngine.XR.ARSubsystems.TrackingState lastTrackingState = UnityEngine.XR.ARSubsystems.TrackingState.None;
         private NotTrackingReason lastNotTrackingReason = NotTrackingReason.None;
 
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 lastNotTrackingReason = sessionSubsystem.notTrackingReason;
             }
         }
-#endif // ARFOUNDATION_PRESENT
+#endif // ARSUBSYSTEMS_ENABLED
 
 #if UNITY_EDITOR
         /// <inheritdoc />
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         }
 #endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
-#if ARFOUNDATION_PRESENT
+#if ARSUBSYSTEMS_ENABLED
         private static XRSessionSubsystem sessionSubsystem = null;
         private static readonly List<XRSessionSubsystem> XRSessionSubsystems = new List<XRSessionSubsystem>();
 
@@ -275,6 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 return sessionSubsystem;
             }
         }
-#endif // ARFOUNDATION_PRESENT
+#endif // ARSUBSYSTEMS_ENABLED
     }
 }
