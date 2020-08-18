@@ -1,37 +1,123 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 {
+    /// <summary>
+    /// Script for generating pulse shader effect on the surface.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/SurfacePulse")]
     public class SurfacePulse : MonoBehaviour
     {
+        [SerializeField]
         [Tooltip("Shader parameter name to drive the pulse radius")]
-        public string ParamName = "_Pulse_";
+        private string paramName = "_Pulse_";
+        public string ParamName
+        {
+            get { return paramName; }
+            set
+            {
+                if (paramName != value)
+                {
+                    paramName = value;
+                }
+            }
+        }
 
+        [SerializeField]
         [Tooltip("Shader parameter name to set the pulse origin, in local space")]
-        public string OriginParamName = "_Pulse_Origin_";
+        private string originParamName = "_Pulse_Origin_";
+        public string OriginParamName
+        {
+            get { return originParamName; }
+            set
+            {
+                if (originParamName != value)
+                {
+                    originParamName = value;
+                }
+            }
+        }
 
+        [SerializeField]
         [Tooltip("How long in seconds the pulse should animate")]
-        public float PulseDuration = 5f;
+        private float pulseDuration = 5f;
+        public float PulseDuration
+        {
+            get { return pulseDuration; }
+            set
+            {
+                if (pulseDuration != value)
+                {
+                    pulseDuration = value;
+                }
+            }
+        }
 
-        [Tooltip("How long to wait in seconds between pulses, when pulsing is active")]
-        public float PulseRepeatDelay = 5f;
-
+        [SerializeField]
         [Tooltip("Minimum time to wait between each pulse")]
-        public float PulseRepeatMinDelay = 1f;
+        private float pulseRepeatMinDelay = 1f;
+        public float PulseRepeatMinDelay
+        {
+            get { return pulseRepeatMinDelay; }
+            set
+            {
+                if (pulseRepeatMinDelay != value)
+                {
+                    pulseRepeatMinDelay = value;
+                }
+            }
+        }
 
+        [SerializeField]
         [Tooltip("Automatically begin repeated pulsing")]
-        public bool bAutoStart = false;
+        private bool autoStart = false;
+        public bool AutoStart
+        {
+            get { return autoStart; }
+            set
+            {
+                if (autoStart != value)
+                {
+                    autoStart = value;
+                }
+            }
+        }
 
+        [SerializeField]
         [Tooltip("Automatically set pulse origin to the main camera location")]
-        public bool bOriginFollowCamera = false;
+        private bool originFollowCamera = false;
+        public bool OriginFollowCamera
+        {
+            get { return originFollowCamera; }
+            set
+            {
+                if (originFollowCamera != value)
+                {
+                    originFollowCamera = value;
+                }
+            }
+        }
 
+        [SerializeField]
         [Tooltip("The material to animate")]
-        public Material SurfaceMat;
+        private Material surfaceMat;
+        public Material SurfaceMat
+        {
+            get { return surfaceMat; }
+            set
+            {
+                if (surfaceMat != value)
+                {
+                    surfaceMat = value;
+                }
+            }
+        }
 
         // Internal state
         Coroutine RepeatPulseCoroutine;
@@ -68,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private void Start()
         {
-            if (bAutoStart)
+            if (autoStart)
             {
                 StartPulsing();
             }
@@ -76,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private void Update()
         {
-            if (bOriginFollowCamera)
+            if (originFollowCamera)
             {
                 SetLocalOrigin(CameraCache.Main.transform.position);
             }
