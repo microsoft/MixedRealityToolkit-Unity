@@ -7,7 +7,6 @@
     Where should we find the packages to upload? Defaults to ".\artifacts\upm"
 .PARAMETER RegistryPath
     To which registry should the packages be uploaded?
-
 #>
 param(
     [string]$PackageDirectory,
