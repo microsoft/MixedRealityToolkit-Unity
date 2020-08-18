@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                     
                 }
-                else if(controllerData is SimulatedMotionControllerData motionControllerData && motionControllerData.IsTracked)
+                else if (controllerData is SimulatedMotionControllerData motionControllerData && motionControllerData.IsTracked)
                 {
                     SimulatedMotionController motionController = GetOrAddControllerDevice(handedness, simulationMode) as SimulatedMotionController;
                     motionController.UpdateState(motionControllerData);
