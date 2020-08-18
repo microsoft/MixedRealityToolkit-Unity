@@ -9,6 +9,6 @@ jobs:
   pool:
     name: On-Prem Unity
   steps:
-    - template: templates/tasks/upmpackages.yml
-      parameters:
-        excludeBuildNumber: 1
+  - template: templates/tasks/upmpackages.yml
+    parameters:
+      excludeBuildNumber: 1
