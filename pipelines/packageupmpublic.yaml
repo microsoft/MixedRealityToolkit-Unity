@@ -2,6 +2,8 @@
 
 variables:
 - template: config/settings.yml
+- name: excludeBuildNumber
+  value: 1
 
 jobs:
 - job: CreatePublicUPMArtifacts
@@ -11,4 +13,4 @@ jobs:
   steps:
     - template: tasks/upmpackages.yml
       parameters:
-        excludeBuildNumber: 1
+        excludeBuildNumber: ${{ parameters.excludeBuildNumber }}
