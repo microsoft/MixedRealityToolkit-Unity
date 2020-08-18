@@ -10,8 +10,6 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
-
-- powershell: Write-Output ${{ parameters.excludeBuildNumber }}
     
 - ${{ if eq(parameters.excludeBuildNumber, 0) }}:
   - task: PowerShell@2
