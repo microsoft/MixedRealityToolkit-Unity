@@ -5,8 +5,6 @@ using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -149,43 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var rb = mh.HostTransform.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
-            constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, "Constraints", true);
-
-            if (constraintsFoldout)
-            {
-                if (EditorGUILayout.DropdownButton(new GUIContent("Add Constraint"), FocusType.Keyboard))
-                {
-                    // create the menu and add items to it
-                    GenericMenu menu = new GenericMenu();
-
-                    var type = typeof(TransformConstraint);
-                    var types = AppDomain.CurrentDomain.GetAssemblies()
-                                .SelectMany(s => s.GetLoadableTypes())
-                                .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
-
-                    foreach (var derivedType in types)
-                    {
-                        menu.AddItem(new GUIContent(derivedType.Name), false, t => mh.gameObject.AddComponent((Type)t), derivedType);
-                    }
-
-                    menu.ShowAsContext();
-                }
-
-                var constraints = mh.GetComponents<TransformConstraint>();
-
-                foreach (var constraint in constraints)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    string constraintName = constraint.GetType().Name;
-                    EditorGUILayout.LabelField(constraintName);
-                    if (GUILayout.Button("Go to component"))
-                    {
-                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
-                        EditorGUIUtility.ExitGUI();
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-            }
+            constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(mh.gameObject, constraintsFoldout, "Constraint");
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);
