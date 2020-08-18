@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -168,11 +169,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 EditorGUILayout.PropertyField(inputSystemType);
 
+                                // Make sure Unity axis mappings are set.
+                                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+
                                 changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                             }
                             else
                             {
                                 RenderSystemDisabled(service);
+
+                                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
                             }
 
                             changed |= c.changed;

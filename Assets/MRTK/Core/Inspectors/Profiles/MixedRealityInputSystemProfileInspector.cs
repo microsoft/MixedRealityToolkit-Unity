@@ -225,6 +225,5 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         }
 
         #endregion
-
     }
 }
