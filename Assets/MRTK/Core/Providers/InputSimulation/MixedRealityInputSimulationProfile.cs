@@ -353,6 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Key to simulate a trigger press (select) on the motion controller")]
         private KeyBinding motionControllerTriggerKey = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Left);
+
         /// <summary>
         /// Key to simulate a trigger press (select) on the motion controller
         /// </summary>
@@ -360,6 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Key to simulate a grab on the motion controller")]
         private KeyBinding motionControllerGrabKey = KeyBinding.FromKey(KeyCode.G);
+
         /// <summary>
         /// Key to simulate a grab on the motion controller
         /// </summary>
@@ -367,6 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Key to simulate a menu press on the motion controller")]
         private KeyBinding motionControllerMenuKey = KeyBinding.FromKey(KeyCode.M);
+
         /// <summary>
         /// Key to simulate a menu press on the motion controller
         /// </summary>

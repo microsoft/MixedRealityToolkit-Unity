@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Random offset to simulate tracking inaccuracy
         public Vector3 JitterOffset = Vector3.zero;
 
-        
         protected float viewportPositionZTarget;
         protected readonly float smoothScrollSpeed = 5f;
 

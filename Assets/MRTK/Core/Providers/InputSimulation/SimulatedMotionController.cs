@@ -13,20 +13,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [SerializeField]
         private bool isTracked = false;
+
+        /// <summary>
+        /// Whether the motion controller is currently being tracked
+        /// </summary>
         public bool IsTracked => isTracked;
         [SerializeField]
         private bool isSelecting = false;
+
+        /// <summary>
+        /// Whether the motion controller is selecting
+        /// </summary>
         public bool IsSelecting => isSelecting;
         [SerializeField]
         private bool isGrabbing = false;
+
+        /// <summary>
+        /// Whether the motion controller is grabbing
+        /// </summary>
         public bool IsGrabbing => isGrabbing;
         [SerializeField]
         private bool isPressingMenu = false;
+
+        /// <summary>
+        /// Whether the menu button on the motion controller is being pressed
+        /// </summary>
         public bool IsPressingMenu => isPressingMenu;
 
+        /// <summary>
+        /// Position of the motion controller
+        /// </summary>
         public Vector3 Position { get; set; } = Vector3.zero;
+
+        /// <summary>
+        /// Rotation of the motion controller
+        /// </summary>
         public Quaternion Rotation { get; set; } = Quaternion.identity;
 
+        /// <summary>
+        /// Delegate to function updating the position and rotation of the motion controller
+        /// </summary>
         public delegate MixedRealityPose MotionControllerPoseUpdater();
 
         /// <summary>
@@ -118,12 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (Interactions[i].InputType)
                 {
                     case DeviceInputType.SpatialPointer:
-                        Interactions[i].PoseData = currentPose;
-                        if (Interactions[i].Changed)
-                        {
-                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentPose);
-                        }
-                        break;
                     case DeviceInputType.SpatialGrip:
                         Interactions[i].PoseData = currentPose;
                         if (Interactions[i].Changed)

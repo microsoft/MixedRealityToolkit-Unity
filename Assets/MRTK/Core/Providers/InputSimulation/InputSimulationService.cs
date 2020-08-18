@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
 
                 case ControllerSimulationMode.MotionController:
-                    EnableControllerSimulation();
+                    EnableMotionControllerSimulation();
                     break;
             }
 
@@ -445,11 +445,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void EnableControllerSimulation()
+        private void EnableMotionControllerSimulation()
         {
             if (dataProvider == null)
             {
-                DebugUtilities.LogVerbose("Creating a new controller simulation data provider");
+                DebugUtilities.LogVerbose("Creating a new motion controller simulation data provider");
                 dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
             }
         }

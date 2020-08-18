@@ -15,9 +15,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     internal class SimulatedMotionControllerState : SimulatedControllerState
     {
+        /// <summary>
+        /// Whether the motion controller is selecting
+        /// </summary>
         public bool IsSelecting { get; set; } = false;
+
+        /// <summary>
+        /// Whether the motion controller is grabbing
+        /// </summary>
         public bool IsGrabbing { get; set; } = false;
+
+        /// <summary>
+        /// Whether the menu button on the motion controller is being pressed
+        /// </summary>
         public bool IsPressingMenu { get; set; } = false;
+
+        private const float rotationXOffset = -15f;
+        private const float rotationYOffset = -10f;
+
         public SimulatedMotionControllerState(Handedness _handedness) : base(_handedness) { }
 
         /// <inheritdoc />
@@ -43,8 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Quaternion localRotation = Quaternion.Euler(ViewportRotation);
             Quaternion worldRotation = CameraCache.Main.transform.rotation * localRotation;
+            Vector3 eulerAngles = worldRotation.eulerAngles;
 
-            return new MixedRealityPose(worldPosition, worldRotation);
+            // Create an offset to rotation to align with the behavior of simulated hand
+            int yOffsetSign = handedness == Handedness.Left ? -1 : 1;
+            Quaternion modifiedRotation = Quaternion.Euler(eulerAngles.x + rotationXOffset, eulerAngles.y + rotationYOffset * yOffsetSign, eulerAngles.z);
+            return new MixedRealityPose(worldPosition, modifiedRotation);
         }
 
     }

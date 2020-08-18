@@ -104,8 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class SimulatedHandDataProvider : SimulatedControllerDataProvider
     {
-        private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
-
         // Cached delegates for hand joint generation
         private SimulatedHandData.HandJointDataGenerator generatorLeft;
         private SimulatedHandData.HandJointDataGenerator generatorRight;
