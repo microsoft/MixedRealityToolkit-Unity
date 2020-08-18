@@ -1,4 +1,4 @@
-# Create UPM packages for public OFFICIAL release
+# Create UPM packages for public PREVIEW release
 
 variables:
 - template: config/settings.yml
@@ -9,6 +9,6 @@ jobs:
   pool:
     name: On-Prem Unity
   steps:
-    - template: templates/tasks/upmpackages.yml
+   - template: templates/tasks/upmpackages.yml
       parameters:
-        excludeBuildNumber: 1
+        excludeBuildNumber: 0
