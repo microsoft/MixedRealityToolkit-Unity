@@ -1,22 +1,15 @@
 # [Template] Builds and publishes UPM .tgz packages
 parameters:
-  version: $(MRTKVersion)
-  buildNumber: $(Build.BuildNumber)
+  excludeBuildNumber: 0
 
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
-- task: PowerShell@2
-  displayName: 'Build UPM packages'
-  inputs:
-    targetType: filePath
-    filePath: ./scripts/packaging/createupmpackages.ps1
-    arguments: >
-      -ProjectRoot $(Get-Location)
-      -OutputDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
-      -Version ${{ parameters.version }}
-      -BuildNumber ${{ parameters.buildNumber }}
+- ${{ if eq(parameters.excludeBuildNumber, 0) }}:
+  - template: buildupm-nobuildnumber.yml
+- ${{ if eq(parameters.excludeBuildNumber, 1) }}:
+  - template: buildupm/yml
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM packages'
   inputs:
