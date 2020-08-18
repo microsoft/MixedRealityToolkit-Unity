@@ -2,8 +2,6 @@
 
 variables:
 - template: config/settings.yml
-- name: excludeBuildNumber
-  value: 1
 
 jobs:
 - job: CreatePublicUPMArtifacts
@@ -11,6 +9,13 @@ jobs:
   pool:
     name: On-Prem Unity
   steps:
-    - template: tasks/upmpackages.yml
+    - powershell: Write-Output $(isNonPreviewRelease)
+
+    - template: templates/tasks/upmpackages.yml
       parameters:
-        excludeBuildNumber: ${{ parameters.excludeBuildNumber }}
+        excludeBuildNumber: $(isNonPreviewRelease)
+
+    # - ${{ if eq(parameters.nonPreview, true) }}:
+    #   - template: templates/tasks/upmpackages.yml
+    #     parameters:
+    #       excludeBuildNumber: 1
