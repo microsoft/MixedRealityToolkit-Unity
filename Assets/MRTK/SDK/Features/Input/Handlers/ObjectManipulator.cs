@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")]
+    [RequireComponent(typeof(ConstraintManager))]
     public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
@@ -474,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void Start()
         {
             rigidBody = HostTransform.GetComponent<Rigidbody>();
-            constraints = new ConstraintManager(gameObject);
+            constraints = gameObject.EnsureComponent<ConstraintManager>();
         }
         private void Update()
         {
