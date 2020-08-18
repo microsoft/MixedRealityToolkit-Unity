@@ -1365,7 +1365,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // This should not be a dependency; edge center calculations can
             // decoupled from the rotation handles.
             // TODO: Decouple these
-            links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
+            links.CreateLinks(ref boundsCorners, rigRoot, currentBoundsExtents);
 
             // Add translation handles
             translationHandles.Create(ref boundsCorners, rigRoot);
@@ -1400,13 +1400,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 rigRoot.position = Vector3.zero;
                 rigRoot.localScale = Vector3.one;
 
-                rotationHandles.CalculateEdgeCenters(ref boundsCorners);
+                rotationHandles.CalculateHandlePositions(ref boundsCorners);
 
                 // Links depend on rotation handles for position calculations.
                 links.UpdateLinkPositions(ref boundsCorners);
                 links.UpdateLinkScales(currentBoundsExtents);
 
-                translationHandles.CalculateFaceCenters(ref boundsCorners);
+                translationHandles.CalculateHandlePositions(ref boundsCorners);
                 scaleHandles.UpdateHandles(ref boundsCorners);
 
                 boxDisplay.UpdateDisplay(currentBoundsExtents, flattenAxis);

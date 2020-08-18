@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
-                boundsControl.RotationHandlesConfig.ShowRotationHandleForY = true;
+                boundsControl.RotationHandlesConfig.ShowHandleForY = true;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe radius 0.1");

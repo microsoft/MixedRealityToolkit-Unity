@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
+        static protected string visualsName = "visuals";
+
         internal HandlesBase() { }
         protected abstract HandlesBaseConfiguration BaseConfig
         {

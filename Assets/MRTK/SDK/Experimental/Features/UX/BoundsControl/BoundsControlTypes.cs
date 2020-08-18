@@ -123,4 +123,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         /// </summary>
         NonUniform
     }
+
+    internal enum Face
+    {
+        ForwardX    = 0,
+        BackwardX   = 1,
+        ForwardY    = 2,
+        BackwardY   = 3,
+        ForwardZ    = 4,
+        BackwardZ   = 5,
+    }
+
+    //internal enum Link
+    //{
+
+    //}
+
+    //internal enum Corner
+    //{
+
+    //}
+
 }

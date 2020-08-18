@@ -221,10 +221,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box)
         {
             RotationHandlesConfiguration config = EnsureConfiguration(control.RotationHandlesConfig);
-            config.RotationHandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
-            config.ShowRotationHandleForX = box.ShowRotationHandleForX;
-            config.ShowRotationHandleForY = box.ShowRotationHandleForY;
-            config.ShowRotationHandleForZ = box.ShowRotationHandleForZ;
+            config.HandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
+            config.ShowHandleForX = box.ShowRotationHandleForX;
+            config.ShowHandleForY = box.ShowRotationHandleForY;
+            config.ShowHandleForZ = box.ShowRotationHandleForZ;
             config.HandleMaterial = box.HandleMaterial;
             config.HandleGrabbedMaterial = box.HandleGrabbedMaterial;
             config.HandlePrefab = box.RotationHandlePrefab;

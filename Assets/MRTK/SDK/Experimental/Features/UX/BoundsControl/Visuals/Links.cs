@@ -197,14 +197,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             UpdateLinkScales(cachedExtents);
         }
 
-        internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void CreateLinks(ref Vector3[] boundsCorners, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
             if (links != null)
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
-                for (int i = 0; i < RotationHandles.NumEdges; ++i)
+                for (int i = 0; i < VisualUtils.EdgeAxisType.Length; ++i)
                 {
                     if (config.WireframeShape == WireframeType.Cubic)
                     {
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                     link.name = "link_" + i.ToString();
 
-                    CardinalAxisType axisType = rotationHandles.GetAxisType(i);
+                    CardinalAxisType axisType = VisualUtils.EdgeAxisType[i];
                     float wireframeEdgeRadius = config.WireframeEdgeRadius;
                     if (axisType == CardinalAxisType.Y)
                     {
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         link.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
                     }
 
-                    link.transform.position = rotationHandles.GetEdgeCenter(i);
+                    link.transform.position = VisualUtils.GetLinkPosition(i, ref boundsCorners);
                     link.transform.parent = parent;
                     Renderer linkRenderer = link.GetComponent<Renderer>();
 

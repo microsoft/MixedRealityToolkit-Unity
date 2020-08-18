@@ -1069,21 +1069,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             RotationHandlesConfiguration rotationHandlesConfig = boundsControl.RotationHandlesConfig;
 
             // disable visibility for each component
-            rotationHandlesConfig.ShowRotationHandleForX = false;
+            rotationHandlesConfig.ShowHandleForX = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on hiding handles");
             Assert.IsNotNull(rotationHandleAxisX, "handle was destroyed on hide");
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
 
-            rotationHandlesConfig.ShowRotationHandleForY = false;
+            rotationHandlesConfig.ShowHandleForY = false;
             Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
             Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
 
-            rotationHandlesConfig.ShowRotationHandleForX = true;
-            rotationHandlesConfig.ShowRotationHandleForY = true;
-            rotationHandlesConfig.ShowRotationHandleForZ = false;
+            rotationHandlesConfig.ShowHandleForX = true;
+            rotationHandlesConfig.ShowHandleForY = true;
+            rotationHandlesConfig.ShowHandleForZ = false;
             Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
@@ -1105,7 +1105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
             // enable z axis again and verify
-            rotationHandlesConfig.ShowRotationHandleForZ = true;
+            rotationHandlesConfig.ShowHandleForZ = true;
             Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
             Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
             Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
@@ -1114,9 +1114,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // verifies bug https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8239
             boundsControl.gameObject.SetActive(false);
             yield return null;
-            rotationHandlesConfig.ShowRotationHandleForX = false;
-            rotationHandlesConfig.ShowRotationHandleForY = false;
-            rotationHandlesConfig.ShowRotationHandleForZ = false;
+            rotationHandlesConfig.ShowHandleForX = false;
+            rotationHandlesConfig.ShowHandleForY = false;
+            rotationHandlesConfig.ShowHandleForZ = false;
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
             boundsControl.gameObject.SetActive(true);
             yield return null;

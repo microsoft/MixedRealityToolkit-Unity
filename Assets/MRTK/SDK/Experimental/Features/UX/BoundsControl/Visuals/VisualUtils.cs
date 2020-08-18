@@ -225,17 +225,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 switch (faceIndex)
                 {
-                    case 0:
+                    case (int)Face.ForwardX:
                         return (cornerPoints[0] + cornerPoints[2] + cornerPoints[4] + cornerPoints[6]) * 0.25f;
-                    case 1:
+                    case (int)Face.BackwardX:
                         return (cornerPoints[1] + cornerPoints[3] + cornerPoints[5] + cornerPoints[7]) * 0.25f;
-                    case 2:
+                    case (int)Face.ForwardY:
                         return (cornerPoints[0] + cornerPoints[1] + cornerPoints[2] + cornerPoints[3]) * 0.25f;
-                    case 3:
+                    case (int)Face.BackwardY:
                         return (cornerPoints[4] + cornerPoints[5] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
-                    case 4:
+                    case (int)Face.ForwardZ:
                         return (cornerPoints[0] + cornerPoints[1] + cornerPoints[4] + cornerPoints[5]) * 0.25f;
-                    case 5:
+                    case (int)Face.BackwardZ:
                         return (cornerPoints[2] + cornerPoints[3] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
                 }
             }
@@ -267,5 +267,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             return null;
         }
+
+        //static readonly int numEdges = 12;
+        internal static readonly CardinalAxisType[] EdgeAxisType = new CardinalAxisType[]
+            {
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z
+            };
+
+       // static readonly int numFaces = 6;
+        internal static readonly CardinalAxisType[] FaceAxisType = new CardinalAxisType[]
+        {
+            CardinalAxisType.X,
+            CardinalAxisType.X,
+            CardinalAxisType.Z,
+            CardinalAxisType.Z,
+            CardinalAxisType.Y,
+            CardinalAxisType.Y
+        };
     }
 }
