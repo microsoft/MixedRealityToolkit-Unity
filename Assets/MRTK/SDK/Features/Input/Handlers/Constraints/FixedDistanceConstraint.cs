@@ -37,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void Start()
         {
-            if (ConstraintTransform == null)
-            {
-                ConstraintTransform = CameraCache.Main.transform;
-            }
+            EnsureConstraintTransform();
         }
 
         #endregion MonoBehaviour Methods
@@ -51,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void Initialize(MixedRealityTransform worldPose)
         {
             base.Initialize(worldPose);
-
+            EnsureConstraintTransform();
             distanceAtManipulationStart = Vector3.Distance(worldPose.Position, constraintTransform.position);
         }
 
@@ -67,5 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Public Methods
+
+        private void EnsureConstraintTransform()
+        {
+            if (ConstraintTransform == null)
+            {
+                ConstraintTransform = CameraCache.Main.transform;
+            }
+        }
     }
 }

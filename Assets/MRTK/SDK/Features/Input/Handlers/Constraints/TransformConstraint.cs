@@ -62,8 +62,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public abstract void ApplyConstraint(ref MixedRealityTransform transform);
 
+
         #endregion Public Methods
 
+        #region MonoBeaviour
+        protected void OnEnable()
+        {
+            var managers = gameObject.GetComponents<ConstraintManager>();
+            foreach (var manager in managers)
+            {
+                manager.RegisterConstraint(this);
+            }
+        }
+
+        protected void OnDisable()
+        {
+            var managers = gameObject.GetComponents<ConstraintManager>();
+            foreach (var manager in managers)
+            {
+                manager.UnregisterConstraint(this);
+            }
+        }
+
+        #endregion
 
         #region Deprecated
 
