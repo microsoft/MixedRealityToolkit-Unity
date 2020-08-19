@@ -81,7 +81,8 @@ $packages = @{
         "Assets\MRTK\Core",
         "Assets\MRTK\Providers",
         "Assets\MRTK\SDK",
-        "Assets\MRTK\Services"
+        "Assets\MRTK\Services",
+        "Assets\MRTK\StandardAssets"
     );
     "Extensions" = @(
         "Assets\MRTK\Extensions"

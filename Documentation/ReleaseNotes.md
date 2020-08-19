@@ -71,6 +71,19 @@ There is a confirmation dialog that will be displayed when selecting `Use MSBuil
 
 ### Breaking changes
 
+**IMixedRealityPointerMediator**
+
+This interface has been updated to have a new function:
+
+```csharp
+void SetPointerPreferences(IPointerPreferences pointerPreferences);
+```
+
+If you have a custom pointer mediator that doesn't subclass DefaultPointerMediator, you will need to implement this
+new function. See [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243) for more background
+on why this was added. This was added to ensure that pointer preferences would be explicitly passed to the mediator,
+rather than having it be implicitly done based on the presence of a constructor that took a IPointerPreferences.
+
 **Rest / Device Portal API**
 
 The `UseSSL` static property has been moved from `Rest` to `DevicePortal`.
@@ -92,9 +105,13 @@ DevicePortal.UseSSL = true
 If an application was previously using the NuGet distribution of the MRTK, the `link.xml` file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default `link.xml` file in `Assets/MixedRealityToolkit.Generated`. It is recommended that this file (and `link.xml.meta`) be added to source control.
 
 **Transform Constraint Changes**
+
 TargetTransform property has been marked as obsolete as it wasn't used by constraint system. Constraint logic is based on the transform passed into Initialize and Apply methods. Derived user constraints that rely on this property can cache the TargetTransform in their implementation by storing the transform of the constraint component to achieve the same behavior.
 
 The stored initial world pose `worldPoseOnManipulationStart` data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.
 
+**New Property in IMixedRealityDictationSystem**
+
+A new property `AudioClip` has been added to the IMixedRealityDictationSystem interface. The `AudioClip` property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.
 
 ### Known issues

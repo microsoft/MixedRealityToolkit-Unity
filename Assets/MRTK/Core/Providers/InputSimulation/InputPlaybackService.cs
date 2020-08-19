@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }))
             {
-                UpdateHandDevice(HandSimulationMode.Articulated, handedness, handData);
+                UpdateControllerDevice(ControllerSimulationMode.ArticulatedHand, handedness, handData);
             }
         }
 

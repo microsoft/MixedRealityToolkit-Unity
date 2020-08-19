@@ -156,9 +156,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             IsActive = areHandlesActive;
             cachedFlattenAxis = flattenAxis;
+            ResetHandles();
             if (IsActive)
             {
-                ResetHandles();
                 int[] flattenedHandles = VisualUtils.GetFlattenedIndices(flattenAxis);
                 if (flattenedHandles != null)
                 {
@@ -294,11 +294,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         #region BoundsControlHandlerBase 
         internal override bool IsVisible(Transform handle)
         {
-            CardinalAxisType axisType = GetAxisType(handle);
-            return IsActive &&
-                ((axisType == CardinalAxisType.X && config.ShowRotationHandleForX) ||
-                (axisType == CardinalAxisType.Y && config.ShowRotationHandleForY) ||
-                (axisType == CardinalAxisType.Z && config.ShowRotationHandleForZ));
+            if (!IsActive)
+            {
+                return false;
+            }
+            else
+            {
+                CardinalAxisType axisType = GetAxisType(handle);
+                switch (axisType)
+                {
+                    case CardinalAxisType.X:
+                        return config.ShowRotationHandleForX;
+                    case CardinalAxisType.Y:
+                        return config.ShowRotationHandleForY;
+                    case CardinalAxisType.Z:
+                        return config.ShowRotationHandleForZ;
+                }
+
+                return false;
+            }
         }
 
         internal override HandleType GetHandleType()

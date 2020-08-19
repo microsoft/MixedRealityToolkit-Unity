@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -49,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private static bool showRotationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
+        private static bool constraintsFoldout = true;
 
         private void OnEnable()
         {
@@ -130,6 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
                     }
+
+                    EditorGUILayout.Space();
+                    constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(boundsControl.gameObject, constraintsFoldout, "Constraint");
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));

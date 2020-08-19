@@ -5,8 +5,6 @@ using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
+        private SerializedProperty useForcesForNearManipulation;
 
         private SerializedProperty oneHandRotationModeNear;
         private SerializedProperty oneHandRotationModeFar;
@@ -31,7 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private SerializedProperty releaseBehavior;
 
-        private SerializedProperty smoothingActive;
+        private SerializedProperty smoothingFar;
+        private SerializedProperty smoothingNear;
         private SerializedProperty moveLerpTime;
         private SerializedProperty rotateLerpTime;
         private SerializedProperty scaleLerpTime;
@@ -76,9 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
+            useForcesForNearManipulation = serializedObject.FindProperty("useForcesForNearManipulation");
 
             // Smoothing
-            smoothingActive = serializedObject.FindProperty("smoothingActive");
+            smoothingFar = serializedObject.FindProperty("smoothingFar");
+            smoothingNear = serializedObject.FindProperty("smoothingNear");
             moveLerpTime = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
@@ -145,43 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var rb = mh.HostTransform.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
-            constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, "Constraints", true);
-
-            if (constraintsFoldout)
-            {
-                if (EditorGUILayout.DropdownButton(new GUIContent("Add Constraint"), FocusType.Keyboard))
-                {
-                    // create the menu and add items to it
-                    GenericMenu menu = new GenericMenu();
-
-                    var type = typeof(TransformConstraint);
-                    var types = AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(s => s.GetLoadableTypes())
-                        .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
-
-                    foreach (var derivedType in types)
-                    {
-                        menu.AddItem(new GUIContent(derivedType.Name), false, t => mh.gameObject.AddComponent((Type)t), derivedType);
-                    }
-
-                    menu.ShowAsContext();
-                }
-
-                var constraints = mh.GetComponents<TransformConstraint>();
-
-                foreach (var constraint in constraints)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    string constraintName = constraint.GetType().Name;
-                    EditorGUILayout.LabelField(constraintName);
-                    if (GUILayout.Button("Go to component"))
-                    {
-                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
-                        EditorGUIUtility.ExitGUI();
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-            }
+            constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(mh.gameObject, constraintsFoldout, "Constraint");
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);
@@ -191,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (rb != null)
                 {
                     EditorGUILayout.PropertyField(releaseBehavior);
+                    EditorGUILayout.PropertyField(useForcesForNearManipulation);
                 }
                 else
                 {
@@ -203,7 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (smoothingFoldout)
             {
-                EditorGUILayout.PropertyField(smoothingActive);
+                EditorGUILayout.PropertyField(smoothingFar);
+                EditorGUILayout.PropertyField(smoothingNear);
                 EditorGUILayout.PropertyField(moveLerpTime);
                 EditorGUILayout.PropertyField(rotateLerpTime);
                 EditorGUILayout.PropertyField(scaleLerpTime);

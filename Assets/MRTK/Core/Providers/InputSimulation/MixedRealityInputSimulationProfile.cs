@@ -201,66 +201,74 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public EyeGazeSimulationMode DefaultEyeGazeSimulationMode => defaultEyeGazeSimulationMode;
 
-        [Header("Hand Simulation")]
+        [Header("Controller Simulation")]
         [SerializeField]
-        [Tooltip("Enable hand simulation")]
+        [Tooltip("Enable controller simulation")]
         [FormerlySerializedAs("handSimulationMode")]
-        private HandSimulationMode defaultHandSimulationMode = HandSimulationMode.Articulated;
+        [FormerlySerializedAs("defaultHandSimulationMode")]
+        private ControllerSimulationMode defaultControllerSimulationMode = ControllerSimulationMode.ArticulatedHand;
         /// <summary>
-        /// Enable hand simulation
+        /// Enable controller simulation
         /// </summary>
-        public HandSimulationMode DefaultHandSimulationMode => defaultHandSimulationMode;
+        public ControllerSimulationMode DefaultControllerSimulationMode => defaultControllerSimulationMode;
 
-        [Header("Hand Control Settings")]
+        [Header("Controller Control Settings")]
         [SerializeField]
-        [Tooltip("Key to toggle persistent mode for the left hand")]
-        private KeyBinding toggleLeftHandKey = KeyBinding.FromKey(KeyCode.T);
+        [Tooltip("Key to toggle persistent mode for the left controller")]
+        [FormerlySerializedAs("toggleLeftHandKey")]
+        private KeyBinding toggleLeftControllerKey = KeyBinding.FromKey(KeyCode.T);
         /// <summary>
-        /// Key to toggle persistent mode for the left hand
+        /// Key to toggle persistent mode for the left controller
         /// </summary>
-        public KeyBinding ToggleLeftHandKey => toggleLeftHandKey;
+        public KeyBinding ToggleLeftControllerKey => toggleLeftControllerKey;
         [SerializeField]
-        [Tooltip("Key to toggle persistent mode for the right hand")]
-        private KeyBinding toggleRightHandKey = KeyBinding.FromKey(KeyCode.Y);
+        [Tooltip("Key to toggle persistent mode for the right controller")]
+        [FormerlySerializedAs("toggleRightHandKey")]
+        private KeyBinding toggleRightControllerKey = KeyBinding.FromKey(KeyCode.Y);
         /// <summary>
-        /// Key to toggle persistent mode for the right hand
+        /// Key to toggle persistent mode for the right controller
         /// </summary>
-        public KeyBinding ToggleRightHandKey => toggleRightHandKey;
+        public KeyBinding ToggleRightControllerKey => toggleRightControllerKey;
         [SerializeField]
-        [Tooltip("Time after which uncontrolled hands are hidden")]
-        private float handHideTimeout = 0.2f;
+        [Tooltip("Time after which uncontrolled controllers are hidden")]
+        [FormerlySerializedAs("handHideTimeout")]
+        private float controllerHideTimeout = 0.2f;
         /// <summary>
-        /// Time after which uncontrolled hands are hidden
+        /// Time after which uncontrolled controllers are hidden
         /// </summary>
-        public float HandHideTimeout => handHideTimeout;
+        public float ControllerHideTimeout => controllerHideTimeout;
         [SerializeField]
-        [Tooltip("Key to manipulate the left hand")]
-        private KeyBinding leftHandManipulationKey = KeyBinding.FromKey(KeyCode.LeftShift);
+        [Tooltip("Key to manipulate the left controller")]
+        [FormerlySerializedAs("leftHandManipulationKey")]
+        private KeyBinding leftControllerManipulationKey = KeyBinding.FromKey(KeyCode.LeftShift);
         /// <summary>
-        /// Key to manipulate the left hand
+        /// Key to manipulate the left controller
         /// </summary>
-        public KeyBinding LeftHandManipulationKey => leftHandManipulationKey;
+        public KeyBinding LeftControllerManipulationKey => leftControllerManipulationKey;
         [SerializeField]
-        [Tooltip("Key to manipulate the right hand")]
-        private KeyBinding rightHandManipulationKey = KeyBinding.FromKey(KeyCode.Space);
+        [Tooltip("Key to manipulate the right controller")]
+        [FormerlySerializedAs("rightHandManipulationKey")]
+        private KeyBinding rightControllerManipulationKey = KeyBinding.FromKey(KeyCode.Space);
         /// <summary>
-        /// Key to manipulate the right hand
+        /// Key to manipulate the right controller
         /// </summary>
-        public KeyBinding RightHandManipulationKey => rightHandManipulationKey;
+        public KeyBinding RightControllerManipulationKey => rightControllerManipulationKey;
         [SerializeField]
         [Tooltip("Additional rotation factor after input smoothing has been applied")]
-        private float mouseHandRotationSpeed = 6.0f;
+        [FormerlySerializedAs("mouseHandRotationSpeed")]
+        private float mouseControllerRotationSpeed = 6.0f;
         /// <summary>
         /// Additional rotation factor after input smoothing has been applied
         /// </summary>
-        public float MouseHandRotationSpeed => mouseHandRotationSpeed;
+        public float MouseControllerRotationSpeed => mouseControllerRotationSpeed;
         [SerializeField]
-        [Tooltip("Controls how hand rotation is activated")]
-        private KeyBinding handRotateButton = KeyBinding.FromKey(KeyCode.LeftControl);
+        [Tooltip("Controls how controller rotation is activated")]
+        [FormerlySerializedAs("handRotateButton")]
+        private KeyBinding controllerRotateButton = KeyBinding.FromKey(KeyCode.LeftControl);
         /// <summary>
-        /// Controls how hand rotation is activated
+        /// Controls how controller rotation is activated
         /// </summary>
-        public KeyBinding HandRotateButton => handRotateButton;
+        public KeyBinding ControllerRotateButton => controllerRotateButton;
 
         [Header("Hand Gesture Settings")]
         [SerializeField]
@@ -315,27 +323,89 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float NavigationStartThreshold => navigationStartThreshold;
 
-        [Header("Hand Placement Settings")]
+        [Header("Controller Placement Settings")]
         [SerializeField]
-        [Tooltip("Default distance of the hand from the camera")]
-        private float defaultHandDistance = 0.5f;
+        [Tooltip("Default distance of the controller from the camera")]
+        [FormerlySerializedAs("defaultHandDistance")]
+        private float defaultControllerDistance = 0.5f;
         /// <summary>
-        /// Default distance of the hand from the camera
+        /// Default distance of the controller from the camera
         /// </summary>
-        public float DefaultHandDistance => defaultHandDistance;
+        public float DefaultControllerDistance => defaultControllerDistance;
         [SerializeField]
         [Tooltip("Depth change when scrolling the mouse wheel")]
-        private float handDepthMultiplier = 0.03f;
+        [FormerlySerializedAs("handDepthMultiplier")]
+        private float controllerDepthMultiplier = 0.03f;
         /// <summary>
         /// Depth change when scrolling the mouse wheel
         /// </summary>
-        public float HandDepthMultiplier => handDepthMultiplier;
+        public float ControllerDepthMultiplier => controllerDepthMultiplier;
         [SerializeField]
-        [Tooltip("Apply random offset to the hand position")]
-        private float handJitterAmount = 0.0f;
+        [Tooltip("Apply random offset to the controller position")]
+        [FormerlySerializedAs("handJitterAmount")]
+        private float controllerJitterAmount = 0.0f;
+        /// <summary>
+        /// Apply random offset to the controller position
+        /// </summary>
+        public float ControllerJitterAmount => controllerJitterAmount;
+        [SerializeField]
+
+        #region Obsolete Properties
+        /// <summary>
+        /// Enable controller simulation
+        /// </summary>
+        [Obsolete("Use DefaultControllerSimulationMode instead.")]
+        public ControllerSimulationMode DefaultHandSimulationMode => DefaultControllerSimulationMode;
+        /// <summary>
+        /// Key to toggle persistent mode for the left controller
+        /// </summary>
+        [Obsolete("Use ToggleLeftControllerKey instead.")]
+        public KeyBinding ToggleLeftHandKey => ToggleLeftControllerKey;
+        /// <summary>
+        /// Key to toggle persistent mode for the right controller
+        /// </summary>
+        [Obsolete("Use ToggleRightControllerKey instead.")]
+        public KeyBinding ToggleRightHandKey => ToggleRightControllerKey;
+        /// <summary>
+        /// Time after which uncontrolled hands are hidden
+        /// </summary>
+        [Obsolete("Use ControllerHideTimeout instead.")]
+        public float HandHideTimeout => ControllerHideTimeout;
+        /// <summary>
+        /// Key to manipulate the left hand
+        /// </summary>
+        [Obsolete("Use LeftControllerManipulationKey instead.")]
+        public KeyBinding LeftHandManipulationKey => LeftControllerManipulationKey;
+        /// <summary>
+        /// Key to manipulate the right hand
+        /// </summary>
+        [Obsolete("Use RightControllerManipulationKey instead.")]
+        public KeyBinding RightHandManipulationKey => RightControllerManipulationKey;
+        /// <summary>
+        /// Additional rotation factor after input smoothing has been applied
+        /// </summary>
+        [Obsolete("Use MouseControllerRotationSpeed instead.")]
+        public float MouseHandRotationSpeed => MouseControllerRotationSpeed;
+        /// <summary>
+        /// Controls how hand rotation is activated
+        /// </summary>
+        [Obsolete("Use ControllerRotateButton instead.")]
+        public KeyBinding HandRotateButton => ControllerRotateButton;
+        /// <summary>
+        /// Default distance of the hand from the camera
+        /// </summary>
+        [Obsolete("Use DefaultControllerDistance instead.")]
+        public float DefaultHandDistance => DefaultControllerDistance;
+        /// <summary>
+        /// Depth change when scrolling the mouse wheel
+        /// </summary>
+        [Obsolete("Use ControllerDepthMultiplier instead.")]
+        public float HandDepthMultiplier => ControllerDepthMultiplier;
         /// <summary>
         /// Apply random offset to the hand position
         /// </summary>
-        public float HandJitterAmount => handJitterAmount;
+        [Obsolete("Use ControllerJitterAmount instead.")]
+        public float HandJitterAmount => ControllerJitterAmount;
+        #endregion
     }
 }

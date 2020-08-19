@@ -122,7 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.position = initialObjectPosition;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -130,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            // grab the cube - move it to the right 
+            // grab the cube - move it to the right
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // This particular test is sensitive to the number of steps that a hand is moving,
@@ -177,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a 
+        /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a
         /// certain distance when being released from grab during hand movement
         /// </summary>
         [UnityTest]
@@ -194,7 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -204,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestHand hand = new TestHand(Handedness.Right);
 
-            // grab the cube - move it to the right 
+            // grab the cube - move it to the right
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             Vector3 handOffset = new Vector3(0, 0, 0.1f);
@@ -246,7 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.position = initialObjectPosition;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
@@ -259,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numHandSteps = 3;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            Vector3 initialGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the left bottom corner of the cube 
+            Vector3 initialGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the left bottom corner of the cube
             TestHand hand = new TestHand(Handedness.Right);
 
             // do this test for every one hand rotation mode
@@ -291,12 +294,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
 
-                // rotating the pointer in a circle around "the user" 
+                // rotating the pointer in a circle around "the user"
                 for (int i = 1; i <= numCircleSteps; ++i)
                 {
                     // rotate main camera (user)
                     MixedRealityPlayspace.PerformTransformation(
-                    p =>
+                        p =>
                     {
                         p.position = MixedRealityPlayspace.Position;
                         Vector3 rotatedFwd = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * Vector3.forward;
@@ -335,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the one hand far movement while camera (character) is moving around.
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
-        /// out of the object on pointer rotation - this test is the same for all objects that won't change 
+        /// out of the object on pointer rotation - this test is the same for all objects that won't change
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
         [UnityTest]
@@ -348,7 +351,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.position = initialObjectPosition;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
@@ -394,13 +398,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
 
-                // rotating the pointer in a circle around "the user" 
+                // rotating the pointer in a circle around "the user"
                 for (int i = 1; i <= numCircleSteps; ++i)
                 {
 
                     // rotate main camera (user)
                     MixedRealityPlayspace.PerformTransformation(
-                    p =>
+                        p =>
                     {
                         p.position = MixedRealityPlayspace.Position;
                         Vector3 rotatedFwd = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * Vector3.forward;
@@ -454,7 +458,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.position = initialObjectPosition;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
             manipHandler.ReleaseBehavior = 0;
@@ -633,7 +638,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return leftHand.Hide();
 
                 MixedRealityPlayspace.PerformTransformation(
-                p =>
+                    p =>
                 {
                     p.position = MixedRealityPlayspace.Position;
                     Vector3 rotatedFwd = Quaternion.AngleAxis(testRotation, Vector3.up) * Vector3.forward;
@@ -663,14 +668,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This test records the poses and scales of an object after various forms of manipulation,
         /// once when the object origin is at the mesh centre and again when the origin is offset from the mesh.
-        /// The test then compares these poses and scales in order to ensure that they are about equal. 
+        /// The test then compares these poses and scales in order to ensure that they are about equal.
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
             // Without this background object that contains a collider, Unity will rarely
-            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is 
+            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is
             // intersecting the collider. Causes tests to be unreliable.
             // It seems to only happen when one collider is in the scene.
             var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -685,7 +690,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded | ManipulationHandFlags.TwoHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
@@ -748,8 +754,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -760,7 +766,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
@@ -792,14 +799,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
         /// <summary>
         /// For positionless input sources that use gaze, such as xbox controller, pointer position will
         /// be coincident with the head position. This was causing issues with manipulation handler, as
-        /// the distance between the pointer and the head is taken as part of the move logic. 
+        /// the distance between the pointer and the head is taken as part of the move logic.
         /// This test simulates a positionless input source by using GGV hands and setting the hand position
         /// to be the head position. It then ensures that there is no weird behaviour as a result of this.
         /// </summary>
@@ -810,8 +817,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -820,7 +827,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
@@ -860,7 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -877,8 +885,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -887,7 +895,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
@@ -919,7 +928,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(xPos, yPos, 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -940,7 +949,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
@@ -988,7 +998,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             int manipulationStartedCount = 0;
             int manipulationEndedCount = 0;
@@ -1040,7 +1051,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             int manipulationStartedCount = 0;
             int manipulationEndedCount = 0;
@@ -1092,7 +1104,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             int manipulationStartedCount = 0;
             int manipulationEndedCount = 0;
@@ -1155,7 +1168,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             var collisionListener = testObject.AddComponent<TestCollisionListener>();
 
@@ -1201,7 +1215,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             var collisionListener = testObject.AddComponent<TestCollisionListener>();
 
@@ -1248,7 +1263,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             // Add NearInteractionGrabbable to be able to grab the cube with articulated hands.
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -1326,10 +1342,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// by the manipulated object.
         /// </summary>
         private IEnumerator MoveHandsAndCheckCentroid(Vector3 handRotationEuler, Vector3 handPosition,
-                                                      TestHand leftHand, TestHand rightHand,
-                                                      ObjectManipulator om,
-                                                      Vector3 originalObjectPosition, Vector3 originalGrabCentroid,
-                                                      Transform testObject)
+                TestHand leftHand, TestHand rightHand,
+                ObjectManipulator om,
+                Vector3 originalObjectPosition, Vector3 originalGrabCentroid,
+                Transform testObject)
         {
             // Rotate the hands.
             yield return rightHand.SetRotation(Quaternion.Euler(handRotationEuler.x, handRotationEuler.y, handRotationEuler.z));
@@ -1368,7 +1384,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             Quaternion rotateTo = Quaternion.Euler(45, 45, 45);
@@ -1412,7 +1429,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // The cube needs to be moved from under the gaze cursor before we add the manipulation handler.
             // Because the cube is under the gaze cursor from the beginning, it gets a focus gained event
-            // in Setup(). When we show the right hand, we get a focus lost event from the gaze pointer. 
+            // in Setup(). When we show the right hand, we get a focus lost event from the gaze pointer.
             // This messes with the CursorContextObjectManipulator hoverCount, as it decrements without
             // ever having incremented. To avoid this, we move the cube out of focus before we add the
             // ObjectManipulator and CursorContextObjectManipulator.
@@ -1476,8 +1493,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.PlayspaceToOriginLookingForward();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // Track the gaze cursor
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
@@ -1492,7 +1509,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingActive = false;
+            manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
 
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
@@ -1550,7 +1568,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
     }

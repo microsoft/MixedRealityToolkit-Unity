@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             {
                 base.Update();
 
-                if (XRSDKSubsystemHelpers.InputSubsystem == null || !XRSDKSubsystemHelpers.InputSubsystem.running)
+                if (XRSubsystemHelpers.InputSubsystem == null || !XRSubsystemHelpers.InputSubsystem.running)
                 {
                     return;
                 }

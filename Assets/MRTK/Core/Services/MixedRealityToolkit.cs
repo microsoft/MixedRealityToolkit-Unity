@@ -18,7 +18,6 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Input.Editor;
 using UnityEditor;
 #endif
 
@@ -80,6 +79,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
         /// </summary>
+        /// <remarks>
+        /// When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
+        /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
+        /// first Update() of all services.
+        /// A noticable application hesitation may occur during this process. Also any scripts with high priority than this can enter its Update
+        /// before the new profiles are properly setup.
+        /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
             get
@@ -88,7 +94,17 @@ namespace Microsoft.MixedReality.Toolkit
             }
             set
             {
-                ResetConfiguration(value);
+                // Behavior during a valid runtime profile switch
+                if (Application.isPlaying && activeProfile != null && value != null)
+                {
+                    newProfile = value;
+                }
+                // Behavior in other scenarios (e.g. when profile switch is being requested by editor code)
+                else
+                {
+                    ResetConfiguration(value);
+                }
+
             }
         }
 
@@ -96,6 +112,22 @@ namespace Microsoft.MixedReality.Toolkit
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
+        {
+            RemoveCurrentProfile(profile);
+            InitializeNewProfile(profile);
+        }
+
+        private void InitializeNewProfile(MixedRealityToolkitConfigurationProfile profile)
+        {
+            InitializeServiceLocator();
+
+            if (profile != null && Application.IsPlaying(profile))
+            {
+                EnableAllServices();
+            }
+        }
+
+        private void RemoveCurrentProfile(MixedRealityToolkitConfigurationProfile profile)
         {
             if (activeProfile != null)
             {
@@ -117,14 +149,9 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 DestroyAllServices();
             }
-
-            InitializeServiceLocator();
-
-            if (profile != null && Application.IsPlaying(profile))
-            {
-                EnableAllServices();
-            }
         }
+
+        private MixedRealityToolkitConfigurationProfile newProfile;
 
         #endregion Mixed Reality Toolkit Profile configuration
 
@@ -373,11 +400,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 DebugUtilities.LogVerbose("Begin registration of the input system");
 
-#if UNITY_EDITOR
-                // Make sure unity axis mappings are set.
-                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-#endif
-
                 object[] args = { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || CoreServices.InputSystem == null)
                 {
@@ -399,12 +421,6 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 DebugUtilities.LogVerbose("End registration of the input system");
-            }
-            else
-            {
-#if UNITY_EDITOR
-                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-#endif
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -654,6 +670,13 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (IsActiveInstance)
             {
+                // Before any Update() of a service is performed check to see if we need to switch profile
+                // If so we instantiate and initialize the services associated with the new profile.
+                if (newProfile != null)
+                {
+                    InitializeNewProfile(newProfile);
+                    newProfile = null;
+                }
                 UpdateAllServices();
             }
         }
@@ -663,6 +686,12 @@ namespace Microsoft.MixedReality.Toolkit
             if (IsActiveInstance)
             {
                 LateUpdateAllServices();
+                // After LateUpdate()s of all services are finished check to see if we need to switch profile
+                // If so we destroy currently running services.
+                if (newProfile != null)
+                {
+                    RemoveCurrentProfile(newProfile);
+                }
             }
         }
 
