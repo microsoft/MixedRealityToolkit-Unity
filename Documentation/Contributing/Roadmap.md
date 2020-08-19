@@ -22,7 +22,7 @@ The Mixed Reality Toolkit is an all-new product, built to be cross MR/AR/VR/XR p
 
 The Mixed Reality Toolkit will require Unity 2018.4.x
 
-> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2019.4.8f) tech branch version of Unity, at the time at which MRTK was released.
+> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2020.1) tech branch version of Unity, at the time at which MRTK was released.
 
 ### 2.5.0
 
