@@ -38,7 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Returns true if index finger tip is closer to wrist than index knuckle joint.
         /// </summary>
         /// <param name="hand">Hand to query joint pose against.</param>
-        /// <returns></returns>
         public static bool IsIndexGrabbing(Handedness hand)
         {
             if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Wrist, hand, out var wristPose) &&
@@ -58,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Returns true if middle finger tip is closer to wrist than middle knuckle joint.
         /// </summary>
         /// <param name="hand">Hand to query joint pose against.</param>
-        /// <returns></returns>
         public static bool IsMiddleGrabbing(Handedness hand)
         {
             if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Wrist, hand, out var wristPose) &&
@@ -77,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Returns true if middle thumb tip is closer to pinky knuckle than thumb knuckle joint.
         /// </summary>
         /// <param name="hand">Hand to query joint pose against.</param>
-        /// <returns></returns>
         public static bool IsThumbGrabbing(Handedness hand)
         {
             if (HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyKnuckle, hand, out var pinkyKnucklePose) &&

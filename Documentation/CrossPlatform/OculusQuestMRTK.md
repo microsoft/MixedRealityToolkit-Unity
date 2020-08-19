@@ -9,8 +9,8 @@ This pipeline is the standard for developing XR applications in Unity 2019.3 and
 Specifically, this pipeline currently allows for the use of Oculus Touch controllers and head tracking with the Oculus Quest.
 
 The **MRTK-Quest Data Provider** enables the use of the Oculus Quest via the **Oculus Integration** Unity package. Specifically, this data provider has the additional benefit of 
-supporting **hand tracking** with the Oculus Quest. This data provider does **NOT** use the **XRSDK pipeline**, so it is recommended to set up this data provider after the 
-**Setting up the project for the Oculus Quest** to avoid potential issues with your project targeting the to-be-deprecated **Legacy XR Pipeline**.
+supporting **hand tracking** with the Oculus Quest. This data provider does **NOT** use the **XRSDK pipeline** or **Legacy XR Pipeline**, so it is recommended to set up this data provider after the 
+**Setting up the project for the Oculus Quest** to avoid potential issues with your project accidentally targeting the to-be-deprecated **Legacy XR Pipeline**.
 
 ## Setting up project for the Oculus Quest
 

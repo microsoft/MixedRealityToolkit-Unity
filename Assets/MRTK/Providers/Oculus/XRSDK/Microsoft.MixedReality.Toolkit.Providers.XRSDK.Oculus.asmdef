@@ -3,7 +3,7 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
-        "Microsoft.MixedReality.Toolkit.XRSDK.MRTKQuest.Utilities",
+        "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities",
         "Unity.XR.Oculus",
         "Oculus.VR"
     ],

@@ -9,7 +9,7 @@
 
 **Oculus Quest XRSDK support**
 
-MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. We also support handtracking on Oculus Quest with the [Oculus Integration package](CrossPlatform/OculusQuestMRTK.md#Using-the-MRTK-Quest-Data-Provider-for-handtracking) thanks to ![Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
 
 For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
 
