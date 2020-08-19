@@ -180,7 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     IsSimulatingRight = false;
                 }
                 if (isSimulatingGaze)
+                {
                     lastSimulationGaze = time;
+                }   
             }
 
             mouseRotation.Update(profile.ControllerRotateButton, cancelRotationKey, false);
