@@ -13,28 +13,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [SerializeField]
         private bool isTracked = false;
-
         /// <summary>
         /// Whether the motion controller is currently being tracked
         /// </summary>
         public bool IsTracked => isTracked;
+        
         [SerializeField]
         private bool isSelecting = false;
-
         /// <summary>
         /// Whether the motion controller is selecting
         /// </summary>
         public bool IsSelecting => isSelecting;
+
         [SerializeField]
         private bool isGrabbing = false;
-
         /// <summary>
         /// Whether the motion controller is grabbing
         /// </summary>
         public bool IsGrabbing => isGrabbing;
+
         [SerializeField]
         private bool isPressingMenu = false;
-
         /// <summary>
         /// Whether the menu button on the motion controller is being pressed
         /// </summary>
