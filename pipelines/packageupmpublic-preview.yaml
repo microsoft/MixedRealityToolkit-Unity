@@ -1,0 +1,14 @@
+# Create UPM packages for public PREVIEW release
+
+variables:
+- template: config/settings.yml
+
+jobs:
+- job: CreatePublicUPMArtifacts
+  timeoutInMinutes: 30
+  pool:
+    name: On-Prem Unity
+  steps:
+  - template: templates/tasks/upmpackages.yml
+    parameters:
+      excludeBuildNumber: 0
