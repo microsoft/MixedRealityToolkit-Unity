@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     /// <summary>
     /// This enum defines which of the axes a given rotation handle revolves about.
     /// </summary>
-    internal enum CardinalAxisType
+    public enum CardinalAxisType
     {
         X = 0,
         Y,

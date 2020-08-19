@@ -242,33 +242,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return Vector3.zero;
         }
 
-        static readonly int[] flattenedIndicesX = new int[] { 0, 4, 2, 6 };
-        static readonly int[] flattenedIndicesY = new int[] { 1, 3, 5, 7 };
-        static readonly int[] flattenedIndicesZ = new int[] { 9, 10, 8, 11 };
         /// <summary>
         /// Returns the flatten indices to the corresponding flattenAxis mode.
         /// </summary>
         /// <param name="flattenAxis">Flatten axis mode that should be converted to indices.</param>
         /// <returns>Flattened indices.</returns>
-        internal static int[] GetFlattenedIndices(FlattenModeType flattenAxis)
+        internal static List<int> GetFlattenedIndices(FlattenModeType flattenAxis, CardinalAxisType[] axisArray)
         {
-            if (flattenAxis == FlattenModeType.FlattenX)
+            List<int> flattenedIndices = new List<int>();
+            for (int i = 0; i < axisArray.Length; ++i)
             {
-                return flattenedIndicesX;
-            }
-            else if (flattenAxis == FlattenModeType.FlattenY)
-            {
-                return flattenedIndicesY;
-            }
-            else if (flattenAxis == FlattenModeType.FlattenZ)
-            {
-                return flattenedIndicesZ;
+                if ((flattenAxis == FlattenModeType.FlattenX && axisArray[i] == CardinalAxisType.X)
+                    || (flattenAxis == FlattenModeType.FlattenY && axisArray[i] == CardinalAxisType.Y)
+                    || (flattenAxis == FlattenModeType.FlattenZ && axisArray[i] == CardinalAxisType.Z))
+                {
+                    flattenedIndices.Add(i);
+                }
             }
 
-            return null;
+            return flattenedIndices;
         }
 
-        //static readonly int numEdges = 12;
         internal static readonly CardinalAxisType[] EdgeAxisType = new CardinalAxisType[]
             {
                 CardinalAxisType.X,
@@ -285,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 CardinalAxisType.Z
             };
 
-       // static readonly int numFaces = 6;
         internal static readonly CardinalAxisType[] FaceAxisType = new CardinalAxisType[]
         {
             CardinalAxisType.X,

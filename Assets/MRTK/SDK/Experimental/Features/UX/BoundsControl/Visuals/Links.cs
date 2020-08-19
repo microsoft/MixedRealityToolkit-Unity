@@ -112,10 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     links[i].transform.gameObject.SetActive(isVisible && config.ShowWireFrame);
                 }
 
-                int[] flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis);
+                List<int> flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis, VisualUtils.EdgeAxisType);
                 if (flattenedHandles != null)
                 {
-                    for (int i = 0; i < flattenedHandles.Length; ++i)
+                    for (int i = 0; i < flattenedHandles.Count; ++i)
                     {
                         links[flattenedHandles[i]].transform.gameObject.SetActive(false);
                     }
