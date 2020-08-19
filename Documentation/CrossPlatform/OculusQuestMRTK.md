@@ -98,16 +98,16 @@ In the imported Oculus (assets/Oculus) folder, there is a scriptable object call
         ![OculusAddMrtkQuestDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddMrtkQuestDataProvider.png)
 
 ## Build and deploy your project to Oculus Quest
-    - Plug in your Oculus Quest via a USB 3.0 -> USB C cable
-    - Navigate to **File > Build Settings**
-    - Change the deployment to **Android**
-    - Ensure that the Oculus Quest is selected as the applicable run device
+1. Plug in your Oculus Quest via a USB 3.0 -> USB C cable
+1. Navigate to **File > Build Settings**
+1. Change the deployment to **Android**
+1. Ensure that the Oculus Quest is selected as the applicable run device
     
     ![OculusRunDevice](../Images/CrossPlatform/OculusQuest/OculusRunDevice.png)
 
-    - Select Build and Run 
-    - Accept the _Allow USB Debugging_ prompt from inside the quest
-    - See your scene inside the Oculus Quest
+1. Select Build and Run 
+1. Accept the _Allow USB Debugging_ prompt from inside the quest
+1. See your scene inside the Oculus Quest
 
 
 ## Common errors
