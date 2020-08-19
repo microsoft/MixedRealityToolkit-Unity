@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoad]
 #endif
-    [CreateAssetMenu(menuName = "MRTK-Quest/MRTK-OculusConfig")]
+    [CreateAssetMenu(menuName = "MixedRealityToolkin/OculusHandtrackingConfig")]
     public class MRTKOculusConfig : ScriptableObject
     {
         private static MRTKOculusConfig instance;
@@ -70,33 +70,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 #endif
 
 
-        //[SerializeField]
-        //[Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
-        //         "Note: In order to render avatar hands, you will need to set an app id in OvrAvatarSettings. Any number will do, but it needs to be set.")]
-        //private bool renderAvatarHandsInsteadOfControllers = true;
+        [SerializeField]
+        [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
+                 "Note: In order to render avatar hands, you will need to set an app id in OvrAvatarSettings. Any number will do, but it needs to be set.")]
+        private bool renderAvatarHandsInsteadOfControllers = true;
 
-        ///// <summary>
-        ///// Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
-        ///// </summary>
-        //public bool RenderAvatarHandsInsteadOfController => renderAvatarHandsInsteadOfControllers;
+        /// <summary>
+        /// Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
+        /// </summary>
+        public bool RenderAvatarHandsInsteadOfController => renderAvatarHandsInsteadOfControllers;
 
-        //[SerializeField]
-        //[Tooltip("Use this if you want to manage the avatar hands prefab yourself.")]
-        //private bool allowDevToManageAvatarPrefab = false;
+        [SerializeField]
+        [Tooltip("Prefab reference for LocalAvatar to load, if none are found in scene.")]
+        private GameObject localAvatarPrefab = null;
 
-        ///// <summary>
-        ///// Use this if you want to manage the avatar hands prefab yourself.
-        ///// </summary>
-        //public bool AllowDevToManageAvatarPrefab => allowDevToManageAvatarPrefab;
-
-        //[SerializeField]
-        //[Tooltip("Prefab reference for LocalAvatar to load, if none are found in scene.")]
-        //private GameObject localAvatarPrefab = null;
-
-        ///// <summary>
-        ///// Prefab reference for LocalAvatar to load, if none are found in scene.
-        ///// </summary>
-        //public GameObject LocalAvatarPrefab => localAvatarPrefab;
+        /// <summary>
+        /// Prefab reference for LocalAvatar to load, if none are found in scene.
+        /// </summary>
+        public GameObject LocalAvatarPrefab => localAvatarPrefab;
 
         [Header("Hand Mesh Visualization")]
         [SerializeField]
@@ -109,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         public bool UseCustomHandMaterial => useCustomHandMaterial;
 
         [SerializeField]
-        [Tooltip("Custom hand material to use for hand tracking hand mesh.")]
+        [Tooltip("Custom hand material to use for hand tracking hand mesh. Use Custom Hand Material must be set to true for this material to be applied")]
         private Material customHandMaterial = null;
 
         /// <summary>
@@ -178,15 +169,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         [SerializeField]
         [Range(0f, 5f)]
         [Tooltip("Time after which low confidence is considered unreliable, and tracking is set to false. Setting this to 0 means low-confidence is always acceptable.")]
-        private float _lowConfidenceTimeThreshold = 0.2f;
+        private float lowConfidenceTimeThreshold = 0.2f;
 
         /// <summary>
         /// Time after which low confidence is considered unreliable, and tracking is set to false.
         /// </summary>
         public float LowConfidenceTimeThreshold
         {
-            get => _lowConfidenceTimeThreshold;
-            set => _lowConfidenceTimeThreshold = value;
+            get => lowConfidenceTimeThreshold;
+            set => lowConfidenceTimeThreshold = value;
         }
 
         [Header("Performance Configuration")]
