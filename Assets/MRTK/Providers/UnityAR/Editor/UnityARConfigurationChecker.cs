@@ -20,7 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
         static UnityARConfigurationChecker()
         {
-            UpdateAsmDef(ReconcileArFoundationDefine());
+            // TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8188)
+            // This should be updated to only run on editor launch and on large asset changes
+            // (i.e. post import of asset packages). This should remove this from the inner compile
+            // loop.
+            if (!EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                UpdateAsmDef(ReconcileArFoundationDefine());
+            }
         }
 
         /// <summary>
@@ -95,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             if (arFoundationPresent)
             {
-#if UNITY_2018 || UNITY_2019_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
                 if (!references.Contains(arFoundationReference))
                 {
                     // Add a reference to the ARFoundation assembly

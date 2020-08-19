@@ -10,15 +10,11 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using System.Collections;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -29,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         GameObject cube;
         Interactable interactable;
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -40,13 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable = cube.AddComponent<Interactable>();
             Assert.NotNull(interactable, "Failed to add interactable to cube");
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             GameObject.Destroy(cube);
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestClickEvents()
         {
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -132,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestToggleEvents()
         {
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;

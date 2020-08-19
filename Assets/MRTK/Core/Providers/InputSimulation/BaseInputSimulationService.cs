@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseInputSimulationService : BaseInputDeviceManager
     {
         /// <summary>
-        /// Dictionary to capture all active hands detected
+        /// Dictionary to capture all active controllers detected
         /// </summary>
-        private readonly Dictionary<Handedness, SimulatedHand> trackedHands = new Dictionary<Handedness, SimulatedHand>();
+        private readonly Dictionary<Handedness, BaseController> trackedControllers = new Dictionary<Handedness, BaseController>();
 
         /// <summary>
         /// Active controllers
@@ -66,63 +67,73 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion BaseInputDeviceManager Implementation
 
-        // Register input sources for hands based on hand data
-        protected void UpdateHandDevice(HandSimulationMode simulationMode, Handedness handedness, SimulatedHandData handData)
+        // Register input sources for controllers based on controller data
+        protected void UpdateControllerDevice(ControllerSimulationMode simulationMode, Handedness handedness, object controllerData)
         {
-            if (handData != null && handData.IsTracked)
+            if (controllerData != null)
             {
-                SimulatedHand controller = GetOrAddHandDevice(handedness, simulationMode);
-                controller.UpdateState(handData);
+                if(controllerData is SimulatedHandData handData && handData.IsTracked)
+                {
+                    
+                    SimulatedHand hand = GetOrAddControllerDevice(handedness, simulationMode) as SimulatedHand;
+                    hand.UpdateState(handData);
+                    return;
+                    
+                }
             }
-            else
-            {
-                RemoveHandDevice(handedness);
-            }
+            
+            RemoveControllerDevice(handedness);
+            
         }
 
-        public SimulatedHand GetHandDevice(Handedness handedness)
+        public BaseController GetControllerDevice(Handedness handedness)
         {
-            if (trackedHands.TryGetValue(handedness, out SimulatedHand controller))
+            if (trackedControllers.TryGetValue(handedness, out BaseController controller))
             {
                 return controller;
             }
             return null;
         }
 
-        protected SimulatedHand GetOrAddHandDevice(Handedness handedness, HandSimulationMode simulationMode)
+        protected BaseController GetOrAddControllerDevice(Handedness handedness, ControllerSimulationMode simulationMode)
         {
-            var controller = GetHandDevice(handedness);
+            var controller = GetControllerDevice(handedness);
             if (controller != null)
             {
-                if (controller.SimulationMode == simulationMode)
+                if (controller is SimulatedHand hand && hand.SimulationMode == simulationMode)
                 {
                     return controller;
                 }
                 else
                 {
-                    // Remove and recreate hand device if simulation mode doesn't match
-                    RemoveHandDevice(handedness);
+                    // Remove and recreate controller device if simulation mode doesn't match
+                    RemoveControllerDevice(handedness);
                 }
             }
 
-            SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
-            IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
+            DebugUtilities.LogVerboseFormat("GetOrAddControllerDevice: Adding a new simulated controller of handedness {0} and simulation mode {1}", handedness, simulationMode);
+            System.Type controllerType = null;
 
-            var inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
+            SupportedControllerType st;
+            IMixedRealityInputSource inputSource;
             switch (simulationMode)
             {
-                case HandSimulationMode.Articulated:
-                    controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                case HandSimulationMode.Gestures:
+                case ControllerSimulationMode.HandGestures:
+                    st = SupportedControllerType.GGVHand;
+                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
                     controller = new SimulatedGestureHand(TrackingState.Tracked, handedness, inputSource);
+                    controllerType = typeof(SimulatedGestureHand);
+                    break;
+                case ControllerSimulationMode.ArticulatedHand:
+                    st = SupportedControllerType.ArticulatedHand;
+                    inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", RequestPointers(st, handedness), InputSourceType.Hand);
+                    controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
+                    controllerType = typeof(SimulatedArticulatedHand);
                     break;
                 default:
                     controller = null;
                     break;
             }
-
-            System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
 
             if (controller == null || !controller.Enabled)
             {
@@ -139,42 +150,81 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Service?.RaiseSourceDetected(controller.InputSource, controller);
 
-            trackedHands.Add(handedness, controller);
+            trackedControllers.Add(handedness, controller);
             UpdateActiveControllers();
 
             return controller;
         }
 
-        protected void RemoveHandDevice(Handedness handedness)
+        protected void RemoveControllerDevice(Handedness handedness)
         {
-            var controller = GetHandDevice(handedness);
+            var controller = GetControllerDevice(handedness);
             if (controller != null)
             {
+                DebugUtilities.LogVerboseFormat("RemoveHandDevice: Removing simulated controller of handedness", handedness);
+
                 Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 RecyclePointers(controller.InputSource);
 
-                trackedHands.Remove(handedness);
+                trackedControllers.Remove(handedness);
                 UpdateActiveControllers();
             }
         }
 
-        protected void RemoveAllHandDevices()
+        protected void RemoveAllControllerDevices()
         {
-            foreach (var controller in trackedHands.Values)
+            foreach (var controller in trackedControllers.Values)
             {
                 Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 RecyclePointers(controller.InputSource);
             }
 
-            trackedHands.Clear();
+            trackedControllers.Clear();
             UpdateActiveControllers();
         }
 
         private void UpdateActiveControllers()
         {
-            activeControllers = trackedHands.Values.ToArray<IMixedRealityController>();
+            activeControllers = trackedControllers.Values.ToArray<IMixedRealityController>();
         }
+
+        #region Obsolete Methods
+
+        // Register input sources for hands based on hand data
+        [Obsolete("Use UpdateControllerDevice instead.")]
+        protected void UpdateHandDevice(ControllerSimulationMode simulationMode, Handedness handedness, SimulatedHandData handData)
+        {
+            UpdateControllerDevice(simulationMode, handedness, handData);
+        }
+
+        [Obsolete("Use GetControllerDevice instead.")]
+        public SimulatedHand GetHandDevice(Handedness handedness)
+        {
+            return GetControllerDevice(handedness) as SimulatedHand;
+        }
+
+        [Obsolete("Use GetOrAddControllerDevice instead.")]
+        protected SimulatedHand GetOrAddHandDevice(Handedness handedness, ControllerSimulationMode simulationMode)
+        {
+            return GetOrAddControllerDevice(handedness, simulationMode) as SimulatedHand;
+        }
+
+        [Obsolete("Use RemoveControllerDevice instead.")]
+        protected void RemoveHandDevice(Handedness handedness)
+        {
+            RemoveControllerDevice(handedness);
+        }
+
+        [Obsolete("Use RemoveAllControllerDevices instead.")]
+        protected void RemoveAllHandDevices()
+        {
+            RemoveAllControllerDevices();
+        }
+
+        #endregion
+
+        
     }
 }

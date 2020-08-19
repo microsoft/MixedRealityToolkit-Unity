@@ -32,9 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-
+            // The base class initialization should be run every time. This ensures
+            // that profile settings are read at the correct time.
             base.Initialize();
+
+            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
         }
 
         #endregion IMixedRealityService Implementation

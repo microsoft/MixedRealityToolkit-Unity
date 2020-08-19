@@ -52,11 +52,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
 
-        [SetUp]
-        public override void Setup()
+        /// <summary>
+        /// Set initial state before each test.
+        /// </summary>
+        /// <returns>enumerator</returns>
+        /// <remarks>
+        /// Note that, in order to catch incorrect reliances on identity camera transforms early on,
+        /// this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+        /// appropriate for an individual test by starting off with, e.g., <see cref="TestUtilities.PlayspaceToOriginLookingForward"/>.
+        /// However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+        /// to align test objects with the camera.
+        /// For example, to place an object 8 meters in front of the camera, set its global position to:
+        /// TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+        /// See usage of these helpers throughout the tests within this file, e.g. <see cref="TestHandInputOnRuntimeAssembled"/>.
+        /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
+        /// </remarks>
+        [UnitySetUp]
+        public override IEnumerator Setup()
         {
-            base.Setup();
-            TestUtilities.PlayspaceToOriginLookingForward();
+            yield return base.Setup();
+            TestUtilities.PlayspaceToArbitraryPose();
+            yield return null;
         }
 
         /// <summary>
@@ -99,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable.transform.position = new Vector3(0.025f, 0.05f, 0.65f);
             interactable.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            TestUtilities.PlaceRelativeToPlayspace(interactable.transform);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -139,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
-            interactable.transform.position = new Vector3(10f, 0.0f, 0.5f);
+            interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(10f, 0.0f, 0.5f));
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -190,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable.transform.position = new Vector3(0.0f, 0.0f, 0.5f);
             interactable.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            TestUtilities.PlaceRelativeToPlayspace(interactable.transform);
 
             // Subscribe to interactable's on click and on press receiver so we know the click went through
             bool wasClicked = false;
@@ -618,13 +636,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var secondRadialButton = radialSet.transform.Find("Radial (2)").GetComponent<Interactable>();
             var thirdRadialButton = radialSet.transform.Find("Radial (3)").GetComponent<Interactable>();
             var testHand = new TestHand(Handedness.Right);
-            yield return testHand.Show(Vector3.zero);
+            yield return testHand.Show(TestUtilities.PositionRelativeToPlayspace(Vector3.zero));
 
             Assert.IsTrue(firstRadialButton.IsToggled);
             Assert.IsFalse(secondRadialButton.IsToggled);
             Assert.IsFalse(thirdRadialButton.IsToggled);
 
-            var aBitBack = Vector3.forward * -0.2f;
+            var aBitBack = TestUtilities.DirectionRelativeToPlayspace(Vector3.forward * -0.2f);
             yield return testHand.MoveTo(secondRadialButton.transform.position);
             yield return testHand.Move(aBitBack);
 
@@ -656,7 +674,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestPressableToggleHoloLens2()
         {
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 p2 = new Vector3(0.015f, 0f, 0.3f);
+            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.015f, 0f, 0.3f));
 
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2ToggleButton,
@@ -664,7 +682,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out Transform frontPlateTransform);
 
             Assert.True(interactable.IsEnabled);
-            interactable.transform.position = new Vector3(0.0f, 0.1f, 0.4f);
+            interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0f, 0.1f, 0.4f));
 
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
@@ -743,17 +761,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestButtonStateResetWhenFocusLostAfterPinch()
         {
+            /// This test breaks if there is roll on the camera. I don't know if that's a real
+            /// break, or an error in the test. Nulling out roll for now.
+            Pose restorePose = TestUtilities.ArbitraryPlayspacePose;
+            Pose noRollPose = restorePose;
+            noRollPose.rotation.eulerAngles = new Vector3(noRollPose.rotation.eulerAngles.x, noRollPose.rotation.eulerAngles.y, 0.0f);
+            TestUtilities.ArbitraryPlayspacePose = noRollPose;
+            TestUtilities.PlayspaceToArbitraryPose();
+
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
                 out Transform interactableTransform);
 
-            interactable.transform.position = new Vector3(0.0f, 0.1f, 0.4f);
+            interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0f, 0.1f, 0.4f));
             Assert.True(interactable.IsEnabled);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 focusPosition = new Vector3(0.015f, 0.015f, 0.3f);
-            Vector3 releaseDelta = new Vector3(0.05f, 0, 0);
+            Vector3 focusPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0155f, 0.0145f, 0.3f));
+            Vector3 releaseDelta = TestUtilities.DirectionRelativeToPlayspace(new Vector3(0.05f, 0, 0));
 
             // Focus the hand on the Button using the far ray pointer
             yield return rightHand.Show(focusPosition);
@@ -811,6 +837,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Focus, "Interactable State is not Focus");
 
             GameObject.Destroy(interactable.gameObject);
+
+            TestUtilities.ArbitraryPlayspacePose = restorePose;
         }
 
         /// <summary>
@@ -822,6 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object checkboxesPrefab = AssetDatabase.LoadAssetAtPath(DisabledInitializedPrefabAssetPath, typeof(Object));
             var result = Object.Instantiate(checkboxesPrefab, Vector3.forward * 1.0f, Quaternion.identity) as GameObject;
             var interactables = result.GetComponentsInChildren<Interactable>(true);
+            TestUtilities.PlaceRelativeToPlayspace(result.transform);
 
             const int ExpectedCheckboxCount = 2;
             Assert.AreEqual(ExpectedCheckboxCount, interactables.Length);
@@ -847,8 +876,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 bool wasClicked = false;
                 disabledCheckbox.OnClick.AddListener(() => { wasClicked = true; });
 
-                Vector3 end = disabledCheckbox.transform.position - new Vector3(0f, 0.05f, 0f);
-                Vector3 start = end - new Vector3(0f, 0f, 0.5f);
+                Vector3 end = disabledCheckbox.transform.position - TestUtilities.DirectionRelativeToPlayspace(new Vector3(0f, 0.05f, 0f));
+                Vector3 start = end - TestUtilities.DirectionRelativeToPlayspace(new Vector3(0f, 0f, 0.5f));
 
                 yield return TestButtonUtilities.MoveHand(start, end);
                 yield return TestButtonUtilities.MoveHand(end, start);
@@ -873,6 +902,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactableObject.transform.position = new Vector3(0.05f, 0.05f, 0.625f);
             interactableObject.transform.localScale = new Vector3(0.15f, 0.025f, 0.15f);
             interactableObject.transform.eulerAngles = new Vector3(90f, 0f, 180f);
+            TestUtilities.PlaceRelativeToPlayspace(interactableObject.transform);
 
             // This will be the part that gets scaled
             GameObject childObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);

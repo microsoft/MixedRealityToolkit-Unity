@@ -320,6 +320,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
                 dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
                 dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
+
+                dictationRecognizer.Dispose();
             }
         }
 
@@ -412,5 +414,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
+        /// <inheritdoc />	 	 
+        public AudioClip AudioClip
+        {
+            get
+            {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+                return dictationAudioClip;
+#else
+                return null;
+#endif
+            }
+        }
     }
 }

@@ -1,0 +1,44 @@
+# [Template] Builds and publishes UPM .tgz packages
+parameters:
+  projectRoot: $(Get-Location)
+  outputDirectory: $(Build.ArtifactStagingDirectory)\build\upm\output
+  version: $(MRTKVersion)
+  buildNumber: $(Build.BuildNumber)
+  excludeBuildNumber: 0
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.18.0'
+    
+- ${{ if eq(parameters.excludeBuildNumber, 0) }}:
+  - task: PowerShell@2
+    displayName: 'Build PREVIEW UPM packages'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/createupmpackages.ps1
+      arguments: >
+        -ProjectRoot ${{ parameters.projectRoot }}
+        -OutputDirectory ${{ parameters.outputDirectory }}
+        -Version ${{ parameters.version }}
+        -BuildNumber ${{ parameters.buildNumber }}
+
+- ${{ if eq(parameters.excludeBuildNumber, 1) }}:
+  - task: PowerShell@2
+    displayName: 'Build OFFICIAL UPM packages'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/createupmpackages.ps1
+      arguments: >
+        -ProjectRoot ${{ parameters.projectRoot }}
+        -OutputDirectory ${{ parameters.outputDirectory }}
+        -Version ${{ parameters.version }}
+        -BuildNumber ${{ parameters.buildNumber }}
+        -ExcludeBuildNumber
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish UPM packages'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
+    ArtifactName: 'mrtk-upm'
+

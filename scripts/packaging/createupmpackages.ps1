@@ -3,44 +3,55 @@
     Builds the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.
 .DESCRIPTION
     Builds UPM packages for the Mixed Reality Toolkit.
-.PARAMETER NodejsVersion
-    The desired version of node.js to use when packaging. If not specified, a known good version will be used.
-.PARAMETER OutputDirectory
-    Where should we place the output? Defaults to ".\artifacts"
-.PARAMETER PackageVersion
-    What version of the artifacts should we build? If unspecified, the highest
-    git tag pointing to HEAD is searched. If none is found, an error is reported.
-.PARAMETER OutputTarget
-    What is the target for the artifacts? To the Official server ("official"), test server ("test") or local folder ("local")?
 .PARAMETER ProjectRoot
     The root folder of the project.
+.PARAMETER OutputDirectory
+    Where should we place the output? Defaults to ".\artifacts"
+.PARAMETER Version
+    What version of the artifacts should we build?
+.PARAMETER BuildNumber
+    The build number to append to the version. Note: This value is required when the ExcludeBuildNumber parameter is omitted.
+.PARAMETER ExcludeBuildNumber
+    Indicates that the build number should be excluded from the generated artifacts. If this parameter is specified, the version
+    of the artifacts will be formatted as "<$Version>", if omitted, the artifact version will be "<$Version>-preview.<BuildNumber>".
 #>
 param(
-    [ValidatePattern("^\d+\.\d+\.\d+")]
-    [string]$NodejsVersion = "12.18.0",
-    [string]$OutputDirectory = ".\artifacts\upm",
-    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")] # todo - format of d.d.d[-preview.0-9.0-9]
-    [string]$PackageVersion,
-    [string]$OutputTarget = "local",
-    [string]$ProjectRoot
+    [string]$ProjectRoot,
+    [string]$OutputDirectory = "./artifacts/upm",
+    [ValidatePattern("^\d+\.\d+\.\d+-?[a-zA-Z0-9\.]*$")]
+    [string]$Version,
+    [ValidatePattern("^\d+?[\.\d+]*$")]
+    [string]$BuildNumber,
+    [Parameter(Mandatory=$false)]
+    [Switch]$ExcludeBuildNumber
 )
 
-if (-not $PackageVersion) {
-        throw "Unknown package version. Please specify -PackageVersion when building."
-}
-
-if ($OutputTarget -eq "local") {
-    if (-not (Test-Path $OutputDirectory -PathType Container)) {
-        New-Item $OutputDirectory -ItemType Directory | Out-Null
-    }
-    $OutputDirectory = Resolve-Path "$(Get-Location)\$OutputDirectory"
-}
+[string]$startPath = $(Get-Location)
 
 if (-not $ProjectRoot) {
-    # ProjectRoot was not specified, presume the current location is Root\scripts\packaging
-    $ProjectRoot = Resolve-Path "$(Get-Location)\..\.." 
+    throw "Missing required parameter: -ProjectRoot."
 }
-$scriptPath = "$ProjectRoot\scripts\packaging"
+$ProjectRoot = Resolve-Path -Path $ProjectRoot
+
+if (-not $Version) {
+    throw "Missing required parameter: -Version."
+}
+
+if ((-not $BuildNumber) -and (-not $ExcludeBuildNumber)) {
+    throw "Missing required parameter: -BuildNumber. This parameter is required when -ExcludeBuildNumber is not specified."
+}
+if (-not $ExcludeBuildNumber) {
+    $Version = "$Version-preview.$BuildNumber"
+}
+Write-Output "Package version: $Version"
+
+if (-not (Test-Path $OutputDirectory -PathType Container)) {
+    New-Item $OutputDirectory -ItemType Directory | Out-Null
+}
+$OutputDirectory = Resolve-Path -Path $OutputDirectory
+Write-Output "OutputDirectory: $OutputDirectory"
+
+$scriptPath = "$ProjectRoot/scripts/packaging"
 
 $scope = "com.microsoft.mixedreality"
 $product = "toolkit"
@@ -57,127 +68,66 @@ $product = "toolkit"
 #
 # These paths are ProjectRoot relative.
 $packages = [ordered]@{
-    "foundation" = "Assets\MRTK";
-    # providers
-    "leapmotion.legacy" = "Assets\MRTK\Providers\LeapMotion";
-    "oculus.xrplugin" = "Assets\MRTK\Providers\Oculus\XRSDK"
-    "openvr.legacy" = "Assets\MRTK\Providers\OpenVR";
-    "unityar" = "Assets\MRTK\Providers\UnityAR";
-    "windows" = "Assets\MRTK\Providers\Windows";
-    "wmr" = "Assets\MRTK\Providers\WindowsMixedReality\XR2018";
-    "wmr.xrplugin" = "Assets\MRTK\Providers\WindowsMixedReality\XRSDK";
-    "wmr.shared" = "Assets\MRTK\Providers\WindowsMixedReality\Shared";
-    "xrplugin" = "Assets\MRTK\Providers\XRSDK";
+    "foundation" = "Assets/MRTK";
+    "standardassets" = "Assets/MRTK/StandardAssets";
     # extensions
-    "handphysicsservice" = "Assets\MRTK\Extensions\HandPhysicsService";
-    "losttrackingservice" = "Assets\MRTK\Extensions\LostTrackingService";
-    "scenetransitionservice" = "Assets\MRTK\Extensions\SceneTransitionService";
-    # other packages
-    "tools" = "Assets\MRTK\Tools";
-    "testutilties" = "Assets\MRTK\Tests\TestUtilities";
-    "examples" = "Assets\MRTK\Examples";
-}
-
-$npmPath = "npm"
-
-# Ensure we can call npm.cmd to package and publish
-[boolean]$nodejsInstalled = $false
-try {
-    node.exe -v > $null 2> $null
-    $nodejsInstalled = $true
-}
-catch {}
-
-if ($nodejsInstalled -eq $false)
-{
-    # Acquire and unpack node.js
-    $archiveName = "node-v$NodejsVersion-win-x64"
-    $archiveFile = ".\$archiveName.zip"
-    $downloadUri = "https://nodejs.org/dist/v$NodejsVersion/$archiveFile"
-    Write-Output "Downloading node.js v$NodejsVersion"
-    Invoke-WebRequest -Uri $downloadUri -OutFile $archiveFile
-    Write-Output "Extracting $archiveFile"
-    Expand-Archive -Path $archiveFile -DestinationPath ".\" -Force
-
-    $npmPath = "$scriptPath\$archiveName\$npmPath"
+    "extensions" = "Assets/MRTK/Extensions";
+    # tools
+    "tools" = "Assets/MRTK/Tools";
+    # tests
+    "testutilties" = "Assets/MRTK/Tests/TestUtilities";
+    # examples
+    "examples" = "Assets/MRTK/Examples";
 }
 
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 1) Copy the appropriate publishing (.npmrc) file and set the npm command
-# 2) Replace the %version% token in the package.json file with the value of PackageVersion
-# 3) Overwrite the package.json file
-# 4) Create and publish the packages (local publishing copies the package to the OutputFolder)
-# 5) Cleanup files created and/or modified
-
-$npmrcFile = ".npmrc"
-$npmrcFileFullPath = "$scriptPath\$npmrcFile.$OutputTarget"
-$cmdFullPath = "$env:systemroot\system32\cmd.exe"
-$npmCommand = "pack"
-$updateAuth = $true
-$isLocalBuild = ($OutputTarget -eq "local")
+# 1) Replace the %version% token in the package.json file with the value of Version
+# 2) Overwrite the package.json file
+# 3) Create and the packages and copy to the OutputFolder
+# 4) Cleanup files created and/or modified
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
-    $packagePath = "$ProjectRoot\$packageFolder"
-    $npmrcBackup = "$npmrcFile.mrtk-bak"
+    $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
-    # Backup any existing .npmrc file
-    if (Test-Path -Path $npmrcFile ) {
-        Rename-Item -Path $npmrcFile  -NewName $npmrcBackup
-    }
-
-    if (-not ($isLocalBuild)) {
-        # Copy the appropriate .nmprc file
-        Copy-Item -Path $npmrcFileFullPath -Destination ".\$npmrcFile" -Force
-
-        # Set the npm command to "publish"
-        $npmCommand = "publish"
-    }
-
-    # Get/update the credentials needed to access the server.
-    # This only needs to happen when credentials are updated. We run this script
-    # once per build to ensure the machine is ready to publish.
-    if (($updateAuth -eq $true) -and (Test-Path -Path $npmrcFile )) {
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "vsts-npm-auth.ps1 -config $npmrcFile" -NoNewWindow -Wait
-        $updateAuth = $false
-    }
+    # The package manifest files what we use are actually templates,
+    # rename the files so that npm can consume them.
+    Rename-Item -Path "$packagePath/packagetemplate.json" -NewName "$packagePath/package.json"
+    Rename-Item -Path "$packagePath/packagetemplate.json.meta" -NewName "$packagePath/package.json.meta"
 
     # Apply the version number to the package json file
-    $packageJsonPath = "$packagePath\package.json"
+    $packageJsonPath = "$packagePath/package.json"
     $packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
-    $packageJson = ($packageJson -replace "%version%", $PackageVersion)
+    $packageJson = ($packageJson -replace "%version%", $Version)
     [System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
 
     # Create and publish the package
     $packageName = $entry.Name
-    $registryName = $OutputPath
 
-    if ($isLocalBuild) {
-        $registryName = $OutputDirectory
-    }
-    else {
-        $registryName = "the $OutputTarget registry"
-    }
+    $samplesFolder = "$packagePath/Samples~"
 
-    $samplesFolder = "$packagePath\Samples~"
-     
     if ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
         # the folder.
-        Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "$scriptPath\examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/examplesfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "extensions") {
+        # The extensions folder contains one or more folders that provide their own examples. In order
+        # to perform the necessary preparation, without overly complicating this script, we will use a
+        # helper script to prepare the folder.
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
-        # are packaged in the examples package.
-        $exampleFolder = "$packagePath\Examples"
-        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
+        $exampleFolder = "$packagePath/Examples"
+        if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
                 New-Item $samplesFolder -ItemType Directory | Out-Null
@@ -190,14 +140,12 @@ foreach ($entry in $packages.GetEnumerator()) {
     }
 
     Write-Output "======================="
-    Write-Output "Creating $scope.$product.$packageName and publishing to $registryName"
+    Write-Output "Creating $scope.$product.$packageName"
     Write-Output "======================="
-    Start-Process -FilePath $cmdFullPath -ArgumentList "/c $npmPath $npmCommand" -NoNewWindow -Wait
+    npm pack
 
-    if ($isLocalBuild) {
-        # Move package file to OutputFolder
-        Move-Item -Path ".\*.tgz" $OutputDirectory -Force
-    }
+    # Move package file to OutputFolder
+    Move-Item -Path "./*.tgz" $OutputDirectory -Force
 
     # ======================
     # Cleanup the changes we have made
@@ -209,23 +157,13 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
-    # Restore the package.json file
-    Start-Process -FilePath "git" -ArgumentList "checkout package.json" -NoNewWindow -Wait
+    # Delete the renamed package.json.* files
+    Remove-Item -Path "$packagePath/package.json"
+    Remove-Item -Path "$packagePath/package.json.meta"
 
-    # Delete the .npmrc file
-    Remove-Item -ErrorAction SilentlyContinue $npmrcFile
-
-    # Restore any backup file that we may have made
-    if (Test-Path -Path "$npmrcBackup") {
-         Rename-Item -Path "$npmrcBackup" -NewName $npmrcFile 
-    }
+    # Restore the original template files
+    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
 }
 
-# Return the the scripts\packaging folder
-Set-Location -Path $scriptPath
-
-if ($nodejsInstalled -eq $false) {
-    # Cleanup the node.js "installation"
-    Remove-Item ".\$archiveName" -Recurse -Force
-    Remove-Item $archiveFile -Force
-}
+# Return to the starting path
+Set-Location $startPath

@@ -84,6 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiate and configure one of the <see cref="DefaultButtonType"/> types.
         /// Returns reference to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> component and Transform to movable object that transforms on press 
         /// </summary>
+        /// <remarks>
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
+        /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
+        /// See <see cref="InstantiateInteractableFromPath(Vector3, Quaternion, string)"/>
+        /// </remarks>
         public static void InstantiateDefaultButton(DefaultButtonType buttonType, out Interactable interactable, out Transform translateTargetObject)
         {
             InstantiatePressableButtonPrefab(
@@ -98,6 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> prefab from provided asset database path at given position and rotation
         /// </summary>
+        /// <remarks>
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
+        /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
+        /// </remarks>
         public static GameObject InstantiateInteractableFromPath(Vector3 position, Quaternion rotation, string path)
         {
             // Load interactable prefab
@@ -106,14 +115,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(result);
 
             // Move the object into position
-            result.transform.position = position;
-            result.transform.rotation = rotation;
+            Pose worldFromLocal = TestUtilities.PlaceRelativeToPlayspace(position, rotation);
+
+            result.transform.position = worldFromLocal.position;
+            result.transform.rotation = worldFromLocal.rotation;
             return result;
         }
 
         /// <summary>
         /// Instantiates Pressable Button based on list of arguments provided
         /// </summary>
+        /// <remarks>
+        /// The button will be instantiated relative to the current MRTKPlayspace. This means its world transform
+        /// will be the position and rotation baked into the prefab, applied relative to the MRTKPlayspace. 
+        /// See <see cref="InstantiateInteractableFromPath(Vector3, Quaternion, string)"/>
+        /// </remarks>
         public static void InstantiatePressableButtonPrefab(Vector3 position, Quaternion rotation,
             string prefabPath, string translateTargetPath,
             out Interactable interactable, out Transform translateTargetTransform)

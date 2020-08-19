@@ -29,12 +29,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private GameObject cube;
 
-        // Initializes MRTK, instantiates the test content prefab 
-        [SetUp]
-        public void SetUp()
+        /// <summary>
+        /// Initializes MRTK, instantiates the test content prefab  
+        /// </summary>
+        /// <returns>enumerator</returns>
+        /// <remarks>
+        /// Note that SetUp places the playspace directly, and so the camera indirectly, to
+        /// an arbitrary non-identity pose. Use the helpers in TestUtilities to place test
+        /// objects relative (e.g. in front of) the camera, using, e.g. <see cref="TestUtilities.PositionRelativeToPlayspace(Vector3)"/>. 
+        /// See test <see cref="ArticulatedCursorState"/>, or most other tests within this file,
+        /// for examples.
+        /// See also comments at <see cref="TestUtilities.PlayspaceToArbitraryPose"/>.
+        /// </remarks>
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
-            TestUtilities.PlayspaceToOriginLookingForward();
+            TestUtilities.PlayspaceToArbitraryPose();
 
             // Target frame rate is set to 50 to match the physics
             // tick rate. The rest of the test code needs to wait on a frame to have
@@ -46,20 +57,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // in scene
             GameObject backgroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             backgroundCube.transform.position = Vector3.forward * 30;
+            TestUtilities.PlaceRelativeToPlayspace(backgroundCube.transform);
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
+            TestUtilities.PlaceRelativeToPlayspace(cube.transform);
 
             var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             Object.Destroy(cube);
             TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
         }
 
         private void VerifyCursorStateFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorStateEnum state)
@@ -101,12 +116,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Show hand far enough from the test collider so the cursor is not on it
             var hand = new TestHand(Handedness.Right);
-            Vector3 offObjectPos = new Vector3(0.05f, 0, 1.0f);
+            Vector3 offObjectPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.05f, 0, 1.0f));
             yield return hand.Show(offObjectPos);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.Interact);
 
             // Move hand closer to the collider so the cursor is on it
-            Vector3 onObjectPos = new Vector3(0.05f, 0, 1.5f);
+            Vector3 onObjectPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.05f, 0, 1.5f));
             yield return hand.MoveTo(onObjectPos, numFramesPerMove);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.InteractHover);
 
@@ -133,11 +148,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
-            Vector3 underPointerPos = new Vector3(0, 0, 2);
-            Vector3 abovePointerPos = new Vector3(0, -2, 2);
+            Vector3 underPointerPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, 0, 2));
+            Vector3 abovePointerPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, -2, 2));
+            Vector3 zeroPos = TestUtilities.PositionRelativeToPlayspace(Vector3.zero);
 
             var rightHand = new TestHand(Handedness.Right);
             var leftHand = new TestHand(Handedness.Left);
@@ -157,11 +173,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Right hand, pointer not on cube, hand open
             cube.transform.localPosition = abovePointerPos;
             yield return new WaitForFixedUpdate();
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(zeroPos);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Interact);
 
             // Both hands, pointer not on cube, hand open
-            yield return leftHand.Show(Vector3.zero);
+            yield return leftHand.Show(zeroPos);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Interact);
 
             // Left hand, pointer not on cube, hand open
@@ -175,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.InteractHover);
 
             // Both hands, pointer on cube, hand open
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(zeroPos);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.InteractHover);
 
             // Right hand, pointer on cube, hand open
@@ -189,12 +205,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Left hand, pointer on cube, hand pinched
             yield return rightHand.Hide();
-            yield return leftHand.Show(Vector3.zero);
+            yield return leftHand.Show(zeroPos);
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
             // Both hands, pointer on cube, left pinched & right open
-            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.Show(zeroPos);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
@@ -207,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -222,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This messes with the CursorContextManipulationHandler hoverCount, as it decrements without
             // ever having incremented. To avoid this, we move the cube out of focus before we add the
             // ManipulationHandler and CursorContextManipulationHandler.
-            cube.transform.localPosition = new Vector3(0, -2, 2);
+            cube.transform.localPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, -2, 2));
             yield return new WaitForFixedUpdate();
             yield return null;
 
@@ -232,13 +248,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Move cube back to original position (described above)
-            cube.transform.localPosition = new Vector3(0, 0, 2);
+            cube.transform.localPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, 0, 2));
             yield return new WaitForFixedUpdate();
             yield return null;
 
             // Show right hand on object
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 rightPos = new Vector3(0.05f, 0, 1.5f);
+            Vector3 rightPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.05f, 0, 1.5f));
             yield return rightHand.Show(rightPos);
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -252,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Show left hand on object
             var leftHand = new TestHand(Handedness.Left);
-            Vector3 leftPos = new Vector3(-0.05f, 0, 1.5f);
+            Vector3 leftPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(-0.05f, 0, 1.5f));
             yield return rightHand.Hide();
             yield return leftHand.Show(leftPos);
             yield return new WaitForFixedUpdate();
@@ -282,50 +298,55 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
+            Vector3 playspaceUp = TestUtilities.DirectionRelativeToPlayspace(Vector3.up);
+            Vector3 playspaceRight = TestUtilities.DirectionRelativeToPlayspace(Vector3.right);
+            Vector3 playspaceDown = -playspaceUp;
+            Vector3 playspaceLeft = -playspaceRight;
+
             var empty = new GameObject();
             var info = cube.AddComponent<CursorContextInfo>();
             info.ObjectCenter = empty.transform;
 
             // Show hand on object
             var hand = new TestHand(Handedness.Right);
-            Vector3 handPos = new Vector3(0.05f, 0, 1.5f);
+            Vector3 handPos = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.05f, 0, 1.5f));
             yield return hand.Show(handPos);
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // rotate, center north
             info.CurrentCursorAction = CursorContextInfo.CursorAction.Rotate;
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.up, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceUp, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.RotateNorthSouth);
 
             // rotate, center east
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.right, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceRight, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.RotateEastWest);
 
             // scale, center northeast
             info.CurrentCursorAction = CursorContextInfo.CursorAction.Scale;
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.up + Vector3.right, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceUp + playspaceRight, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveNortheastSouthwest);
 
             // scale, center southeast
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.down + Vector3.right, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceDown + playspaceRight, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveNorthwestSoutheast);
 
             // scale, center northwest
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.up + Vector3.left, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceUp + playspaceLeft, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveNorthwestSoutheast);
 
             // scale, center southwest
-            empty.transform.SetPositionAndRotation(cube.transform.position + Vector3.down + Vector3.left, Quaternion.identity);
+            empty.transform.SetPositionAndRotation(cube.transform.position + playspaceDown + playspaceLeft, Quaternion.identity);
             yield return new WaitForFixedUpdate();
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveNortheastSouthwest);
@@ -350,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Set CursorAngularScale for hardcoded calculations
             baseCursor.CursorAngularSize = 50.0f;
 
-            cube.transform.position = Vector3.forward * 2.0f;
+            cube.transform.position = TestUtilities.PositionRelativeToPlayspace(Vector3.forward * 2.0f);
 
             // Wait for cursor to resize/move
             yield return new WaitForFixedUpdate();
@@ -365,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            cube.transform.position = Vector3.forward;
+            cube.transform.position = TestUtilities.PositionRelativeToPlayspace(Vector3.forward);
 
             // Wait for cursor to resize/move
             yield return new WaitForFixedUpdate();

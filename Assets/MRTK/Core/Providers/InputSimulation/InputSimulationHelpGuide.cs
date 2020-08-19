@@ -50,9 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             HelpGuideVisual.SetActive(false);
         }
 
-
-        public Vector3 helpDisplayOffset = new Vector3(0, 0.1f, 0.5f);
-
         // Update is called once per frame
         void Update()
         {
@@ -69,12 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             if (shortcutPressed && shortcutDown)
             {
-                HelpGuideVisual.transform.parent = CameraCache.Main.transform;
-                HelpGuideVisual.transform.rotation = CameraCache.Main.transform.rotation;
-                HelpGuideVisual.transform.localPosition = helpDisplayOffset;
-
-                HelpGuideVisual.transform.parent = null;
-
                 HelpGuideVisual.SetActive(!HelpGuideVisual.activeSelf);
                 HelpGuideShortcutTip.SetActive(false);
             }

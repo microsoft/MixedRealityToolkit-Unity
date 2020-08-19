@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             using (UpdateHandDataPerfMarker.Auto())
             {
 #if WINDOWS_UWP && WMR_ENABLED
-                XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+                XRSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
                 foreach (SpatialInteractionSourceState sourceState in states)
                 {

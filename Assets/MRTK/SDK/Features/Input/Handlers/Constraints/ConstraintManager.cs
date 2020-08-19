@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -12,14 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Manages constraints for a given object and ensures that Scale/Rotation/Translation 
     /// constraints are executed separately.
     /// </summary>
-    internal class ConstraintManager
+    internal class ConstraintManager : MonoBehaviour
     {
-        private List<TransformConstraint> constraints;
-
-        public ConstraintManager(GameObject gameObject)
-        {
-            constraints = gameObject.GetComponents<TransformConstraint>().ToList();
-        }
+        private HashSet<TransformConstraint> constraints = new HashSet<TransformConstraint>();
+        private MixedRealityTransform initialWorldPose;
 
         public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
@@ -36,11 +31,45 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Move);
         }
 
-        public void Initialize(MixedRealityPose worldPose)
+        public void Initialize(MixedRealityTransform worldPose)
         {
+            initialWorldPose = worldPose;
             foreach (var constraint in constraints)
             {
                 constraint.Initialize(worldPose);
+            }
+        }
+
+        /// <summary>
+        /// Manual registering of a constraint in case a constraint gets added during runtime.
+        /// Only active and enabled constraints can be registered to the constraint manager.
+        /// </summary>
+        internal void RegisterConstraint(TransformConstraint constraint)
+        {
+            if (constraint.isActiveAndEnabled)
+            {
+                constraints.Add(constraint);
+                constraint.Initialize(initialWorldPose);
+            }
+        }
+
+        /// <summary>
+        /// Unregister a constraint from the manager.
+        /// </summary>
+        internal void UnregisterConstraint(TransformConstraint constraint)
+        {
+            constraints.Remove(constraint);
+        }
+
+        protected void Awake()
+        {
+            var constraintComponents = gameObject.GetComponents<TransformConstraint>();
+            foreach (var constraint in constraintComponents)
+            {
+                if (constraint.isActiveAndEnabled)
+                {
+                    constraints.Add(constraint);
+                }
             }
         }
 
@@ -51,7 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             foreach (var constraint in constraints)
             {
-                if (constraint.ConstraintType == transformType &&
+                if (constraint.isActiveAndEnabled &&
+                    constraint.ConstraintType == transformType &&
                     constraint.HandType.HasFlag(handMode) &&
                     constraint.ProximityType.HasFlag(proximityMode))
                 {

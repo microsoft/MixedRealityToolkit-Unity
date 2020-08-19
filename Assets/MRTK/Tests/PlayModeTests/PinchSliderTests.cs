@@ -27,17 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string defaultPinchSliderPrefabGuid = "1093263a89abe47499cccf7dcb08effb";
         private static readonly string defaultPinchSliderPrefabPath = AssetDatabase.GUIDToAssetPath(defaultPinchSliderPrefabGuid);
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests
@@ -89,9 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // This should not throw exception
             InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
 
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -114,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Set up ggv simulation
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
@@ -192,9 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.ThumbVisuals = null;
 
             // Test that the slider still works
-            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            Assert.AreEqual(slider.SliderValue, 0.5f, 1.0e-5f, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+            Assert.AreEqual(slider.SliderValue, 1.0f, 1.0e-5f, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class SimulatedGestureHand : SimulatedHand
     {
         /// <inheritdoc />
-        public override HandSimulationMode SimulationMode => HandSimulationMode.Gestures;
+        public override ControllerSimulationMode SimulationMode => ControllerSimulationMode.HandGestures;
 
         private bool initializedFromProfile = false;
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;

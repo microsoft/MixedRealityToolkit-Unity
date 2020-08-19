@@ -341,6 +341,19 @@ namespace Microsoft.MixedReality.Toolkit
         [Tooltip("If true, MRTK will render the depth buffer as color. Only valid in editor.")]
         private bool renderDepthBuffer = false;
 
+        /// <summary>
+        /// If true, verbose logging will be enabled for MRTK components.
+        /// </summary>
+        public bool EnableVerboseLogging
+        {
+            get { return enableVerboseLogging; }
+            set { enableVerboseLogging = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("If true, verbose logging will be enabled for MRTK components.")]
+        private bool enableVerboseLogging = false;
+
         #endregion Mixed Reality Toolkit configurable properties
     }
 }

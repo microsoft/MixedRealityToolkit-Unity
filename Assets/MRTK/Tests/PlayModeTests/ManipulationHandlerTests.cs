@@ -26,18 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private readonly List<Action> cleanupAction = new List<Action>();
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             cleanupAction.ForEach(f => f?.Invoke());
 
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -873,8 +875,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -917,7 +919,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -935,8 +937,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -985,7 +987,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -1002,8 +1004,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldHandSimMode = iss.HandSimulationMode;
-            iss.HandSimulationMode = HandSimulationMode.Gestures;
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -1049,7 +1051,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(xPos, Mathf.Abs(yPosDown), 0.02f);
 
             // Restore the input simulation profile
-            iss.HandSimulationMode = oldHandSimMode;
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -1254,6 +1256,128 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
+        }
+
+        /// <summary>
+        /// Test that the grab centroid is calculated correctly while rotating
+        /// the hands during a two-hand near interaction grab.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerTwoHandedCentroid()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            // Add NearInteractionGrabbable to be able to grab the cube with articulated hands.
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.2f, -0.1f, 0.8f));
+            yield return leftHand.Show(new Vector3(-0.2f, -0.1f, 0.8f));
+            yield return null;
+
+            // Two Handed
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.TwoHandedOnly;
+
+            // Only testing move/rotate centroid position
+            manipHandler.TwoHandedManipulationType = ManipulationHandler.TwoHandedManipulation.MoveRotate;
+
+            // Only testing near manipulation
+            manipHandler.AllowFarManipulation = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+
+            // Grab the box.
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Should not have moved (yet!)
+            TestUtilities.AssertAboutEqual(testObject.transform.position, initialObjectPosition, $"Object moved when it shouldn't have! Position: {testObject.transform.position:F5}", 0.00001f);
+
+            // The ObjectManipulator should recognize that we've begun manipulation.
+            Assert.IsTrue(manipulationStartedCount == 1);
+
+            // Move both hands outwards; the object may be scaled but the position should remain the same.
+            yield return rightHand.MoveTo(new Vector3(0.2f, -0.1f, 0.8f));
+            yield return leftHand.MoveTo(new Vector3(-0.2f, -0.1f, 0.8f));
+
+            // Should *still* not have moved!
+            TestUtilities.AssertAboutEqual(testObject.transform.position, initialObjectPosition, $"Object moved when it shouldn't have! Position: {testObject.transform.position:F5}", 0.00001f);
+
+            // Manipulation should not yet have ended.
+            Assert.IsTrue(manipulationEndedCount == 0);
+
+            // Get the grab points before we rotate the hands.
+            var leftGrabPoint = manipHandler.GetPointerGrabPoint(leftHand.GetPointer<SpherePointer>().PointerId);
+            var rightGrabPoint = manipHandler.GetPointerGrabPoint(rightHand.GetPointer<SpherePointer>().PointerId);
+            var originalCentroid = (leftGrabPoint + rightGrabPoint) / 2.0f;
+
+            // List of test conditions for test fuzzing.
+            // (position, rotation)
+            List<(Vector3, Vector3)> testConditions = new List<(Vector3, Vector3)>
+            {
+                (new Vector3(0, 90, 0), new Vector3(0.2f, -0.1f, 0.8f)),
+                (new Vector3(25, 30, 45), new Vector3(0.3f, -0.2f, 0.7f)),
+                (new Vector3(75, 140, 0), new Vector3(0.1f, -0.1f, 0.8f)),
+                (new Vector3(10, 90, 20), new Vector3(0.5f, -0.2f, 0.5f)),
+                (new Vector3(45, 110, 0), new Vector3(0.3f, -0.1f, 0.8f))
+            };
+
+            // Fuzz test.
+            foreach (var testCondition in testConditions)
+            {
+                yield return MoveHandsAndCheckCentroid(testCondition.Item1, testCondition.Item2, leftHand, rightHand, manipHandler, initialObjectPosition, originalCentroid, testObject.transform);
+            }
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+        }
+
+        /// <summary>
+        /// Helper function for ObjectManipulatorTwoHandedCentroid. Will mirror desired handRotation
+        /// and handPosition across the two hands, and verify that the centroid was still respected
+        /// by the manipulated object.
+        /// </summary>
+        private IEnumerator MoveHandsAndCheckCentroid(Vector3 handRotationEuler, Vector3 handPosition,
+                                                      TestHand leftHand, TestHand rightHand,
+                                                      ManipulationHandler mh,
+                                                      Vector3 originalObjectPosition, Vector3 originalGrabCentroid,
+                                                      Transform testObject)
+        {
+            // Rotate the hands.
+            yield return rightHand.SetRotation(Quaternion.Euler(handRotationEuler.x, handRotationEuler.y, handRotationEuler.z));
+            yield return leftHand.SetRotation(Quaternion.Euler(handRotationEuler.x, -handRotationEuler.y, -handRotationEuler.z));
+
+            // Move the hands.
+            yield return rightHand.MoveTo(new Vector3(handPosition.x, handPosition.y, handPosition.z));
+            yield return leftHand.MoveTo(new Vector3(-handPosition.x, handPosition.y, handPosition.z));
+
+            // Recalculate the new grab centroid.
+            var leftGrabPoint = mh.GetPointerGrabPoint(leftHand.GetPointer<SpherePointer>().PointerId);
+            var rightGrabPoint = mh.GetPointerGrabPoint(rightHand.GetPointer<SpherePointer>().PointerId);
+            var centroid = (leftGrabPoint + rightGrabPoint) / 2.0f;
+
+            // Compute delta between original grab centroid and the new centroid.
+            var centroidDelta = centroid - originalGrabCentroid;
+
+            // Ensure grab consistency.
+            TestUtilities.AssertAboutEqual(testObject.transform.position, originalObjectPosition + centroidDelta,
+                                           $"Object moved did not move according to the delta! Actual position: {testObject.transform.position:F5}, should be {originalObjectPosition + centroidDelta}", 0.00001f);
         }
 
         /// <summary>

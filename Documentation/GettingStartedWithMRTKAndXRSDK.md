@@ -8,9 +8,11 @@ To get started with the Mixed Reality Toolkit, follow [the provided steps](Getti
 
 ## Add XR SDK to a Unity project
 
-For MRTK 2.3, Windows Mixed Reality is supported on XR SDK.
+Windows Mixed Reality and Oculus are supported on XR SDK.
 
 ### Required in Unity
+
+#### Windows Mixed Reality
 
 1. Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following all successfully installed:
    1. XR Plugin Management

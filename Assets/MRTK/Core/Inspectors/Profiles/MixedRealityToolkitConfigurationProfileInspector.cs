@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -43,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
         private SerializedProperty enableDiagnosticsSystem;
+        private SerializedProperty enableVerboseLogging;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
         // Scene system properties
@@ -59,7 +61,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private Func<bool>[] RenderProfileFuncs;
 
-        private static readonly string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
+        private static readonly string[] ProfileTabTitles = {
+            "Camera",
+            "Input",
+            "Boundary",
+            "Teleport",
+            "Spatial Awareness",
+            "Diagnostics",
+            "Scene System",
+            "Extensions",
+            "Editor",
+        };
+
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
@@ -98,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             spatialAwarenessSystemProfile = serializedObject.FindProperty("spatialAwarenessSystemProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
+            enableVerboseLogging = serializedObject.FindProperty("enableVerboseLogging");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
             // Scene system configuration
@@ -155,11 +169,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 EditorGUILayout.PropertyField(inputSystemType);
 
+                                // Make sure Unity axis mappings are set.
+                                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+
                                 changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                             }
                             else
                             {
                                 RenderSystemDisabled(service);
+
+                                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
                             }
 
                             changed |= c.changed;
@@ -251,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            EditorGUILayout.PropertyField(enableVerboseLogging);
                             EditorGUILayout.PropertyField(enableDiagnosticsSystem);
 
                             const string service = "Diagnostics System";

@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -21,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Todo: replace doc link - point to BoundsControl docs
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [RequireComponent(typeof(ConstraintManager))]
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -107,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Behavior")]
         [SerializeField]
         [Tooltip("Type of activation method for showing/hiding bounds control handles and controls")]
         private BoundsControlActivationType activation = BoundsControlActivationType.ActivateOnStart;
@@ -128,8 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
-
-        [Header("Visuals")]
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -233,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => handleProximityEffectConfiguration = value;
         }
 
-        [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
         private TextMesh debugText;
         /// <summary>
@@ -265,7 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        [Header("Smoothing")]
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = false;
@@ -307,7 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             set => scaleLerpTime = value;
         }
 
-        [Header("Events")]
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
@@ -402,8 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private MinMaxScaleConstraint scaleConstraint;
-
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
 
@@ -435,6 +427,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
+        private ConstraintManager constraints;
         #endregion
 
         #region public Properties
@@ -533,17 +526,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             UpdateRigVisibilityInInspector();
         }
 
-
-        /// <summary>
-        /// Register a transform scale handler to bounding box to limit the scaling range
-        /// This is useful for adding/switching your scale handler during runtime
-        /// </summary>
-        /// <param name="transformScaleHandler">scale handler you want to switch to - can be null if scaling shouldn't be constrained</param>
-        public void RegisterTransformScaleHandler(MinMaxScaleConstraint transformScaleHandler)
-        {
-            scaleConstraint = transformScaleHandler;
-        }
-
         #endregion
 
         #region MonoBehaviour Methods
@@ -566,6 +548,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
+
+            constraints = gameObject.EnsureComponent<ConstraintManager>();
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject
@@ -854,7 +838,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 isChildOfTarget = transform.IsChildOf(Target.transform);
             }
-            RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
         }
 
 
@@ -1018,36 +1001,50 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (transformType != HandleType.None)
             {
-                Vector3 prevGrabPoint = currentGrabPoint;
                 currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
+                bool isNear = currentPointer is IMixedRealityNearPointer;
 
                 if (transformType == HandleType.Rotation)
                 {
                     Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
                     Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
                     Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
+                    MixedRealityTransform constraintRotation = MixedRealityTransform.NewRotate(goal);
+                    constraints.ApplyRotationConstraints(ref constraintRotation, true, isNear);
+                    goal = constraintRotation.Rotation;
                     Target.transform.rotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.rotation, goal, rotateLerpTime, Time.deltaTime) : goal;
                 }
                 else if (transformType == HandleType.Scale)
                 {
-                    float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
-                    float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
-                    float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
-
-                    Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-
-                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
-                    if (scaleConstraint != null)
+                    Vector3 scaleFactor = Target.transform.localScale;
+                    if (ScaleHandlesConfig.ScaleBehavior == HandleScaleMode.Uniform)
                     {
-                        scaleConstraint.ApplyConstraint(ref clampedTransform);
-                        if (clampedTransform.Scale != newScale)
-                        {
-                            scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
-                        }
+                        float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
+                        float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
+                        float scaleFactorUniform = 1 + (currentDist - initialDist) / initialDist;
+                        scaleFactor = new Vector3(scaleFactorUniform, scaleFactorUniform, scaleFactorUniform);
+                    }
+                    else // non-uniform scaling
+                    {
+                        // get diff from center point of box
+                        Vector3 initialDist = (initialGrabPoint - oppositeCorner);
+                        Vector3 currentDist = (currentGrabPoint - oppositeCorner);
+                        Vector3 grabDiff = (currentDist - initialDist);
+                        scaleFactor = Vector3.one + grabDiff.Div(initialDist);
+
                     }
 
-                    var newPosition = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
+                    Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
+                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
+                    constraints.ApplyScaleConstraints(ref clampedTransform, true, isNear);
+                    if (clampedTransform.Scale != newScale)
+                    {
+                        scaleFactor = clampedTransform.Scale.Div(initialScaleOnGrabStart);
+                    }
+
                     Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
+                    var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
+                    var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
                 }
             }
@@ -1153,6 +1150,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                             debugText.text = "OnPointerDown:RotateStarted";
                         }
                     }
+
+                    constraints.Initialize(new MixedRealityTransform(Target.transform));
 
                     eventData.Use();
                 }
