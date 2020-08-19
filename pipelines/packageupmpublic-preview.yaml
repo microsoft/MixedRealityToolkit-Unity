@@ -4,7 +4,7 @@ variables:
 - template: config/settings.yml
 
 jobs:
-- job: CreatePublicPreviewUPMArtifacts
+- job: UPMPublicPreviewRelease
   timeoutInMinutes: 30
   pool:
     name: On-Prem Unity
