@@ -102,11 +102,11 @@ integration of <a href="https://nunit.org/">NUnit</a>. This guide will provide a
 <p>The <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> can be found under <strong>Window</strong> &gt; <strong>General</strong> &gt; <strong>Test Runner</strong> and will show all available MRTK play and edit mode tests.</p>
 <h3 id="command-line">Command line</h3>
 <p>Tests can also be run by a <a href="https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6">powershell</a> script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script</p>
-<p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4 (for example Unity 2018.4.1f1)</p>
-<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot;
+<p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4 (for example Unity 2018.4.26f1)</p>
+<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.26f1\Editor\Unity.exe&quot;
 </code></pre>
 <p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4, output results to C:\playmode_test_out</p>
-<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot; -outFolder &quot;C:\playmode_test_out\&quot;
+<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.26f1\Editor\Unity.exe&quot; -outFolder &quot;C:\playmode_test_out\&quot;
 </code></pre>
 <p>It's also possible to run the playmode tests multiple times via the <code>run_repeat_tests.ps1</code> script. All parameters used in <code>run_playmode_tests.ps1</code> may be used.</p>
 <pre><code class="lang-ps">.\run_repeat_tests.ps1 -Times 5
