@@ -26,9 +26,8 @@ supporting **hand tracking** with the Oculus Quest. This data provider does **NO
 1. Ensure that [developer mode](https://developer.oculus.com/documentation/native/android/mobile-device-setup/) is enabled on your device. Installing the Oculus ADB Drivers is optional.
 
 ## Setting up the scene
-    - Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
-    
-    - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
+1. Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
+1. Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
 
 ## Using the Oculus XRSDK Data Provider
 
