@@ -34,7 +34,7 @@ supporting **hand tracking** with the Oculus Quest. This data provider does **NO
 
 1. Configure your profile to use the **Oculus XRSDK Data Provider**
     - If not intending to modify the configuration profiles
-        - Change your profile to DefaultXRSDKInputSystemProfile and go to **Build and deploy your project to Oculus Quest**
+        - Change your profile to DefaultXRSDKInputSystemProfile and go to [Build and deploy your project to Oculus Quest](OculusQuestMRTK.md#build-and-deploy-your-project-to-oculus-quest)
 
     - Otherwise follow the following:
         - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
