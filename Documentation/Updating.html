@@ -144,8 +144,13 @@ breaking changes. The migration tool is part of the <strong>Tools</strong> packa
 <li>(Optional) Examples</li>
 </ul>
 </li>
-<li>Close Unity and delete the <strong>Library</strong> folder. This step is necessary to force Unity to refresh its
-asset database and reconcile existing custom profiles.</li>
+<li>Close Unity and delete the <strong>Library</strong> folder (read the note below first!). This step is necessary to force Unity to refresh its
+asset database and reconcile existing custom profiles.
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.</p>
+</div>
+</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
 <li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
