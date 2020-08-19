@@ -32,6 +32,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
+    /// <summary>
+    /// Utilities for detecting hand poses. useful for systems without native gesture support and for raising
+    /// your own events based on specific hand pose values.
+    /// </summary>
     public static class HandPoseUtils
     {
         /// <summary>
@@ -179,7 +183,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return 0.0f;
         }
 
-        // Curl calculation of a finger based on the angle made by vectors wristToFingerKuncle and fingerKuckleToFingerTip.
+        /// <summary>
+        /// Curl calculation of a finger based on the angle made by vectors wristToFingerKuncle and fingerKuckleToFingerTip.
+        /// </summary>
         static private float CalculateCurl(Vector3 wristJoint, Vector3 fingerKnuckleJoint, Vector3 fingerTipJoint)
         {
             var palmToFinger = (fingerKnuckleJoint - wristJoint).normalized;
