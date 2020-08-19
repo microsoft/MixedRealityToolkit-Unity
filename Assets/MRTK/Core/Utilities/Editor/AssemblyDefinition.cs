@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             else 
             {
-                Debug.LogError($"The {referenceName} reference name is already listed in the {Name} file.");
+                Debug.Log($"The {referenceName} reference name is already listed in the {Name} file.");
                 return;
             }
 
