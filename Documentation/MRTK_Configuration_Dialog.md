@@ -101,11 +101,6 @@ This setting is enabled by default in Unity - while this bug exists (see [Unity 
 (https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2)),
 the configurator will default to setting Graphics Jobs to 'false' (thus allowing apps deployed to HoloLens 2 not to crash).
 
-**Unity 2019.2 and earlier**
-
-MSBuild for Unity is a component that enables automatic restoring of specific NuGet packages. In this version, the **Microsoft.Windows.MixedReality.DotNetWinRT** package will be installed after enabling MSBuild for Unity.
-
-
 ## Android settings
 
 Configuration settings to support AR applications on Android powered devices.
