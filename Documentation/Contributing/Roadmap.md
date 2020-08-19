@@ -4,7 +4,7 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 
 ## Current release
 
-[Microsoft Mixed Reality Toolkit v2.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0)
+[Microsoft Mixed Reality Toolkit v2.4.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.4.0)
 
 ## Upcoming releases
 
@@ -20,9 +20,9 @@ Release details, including backlog items, can be found on the [GitHub milestone 
 
 The Mixed Reality Toolkit is an all-new product, built to be cross MR/AR/VR/XR platform by design. There are two planned pre-releases after which the Mixed Reality Toolkit will become the primary product.
 
-The Mixed Reality Toolkit will require Unity 2018.4.
+The Mixed Reality Toolkit will require Unity 2018.4.x
 
-> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2019.1) tech branch version of Unity, at the time at which MRTK was released.
+> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2019.4.8f) tech branch version of Unity, at the time at which MRTK was released.
 
 ### 2.5.0
 
