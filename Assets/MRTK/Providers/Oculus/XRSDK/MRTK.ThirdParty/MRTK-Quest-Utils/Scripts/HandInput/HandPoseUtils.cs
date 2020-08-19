@@ -30,7 +30,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace prvncher.MixedReality.Toolkit.Utils
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class HandPoseUtils
     {

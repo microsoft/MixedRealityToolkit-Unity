@@ -31,7 +31,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace prvncher.MixedReality.Toolkit.Debug
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
 
     public class HandJointFollow : MonoBehaviour

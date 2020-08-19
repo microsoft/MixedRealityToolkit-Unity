@@ -30,7 +30,7 @@
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace prvncher.MixedReality.Toolkit.Utils
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public class FingerCurlExample : MonoBehaviour
     {

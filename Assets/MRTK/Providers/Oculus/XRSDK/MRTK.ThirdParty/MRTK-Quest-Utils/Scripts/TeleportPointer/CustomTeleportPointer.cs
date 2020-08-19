@@ -37,7 +37,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityPhysics = UnityEngine.Physics;
 
-namespace prvncher.MixedReality.Toolkit.Input.Teleport
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Custom teleport pointer, controlled directly by MRTK-Quest input classes.

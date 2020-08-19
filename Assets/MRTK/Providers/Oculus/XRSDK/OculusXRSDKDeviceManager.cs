@@ -4,8 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using prvncher.MixedReality.Toolkit.Config;
-using prvncher.MixedReality.Toolkit.OculusQuestInput;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,20 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private OVRHand leftHand;
         private OVRMeshRenderer leftMeshRenderer;
         private OVRSkeleton leftSkeleton;
-
-        /// <inheritdoc/>
-        public override void Update()
-        {
-            base.Update();
-            if (OVRPlugin.GetHandTrackingEnabled())
-            {
-                UpdateHands();
-            }
-            else
-            {
-                RemoveAllHandDevices();
-            }
-        }
 #endif
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -78,15 +62,84 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
+        
+        #region Controller Utilities
+        /// <inheritdoc />
+        protected override Type GetControllerType(SupportedControllerType supportedControllerType)
+        {
+            switch (supportedControllerType)
+            {
+                case SupportedControllerType.ArticulatedHand:
+                    return typeof(OculusQuestHand);
+                case SupportedControllerType.OculusTouch:
+                    return typeof(OculusXRSDKTouchController);
+                default:
+                    return base.GetControllerType(supportedControllerType);
+            }
+        }
 
-        #if OCULUSINTEGRATION_PRESENT
+        /// <inheritdoc />
+        protected override InputSourceType GetInputSourceType(SupportedControllerType supportedControllerType)
+        {
+            switch (supportedControllerType)
+            {
+                case SupportedControllerType.OculusTouch:
+                    return InputSourceType.Controller;
+                case SupportedControllerType.ArticulatedHand:
+                    return InputSourceType.Hand;
+                default:
+                    return base.GetInputSourceType(supportedControllerType);
+            }
+        }
+
+        /// <inheritdoc />
+        protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
+        {
+            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            {
+                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                {
+                    // If it's a hand with a reported handedness, assume HL2 articulated hand
+                    return SupportedControllerType.ArticulatedHand;
+                }
+            }
+
+            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+            {
+                return SupportedControllerType.OculusTouch;
+            }
+
+            return base.GetCurrentControllerType(inputDevice);
+        }
+
+        #endregion Controller Utilities
+
+
+#if OCULUSINTEGRATION_PRESENT
         public override void Enable()
         {
             base.Enable();
             SetupInput();
             ConfigurePerformancePreferences();
-            //MRTKOculusConfig.OnCustomHandMaterialUpdate += UpdateHandMaterial;
+            MRTKOculusConfig.OnCustomHandMaterialUpdate += UpdateHandMaterial;
         }
+
+
+        /// <inheritdoc/>
+        public override void Update()
+        {
+            base.Update();
+            if (OVRPlugin.GetHandTrackingEnabled())
+            {
+                UpdateHands();
+            }
+            else
+            {
+                RemoveAllHandDevices();
+            }
+        }
+
 
         private void SetupInput()
         {
@@ -116,19 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             {
                 // Ensure all related game objects are configured
                 cameraRig.EnsureGameObjectIntegrity();
-            }
-
-            bool useAvatarHands = MRTKOculusConfig.Instance.RenderAvatarHandsInsteadOfController;
-            // If using Avatar hands, de-activate ovr controller rendering
-            foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
-            {
-                controllerHelper.gameObject.SetActive(!useAvatarHands);
-            }
-
-            if (useAvatarHands && !MRTKOculusConfig.Instance.AllowDevToManageAvatarPrefab)
-            {
-                // Initialize the local avatar controller
-                GameObject.Instantiate(MRTKOculusConfig.Instance.LocalAvatarPrefab, cameraRig.trackingSpace);
             }
 
             var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
@@ -171,49 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             base.Disable();
 
-            //MRTKOculusConfig.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
+            MRTKOculusConfig.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
-
-#endif
-
-        #region Controller Utilities
-
-        /// <inheritdoc />
-        protected override Type GetControllerType(SupportedControllerType supportedControllerType)
-        {
-            switch (supportedControllerType)
-            {
-                case SupportedControllerType.OculusTouch:
-                    return typeof(OculusXRSDKTouchController);
-                default:
-                    return base.GetControllerType(supportedControllerType);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override InputSourceType GetInputSourceType(SupportedControllerType supportedControllerType)
-        {
-            switch (supportedControllerType)
-            {
-                case SupportedControllerType.OculusTouch:
-                    return InputSourceType.Controller;
-                default:
-                    return base.GetInputSourceType(supportedControllerType);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
-        {
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
-            {
-                return SupportedControllerType.OculusTouch;
-            }
-
-            return base.GetCurrentControllerType(inputDevice);
-        }
-
-        #endregion Controller Utilities
 
         #region Hand Utilities
         protected void UpdateHands()
@@ -236,6 +235,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             else
             {
                 RemoveHandDevice(handedness);
+            }
+        }
+
+        private void UpdateHandMaterial()
+        {
+            foreach (var hand in trackedHands.Values)
+            {
+                hand.UpdateHandMaterial(MRTKOculusConfig.Instance.CustomHandMaterial);
             }
         }
 
@@ -302,6 +309,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             RecyclePointers(hand.InputSource);
         }
         #endregion
+        
+#endif
     }
 }
 

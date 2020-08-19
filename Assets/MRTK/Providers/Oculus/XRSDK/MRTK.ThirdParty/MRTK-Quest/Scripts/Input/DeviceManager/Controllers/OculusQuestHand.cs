@@ -30,8 +30,6 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using prvncher.MixedReality.Toolkit.Input.Teleport;
-using prvncher.MixedReality.Toolkit.Utils;
 using UnityEngine;
 
 #if OCULUSINTEGRATION_PRESENT
@@ -39,10 +37,16 @@ using static OVRSkeleton;
 #endif
 
 using Object = UnityEngine.Object;
+//using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
-    [MixedRealityController(SupportedControllerType.ArticulatedHand, new[] { Handedness.Left, Handedness.Right })]
+    /// <summary>
+    /// Oculus Integration Asset package implementation of Oculus Quest articulated hands.
+    /// </summary>
+    [MixedRealityController(
+        SupportedControllerType.ArticulatedHand,
+        new[] { Handedness.Left, Handedness.Right })]
     public class OculusQuestHand : BaseHand, IMixedRealityHand
     {
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
@@ -96,7 +100,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         #endregion IMixedRealityHand Implementation
 
-#if OCULUSINTEGRATION_PRESENT
+
+        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
+        };
+
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
+
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+
+        public override void SetupDefaultInteractions()
+        {
+            AssignControllerMappings(DefaultInteractions);
+        }
+
+        #if OCULUSINTEGRATION_PRESENT
         public void InitializeHand(OVRHand ovrHand, Material handMaterial)
         {
             handRenderer = ovrHand.GetComponent<Renderer>();
@@ -123,24 +146,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
-        {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, new MixedRealityInputAction(4, "Pointer Pose", AxisType.SixDof)),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, new MixedRealityInputAction(3, "Grip Pose", AxisType.SixDof)),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select, new MixedRealityInputAction(1, "Select", AxisType.Digital)),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress, new MixedRealityInputAction(7, "Grip Press", AxisType.SingleAxis)),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger,  new MixedRealityInputAction(13, "Index Finger Pose", AxisType.SixDof)),
-        };
-
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
-
-        public override void SetupDefaultInteractions()
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-        
         public override bool IsInPointingPose
         {
             get
@@ -168,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             get
             {
-                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
+                //if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
                 if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
 
                 Camera mainCamera = CameraCache.Main;
@@ -224,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 UpdateVelocity();
             }
 
-            UpdateTeleport();
+            //UpdateTeleport();
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -281,6 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
+        /*
         private void UpdateTeleport()
         {
             if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return;
@@ -300,6 +306,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                     anyPointersLockedWithHand |= nearPointer.IsNearObject;
                 }
                 anyPointersLockedWithHand |= InputSource.Pointers[i].IsFocusLocked;
+
+                // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
+                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.Official
+                    && InputSource.Pointers[i] is IMixedRealityTeleportPointer)
+                {
+                    teleportPointer = (TeleportPointer)InputSource.Pointers[i];
+                    teleportAction = ((TeleportPointer)teleportPointer).TeleportInputAction;
+                }
             }
 
             // We close middle finger to signal spider-man gesture, and as being ready for teleport
@@ -335,8 +349,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                     return;
             }
         }
-        
-#region HandJoints
+        */
+        #region HandJoints
         protected readonly Dictionary<BoneId, TrackedHandJoint> boneJointMapping = new Dictionary<BoneId, TrackedHandJoint>()
         {
             { BoneId.Hand_Thumb1, TrackedHandJoint.ThumbMetacarpalJoint },
@@ -361,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             { BoneId.Hand_PinkyTip, TrackedHandJoint.PinkyTip },
             { BoneId.Hand_WristRoot, TrackedHandJoint.Wrist },
         };
-        
+
         private float _lastHighConfidenceTime = 0f;
         protected bool UpdateHandData(OVRHand ovrHand, OVRSkeleton ovrSkeleton)
         {
@@ -575,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
         }
-#endregion
+        #endregion
 #endif
     }
 }

@@ -3,9 +3,9 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Microsoft.MixedReality.Toolkit.XRSDK.MRTKQuest.Utilities",
         "Unity.XR.Oculus",
-        "Oculus.VR",
-        "prvncher.MRTKQuest"
+        "Oculus.VR"
     ],
     "includePlatforms": [
         "Android",

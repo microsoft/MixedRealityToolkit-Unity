@@ -37,7 +37,7 @@ using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace prvncher.MixedReality.Toolkit.Input.Teleport
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Custom teleport cursor built for MRTK-Quest
