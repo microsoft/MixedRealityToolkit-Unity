@@ -21,10 +21,12 @@ This provider can be used in editor and on device while on the Standalone platfo
     - Download and import the latest version of the [Leap Motion Unity Modules](https://developer.leapmotion.com/unity) into the project
         - Only import the **Core** package within the Unity Modules
 
-1. Connect the Leap Motion Unity Modules to MRTK
-    - After the Unity Modules are in the project, navigate to **Mixed Reality Toolkit** > **Leap Motion** > **Connect Leap Motion Unity Modules**
+1. Integrate the Leap Motion Unity Modules with MRTK
+    - After the Unity Modules are in the project, navigate to **Mixed Reality Toolkit** > **Leap Motion** > **Integrate Leap Motion Unity Modules**
     > [!NOTE]
-    > Connecting the Unity Modules to MRTK adds 10 assembly definitions to the project and adds references to the **Microsoft.MixedReality.Toolkit.Providers.LeapMotion** assembly definition. Make sure Visual Studio is closed.
+    > Integrating the Unity Modules to MRTK adds 10 assembly definitions to the project and adds references to the **Microsoft.MixedReality.Toolkit.Providers.LeapMotion** assembly definition. Make sure Visual Studio is closed.
+
+     ![LeapMotionIntegration](../Images/CrossPlatform/LeapMotion/LeapMotionIntegrateMenu.png)
 
 1. Adding the Leap Motion Data Provider
     - Create a new Unity scene
@@ -126,7 +128,7 @@ The Leap Motion Hands will show up in the editor, without a VR headset plugged i
 
 ## Removing Leap Motion from the Project
 
-1. Navigate to the **Mixed Reality Toolkit** > **Leap Motion** > **Disconnect Leap Motion Unity Modules**
+1. Navigate to the **Mixed Reality Toolkit** > **Leap Motion** > **Separate Leap Motion Unity Modules**
     - Let Unity refresh as references in the **Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef** file are modified in this step
 1. Close Unity
 1. Close Visual Studio, if it's open
@@ -145,12 +147,12 @@ If errors are logged after reopening, restart Unity again.
 
 To test if the Leap Motion Unity Modules have integrated with MRTK:
 
-- Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Check Connection Status**
+- Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Check Integration Status**
   - This will display a pop up window with a message about whether or not the Leap Motion Unity Modules have integrated with MRTK.
 - If the message says that the assets have not been integrated:
     - Make sure the Leap Motion Unity Modules are in the project
     - Make sure that the version added is supported, see the table at the top of the page for versions supported. 
-    - Try **Mixed Reality Toolkit > Utilities > Leap Motion > Connect Leap Motion Unity Modules**
+    - Try **Mixed Reality Toolkit > Utilities > Leap Motion > Integrate Leap Motion Unity Modules**
 
 ### Copying assembly Multiplayer HLAPI failed
 
