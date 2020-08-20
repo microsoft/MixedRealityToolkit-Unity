@@ -10,6 +10,7 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
@@ -21,9 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class TestMotionController : TestController
     {
-        private bool isSelecting = false;
-        private bool isGrabbing = false;
-        private bool isPressingMenu = false;
+        private SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState();
 
         public TestMotionController(Handedness handedness) : base(handedness) { }
 
@@ -53,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            for (var iter = PlayModeTestUtilities.MoveMotionController(oldPosition, newPosition, isSelecting, isGrabbing, isPressingMenu, handedness, simulationService, numSteps); iter.MoveNext();)
+            for (var iter = PlayModeTestUtilities.MoveMotionController(oldPosition, newPosition, buttonState, handedness, simulationService, numSteps); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -83,9 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 oldRotation,
                 newRotation,
                 position,
-                isSelecting,
-                isGrabbing,
-                isPressingMenu,
+                buttonState,
                 handedness,
                 PlayModeTestUtilities.CalculateNumSteps(numSteps),
                 simulationService);
@@ -98,9 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="isGrabbing">Whether the motion controller should be grabbing something.</param>
         /// <param name="isPressingMenu">Whether the menu button of the motion controller should be pressed down.</param>
         /// <param name="waitForFixedUpdate">If true, waits for a fixed update after moving to the new state.</param>
-        public IEnumerator SetState(bool isSelecting, bool isGrabbing, bool isPressingMenu, bool waitForFixedUpdate = true)
+        public IEnumerator SetState(SimulatedMotionControllerButtonState buttonStateNew, bool waitForFixedUpdate = true)
         {
-            for (var iter = PlayModeTestUtilities.MoveMotionController(position, position, isSelecting, isGrabbing, isPressingMenu, handedness, simulationService, 1); iter.MoveNext();)
+            buttonState = buttonStateNew;
+            for (var iter = PlayModeTestUtilities.MoveMotionController(position, position, buttonState, handedness, simulationService, 1); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -115,9 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public override IEnumerator Click()
         {
-            yield return SetState(true, false, false);
+            SimulatedMotionControllerButtonState selectButtonState = new SimulatedMotionControllerButtonState
+            {
+                IsSelecting = true
+            };
+            yield return SetState(selectButtonState);
             yield return null;
-            yield return SetState(false, false, false);
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            yield return SetState(defaultButtonState);
             yield return null;
         }
 
@@ -129,7 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="numSteps">Number of steps of the hand movement</param>
         public IEnumerator SelectAndThrowAt(Vector3 positionToRelease, bool waitForFinalFixedUpdate, int numSteps = 30)
         {
-            for (var iter = SetState(true, false, false); iter.MoveNext();)
+            SimulatedMotionControllerButtonState selectButtonState = new SimulatedMotionControllerButtonState
+            {
+                IsSelecting = true
+            };
+            for (var iter = SetState(selectButtonState); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -137,7 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 yield return iter.Current;
             }
-            for (var iter = SetState(false, false, false, waitForFinalFixedUpdate); iter.MoveNext();)
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            for (var iter = SetState(defaultButtonState, waitForFinalFixedUpdate); iter.MoveNext();)
             {
                 yield return iter.Current;
             }

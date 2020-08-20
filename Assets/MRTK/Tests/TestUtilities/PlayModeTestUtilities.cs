@@ -321,9 +321,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHand(handPos, handPos, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService, 2);
         }
 
-        public static IEnumerator SetMotionControllerState(Vector3 motionControllerPos, bool isSelecting, bool isGrabbing, bool isPressingMenu, Handedness handedness, InputSimulationService inputSimulationService)
+        public static IEnumerator SetMotionControllerState(Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState, Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return MoveMotionController(motionControllerPos, motionControllerPos, isSelecting, isGrabbing, isPressingMenu, handedness, inputSimulationService, 2);
+            yield return MoveMotionController(motionControllerPos, motionControllerPos, buttonState, handedness, inputSimulationService, 2);
         }
 
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// time constant, which is a requirement for default parameter values.
         /// </remarks>
         public static IEnumerator MoveMotionController(
-            Vector3 startPos, Vector3 endPos, bool isSelecting, bool isGrabbing, bool isPressingMenu,
+            Vector3 startPos, Vector3 endPos, SimulatedMotionControllerButtonState buttonState,
             Handedness handedness, InputSimulationService inputSimulationService,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
@@ -400,7 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         motionControllerPos,
                         Quaternion.identity);
                 SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-                motionControllerData.Update(true, isSelecting, isGrabbing, isPressingMenu, motionControllerDataUpdater);
+                motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
         }
@@ -426,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        public static IEnumerator SetMotionControllerRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 motionControllerPos, bool isSelecting, bool isGrabbing, bool isPressingMenu,
+        public static IEnumerator SetMotionControllerRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState,
             Handedness handedness, int numSteps, InputSimulationService inputSimulationService)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         motionControllerPos,
                         motionControllerRotation);
                 SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-                motionControllerData.Update(true, isSelecting, isGrabbing, isPressingMenu, motionControllerDataUpdater);
+                motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
         }
@@ -461,7 +461,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-            motionControllerData.Update(false, false, false, false, UpdateMotionControllerPose(handedness, Vector3.zero, Quaternion.identity));
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            motionControllerData.Update(false, defaultButtonState, UpdateMotionControllerPose(handedness, Vector3.zero, Quaternion.identity));
 
             // Wait one frame for the motion controller to actually disappear
             yield return null;
@@ -493,16 +494,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return ShowMontionController(handedness, inputSimulationService, false, false, false, Vector3.zero);
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            yield return ShowMontionController(handedness, inputSimulationService, defaultButtonState, Vector3.zero);
         }
 
-        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, bool isSelecting, bool isGrabbing, bool isPressingMenu, Vector3 handLocation)
+        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 handLocation)
         {
             yield return null;
 
             Assert.AreEqual(inputSimulationService.ControllerSimulationMode, ControllerSimulationMode.MotionController, "The current ControllerSimulationMode must be MotionController!");
             SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-            motionControllerData.Update(true, isSelecting, isGrabbing, isPressingMenu, UpdateMotionControllerPose(handedness, handLocation, Quaternion.identity));
+            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, handLocation, Quaternion.identity));
 
             // Wait one frame for the hand to actually appear
             yield return null;

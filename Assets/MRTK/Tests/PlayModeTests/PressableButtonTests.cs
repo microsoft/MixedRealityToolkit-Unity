@@ -452,8 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestMotionController motionController = new TestMotionController(Handedness.Right);
             Vector3 initialmotionControllerPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
             yield return motionController.Show(initialmotionControllerPosition);
-            yield return motionController.SetState(true, false, false);
-            yield return motionController.SetState(false, false, false);
+            yield return motionController.Click();
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);
