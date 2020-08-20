@@ -1362,10 +1362,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             rotationHandles.Create(ref boundsCorners, rigRoot);
             proximityEffect.RegisterObjectProvider(rotationHandles);
 
-            // Links require rotation handles to calculate their position.
-            // This should not be a dependency; edge center calculations can
-            // decoupled from the rotation handles.
-            // TODO: Decouple these
             links.CreateLinks(ref boundsCorners, rigRoot, currentBoundsExtents);
 
             // Add translation handles
