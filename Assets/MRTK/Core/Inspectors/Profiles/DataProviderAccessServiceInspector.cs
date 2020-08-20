@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <summary>
         /// Renders properties of <see cref="IMixedRealityServiceConfiguration"/> instance at provided index in inspector.
-        /// Also renders inspector view of data provider's profile object and it's contents if applicable and foldout is expanded.
+        /// Also renders inspector view of data provider's profile object and its contents if applicable and foldout is expanded.
         /// </summary>
         protected bool RenderDataProviderEntry(int index, GUIContent removeContent, System.Type dataProviderProfileType = null)
         {

@@ -471,12 +471,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Render helpbox that provided service string is disabled and none of it's functionality will be loaded at runtime
+        /// Render helpbox that provided service string is disabled and none of its functionality will be loaded at runtime
         /// </summary>
         protected static void RenderSystemDisabled(string service)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
+            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of its features will be available at runtime.", MessageType.Info);
             EditorGUILayout.Space();
         }
 

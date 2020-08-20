@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="worldPoint">The world point</param>
         /// <param name="recursive">Indicates if the check should be done recursively</param>
         /// <param name="shouldReturnActive">If true, will only check children that are active, otherwise it will check all children.</param>
-        /// <param name="shouldReturnRaycastable">If true, will only check children that if they have a graphic and have it's member raycastTarget set to true, otherwise will ignore the raycastTarget value. Will still allow children to be checked that do not have a graphic component.</param>
+        /// <param name="shouldReturnRaycastable">If true, will only check children that if they have a graphic and have its member raycastTarget set to true, otherwise will ignore the raycastTarget value. Will still allow children to be checked that do not have a graphic component.</param>
         public static RectTransform GetChildRectTransformAtPoint(this RectTransform rectTransformParent, Vector3 worldPoint, bool recursive, bool shouldReturnActive, bool shouldReturnRaycastable)
         {
             Vector3[] localCorners = new Vector3[4];

@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Tests if the initial transform setup of bounds control has been propagated to it's collider
+        /// Tests if the initial transform setup of bounds control has been propagated to its collider
         /// </summary>
         /// <param name="boundsControl">Bounds control that controls the collider size</param>
         private IEnumerator VerifyInitialBoundsCorrect(BoundsControl boundsControl)
