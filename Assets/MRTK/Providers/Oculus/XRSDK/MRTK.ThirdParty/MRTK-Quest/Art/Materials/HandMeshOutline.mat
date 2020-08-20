@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HandMeshOutline
-  m_Shader: {fileID: 4800000, guid: 142ff31b934b2994ea49105e2796ec9f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7a052d2ba7d176348be6de56c061b21d, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1

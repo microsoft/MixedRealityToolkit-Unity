@@ -300,59 +300,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8451701686249371557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a40beacab2e66f48837c1fd24ed4db9, type: 3}
+  m_Script: {fileID: 11500000, guid: cb64483e6b3c9f54f8d9b0c8115191fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorStateData:
-  - name: None
-    cursorState: 5
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  - name: None
-    cursorState: 5
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  - name: Invalid
-    cursorState: 0
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  - name: Invalid
-    cursorState: 0
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  - name: Valid
-    cursorState: 1
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  - name: Valid
-    cursorState: 1
-    parameter:
-      parameterType: 0
-      defaultInt: 0
-      defaultFloat: 0
-      defaultBool: 0
-      name: 
-  cursorAnimator: {fileID: 4158385428058630565}
   pointer: {fileID: 0}
   PrimaryCursorVisual: {fileID: 0}
+  RingCursorVisual: {fileID: 0}
   arrowTransform: {fileID: 0}

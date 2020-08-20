@@ -171,6 +171,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 cameraRig.EnsureGameObjectIntegrity();
             }
 
+            bool useAvatarHands = MRTKOculusConfig.Instance.RenderAvatarHandsInsteadOfController;
+            // If using Avatar hands, de-activate ovr controller rendering
+            foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
+            {
+                controllerHelper.gameObject.SetActive(!useAvatarHands);
+            }
+
+            if (useAvatarHands)
+            {
+                // Initialize the local avatar controller
+                GameObject.Instantiate(MRTKOculusConfig.Instance.LocalAvatarPrefab, cameraRig.trackingSpace);
+            }
+
             var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
 
             foreach (var ovrHand in ovrHands)
