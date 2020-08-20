@@ -556,6 +556,10 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/LeapMotion/Editor/Microsoft.MixedReality.Toolkit.LeapMotion.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.ThirdParty/MRTK-Quest/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.ThirdParty/MRTK-Quest-Utils/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities.asmdef",
     "Assets/MRTK/Providers/OpenVR/Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/Microsoft.MixedReality.Toolkit.UnityAR.Editor.asmdef",
@@ -596,7 +600,7 @@ function CheckAsmDef {
         $assetFileName = GetProjectRelativePath($FileName)
         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
             Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
-            Write-Warning "after a dicussion with the rest of the team determining if the asmdef is necessary."
+            Write-Warning "after a discussion with the rest of the team determining if the asmdef is necessary."
             $containsIssue = $true
         }
         $containsIssue
