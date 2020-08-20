@@ -732,6 +732,163 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test bounds control translation via far interaction
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaFarInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+            boundsControl.SmoothingActive = false;
+            boundsControl.transform.position = new Vector3(-1.0f, 0.0f, 1.5f);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 transformHandlePosition = new Vector3(-0.324f, -0.141f, 0.499f);
+            Vector3 endPosition = new Vector3(0.497f, -0.188f, 0.499f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // make sure translation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(1f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+        /// <summary>
+        /// Test bounds control translation via near interaction
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Transform transformHandle = boundsControl.gameObject.transform.Find("rigRoot/faceCenter_0");
+            Vector3 transformHandlePosition = transformHandle.position;
+            Vector3 endPosition = transformHandlePosition + new Vector3(10.0f, 0.0f, 0.0f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // make sure translation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(10f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control translation via HoloLens 1 interaction / GGV
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaHololens1Interaction()
+        {
+            // todo
+            BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(control);
+            control.TranslationHandlesConfig.ShowHandleForZ = true;
+            control.SmoothingActive = false;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+
+            // move camera to look at translation sphere
+            Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
+            CameraCache.Main.transform.LookAt(transformHandle.position); 
+
+            var startHandPos = new Vector3(0.191f, -0.07f, 0.499f);
+            var endPoint = new Vector3(-0.368f, -0.221f, 0.499f);
+
+            // perform tab with hand and drag to left 
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.MoveTo(endPoint);
+
+            // make sure x axis translation was performed and no other transform values have changed
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.0f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(control.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(control.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(control.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(control.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control translate constraints via near interaction.
+        /// Verifies gameobject won't translate when MoveAxisConstraint is applied.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslationConstraintViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+
+            var moveConstraint = boundsControl.EnsureComponent<MoveAxisConstraint>();
+            moveConstraint.ConstraintOnMovement = AxisFlags.XAxis; // restrict translation in X axis
+            yield return null;
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Transform transformHandle = boundsControl.gameObject.transform.Find("rigRoot/faceCenter_0");
+            Vector3 transformHandlePosition = transformHandle.position;
+            Vector3 endPosition = transformHandlePosition + new Vector3(10.0f, 0.0f, 0.0f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // object shouldn't move with constraint attached
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Test that changing the transform of the bounds control target (rotation, scale, translation)
         /// updates the rig bounds
         /// </summary>

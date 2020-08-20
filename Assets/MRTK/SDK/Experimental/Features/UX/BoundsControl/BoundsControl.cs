@@ -592,8 +592,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 targetObject = gameObject;
 
             // ensure we have a default configuration in case there's none set by the user
-            // Translation handles are optional; we will leave the config object null if the
-            // user has not assigned one.
             scaleHandlesConfiguration = EnsureScriptable(scaleHandlesConfiguration);
             rotationHandlesConfiguration = EnsureScriptable(rotationHandlesConfiguration);
             translationHandlesConfiguration = EnsureScriptable(translationHandlesConfiguration);
@@ -1135,6 +1133,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Vector3 translateVectorAlongAxis = Vector3.Project(currentGrabPoint - initialGrabPoint, currentTranslationAxis);
 
                     var goal = initialPositionOnGrabStart + translateVectorAlongAxis;
+                    MixedRealityTransform constraintTranslate = MixedRealityTransform.NewTranslate(goal);
+                    constraints.ApplyTranslationConstraints(ref constraintTranslate, true, isNear);
+                    goal = constraintTranslate.Position;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
                 }
             }

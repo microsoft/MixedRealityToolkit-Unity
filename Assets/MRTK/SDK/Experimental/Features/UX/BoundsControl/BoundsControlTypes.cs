@@ -133,15 +133,4 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         ForwardZ    = 4,
         BackwardZ   = 5,
     }
-
-    //internal enum Link
-    //{
-
-    //}
-
-    //internal enum Corner
-    //{
-
-    //}
-
 }

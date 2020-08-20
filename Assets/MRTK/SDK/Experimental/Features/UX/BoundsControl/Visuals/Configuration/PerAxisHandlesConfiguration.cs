@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Configuration for <see cref="PerAxisHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create axis based handles for <see cref="BoundsControl"/>
     /// </summary
-    public class PerAxisHandlesConfiguration : HandlesBaseConfiguration
+    public abstract class PerAxisHandlesConfiguration : HandlesBaseConfiguration
     {
 
         [SerializeField]
