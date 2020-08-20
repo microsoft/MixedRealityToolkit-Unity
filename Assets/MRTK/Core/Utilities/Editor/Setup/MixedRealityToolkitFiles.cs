@@ -144,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string newRoot = string.Empty;
             if (assetDatabasePath.Contains("/Assets/"))
             {
-                token = "Assets";
+                token = "/Assets/";
                 newRoot = "Assets";
             }
             else if (assetDatabasePath.Contains("/PackageCache/"))
             {
-                token = "PackageCache";
+                token = "/PackageCache/";
                 newRoot = "Packages";
 
                 // PackageCache folders need the embedded version removed.
@@ -160,16 +160,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
             else if (assetDatabasePath.Contains("/Packages/"))
             {
-                token = "Packages";
+                token = "/Packages/";
                 newRoot = "Packages";
             }
 
-            // Use Path.GetFullPath to ensure proper Path.DirectorySeparatorChar is used depending on our editor platform
             if (!string.IsNullOrWhiteSpace(newRoot) &&
                 !string.IsNullOrWhiteSpace(token))
             {
                 string oldRoot = assetDatabasePath.Substring(0,
-                    assetDatabasePath.IndexOf(token) + token.Length);
+                    assetDatabasePath.LastIndexOf(token) + token.Length - 1); // Subtract 1 to keep the trailing slash
                 assetDatabasePath = assetDatabasePath.Replace(oldRoot, newRoot);
             }
             return assetDatabasePath;
