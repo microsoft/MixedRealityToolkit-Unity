@@ -345,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// Warning 618 and 649 are logged when the Leap Motion Core Assets are imported into the project, 618 is the obsolete warning and 649 is a null on start warning.
         /// </summary>
         /// <remarks>Updating the CSC file was only required for the 4.4.0 Leap Assets and only version 4.5.0 and up is supported moving forward</remarks>        
-        [Obsolete]
+        [Obsolete ("Updating the CSC file was only required for the 4.4.0 Leap Assets and only version 4.5.0 and up is supported moving forward")]
         static void UpdateCSC()
         {
             // The csc file will always be in the root of assets
@@ -427,9 +427,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             
             if (!isLeapInProject)
             {
-                EditorUtility.DisplayDialog("Leap Motion Unity Modules Not Found", "The Leap Motion Unity Modules could not be found in this project, please import the assets into this project. The assets can be found here: " +
-                    "https://developer.leapmotion.com/unity"
-                     , "OK");
+                EditorUtility.DisplayDialog(
+                    "Leap Motion Unity Modules Not Found", 
+                    "The Leap Motion Unity Modules could not be found in this project, please import the assets into this project. The assets can be found here: " +
+                    "https://developer.leapmotion.com/unity",
+                      "OK");
             }
 
             ConfigureLeapMotion(isLeapInProject);
@@ -444,8 +446,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             // If the user tries to disconnect the Leap Assets without assets in the project display a message
             if (!isLeapInProject)
             {
-                EditorUtility.DisplayDialog("MRTK Leap Motion Removal", "There are no Leap Motion Unity Modules in the project to disconnect, please add the Leap Motion Unity " +
-                    " Modules to use the MRTK's Leap Motion Data Provider", "OK");
+                EditorUtility.DisplayDialog(
+                    "MRTK Leap Motion Removal", 
+                    "There are no Leap Motion Unity Modules in the project to disconnect, please add the Leap Motion Unity " +
+                    " Modules to use the MRTK's Leap Motion Data Provider", 
+                    "OK");
 
                 return;
             }
@@ -460,7 +465,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             ConfigureLeapMotion(isLeapInProject);
 
             // Prompt the user to close unity and delete the assets to completely remove.  Closing unity and deleting the assets is optional.
-            EditorUtility.DisplayDialog("MRTK Leap Motion Removal", "To complete the removal of the Leap Motion Unity Modules, close Unity, delete the assets, and reopen Unity", "OK");
+            EditorUtility.DisplayDialog(
+                "MRTK Leap Motion Removal", 
+                "To complete the removal of the Leap Motion Unity Modules, close Unity, delete the assets, and reopen Unity", 
+                "OK");
         }
 
         /// <summary>
@@ -489,12 +497,18 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             if (isLeapConnected)
             {
-                EditorUtility.DisplayDialog("Leap Connection Status", "The Leap Motion Unity Modules are connected to MRTK", "OK");
+                EditorUtility.DisplayDialog(
+                    "Leap Connection Status", 
+                    "The Leap Motion Unity Modules are connected to MRTK", 
+                    "OK");
             }
             else
             {
-                EditorUtility.DisplayDialog("Leap Connection Status", "The Leap Motion Unity Modules are not connected to MRTK.  " +
-                    "Make sure the assets have been imported into the project and select the Connect Leap Motion Unity Modules to MRTK menu item.", "OK");
+                EditorUtility.DisplayDialog(
+                    "Leap Connection Status", 
+                    "The Leap Motion Unity Modules are not connected to MRTK.  " +
+                    "Make sure the assets have been imported into the project and select the Connect Leap Motion Unity Modules to MRTK menu item.", 
+                    "OK");
             }
         }
     }
