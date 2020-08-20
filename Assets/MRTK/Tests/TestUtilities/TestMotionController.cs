@@ -17,7 +17,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    ///  Utility class to use a simulated motion controller
+    /// Utility class to use a simulated motion controller
     /// </summary>
     public class TestMotionController : TestController
     {
