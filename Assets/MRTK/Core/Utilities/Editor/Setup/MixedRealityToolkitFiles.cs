@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         Tests,
         Extensions,
         Tools,
+        StandardAssets,
         // This module only exists for testing purposes, and is used in edit mode tests in conjunction
         // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
         // files that are placed outside of the root asset folder.
@@ -124,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Tests", MixedRealityToolkitModuleType.Tests },
             { "Extensions", MixedRealityToolkitModuleType.Extensions },
             { "Tools", MixedRealityToolkitModuleType.Tools },
+            { "StandardAssets", MixedRealityToolkitModuleType.StandardAssets },
 
             // This module only exists for testing purposes, and is used in edit mode tests in conjunction
             // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
