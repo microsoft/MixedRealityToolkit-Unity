@@ -231,7 +231,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             else
             {
                 midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                Object.Destroy(midpointVisual.GetComponent<SphereCollider>());
+                if (config.HandlePrefabColliderType != HandlePrefabCollider.Sphere)
+                {
+                    Object.Destroy(midpointVisual.GetComponent<SphereCollider>());
+                }
             }
 
             Quaternion realignment = GetRotationRealignment(handleIndex);

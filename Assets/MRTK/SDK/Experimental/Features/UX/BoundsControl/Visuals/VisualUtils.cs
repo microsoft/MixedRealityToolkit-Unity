@@ -75,14 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (colliderType == HandlePrefabCollider.Box)
             {
-                BoxCollider collider = afford.AddComponent<BoxCollider>();
+                BoxCollider collider = afford.EnsureComponent<BoxCollider>();
                 collider.size = bounds.size;
                 collider.center = bounds.center;
                 collider.size += colliderPadding;
             }
             else
             {
-                SphereCollider sphere = afford.AddComponent<SphereCollider>();
+                SphereCollider sphere = afford.EnsureComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
                 sphere.radius += GetMaxComponent(colliderPadding);
