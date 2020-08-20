@@ -98,6 +98,8 @@ The HandInteractionExamples scene now has a configurable shortcut to show a help
 <p><strong>Input Simulation Eye Gaze with mouse</strong>
 Users can now use the Mouse for simulating eye tracking. See the <code>Eye Simulation Mode</code> field in the input simulation profile and set it to Mouse. This replaces the previous <code>Simulate Eye Position</code> field</p>
 <p><img src="https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif" alt="Eye Gaze Mouse"></p>
+<p><strong>Input Simulation Motion Controller in Editor Play Mode</strong></p>
+<p>Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.</p>
 <p><strong>Conical Grab Pointer</strong></p>
 <p>Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
 interface, which queries for nearby objects using a cone. The DefaultHoloLens2InputSystemProfile has also been adjusted to use the new <code>ConicalGrabPointer</code>.</p>
@@ -150,6 +152,9 @@ rather than having it be implicitly done based on the presence of a constructor 
 <p>The stored initial world pose <code>worldPoseOnManipulationStart</code> data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.</p>
 <p><strong>New Property in IMixedRealityDictationSystem</strong></p>
 <p>A new property <code>AudioClip</code> has been added to the IMixedRealityDictationSystem interface. The <code>AudioClip</code> property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.</p>
+<p><strong>Addition of Motion Controller to Input Simulation Service</strong></p>
+<p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
+<p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
 <h3 id="known-issues">Known issues</h3>
 </article>
           </div>

@@ -447,6 +447,9 @@ It's movement is bound to screenspace.</p>
       <section><p>This stores the joint pose JSON data that defines various articulated hand gestures for input simulation.
 The JSON data that defines each joint position and orientation is stored in strings to avoid file loading/targeting during runtime</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedControllerDataProvider.html">SimulatedControllerDataProvider</a></h4>
+      <section><p>Produces simulated data every frame that defines the position and rotation of the simulated controller.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html">SimulatedGestureHand</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html">SimulatedHand</a></h4>
@@ -459,6 +462,14 @@ The JSON data that defines each joint position and orientation is stored in stri
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandUtils.html">SimulatedHandUtils</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController.html">SimulatedMotionController</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerData.html">SimulatedMotionControllerData</a></h4>
+      <section><p>Snapshot of simulated motion controller data.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerDataProvider.html">SimulatedMotionControllerDataProvider</a></h4>
+      <section><p>Produces simulated data every frame that defines the position and rotation of the simulated controller.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData&lt;T&gt;</a></h4>
       <section><p>Describes a source change event.</p>
 </section>
@@ -777,7 +788,11 @@ Initially, this lists proposed SDKs, not all may be implemented at this time (pl
 Old and new pointer values can be null to indicate transition from or to no primary pointer, but they won't both be null simultaneously.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html">SimulatedHandData.HandJointDataGenerator</a></h4>
-      <section></section>
+      <section><p>Generator function producing joint positions and rotations</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerData.MotionControllerPoseUpdater.html">SimulatedMotionControllerData.MotionControllerPoseUpdater</a></h4>
+      <section><p>Delegate to function updating the position and rotation of the motion controller</p>
+</section>
 </article>
           </div>
           
