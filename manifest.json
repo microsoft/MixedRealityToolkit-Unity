@@ -714,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "79swYb8A0N8kU07hnCVAgw=="
+          "hash": "jBpiMmYgB8wZPetJuhjAvA=="
         }
       },
       "is_incremental": false,
@@ -2530,6 +2530,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionIntegrateMenu.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionIntegrateMenu.png"
         }
       },
       "is_incremental": false,
@@ -7883,7 +7894,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTK_Configuration_Dialog.html",
-          "hash": "ELjf4xGzo//+b3EhWCyIqQ=="
+          "hash": "Q98Jn9wyegWeF/rFZDYw6A=="
         }
       },
       "is_incremental": false,
@@ -8267,7 +8278,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "R2tvcbhcZJmByOkbhmuMtw=="
+          "hash": "KWsko/UypHnnowoG4ByKGw=="
         }
       },
       "is_incremental": false,
@@ -24886,7 +24897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssemblyDefinition.html",
-          "hash": "6pyy7J0JUKn5H6q2WomMcg=="
+          "hash": "w403Hxgs+uZqqB3jKjUvGQ=="
         }
       },
       "is_incremental": false,

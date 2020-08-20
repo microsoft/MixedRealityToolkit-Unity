@@ -145,6 +145,12 @@
 <p>Enables support for tracking the user's eye gaze.</p>
 </li>
 </ul>
+<h3 id="avoid-unity-playersettingsgraphicsjob-crash">Avoid Unity 'PlayerSettings.graphicsJob' crash</h3>
+<p><strong>Unity 2019.3 and newer</strong></p>
+<p>In the latest version of Unity 2019, when &quot;Graphics Jobs&quot; is enabled, the app will crash when deployed to a HoloLens 2.
+This setting is enabled by default in Unity - while this bug exists (see [Unity bug]
+(<a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2</a>)),
+the configurator will default to setting Graphics Jobs to 'false' (thus allowing apps deployed to HoloLens 2 not to crash).</p>
 <h2 id="android-settings">Android settings</h2>
 <p>Configuration settings to support AR applications on Android powered devices.</p>
 <p><img src="Images/ConfigurationDialog/ConfigurationDialogAndroidSettings.png" alt="Android Settings"></p>

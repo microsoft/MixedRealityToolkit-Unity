@@ -86,41 +86,43 @@
 <p>The Leap Motion Data Provider enables articulated hand tracking for VR and could be useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.</p>
 <p><img src="../Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif" alt="LeapMotionIntroGif"></p>
 <p>This provider can be used in editor and on device while on the Standalone platform.  It can also be used in editor while on the UWP platform but NOT in a UWP build.</p>
+<table>
+<thead>
+<tr>
+<th>Leap Motion Unity Modules Versions Supported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>4.5.1</td>
+</tr>
+</tbody>
+</table>
 <h2 id="using-leap-motion-by-ultraleap-hand-tracking-in-mrtk">Using Leap Motion (by Ultraleap) hand tracking in MRTK</h2>
 <ol>
-<li><p>Prepare MRTK project for Leap Motion</p>
+<li><p>Importing MRTK and the Leap Motion Unity Modules</p>
 <ul>
-<li><p><strong>This step only applies for the Leap Motion Unity Core Assets version 4.4.0 and if the source of MRTK is cloned from the git repo, NOT from the Unity packages. This step is not required if the Core Assets from Leap Motion Unity Modules version 4.5.0 are used. If the MRTK source is going to be from the Unity packages, start at the next step</strong></p>
-</li>
-<li><p>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong>. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Unity Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked <a href="https://github.com/leapmotion/UnityModules/issues/1082">here</a>.</p>
-</li>
-</ul>
-<p><img src="../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png" alt="LeapMotionUpdateCSCFile"></p>
-</li>
-<li><p>Importing MRTK and the Core Assets from Leap Motion Unity Modules version 4.5.0</p>
-<ul>
+<li>Install the <a href="https://developer.leapmotion.com/releases/?category=orion">Leap Motion SDK 4.0.0</a> if it is not already installed</li>
 <li>Import the <strong>Microsoft.MixedReality.Toolkit.Foundation</strong> package into the Unity project.</li>
-<li>Install the <a href="https://developer.leapmotion.com/releases/?category=orion">Leap Motion SDK 4.0.0</a></li>
-<li>Download and import the <a href="https://developer.leapmotion.com/unity">Core Assets from Leap Motion Unity Modules version 4.5.0</a>
+<li>Download and import the latest version of the <a href="https://developer.leapmotion.com/unity">Leap Motion Unity Modules</a> into the project
 <ul>
-<li>Leap Motion Unity Core Assets version <a href="https://github.com/leapmotion/UnityModules/releases/tag/Release-CoreAsset-4.4.0">4.4.0</a> and the Core Assets from Leap Motion Unity Modules version <a href="https://github.com/leapmotion/UnityModules/releases/tag/UM-4.5.0">4.5.0</a> are supported, but Core Assets from Leap Motion Unity Modules version 4.5.0 are preferred.</li>
-<li>If using Core Assets from Leap Motion Unity Modules version 4.5.0, import the <strong>Core</strong> package into the Unity project.</li>
+<li>Only import the <strong>Core</strong> package within the Unity Modules</li>
 </ul>
 </li>
+</ul>
+</li>
+<li><p>Integrate the Leap Motion Unity Modules with MRTK</p>
+<ul>
+<li>After the Unity Modules are in the project, navigate to <strong>Mixed Reality Toolkit</strong> &gt; <strong>Leap Motion</strong> &gt; <strong>Integrate Leap Motion Unity Modules</strong></li>
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
-<p>On import of the Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.</p>
+<p>Integrating the Unity Modules to MRTK adds 10 assembly definitions to the project and adds references to the <strong>Microsoft.MixedReality.Toolkit.Providers.LeapMotion</strong> assembly definition. Make sure Visual Studio is closed.</p>
 </div>
-<ul>
-<li><p>If using Unity 2018.4.x</p>
-<ul>
-<li>After the Core Assets import, navigate to <strong>Assets/LeapMotion/</strong>, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the <a href="#leap-motion-has-not-integrated-with-mrtk">Leap Motion Common Errors</a>. If the file is present, go to the next step.</li>
-</ul>
-</li>
-<li><p>If using Unity 2019.3.x, go to the next step</p>
-</li>
-</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapMotionIntegrateMenu.png" alt="LeapMotionIntegration"></p>
 </li>
 <li><p>Adding the Leap Motion Data Provider</p>
 <ul>
@@ -234,13 +236,18 @@ public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
 </div>
 <h2 id="removing-leap-motion-from-the-project">Removing Leap Motion from the Project</h2>
 <ol>
+<li>Navigate to the <strong>Mixed Reality Toolkit</strong> &gt; <strong>Leap Motion</strong> &gt; <strong>Separate Leap Motion Unity Modules</strong>
+<ul>
+<li>Let Unity refresh as references in the <strong>Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef</strong> file are modified in this step</li>
+</ul>
+</li>
 <li>Close Unity</li>
 <li>Close Visual Studio, if it's open</li>
 <li>Open File Explorer and navigate to the root of the MRTK Unity project
 <ul>
 <li>Delete the <strong>UnityProjectName/Library</strong> directory</li>
-<li>Delete the <strong>UnityProjectName/Assets/LeapMotion</strong> directory</li>
-<li>Delete the <strong>UnityProjectName/Assets/LeapMotion.meta</strong> file</li>
+<li>Delete the <strong>UnityProjectName/Assets/Plugins/LeapMotion</strong> directory</li>
+<li>Delete the <strong>UnityProjectName/Assets/Plugins/LeapMotion.meta</strong> file</li>
 </ul>
 </li>
 <li>Reopen Unity</li>
@@ -248,31 +255,19 @@ public class LeapHandJoints : MonoBehaviour, IMixedRealityHandJointHandler
 <p>In Unity 2018.4, you might notice that errors still remain in the console after deleting the Library and the Leap Motion Core Assets.
 If errors are logged after reopening, restart Unity again.</p>
 <h2 id="common-errors">Common Errors</h2>
-<h3 id="leap-motion-obsolete-errors">Leap Motion Obsolete Errors</h3>
-<p>If the source of MRTK is from the repo and the Unity version is 2019.3.x, the following error might be in the console after the import of the Leap Motion Unity Core Assets:</p>
-<pre><code>Assets\LeapMotion\Core\Scripts\EditorTools\LeapPreferences.cs(84,6): error CS0618: 'PreferenceItem' is obsolete: '[PreferenceItem] is deprecated. Use [SettingsProvider] instead.
-</code></pre>
-<p>In Unity version 2018.4.x, the following obsolete errors might be logged:</p>
-<pre><code>Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,7): error CS0618: 'PrefabType' is obsolete: 'PrefabType no longer tells everything about Prefab instance.'
-</code></pre>
-<pre><code>Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,31): error CS0618: 'PrefabUtility.GetPrefabType(Object)' is obsolete: 'Use GetPrefabAssetType and GetPrefabInstanceStatus to get the full picture about Prefab types.'
-</code></pre>
-<p>These errors appear if <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong> was not selected BEFORE the Leap Motion Unity Core Assets import.</p>
-<h4 id="solution">Solution</h4>
-<ul>
-<li>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong>, this will update the csc file to filter out Leap Motion warnings that are converted to errors in MRTK repo.</li>
-<li>Close Unity</li>
-<li>Reopen Unity</li>
-</ul>
 <h3 id="leap-motion-has-not-integrated-with-mrtk">Leap Motion has not integrated with MRTK</h3>
-<p>This error can occur if the Unity version is 2018.4.x, the MRTK source is from the Unity packages and after the import of the Leap Motion Unity Core Assets.</p>
-<p>To test if MRTK recognizes the presence of the Leap Motion Unity Core Assets, open the LeapMotionHandTrackingExample scene located in MRTK/Examples/Demos/HandTracking/ and press play.  If the Leap Motion Unity Core Assets are recognized a green message on the informational panel in the scene will appear.  If the Leap Motion Unity Core Assets are not recognized a red message will appear.</p>
-<p>If the Leap Motion Unity Core Assets are in your project and you see a red message on the informational panel, the project needs to be configured.</p>
-<h4 id="solution-1">Solution</h4>
+<p>To test if the Leap Motion Unity Modules have integrated with MRTK:</p>
 <ul>
-<li>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure Leap Motion</strong>
+<li>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Check Integration Status</strong>
 <ul>
-<li>This will force Leap Motion integration if the configuration process was not started after the Leap Motion Unity Core Assets import.</li>
+<li>This will display a pop up window with a message about whether or not the Leap Motion Unity Modules have integrated with MRTK.</li>
+</ul>
+</li>
+<li>If the message says that the assets have not been integrated:
+<ul>
+<li>Make sure the Leap Motion Unity Modules are in the project</li>
+<li>Make sure that the version added is supported, see the table at the top of the page for versions supported.</li>
+<li>Try <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Integrate Leap Motion Unity Modules</strong></li>
 </ul>
 </li>
 </ul>
@@ -280,7 +275,7 @@ If errors are logged after reopening, restart Unity again.</p>
 <p>On import of the Leap Motion Unity Core Assets this error might be logged:</p>
 <pre><code>Copying assembly from 'Temp/com.unity.multiplayer-hlapi.Runtime.dll' to 'Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll' failed
 </code></pre>
-<h4 id="solution-2">Solution</h4>
+<p><strong>Solution</strong></p>
 <ul>
 <li>A short term solution is to restart Unity. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7761">Issue 7761</a> for more information.</li>
 </ul>
