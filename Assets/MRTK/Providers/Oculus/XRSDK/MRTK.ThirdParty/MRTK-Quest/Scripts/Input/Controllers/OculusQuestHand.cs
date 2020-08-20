@@ -79,10 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public OculusQuestHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
@@ -173,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             get
             {
-                //if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
+                // if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
                 if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
 
                 Camera mainCamera = CameraCache.Main;
@@ -229,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 UpdateVelocity();
             }
 
-            //UpdateTeleport();
+            // UpdateTeleport();
 
             for (int i = 0; i < Interactions?.Length; i++)
             {

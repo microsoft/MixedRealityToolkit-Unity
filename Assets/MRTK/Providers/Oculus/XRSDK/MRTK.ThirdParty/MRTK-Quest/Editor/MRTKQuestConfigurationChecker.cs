@@ -35,7 +35,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace prvncher.MRTKQuest.Editor
+namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
 {
     /// <summary>
     /// Class that checks if the Oculus Integration Assets are present and configures the project if they are.

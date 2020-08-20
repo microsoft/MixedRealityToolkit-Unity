@@ -50,7 +50,7 @@ supporting **hand tracking** with the Oculus Quest. This data provider does **NO
 
         - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
 
-        ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddXRSDKDataProvider.png)
+        ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
 
 ## Using the MRTK-Quest Data Provider for handtracking

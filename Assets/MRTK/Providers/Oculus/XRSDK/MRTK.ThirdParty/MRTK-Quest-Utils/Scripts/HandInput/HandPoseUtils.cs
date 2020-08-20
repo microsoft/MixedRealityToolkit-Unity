@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             var fingerKnuckleToTip = (fingerKnuckleJoint - fingerTipJoint).normalized;
 
             var curl = Vector3.Dot(fingerKnuckleToTip, palmToFinger);
-            //Redefining the range from [-1,1] to [0,1]
+            // Redefining the range from [-1,1] to [0,1]
             curl = (curl + 1) / 2.0f;
             return curl;
 

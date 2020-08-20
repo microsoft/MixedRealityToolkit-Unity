@@ -318,8 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     return TeleportHotSpot.TargetOrientation;
                 }
 
-                //return PointerPose.Rotation.eulerAngles.y;
-                //return pointerOrientation + (Rotation.eulerAngles.y ?? transform.eulerAngles.y);
                 return pointerOrientation + Rotation.eulerAngles.y;
             }
             set
@@ -517,7 +515,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     if (Controller == null)
                     {
                         // Since we manually manage this pointer, we dont need a specific controller to point to.
-                        //Destroy(gameObject);
                         yield break;
                     }
                 }
@@ -761,8 +758,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Updates
         /// </summary>
-        /// <param name="isActive"></param>
-        /// <param name="teleportDirection"></param>
+        /// <param name="isActive">Whether the pointer is active.</param>
+        /// <param name="teleportDirection">Direction to teleport.</param>
         public void UpdatePointer(bool isActive, Vector2 teleportDirection, bool autoActivate = true)
         {
             if (IsActive && !isActive && TeleportHotSpot != null)
