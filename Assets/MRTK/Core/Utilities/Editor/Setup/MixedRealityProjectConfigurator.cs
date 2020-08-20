@@ -63,6 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             IOSMinOSVersion = 3000,
             IOSArchitecture,
             IOSCameraUsageDescription,
+
+#if UNITY_2019_3_OR_NEWER
+            // A workaround for the Unity bug described in https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8326.
+            GraphicsJobWorkaround,
+#endif // UNITY_2019_3_OR_NEWER
         };
 
         private class ConfigGetter
@@ -133,6 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) ? version >= iOSMinOsVersion : false, BuildTarget.iOS) },
             { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
             { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
+
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.GraphicsJobWorkaround, new ConfigGetter(() => !PlayerSettings.graphicsJobs, BuildTarget.WSAPlayer) },
+#endif // UNITY_2019_3_OR_NEWER
+
         };
 
         // The configure functions for each type of setting
@@ -162,6 +172,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.IOSMinOSVersion, () => PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1") },
             { Configurations.IOSArchitecture, () => PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture) },
             { Configurations.IOSCameraUsageDescription, () => PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription },
+
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.GraphicsJobWorkaround, () => PlayerSettings.graphicsJobs = false },
+#endif // UNITY_2019_3_OR_NEWER
         };
 
         /// <summary>
