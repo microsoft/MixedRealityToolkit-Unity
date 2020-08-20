@@ -8,9 +8,9 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
-    /// Configuration for <see cref="PerAxisHandles"/> used in <see cref="BoundsControl"/>
-    /// This class provides all data members needed to create axis based handles for <see cref="BoundsControl"/>
-    /// </summary
+    /// Configuration for <see cref="PerAxisHandles"/> used in <see cref="BoundsControl"/>.
+    /// This class provides all data members needed to create axis based handles for <see cref="BoundsControl"/>.
+    /// </summary>
     public abstract class PerAxisHandlesConfiguration : HandlesBaseConfiguration
     {
 
@@ -38,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the X axis")]
+        [Tooltip("Check to show handles for the X axis.")]
         private bool showHandleForX = true;
 
         /// <summary>
-        /// Check to show handles for the X axis
+        /// Check to show handles for the X axis.
         /// </summary>
         public bool ShowHandleForX
         {
@@ -61,11 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the Y axis")]
+        [Tooltip("Check to show handles for the Y axis.")]
         private bool showHandleForY = true;
 
         /// <summary>
-        /// Check to show handles for the Y axis
+        /// Check to show handles for the Y axis.
         /// </summary>
         public bool ShowHandleForY
         {
@@ -84,11 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the Z axis")]
+        [Tooltip("Check to show handles for the Z axis.")]
         private bool showHandleForZ = true;
 
         /// <summary>
-        /// Check to show handles for the Z axis
+        /// Check to show handles for the Z axis.
         /// </summary>
         public bool ShowHandleForZ
         {
