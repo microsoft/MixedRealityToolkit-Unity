@@ -253,10 +253,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             // MRTK may be located in Assets (.unitypackage import) or the Packages (UPM import)
             // folder. Check both locations.
-            List<string> rootFolders = new List<string>();
-            rootFolders.Add(Application.dataPath);
-            rootFolders.Add(Path.GetFullPath("Packages"));
-            rootFolders.Add(Path.GetFullPath(Path.Combine("Library", "PackageCache")));
+            List<string> rootFolders = new List<string>
+            {
+                Application.dataPath,
+                Path.GetFullPath("Packages"),
+                Path.GetFullPath(Path.Combine("Library", "PackageCache"))
+            };
             searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(rootFolders));
         }
 
