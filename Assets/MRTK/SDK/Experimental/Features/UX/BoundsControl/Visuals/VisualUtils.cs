@@ -182,29 +182,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 switch (linkIndex)
                 {
-                    case 0:
+                    case (int)Edges.FrontBottom:
                         return (cornerPoints[0] + cornerPoints[1]) * 0.5f;
-                    case 1:
+                    case (int)Edges.FrontLeft:
                         return (cornerPoints[0] + cornerPoints[2]) * 0.5f;
-                    case 2:
+                    case (int)Edges.FrontTop:
                         return (cornerPoints[3] + cornerPoints[2]) * 0.5f;
-                    case 3:
+                    case (int)Edges.FrontRight:
                         return (cornerPoints[3] + cornerPoints[1]) * 0.5f;
-                    case 4:
+                    case (int)Edges.BackBottom:
                         return (cornerPoints[4] + cornerPoints[5]) * 0.5f;
-                    case 5:
+                    case (int)Edges.BackLeft:
                         return (cornerPoints[4] + cornerPoints[6]) * 0.5f;
-                    case 6:
+                    case (int)Edges.BackTop:
                         return (cornerPoints[7] + cornerPoints[6]) * 0.5f;
-                    case 7:
+                    case (int)Edges.BackRight:
                         return (cornerPoints[7] + cornerPoints[5]) * 0.5f;
-                    case 8:
+                    case (int)Edges.BottomLeft:
                         return (cornerPoints[0] + cornerPoints[4]) * 0.5f;
-                    case 9:
+                    case (int)Edges.BottomRight:
                         return (cornerPoints[1] + cornerPoints[5]) * 0.5f;
-                    case 10:
+                    case (int)Edges.TopLeft:
                         return (cornerPoints[2] + cornerPoints[6]) * 0.5f;
-                    case 11:
+                    case (int)Edges.TopRight:
                         return (cornerPoints[3] + cornerPoints[7]) * 0.5f;
                 }
             }

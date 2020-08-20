@@ -25,9 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     HandlePositions[i] = VisualUtils.GetLinkPosition(i, ref boundsCorners);
                 }
+                UpdateHandles();
             }
-
-            UpdateHandles();
         }
 
         internal RotationHandles(RotationHandlesConfiguration configuration) 

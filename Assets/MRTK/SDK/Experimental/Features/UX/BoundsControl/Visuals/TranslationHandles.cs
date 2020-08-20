@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     HandlePositions[i] = VisualUtils.GetFaceCenterPosition(i, ref boundsCorners);
                 }
+            
+                UpdateHandles();
             }
-
-            UpdateHandles();
         }
 
         internal TranslationHandles(TranslationHandlesConfiguration configuration) 
