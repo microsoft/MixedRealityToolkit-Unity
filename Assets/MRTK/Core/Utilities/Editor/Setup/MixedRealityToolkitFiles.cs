@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         Tests,
         Extensions,
         Tools,
+        StandardAssets,
         // This module only exists for testing purposes, and is used in edit mode tests in conjunction
         // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
         // files that are placed outside of the root asset folder.
@@ -124,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Tests", MixedRealityToolkitModuleType.Tests },
             { "Extensions", MixedRealityToolkitModuleType.Extensions },
             { "Tools", MixedRealityToolkitModuleType.Tools },
+            { "StandardAssets", MixedRealityToolkitModuleType.StandardAssets },
 
             // This module only exists for testing purposes, and is used in edit mode tests in conjunction
             // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
@@ -251,10 +253,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             // MRTK may be located in Assets (.unitypackage import) or the Packages (UPM import)
             // folder. Check both locations.
-            List<string> rootFolders = new List<string>();
-            rootFolders.Add(Application.dataPath);
-            rootFolders.Add(Path.GetFullPath("Packages"));
-            rootFolders.Add(Path.GetFullPath(Path.Combine("Library", "PackageCache")));
+            List<string> rootFolders = new List<string>
+            {
+                Application.dataPath,
+                Path.GetFullPath("Packages"),
+                Path.GetFullPath(Path.Combine("Library", "PackageCache"))
+            };
             searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(rootFolders));
         }
 

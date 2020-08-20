@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     [MixedRealityController(
         SupportedControllerType.OculusTouch,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/OculusControllersTouch")]
+        "Textures/OculusControllersTouch")]
     public class OculusTouchController : GenericOpenVRController
     {
         /// <summary>
