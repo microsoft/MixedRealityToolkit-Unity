@@ -532,8 +532,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(control);
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             // move camera to look at rotation sphere
             CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
@@ -566,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return null;
 
             // Restore the input simulation profile
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
 
             yield return null;
         }
@@ -659,8 +659,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
@@ -687,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return null;
 
             // Restore the input simulation profile
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
 
             yield return null;
         }

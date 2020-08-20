@@ -454,9 +454,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
             yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim, 1);
 
-            for (int i = 0; i < PlayModeTestUtilities.HandMoveSteps; ++i)
+            for (int i = 0; i < PlayModeTestUtilities.ControllerMoveSteps; ++i)
             {
-                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.HandMoveSteps;
+                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.ControllerMoveSteps;
                 for (int j = 0; j < numTouchables; ++j)
                 {
                     Vector3 r = GetRandomPoint(j + 10);
