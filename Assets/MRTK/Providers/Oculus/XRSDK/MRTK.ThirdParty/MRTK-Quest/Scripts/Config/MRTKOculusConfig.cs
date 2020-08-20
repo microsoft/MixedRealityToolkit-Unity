@@ -31,10 +31,7 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
-#if UNITY_EDITOR
-    [UnityEditor.InitializeOnLoad]
-#endif
-    [CreateAssetMenu(menuName = "MixedRealityToolkin/OculusHandtrackingConfig")]
+    [CreateAssetMenu(menuName = "MixedRealityToolkit/OculusHandtrackingConfig")]
     public class MRTKOculusConfig : ScriptableObject
     {
         private static MRTKOculusConfig instance;
