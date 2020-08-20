@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             if (arFoundationPresent)
             {
-#if UNITY_2018 || UNITY_2019_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
                 if (!references.Contains(arFoundationReference))
                 {
                     // Add a reference to the ARFoundation assembly

@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Tests if the initial transform setup of bounds control has been propagated to it's collider
+        /// Tests if the initial transform setup of bounds control has been propagated to its collider
         /// </summary>
         /// <param name="boundsControl">Bounds control that controls the collider size</param>
         private IEnumerator VerifyInitialBoundsCorrect(BoundsControl boundsControl)
@@ -433,6 +433,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test bounds control rotation constraints via near interaction.
+        /// Verifies gameobject won't rotate when rotation constraint is applied.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotationConstraintViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            var rotateConstraint = boundsControl.EnsureComponent<RotationAxisConstraint>();
+            rotateConstraint.ConstraintOnRotation = AxisFlags.YAxis; // restrict rotation in Y axis
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            Assert.IsTrue(angle == 0f, "cube didn't constraint on rotation");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube shouldn't move while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube shouldn't scale while rotating");
+
+            yield return null;
+        }
+
+        /// <summary>
         /// Test bounds control rotation via near interaction, while moving extremely slowly.
         /// Rotation amount should be coherent even with extremely small per-frame motion
         /// </summary>
@@ -575,7 +614,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var scaleHandler = boundsControl.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
-            boundsControl.RegisterTransformScaleHandler(scaleHandler);
 
             Vector3 initialScale = boundsControl.transform.localScale;
 

@@ -367,7 +367,6 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
     "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/LeapMotion/Editor/LeapMotionConfigurationChecker.cs",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
     "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
     "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
@@ -403,6 +402,45 @@ function CheckInitializeOnLoad {
     }
 }
 
+# The set of exempt files that are allowed to use Assembly.GetTypes()
+# Note that this is used in a rough regex to check for any references to ".GetTypes()"
+# which is generally good enough catch those incorrect use cases.
+$AssemblyTypesExceptions = [System.Collections.Generic.HashSet[String]]@(
+    "Assets/MRTK/Core/Extensions/AssemblyExtensions.cs",
+    "Assets/MRTK/Core/Extensions/TypeExtensions.cs"
+)
+
+<#
+.SYNOPSIS
+    Checks that we don't have any references to Assembly.GetTypes(), which throws an exception for types
+    that aren't loadable. Instead, callers should use the Assembly extensions GetLoadableTypes(), which wraps
+    Assembly.GetTypes(), catches any unloadable types exceptions, and returns the actually loadable types.
+    Note that this is mostly a hueristic to avoid having additional Assembly.GetTypes() calls (it doesn't do
+    actual static analysis, just rough text analysis)
+#>
+function CheckAssemblyTypes {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+
+        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+            $assetFileName = GetProjectRelativePath($FileName)
+            if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
+                Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
+                Write-Host $FileContent[$LineNumber]
+                Write-Host "If this is using Assembly.GetTypes(), switch to Assembly.GetLoadableTypes() instead or add to AssemblyTypesExceptions"
+                $hasIssue = $true
+            }
+        }      
+        $hasIssue
+    }
+}
+
 function CheckScript {
     [CmdletBinding()]
     param(
@@ -430,6 +468,9 @@ function CheckScript {
                 $containsIssue = $true
             }
             if (CheckInitializeOnLoad $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            if (CheckAssemblyTypes $FileName $fileContent $i) {
                 $containsIssue = $true
             }
             $containsNamespaceDeclaration = $containsNamespaceDeclaration -or (IsNamespace $fileContent[$i])

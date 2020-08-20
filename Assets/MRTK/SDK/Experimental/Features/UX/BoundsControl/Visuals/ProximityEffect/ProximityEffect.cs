@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Updates proximity effect and it's registered objects.
+        /// Updates proximity effect and its registered objects.
         /// Highlights and scales objects in proximity according to the pointer distance
         /// </summary>
         /// <param name="boundsCenter">gameobject position the proximity effect is attached to</param>

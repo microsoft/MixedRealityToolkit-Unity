@@ -18,14 +18,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         private bool isTracked = false;
+
+        /// <summary>
+        /// Whether the hand is currently being tracked
+        /// </summary>
         public bool IsTracked => isTracked;
         [SerializeField]
         private MixedRealityPose[] joints = new MixedRealityPose[jointCount];
+
+        /// <summary>
+        /// Array storing the joints of the hand
+        /// </summary>
         public MixedRealityPose[] Joints => joints;
         [SerializeField]
         private bool isPinching = false;
+
+        /// <summary>
+        /// Whether the hand is pinching
+        /// </summary>
         public bool IsPinching => isPinching;
 
+        /// <summary>
+        /// Generator function producing joint positions and rotations
+        /// </summary>
         public delegate void HandJointDataGenerator(MixedRealityPose[] jointPoses);
 
         public void Copy(SimulatedHandData other)
