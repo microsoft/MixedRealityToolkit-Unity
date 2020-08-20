@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public static class SizeUtilities
     {
         /// <summary>
-        /// Finds the first Renderer type component on the selected GameObject in scene and returns it's world space bounds size.
+        /// Finds the first Renderer type component on the selected GameObject in scene and returns its world space bounds size.
         /// </summary>
         [MenuItem("GameObject/MRTK Debug Utilities/Print Renderer Size", false, 40)]
         public static void RendererSize()

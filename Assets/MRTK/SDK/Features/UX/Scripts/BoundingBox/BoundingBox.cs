@@ -1847,7 +1847,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             Transform targetTransform = Target.transform;
 
-            // In case we found nothing and this is the Target, we add it's inevitable collider's bounds
+            // In case we found nothing and this is the Target, we add its inevitable collider's bounds
 
             if (totalBoundsCorners.Count == 0 && Target == gameObject)
             {

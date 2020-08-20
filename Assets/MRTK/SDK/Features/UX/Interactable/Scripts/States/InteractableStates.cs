@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             /// </summary>
             Gesture,
             /// <summary>
-            /// Gesture has reached it's max movement
+            /// Gesture has reached its max movement
             /// </summary>
             GestureMax,
             /// <summary>
