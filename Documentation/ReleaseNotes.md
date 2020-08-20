@@ -23,6 +23,10 @@ Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation
 
 ![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
 
+**Input Simulation Motion Controller in Editor Play Mode**
+
+Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.
+
 **Conical Grab Pointer**
 
 Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
@@ -113,5 +117,11 @@ The stored initial world pose `worldPoseOnManipulationStart` data type has been 
 **New Property in IMixedRealityDictationSystem**
 
 A new property `AudioClip` has been added to the IMixedRealityDictationSystem interface. The `AudioClip` property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.
+
+**Addition of Motion Controller to Input Simulation Service**
+
+Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with `InputSimulationService.cs` and `MixedRealityInputSimulationProfile.cs` getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to "hand" to the more generic term "controller" (e.g. from `DefaultHandSimulationMode` to `DefaultControllerSimulationMode`). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. `GetControllerDevice` based on the original `GetHandDevice` now returns `BaseController` instead of `SimulatedHand`).
+
+`IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
 
 ### Known issues

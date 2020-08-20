@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
-        private SimulatedHandDataProvider dataProvider = null;
+        private SimulatedControllerDataProvider dataProvider = null;
 
         /// <inheritdoc />
         public ControllerSimulationMode ControllerSimulationMode { get; set; }
@@ -56,6 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
         /// <inheritdoc />
         private SimulatedHandData HandDataGaze { get; } = new SimulatedHandData();
+        /// <inheritdoc />
+        public SimulatedMotionControllerData MotionControllerDataLeft { get; } = new SimulatedMotionControllerData();
+        /// <inheritdoc />
+        public SimulatedMotionControllerData MotionControllerDataRight { get; } = new SimulatedMotionControllerData();
 
         /// <inheritdoc />
         public bool IsSimulatingControllerLeft => (dataProvider != null ? dataProvider.IsSimulatingLeft : false);
@@ -79,29 +83,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public Vector3 ControllerPositionLeft
         {
-            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.InputStateLeft.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.InputStateLeft.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerPositionRight
         {
-            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportPosition = value; } }
+            get { return dataProvider != null ? dataProvider.InputStateRight.ViewportPosition : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.InputStateRight.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerRotationLeft
         {
-            get { return dataProvider != null ? dataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.HandStateLeft.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.InputStateLeft.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.InputStateLeft.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 ControllerRotationRight
         {
-            get { return dataProvider != null ? dataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
-            set { if (dataProvider != null) { dataProvider.HandStateRight.ViewportRotation = value; } }
+            get { return dataProvider != null ? dataProvider.InputStateRight.ViewportRotation : Vector3.zero; }
+            set { if (dataProvider != null) { dataProvider.InputStateRight.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
@@ -109,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (dataProvider != null)
             {
-                dataProvider.ResetHand(Handedness.Left);
+                dataProvider.ResetInput(Handedness.Left);
             }
         }
 
@@ -118,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (dataProvider != null)
             {
-                dataProvider.ResetHand(Handedness.Right);
+                dataProvider.ResetInput(Handedness.Right);
             }
         }
 
@@ -213,6 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 case MixedRealityCapability.EyeTracking:
                     return EyeGazeSimulationMode != EyeGazeSimulationMode.Disabled;
+
+                case MixedRealityCapability.MotionController:
+                    return ControllerSimulationMode == ControllerSimulationMode.MotionController;
             }
 
             return false;
@@ -279,6 +286,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case ControllerSimulationMode.HandGestures:
                     EnableHandSimulation();
                     break;
+
+                case ControllerSimulationMode.MotionController:
+                    EnableMotionControllerSimulation();
+                    break;
             }
 
             // If an XRDevice is present, the user will not be able to control the camera
@@ -306,6 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, HandDataGaze, mouseDelta);
                     }
+                    else if (dataProvider is SimulatedMotionControllerDataProvider controllerDataProvider)
+                    {
+                        controllerDataProvider.UpdateControllerData(MotionControllerDataLeft, MotionControllerDataRight, mouseDelta);
+                    }
+
                 }
 
                 if (cameraControl != null && CameraCache.Main)
@@ -359,6 +375,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case ControllerSimulationMode.HandGestures:
                             controllerDataLeft = HandDataLeft;
                             controllerDataRight = HandDataRight;
+                            break;
+
+                        case ControllerSimulationMode.MotionController:
+                            controllerDataLeft = MotionControllerDataLeft;
+                            controllerDataRight = MotionControllerDataRight;
                             break;
                     }
                     UpdateControllerDevice(ControllerSimulationMode, Handedness.Left, controllerDataLeft);
@@ -421,6 +442,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
+            }
+        }
+
+        private void EnableMotionControllerSimulation()
+        {
+            if (dataProvider == null)
+            {
+                DebugUtilities.LogVerbose("Creating a new motion controller simulation data provider");
+                dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
             }
         }
 
