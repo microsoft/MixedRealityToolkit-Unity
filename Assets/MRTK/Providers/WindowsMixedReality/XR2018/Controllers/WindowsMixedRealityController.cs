@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/MotionController")]
+        "Textures/MotionController")]
     public class WindowsMixedRealityController : BaseWindowsMixedRealitySource
     {
         /// <summary>
