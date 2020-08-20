@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type t in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component))))
+                foreach (Type t in assembly.GetLoadableTypes().Where(t => t.IsSubclassOf(typeof(Component))))
                 {
                     foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                     {
