@@ -14,6 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Gets or sets the <see href="https://docs.unity3d.com/ScriptReference/PhysicMaterial.html">PhysicMaterial</see> to be used when displaying <see href="https://docs.unity3d.com/ScriptReference/Mesh.html">Mesh</see>es.
         /// </summary>
-        PhysicMaterial PhysicMaterial { get; set; }
+        PhysicMaterial PhysicsMaterial { get; set; }
     }
 }
