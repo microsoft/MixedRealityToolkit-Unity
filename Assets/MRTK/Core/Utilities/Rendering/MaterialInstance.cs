@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 {
                     defaultMaterials = CachedRenderer.sharedMaterials;
                 }
-                else if (!materialsInstanced) // Restore the clone to it's initial state.
+                else if (!materialsInstanced) // Restore the clone to its initial state.
                 {
                     CachedRenderer.sharedMaterials = defaultMaterials;
                 }

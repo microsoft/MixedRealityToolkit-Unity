@@ -842,7 +842,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Ensure a disabled Interactable initializes when accessing one of it's properties even though it's Awake() has not been called
+        /// Ensure a disabled Interactable initializes when accessing one of its properties even though its Awake() has not been called
         /// </summary>
         [UnityTest]
         public IEnumerator TestForceInitialize()
@@ -863,7 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             enabledCheckbox.IsToggled = true;
             Assert.IsTrue(enabledCheckbox.IsToggled);
 
-            // Disabled checkbox should auto-initialize even though it's Awake() has not been called
+            // Disabled checkbox should auto-initialize even though its Awake() has not been called
             disabledCheckbox.IsToggled = true;
             Assert.IsTrue(disabledCheckbox.IsToggled);
 

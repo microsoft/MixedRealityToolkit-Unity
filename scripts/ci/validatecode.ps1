@@ -367,7 +367,6 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
     "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/LeapMotion/Editor/LeapMotionConfigurationChecker.cs",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
     "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
     "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
@@ -392,8 +391,8 @@ function CheckInitializeOnLoad {
         if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
-                #Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
-                #Write-Warning "to `$InitializeOnLoadExceptions after discussion with the rest of the team."
+                Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
+                Write-Warning "to `$InitializeOnLoadExceptions after discussion with the rest of the team."
                 $hasIssue = $true
 
                 Write-Host "`"$assetFileName`","
@@ -429,7 +428,7 @@ function CheckAssemblyTypes {
     process {
         $hasIssue = $false
 
-        if ($FileContent[$LineNumber] -match ".GetTypes()") {
+        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
                 Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
