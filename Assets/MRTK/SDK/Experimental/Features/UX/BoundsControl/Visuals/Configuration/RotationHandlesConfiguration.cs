@@ -12,101 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// This class provides all data members needed to create rotation handles for <see cref="BoundsControl"/>
     /// </summary>
     [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Experimental/Bounds Control/Rotation Handles Configuration")]
-    public class RotationHandlesConfiguration : HandlesBaseConfiguration
+    public class RotationHandlesConfiguration : PerAxisHandlesConfiguration
     {
-
-        [SerializeField]
-        [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
-        private HandlePrefabCollider rotationHandlePrefabColliderType = HandlePrefabCollider.Box;
-
         /// <summary>
-        /// Determines the type of collider that will surround the rotation handle prefab.
+        /// Fabricates an instance of RotationHandles, applying
+        /// this config to it whilst creating it.
         /// </summary>
-        public HandlePrefabCollider RotationHandlePrefabColliderType
+        /// <returns>New RotationHandles</returns>
+        internal virtual RotationHandles ConstructInstance()
         {
-            get
-            {
-                return rotationHandlePrefabColliderType;
-            }
-            set
-            {
-                if (rotationHandlePrefabColliderType != value)
-                {
-                    rotationHandlePrefabColliderType = value;
-                    colliderTypeChanged.Invoke();
-                }
-            }
+            // Return a new RotationHandles, using this config as the active config.
+            return new RotationHandles(this);
         }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the X axis")]
-        private bool showRotationHandleForX = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the X axis
-        /// </summary>
-        public bool ShowRotationHandleForX
-        {
-            get
-            {
-                return showRotationHandleForX;
-            }
-            set
-            {
-                if (showRotationHandleForX != value)
-                {
-                    showRotationHandleForX = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Y axis")]
-        private bool showRotationHandleForY = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Y axis
-        /// </summary>
-        public bool ShowRotationHandleForY
-        {
-            get
-            {
-                return showRotationHandleForY;
-            }
-            set
-            {
-                if (showRotationHandleForY != value)
-                {
-                    showRotationHandleForY = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Z axis")]
-        private bool showRotationHandleForZ = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Z axis
-        /// </summary>
-        public bool ShowRotationHandleForZ
-        {
-            get
-            {
-                return showRotationHandleForZ;
-            }
-            set
-            {
-                if (showRotationHandleForZ != value)
-                {
-                    showRotationHandleForZ = value;
-                    handlesChanged.Invoke(HandlesChangedEventType.Visibility);
-                }
-            }
-        }
-
-        internal UnityEvent colliderTypeChanged = new UnityEvent();
     }
 }
