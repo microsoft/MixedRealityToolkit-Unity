@@ -13,10 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public class RotationHandles : PerAxisHandles
     {
+        /// <inheritdoc/>
         protected override string HandlePositionDescription => "midpoint";
-        protected override int NumHandles => VisualUtils.EdgeAxisType.Length;
+
+        /// <inheritdoc/>
         internal override CardinalAxisType[] handleAxes => VisualUtils.EdgeAxisType;
 
+        /// <inheritdoc/>
         internal override void CalculateHandlePositions(ref Vector3[] boundsCorners)
         {
             if (boundsCorners != null && HandlePositions != null)
@@ -34,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
         }
 
+        /// <inheritdoc/>
         protected override Quaternion GetRotationRealignment(int handleIndex)
         {
             if (VisualUtils.EdgeAxisType[handleIndex] == CardinalAxisType.X)
@@ -52,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #region BoundsControlHandlerBase 
 
-
+        /// <inheritdoc/>
         internal override HandleType GetHandleType()
         {
             return HandleType.Rotation;

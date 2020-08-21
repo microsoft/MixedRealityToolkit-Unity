@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
-        static protected string visualsName = "visuals";
+        protected const string visualsName = "visuals";
 
         internal HandlesBase() { }
         protected abstract HandlesBaseConfiguration BaseConfig
@@ -159,7 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return false;
         }
 
-
+        /// <summary>
+        /// Provides the handle type - can be either translation / rotation / scale.
+        /// </summary>
         internal virtual HandleType GetHandleType()
         {
             return HandleType.None;

@@ -38,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the X axis.")]
+        [Tooltip("Shows handles for the X axis.")]
         private bool showHandleForX = true;
 
         /// <summary>
-        /// Check to show handles for the X axis.
+        /// Shows handles for the X axis.
         /// </summary>
         public bool ShowHandleForX
         {
@@ -61,11 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the Y axis.")]
+        [Tooltip("Shows handles for the Y axis.")]
         private bool showHandleForY = true;
 
         /// <summary>
-        /// Check to show handles for the Y axis.
+        /// Shows handles for the Y axis.
         /// </summary>
         public bool ShowHandleForY
         {
@@ -84,11 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Check to show handles for the Z axis.")]
+        [Tooltip("Shows handles for the Z axis.")]
         private bool showHandleForZ = true;
 
         /// <summary>
-        /// Check to show handles for the Z axis.
+        /// Shows handles for the Z axis.
         /// </summary>
         public bool ShowHandleForZ
         {

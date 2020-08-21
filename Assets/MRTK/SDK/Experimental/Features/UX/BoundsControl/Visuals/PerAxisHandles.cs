@@ -14,19 +14,50 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class PerAxisHandles : HandlesBase
     {
+        /// <summary>
+        /// Configuration defining the handle behavior.
+        /// </summary>
         protected override HandlesBaseConfiguration BaseConfig => config;
         protected PerAxisHandlesConfiguration config;
+
+        /// <summary>
+        /// Defines the axes the handles are assigned to.
+        /// There needs to be an entry for each of the created handles.
+        /// Predefined arrays for <see cref="VisualUtils.EdgeAxisType">Edges/Links</cref> and 
+        /// <see cref="VisualUtils.FaceAxisType">Faces</cref> can be passed from <see cref="VisualUtils">VisualUtils</cref>
+        /// </summary>
+        internal abstract CardinalAxisType[] handleAxes { get; }
+
+        /// <summary>
+        /// This description is used as the name (followed by an index) for the handle gameobject.
+        /// Can be used to search the rigroot tree to find a specific handle by name
+        /// </summary>
+        protected virtual string HandlePositionDescription => "handle";
+        private int NumHandles => handleAxes.Length;
+
+        /// <summary>
+        /// Cached handle positions - we keep track of handle positions in this array
+        /// in case we have to reload the handles due to configuration changes.
+        /// </summary>
         protected Vector3[] HandlePositions { get; private set; }
 
-        protected abstract int NumHandles { get; }
-        protected abstract string HandlePositionDescription { get; }
-        internal abstract CardinalAxisType[] handleAxes { get; }
+        /// <summary>
+        /// Defines the positions of the handles. Has to be provided in specific handle class.
+        /// </summary>
+        internal abstract void CalculateHandlePositions(ref Vector3[] boundsCorners);
+
+        /// <summary>
+        /// Provide the rotation alignment for a handle. This method will be called when creating the handles.
+        /// </summary>
+        /// <param name="handleIndex">Index of the handle the rotation alignment is provided for.</param>
+        /// <returns></returns>
+        protected abstract Quaternion GetRotationRealignment(int handleIndex);
 
         internal PerAxisHandles(PerAxisHandlesConfiguration configuration)
         {
             HandlePositions = new Vector3[NumHandles];
 
-            Debug.Assert(configuration != null, "Can't create " + configuration.ToString() + " without valid configuration");
+            Debug.Assert(configuration != null, "Can't create " + ToString() + " without valid configuration");
             config = configuration;
             config.handlesChanged.AddListener(HandlesChanged);
             config.colliderTypeChanged.AddListener(UpdateColliderType);
@@ -123,8 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal abstract void CalculateHandlePositions(ref Vector3[] boundsCorners);
-
         internal void Reset(bool areHandlesActive, FlattenModeType flattenAxis)
         {
             IsActive = areHandlesActive;
@@ -144,7 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent)
         {
-            HandlePositions = new Vector3[NumHandles];
             CalculateHandlePositions(ref boundsCorners);
             CreateHandles(parent);
         }
@@ -217,8 +245,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 collider.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
             }
         }
-
-        protected abstract Quaternion GetRotationRealignment(int handleIndex);
 
         private Bounds CreateVisual(int handleIndex, GameObject parent)
         {

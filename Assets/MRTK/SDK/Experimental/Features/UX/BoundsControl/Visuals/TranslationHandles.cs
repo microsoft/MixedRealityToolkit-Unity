@@ -13,9 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public class TranslationHandles : PerAxisHandles
     {
-    
+
+        /// <inheritdoc/>
         protected override string HandlePositionDescription => "faceCenter";
-        protected override int NumHandles => VisualUtils.FaceAxisType.Length;
+
+        /// <inheritdoc/>
         internal override CardinalAxisType[] handleAxes => VisualUtils.FaceAxisType;
 
         internal override void CalculateHandlePositions(ref Vector3[] boundsCorners)
