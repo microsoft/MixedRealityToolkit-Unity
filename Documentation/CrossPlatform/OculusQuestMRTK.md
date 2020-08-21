@@ -1,6 +1,6 @@
 # How to configure Oculus Quest in MRTK using the XRSDK pipeline
 
-A [Oculus Quest](https://www.oculus.com/quest/?locale=en_US) is required.
+A [Oculus Quest](https://www.oculus.com/quest/) is required.
 
 MRTK's support for the Oculus Quest comes via two different sources, Unity's XR pipeline and the Oculus Integration Unity package. The **Oculus XRSDK Data Provider** enables the use
 of both sources and must be used to use MRTK on the Oculus Quest.
