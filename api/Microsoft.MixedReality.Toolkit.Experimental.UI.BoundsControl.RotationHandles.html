@@ -94,7 +94,8 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html">HandlesBase</a></div>
-    <div class="level2"><span class="xref">RotationHandles</span></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html">PerAxisHandles</a></div>
+    <div class="level3"><span class="xref">RotationHandles</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -102,6 +103,33 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_BaseConfig">PerAxisHandles.BaseConfig</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_config">PerAxisHandles.config</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_HandlePositions">PerAxisHandles.HandlePositions</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_UpdateHandles">PerAxisHandles.UpdateHandles()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_RecreateVisuals">PerAxisHandles.RecreateVisuals()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_UpdateColliderBounds_Transform_Vector3_">PerAxisHandles.UpdateColliderBounds(Transform, Vector3)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_GetVisual_Transform_">PerAxisHandles.GetVisual(Transform)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_IsActive">PerAxisHandles.IsActive</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_visualsName">HandlesBase.visualsName</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_UpdateColliderBounds">HandlesBase.UpdateColliderBounds()</a>
     </div>
@@ -164,19 +192,21 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RotationHandles : HandlesBase, IProximityEffectObjectProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class RotationHandles : PerAxisHandles, IProximityEffectObjectProvider</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_BaseConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.BaseConfig*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_BaseConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.BaseConfig">BaseConfig</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_HandlePositionDescription_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.HandlePositionDescription*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_HandlePositionDescription" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.HandlePositionDescription">HandlePositionDescription</h4>
+  <div class="markdown level1 summary"><p>This description is used as the name (followed by an index) for the handle gameobject.
+Can be used to search the rigroot tree to find a specific handle by name</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override HandlesBaseConfiguration BaseConfig { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected override string HandlePositionDescription { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -188,61 +218,25 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBaseConfiguration.html">HandlesBaseConfiguration</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_BaseConfig">HandlesBase.BaseConfig</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_IsActive_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.IsActive*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_IsActive" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.IsActive">IsActive</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool IsActive { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_IsActive">HandlesBase.IsActive</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_HandlePositionDescription">PerAxisHandles.HandlePositionDescription</a></div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_Finalize_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.Finalize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_Finalize" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.Finalize">Finalize()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_GetRotationRealignment_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.GetRotationRealignment*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_GetRotationRealignment_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.GetRotationRealignment(System.Int32)">GetRotationRealignment(Int32)</h4>
+  <div class="markdown level1 summary"><p>Provide the rotation alignment for a handle. This method will be called when creating the handles.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_GetVisual_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.GetVisual*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_GetVisual_Transform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.GetVisual(Transform)">GetVisual(Transform)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Transform GetVisual(Transform handle)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Quaternion GetRotationRealignment(int handleIndex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -255,9 +249,10 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Transform</span></td>
-        <td><span class="parametername">handle</span></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">handleIndex</span></td>
+        <td><p>Index of the handle the rotation alignment is provided for.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -271,59 +266,13 @@ Gameobject BoundsControl is attached to with near or far interaction</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Transform</span></td>
+        <td><span class="xref">Quaternion</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_GetVisual_Transform_">HandlesBase.GetVisual(Transform)</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_RecreateVisuals_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.RecreateVisuals*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_RecreateVisuals" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.RecreateVisuals">RecreateVisuals()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void RecreateVisuals()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_RecreateVisuals">HandlesBase.RecreateVisuals()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_UpdateColliderBounds_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.UpdateColliderBounds*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_RotationHandles_UpdateColliderBounds_Transform_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandles.UpdateColliderBounds(Transform,Vector3)">UpdateColliderBounds(Transform, Vector3)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Transform</span></td>
-        <td><span class="parametername">handle</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">visualSize</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.HandlesBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_HandlesBase_UpdateColliderBounds_Transform_Vector3_">HandlesBase.UpdateColliderBounds(Transform, Vector3)</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.PerAxisHandles.html#Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_PerAxisHandles_GetRotationRealignment_System_Int32_">PerAxisHandles.GetRotationRealignment(Int32)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.IProximityEffectObjectProvider.html">IProximityEffectObjectProvider</a>

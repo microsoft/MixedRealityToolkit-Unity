@@ -368,16 +368,123 @@ deactivated, that BoundingBox no longer transforms that object.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleVisibilityTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleVisibilityTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleVisibilityTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleVisibilityTest">HandleVisibilityTest()</h4>
-  <div class="markdown level1 summary"><p>Tests visibility changes of different handle types: scale, rotateX, rotateY, rotateZ.
-Makes sure rig isn't recreated and visibility restores as expected when disabling the entire control.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleColliderPaddingTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleColliderPaddingTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleColliderPaddingTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleColliderPaddingTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData)">HandleColliderPaddingTest(PlayModeBoundsControlTests.HandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Tests runtime configuration of handle collider padding.
+Verifies collider of handles are scaled according to new size value
+without recreating the visual or the rig</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator HandleVisibilityTest()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator HandleColliderPaddingTest(PlayModeBoundsControlTests.HandleTestData testData)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData.html">PlayModeBoundsControlTests.HandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleMaterialTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleMaterialTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleMaterialTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleMaterialTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData)">HandleMaterialTest(PlayModeBoundsControlTests.HandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Tests runtime configuration of handle materials.
+Verifies handle default and grabbed material are properly replaced in all visuals when
+setting the material in the config as well as validating that neither the rig nor the visuals get recreated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator HandleMaterialTest(PlayModeBoundsControlTests.HandleTestData testData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData.html">PlayModeBoundsControlTests.HandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleSizeTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleSizeTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleSizeTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_HandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleSizeTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData)">HandleSizeTest(PlayModeBoundsControlTests.HandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Tests runtime configuration of handle size.
+Verifies handles are scaled according to new size value without recreating the visual or the rig</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator HandleSizeTest(PlayModeBoundsControlTests.HandleTestData testData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.HandleTestData.html">PlayModeBoundsControlTests.HandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -562,6 +669,138 @@ Makes sure that rig / visuals aren't recreated.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator ManipulationTetherTest()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleFlattenTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleFlattenTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleFlattenTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleFlattenTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData)">PerAxisHandleFlattenTest(PlayModeBoundsControlTests.PerAxisHandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Test for verifying that per axis handles are properly switched off/on when flattening/ unflattening the rig.
+Makes sure rig and handles are not recreated on changing flattening mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator PerAxisHandleFlattenTest(PlayModeBoundsControlTests.PerAxisHandleTestData testData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData.html">PlayModeBoundsControlTests.PerAxisHandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandlePrefabTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandlePrefabTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandlePrefabTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandlePrefabTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData)">PerAxisHandlePrefabTest(PlayModeBoundsControlTests.PerAxisHandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Test for verifying changing the per axis handle prefabs during runtime
+and making sure the entire rig won't be recreated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator PerAxisHandlePrefabTest(PlayModeBoundsControlTests.PerAxisHandleTestData testData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData.html">PlayModeBoundsControlTests.PerAxisHandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleVisibilityTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleVisibilityTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleVisibilityTest_Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_PerAxisHandleTestData_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleVisibilityTest(Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData)">PerAxisHandleVisibilityTest(PlayModeBoundsControlTests.PerAxisHandleTestData)</h4>
+  <div class="markdown level1 summary"><p>Tests visibility changes of per axis handle types.
+Makes sure rig isn't recreated and visibility restores as expected when disabling the entire control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator PerAxisHandleVisibilityTest(PlayModeBoundsControlTests.PerAxisHandleTestData testData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.PerAxisHandleTestData.html">PlayModeBoundsControlTests.PerAxisHandleTestData</a></td>
+        <td><span class="parametername">testData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -768,199 +1007,6 @@ Verifies gameobject won't rotate when rotation constraint is applied.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleColliderPaddingTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleColliderPaddingTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleColliderPaddingTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleColliderPaddingTest">RotationHandleColliderPaddingTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of rotation handle collider padding.
-Verifies collider of rotation handles are scaled according to new size value
-without recreating the visual or the rig</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotationHandleColliderPaddingTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleFlattenTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleFlattenTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleFlattenTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleFlattenTest">RotationHandleFlattenTest()</h4>
-  <div class="markdown level1 summary"><p>Test for verifying that rotation handles are properly switched off/on when flattening/ unflattening the rig.
-Makes sure rig and handles are not recreated on changing flattening mode.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotationHandleFlattenTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleMaterialTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleMaterialTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleMaterialTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleMaterialTest">RotationHandleMaterialTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of rotation handle materials.
-Verifies rotation handle default and grabbed material are properly replaced in all visuals when
-setting the material in the config as well as validating that neither the rig nor the visuals get recreated.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotationHandleMaterialTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandlePrefabTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandlePrefabTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandlePrefabTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandlePrefabTest">RotationHandlePrefabTest()</h4>
-  <div class="markdown level1 summary"><p>Test for verifying changing the handle prefabs during runtime
-and making sure the entire rig won't be recreated</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotationHandlePrefabTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleSizeTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleSizeTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_RotationHandleSizeTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.RotationHandleSizeTest">RotationHandleSizeTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of rotation handle size.
-Verifies rotation handles are scaled according to new size value without recreating the visual or the rig</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotationHandleSizeTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleColliderPaddingTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleColliderPaddingTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleColliderPaddingTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleColliderPaddingTest">ScaleHandleColliderPaddingTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of scale handle collider padding.
-Verifies collider of scale handles are scaled according to new size value
-without recreating the visual or the rig</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator ScaleHandleColliderPaddingTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleMaterialTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleMaterialTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleMaterialTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleMaterialTest">ScaleHandleMaterialTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of scale handle materials.
-Verifies scale handle default and grabbed material are properly replaced in all visuals when
-setting the material in the config as well as validating that neither the rig nor the visuals get recreated.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator ScaleHandleMaterialTest()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandlePrefabTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandlePrefabTest*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandlePrefabTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandlePrefabTest">ScaleHandlePrefabTest()</h4>
   <div class="markdown level1 summary"><p>Test for verifying changing the handle prefabs during runtime
@@ -988,15 +1034,15 @@ in regular and flatten mode and making sure the entire rig won't be recreated</p
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleSizeTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleSizeTest*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleSizeTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleSizeTest">ScaleHandleSizeTest()</h4>
-  <div class="markdown level1 summary"><p>Tests runtime configuration of scale handle size.
-Verifies scale handles are scaled according to new size value without recreating the visual or the rig</p>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleVisibilityTest_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleVisibilityTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_ScaleHandleVisibilityTest" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.ScaleHandleVisibilityTest">ScaleHandleVisibilityTest()</h4>
+  <div class="markdown level1 summary"><p>Tests visibility changes of scale handles.
+Makes sure rig isn't recreated and visibility restores as expected when disabling the entire control.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator ScaleHandleSizeTest()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator ScaleHandleVisibilityTest()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1203,6 +1249,114 @@ Verifies scale handles are scaled according to new size value without recreating
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator TearDown()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaFarInteraction_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaFarInteraction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaFarInteraction" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaFarInteraction">TranslateViaFarInteraction()</h4>
+  <div class="markdown level1 summary"><p>Test bounds control translation via far interaction
+Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TranslateViaFarInteraction()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaHololens1Interaction_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaHololens1Interaction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaHololens1Interaction" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaHololens1Interaction">TranslateViaHololens1Interaction()</h4>
+  <div class="markdown level1 summary"><p>Test bounds control translation via HoloLens 1 interaction / GGV
+Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TranslateViaHololens1Interaction()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaNearInteraction_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaNearInteraction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslateViaNearInteraction" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslateViaNearInteraction">TranslateViaNearInteraction()</h4>
+  <div class="markdown level1 summary"><p>Test bounds control translation via near interaction
+Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TranslateViaNearInteraction()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslationConstraintViaNearInteraction_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslationConstraintViaNearInteraction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Experimental_PlayModeBoundsControlTests_TranslationConstraintViaNearInteraction" data-uid="Microsoft.MixedReality.Toolkit.Tests.Experimental.PlayModeBoundsControlTests.TranslationConstraintViaNearInteraction">TranslationConstraintViaNearInteraction()</h4>
+  <div class="markdown level1 summary"><p>Test bounds control translate constraints via near interaction.
+Verifies gameobject won't translate when MoveAxisConstraint is applied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TranslationConstraintViaNearInteraction()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
