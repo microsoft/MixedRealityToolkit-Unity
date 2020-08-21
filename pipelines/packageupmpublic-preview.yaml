@@ -4,7 +4,7 @@ variables:
 - template: config/settings.yml
 
 jobs:
-- job: CreatePublicUPMArtifacts
+- job: UPMPublicPreviewRelease
   timeoutInMinutes: 30
   pool:
     name: On-Prem Unity
@@ -12,3 +12,11 @@ jobs:
   - template: templates/tasks/upmpackages.yml
     parameters:
       excludeBuildNumber: 0
+  - task: PowerShell@2
+    displayName: 'UPM packages to registry'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/publishupmpackages.ps1
+      arguments: >
+        -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
+        -RegistryPath $(UpmRegistry)
