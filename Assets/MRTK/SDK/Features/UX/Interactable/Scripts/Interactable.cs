@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -84,11 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("IsGlobal")]
         [SerializeField]
         [Tooltip("If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks." +
-        "If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.")]
+        "If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of its children's, collider.")]
         protected bool isGlobal = false;
         /// <summary>
         /// If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks.
-        /// If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.
+        /// If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of its children's, collider.
         /// </summary>
         public bool IsGlobal
         {
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions}");
+                        Debug.LogWarning($"On GameObject {gameObject.name}, value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions}.");
                     }
                 }
             }

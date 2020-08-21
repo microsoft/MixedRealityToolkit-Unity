@@ -1,6 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using Unity.Profiling;
@@ -173,6 +174,8 @@ namespace Microsoft.MixedReality.Toolkit
 #endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to RegisterHandler doesn't implement a type given as generic parameter.");
 
+            DebugUtilities.LogVerboseFormat("Registering handler {0} against system {1}", handler, this);
+
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
         }
 
@@ -191,6 +194,8 @@ namespace Microsoft.MixedReality.Toolkit
             Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
 #endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to UnregisterHandler doesn't implement a type given as generic parameter.");
+
+            DebugUtilities.LogVerboseFormat("Unregistering handler {0} against system {1}", handler, this);
 
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
         }

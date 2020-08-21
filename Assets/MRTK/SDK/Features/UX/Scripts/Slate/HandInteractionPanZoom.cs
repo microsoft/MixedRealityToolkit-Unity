@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -169,6 +169,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<Vector2> uvs = new List<Vector2>();
         private List<Vector2> uvsOrig = new List<Vector2>();
         private bool oldIsTargetPositionLockedOnFocusLock;
+
+#if UNITY_2019_4_OR_NEWER
+        // Quad meshes by default (in 2019 and higher) appear to follow the vertex order
+        // specified here: https://docs.unity3d.com/Manual/Example-CreatingaBillboardPlane.html
+        // That is, LowerLeft->LowerRight->UpperLeft->UpperRight
+        // Note that even though the example on that page is one that creates a quad manually
+        // using a specific order of vertices, this order seems to be what a quad mesh defaults to.
+        // This was discovered when looking into an issue on the SlateTests, which depend on the
+        // projection math within this to be using the correct right and up vectors.
+        private const int UpperLeftQuadIndex = 2;
+        private const int UpperRightQuadIndex = 3;
+        private const int LowerLeftQuadIndex = 0;
+#else // !UNITY_2019_4_OR_NEWER
+        // Quad meshes in 2018 and lower appear to follow a vertex order that looks like this:
+        // [0] "(-0.5, -0.5, 0.0)"
+        // [1] "(0.5, 0.5, 0.0)"
+        // [2] "(0.5, -0.5, 0.0)"
+        // [3] "(-0.5, 0.5, 0.0)"
+        // That is, LowerLeft->UpperRight->LowerRight->UpperLeft
+        private const int UpperLeftQuadIndex = 3;
+        private const int UpperRightQuadIndex = 1;
+        private const int LowerLeftQuadIndex = 0;
+#endif
 
         #endregion Private Properties
 
@@ -611,9 +634,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector2 uvCoord = Vector2.zero;
             Vector2[] uvs = mesh.uv;
-            Vector2 upperLeft = uvs[3];
-            Vector2 upperRight = uvs[1];
-            Vector2 lowerLeft = uvs[0];
+            Vector2 upperLeft = uvs[UpperLeftQuadIndex];
+            Vector2 upperRight = uvs[UpperRightQuadIndex];
+            Vector2 lowerLeft = uvs[LowerLeftQuadIndex];
 
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;
@@ -638,9 +661,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector2 quadCoord = Vector2.zero;
             Vector3[] vertices = mesh.vertices;
-            Vector3 upperLeft = transform.TransformPoint(vertices[3]);
-            Vector3 upperRight = transform.TransformPoint(vertices[1]);
-            Vector3 lowerLeft = transform.TransformPoint(vertices[0]);
+            Vector3 upperLeft = transform.TransformPoint(vertices[UpperLeftQuadIndex]);
+            Vector3 upperRight = transform.TransformPoint(vertices[UpperRightQuadIndex]);
+            Vector3 lowerLeft = transform.TransformPoint(vertices[LowerLeftQuadIndex]);
 
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;

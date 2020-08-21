@@ -3,16 +3,18 @@
   items:
   - name: Release Notes
     href: ReleaseNotes.md
-  - name: MRTK Package Contents
-    href: MRTK_PackageContents.md
+  - name: MRTK Packages
+    href: Packaging/MRTK_Packages.md
   - name: Updating from earlier versions
     href: Updating.md
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
-  - name: NuGet Packages
-    href: MRTKNuGetPackage.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
+  - name: Using the Unity Package Manager
+    href: usingupm.md
   - name: MRTK configuration dialog
     href: MRTK_Configuration_Dialog.md
   - name: Getting started with MRTK and XR SDK
@@ -205,7 +207,9 @@
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
+        href: Tools/ControllerMappingTool.md
+      - name: InputFeatureUsage tool
+        href: Tools/InputFeatureUsageTool.md 
   - name: UX Building Blocks
     items:
     - name: Toolbox Window
@@ -257,6 +261,8 @@
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
     - name: HoloLens Keyboard Helpers [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
+    - name: Rigged Hand Visualizer [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md      
   - name: Example Scenes
     items:
     - name: Examples Hub

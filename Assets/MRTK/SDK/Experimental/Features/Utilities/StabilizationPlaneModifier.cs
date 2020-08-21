@@ -1,17 +1,21 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine.XR.WSA;
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
-    [Serializable]
     /// <summary>
     /// StablizationPlaneOverride is a class used to describe the plane to be used by the StabilizationPlaneModifier class
     /// </summary>
+    [Serializable]
     public struct StabilizationPlaneOverride
     {
         /// <summary>
@@ -34,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     [AddComponentMenu("Scripts/MRTK/SDK/StabilizationPlaneModifier")]
     public class StabilizationPlaneModifier : MonoBehaviour
     {
-        [System.Serializable]
-        public enum StabilizationPlaneMode
+        [Serializable]
+        private enum StabilizationPlaneMode
         {
             /// <summary>
             /// Does not call SetFocusPoint
@@ -123,19 +127,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private bool drawGizmos = false;
 #pragma warning restore 414
 
-        [SerializeField, Tooltip("Override plane to use. Usually used to set plane to a slate like a menu")]
+        [SerializeField, Tooltip("Override plane to use. Usually used to set plane to a slate like a menu.")]
         private StabilizationPlaneOverride overridePlane;
 
+        /// <summary>
+        /// Override plane to use. Usually used to set plane to a slate like a menu.
+        /// </summary>
         public StabilizationPlaneOverride OverridePlane
         {
-            get
-            {
-                return overridePlane;
-            }
-            set
-            {
-                overridePlane = value;
-            }
+            get => overridePlane;
+            set => overridePlane = value;
         }
 
         /// <summary>
@@ -310,14 +311,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             gazeToPlane.Normalize();
             planePosition = gazeOrigin + (gazeToPlane * currentPlaneDistance);
 
-#if UNITY_WSA
+#if UNITY_2019_3_OR_NEWER
+            XRSubsystemHelpers.DisplaySubsystem?.SetFocusPlane(planePosition, OverridePlane.Normal, velocity);
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
+            {
 #pragma warning disable 0618
-            // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
-            HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Normal, velocity);
+                // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
+                HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Normal, velocity);
 #pragma warning restore 0618
-#endif
+            }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 
             return gazeToPlane;
         }
@@ -353,10 +361,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeDirection;
-#elif UNITY_WSA
+#else
+#if UNITY_2019_3_OR_NEWER
+            XRSubsystemHelpers.DisplaySubsystem?.SetFocusPlane(planePosition, -gazeDirection, Vector3.zero);
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
+            {
 #pragma warning disable 0618
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
+                HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
 #pragma warning restore 0618
+            }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 #endif
         }
 
@@ -378,10 +397,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeNormal;
-#elif UNITY_WSA
+#else
+#if UNITY_2019_3_OR_NEWER
+            XRSubsystemHelpers.DisplaySubsystem?.SetFocusPlane(planePosition, -gazeNormal, Vector3.zero);
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
+            {
 #pragma warning disable 0618
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
+                HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
 #pragma warning restore 0618
+            }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 #endif
         }
 

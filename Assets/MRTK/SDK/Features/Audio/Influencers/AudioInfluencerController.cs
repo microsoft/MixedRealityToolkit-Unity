@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// </summary>
     /// <remarks>
     /// AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component. If one is not attached, it will be added automatically.
-    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have it's audio influenced.
+    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have its audio influenced.
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [DisallowMultipleComponent]

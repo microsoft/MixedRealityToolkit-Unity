@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
 {
@@ -106,5 +106,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         X = 0,
         Y,
         Z
+    }
+
+    /// <summary>
+    /// Scale mode that is used for scaling behavior of bounds control.
+    /// </summary>
+    public enum HandleScaleMode
+    {
+        /// <summary>
+        /// Control will be scaled uniformly.
+        /// </summary>
+        Uniform,
+        /// <summary>
+        /// Scales non uniformly according to movement in 3d space.
+        /// </summary>
+        NonUniform
     }
 }

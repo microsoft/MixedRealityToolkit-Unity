@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
             else // Pre-Windows 10 1903.
             {
-                if (XRSDKSubsystemHelpers.DisplaySubsystem != null && !XRSDKSubsystemHelpers.DisplaySubsystem.displayOpaque)
+                if (XRSubsystemHelpers.DisplaySubsystem != null && !XRSubsystemHelpers.DisplaySubsystem.displayOpaque)
                 {
                     // HoloLens supports GGV hands
                     return capability == MixedRealityCapability.GGVHand;

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            return GetControllerTextureInternal("StandardAssets/Textures/Generic_controller", Handedness.None, suffix);
+            return GetControllerTextureInternal("Textures/Generic_controller", Handedness.None, suffix);
         }
 
         private static Texture2D GetControllerTextureInternal(string relativeTexturePath, Handedness handedness, string suffix)
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             string themeSuffix = EditorGUIUtility.isProSkin ? "_white" : "_black";
 
-            string fullTexturePath = MixedRealityToolkitFiles.MapRelativeFilePath($"{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png");
+            string fullTexturePath = MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.StandardAssets, $"{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png");
             return (Texture2D)AssetDatabase.LoadAssetAtPath(fullTexturePath, typeof(Texture2D));
         }
 

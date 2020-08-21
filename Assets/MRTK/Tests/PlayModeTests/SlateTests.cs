@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -30,21 +30,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject panObject;
         private HandInteractionPanZoom panZoom;
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.PushHandSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
             PlayModeTestUtilities.PopHandSimulationProfile();
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -128,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InstantiateFromPrefab();
 
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(new Vector3(0.0f, 0.0f, 0.6f));
@@ -224,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System;
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type t in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component))))
+                foreach (Type t in assembly.GetLoadableTypes().Where(t => t.IsSubclassOf(typeof(Component))))
                 {
                     foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                     {

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using System.Collections.Generic;
@@ -37,6 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.IOSMinOSVersion, true },
             { MRConfig.IOSArchitecture, true },
             { MRConfig.IOSCameraUsageDescription, true },
+
+#if UNITY_2019_3_OR_NEWER
+            // A workaround for the Unity bug described in https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8326.
+            { MRConfig.GraphicsJobWorkaround, true },
+#endif // UNITY_2019_3_OR_NEWER
         };
 
         private const float Default_Window_Height = 640.0f;
@@ -194,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
+                    RenderToggle(MRConfig.GraphicsJobWorkaround, "Avoid Unity 'PlayerSettings.graphicsJob' crash");
 #endif // UNITY_2019_3_OR_NEWER
                 }
                 else
@@ -203,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     trackToggles[MRConfig.SpatialPerceptionCapability] = false;
 #if UNITY_2019_3_OR_NEWER
                     trackToggles[MRConfig.EyeTrackingCapability] = false;
+                    trackToggles[MRConfig.GraphicsJobWorkaround] = false;
 #endif // UNITY_2019_3_OR_NEWER
                 }
 

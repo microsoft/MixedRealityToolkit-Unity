@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Calculates the bounds of all the colliders attached to this GameObject and all it's children
+        /// Calculates the bounds of all the colliders attached to this GameObject and all its children
         /// </summary>
         /// <param name="transform">Transform of root GameObject the colliders are attached to </param>
         /// <returns>The total bounds of all colliders attached to this GameObject. 

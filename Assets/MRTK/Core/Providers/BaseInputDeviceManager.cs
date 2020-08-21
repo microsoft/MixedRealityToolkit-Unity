@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -207,6 +207,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                                     // We got pointer from cache, continue to next pointer option to review
                                     requestedPointer = p;
+
+                                    DebugUtilities.LogVerboseFormat("RequestPointers: Reusing a cached pointer {0} for controller type {1} and handedness {2}",
+                                        requestedPointer,
+                                        controllerType,
+                                        controllingHand);
                                     break;
                                 }
                             }
@@ -300,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
                 if (pointer == null)
                 {
-                    Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
+                    Debug.LogError($"Ensure that the prefab '{option.PointerPrefab.name}' listed under Input -> Pointers -> Pointer Options has an {typeof(IMixedRealityPointer).Name} component.\nThis prefab can't be used as a pointer as configured and won't be instantiated.");
 
                     GameObjectExtensions.DestroyGameObject(pointerObject);
                 }

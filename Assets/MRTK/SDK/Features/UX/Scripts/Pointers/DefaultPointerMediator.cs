@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -20,14 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly HashSet<IMixedRealityTeleportPointer> teleportPointers = new HashSet<IMixedRealityTeleportPointer>();
         protected readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
-
-        private IPointerPreferences pointerPreferences;
+        protected IPointerPreferences pointerPreferences;
 
         public DefaultPointerMediator()
-            : this(null)
         {
+            pointerPreferences = null;
         }
 
+        [Obsolete("Use DefaultPointerMediator() instead, followed by a call to SetPointerPreferences()")]
         public DefaultPointerMediator(IPointerPreferences pointerPrefs)
         {
             pointerPreferences = pointerPrefs;
@@ -203,6 +203,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     unassignedPointer.IsActive = true;
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void SetPointerPreferences(IPointerPreferences pointerPreferences)
+        {
+            this.pointerPreferences = pointerPreferences;
         }
 
         private static readonly ProfilerMarker ApplyCustomPointerBehaviorsPerfMarker = new ProfilerMarker("[MRTK] DefaultPointerMediator.ApplyCustomPointerBehaviors");

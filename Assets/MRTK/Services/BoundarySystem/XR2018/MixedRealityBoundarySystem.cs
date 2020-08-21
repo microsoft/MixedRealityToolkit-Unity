@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -32,9 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-
+            // The base class initialization should be run every time. This ensures
+            // that profile settings are read at the correct time.
             base.Initialize();
+
+            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
         }
 
         #endregion IMixedRealityService Implementation

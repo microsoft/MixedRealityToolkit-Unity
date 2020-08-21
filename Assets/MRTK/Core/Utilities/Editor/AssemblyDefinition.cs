@@ -1,8 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -222,6 +224,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 file.IsReadOnly = true;
             }
+        }
+
+        /// <summary>
+        /// Adds a reference to an existing assembly definition.  Make sure to call Save() after using this method to save the changes.
+        /// </summary>
+        /// <param name="referenceName">The name of the reference to add to this assembly definition</param>
+        public void AddReference(string referenceName)
+        {
+            if (string.IsNullOrWhiteSpace(referenceName))
+            {
+                Debug.LogError($"The reference name is empty and was not added to the {Name} assembly definition file.");
+                return;
+            }
+
+            if (References == null)
+            {
+                References = new string[] { };
+            }
+
+            List<string> refs = References.ToList();
+
+            if (!refs.Contains(referenceName))
+            {
+                refs.Add(referenceName);
+            }
+            else 
+            {
+                Debug.Log($"The {referenceName} reference name is already listed in the {Name} file.");
+                return;
+            }
+
+            References = refs.ToArray();
         }
     }
 

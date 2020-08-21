@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -392,8 +392,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             foreach (var pointer in eventData.InputSource.Pointers)
             {
+                // In the case that the input source has multiple poke pointers, this code
+                // will reason over the first such pointer that is actually interacting with
+                // an object. For input sources that have a single poke pointer, this is one
+                // and the same (i.e. this event will only fire for this object when the poke
+                // pointer is touching this object).
                 PokePointer poke = pointer as PokePointer;
-                if (poke)
+                if (poke && poke.CurrentTouchableObjectDown)
                 {
                     // Extrapolate to get previous position.
                     float previousDistance = GetDistanceAlongPushDirection(poke.PreviousPosition);

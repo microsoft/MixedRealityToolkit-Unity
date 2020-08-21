@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Tests.EditMode.Services;
@@ -48,19 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
 
             // Check for Spatial Awareness System
             Assert.IsTrue(MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealitySpatialAwarenessSystem>());
-        }
-
-        [Test]
-        public void TestEmptyDataProvider()
-        {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-
-            // Check for Spatial Awareness System
-            var spatialAwarenessSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessSystem>();
-            var dataProviderAccess = spatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-            Assert.IsNotNull(dataProviderAccess);
-            Assert.IsEmpty(dataProviderAccess.GetDataProviders());
         }
 
         [Test]

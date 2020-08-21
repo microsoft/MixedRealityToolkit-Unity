@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -90,7 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
         /// </summary>
-        public static void Setup()
+        /// <remarks>
+        /// Takes an optional MixedRealityToolkitConfigurationProfile used to initialize the MRTK.
+        /// </remarks>
+        public static void Setup(MixedRealityToolkitConfigurationProfile profile = null)
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
@@ -115,7 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Create an MRTK instance and set up playspace
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            if (profile == null)
+            {
+                TestUtilities.InitializeMixedRealityToolkit(true);
+            }
+            else
+            {
+                TestUtilities.InitializeMixedRealityToolkit(profile);
+            }
             TestUtilities.InitializePlayspace();
 
             // Ensure user input is disabled during the tests
@@ -283,10 +293,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.InputSimulationProfile = inputSimulationProfiles.Pop();
         }
 
-        public static void SetHandSimulationMode(HandSimulationMode mode)
+        public static void SetHandSimulationMode(ControllerSimulationMode mode)
         {
             var iss = GetInputSimulationService();
-            iss.HandSimulationMode = mode;
+            iss.ControllerSimulationMode = mode;
         }
 
         public static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
@@ -297,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
             InputSimulationService simulationService = GetInputSimulationService();
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             if (hand != null && hand.InputSource != null)
             {
                 foreach (var pointer in hand.InputSource.Pointers)

@@ -11,9 +11,6 @@
 
 The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
 
-> [!NOTE]
-> At this time, it is not supported to switch between using .unitypackage files and NuGet.
-
 *Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
 after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
 breaking changes. The migration tool is part of the **Tools** package.
@@ -48,28 +45,16 @@ For the smoothest upgrade path, please use the following steps.
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
+1. Close Unity and delete the **Library** folder (read the note below first!). This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
+    > [!IMPORTANT]
+    > Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
 1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
-
-### NuGet packages
-
-If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
-
-1. Select **NuGet > Manage NuGet Packages**
-1. Select the **Online** tab and click **Refresh**
-1. Select the **Installed** tab
-1. Click the **Update** button for each installed package
-    - Microsoft.MixedReality.Toolkit.Foundation
-    - Microsoft.MixedReality.Toolkit.Tools
-    - Microsoft.MixedReality.Toolkit.Extensions
-    - Microsoft.MixedReality.Toolkit.Examples
-1. Close and re-open the project in Unity
 
 ## Updating 2.3.0 to 2.4.0
 
@@ -100,6 +85,12 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
+
+### Eye gaze pointer behavior in 2.4.0
+
+The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. The eye gaze pointer will become visible again after saying "Select".
+
+Details about gaze and hand setups can be found in the [eyes and hands](EyeTracking/EyeTracking_EyesAndHands.md#how-to-keep-gaze-pointer-always-on) article.
 
 ### API changes in 2.4.0
 
