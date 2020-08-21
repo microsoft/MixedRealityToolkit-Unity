@@ -9,9 +9,9 @@
 
 **Oculus Quest XRSDK support**
 
-MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. We also support handtracking on Oculus Quest with the [Oculus Integration package](CrossPlatform/OculusQuestMRTK.md#using-the-mrtk-quest-data-provider-for-handtracking) thanks to [Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. We also support handtracking on Oculus Quest with the [Oculus Integration Unity package](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) thanks to [Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
 
-For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
 **Input Simulation Cheat Sheet**
 The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
