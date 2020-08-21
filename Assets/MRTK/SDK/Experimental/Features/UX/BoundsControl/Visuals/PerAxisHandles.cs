@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// Provide the rotation alignment for a handle. This method will be called when creating the handles.
         /// </summary>
         /// <param name="handleIndex">Index of the handle the rotation alignment is provided for.</param>
-        /// <returns></returns>
         protected abstract Quaternion GetRotationRealignment(int handleIndex);
 
         internal PerAxisHandles(PerAxisHandlesConfiguration configuration)
