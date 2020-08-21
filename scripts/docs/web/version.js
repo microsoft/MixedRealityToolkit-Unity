@@ -12,6 +12,8 @@ function createDropdown()
 		"releases/2.4.0"
 	];
 	
+	var ignoreDefaultInVersionFolder = true;
+	
 	//--------------------------------------
 	
 	// get web root path
@@ -49,12 +51,22 @@ function createDropdown()
 	{
 		if (versionArray[i] != currentVersionName)
 		{
-			createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html", false);
-			
-			// remember if our current version is also the default 
 			if (versionArray[i].localeCompare(defaultTitle) == 0)
 			{
-				isDefaultInVersionFolder = true;
+				if (ignoreDefaultInVersionFolder == false)
+				{
+					// remember if our current version is also the default and replaces the root folder entry
+					isDefaultInVersionFolder = true;
+					createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html", false);
+				}
+				else
+				{
+					// skip processing this entry - we'll add the root folder instead for this version
+				}
+			}
+			else
+			{
+				createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html", false);
 			}
 		}
 	}
