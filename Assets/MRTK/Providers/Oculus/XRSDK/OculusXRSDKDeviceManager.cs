@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-        private Dictionary<Handedness, OculusQuestHand> trackedHands = new Dictionary<Handedness, OculusQuestHand>();
+        private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 
 #if OCULUSINTEGRATION_PRESENT
         private OVRCameraRig cameraRig;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             switch (supportedControllerType)
             {
                 case SupportedControllerType.ArticulatedHand:
-                    return typeof(OculusQuestHand);
+                    return typeof(OculusHand);
                 case SupportedControllerType.OculusTouch:
                     return typeof(OculusXRSDKTouchController);
                 default:
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
                     inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
                 {
-                    // If it's a hand with a reported handedness, assume HL2 articulated hand
+                    // If it's a hand with a reported handedness, assume articulated hand
                     return SupportedControllerType.ArticulatedHand;
                 }
             }
@@ -189,26 +189,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             foreach (var ovrHand in ovrHands)
             {
                 // Manage Hand skeleton data
-                var skeltonDataProvider = ovrHand as OVRSkeleton.IOVRSkeletonDataProvider;
-                var skeltonType = skeltonDataProvider.GetSkeletonType();
+                var skeletonDataProvider = ovrHand as OVRSkeleton.IOVRSkeletonDataProvider;
+                var skeletonType = skeletonDataProvider.GetSkeletonType();
                 var meshRenderer = ovrHand.GetComponent<OVRMeshRenderer>();
 
-                var ovrSkelton = ovrHand.GetComponent<OVRSkeleton>();
-                if (ovrSkelton == null)
+                var ovrSkeleton = ovrHand.GetComponent<OVRSkeleton>();
+                if (ovrSkeleton == null)
                 {
                     continue;
                 }
 
-                switch (skeltonType)
+                switch (skeletonType)
                 {
                     case OVRSkeleton.SkeletonType.HandLeft:
                         leftHand = ovrHand;
-                        leftSkeleton = ovrSkelton;
+                        leftSkeleton = ovrSkeleton;
                         leftMeshRenderer = meshRenderer;
                         break;
                     case OVRSkeleton.SkeletonType.HandRight:
                         rightHand = ovrHand;
-                        rightSkeleton = ovrSkelton;
+                        rightSkeleton = ovrSkeleton;
                         righMeshRenderer = meshRenderer;
                         break;
                 }
@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-        private OculusQuestHand GetOrAddHand(Handedness handedness, OVRHand ovrHand)
+        private OculusHand GetOrAddHand(Handedness handedness, OVRHand ovrHand)
         {
             if (trackedHands.ContainsKey(handedness))
             {
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             var inputSource = inputSystem?.RequestNewGenericInputSource($"Oculus Quest {handedness} Hand", pointers, inputSourceType);
 
 
-            OculusQuestHand handController = new OculusQuestHand(TrackingState.Tracked, handedness, inputSource);
+            OculusHand handController = new OculusHand(TrackingState.Tracked, handedness, inputSource);
             handController.InitializeHand(ovrHand, MRTKOculusConfig.Instance.CustomHandMaterial);
 
             for (int i = 0; i < handController.InputSource?.Pointers?.Length; i++)
@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         private void RemoveHandDevice(Handedness handedness)
         {
-            if (trackedHands.TryGetValue(handedness, out OculusQuestHand hand))
+            if (trackedHands.TryGetValue(handedness, out OculusHand hand))
             {
                 RemoveHandDevice(hand);
             }
@@ -303,14 +303,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (trackedHands.Count == 0) return;
 
             // Create a new list to avoid causing an error removing items from a list currently being iterated on.
-            foreach (var hand in new List<OculusQuestHand>(trackedHands.Values))
+            foreach (var hand in new List<OculusHand>(trackedHands.Values))
             {
                 RemoveHandDevice(hand);
             }
             trackedHands.Clear();
         }
 
-        private void RemoveHandDevice(OculusQuestHand hand)
+        private void RemoveHandDevice(OculusHand hand)
         {
             if (hand == null) return;
 

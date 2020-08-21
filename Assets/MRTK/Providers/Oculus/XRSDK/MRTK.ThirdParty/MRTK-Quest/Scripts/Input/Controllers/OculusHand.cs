@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
         new[] { Handedness.Left, Handedness.Right })]
-    public class OculusQuestHand : BaseHand, IMixedRealityHand
+    public class OculusHand : BaseHand, IMixedRealityHand
     {
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        public OculusQuestHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             pinchStrengthProp = Shader.PropertyToID(MRTKOculusConfig.Instance.PinchStrengthMaterialProperty);
