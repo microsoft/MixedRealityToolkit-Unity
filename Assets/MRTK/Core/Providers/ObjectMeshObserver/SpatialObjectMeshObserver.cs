@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                     VisibleMaterial :
                     OcclusionMaterial;
 
-                meshObject.Collider.material = PhysicMaterial;
+                meshObject.Collider.material = PhysicsMaterial;
             }
 
             meshObject.Renderer.enabled = enable;
