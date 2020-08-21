@@ -66,10 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             LevelOfDetail = profile.LevelOfDetail;
             MeshPhysicsLayer = profile.MeshPhysicsLayer;
             OcclusionMaterial = profile.OcclusionMaterial;
+            PhysicsMaterial = profile.PhysicsMaterial;
             RecalculateNormals = profile.RecalculateNormals;
             TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
-            PhysicMaterial = profile.PhysicsMaterial;
         }
 
         private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshDisplayOption");
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
                 {
                     if (meshObject?.Collider == null) { continue; }
-                    meshObject.Collider.material = physicMaterial;
+                    meshObject.Collider.material = PhysicsMaterial;
                 }
             }
         }
@@ -299,16 +299,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
-        private PhysicMaterial physicMaterial;
+        private PhysicMaterial physicsMaterial;
 
-        public PhysicMaterial PhysicMaterial
+        public PhysicMaterial PhysicsMaterial
         {
-            get { return physicMaterial; }
+            get { return physicsMaterial; }
             set
             {
-                if (value != physicMaterial)
+                if (value != physicsMaterial)
                 {
-                    physicMaterial = value;
+                    physicsMaterial = value;
                     ApplyUpdatedMeshPhysics();
                 }
             }
