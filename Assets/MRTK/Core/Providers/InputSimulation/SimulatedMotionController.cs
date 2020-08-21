@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override int GetHashCode()
         {
-            return (IsSelecting ? 1 : 0) * 100 + (IsGrabbing ? 1 : 0) * 100 + (IsPressingMenu ? 1 : 0);
+            return (IsSelecting ? 1 : 0) * 100 + (IsGrabbing ? 1 : 0) * 10 + (IsPressingMenu ? 1 : 0);
         }
 
         public static bool operator ==(SimulatedMotionControllerButtonState lhs, SimulatedMotionControllerButtonState rhs)
