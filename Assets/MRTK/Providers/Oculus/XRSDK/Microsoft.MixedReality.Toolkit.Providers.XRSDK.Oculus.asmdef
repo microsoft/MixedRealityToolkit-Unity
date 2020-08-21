@@ -4,9 +4,9 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities",
-        "Unity.XR.Oculus",
         "Oculus.VR"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Android",
         "Editor",
@@ -20,13 +20,5 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.oculus",
-            "expression": "",
-            "define": "OCULUS_ENABLED"
-        }
-    ],
-    "noEngineReferences": false
+    ]
 }
