@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Should this GameObject clean itself up when it's controller is lost?")]
+        [Tooltip("Should this GameObject clean itself up when its controller is lost?")]
         private bool destroyOnSourceLost = true;
 
         /// <inheritdoc />

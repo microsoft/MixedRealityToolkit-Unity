@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var smoothNormals = new List<Vector3>(normals);
 
-            // If we don't hit the degenerate case of each vertex is it's own group (no vertices shared a location), average the normals of each group.
+            // If we don't hit the degenerate case of each vertex is its own group (no vertices shared a location), average the normals of each group.
             if (groupedVerticies.Count != vertices.Length)
             {
                 foreach (var group in groupedVerticies)

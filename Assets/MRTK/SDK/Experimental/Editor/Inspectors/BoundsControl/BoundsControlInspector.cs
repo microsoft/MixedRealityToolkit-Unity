@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
@@ -22,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
+        private SerializedProperty enabledHandles;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -32,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty linksConfiguration;
         private SerializedProperty scaleHandlesConfiguration;
         private SerializedProperty rotationHandlesConfiguration;
+        private SerializedProperty translationHandlesConfiguration;
         private SerializedProperty proximityEffectConfiguration;
 
         // Debug
@@ -42,12 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty rotateStoppedEvent;
         private SerializedProperty scaleStartedEvent;
         private SerializedProperty scaleStoppedEvent;
+        private SerializedProperty translateStartedEvent;
+        private SerializedProperty translateStoppedEvent;
 
         private BoundsControl boundsControl;
 
         private static bool showBoxConfiguration = false;
         private static bool showScaleHandlesConfiguration = false;
         private static bool showRotationHandlesConfiguration = false;
+        private static bool showTranslationHandlesConfiguration = false;
         private static bool showLinksConfiguration = false;
         private static bool showProximityConfiguration = false;
         private static bool constraintsFoldout = true;
@@ -62,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
+            enabledHandles = serializedObject.FindProperty("enabledHandles");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
@@ -71,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             linksConfiguration = serializedObject.FindProperty("linksConfiguration");
             scaleHandlesConfiguration = serializedObject.FindProperty("scaleHandlesConfiguration");
             rotationHandlesConfiguration = serializedObject.FindProperty("rotationHandlesConfiguration");
+            translationHandlesConfiguration = serializedObject.FindProperty("translationHandlesConfiguration");
             proximityEffectConfiguration = serializedObject.FindProperty("handleProximityEffectConfiguration");
 
             hideElementsInHierarchyEditor = serializedObject.FindProperty("hideElementsInInspector");
@@ -79,6 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             rotateStoppedEvent = serializedObject.FindProperty("rotateStopped");
             scaleStartedEvent = serializedObject.FindProperty("scaleStarted");
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
+            translateStartedEvent = serializedObject.FindProperty("translateStarted");
+            translateStoppedEvent = serializedObject.FindProperty("translateStopped");
         }
 
         public override void OnInspectorGUI()
@@ -115,19 +125,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                     EditorGUILayout.LabelField(new GUIContent("Visuals", "Bounds Control Visual Configurations"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                     using (new EditorGUI.IndentLevelScope())
                     {
-
                         showBoxConfiguration = InspectorUIUtility.DrawScriptableFoldout<BoxDisplayConfiguration>(boxDisplayConfiguration, 
                                                                                                                  "Box Configuration", 
                                                                                                                  showBoxConfiguration);
-                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration, 
-                                                                                                                            "Scale Handles Configuration", 
+
+                        showScaleHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<ScaleHandlesConfiguration>(scaleHandlesConfiguration,
+                                                                                                                            "Scale Handles Configuration",
                                                                                                                             showScaleHandlesConfiguration);
-                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration, 
-                                                                                                                                  "Rotation Handles Configuration", 
+
+                        showRotationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<RotationHandlesConfiguration>(rotationHandlesConfiguration,
+                                                                                                                                  "Rotation Handles Configuration",
                                                                                                                                   showRotationHandlesConfiguration);
+
+                        showTranslationHandlesConfiguration = InspectorUIUtility.DrawScriptableFoldout<TranslationHandlesConfiguration>(translationHandlesConfiguration,
+                                                                                                                                        "Translation Handles Configuration",
+                                                                                                                                        showTranslationHandlesConfiguration);
+
                         showLinksConfiguration = InspectorUIUtility.DrawScriptableFoldout<LinksConfiguration>(linksConfiguration, 
                                                                                                               "Links Configuration", 
                                                                                                               showLinksConfiguration);
+
                         showProximityConfiguration = InspectorUIUtility.DrawScriptableFoldout<ProximityEffectConfiguration>(proximityEffectConfiguration, 
                                                                                                                             "Proximity Configuration", 
                                                                                                                             showProximityConfiguration);
@@ -143,6 +160,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         EditorGUILayout.PropertyField(rotateStoppedEvent);
                         EditorGUILayout.PropertyField(scaleStartedEvent);
                         EditorGUILayout.PropertyField(scaleStoppedEvent);
+                        EditorGUILayout.PropertyField(translateStartedEvent);
+                        EditorGUILayout.PropertyField(translateStoppedEvent);
                     }
 
                     EditorGUILayout.Space();

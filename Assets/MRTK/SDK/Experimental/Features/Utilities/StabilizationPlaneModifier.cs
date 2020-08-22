@@ -361,10 +361,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeDirection;
-#elif UNITY_WSA
+#else
+#if UNITY_2019_3_OR_NEWER
+            XRSubsystemHelpers.DisplaySubsystem?.SetFocusPlane(planePosition, -gazeDirection, Vector3.zero);
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
+            {
 #pragma warning disable 0618
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
+                HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
 #pragma warning restore 0618
+            }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 #endif
         }
 
@@ -386,10 +397,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 #if UNITY_EDITOR
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeNormal;
-#elif UNITY_WSA
+#else
+#if UNITY_2019_3_OR_NEWER
+            XRSubsystemHelpers.DisplaySubsystem?.SetFocusPlane(planePosition, -gazeNormal, Vector3.zero);
+#endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+            if (XRSubsystemHelpers.DisplaySubsystem == null)
+            {
 #pragma warning disable 0618
-            HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
+                HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
 #pragma warning restore 0618
+            }
+#endif // UNITY_WSA && !UNITY_2020_1_OR_NEWER
 #endif
         }
 

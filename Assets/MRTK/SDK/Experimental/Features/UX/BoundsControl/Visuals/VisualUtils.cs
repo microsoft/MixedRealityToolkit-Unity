@@ -75,14 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (colliderType == HandlePrefabCollider.Box)
             {
-                BoxCollider collider = afford.AddComponent<BoxCollider>();
+                BoxCollider collider = afford.EnsureComponent<BoxCollider>();
                 collider.size = bounds.size;
                 collider.center = bounds.center;
                 collider.size += colliderPadding;
             }
             else
             {
-                SphereCollider sphere = afford.AddComponent<SphereCollider>();
+                SphereCollider sphere = afford.EnsureComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
                 sphere.radius += GetMaxComponent(colliderPadding);
@@ -182,59 +182,111 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 switch (linkIndex)
                 {
-                    case 0:
+                    case (int)Edges.FrontBottom:
                         return (cornerPoints[0] + cornerPoints[1]) * 0.5f;
-                    case 1:
+                    case (int)Edges.FrontLeft:
                         return (cornerPoints[0] + cornerPoints[2]) * 0.5f;
-                    case 2:
+                    case (int)Edges.FrontTop:
                         return (cornerPoints[3] + cornerPoints[2]) * 0.5f;
-                    case 3:
+                    case (int)Edges.FrontRight:
                         return (cornerPoints[3] + cornerPoints[1]) * 0.5f;
-                    case 4:
+                    case (int)Edges.BackBottom:
                         return (cornerPoints[4] + cornerPoints[5]) * 0.5f;
-                    case 5:
+                    case (int)Edges.BackLeft:
                         return (cornerPoints[4] + cornerPoints[6]) * 0.5f;
-                    case 6:
+                    case (int)Edges.BackTop:
                         return (cornerPoints[7] + cornerPoints[6]) * 0.5f;
-                    case 7:
+                    case (int)Edges.BackRight:
                         return (cornerPoints[7] + cornerPoints[5]) * 0.5f;
-                    case 8:
+                    case (int)Edges.BottomLeft:
                         return (cornerPoints[0] + cornerPoints[4]) * 0.5f;
-                    case 9:
+                    case (int)Edges.BottomRight:
                         return (cornerPoints[1] + cornerPoints[5]) * 0.5f;
-                    case 10:
+                    case (int)Edges.TopLeft:
                         return (cornerPoints[2] + cornerPoints[6]) * 0.5f;
-                    case 11:
+                    case (int)Edges.TopRight:
                         return (cornerPoints[3] + cornerPoints[7]) * 0.5f;
                 }
             }
             return Vector3.zero;
         }
 
-        static readonly int[] flattenedIndicesX = new int[] { 0, 4, 2, 6 };
-        static readonly int[] flattenedIndicesY = new int[] { 1, 3, 5, 7 };
-        static readonly int[] flattenedIndicesZ = new int[] { 9, 10, 8, 11 };
+        /// <summary>
+        /// Util function for retrieving a position for the given face index of a box.
+        /// This method makes sure all visual components are having the same definition of face centers.
+        /// </summary>
+        /// <param name="faceIndex">Index of the face the position is queried for.</param>
+        /// <param name="cornerPoints">Corner points array of the box.</param>
+        /// <returns>Center position of face.</returns>
+        static internal Vector3 GetFaceCenterPosition(int faceIndex, ref Vector3[] cornerPoints)
+        {
+            Debug.Assert(cornerPoints != null && cornerPoints.Length == 8, "Invalid corner points array passed");
+            if (cornerPoints != null && cornerPoints.Length == 8)
+            {
+                switch (faceIndex)
+                {
+                    case (int)Face.ForwardX:
+                        return (cornerPoints[0] + cornerPoints[2] + cornerPoints[4] + cornerPoints[6]) * 0.25f;
+                    case (int)Face.BackwardX:
+                        return (cornerPoints[1] + cornerPoints[3] + cornerPoints[5] + cornerPoints[7]) * 0.25f;
+                    case (int)Face.ForwardY:
+                        return (cornerPoints[0] + cornerPoints[1] + cornerPoints[2] + cornerPoints[3]) * 0.25f;
+                    case (int)Face.BackwardY:
+                        return (cornerPoints[4] + cornerPoints[5] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
+                    case (int)Face.ForwardZ:
+                        return (cornerPoints[0] + cornerPoints[1] + cornerPoints[4] + cornerPoints[5]) * 0.25f;
+                    case (int)Face.BackwardZ:
+                        return (cornerPoints[2] + cornerPoints[3] + cornerPoints[6] + cornerPoints[7]) * 0.25f;
+                }
+            }
+            return Vector3.zero;
+        }
+
         /// <summary>
         /// Returns the flatten indices to the corresponding flattenAxis mode.
         /// </summary>
         /// <param name="flattenAxis">Flatten axis mode that should be converted to indices.</param>
         /// <returns>Flattened indices.</returns>
-        internal static int[] GetFlattenedIndices(FlattenModeType flattenAxis)
+        internal static List<int> GetFlattenedIndices(FlattenModeType flattenAxis, CardinalAxisType[] axisArray)
         {
-            if (flattenAxis == FlattenModeType.FlattenX)
+            List<int> flattenedIndices = new List<int>();
+            for (int i = 0; i < axisArray.Length; ++i)
             {
-                return flattenedIndicesX;
-            }
-            else if (flattenAxis == FlattenModeType.FlattenY)
-            {
-                return flattenedIndicesY;
-            }
-            else if (flattenAxis == FlattenModeType.FlattenZ)
-            {
-                return flattenedIndicesZ;
+                if ((flattenAxis == FlattenModeType.FlattenX && axisArray[i] == CardinalAxisType.X)
+                    || (flattenAxis == FlattenModeType.FlattenY && axisArray[i] == CardinalAxisType.Y)
+                    || (flattenAxis == FlattenModeType.FlattenZ && axisArray[i] == CardinalAxisType.Z))
+                {
+                    flattenedIndices.Add(i);
+                }
             }
 
-            return null;
+            return flattenedIndices;
         }
+
+        internal static readonly CardinalAxisType[] EdgeAxisType = new CardinalAxisType[]
+            {
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.X,
+                CardinalAxisType.Y,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z,
+                CardinalAxisType.Z
+            };
+
+        internal static readonly CardinalAxisType[] FaceAxisType = new CardinalAxisType[]
+        {
+            CardinalAxisType.X,
+            CardinalAxisType.X,
+            CardinalAxisType.Z,
+            CardinalAxisType.Z,
+            CardinalAxisType.Y,
+            CardinalAxisType.Y
+        };
     }
 }

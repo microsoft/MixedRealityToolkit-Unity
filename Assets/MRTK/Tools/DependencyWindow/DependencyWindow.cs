@@ -357,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     dependencies.AddRange(GetDependenciesInFile(metaFile));
                 }
 
-                // Add linkage between this node and it's dependencies and the dependency and this node.
+                // Add linkage between this node and its dependencies and the dependency and this node.
                 foreach (var dependency in dependencies)
                 {
                     node.assetsThisDependsOn.Add(EnsureNode(dependency));

@@ -82,6 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The material to be used when observed meshes should occlude other objects.
         /// </summary>
         public Material OcclusionMaterial => occlusionMaterial;
+        
+        [SerializeField] 
+        [Tooltip("Optional physics material to apply to spatial mesh")]
+        private PhysicMaterial physicsMaterial = null;
+
+        public PhysicMaterial PhysicsMaterial => physicsMaterial;
+
+        
 
         #endregion IMixedRealitySpatialAwarenessMeshObserver settings
     }

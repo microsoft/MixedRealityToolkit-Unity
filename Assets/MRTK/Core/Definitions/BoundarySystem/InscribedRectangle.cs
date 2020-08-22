@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Is the described rectangle valid?
         /// </summary>
         /// <remarks>
-        /// A rectangle is considered valid if it's center point is valid.
+        /// A rectangle is considered valid if its center point is valid.
         /// </remarks>
         public bool IsValid => EdgeUtilities.IsValidPoint(Center);
 

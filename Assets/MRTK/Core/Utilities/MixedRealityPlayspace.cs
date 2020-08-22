@@ -131,6 +131,18 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Transforms a direction from world to local space.
+        /// </summary>
+        /// <param name="worldDirection">The direction to be transformed.</param>
+        /// <returns>
+        /// The direction, in local space.
+        /// </returns>
+        public static Vector3 InverseTransformDirection(Vector3 worldDirection)
+        {
+            return Transform.InverseTransformDirection(worldDirection);
+        }
+
+        /// <summary>
         /// Rotates the playspace around the specified axis.
         /// </summary>
         /// <param name="point">The point to pass through during rotation.</param>
