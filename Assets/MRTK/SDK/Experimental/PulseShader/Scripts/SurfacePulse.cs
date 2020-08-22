@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         [SerializeField]
         [Tooltip("Shader parameter name to drive the pulse radius")]
         private string paramName = "_Pulse_";
+        /// <summary>
+        /// Shader parameter name to drive the pulse radius
+        /// </summary>
         public string ParamName
         {
             get { return paramName; }
