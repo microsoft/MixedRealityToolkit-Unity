@@ -10,6 +10,7 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -396,6 +397,67 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
 
             Object.Destroy(testButton);
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test verifies that buttons will trigger with motion controller far interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TriggerButtonFarInteractionWithMotionController([ValueSource(nameof(PressableButtonsTestPrefabPaths))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            Interactable interactableComponent = testButton.GetComponent<Interactable>();
+            Button buttonComponent = testButton.GetComponent<Button>();
+
+            Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
+
+            if (buttonComponent != null)
+            {
+                // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
+                // So just ignore this until that bug is resolved.
+                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
+                Assert.Ignore();
+                yield break;
+            }
+
+            var objectToMoveAndScale = testButton.transform;
+
+            if (buttonComponent != null)
+            {
+                objectToMoveAndScale = testButton.transform.parent;
+            }
+
+            objectToMoveAndScale.position += new Vector3(0f, 0.3f, 0.8f);
+            objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            bool buttonTriggered = false;
+
+            var onClickEvent = (interactableComponent != null) ? interactableComponent.OnClick : buttonComponent.onClick;
+
+            onClickEvent.AddListener(() =>
+            {
+                buttonTriggered = true;
+            });
+
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+            TestMotionController motionController = new TestMotionController(Handedness.Right);
+            Vector3 initialmotionControllerPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
+            yield return motionController.Show(initialmotionControllerPosition);
+            yield return motionController.Click();
+            Assert.IsTrue(buttonTriggered, "Button did not get triggered with far interaction.");
+
+            Object.Destroy(testButton);
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldHandSimMode;
             yield return null;
         }
 

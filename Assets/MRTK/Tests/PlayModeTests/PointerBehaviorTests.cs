@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             // set input simulation mode to GGV
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);

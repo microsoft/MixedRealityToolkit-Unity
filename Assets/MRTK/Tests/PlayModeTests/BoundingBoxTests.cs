@@ -343,8 +343,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
 
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Restore the input simulation profile
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
 
             yield return null;
         }
