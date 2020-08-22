@@ -814,8 +814,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return VerifyInitialBoundsCorrect(control);
             control.TranslationHandlesConfig.ShowHandleForZ = true;
             control.SmoothingActive = false;
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             // move camera to look at translation sphere
             Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
@@ -843,7 +843,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return null;
 
             // Restore the input simulation profile
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
 
             yield return null;
         }
