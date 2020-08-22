@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
         public static Vector3 CylindricalMapping(Vector3 source, float radius)
         {
-            float circ  = 2f * Mathf.PI * radius;
+            float circ = 2f * Mathf.PI * radius;
 
             float xAngle = (source.x / circ) * 360f;
 

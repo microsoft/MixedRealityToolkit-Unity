@@ -15,7 +15,7 @@ The main configuration profile, which is attached to the *MixedRealityToolkit* G
 
 ![MRTK configuration profile](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
-All the "default" profiles for the Mixed Reality Toolkit can be found in the SDK project in the folder Assets/MRT/KSDK/Profiles.
+All the "default" profiles for the Mixed Reality Toolkit can be found in the SDK project in the folder Assets/MRTK/SDK/Profiles.
 
 > [!IMPORTANT]
 > DefaultHoloLens2ConfigurationProfile is optimized for HoloLens 2. See [Profiles](Profiles/Profiles.md) for the details.

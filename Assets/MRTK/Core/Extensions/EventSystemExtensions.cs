@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         private static readonly ProfilerMarker RaycastPerfMarker = new ProfilerMarker("[MRTK] EventSystemExtensions.Raycast");
-        
+
         /// <summary>
         /// Executes a raycast all and returns the closest element.
         /// Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.

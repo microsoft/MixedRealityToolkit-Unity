@@ -311,20 +311,133 @@ function CheckForActualFile {
 
 <#
 .SYNOPSIS
-    Checks if all assembly definitions have a corresponding AssemblyInfo.cs checked in.
-    Returns true if the AssemblyInfo is missing.
+    Returns true if the given line is a namespace declaration
 #>
-function CheckForAssemblyInfo {
+function IsNamespace {
     [CmdletBinding()]
     param(
-        [string]$FileName
+        [string]$Line
     )
     process {
-        if (-not (Test-Path (Join-Path -Path (Split-Path $FileName) -ChildPath "AssemblyInfo.cs"))) {
-            Write-Warning "AssemblyInfo.cs missing for $FileName. Please be sure to check it in alongside this asmdef."
+        if (($Line -match "^namespace\sMicrosoft\.MixedReality\.Toolkit") -or
+            ($Line -match "^namespace\sMicrosoft\.Windows\.MixedReality")) {
             $true;
         }
         $false;
+    }
+}
+
+<#
+.SYNOPSIS
+    Given a full filename path, this returns the MRTK project relative path
+    of the file and normalizes the separators to /.
+    For example, given D:\src\MixedRealityToolkit-Unity\Assets\MRTK\Services\DiagnosticsSystem\File.cs,
+    this would return Assets/MRTK/Services/DiagnosticsSystem/File.cs.
+    Note that this function asssumes the Assets/MRTK prefix for all of the MRTK code,
+    and if this ever changes this function would need to be updated to accomodate that.
+#>
+function GetProjectRelativePath {
+    [CmdletBinding()]
+    param(
+        [string]$Filename
+    )
+    process {
+        $normalizedFileName = $FileName.Replace("\", "/")
+        $assetPathStartIndex = $normalizedFileName.IndexOf("Assets/MRTK")
+        $assetFileName = $normalizedFileName.SubString($assetPathStartIndex)
+        $assetFileName
+    }
+}
+
+# This set contains all of the currently allowed InitializeOnLoad handlers# in MRTK.
+# InitializeOnLoad handlers have a fairly dangerous impact on the inner loop speed of anyone
+# using the MRTK, as they add milliseconds of time after each compile and prior to entering play mode.
+# While individual handlers may not be that significant, the sum total of time across all handlers
+# (which run serially) causes noticable delays in responsiveness in the Unity editor.
+$InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
+    "Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs",
+    "Assets/MRTK/Core/Inspectors/PropertyDrawers/SceneInfoUtils.cs",
+    "Assets/MRTK/Core/Inspectors/ServiceInspectors/ServiceFacadeInspector.cs",
+    "Assets/MRTK/Core/Inspectors/Setup/MixedRealityEditorSettings.cs",
+    "Assets/MRTK/Core/Inspectors/Utilities/MixedRealityProfileUtility.cs",
+    "Assets/MRTK/Core/Services/MixedRealityToolkit.cs",
+    "Assets/MRTK/Core/Utilities/MixedRealityPlayspace.cs",
+    "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
+    "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
+    "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
+    "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
+    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
+    "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
+    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
+    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
+)
+
+<#
+.SYNOPSIS
+    Checks if the given file (at the given line number) contains a non-exempt
+    InitializeOnLoad handler.
+#>
+function CheckInitializeOnLoad {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+        if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
+            $assetFileName = GetProjectRelativePath($FileName)
+            if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
+                Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
+                Write-Warning "to `$InitializeOnLoadExceptions after discussion with the rest of the team."
+                $hasIssue = $true
+
+                Write-Host "`"$assetFileName`","
+            }
+        }
+        $hasIssue
+    }
+}
+
+# The set of exempt files that are allowed to use Assembly.GetTypes()
+# Note that this is used in a rough regex to check for any references to ".GetTypes()"
+# which is generally good enough catch those incorrect use cases.
+$AssemblyTypesExceptions = [System.Collections.Generic.HashSet[String]]@(
+    "Assets/MRTK/Core/Extensions/AssemblyExtensions.cs",
+    "Assets/MRTK/Core/Extensions/TypeExtensions.cs"
+)
+
+<#
+.SYNOPSIS
+    Checks that we don't have any references to Assembly.GetTypes(), which throws an exception for types
+    that aren't loadable. Instead, callers should use the Assembly extensions GetLoadableTypes(), which wraps
+    Assembly.GetTypes(), catches any unloadable types exceptions, and returns the actually loadable types.
+    Note that this is mostly a hueristic to avoid having additional Assembly.GetTypes() calls (it doesn't do
+    actual static analysis, just rough text analysis)
+#>
+function CheckAssemblyTypes {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+
+        if ($FileContent[$LineNumber] -match "\.GetTypes()") {
+            $assetFileName = GetProjectRelativePath($FileName)
+            if (-Not $AssemblyTypesExceptions.Contains($assetFileName)) {
+                Write-Host "$FileName at line $LineNumber has a possible usage of Assembly.GetTypes()"
+                Write-Host $FileContent[$LineNumber]
+                Write-Host "If this is using Assembly.GetTypes(), switch to Assembly.GetLoadableTypes() instead or add to AssemblyTypesExceptions"
+                $hasIssue = $true
+            }
+        }      
+        $hasIssue
     }
 }
 
@@ -339,6 +452,7 @@ function CheckScript {
         # repeatedly running this script, discovering a single issue, fixing it, and then
         # re-running the script
         $containsIssue = $false
+        $containsNamespaceDeclaration = $false;
         $fileContent = Get-Content $FileName
         for ($i = 0; $i -lt $fileContent.Length; $i++) {
             if (CheckBooLang $FileName $fileContent $i) {
@@ -353,6 +467,21 @@ function CheckScript {
             if (CheckSpacelessComments $FileName $fileContent $i) {
                 $containsIssue = $true
             }
+            if (CheckInitializeOnLoad $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            if (CheckAssemblyTypes $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            $containsNamespaceDeclaration = $containsNamespaceDeclaration -or (IsNamespace $fileContent[$i])
+        }
+
+        # Only validate that there is a namespace declaration if it's not an AssemblyInfo.cs file.
+        # These do not contain namespace declarations.
+        if ((-not $containsNamespaceDeclaration) -and ($FileName -notmatch "AssemblyInfo.cs$"))
+        {
+            Write-Warning "$FileName is missing a namespace declaration (i.e. missing namespace Microsoft.MixedReality.Toolkit.*)"
+            $containsIssue = $true;
         }
 
         if (CheckHardcodedPath $FileName) {
@@ -426,18 +555,91 @@ function CheckUnityScene {
     }
 }
 
-function CheckAssemblyDefinition {
+# This set contains all of the currently allowed asmdefs in the MRTK
+# If you're reading this, it's probably because you've added a new asmdef
+# and you're seeing a CI build/PR validation failure. This is because we've
+# added a roadblock to force discussion of new asmdef creation to ensure that we're
+# not creating a lot of tiny ones.
+# There's non-trivial overhead to the addition of each asmdef (i.e. each asmdef will
+# create build overhead associated with all of the stuff that happens before the actual code
+# inside gets compiled.)
+# In certain cases (especially lighting up a new platform/provider) this will be a necessary
+# addition, but in others it may make more sense to put group the code with another existing
+# binary that has a lot of overlap.
+# Either way, this is an explicit speed bump being added to force discussion at future times.
+$AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
+    "Assets/MRTK/Core/Microsoft.MixedReality.Toolkit.asmdef",
+    "Assets/MRTK/Core/Extensions/EditorClassExtensions/Microsoft.MixedReality.Toolkit.Editor.ClassExtensions.asmdef",
+    "Assets/MRTK/Core/Inspectors/Microsoft.MixedReality.Toolkit.Editor.Inspectors.asmdef",
+    "Assets/MRTK/Core/Inspectors/ServiceInspectors/Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors.asmdef",
+    "Assets/MRTK/Core/Providers/InputAnimation/MixedRealityToolkit.Services.InputAnimation.asmdef",
+    "Assets/MRTK/Core/Providers/InputSimulation/Microsoft.MixedReality.Toolkit.Services.InputSimulation.asmdef",
+    "Assets/MRTK/Core/Providers/InputSimulation/Editor/Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef",
+    "Assets/MRTK/Core/Providers/ObjectMeshObserver/Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver.asmdef",
+    "Assets/MRTK/Core/Utilities/Async/Microsoft.MixedReality.Toolkit.Async.asmdef",
+    "Assets/MRTK/Core/Utilities/BuildAndDeploy/Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef",
+    "Assets/MRTK/Core/Utilities/Editor/Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef",
+    "Assets/MRTK/Core/Utilities/Gltf/Microsoft.MixedReality.Toolkit.Gltf.asmdef",
+    "Assets/MRTK/Core/Utilities/Gltf/Serialization/Importers/Microsoft.MixedReality.Toolkit.Gltf.Importers.asmdef",
+    "Assets/MRTK/Examples/Microsoft.MixedReality.Toolkit.Examples.asmdef",
+    "Assets/MRTK/Examples/Demos/Gltf/Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef",
+    "Assets/MRTK/Examples/Demos/Gltf/Scripts/Editor/Microsoft.MixedReality.Toolkit.Demos.Gltf.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/StandardShader/Scripts/Editor/Demos.StandardShader.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Microsoft.MixedReality.Toolkit.Demos.InspectorFields.asmdef",
+    "Assets/MRTK/Examples/Demos/Utilities/InspectorFields/Inspectors/Demos.InspectorFields.Inspectors.asmdef",
+    "Assets/MRTK/Examples/Demos/UX/Interactables/Microsoft.MixedReality.Toolkit.Demos.UX.Interactables.asmdef",
+    "Assets/MRTK/Examples/Experimental/Dwell/Editor/Microsoft.MixedReality.Examples.Editor.Dwell.asmdef",
+    "Assets/MRTK/Extensions/HandPhysicsService/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.asmdef",
+    "Assets/MRTK/Extensions/LostTrackingService/Microsoft.MixedReality.Toolkit.Extensions.Tracking.asmdef",
+    "Assets/MRTK/Extensions/LostTrackingService/Editor/Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor.asmdef",
+    "Assets/MRTK/Extensions/SceneTransitionService/Microsoft.MixedReality.Toolkit.Extensions.SceneTransitionService.asmdef",
+    "Assets/MRTK/Providers/LeapMotion/Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef",
+    "Assets/MRTK/Providers/LeapMotion/Editor/Microsoft.MixedReality.Toolkit.LeapMotion.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
+    "Assets/MRTK/Providers/OpenVR/Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef",
+    "Assets/MRTK/Providers/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef",
+    "Assets/MRTK/Providers/UnityAR/Editor/Microsoft.MixedReality.Toolkit.UnityAR.Editor.asmdef",
+    "Assets/MRTK/Providers/Windows/Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/Microsoft.MixedReality.Toolkit.WMR.Editor.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/XR2018/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef",
+    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.WMR.Editor.asmdef",
+    "Assets/MRTK/Providers/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef",
+    "Assets/MRTK/Providers/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Editor.asmdef",
+    "Assets/MRTK/SDK/Microsoft.MixedReality.Toolkit.SDK.asmdef",
+    "Assets/MRTK/SDK/Editor/Microsoft.MixedReality.Toolkit.SDK.Editor.asmdef",
+    "Assets/MRTK/SDK/Experimental/Editor/Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.asmdef",
+    "Assets/MRTK/Services/BoundarySystem/XR2018/Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef",
+    "Assets/MRTK/Services/CameraSystem/Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef",
+    "Assets/MRTK/Services/DiagnosticsSystem/Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.asmdef",
+    "Assets/MRTK/Services/InputSystem/Microsoft.MixedReality.Toolkit.Services.InputSystem.asmdef",
+    "Assets/MRTK/Services/InputSystem/Editor/Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor.asmdef",
+    "Assets/MRTK/Services/SceneSystem/Microsoft.MixedReality.Toolkit.Services.SceneSystem.asmdef",
+    "Assets/MRTK/Services/SpatialAwarenessSystem/Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.asmdef",
+    "Assets/MRTK/Services/TeleportSystem/Microsoft.MixedReality.Toolkit.Services.TeleportSystem.asmdef",
+    "Assets/MRTK/Tests/EditModeTests/Microsoft.MixedReality.Toolkit.Tests.EditModeTests.asmdef",
+    "Assets/MRTK/Tests/PlayModeTests/Microsoft.MixedReality.Toolkit.Tests.PlayModeTests.asmdef",
+    "Assets/MRTK/Tests/TestUtilities/Microsoft.MixedReality.Toolkit.Tests.Utilities.asmdef",
+    "Assets/MRTK/Tools/Microsoft.MixedReality.Toolkit.Tools.asmdef",
+    "Assets/MRTK/Tools/MSBuild/Microsoft.MixedReality.Toolkit.MSBuild.asmdef",
+    "Assets/MRTK/Tools/RuntimeTools/Tools/Microsoft.MixedReality.Toolkit.Tools.Runtime.asmdef"
+)
+
+function CheckAsmDef {
     [CmdletBinding()]
     param(
         [string]$FileName
     )
     process {
         $containsIssue = $false
-
-        if (CheckForAssemblyInfo $FileName) {
+        $assetFileName = GetProjectRelativePath($FileName)
+        if (-Not $AsmDefExceptions.Contains($assetFileName)) {
+            Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
+            Write-Warning "after a dicussion with the rest of the team determining if the asmdef is necessary."
             $containsIssue = $true
         }
-
         $containsIssue
     }
 }
@@ -456,8 +658,8 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
         if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
             ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or 
-            ((IsAsmDef -Filename $changedFile) -and (CheckAssemblyDefinition $changedFile))) {
+            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or
+            ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile))) {
             $containsIssue = $true;
         }
     }
@@ -480,14 +682,14 @@ else {
         }
     }
 
-    # Check all Unity scenes for extra MixedRealityPlayspace objects 
+    # Check all Unity scenes for extra MixedRealityPlayspace objects
     $codeFiles = Get-ChildItem $Directory *.unity -Recurse | Select-Object FullName
     foreach ($codeFile in $codeFiles) {
         if (CheckUnityScene $codeFile.FullName) {
             $containsIssue = $true
         }
     }
-    
+
     $metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
     foreach ($meta in $metas) {
         if (CheckForActualFile $meta.FullName) {
@@ -497,7 +699,7 @@ else {
 
     $asmdefs = Get-ChildItem $Directory *.asmdef -File -Recurse | Select-Object FullName
     foreach ($asmdef in $asmdefs) {
-        if (CheckAssemblyDefinition $asmdef.FullName) {
+        if (CheckAsmDef $asmdef.FullName) {
             $containsIssue = $true
         }
     }

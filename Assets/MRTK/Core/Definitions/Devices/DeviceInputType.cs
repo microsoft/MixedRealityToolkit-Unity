@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -83,5 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         PinkyFingerPress,
         DirectionalPad,
         Scroll,
+        PrimaryButtonPress,
+        PrimaryButtonTouch,
+        PrimaryButtonNearTouch,
+        SecondaryButtonPress,
+        SecondaryButtonTouch,
+        SecondaryButtonNearTouch,
+        Grip,
+        GripTouch,
+        GripNearTouch,
+        // GripPress, in some cases, maps to the Grab gesture.
+        GripPress,
     }
 }

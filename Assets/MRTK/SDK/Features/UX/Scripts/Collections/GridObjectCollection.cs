@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEditor;
 using UnityEngine;
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// How the columns are aligned in the grid
         /// </summary>
-        public LayoutHorizontalAlignment ColumnAlignment 
+        public LayoutHorizontalAlignment ColumnAlignment
         {
             get { return columnAlignment; }
             set { columnAlignment = value; }
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
-                startOffsetY = anchorAlongAxis ? 0.5f * CellHeight: 0;
+                startOffsetY = anchorAlongAxis ? 0.5f * CellHeight : 0;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
@@ -392,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                     alignmentOffsetX = 0;
                                     break;
                                 case LayoutHorizontalAlignment.Center:
-                                    alignmentOffsetX = CellWidth *((xMax - (NodeList.Count % xMax)) % xMax) * 0.5f;
+                                    alignmentOffsetX = CellWidth * ((xMax - (NodeList.Count % xMax)) % xMax) * 0.5f;
                                     break;
                                 case LayoutHorizontalAlignment.Right:
                                     alignmentOffsetX = CellWidth * ((xMax - (NodeList.Count % xMax)) % xMax);
@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                                  (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y + alignmentOffsetY,
                                                  0.0f);
                         }
-                    cellCounter++;
+                        cellCounter++;
                     }
                 }
             }

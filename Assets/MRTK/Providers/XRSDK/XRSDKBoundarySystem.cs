@@ -31,13 +31,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "XR SDK Boundary System";
 
+        /// <inheritdoc/>
+        public override void Initialize()
+        {
+            if (!Application.isPlaying) { return; }
+
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
+
+            if (devices.Count <= 0) { return; }
+
+            base.Initialize();
+        }
+
         #endregion IMixedRealityService Implementation
 
         /// <inheritdoc/>
         protected override List<Vector3> GetBoundaryGeometry()
         {
             // Boundaries are supported for Room Scale experiences only.
-            if (XRSDKSubsystemHelpers.InputSubsystem.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
+            if (XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
             {
                 return null;
             }
@@ -45,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
 
-            if (!XRSDKSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
+            if (!XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
             {
                 return null;
             }
@@ -81,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            if (!XRSDKSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
+            if (!XRSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
                 Debug.LogWarning("Tracking origin unable to be set.");
             }

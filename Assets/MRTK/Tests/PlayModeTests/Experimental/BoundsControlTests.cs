@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     /// <summary>
     /// Tests for runtime behavior of bounds control
     /// </summary>
-    public class BoundsControlTests
+    public class PlayModeBoundsControlTests
     {
         private Material testMaterial;
         private Material testMaterialGrabbed;
 
         #region Utilities
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
 
@@ -45,12 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             testMaterialGrabbed = new Material(shader);
             testMaterialGrabbed.color = Color.green;
+            yield return null;
         }
 
-        [TearDown]
-        public void ShutdownMrtk()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
@@ -59,6 +61,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         // SDK/Features/UX/Prefabs/AppBar/AppBar.prefab
         private const string appBarPrefabGuid = "83c02591e2867124181bcd3bcb65e288";
         private static readonly string appBarPrefabLink = AssetDatabase.GUIDToAssetPath(appBarPrefabGuid);
+
+        public struct HandleTestData
+        {
+            public HandleTestData(string name, string visualPath, string configName)
+            {
+                handleName = name;
+                handleVisualPath = visualPath;
+                configPropertyName = configName;
+            }
+            public string handleName;
+            public string handleVisualPath;
+            public string configPropertyName;
+        };
+
+        static HandleTestData[] handleTestData = new HandleTestData[]
+        {
+            new HandleTestData("corner_3", "corner_3/visualsScale/visuals", "ScaleHandlesConfig"),
+            new HandleTestData("midpoint_2", "midpoint_2/visuals", "RotationHandlesConfig"),
+            new HandleTestData("faceCenter_2", "faceCenter_2/visuals", "TranslationHandlesConfig")
+        };
+
+        public struct PerAxisHandleTestData
+        {
+            public PerAxisHandleTestData(string name, string configName, CardinalAxisType[] axisTypes)
+            {
+                handleName = name;
+                configPropertyName = configName;
+                handleAxisTypes = axisTypes;
+            }
+            public string handleName;
+            public string configPropertyName;
+            public CardinalAxisType[] handleAxisTypes;
+        };
+
+        static PerAxisHandleTestData[] perAxisHandleTestData = new PerAxisHandleTestData[]
+        {
+            new PerAxisHandleTestData("midpoint", "RotationHandlesConfig", VisualUtils.EdgeAxisType),
+            new PerAxisHandleTestData("faceCenter", "TranslationHandlesConfig", VisualUtils.FaceAxisType)
+        };
 
         /// <summary>
         /// Instantiates a bounds control at boundsControlStartCenter
@@ -71,13 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cube.transform.localScale = boundsControlStartScale;
             BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
             TestUtilities.PlayspaceToOriginLookingForward();
-            boundsControl.Active = true; 
+            boundsControl.Active = true;
 
             return boundsControl;
         }
 
         /// <summary>
-        /// Tests if the initial transform setup of bounds control has been propagated to it's collider
+        /// Tests if the initial transform setup of bounds control has been propagated to its collider
         /// </summary>
         /// <param name="boundsControl">Bounds control that controls the collider size</param>
         private IEnumerator VerifyInitialBoundsCorrect(BoundsControl boundsControl)
@@ -138,26 +179,122 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// Test that if we toggle the bounding box's active status,
+        /// that the size of the boundsOverride is consistent, even
+        /// when BoxPadding is set.
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleViaNearInteration()
+        public IEnumerator BoundsOverridePaddingReset()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            boundsControl.HideElementsInInspector = false;
+
+            // Set the bounding box to have a large padding.
+            boundsControl.BoxPadding = Vector3.one;
+            yield return null;
+
+            var newObject = new GameObject();
+            var bc = newObject.AddComponent<BoxCollider>();
+            bc.center = new Vector3(1, 2, 3);
+            var backupSize = bc.size = new Vector3(1, 2, 3);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Change the center and size of the boundsOverride
+            // in the middle of execution, to ensure
+            // these changes will be correctly reflected
+            // in the BoundingBox after toggling.
+            bc.center = new Vector3(0.1776f, 0.42f, 0.0f);
+            backupSize = bc.size = new Vector3(0.1776f, 0.42f, 1.0f);
+            boundsControl.BoundsOverride = bc;
+            yield return null;
+
+            // Toggles the bounding box and verifies
+            // integrity of the measurements.
+            VerifyBoundingBox();
+
+            // Private helper function to prevent code copypasta.
+            IEnumerator VerifyBoundingBox()
+            {
+                // Toggle the bounding box active status to check that the boundsOverride
+                // will persist, and will not be destructively resized 
+                boundsControl.gameObject.SetActive(false);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+                boundsControl.gameObject.SetActive(true);
+                yield return null;
+                Debug.Log($"bc.size = {bc.size}");
+
+                Bounds b = GetBoundsControlRigBounds(boundsControl);
+
+                var expectedSize = backupSize + Vector3.Scale(boundsControl.BoxPadding, newObject.transform.lossyScale);
+                Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
+                Debug.Assert(b.size == expectedSize, $"bounds size should be {expectedSize} but they are {b.size}");
+                Debug.Assert(bc.size == expectedSize, $"boundsOverride's size was corrupted.");
+            }
+
+            GameObject.Destroy(boundsControl.gameObject);
+            GameObject.Destroy(newObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner
+        /// </summary>
+        [UnityTest]
+        public IEnumerator FlickeringBoundsTest()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            
+            boundsControl.gameObject.transform.position = new Vector3(0, 0, 1.386f);
+            boundsControl.gameObject.transform.rotation = Quaternion.Euler(0, 45.0f, 0);
+            
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(new Vector3(0, 0, 1));
+            
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Check for a few loops that the hand is not flickering between states
+            // number of iterations is an arbirary number to check that the box isn't flickering
+            int iterations = 15;
+            for (int i = 0; i < iterations; i++)
+            {
+                Assert.IsFalse(hand.GetPointer<SpherePointer>().IsNearObject);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - uniform scaling
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
 
             // front right corner is corner 3
             var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at a slower pace.
-            int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
 
             var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
@@ -165,8 +302,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
-            GameObject.Destroy(boundsControl.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Uses near interaction to scale the bounds control by directly grabbing corner - precise scaling 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleNonUniform()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            boundsControl.ScaleHandlesConfig.ScaleBehavior = HandleScaleMode.NonUniform;
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // front right corner is corner 3
+            var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta);
+            yield return null;
+
+            var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.05f, 0.05f, 1.5f);
+            Vector3 expectedSize = Vector3.one * .6f;
+            expectedSize.z = 0.5f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
             yield return null;
         }
 
@@ -190,6 +357,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(rightFrontRotationHandlePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 85f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via far interaction, while moving extremely slowly.
+        /// Rotation amount should be coherent even with extremely small per-frame motion
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateVerySlowlyViaFarInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // First, we make a series of very very tiny movements, as if the user
+            // is making very precise adjustments to the rotation. If the rotation is
+            // being calculated per-frame instead of per-manipulation-event, this should
+            // induce drift/error.
+            for (int i = 0; i < 50; i++)
+            {
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+            }
+
+            // Move the rest of the way very quickly.
             yield return hand.MoveTo(endRotation);
 
             // make sure rotation is as expected and no other transform values have been modified through this
@@ -254,7 +472,98 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Test bounds control rotation constraints via near interaction.
+        /// Verifies gameobject won't rotate when rotation constraint is applied.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotationConstraintViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            var rotateConstraint = boundsControl.EnsureComponent<RotationAxisConstraint>();
+            rotateConstraint.ConstraintOnRotation = AxisFlags.YAxis; // restrict rotation in Y axis
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            Assert.IsTrue(angle == 0f, "cube didn't constraint on rotation");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube shouldn't move while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube shouldn't scale while rotating");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via near interaction, while moving extremely slowly.
+        /// Rotation amount should be coherent even with extremely small per-frame motion
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateVerySlowlyViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            
+            // First, we make a series of very very tiny movements, as if the user
+            // is making very precise adjustments to the rotation. If the rotation is
+            // being calculated per-frame instead of per-manipulation-event, this should
+            // induce drift/error.
+            for (int i = 0; i < 50; i++)
+            {
+                yield return hand.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1/1000.0f) * i));
+            }
+
+            // Move the rest of the way very quickly.
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 90f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, $"cube didn't rotate as expected, actual angle: {angle}");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -263,7 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(control);
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             // move camera to look at rotation sphere
             CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
@@ -344,7 +653,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var scaleHandler = boundsControl.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
-            boundsControl.RegisterTransformScaleHandler(scaleHandler);
 
             Vector3 initialScale = boundsControl.transform.localScale;
 
@@ -391,7 +699,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return VerifyInitialBoundsCorrect(boundsControl);
             BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
             PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
@@ -420,6 +728,163 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // Restore the input simulation profile
             PlayModeTestUtilities.PopHandSimulationProfile();
 
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control translation via far interaction
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaFarInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+            boundsControl.SmoothingActive = false;
+            boundsControl.transform.position = new Vector3(-1.0f, 0.0f, 1.5f);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 transformHandlePosition = new Vector3(-0.324f, -0.141f, 0.499f);
+            Vector3 endPosition = new Vector3(0.497f, -0.188f, 0.499f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // make sure translation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(1f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+        /// <summary>
+        /// Test bounds control translation via near interaction
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Transform transformHandle = boundsControl.gameObject.transform.Find("rigRoot/faceCenter_0");
+            Vector3 transformHandlePosition = transformHandle.position;
+            Vector3 endPosition = transformHandlePosition + new Vector3(10.0f, 0.0f, 0.0f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // make sure translation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(10f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control translation via HoloLens 1 interaction / GGV
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaHololens1Interaction()
+        {
+            // todo
+            BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(control);
+            control.TranslationHandlesConfig.ShowHandleForZ = true;
+            control.SmoothingActive = false;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+
+            // move camera to look at translation sphere
+            Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
+            CameraCache.Main.transform.LookAt(transformHandle.position); 
+
+            var startHandPos = new Vector3(0.191f, -0.07f, 0.499f);
+            var endPoint = new Vector3(-0.368f, -0.221f, 0.499f);
+
+            // perform tab with hand and drag to left 
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.MoveTo(endPoint);
+
+            // make sure x axis translation was performed and no other transform values have changed
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.0f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(control.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(control.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(control.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(control.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control translate constraints via near interaction.
+        /// Verifies gameobject won't translate when MoveAxisConstraint is applied.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslationConstraintViaNearInteraction()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+
+            var moveConstraint = boundsControl.EnsureComponent<MoveAxisConstraint>();
+            moveConstraint.ConstraintOnMovement = AxisFlags.XAxis; // restrict translation in X axis
+            yield return null;
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Transform transformHandle = boundsControl.gameObject.transform.Find("rigRoot/faceCenter_0");
+            Vector3 transformHandlePosition = transformHandle.position;
+            Vector3 endPosition = transformHandlePosition + new Vector3(10.0f, 0.0f, 0.0f);
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(transformHandlePosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endPosition);
+
+            // object shouldn't move with constraint attached
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
 
@@ -538,7 +1003,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -716,7 +1181,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsFalse(boundsControl.WireframeOnly, "wireframeonly should be disabled");
-            
+
             yield return hand.MoveTo(pointOnCube);
             Assert.IsTrue(boundsControl.Active, "control should be active");
             Assert.IsTrue(boundsControl.WireframeOnly, "wireframeonly should be enabled");
@@ -762,11 +1227,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Tests visibility changes of different handle types: scale, rotateX, rotateY, rotateZ.
+        /// Tests visibility changes of scale handles.
         /// Makes sure rig isn't recreated and visibility restores as expected when disabling the entire control.
         /// </summary>
         [UnityTest]
-        public IEnumerator HandleVisibilityTest()
+        public IEnumerator ScaleHandleVisibilityTest()
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
@@ -790,58 +1255,128 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             scaleHandleConfig.ShowScaleHandles = true;
             Assert.IsTrue(scaleHandle.gameObject.activeSelf, "handle wasn't enabled on show");
 
-            // test rotation handle behavior
-            Transform rotationHandleAxisX = rigRoot.transform.Find("midpoint_0");
-            Transform rotationHandleAxisY = rigRoot.transform.Find("midpoint_1");
-            Transform rotationHandleAxisZ = rigRoot.transform.Find("midpoint_8");
-            Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active by default");
-            Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active by default");
-            Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active by default");
-            RotationHandlesConfiguration rotationHandlesConfig = boundsControl.RotationHandlesConfig;
-
-            // disable visibility for each component
-            rotationHandlesConfig.ShowRotationHandleForX = false;
-            Assert.IsNotNull(rigRoot, "rigRoot was destroyed on hiding handles");
-            Assert.IsNotNull(rotationHandleAxisX, "handle was destroyed on hide");
-            Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
-            Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
-            Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
-
-            rotationHandlesConfig.ShowRotationHandleForY = false;
-            Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
-            Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
-            Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
-
-            rotationHandlesConfig.ShowRotationHandleForX = true;
-            rotationHandlesConfig.ShowRotationHandleForY = true;
-            rotationHandlesConfig.ShowRotationHandleForZ = false;
-            Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
-            Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
-            Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
-
-            // make sure handles are disabled and enabled when bounds control is deactived / activated
+            // make sure handles are disabled and enabled when bounds control is deactivated / activated
             boundsControl.Active = false;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
             Assert.IsFalse(scaleHandle.gameObject.activeSelf, "scale handle not disabled");
-            Assert.IsFalse(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
-            Assert.IsFalse(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
-            Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
             // set active again and make sure internal states have been restored
             boundsControl.Active = true;
             Assert.IsNotNull(rigRoot, "rigRoot was destroyed on enabling bounds control");
             Assert.IsTrue(scaleHandle.gameObject.activeSelf, "scale handle not enabled");
-            Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
-            Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
-            Assert.IsFalse(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
+            yield return null;
+        }
+
+        private int GetFirstHandleIndexForAxis(CardinalAxisType axisType, ref CardinalAxisType[] handleAxisTypes)
+        {
+            for (int i = 0; i < handleAxisTypes.Length; ++i)
+            {
+                if (handleAxisTypes[i] == axisType)
+                {
+                    return i;
+                }
+            }
+
+            Debug.LogError("Couldn't find index for axis");
+            return 0;
+        }
+
+        /// <summary>
+        /// Tests visibility changes of per axis handle types.
+        /// Makes sure rig isn't recreated and visibility restores as expected when disabling the entire control.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PerAxisHandleVisibilityTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        {
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            // test rotation handle behavior
+            string handleAxisXName = testData.handleName + "_" + GetFirstHandleIndexForAxis(CardinalAxisType.X, ref testData.handleAxisTypes);
+            string handleAxisYName = testData.handleName + "_" + GetFirstHandleIndexForAxis(CardinalAxisType.Y, ref testData.handleAxisTypes);
+            string handleAxisZName = testData.handleName + "_" + GetFirstHandleIndexForAxis(CardinalAxisType.Z, ref testData.handleAxisTypes);
+            Transform handleAxisX = rigRoot.transform.Find(handleAxisXName);
+            Transform handleAxisY = rigRoot.transform.Find(handleAxisYName);
+            Transform handleAxisZ = rigRoot.transform.Find(handleAxisZName);
+
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            PerAxisHandlesConfiguration config = (PerAxisHandlesConfiguration)propName.GetValue(boundsControl);
+
+            Assert.AreEqual(handleAxisX.gameObject.activeSelf, config.ShowHandleForX, "handle x default value not applied");
+            Assert.AreEqual(handleAxisY.gameObject.activeSelf, config.ShowHandleForY, "handle y default value not applied");
+            Assert.AreEqual(handleAxisZ.gameObject.activeSelf, config.ShowHandleForZ, "handle z default value not applied");
+
+            // disable visibility for each component
+            config.ShowHandleForX = false;
+            config.ShowHandleForY = true;
+            config.ShowHandleForZ = true;
+            Assert.IsNotNull(rigRoot, "rigRoot was destroyed on hiding handles");
+            Assert.IsNotNull(handleAxisX, "handle was destroyed on hide");
+            Assert.IsFalse(handleAxisX.gameObject.activeSelf, "handle x not hidden");
+            Assert.IsTrue(handleAxisY.gameObject.activeSelf, "handle y not active");
+            Assert.IsTrue(handleAxisZ.gameObject.activeSelf, "handle z not active");
+
+            config.ShowHandleForY = false;
+            Assert.IsFalse(handleAxisX.gameObject.activeSelf, "handle x not hidden");
+            Assert.IsFalse(handleAxisY.gameObject.activeSelf, "handle y not hidden");
+            Assert.IsTrue(handleAxisZ.gameObject.activeSelf, "handle z not active");
+
+            config.ShowHandleForX = true;
+            config.ShowHandleForY = true;
+            config.ShowHandleForZ = false;
+            Assert.IsTrue(handleAxisX.gameObject.activeSelf, "rotation handle x not active");
+            Assert.IsTrue(handleAxisY.gameObject.activeSelf, "rotation handle y not active");
+            Assert.IsFalse(handleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
+
+            // make sure handles are disabled and enabled when bounds control is deactivated / activated
+            boundsControl.Active = false;
+            Assert.IsNotNull(rigRoot, "rigRoot was destroyed on disabling bounds control");
+            Assert.IsFalse(handleAxisX.gameObject.activeSelf, "rotation handle x not hidden");
+            Assert.IsFalse(handleAxisY.gameObject.activeSelf, "rotation handle y not hidden");
+            Assert.IsFalse(handleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
+
+            // set active again and make sure internal states have been restored
+            boundsControl.Active = true;
+            Assert.IsNotNull(rigRoot, "rigRoot was destroyed on enabling bounds control");
+            Assert.IsTrue(handleAxisX.gameObject.activeSelf, "rotation handle x not active");
+            Assert.IsTrue(handleAxisY.gameObject.activeSelf, "rotation handle y not active");
+            Assert.IsFalse(handleAxisZ.gameObject.activeSelf, "rotation handle z not hidden");
 
             // enable z axis again and verify
-            rotationHandlesConfig.ShowRotationHandleForZ = true;
-            Assert.IsTrue(rotationHandleAxisX.gameObject.activeSelf, "rotation handle x not active");
-            Assert.IsTrue(rotationHandleAxisY.gameObject.activeSelf, "rotation handle y not active");
-            Assert.IsTrue(rotationHandleAxisZ.gameObject.activeSelf, "rotation handle z not active");
+            config.ShowHandleForZ = true;
+            Assert.IsTrue(handleAxisX.gameObject.activeSelf, "rotation handle x not active");
+            Assert.IsTrue(handleAxisY.gameObject.activeSelf, "rotation handle y not active");
+            Assert.IsTrue(handleAxisZ.gameObject.activeSelf, "rotation handle z not active");
 
+            // test disabling all rotation handles before activating the gameobject
+            // verifies bug https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8239
+            boundsControl.gameObject.SetActive(false);
             yield return null;
+            config.ShowHandleForX = false;
+            config.ShowHandleForY = false;
+            config.ShowHandleForZ = false;
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            boundsControl.gameObject.SetActive(true);
+            yield return null;
+
+            // refetch transforms
+            rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            handleAxisX = rigRoot.transform.Find(handleAxisXName);
+            Assert.IsNotNull(handleAxisX, "rotation handle couldn't be found");
+            handleAxisY = rigRoot.transform.Find(handleAxisYName);
+            Assert.IsNotNull(handleAxisY, "rotation handle couldn't be found");
+            handleAxisZ = rigRoot.transform.Find(handleAxisZName);
+            Assert.IsNotNull(handleAxisZ, "rotation handle couldn't be found");
+
+            // check handle visibility
+            Assert.IsFalse(handleAxisX.gameObject.activeSelf, "rotation handle x active");
+            Assert.IsFalse(handleAxisY.gameObject.activeSelf, "rotation handle y active");
+            Assert.IsFalse(handleAxisZ.gameObject.activeSelf, "rotation handle z active");
         }
 
         /// <summary>
@@ -861,6 +1396,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // test default and runtime changing draw tether flag of both handle types
             yield return TestDrawManipulationTetherFlag(boundsControl.ScaleHandlesConfig, rigRoot, "corner_3");
             yield return TestDrawManipulationTetherFlag(boundsControl.RotationHandlesConfig, rigRoot, "midpoint_2");
+            boundsControl.TranslationHandlesConfig.ShowHandleForZ = true;
+            yield return TestDrawManipulationTetherFlag(boundsControl.TranslationHandlesConfig, rigRoot, "faceCenter_2");
             yield return null;
         }
 
@@ -901,7 +1438,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var defaultPadding = boundsControl.BoxPadding;
             var targetBoundsOriginal = boundsControl.TargetBounds; // this has the default padding already applied
             var targetBoundsSize = targetBoundsOriginal.size;
-            Vector3 targetBoundsScaleInv = new Vector3(1.0f/ targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
+            Vector3 targetBoundsScaleInv = new Vector3(1.0f / targetBoundsOriginal.transform.lossyScale.x, 1.0f / targetBoundsOriginal.transform.lossyScale.y, 1.0f / targetBoundsOriginal.transform.lossyScale.z);
 
             // set padding
             boundsControl.BoxPadding = Vector3.one * 0.5f;
@@ -996,7 +1533,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// </summary>
         [UnityTest]
         public IEnumerator LinksRadiusTest()
-        { 
+        {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
@@ -1177,88 +1714,91 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test for verifying that rotation handles are properly switched off/on when flattening/ unflattening the rig.
+        /// Test for verifying that per axis handles are properly switched off/on when flattening/ unflattening the rig.
         /// Makes sure rig and handles are not recreated on changing flattening mode.
         /// </summary>
         [UnityTest]
-        public IEnumerator RotationHandleFlattenTest()
+        public IEnumerator PerAxisHandleFlattenTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
         {
             // test flatten mode of rotation handle
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true; // make sure translation handle test handle is enabled for per axis tests
 
             // cache rig root for verifying that we're not recreating the rig on config changes
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
-            // get rotation handle and make sure it's active per default
-            Transform rotationHandle = rigRoot.transform.Find("midpoint_2");
-            Assert.IsNotNull(rotationHandle, "couldn't find rotation handle");
-            Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled by default");
+            // get handle and make sure it's active per default
+            Transform handle = rigRoot.transform.Find(testData.handleName +"_0");
+            Assert.IsNotNull(handle, "couldn't find rotation handle");
+            Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled by default");
 
             // flatten x axis and make sure handle gets deactivated
             boundsControl.FlattenAxis = FlattenModeType.FlattenX;
-            Assert.IsFalse(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't disabled when control was flattened in X axis");
+            Assert.IsFalse(handle.gameObject.activeSelf, "handle wasn't disabled when control was flattened in X axis");
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
 
             // unflatten the control again and make sure handle gets activated accordingly
             boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
-            Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled on unflatten");
+            Assert.IsTrue(handle.gameObject.activeSelf, "handle wasn't enabled on unflatten");
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
 
             yield return null;
         }
 
         /// <summary>
-        /// Test for verifying changing the handle prefabs during runtime 
-        /// and making sure the the entire rig won't be recreated
+        /// Test for verifying changing the per axis handle prefabs during runtime 
+        /// and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
-        public IEnumerator RotationHandlePrefabTest()
-        {
+        public IEnumerator PerAxisHandlePrefabTest([ValueSource("perAxisHandleTestData")] PerAxisHandleTestData testData)
+        { 
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             GameObject childBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var sharedMeshFilter = childBox.GetComponent<MeshFilter>();
+            boundsControl.TranslationHandlesConfig.ShowHandleForZ = true; // make sure translation handle test handle is enabled for per axis tests
 
             // cache rig root for verifying that we're not recreating the rig on config changes
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
             // check default mesh filter
-            Transform rotationHandleVisual = rigRoot.transform.Find("midpoint_2/visuals");
+            Transform perAxisVisual = rigRoot.transform.Find(testData.handleName + "_2/visuals");
             Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
-            Assert.IsNotNull(rotationHandleVisual, "couldn't find rotation handle visual");
+            Assert.IsNotNull(perAxisVisual, "couldn't find axis handle visual");
             Assert.IsNotNull(cornerVisual, "couldn't find scale handle visual");
-            var handleVisualMeshFilter = rotationHandleVisual.GetComponent<MeshFilter>();
+            var handleVisualMeshFilter = perAxisVisual.GetComponent<MeshFilter>();
 
-            Assert.IsTrue(handleVisualMeshFilter.mesh.name == "Sphere Instance", "Rotation handles weren't created with default sphere");
+            Assert.IsTrue(handleVisualMeshFilter.mesh.name == "Sphere Instance", "Axis handles weren't created with default sphere");
 
             // change mesh
-            RotationHandlesConfiguration rotationHandlesConfig = boundsControl.RotationHandlesConfig;
-            rotationHandlesConfig.HandlePrefab = childBox;
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            PerAxisHandlesConfiguration config = (PerAxisHandlesConfiguration)propName.GetValue(boundsControl);
+            config.HandlePrefab = childBox;
             yield return null;
             yield return new WaitForFixedUpdate();
 
             // make sure only the visuals have been destroyed but not the rig root
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
-            Assert.IsNotNull(cornerVisual, "scale handle got destroyed while replacing prefab for rotation handle");
-            Assert.IsNull(rotationHandleVisual, "corner visual wasn't destroyed when swapping the prefab");
+            Assert.IsNotNull(cornerVisual, "scale handle got destroyed while replacing prefab for per axis handle");
+            Assert.IsNull(perAxisVisual, "axis handle visual wasn't destroyed when swapping the prefab");
 
-            // fetch new rotation handle visual
-            rotationHandleVisual = rigRoot.transform.Find("midpoint_2/visuals");
-            Assert.IsNotNull(rotationHandleVisual, "couldn't find rotation handle visual");
-            handleVisualMeshFilter = rotationHandleVisual.GetComponent<MeshFilter>();
+            // fetch new per axis handle visual
+            perAxisVisual = rigRoot.transform.Find(testData.handleName + "_2/visuals");
+            Assert.IsNotNull(perAxisVisual, "couldn't find handle visual");
+            handleVisualMeshFilter = perAxisVisual.GetComponent<MeshFilter>();
 
             // check if new mesh filter was applied
-            Assert.IsTrue(sharedMeshFilter.mesh.name == handleVisualMeshFilter.mesh.name, "box rotation handle wasn't applied");
+            Assert.IsTrue(sharedMeshFilter.mesh.name == handleVisualMeshFilter.mesh.name, "box handle wasn't applied");
 
             yield return null;
         }
 
         /// <summary>
         /// Test for verifying changing the handle prefabs during runtime 
-        /// in regular and flatten mode and making sure the the entire rig won't be recreated
+        /// in regular and flatten mode and making sure the entire rig won't be recreated
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleHandlePrefabTest()
@@ -1330,43 +1870,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // check if new mesh filter was applied
             Assert.IsTrue(cornerMeshFilter.mesh.name.StartsWith(sharedMeshFilter.mesh.name), "sphere scale handle wasn't applied");
-            yield return null; 
+            yield return null;
         }
 
         /// <summary>
-        /// Tests runtime configuration of scale handle materials.
-        /// Verifies scale handle default and grabbed material are properly replaced in all visuals when 
+        /// Tests runtime configuration of handle materials.
+        /// Verifies handle default and grabbed material are properly replaced in all visuals when 
         /// setting the material in the config as well as validating that neither the rig nor the visuals get recreated.
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleHandleMaterialTest()
+        public IEnumerator HandleMaterialTest([ValueSource("handleTestData")] HandleTestData testData)
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleMaterialTest("corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
-        }
+            boundsControl.TranslationHandlesConfig.ShowHandleForZ = true; // make sure translation handle test handle is enabled for per axis tests
 
-        /// <summary>
-        /// Tests runtime configuration of rotation handle materials.
-        /// Verifies rotation handle default and grabbed material are properly replaced in all visuals when 
-        /// setting the material in the config as well as validating that neither the rig nor the visuals get recreated.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator RotationHandleMaterialTest()
-        {
-            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleMaterialTest("midpoint_2/visuals", boundsControl.RotationHandlesConfig, boundsControl);
-        }
-
-        private IEnumerator HandleMaterialTest(string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
-            Transform cornerVisual = rigRoot.transform.Find(handleVisualName);
+            Transform cornerVisual = rigRoot.transform.Find(testData.handleVisualPath);
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
 
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            HandlesBaseConfiguration handleConfig = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
             // set materials and make sure rig root and visuals haven't been destroyed while doing so
             handleConfig.HandleMaterial = testMaterial;
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
@@ -1390,36 +1916,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Tests runtime configuration of scale handle size.
-        /// Verifies scale handles are scaled according to new size value without recreating the visual or the rig
+        /// Tests runtime configuration of handle size.
+        /// Verifies handles are scaled according to new size value without recreating the visual or the rig
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleHandleSizeTest()
+        public IEnumerator HandleSizeTest([ValueSource("handleTestData")] HandleTestData testData)
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleSizeTest("corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
-        }
+            boundsControl.TranslationHandlesConfig.ShowHandleForZ = true;
 
-        /// <summary>
-        /// Tests runtime configuration of rotation handle size.
-        /// Verifies rotation handles are scaled according to new size value without recreating the visual or the rig
-        /// </summary>
-        [UnityTest]
-        public IEnumerator RotationHandleSizeTest()
-        {
-            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleSizeTest("midpoint_2/visuals", boundsControl.RotationHandlesConfig, boundsControl);
-        }
-
-        private IEnumerator HandleSizeTest(string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        {
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
-            Transform handleVisual = rigRoot.transform.Find(handleVisualName);
-            Assert.IsNotNull(handleVisual, "couldn't find visual " + handleVisualName);
+            Transform handleVisual = rigRoot.transform.Find(testData.handleVisualPath);
+            Assert.IsNotNull(handleVisual, "couldn't find visual " + testData.handleVisualPath);
 
             // test hand setup
             TestHand hand = new TestHand(Handedness.Right);
@@ -1427,6 +1938,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             // set test materials so we know if we're interacting with the handle later in the test
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            HandlesBaseConfiguration handleConfig = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
             handleConfig.HandleMaterial = testMaterial;
             handleConfig.HandleGrabbedMaterial = testMaterialGrabbed;
 
@@ -1441,50 +1954,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Tests runtime configuration of scale handle collider padding.
-        /// Verifies collider of scale handles are scaled according to new size value 
+        /// Tests runtime configuration of handle collider padding.
+        /// Verifies collider of handles are scaled according to new size value 
         /// without recreating the visual or the rig
         /// </summary>
         [UnityTest]
-        public IEnumerator ScaleHandleColliderPaddingTest()
+        public IEnumerator HandleColliderPaddingTest([ValueSource("handleTestData")] HandleTestData testData)
         {
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleColliderPaddingTest("corner_3","corner_3/visualsScale/visuals", boundsControl.ScaleHandlesConfig, boundsControl);
-        }
+            boundsControl.TranslationHandlesConfig.ShowHandleForZ = true;
 
-        /// <summary>
-        /// Tests runtime configuration of rotation handle collider padding.
-        /// Verifies collider of rotation handles are scaled according to new size value 
-        /// without recreating the visual or the rig
-        /// </summary>
-        [UnityTest]
-        public IEnumerator RotationHandleColliderPaddingTest()
-        {
-            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            yield return VerifyInitialBoundsCorrect(boundsControl);
-            yield return HandleColliderPaddingTest("midpoint_2", "midpoint_2/visuals", boundsControl.RotationHandlesConfig, boundsControl);
-        }
-
-        private IEnumerator HandleColliderPaddingTest(string handleName, string handleVisualName, HandlesBaseConfiguration handleConfig, BoundsControl boundsControl)
-        { 
             // fetch rigroot, corner visual and rotation handle config
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
-            Transform cornerVisual = rigRoot.transform.Find(handleVisualName);
-            Assert.IsNotNull(cornerVisual, "couldn't find visual" + handleVisualName);
+            Transform cornerVisual = rigRoot.transform.Find(testData.handleVisualPath);
+            Assert.IsNotNull(cornerVisual, "couldn't find visual" + testData.handleVisualPath);
             // init test hand
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             // set test materials so we know if we're interacting with the handle later in the test
+            System.Reflection.PropertyInfo propName = boundsControl.GetType().GetProperty(testData.configPropertyName);
+            HandlesBaseConfiguration handleConfig = (HandlesBaseConfiguration)propName.GetValue(boundsControl);
             handleConfig.HandleMaterial = testMaterial;
             handleConfig.HandleGrabbedMaterial = testMaterialGrabbed;
             yield return new WaitForFixedUpdate();
 
             // move hand to edge of rotation handle collider
-            Transform cornerHandle = rigRoot.transform.Find(handleName);
+            Transform cornerHandle = rigRoot.transform.Find(testData.handleName);
             var cornerCollider = cornerHandle.GetComponent<BoxCollider>();
             Vector3 originalColliderExtents = cornerCollider.bounds.extents;
 
@@ -1500,7 +1999,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             // now adjust collider bounds and try grabbing the handle again
-            handleConfig.ColliderPadding = handleConfig.ColliderPadding  + newColliderPadding;
+            handleConfig.ColliderPadding = handleConfig.ColliderPadding + newColliderPadding;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(cornerVisual, "corner visual got destroyed when setting material");

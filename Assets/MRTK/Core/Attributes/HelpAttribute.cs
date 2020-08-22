@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using UnityEngine;
 using System;
 
@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// A PropertyAttribute for showing a collapsible Help section.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field|AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
     public class HelpAttribute : PropertyAttribute
     {
         /// <summary>
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="helpText">The help text to display</param>
         /// <param name="helpHeader">The help header foldout text</param>
         /// <param name="collapsible">If true, this help drawer will be collapsible</param>
-        public HelpAttribute(string helpText, string helpHeader="Help", bool collapsible = true)
+        public HelpAttribute(string helpText, string helpHeader = "Help", bool collapsible = true)
         {
             Text = helpText;
             Header = helpHeader;

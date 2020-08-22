@@ -369,6 +369,9 @@ MonoBehaviour:
   flatHandThreshold: 45
   followHandUntilFacingCamera: 0
   followHandCameraFacingThresholdAngle: 60
+  useGazeActivation: 0
+  eyeGazeProximityThreshold: 0.01
+  headGazeProximityThreshold: 0.04
 --- !u!114 &8576847672641135088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1294,6 +1297,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683505596520617 stripped
@@ -1406,6 +1420,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683505341563378 stripped
@@ -1518,6 +1543,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     - target: {fileID: 6404360168919450832, guid: 0b624ef669468fc43ba70c5eb0da606e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1635,6 +1671,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     - target: {fileID: 6404360168919450832, guid: 0b624ef669468fc43ba70c5eb0da606e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1752,6 +1799,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683505023299784 stripped
@@ -1864,6 +1922,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683504953813228 stripped
@@ -1976,6 +2045,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     - target: {fileID: 6404360168919450832, guid: 0b624ef669468fc43ba70c5eb0da606e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2093,6 +2173,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683504530670046 stripped
@@ -2205,6 +2296,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683504450540755 stripped
@@ -2317,6 +2419,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b624ef669468fc43ba70c5eb0da606e, type: 3}
 --- !u!4 &2749683504283320589 stripped
@@ -2429,6 +2542,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     - target: {fileID: 6404360168919450832, guid: 0b624ef669468fc43ba70c5eb0da606e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2546,6 +2670,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 29b54a82db8f0554986bdcdb1e53b4e9, type: 3}
+    - target: {fileID: 5337163769212510047, guid: 0b624ef669468fc43ba70c5eb0da606e,
+        type: 3}
+      propertyPath: iconSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f4439d031a069488ae68f0e97ab9a8,
+        type: 2}
     - target: {fileID: 6404360168919450832, guid: 0b624ef669468fc43ba70c5eb0da606e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

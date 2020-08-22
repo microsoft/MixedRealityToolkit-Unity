@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
@@ -72,9 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 Bounds visualBounds = CreateVisual(visualsScale, isFlattened);
                 var invScale = visualBounds.size.x == 0.0f ? 0.0f : config.HandleSize / visualBounds.size.x;
-                VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale), 
+                VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale),
                     HandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
-                handles.Add(corner.transform);       
+                handles.Add(corner.transform);
             }
 
             VisualUtils.HandleIgnoreCollider(config.HandlesIgnoreCollider, handles);
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (visualsScaleParent)
                 {
                     // get old child and remove it
-                    Transform obsoleteChild = visualsScaleParent.Find("visuals");
+                    Transform obsoleteChild = visualsScaleParent.Find(visualsName);
                     if (obsoleteChild)
                     {
                         obsoleteChild.parent = null;
@@ -120,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             Vector3 colliderSize = visualSize * invScale;
             collider.size = colliderSize;
             collider.size += BaseConfig.ColliderPadding;
+            collider.center = new Vector3(collider.size.x, collider.size.y, collider.size.z) * 0.5f;
         }
 
         /// <summary>
@@ -153,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 cornerVisual.transform.Rotate(0, 0, -90);
             }
 
-            cornerVisual.name = "visuals";
+            cornerVisual.name = visualsName;
 
             // this is the size of the corner visuals
             var cornerbounds = VisualUtils.GetMaxBounds(cornerVisual);
@@ -186,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override Transform GetVisual(Transform handle)
         {
             Transform visual = handle.GetChild(0)?.GetChild(0);
-            if (visual != null && visual.name == "visuals")
+            if (visual != null && visual.name == visualsName)
             {
                 return visual;
             }

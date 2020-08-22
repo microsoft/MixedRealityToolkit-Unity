@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public int TransparentQualityLevel => transparentQualityLevel;
 
-#region Obsolete properties
+        #region Obsolete properties
 
         /// <summary>
         /// Quality level for a HoloLens device.
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit
         [Obsolete("HoloLensQualityLevel is obsolete and will be removed in a future Mixed Reality Toolkit release. Please use TransparentQualityLevel.")]
         public int HoloLensQualityLevel => transparentQualityLevel;
 
-#endregion Obsolete properties
+        #endregion Obsolete properties
 
     }
 }

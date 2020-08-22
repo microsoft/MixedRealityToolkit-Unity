@@ -28,7 +28,6 @@
 
     <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
     <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\..\Assets\MRTK\Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Examples" /> -->
+    <file src="..\..\..\..\Assets\MRTK\Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Examples" />
   </files>
 </package>

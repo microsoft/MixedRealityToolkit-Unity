@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 materialEditor.ShaderProperty(albedoAlphaMode, albedoAlphaMode.displayName);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.Cutout || 
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.Cutout ||
                     (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
@@ -593,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(borderMinValue, Styles.borderMinValue, 2);
 
                 materialEditor.ShaderProperty(borderLightReplacesAlbedo, Styles.borderLightReplacesAlbedo, 2);
-                
+
                 if (PropertyEnabled(hoverLight) && PropertyEnabled(enableHoverColorOverride))
                 {
                     materialEditor.ShaderProperty(borderLightUsesHoverColor, Styles.borderLightUsesHoverColor, 2);
@@ -735,8 +735,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected bool ScaleRequired()
         {
-            return PropertyEnabled(vertexExtrusion) || 
-                   PropertyEnabled(roundCorners) || 
+            return PropertyEnabled(vertexExtrusion) ||
+                   PropertyEnabled(roundCorners) ||
                    PropertyEnabled(borderLight) ||
                    (PropertyEnabled(enableTriplanarMapping) && PropertyEnabled(enableLocalSpaceTriplanarMapping));
         }
@@ -780,9 +780,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
         protected static void UpgradeShaderForLightweightRenderPipeline()
         {
-            if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?", 
-                                            "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.", 
-                                            "Ok", 
+            if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?",
+                                            "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.",
+                                            "Ok",
                                             "Cancel"))
             {
                 string path = AssetDatabase.GetAssetPath(StandardShaderUtility.MrtkStandardShader);

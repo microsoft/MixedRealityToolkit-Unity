@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -409,6 +409,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 {
                     Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
                     Pose anchorPose = new Pose(transform.position, transform.rotation);
+                    /// Propagate any global scale on the playspace into the position.
+                    Vector3 playspaceScale = MixedRealityPlayspace.Transform.lossyScale;
+                    anchorPose.position *= playspaceScale.x; 
                     Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
                     transform.parent.position = parentPose.position;
                     transform.parent.rotation = parentPose.rotation;
@@ -661,6 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
                         VisibleMaterial :
                         OcclusionMaterial;
+                    meshObject.Collider.material = PhysicMaterial;
                 }
                 else
                 {
@@ -685,7 +689,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
                 meshes.Add(cookedData.id.handle, meshObject);
 
-                meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+                /// Preserve local transform relative to parent.
+                meshObject.GameObject.transform.SetParent(ObservedObjectParent != null 
+                        ? ObservedObjectParent.transform
+                        : null,
+                    false);
 
                 meshEventData.Initialize(this, cookedData.id.handle, meshObject);
                 if (sendUpdatedEvent)

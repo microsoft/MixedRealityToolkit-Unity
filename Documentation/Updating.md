@@ -11,13 +11,15 @@
 
 The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
 
-> [!NOTE]
-> At this time, it is not supported to switch between using .unitypackage files and NuGet.
+*Starting with 2.4.0, it is strongly recommended to run the [migration tool](Tools/MigrationWindow.md)
+after getting the MRTK update** to auto-fix and upgrade from deprecated components and adjust to
+breaking changes. The migration tool is part of the **Tools** package.
 
 ### Unity asset (.unitypackage) files
 
 For the smoothest upgrade path, please use the following steps.
 
+1. Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.
 1. Close Unity
 1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
@@ -38,32 +40,21 @@ For the smoothest upgrade path, please use the following steps.
 1. Re-open the project in Unity
 1. Import the new unity packages
     - Foundation - _Import this package first_
-    - (Optional) Tools
+    - Tools
     - (Optional) Extensions
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
+1. Close Unity and delete the **Library** folder (read the note below first!). This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
+    > [!IMPORTANT]
+    > Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
-
-### NuGet packages
-
-If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
-
-1. Select **NuGet > Manage NuGet Packages**
-1. Select the **Online** tab and click **Refresh**
-1. Select the **Installed** tab
-1. Click the **Update** button for each installed package
-    - Microsoft.MixedReality.Toolkit.Foundation
-    - Microsoft.MixedReality.Toolkit.Tools
-    - Microsoft.MixedReality.Toolkit.Extensions
-    - Microsoft.MixedReality.Toolkit.Examples
-1. Close and re-open the project in Unity
+1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
 
 ## Updating 2.3.0 to 2.4.0
 
@@ -95,6 +86,12 @@ This version of MRTK modifies the steps required for eye gaze setup. The _'IsEye
 
 For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
 
+### Eye gaze pointer behavior in 2.4.0
+
+The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. The eye gaze pointer will become visible again after saying "Select".
+
+Details about gaze and hand setups can be found in the [eyes and hands](EyeTracking/EyeTracking_EyesAndHands.md#how-to-keep-gaze-pointer-always-on) article.
+
 ### API changes in 2.4.0
 
 **Custom controller classes**
@@ -125,7 +122,7 @@ if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
 
 **WindowsApiChecker properties**
 
-The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvailable`, `IsPropertyAvailable` or `IsTypeAvailable`.
 
 - UniversalApiContractV8_IsAvailable
 - UniversalApiContractV7_IsAvailable
@@ -141,6 +138,18 @@ There are no plans to add properties to WindowsApiChecker for future API contrac
 The gltf mesh primitive attributes used to be settable, they are now read-only. Their values
 will be set once when deserialized.
 
+### Custom Button Icon Migration
+
+Previously custom button icons required assigning a new material to the button's quad renderer. This is no longer necessary and we recommend moving custom icon textures into an IconSet. Existing custom materials and icons are preserved. However they will be less optimal until upgraded.
+To upgrade the assets on all buttons in the project to the new recommended format, use the ButtonConfigHelperMigrationHandler.
+(Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
+
+![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
+
+If an icon is not found in the default icon set during migration, a custom icon set will be created in MixedRealityToolkit.Generated/CustomIconSets. A dialog will indicate that this has taken place.
+
+![Custom icon notification](https://user-images.githubusercontent.com/9789716/82093856-c57dfc00-96b0-11ea-83ab-4df57446d661.PNG)
+
 ## Updating 2.2.0 to 2.3.0
 
 - [API changes](#api-changes-in-230)
@@ -151,7 +160,7 @@ will be set once when deserialized.
 
 The private ControllerPoseSynchronizer.handedness field has been marked as obsolete. This should have minimal impact on applications as the field is not visible outside of its class.
 
-The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)). 
+The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)).
 
 **MSBuild for Unity**
 
@@ -170,7 +179,7 @@ The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPoi
 
 Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.
 
-**Spatial observer StarupBehavior**
+**Spatial observer StartupBehavior**
 
 Spatial observers built upon the `BaseSpatialObserver` class now honor the value of StartupBehavior when re-enabled ([#6919](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919)).
 

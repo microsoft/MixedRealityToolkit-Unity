@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
@@ -22,6 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Query the build process to see if we're already building.
         /// </summary>
         public static bool IsBuilding { get; private set; } = false;
+
+        /// <summary>
+        /// The list of filename extensions that are valid VCProjects.
+        /// </summary>
+        private static readonly string[] VcProjExtensions = { "vcsproj", "vcxproj" };
 
         /// <summary>
         /// Build the UWP appx bundle for this project.  Requires that <see cref="UwpPlayerBuildTools.BuildPlayer(string,bool,CancellationToken)"/> has already be run or a user has
@@ -108,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Now that NuGet packages have been restored, we can run the actual build process.
-            exitCode = await Run(msBuildPath, 
+            exitCode = await Run(msBuildPath,
                 $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
@@ -229,20 +234,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // For ARM64 builds we need to add ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch
             // to vcxproj file in order to ensure that the build passes
-
-            string projectName = PlayerSettings.productName;
-            string projectFilePath = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName, $"{projectName}.vcsproj");
-
-            if (!File.Exists(projectFilePath))
+            string projectFilePath = GetProjectFilePath(buildInfo);
+            if (projectFilePath == null)
             {
-                Debug.LogError($"Cannot find project file: {projectFilePath}");
                 return false;
             }
 
             var rootNode = XElement.Load(projectFilePath);
             var defaultNamespace = rootNode.GetDefaultNamespace();
             var propertyGroupNode = rootNode.Element(defaultNamespace + "PropertyGroup");
-            
+
             if (propertyGroupNode == null)
             {
                 propertyGroupNode = new XElement(defaultNamespace + "PropertyGroup", new XAttribute("Label", "Globals"));
@@ -252,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var newNode = propertyGroupNode.Element(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch");
             if (newNode != null)
             {
-                // If this setting already exists in the project, ensure it's value is "None"
+                // If this setting already exists in the project, ensure its value is "None"
                 newNode.Value = "None";
             }
             else
@@ -263,6 +264,28 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             rootNode.Save(projectFilePath);
 
             return true;
+        }
+
+        /// <summary>
+        /// Given the project name and build path, resolves the valid VcProject file (i.e. .vcsproj, vcxproj)
+        /// </summary>
+        /// <returns>A valid path if the project file exists, null otherwise</returns>
+        private static string GetProjectFilePath(IBuildInfo buildInfo)
+        {
+            string projectName = PlayerSettings.productName;
+            foreach (string extension in VcProjExtensions)
+            {
+                string projectFilePath = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName, $"{projectName}.{extension}");
+                if (File.Exists(projectFilePath))
+                {
+                    return projectFilePath;
+                }
+            }
+
+            string projectDirectory = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName);
+            string combinedExtensions = String.Join("|", VcProjExtensions);
+            Debug.LogError($"Cannot find project file {projectDirectory} given names {projectName}.{combinedExtensions}");
+            return null;
         }
 
         private static bool UpdateAppxManifest(IBuildInfo buildInfo)

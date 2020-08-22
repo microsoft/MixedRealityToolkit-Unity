@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -39,14 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private class ObjectProximityInfo
         {
             public Transform ScaledObject;
-            public Renderer ObjectVisualRenderer; 
+            public Renderer ObjectVisualRenderer;
             public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
         /// <summary>
         /// Dictionary that maps proximity object provider to list of objects that have proximity scaling applied
         /// </summary>
-        
+
         private Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>> registeredObjects = new Dictionary<IProximityEffectObjectProvider, List<ObjectProximityInfo>>();
 
 
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
                         item.ProximityState = ProximityState.FullsizeNoProximity;
-                       
+
                         if (item.ObjectVisualRenderer)
                         {
                             item.ObjectVisualRenderer.material = keyValuePair.Key.GetBaseMaterial();
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         /// <summary>
-        /// Updates proximity effect and it's registered objects.
+        /// Updates proximity effect and its registered objects.
         /// Highlights and scales objects in proximity according to the pointer distance
         /// </summary>
         /// <param name="boundsCenter">gameobject position the proximity effect is attached to</param>
@@ -171,9 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     proximityPoints.Add(pointer.Position);
                 }
-                
+
                 if (pointer.Result?.CurrentPointerTarget != null)
-                { 
+                {
                     Vector3? point = pointer.Result?.Details.Point;
                     if (point.HasValue && IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, squareMaxLength))
                     {

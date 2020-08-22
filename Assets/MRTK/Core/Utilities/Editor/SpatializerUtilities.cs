@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            // A spatializer is correctly confiugured.
+            // A spatializer is correctly configured.
             return true;
         }
 

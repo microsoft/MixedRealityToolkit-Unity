@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Override base behavior to align the cursor with the finger, else perform normal cursor transformations.
         /// </summary>
-        protected override void UpdateCursorTransform() 
+        protected override void UpdateCursorTransform()
         {
             IMixedRealityNearPointer nearPointer = (IMixedRealityNearPointer)Pointer;
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     indexKnucklePosition = transform.position;
                 }
-                
+
                 if (!nearPointer.IsInteractionEnabled)
                 {
                     // If the pointer is disabled, make sure to turn the ring cursor off
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 tipPosition = fingerPosition + tipNormal * skinSurfaceOffset;
             Vector3 tipOffset = tipPosition - fingerPosition;
 
-            // Check how perpindicular the finger normal is to the surface, so that the cursor will
+            // Check how perpendicular the finger normal is to the surface, so that the cursor will
             // not translate to the finger pad if the user is poking with a horizontal finger
             float fingerSurfaceDot = Vector3.Dot(tipNormal, -surfaceNormal);
 

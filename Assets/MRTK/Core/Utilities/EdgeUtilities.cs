@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using UnityEngine;
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="point">The point to check.</param>
         /// <returns>True if the point is valid, false otherwise.</returns>
         /// <remarks>
-        /// A point is considered invalid if any one of it's coordinate values are infinite or not a number.
+        /// A point is considered invalid if any one of its coordinate values are infinite or not a number.
         /// </remarks>
         public static bool IsValidPoint(Vector2 point)
         {

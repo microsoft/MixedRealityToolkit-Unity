@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }
@@ -88,13 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             base.Disable();
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
             foreach (var genericJoystick in ActiveControllers)
             {
                 if (genericJoystick.Value != null)
                 {
-                    inputSystem?.RaiseSourceLost(genericJoystick.Value.InputSource, genericJoystick.Value);
+                    Service?.RaiseSourceLost(genericJoystick.Value.InputSource, genericJoystick.Value);
                 }
             }
 
@@ -119,8 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             using (RefreshDevicesPerfMarker.Auto())
             {
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
                 var joystickNames = UInput.GetJoystickNames();
 
                 if (joystickNames.Length <= 0)
@@ -140,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                             if (controller != null)
                             {
-                                inputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                                Service?.RaiseSourceLost(controller.InputSource, controller);
                             }
 
                             RemoveController(lastDeviceList[i]);
@@ -161,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                         if (controller != null)
                         {
-                            inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                            Service?.RaiseSourceDetected(controller.InputSource, controller);
                         }
                     }
                 }
@@ -181,8 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             using (GetOrAddControllerPerfMarker.Auto())
             {
-                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
                 if (ActiveControllers.ContainsKey(joystickName))
                 {
                     var controller = ActiveControllers[joystickName];
@@ -204,8 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         break;
                 }
 
-                var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
-                var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
+                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
+                GenericJoystickController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
                 if (detectedController == null || !detectedController.Enabled)
                 {

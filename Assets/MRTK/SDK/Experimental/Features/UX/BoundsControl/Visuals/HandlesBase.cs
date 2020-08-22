@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Input;
@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
+        protected const string visualsName = "visuals";
+
         internal HandlesBase() { }
         protected abstract HandlesBaseConfiguration BaseConfig
         {
@@ -98,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         internal abstract bool IsVisible(Transform handle);
-        
+
 
         internal protected List<Transform> handles = new List<Transform>();
         private Transform highlightedHandle = null;
@@ -111,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             get { return handles; }
         }
 
-        internal void SetHighlighted(Transform handleToHighlight)
+        internal void SetHighlighted(Transform handleToHighlight, IMixedRealityPointer associatedPointer = null)
         {
             // turn off all handles that aren't the handle we want to highlight
             if (handles != null)
@@ -157,7 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return false;
         }
 
-
+        /// <summary>
+        /// Provides the handle type - can be either translation / rotation / scale.
+        /// </summary>
         internal virtual HandleType GetHandleType()
         {
             return HandleType.None;

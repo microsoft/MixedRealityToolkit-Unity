@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
 
-#region IMixedRealityCapabilityCheck Implementation
+        #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 
 
-#endregion IMixedRealityCapabilityCheck Implementation
+        #endregion IMixedRealityCapabilityCheck Implementation
 #if LEAPMOTIONCORE_PRESENT
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         {
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource);
+                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource, trackedHands[handedness]);
             }
 
             // Disable the pointers if the hand is not tracking

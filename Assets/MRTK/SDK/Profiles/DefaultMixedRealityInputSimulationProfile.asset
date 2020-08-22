@@ -41,23 +41,23 @@ MonoBehaviour:
   moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  simulateEyePosition: 0
-  defaultHandSimulationMode: 2
-  toggleLeftHandKey:
+  defaultEyeGazeSimulationMode: 0
+  defaultControllerSimulationMode: 2
+  toggleLeftControllerKey:
     bindingType: 2
     code: 116
-  toggleRightHandKey:
+  toggleRightControllerKey:
     bindingType: 2
     code: 121
-  handHideTimeout: 0.2
-  leftHandManipulationKey:
+  controllerHideTimeout: 0.2
+  leftControllerManipulationKey:
     bindingType: 2
     code: 304
-  rightHandManipulationKey:
+  rightControllerManipulationKey:
     bindingType: 2
     code: 32
-  mouseHandRotationSpeed: 30
-  handRotateButton:
+  mouseControllerRotationSpeed: 30
+  controllerRotateButton:
     bindingType: 2
     code: 306
   defaultHandGesture: 2
@@ -67,6 +67,15 @@ MonoBehaviour:
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5
   navigationStartThreshold: 0.03
-  defaultHandDistance: 0.5
-  handDepthMultiplier: 0.03
-  handJitterAmount: 0
+  defaultControllerDistance: 0.5
+  controllerDepthMultiplier: 0.03
+  controllerJitterAmount: 0
+  motionControllerTriggerKey:
+    bindingType: 1
+    code: 0
+  motionControllerGrabKey:
+    bindingType: 2
+    code: 103
+  motionControllerMenuKey:
+    bindingType: 2
+    code: 109

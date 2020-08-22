@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// To use this component attach it to a UI element (a GameObject with a
     /// RectTransform component) such as an Image or Panel.
     /// </summary>
-    [AddComponentMenu("MRTK/Experimental/UICollection")]
+    [AddComponentMenu("Scripts/MRTK/Experimental/UICollection")]
     [RequireComponent(typeof(RectTransform))]
     [ExecuteInEditMode]
     public class UICollection : MonoBehaviour
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private void CollectItems()
-        { 
+        {
             Items.Clear();
 
             foreach (Transform childTransform in transform)

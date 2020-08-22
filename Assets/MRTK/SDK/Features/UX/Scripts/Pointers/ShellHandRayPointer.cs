@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Implementation for default hand ray pointers shipped with MRTK. Primariliy used with hands and motion controllers
+    /// Implementation for default hand ray pointers shipped with MRTK. Primarily used with hands and motion controllers
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ShellHandRayPointer")]
     public class ShellHandRayPointer : LinePointer

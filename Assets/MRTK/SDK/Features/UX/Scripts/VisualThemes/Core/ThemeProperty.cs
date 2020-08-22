@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ThemeProperty
     {
         /// <summary>
-        /// Dispalyed as Label in Inspector
+        /// Displayed as Label in Inspector
         /// </summary>
         public string Name;
 

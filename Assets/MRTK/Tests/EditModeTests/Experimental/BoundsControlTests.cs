@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using NUnit.Framework;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
     /// Tests for edit mode behavior of bounds control
     /// </summary>
     public class BoundsControlTests
-    {       
+    {
         [Test]
         /// <summary>
         /// Tests configuring every property of bounds control in edit mode
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             scaleConfig.HandleMaterial = testMaterial;
             scaleConfig.HandleGrabbedMaterial = testMaterial;
             scaleConfig.HandlePrefab = testCube;
-            scaleConfig.HandleSize = 0.05f ;
+            scaleConfig.HandleSize = 0.05f;
             scaleConfig.ColliderPadding = Vector3.one;
             scaleConfig.DrawTetherWhenManipulating = false;
             scaleConfig.HandlesIgnoreCollider = collider;
@@ -88,10 +88,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             assetsToDestroy.Add(path);
             AssetDatabase.CreateAsset(rotationHandles, path);
 
-            rotationHandles.RotationHandlePrefabColliderType = HandlePrefabCollider.Box;
-            rotationHandles.ShowRotationHandleForX = false;
-            rotationHandles.ShowRotationHandleForY = true;
-            rotationHandles.ShowRotationHandleForZ = true;
+            rotationHandles.HandlePrefabColliderType = HandlePrefabCollider.Box;
+            rotationHandles.ShowHandleForX = false;
+            rotationHandles.ShowHandleForY = true;
+            rotationHandles.ShowHandleForZ = true;
             rotationHandles.HandleMaterial = testMaterial;
             rotationHandles.HandleGrabbedMaterial = testMaterial;
             rotationHandles.HandlePrefab = childSphere;

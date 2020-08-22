@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -154,7 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Extensions
 
             var far = testCamera.farClipPlane;
             var frustrumSize = testCamera.GetFrustumSizeForDistance(far / 2.0f);
-            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f, frustrumSize.y / 2.0f, far / 2.0f)));
+            /// (fSz.x,fSz.y,far) is right on the upper right corner midway up the frustum. Numerical precision can
+            /// put it either in or out of frustum. Subtract a small epsilon to bring it inside.
+            float eps = 1.0e-5f;
+            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f - eps, frustrumSize.y / 2.0f - eps, far / 2.0f + eps)));
         }
 
         /// <summary>

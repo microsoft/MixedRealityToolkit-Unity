@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -25,21 +25,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class GltfTests
     {
         private const string AvocadoCustomAttrGuid = "fea29429b97dbb14b97820f56c74060a";
+        private const string CubeCustomAttrGuid = "f0bb9fb635c69be4e8526b0fb6b48f39";
+
         private AsyncCoroutineRunner asyncCoroutineRunner;
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
             GameObject.Destroy(asyncCoroutineRunner.gameObject);
+            yield return null;
         }
-        
+
         private IEnumerator WaitForTask(Task task)
         {
             while (!task.IsCompleted) { yield return null; }
@@ -98,8 +102,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int temperature = gltfObject.accessors[temperatureIdx].count;
             Assert.AreEqual(100, temperature);
         }
+
+        [UnityTest]
+        public IEnumerator TestGltfCustomAttributesData()
+        {
+            // Load glTF
+            string path = AssetDatabase.GUIDToAssetPath(CubeCustomAttrGuid);
+            var task = GltfUtility.ImportGltfObjectFromPathAsync(path);
+
+            yield return WaitForTask(task);
+
+            GltfObject gltfObject = task.Result;
+
+            yield return null;
+
+            // Check for custom vertex data is a list of 10s
+            gltfObject.meshes[0].primitives[0].Attributes.TryGetValue("_CUSTOM_ATTR", out var customAttrIdx);
+
+            GltfAccessor accessor = gltfObject.GetAccessor(customAttrIdx);
+            var intArray = accessor.GetIntArray(false);
+
+            foreach (var item in intArray)
+            {
+                Assert.AreEqual(10, item);
+            }
+        }
         #endregion
-        
+
     }
 }
 #endif

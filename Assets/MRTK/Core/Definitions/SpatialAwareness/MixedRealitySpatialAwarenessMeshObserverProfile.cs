@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Spatial Awareness Mesh Observer Profile", fileName = "MixedRealitySpatialAwarenessMeshObserverProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwarenessMeshObserver)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessMeshObserver))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html")]
-    public class MixedRealitySpatialAwarenessMeshObserverProfile : BaseSpatialAwarenessObserverProfile 
+    public class MixedRealitySpatialAwarenessMeshObserverProfile : BaseSpatialAwarenessObserverProfile
     {
         #region IMixedRealitySpatialAwarenessMeshObserver settings
 
@@ -82,6 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The material to be used when observed meshes should occlude other objects.
         /// </summary>
         public Material OcclusionMaterial => occlusionMaterial;
+        
+        [SerializeField] 
+        [Tooltip("Optional physics material to apply to spatial mesh")]
+        private PhysicMaterial physicsMaterial = null;
+
+        public PhysicMaterial PhysicsMaterial => physicsMaterial;
+
+        
 
         #endregion IMixedRealitySpatialAwarenessMeshObserver settings
     }

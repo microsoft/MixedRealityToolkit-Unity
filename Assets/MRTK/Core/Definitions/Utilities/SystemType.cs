@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
 using Microsoft.MixedReality.Toolkit;
@@ -137,10 +137,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         // Key == original reference string entry, value == new migrated placement
         // String values are broken into {namespace.classname, asmdef}
         private static Dictionary<string, string> ReferenceMappings = new Dictionary<string, string>()
-        { 
+        {
             { "Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
             "Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation" },
-            
+
             { "Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
             "Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation" },
         };

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform frontBounds = null;
-    
+
         public Transform FrontBounds
         {
             get => frontBounds;
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform backBounds = null;
-    
+
         public Transform BackBounds
         {
             get => backBounds;
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform leftBounds = null;
-    
+
         public Transform LeftBounds
         {
             get => leftBounds;
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform rightBounds = null;
-    
+
         public Transform RightBounds
         {
             get => rightBounds;
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform bottomBounds = null;
-    
+
         public Transform BottomBounds
         {
             get => bottomBounds;
@@ -75,15 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         [SerializeField]
         private Transform topBounds = null;
-    
+
         public Transform TopBounds
         {
             get => topBounds;
             set => topBounds = value;
         }
-    
+
         private Vector3 positionAtStart;
-    
+
 
         /// <summary>
         /// Caches start position of gameobject this script is attached to

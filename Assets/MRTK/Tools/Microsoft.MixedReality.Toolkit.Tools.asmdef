@@ -5,7 +5,7 @@
         "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.SDK.Editor",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Tools.Runtime",
         "Unity.TextMeshPro"

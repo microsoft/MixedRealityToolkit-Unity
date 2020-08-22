@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System.Collections.Generic;
@@ -112,10 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     links[i].transform.gameObject.SetActive(isVisible && config.ShowWireFrame);
                 }
 
-                int[] flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis);
+                List<int> flattenedHandles = VisualUtils.GetFlattenedIndices(cachedFlattenAxis, VisualUtils.EdgeAxisType);
                 if (flattenedHandles != null)
                 {
-                    for (int i = 0; i < flattenedHandles.Length; ++i)
+                    for (int i = 0; i < flattenedHandles.Count; ++i)
                     {
                         links[flattenedHandles[i]].transform.gameObject.SetActive(false);
                     }
@@ -197,14 +197,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             UpdateLinkScales(cachedExtents);
         }
 
-        internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void CreateLinks(ref Vector3[] boundsCorners, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
             if (links != null)
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
-                for (int i = 0; i < RotationHandles.NumEdges; ++i)
+                for (int i = 0; i < VisualUtils.EdgeAxisType.Length; ++i)
                 {
                     if (config.WireframeShape == WireframeType.Cubic)
                     {
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                     link.name = "link_" + i.ToString();
 
-                    CardinalAxisType axisType = rotationHandles.GetAxisType(i);
+                    CardinalAxisType axisType = VisualUtils.EdgeAxisType[i];
                     float wireframeEdgeRadius = config.WireframeEdgeRadius;
                     if (axisType == CardinalAxisType.Y)
                     {
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         link.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
                     }
 
-                    link.transform.position = rotationHandles.GetEdgeCenter(i);
+                    link.transform.position = VisualUtils.GetLinkPosition(i, ref boundsCorners);
                     link.transform.parent = parent;
                     Renderer linkRenderer = link.GetComponent<Renderer>();
 

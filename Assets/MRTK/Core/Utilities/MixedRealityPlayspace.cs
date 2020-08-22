@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit
         public static Quaternion Rotation
         {
             get { return Transform.rotation; }
-            set { Transform.rotation = value;  }
+            set { Transform.rotation = value; }
         }
 
         /// <summary>
@@ -128,6 +128,18 @@ namespace Microsoft.MixedReality.Toolkit
         public static Vector3 TransformDirection(Vector3 localDirection)
         {
             return Transform.TransformDirection(localDirection);
+        }
+
+        /// <summary>
+        /// Transforms a direction from world to local space.
+        /// </summary>
+        /// <param name="worldDirection">The direction to be transformed.</param>
+        /// <returns>
+        /// The direction, in local space.
+        /// </returns>
+        public static Vector3 InverseTransformDirection(Vector3 worldDirection)
+        {
+            return Transform.InverseTransformDirection(worldDirection);
         }
 
         /// <summary>

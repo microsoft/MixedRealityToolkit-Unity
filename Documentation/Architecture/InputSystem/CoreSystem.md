@@ -25,7 +25,7 @@ Input events are generally fired on two different channels:
 ### Objects in focus
 
 Events can be sent directly to a GameObject that has focus. For example, an object might
-have a script that implements [`IMixedRealityTouchHandler`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs).
+have a script that implements [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler).
 This object would get touch events when focused by a hand that is near it. These types of
 events go "up" the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.

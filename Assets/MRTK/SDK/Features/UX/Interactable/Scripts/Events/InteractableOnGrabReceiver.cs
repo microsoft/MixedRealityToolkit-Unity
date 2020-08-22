@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine.Events;
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Creates a receiver that raises grab start and end events.
         /// </summary>
-        public InteractableOnGrabReceiver() : this( new UnityEvent()) { }
+        public InteractableOnGrabReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

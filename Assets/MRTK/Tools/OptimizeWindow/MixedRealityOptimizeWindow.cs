@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Render Title
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
                 InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
             }
 
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                GUILayout.Label(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     RenderOptimalRenderingSection();

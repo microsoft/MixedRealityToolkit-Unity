@@ -47,5 +47,5 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
             }
         }
-	}
+    }
 }

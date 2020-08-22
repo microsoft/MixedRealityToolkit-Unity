@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// We could add an enum or bool to the SceneInfo struct to control this, but that seemed like unnecessary clutter.
         /// </summary>
         public static bool DrawTagProperty { get; set; }
-        
+
         const float iconWidth = 20f;
         const float totalPropertyWidth = 410;
         const float assetPropertyWidth = 400;
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             assetRect.width = position.width - iconWidth;
             assetRect.height = EditorGUIUtility.singleLineHeight;
             assetRect.x += iconWidth;
-           
+
             Rect buttonRect = position;
             buttonRect.height = EditorGUIUtility.singleLineHeight;
             buttonRect.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
@@ -186,12 +186,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
 
-            if (!string.IsNullOrEmpty (nameProperty.stringValue) && asset == null)
+            if (!string.IsNullOrEmpty(nameProperty.stringValue) && asset == null)
             {
                 // If we still can't find it, draw a button that lets people attempt to recover it
                 if (GUI.Button(buttonRect, "Search for missing scene", EditorStyles.toolbarButton))
                 {
-                   changed |= SceneInfoUtils.FindScene(nameProperty, pathProperty, ref asset);
+                    changed |= SceneInfoUtils.FindScene(nameProperty, pathProperty, ref asset);
                 }
             }
             else
@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 property.serializedObject.ApplyModifiedProperties();
             }
-            
+
             EditorGUIUtility.wideMode = lastMode;
             EditorGUI.indentLevel = lastIndentLevel;
             EditorGUI.EndProperty();

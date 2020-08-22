@@ -371,6 +371,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
+  resetOnDestroy: 0
   enabledOnStart: 1
 --- !u!82 &316800719
 AudioSource:
@@ -512,7 +513,10 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1911902820}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f,
+    type: 2}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
 --- !u!1 &937783100
 GameObject:
   m_ObjectHideFlags: 0

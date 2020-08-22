@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -23,16 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SpeechTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         [UnityTest]
@@ -55,10 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Toggle the profiler visualization off.
             var gazeInputSource = CoreServices.InputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
             CoreServices.InputSystem.RaiseSpeechCommandRecognized(
-                gazeInputSource, 
-                RecognitionConfidenceLevel.High, 
-                new TimeSpan(), 
-                DateTime.Now, 
+                gazeInputSource,
+                RecognitionConfidenceLevel.High,
+                new TimeSpan(),
+                DateTime.Now,
                 new SpeechCommands("toggle profiler", KeyCode.Alpha9, MixedRealityInputAction.None));
             // It may take a few frames before the event is handled and the system responds to the state change.
             for (int i = 0; i < frameDelay; i++) { yield return null; }

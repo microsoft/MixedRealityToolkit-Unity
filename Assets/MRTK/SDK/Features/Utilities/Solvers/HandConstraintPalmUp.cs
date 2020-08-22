@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
@@ -253,19 +253,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float distanceToHandPlane;
 
                 // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
-                if (TryGenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
+                if (TryGenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) &&
                     handPlane.Raycast(gazeRay, out distanceToHandPlane))
                 {
-                        // Now that we know the dist to the plane, create a vector at that point
-                        Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
-                        Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
-                        float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
-                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold; 
-                        gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
+                    // Now that we know the dist to the plane, create a vector at that point
+                    Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
+                    Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                    float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
+                    float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
+                    gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
 
-                        return gazeActivationAlreadyTriggered;
-                    }
+                    return gazeActivationAlreadyTriggered;
                 }
+            }
 
             return false;
         }
@@ -281,14 +281,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// This function attenpts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
+        /// This function attempts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
         /// On a success, it then calls GenerateActivationPoint to try to generate a hand-based activation point that the user
         /// needs to gaze at to activate the constrained object.
         /// On a failure, it assigns them to be default values and then returns false
         /// </summary>
         /// <param name="jointedHand">Hand reference to the user's hand that is used to generate the hand plane and activation point</param>
         /// <param name="handPlane">Out Plane that represents the hand and is raycasted against to determine whether the users gaze is close to the activation point or not</param>
-        /// <param name="activationPoint">Out Vector3 that represents the point on the hand-based plane to determine whther the menu activates or not</param>
+        /// <param name="activationPoint">Out Vector3 that represents the point on the hand-based plane to determine whether the menu activates or not</param>
         /// <returns>True if the function can properly generate an activation point using the hand-based plane</returns>
         private bool TryGenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
         {
@@ -355,6 +355,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     {
                         return false;
                     }
+                case SolverSafeZone.AtopPalm:
+                    referenceJoint1 = TrackedHandJoint.Palm;
+                    referenceJoint2 = TrackedHandJoint.Palm;
+                    break;
                 case SolverSafeZone.RadialSide:
                     referenceJoint1 = TrackedHandJoint.IndexKnuckle;
                     referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;

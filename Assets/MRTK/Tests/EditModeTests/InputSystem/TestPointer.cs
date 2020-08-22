@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         public int GetHashCode(object obj)
         {
             var pointer = obj as TestPointer;
-            return (int) pointer.PointerId;
+            return (int)pointer.PointerId;
         }
 
         /// <inheritdoc />

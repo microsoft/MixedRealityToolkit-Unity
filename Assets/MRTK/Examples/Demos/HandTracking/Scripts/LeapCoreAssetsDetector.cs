@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,13 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         void Start()
         {
             var text = gameObject.GetComponent<Text>();
-
 #if LEAPMOTIONCORE_PRESENT
+#if UNITY_WSA && !UNITY_EDITOR
+            text.text = "The Leap Data Provider can only be used on the UWP platform in the editor and NOT in a UWP build.";
+            text.color = Color.yellow;
+#else
             text.text = "The Leap Data Provider can be used in this project";
             text.color = Color.green;
+#endif // UNITY_WSA && !UNITY_EDITOR
 #else
-        text.text = "This project has not met the requirements to use the Leap Data Provider. For more information, visit the MRTK Leap Motion Documentation";
-        text.color = Color.red;
+            text.text = "This project has not met the requirements to use the Leap Data Provider. For more information, visit the MRTK Leap Motion Documentation";
+            text.color = Color.red;
 #endif
         }
     }

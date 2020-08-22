@@ -1,6 +1,6 @@
 ﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 //
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Slider Axis Visuals")]
-    
+
         [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject trackVisuals = null;
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private SliderAxis? previousSliderAxis = null;
         /// <summary>
-        /// Property accessor for previousSliderAxis that is used also to initiallize the property with the current value in case of null value.
+        /// Property accessor for previousSliderAxis that is used also to initialize the property with the current value in case of null value.
         /// </summary>
         private SliderAxis PreviousSliderAxis
         {

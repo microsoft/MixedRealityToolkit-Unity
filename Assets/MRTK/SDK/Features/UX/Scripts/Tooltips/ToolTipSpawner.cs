@@ -1,9 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -13,59 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Applies its follow settings to the spawned ToolTip's ToolTipConnector component
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ToolTipSpawner")]
-    public class ToolTipSpawner :
-        BaseFocusHandler,
-        IMixedRealityInputHandler,
-        IMixedRealityInputHandler<float>
+    public class ToolTipSpawner : PrefabSpawner
     {
         private enum SettingsMode
         {
             UseDefaults = 0,
             Override
         }
-
-        private enum VanishType
-        {
-            VanishOnFocusExit = 0,
-            VanishOnTap,
-        }
-
-        private enum AppearType
-        {
-            AppearOnFocusEnter = 0,
-            AppearOnTap,
-        }
-
-        public enum RemainType
-        {
-            Indefinite = 0,
-            Timeout,
-        }
-
-        [SerializeField]
-        private GameObject toolTipPrefab = null;
-
-        [Header("Input Settings")]
-        [SerializeField]
-        [Tooltip("The action that will be used for when to spawn or toggle the tooltip.")]
-        private MixedRealityInputAction tooltipToggleAction = MixedRealityInputAction.None;
-
-        [Header("Appear / Vanish Behavior Settings")]
-        [SerializeField]
-        private AppearType appearType = AppearType.AppearOnFocusEnter;
-        [SerializeField]
-        private VanishType vanishType = VanishType.VanishOnFocusExit;
-        [SerializeField]
-        private RemainType remainType = RemainType.Timeout;
-        [SerializeField]
-        [Range(0f, 5f)]
-        private float appearDelay = 0.0f;
-        [SerializeField]
-        [Range(0f, 5f)]
-        private float vanishDelay = 2.0f;
-        [SerializeField]
-        [Range(0.5f, 10.0f)]
-        private float lifetime = 1.0f;
 
         [Header("ToolTip Override Settings")]
         [Tooltip("Prefab's settings will be used unless this is set to Override")]
@@ -99,122 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private Transform anchor = null;
 
-        private float focusEnterTime = 0f;
-        private float focusExitTime = 0f;
-        private float tappedTime = 0f;
-        private ToolTip toolTip;
-
-        /// <inheritdoc />
-        public override void OnFocusEnter(FocusEventData eventData)
+        protected override void SpawnableActivated(GameObject spawnable)
         {
-            base.OnFocusEnter(eventData);
-
-            HandleFocusEnter();
-        }
-
-        /// <inheritdoc />
-        public override void OnFocusExit(FocusEventData eventData)
-        {
-            base.OnFocusExit(eventData);
-
-            HandleFocusExit();
-        }
-
-        /// <inheritdoc />
-        void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
-        {
-            if (eventData.InputData > .95f) 
-            {
-                HandleTap();
-            }
-        }
-
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
-        {
-            if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
-            {
-                HandleTap();
-            }
-        }
-
-        /// <inheritdoc />
-        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData) { }
-
-        private void HandleTap()
-        {
-            tappedTime = Time.unscaledTime;
-
-            if (toolTip == null || !toolTip.gameObject.activeSelf)
-            {
-                switch (appearType)
-                {
-                    case AppearType.AppearOnTap:
-                        ShowToolTip();
-                        break;
-                }
-            }
-            else
-            {
-                switch (vanishType)
-                {
-                    case VanishType.VanishOnTap:
-                        toolTip.gameObject.SetActive(false);
-                        break;
-                }
-            }
-        }
-
-        private void HandleFocusEnter()
-        {
-            focusEnterTime = Time.unscaledTime;
-
-            if (toolTip == null || !toolTip.gameObject.activeSelf)
-            {
-                switch (appearType)
-                {
-                    case AppearType.AppearOnFocusEnter:
-                        ShowToolTip();
-                        break;
-                }
-            }
-        }
-
-        private void HandleFocusExit()
-        {
-            focusExitTime = Time.unscaledTime;
-        }
-
-        private async void ShowToolTip()
-        {
-            await UpdateTooltip(focusEnterTime, tappedTime);
-        }
-
-        private async Task UpdateTooltip(float focusEnterTimeOnStart, float tappedTimeOnStart)
-        {
-            if (toolTip == null)
-            {
-                var toolTipGo = Instantiate(toolTipPrefab);
-                toolTip = toolTipGo.GetComponent<ToolTip>();
-                toolTip.gameObject.SetActive(false);
-                toolTip.transform.position = transform.position;
-                toolTip.transform.parent = transform;
-            }
-
-            if (appearType == AppearType.AppearOnFocusEnter)
-            {
-                // Wait for the appear delay
-                await new WaitForSeconds(appearDelay);
-                // If we don't have focus any more, get out of here
-
-                if (!HasFocus)
-                {
-                    return;
-                }
-            }
+            var toolTip = spawnable.GetComponent<ToolTip>();
 
             toolTip.ToolTipText = toolTipText;
-            toolTip.gameObject.SetActive(true);
             var connector = toolTip.GetComponent<ToolTipConnector>();
             connector.Target = (anchor != null) ? anchor.gameObject : gameObject;
 
@@ -242,64 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     break;
             }
-
-            while (toolTip.gameObject.activeSelf)
-            {
-                if (remainType == RemainType.Timeout)
-                {
-                    switch (appearType)
-                    {
-                        case AppearType.AppearOnTap:
-                            if (Time.unscaledTime - tappedTime >= lifetime)
-                            {
-                                toolTip.gameObject.SetActive(false);
-                                return;
-                            }
-
-                            break;
-                        case AppearType.AppearOnFocusEnter:
-                            if (Time.unscaledTime - focusEnterTime >= lifetime)
-                            {
-                                toolTip.gameObject.SetActive(false);
-                                return;
-                            }
-
-                            break;
-                    }
-                }
-
-                // Check whether we're suppose to disappear
-                switch (vanishType)
-                {
-                    case VanishType.VanishOnFocusExit:
-                        if (!HasFocus)
-                        {
-                            toolTip.gameObject.SetActive(false);
-                        }
-
-                        break;
-
-                    case VanishType.VanishOnTap:
-                        if (!tappedTime.Equals(tappedTimeOnStart))
-                        {
-                            toolTip.gameObject.SetActive(false);
-                        }
-
-                        break;
-
-                    default:
-                        if (!HasFocus)
-                        {
-                            if (Time.time - focusExitTime > vanishDelay)
-                            {
-                                toolTip.gameObject.SetActive(false);
-                            }
-                        }
-                        break;
-                }
-
-                await new WaitForUpdate();
-            }
         }
 
 #if UNITY_EDITOR
@@ -307,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (Application.isPlaying) { return; }
 
-            if (toolTipPrefab == null) { return; }
+            if (prefab == null) { return; }
 
             if (gameObject == UnityEditor.Selection.activeGameObject)
             {
@@ -325,14 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 switch (settingsMode)
                 {
                     case SettingsMode.UseDefaults:
-                        ToolTipConnector connector = toolTipPrefab.GetComponent<ToolTipConnector>();
+                        ToolTipConnector connector = prefab.GetComponent<ToolTipConnector>();
                         followType = connector.ConnectorFollowingType;
                         pivotDirectionOrient = connector.PivotDirectionOrient;
                         pivotDirection = connector.PivotDirection;
                         pivotMode = connector.PivotMode;
                         manualPivotDirection = connector.ManualPivotDirection;
                         manualPivotLocalPosition = connector.ManualPivotLocalPosition;
-                        pivotDistance = connector.PivotDistance; 
+                        pivotDistance = connector.PivotDistance;
                         break;
                 }
 

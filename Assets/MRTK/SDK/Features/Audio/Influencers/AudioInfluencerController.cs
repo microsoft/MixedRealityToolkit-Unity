@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// </summary>
     /// <remarks>
     /// AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component. If one is not attached, it will be added automatically.
-    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have it's audio influenced.
+    /// Each sound playing game object needs to have an AudioInfluencerController attached in order to have its audio influenced.
     /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [DisallowMultipleComponent]
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             hits = new RaycastHit[maxObjects];
         }
 
-        private void Update() 
+        private void Update()
         {
             DateTime now = DateTime.UtcNow;
 
@@ -191,15 +191,17 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                 List<IAudioInfluencer> influencersToRemove = new List<IAudioInfluencer>();
                 for (int i = 0; i < previousInfluencers.Count; i++)
                 {
-                    MonoBehaviour mbPrev = previousInfluencers[i] as MonoBehaviour;
+                    var audioInfluencer = previousInfluencers[i];
 
-                    // Remove influencers that are no longer in line of sight
-                    // OR
-                    // Have been disabled
-                    if (!influencers.Contains(previousInfluencers[i]) ||
-                        ((mbPrev != null) && !mbPrev.isActiveAndEnabled))
+                    // Remove influencers that are
+                    // no longer in line of sight,
+                    // have been destroyed,
+                    // or have been disabled
+                    if (!influencers.Contains(audioInfluencer) ||
+                        !audioInfluencer.TryGetMonoBehaviour(out MonoBehaviour mbPrev) ||
+                        !mbPrev.isActiveAndEnabled)
                     {
-                        influencersToRemove.Add(previousInfluencers[i]);
+                        influencersToRemove.Add(audioInfluencer);
                     }
                 }
                 RemoveInfluencers(influencersToRemove);
@@ -241,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                                                 distance,
                                                 UnityPhysics.DefaultRaycastLayers,
                                                 QueryTriggerInteraction.Ignore);
-            
+
             for (int i = 0; i < count; i++)
             {
                 IAudioInfluencer influencer = hits[i].collider.gameObject.GetComponentInParent<IAudioInfluencer>();

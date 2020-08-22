@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public Vector3 GetVelocity()
         {
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             return hand.Velocity;
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            for (var iter = PlayModeTestUtilities.MoveHand(oldPosition, newPosition, gestureId, handedness, simulationService, numSteps); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(oldPosition, newPosition, gestureId, handedness, simulationService, numSteps); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </param>
         public IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
         {
-            for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext(); )
+            for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
-            for (var iter = PlayModeTestUtilities.MoveHand(position, position, gestureId, handedness, simulationService, 1); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(position, position, gestureId, handedness, simulationService, 1); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -170,15 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="numSteps">Number of steps of the hand movement</param>
         public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, bool waitForFinalFixedUpdate, int numSteps = 30)
         {
-            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Pinch); iter.MoveNext(); )
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Pinch); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
-            for (var iter = MoveTo(positionToRelease, numSteps); iter.MoveNext(); )
+            for (var iter = MoveTo(positionToRelease, numSteps); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
-            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Open, waitForFinalFixedUpdate); iter.MoveNext(); )
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Open, waitForFinalFixedUpdate); iter.MoveNext();)
             {
                 yield return iter.Current;
             }
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <typeparam name="T">Type of pointer to look for.</typeparam>
         public T GetPointer<T>() where T : class, IMixedRealityPointer
         {
-            var hand = simulationService.GetHandDevice(handedness);
+            var hand = simulationService.GetControllerDevice(handedness);
             foreach (var pointer in hand.InputSource.Pointers)
             {
                 if (pointer is T)

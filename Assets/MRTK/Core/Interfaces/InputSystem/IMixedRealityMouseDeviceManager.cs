@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [ObsoleteAttribute("The MouseInputProfile property has been deprecated and will be removed in a future version of MRTK.")]
         MixedRealityMouseInputProfile MouseInputProfile { get; }
-        
+
         /// <summary>
         /// Gets or sets a multiplier value used to adjust the speed of the mouse cursor.
         /// </summary>

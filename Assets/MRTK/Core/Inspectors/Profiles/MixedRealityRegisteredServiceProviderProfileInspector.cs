@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -134,9 +134,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     // Try to assign default configuration profile when type changes.
                                     serializedObject.ApplyModifiedProperties();
                                     AssignDefaultConfigurationValues(
-                                        ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType, 
+                                        ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType,
                                         componentName,
-                                        configurationProfile, 
+                                        configurationProfile,
                                         runtimePlatform);
                                     changed = true;
                                     break;
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             serializedObject.ApplyModifiedProperties();
                         }
 
-                        if (IsProfileRequired(serviceType) && 
+                        if (IsProfileRequired(serviceType) &&
                             (configurationProfile.objectReferenceValue == null))
                         {
                             EditorGUILayout.HelpBox($"{componentName} requires a Profile", MessageType.Warning);
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void AssignDefaultConfigurationValues(
             System.Type componentType,
             SerializedProperty componentName,
-            SerializedProperty configurationProfile, 
+            SerializedProperty configurationProfile,
             SerializedProperty runtimePlatform)
         {
             configurationProfile.objectReferenceValue = null;

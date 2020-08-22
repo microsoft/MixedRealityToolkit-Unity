@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -30,17 +30,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private const string DefaultColorProperty = "_Color";
 
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests
@@ -307,12 +309,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
-                (host, theme) => 
+                (host, theme) =>
                 {
                     Assert.AreEqual(Vector3.one, host.transform.localScale);
                     Assert.AreEqual(Vector3.zero, host.transform.position);
                 },
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state0, theme.Host.transform.localScale);
                     Assert.AreEqual(state0Offset, theme.Host.transform.position);
@@ -376,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return TestTheme<InteractableColorChildrenTheme, AudioSource>(parent,
                 defaultStateValues,
-                (host, theme) => 
+                (host, theme) =>
                 {
                     foreach (Transform child in host.transform)
                     {
@@ -445,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableStringTheme, Text>(defaultStateValues,
-                (host,theme) => { Assert.AreEqual(string.Empty, host.GetComponent<Text>().text); },
+                (host, theme) => { Assert.AreEqual(string.Empty, host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<Text>().text); });
 

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Whether the Manipulation is a NearInteration or not.
         /// </summary>
-        public bool IsNearInteraction {get; set; }
+        public bool IsNearInteraction { get; set; }
 
         /// <summary>
         /// Center of the <see cref="ObjectManipulator"/>'s Pointer in world space

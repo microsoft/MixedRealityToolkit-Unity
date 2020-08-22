@@ -36,13 +36,12 @@ The `Button` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/Button.prefab) is
 `PressableButtonHoloLens2` (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) is HoloLens 2's shell style button that supports the precise movement of the button for the direct hand tracking input. It combines `Interactable` script with `PressableButton` script.
 
 For HoloLens 2, it is recommended to use buttons with an opaque backplate. Transparent buttons are not recommended because of these usability and stability issues:
+
 - Icon and text are difficult to read with the physical environment
 - It is hard to understand when the event triggers
 - Holograms that are displayed through a transparent plane can be unstable with HoloLens 2's Depth LSR stabilization
 
 ![Button](Images/Button/MRTK_Button_UsePlated.png)
-
-
 
 ## How to use pressable buttons
 
@@ -82,7 +81,6 @@ In HoloLens 2 shell-style button, there are many visual cues and affordances to 
 |:--- | :--- | :--- | :--- |
 | Proximity light | Focus highlight | Compressing cage | Pulse on trigger |
 
-
 The subtle pulse effect is triggered by the pressable button, which looks for *ProximityLight(s)* that live on the currently interacting pointer. If any proximity lights are found, the `ProximityLight.Pulse` method is called, which automatically animates shader parameters to display a pulse.
 
 ## Inspector properties
@@ -119,9 +117,10 @@ MRTK buttons use a `ButtonConfigHelper` component to assist you in changing the 
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Config_Helper.png)
 
-### Creating and Modifying Icon Sets ###
+### Creating and Modifying Icon Sets
 
 An **Icon Set** is a shared set of icon assets used by the `ButtonConfigHelper` component. Three icon *styles* are supported.
+
 * **Quad** icons are rendered on a quad using a `MeshRenderer`. This is the default icon style.
 * **Sprite** icons are rendered using a `SpriteRenderer`. This is useful if you prefer to import your icons as a sprite sheet, or if you want your icon assets to be shared with Unity UI components. To use this style you will need to install the Sprite Editor package **(Windows -> Package Manager -> 2D Sprite)**
 * **Char** icons are rendered using a `TextMeshPro` component. This is useful if you prefer to use an icon font. To use the HoloLens icon font you will need to create a `TextMeshPro` font asset.
@@ -130,14 +129,28 @@ To change which style your button uses, expand the *Icons* dropdown in the Butto
 
 You can create a new button icon set with the asset menu: **Create > Mixed Reality Toolkit > Icon Set.** To add quad and sprite icons, simply drag them into their respective arrays. To add Char icons, you must first create and assign a font asset.
 
-### Creating a HoloLens Icon Font Asset ###
+In MRTK 2.4 and beyond, we recommend custom icon textures be moved into an IconSet.
+To upgrade the assets on all buttons in a project to the new recommended format, use the ButtonConfigHelperMigrationHandler.
+(Mixed Reality Toolkit -> Utilities -> Migration Window -> Migration Handler Selection -> Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler)
+
+Importing the Microsoft.MixedRealityToolkit.Unity.Tools package required to upgrade the buttons.
+
+![Upgrade window dialogue](https://user-images.githubusercontent.com/39840334/82096923-bd28bf80-96b6-11ea-93a9-ceafcb822242.png)
+
+If an icon is not found in the default icon set during migration, a custom icon set will be created in MixedRealityToolkit.Generated/CustomIconSets. A dialog will indicate that this has taken place.
+
+![Custom icon notification](https://user-images.githubusercontent.com/9789716/82093856-c57dfc00-96b0-11ea-83ab-4df57446d661.PNG)
+
+### Creating a HoloLens Icon Font Asset
 
 First, import the icon font into Unity. On Windows machines you can find the default HoloLens font in *Windows/Fonts/holomdl2.ttf.* Copy and paste this file into your Assets folder.
 
 Next, open the TextMeshPro Font Asset Creator via **Window > TextMeshPro > Font Asset Creator.** Here are the recommended settings for generating a HoloLens font atlas. To include all icons, paste the following Unicode range into the *Character Sequence* field:
+
 ```c#
 E700-E702,E706,E70D-E70E,E710-E714,E718,E71A,E71D-E71E,E720,E722,E728,E72A-E72E,E736,E738,E73F,E74A-E74B,E74D,E74F-E752,E760-E761,E765,E767-E769,E76B-E76C,E770,E772,E774,E777,E779-E77B,E782-E783,E785-E786,E799,E7A9-E7AB,E7AF-E7B1,E7B4,E7C8,E7E8-E7E9,E7FC,E80F,E821,E83F,E850-E859,E872-E874,E894-E895,E8A7,E8B2,E8B7,E8B9,E8D5,E8EC,E8FB,E909,E91B,E92C,E942,E95B,E992-E995,E9E9-E9EA,EA37,EA40,EA4A,EA55,EA96,EB51-EB52,EB65,EB9D-EBB5,EBCB-EBCC,EBCF-EBD3,EC03,EC19,EC3F,EC7A,EC8E-EC98,ECA2,ECD8-ECDA,ECE0,ECE7-ECEB,ED17,EE93,EFA9,F114-F120,F132,F181,F183-F186
 ```
+
 ![Button](../Documentation/Images/Button/MRTK_Font_Asset_Creation_1.png)
 
 Once the font asset is generated, save it to your project and assign it to your Icon Set's *Char Icon Font* field. The *Available Icons* dropdown will now be populated. To make an icon available for use by a button, click it. It will be added to the *Selected Icons* dropdown and will now show up in the `ButtonConfigHelper.` You can optionally give the icon a tag. This enables setting the icon at runtime.
@@ -147,7 +160,7 @@ Once the font asset is generated, save it to your project and assign it to your 
 ![Button](../Documentation/Images/Button/MRTK_Font_Asset_Creation_2.png)
 
 ```c#
-public void SetButtonToAdjust() 
+public void SetButtonToAdjust()
 {
     ButtonConfigHelper buttonConfigHelper = gameObject.GetComponent<ButtonConfigHelper>();
     buttonConfigHelper.SetCharIconByName("AppBarAdjust");
@@ -161,11 +174,12 @@ To use your Icon Set select a button, expand the Icons dropdown in the `ButtonCo
 ## How to change the size of a button
 
 HoloLens 2's shell-style button's size is 32x32mm. To customize the dimension, change the size of these objects in the button prefab:
+
 1. **FrontPlate**
 2. **Quad** under BackPlate
 3. **Box Collider** on the root
 
-Then, click **Fix Bounds** button in the NearInteractionTouchble script which is in the root of the button. 
+Then, click **Fix Bounds** button in the NearInteractionTouchable script which is in the root of the button.
 
 Update the size of the FrontPlate
 ![Button](Images/Button/MRTK_Button_SizeCustomization1.png)

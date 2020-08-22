@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -15,14 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         #region Properties
 
-        private Vector3 initialScale;
-
         [SerializeField]
         [Tooltip("Minimum scaling allowed")]
-        private  float scaleMinimum = 0.2f;
+        private float scaleMinimum = 0.2f;
 
         private Vector3 minimumScale;
-        
+
         /// <summary>
         /// Minimum scaling allowed
         /// </summary>
@@ -41,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float scaleMaximum = 2f;
 
         private Vector3 maximumScale;
-        
+
         /// <summary>
         /// Maximum scaling allowed
         /// </summary>
@@ -58,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Min/max scaling relative to initial scale if true")]
         private bool relativeToInitialState = true;
-        
+
         /// <summary>
         /// Min/max scaling relative to initial scale if true
         /// </summary>
@@ -76,19 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Properties
 
-        #region MonoBehaviour Methods
-
-        public override void Start()
+        #region Public Methods
+        public override void Initialize(MixedRealityTransform worldPose)
         {
-            base.Start();
-
-            initialScale = TargetTransform.localScale;
+            base.Initialize(worldPose);
             SetScaleLimits();
         }
-
-        #endregion MonoBehaviour Methods
-
-        #region Public Methods
 
         /// <summary>
         /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
@@ -152,13 +143,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Public Methods
 
         #region Private Methods
-        
+
         private void SetScaleLimits()
         {
             if (relativeToInitialState)
             {
-                minimumScale = initialScale * scaleMinimum;
-                maximumScale = initialScale * scaleMaximum;
+                minimumScale = worldPoseOnManipulationStart.Scale * scaleMinimum;
+                maximumScale = worldPoseOnManipulationStart.Scale * scaleMaximum;
             }
             else
             {
