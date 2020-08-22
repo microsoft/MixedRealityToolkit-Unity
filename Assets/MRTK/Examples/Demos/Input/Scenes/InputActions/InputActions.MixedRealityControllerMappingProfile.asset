@@ -1929,7 +1929,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 330
+      keyCode: 331
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -1942,7 +1942,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 331
+      keyCode: 330
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -1955,7 +1955,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 340
+      keyCode: 341
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -1968,7 +1968,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 341
+      keyCode: 340
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
