@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         {
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource);
+                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource, trackedHands[handedness]);
             }
 
             // Disable the pointers if the hand is not tracking

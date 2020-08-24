@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var newNode = propertyGroupNode.Element(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch");
             if (newNode != null)
             {
-                // If this setting already exists in the project, ensure it's value is "None"
+                // If this setting already exists in the project, ensure its value is "None"
                 newNode.Value = "None";
             }
             else

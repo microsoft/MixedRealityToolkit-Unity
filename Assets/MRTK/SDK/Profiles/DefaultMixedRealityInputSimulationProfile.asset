@@ -70,3 +70,12 @@ MonoBehaviour:
   defaultControllerDistance: 0.5
   controllerDepthMultiplier: 0.03
   controllerJitterAmount: 0
+  motionControllerTriggerKey:
+    bindingType: 1
+    code: 0
+  motionControllerGrabKey:
+    bindingType: 2
+    code: 103
+  motionControllerMenuKey:
+    bindingType: 2
+    code: 109

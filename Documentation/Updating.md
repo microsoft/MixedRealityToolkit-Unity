@@ -45,8 +45,10 @@ For the smoothest upgrade path, please use the following steps.
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
+1. Close Unity and delete the **Library** folder (read the note below first!). This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
+    > [!IMPORTANT]
+    > Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**

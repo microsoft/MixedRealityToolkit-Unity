@@ -57,6 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty controllerDepthMultiplier;
         private SerializedProperty controllerJitterAmount;
 
+        private SerializedProperty motionControllerTriggerKey;
+        private SerializedProperty motionControllerGrabKey;
+        private SerializedProperty motionControllerMenuKey;
+
         private SerializedProperty holdStartDuration;
         private SerializedProperty navigationStartThreshold;
 
@@ -114,6 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             defaultControllerDistance = serializedObject.FindProperty("defaultControllerDistance");
             controllerDepthMultiplier = serializedObject.FindProperty("controllerDepthMultiplier");
             controllerJitterAmount = serializedObject.FindProperty("controllerJitterAmount");
+
+            motionControllerTriggerKey = serializedObject.FindProperty("motionControllerTriggerKey");
+            motionControllerGrabKey = serializedObject.FindProperty("motionControllerGrabKey");
+            motionControllerMenuKey = serializedObject.FindProperty("motionControllerMenuKey");
         }
 
         public override void OnInspectorGUI()
@@ -179,6 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(controllerRotateButton);
                     EditorGUILayout.Space();
 
+                    EditorGUILayout.PropertyField(defaultControllerDistance);
+                    EditorGUILayout.PropertyField(controllerDepthMultiplier);
+                    EditorGUILayout.PropertyField(controllerJitterAmount);
+                    EditorGUILayout.Space();
+
                     EditorGUILayout.PropertyField(defaultHandGesture);
                     EditorGUILayout.PropertyField(leftMouseHandGesture);
                     EditorGUILayout.PropertyField(middleMouseHandGesture);
@@ -190,9 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(navigationStartThreshold);
                     EditorGUILayout.Space();
 
-                    EditorGUILayout.PropertyField(defaultControllerDistance);
-                    EditorGUILayout.PropertyField(controllerDepthMultiplier);
-                    EditorGUILayout.PropertyField(controllerJitterAmount);
+                    EditorGUILayout.PropertyField(motionControllerTriggerKey);
+                    EditorGUILayout.PropertyField(motionControllerGrabKey);
+                    EditorGUILayout.PropertyField(motionControllerMenuKey);
                     EditorGUILayout.Space();
 
                     EditorGUILayout.EndVertical();

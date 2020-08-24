@@ -23,6 +23,10 @@ Users can now use the Mouse for simulating eye tracking. See the `Eye Simulation
 
 ![Eye Gaze Mouse](https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif)
 
+**Input Simulation Motion Controller in Editor Play Mode**
+
+Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.
+
 **Conical Grab Pointer**
 
 Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
@@ -50,6 +54,13 @@ For instructions on how to write a test using these TestUtilities, see this sect
 [writing tests](Contributing/UnitTests.md#writing-tests)
 
 For examples of existing tests that use this infrastructure, see MRTK's [PlayModeTests](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests)
+
+
+**Support for the Leap Motion 4.5.1 Unity Modules**
+
+Support for the Leap Motion Unity Modules version 4.5.1 has been added and support for the 4.4.0 assets has been removed. The current supported versions of the Leap Motion Unity Modules are 4.5.0 and 4.5.1.
+
+There is also an additional step for initial Leap Motion integration, see [How to Configure the Leap Motion Hand Tracking in MRTK](CrossPlatform/LeapMotionMRTK.md) for more information.
 
 **Link.xml created in the MixedRealityToolkit.Generated folder**
 
@@ -127,5 +138,11 @@ any facades that exist in the project will be deleted by the service facade hand
 scenes opened up in 2.5 get automatically fixed.
 
 The remaining code associated with the service facade feature will be removed in a future release.
+
+**Addition of Motion Controller to Input Simulation Service**
+
+Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with `InputSimulationService.cs` and `MixedRealityInputSimulationProfile.cs` getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to "hand" to the more generic term "controller" (e.g. from `DefaultHandSimulationMode` to `DefaultControllerSimulationMode`). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. `GetControllerDevice` based on the original `GetHandDevice` now returns `BaseController` instead of `SimulatedHand`).
+
+`IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
 
 ### Known issues

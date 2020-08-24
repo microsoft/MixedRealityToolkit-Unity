@@ -591,7 +591,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the index of a serialized array item based on it's name, pop-up field helper
+        /// Get the index of a serialized array item based on its name, pop-up field helper
         /// </summary>
         public static int GetOptionsIndex(SerializedProperty options, string selection)
         {

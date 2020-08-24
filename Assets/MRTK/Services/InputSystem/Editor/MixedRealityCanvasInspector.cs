@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(Canvas))]
     public class MixedRealityCanvasInspector : UEditor
     {
-        private static readonly GUIContent MakeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
+        private static readonly GUIContent MakeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRTK use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
         private static readonly GUIContent RemoveMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
 
         private readonly List<Graphic> graphicsWhichRequireScaleMeshEffect = new List<Graphic>();

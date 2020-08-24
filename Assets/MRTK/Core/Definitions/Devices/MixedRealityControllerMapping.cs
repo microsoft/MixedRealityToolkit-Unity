@@ -222,9 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        return detectedController.DefaultLeftHandedInteractions;
+                        return detectedController.DefaultLeftHandedInteractions ?? detectedController.DefaultInteractions;
                     case Handedness.Right:
-                        return detectedController.DefaultRightHandedInteractions;
+                        return detectedController.DefaultRightHandedInteractions ?? detectedController.DefaultInteractions;
                     default:
                         return detectedController.DefaultInteractions;
                 }

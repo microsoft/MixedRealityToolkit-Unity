@@ -66,14 +66,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Press Left Ctrl + H to close this guide\n\nMove with <color=#03fcbe>W,
     A, S, D</color> keys\n\nPan the camera down with <color=#03fcbe>Q</color>, up
-    with <color=#03fcbe>E</color>\n\nTo bring up the simulated hands, press <color=#03fcbe>Space
-    Bar</color> (Right hand) or <color=#03fcbe>Left Shift</color> (Left hand)\n\nTo
-    keep simulated hands in the view, press <color=#03fcbe>T</color> or <color=#03fcbe>Y</color>
-    key\n\nUse <color=#03fcbe>Mouse Scroll Wheel</color> to move hands forward/backward\u200B\r\n\r\nUse
-    <color=#03fcbe>Left Mouse Button</color> to pinch (air-tap)\n\nWhile holding 
-    <color=#03fcbe>Right Mouse Button</color>, move the mouse to rotate the camera\n\nWhile
-    holding  <color=#03fcbe>Right Mouse Button</color>, use <color=#03fcbe>Mouse
-    Scroll Wheel</color> to tilt the camera"
+    with <color=#03fcbe>E</color>\n\nTo bring up the simulated controllers, press
+    <color=#03fcbe>Space Bar</color> (Right controller) or <color=#03fcbe>Left Shift</color>
+    (Left controller)\n\nTo keep simulated controllers in the view, press <color=#03fcbe>T</color>
+    or <color=#03fcbe>Y</color> key\n\nUse <color=#03fcbe>Mouse Scroll Wheel</color>
+    to move controllers forward/backward\u200B\r\n\r\nUse <color=#03fcbe>Left Mouse
+    Button</color> to pinch (air-tap) or select\n\nWhile holding  <color=#03fcbe>Right
+    Mouse Button</color>, move the mouse to rotate the camera\n\nWhile holding  <color=#03fcbe>Right
+    Mouse Button</color>, use <color=#03fcbe>Mouse Scroll Wheel</color> to tilt the
+    camera"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -142,12 +143,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 7490726607216722039}
-    characterCount: 499
+    characterCount: 539
     spriteCount: 0
-    spaceCount: 102
-    wordCount: 93
+    spaceCount: 104
+    wordCount: 95
     linkCount: 0
-    lineCount: 17
+    lineCount: 18
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

@@ -81,5 +81,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         #endregion serialized fields
+
+        /// <summary>
+        /// Fabricates an instance of ScaleHandles, applying
+        /// this config to it whilst creating it.
+        /// </summary>
+        /// <returns>New TranslationHandles</returns>
+        internal virtual ScaleHandles ConstructInstance()
+        {
+            // Return a new ScaleHandles, using this config as the active config.
+            return new ScaleHandles(this);
+        }
     }
 }

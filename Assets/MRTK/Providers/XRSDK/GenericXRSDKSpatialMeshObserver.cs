@@ -494,6 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                             meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
                                 VisibleMaterial :
                                 OcclusionMaterial;
+                            meshObject.Collider.material = PhysicsMaterial;
                         }
                         else
                         {
