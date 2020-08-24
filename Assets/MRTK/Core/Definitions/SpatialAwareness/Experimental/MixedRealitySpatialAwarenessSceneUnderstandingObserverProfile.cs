@@ -51,17 +51,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         [EnumFlags]
         [SerializeField]
         [Tooltip("Which plane types the observer should generate.")]
-        private SpatialAwarenessSurfaceTypes surfaceTypes = 
-            SpatialAwarenessSurfaceTypes.Floor | 
-            SpatialAwarenessSurfaceTypes.Ceiling | 
-            SpatialAwarenessSurfaceTypes.Wall |
-            SpatialAwarenessSurfaceTypes.Seat |
-            SpatialAwarenessSurfaceTypes.Table;
+        private SpatialAwarenessSurfaceType surfaceTypes = 
+            SpatialAwarenessSurfaceType.Floor | 
+            SpatialAwarenessSurfaceType.Ceiling | 
+            SpatialAwarenessSurfaceType.Wall |
+            SpatialAwarenessSurfaceType.Seat |
+            SpatialAwarenessSurfaceType.Table;
 
         /// <summary>
         /// Which plane types the observer should generate.
         /// </summary>
-        public SpatialAwarenessSurfaceTypes SurfaceTypes => surfaceTypes;
+        public SpatialAwarenessSurfaceType SurfaceTypes => surfaceTypes;
 
         [SerializeField]
         [Tooltip("The number of planes to render per interval. Setting this too high can cause performance problems.")]

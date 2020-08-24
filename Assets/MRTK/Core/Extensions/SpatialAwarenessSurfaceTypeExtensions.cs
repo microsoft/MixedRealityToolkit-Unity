@@ -17,9 +17,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public static PlaneClassification ToPlaneClassification(this SpatialAwarenessSurfaceType)
+        public static PlaneClassification ToPlaneClassification(this SpatialAwarenessSurfaceType surfaceType)
         {
-
+            // todo
         }
 #endif // ARSUBSYSTEMS_ENABLED
     }

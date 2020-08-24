@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         public IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; set; }
 
         /// <inheritdoc/>
-        public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
+        public SpatialAwarenessSurfaceType SurfaceTypes { get; set; }
 
         /// <inheritdoc/>
         public bool ShouldLoadFromFile { get; set; }
