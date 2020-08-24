@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// 
         /// </summary>
-        SpatialAwarenessSurfaceType SurfaceTypes { get; set; }
+        SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
 
         /// <summary>
         /// Number of meshes to generate per frame. Throttled to keep framerate under control.

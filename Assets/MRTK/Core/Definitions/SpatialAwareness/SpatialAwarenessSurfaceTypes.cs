@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// Enumeration defining the types of planar surfaces that are supported by the spatial awareness surface finding subsystem.
     /// </summary>
     [System.Flags]
-    public enum SpatialAwarenessSurfaceType
+    public enum SpatialAwarenessSurfaceTypes
     {
         /// <summary>
         /// An unknown / unsupported type of surface.

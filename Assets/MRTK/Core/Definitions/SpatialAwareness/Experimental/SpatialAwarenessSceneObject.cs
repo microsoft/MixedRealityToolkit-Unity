@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     {
         public SpatialAwarenessSceneObject(
             System.Guid guid,
-            SpatialAwarenessSurfaceType surfaceType,
+            SpatialAwarenessSurfaceTypes surfaceType,
             Vector3 position,
             Quaternion rotation,
             List<Quad> quads,
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             }
         }
 
-        public SpatialAwarenessSurfaceType SurfaceType
+        public SpatialAwarenessSurfaceTypes SurfaceType
         {
             get;
             private set;

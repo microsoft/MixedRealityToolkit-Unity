@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             switch (sceneObject.SurfaceType)
             {
-                case SpatialAwarenessSurfaceType.Wall:
+                case SpatialAwarenessSurfaceTypes.Wall:
                     if (WallTag != "")
                     {
                         gameObject.tag = WallTag;
