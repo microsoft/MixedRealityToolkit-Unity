@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Returns curl of  middle finger ranging from 0 to 1. 1 if index finger curled/closer to wrist. 0 if the finger is not curled.
+        /// Returns curl of middle finger ranging from 0 to 1. 1 if index finger curled/closer to wrist. 0 if the finger is not curled.
         /// </summary>
         /// <param name="handedness">Handedness to query joint pose against.</param>
         /// <returns> Float ranging from 0 to 1. 0 if middle finger is straight/not curled, 1 if middle finger is curled</returns>
