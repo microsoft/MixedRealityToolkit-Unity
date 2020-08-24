@@ -87,6 +87,7 @@ to entering play mode, and also at editor launch. These handlers now run in far 
 Unity responsiveness improvements.
 
 In some cases there was a tradeoff that had to be made:
+See [Leap Motion Hand Tracking Configuration](CrossPlatform/LeapMotionMRTK.md) for the extra integration step.
 For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
 See [ARFoundation](CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
 
