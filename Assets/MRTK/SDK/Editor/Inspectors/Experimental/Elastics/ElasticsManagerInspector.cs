@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
     /// <summary>
     /// A custom inspector for ElasticsManager used to separate
