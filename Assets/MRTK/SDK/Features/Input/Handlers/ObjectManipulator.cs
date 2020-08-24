@@ -779,7 +779,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             ReleaseRigidBody(pointerVelocity, pointerAnglularVelocity);
-            if (elasticsManager)
+            if (elasticsManager != null)
             {
                 elasticsManager.EnableElasticsUpdate = true;
             }
