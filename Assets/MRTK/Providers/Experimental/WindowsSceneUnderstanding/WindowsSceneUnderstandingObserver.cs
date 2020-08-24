@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
 #endregion IMixedRealityOnDemandObserver
 
-#region Public Profile
+        #region Public Profile
 
         /// <summary>
         /// 
@@ -348,11 +348,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-#endregion Profile
+        #endregion Profile
 
 #if SCENE_UNDERSTANDING_PRESENT
 
-#region Private Fields
+        #region Private Fields
 
         private Dictionary<System.Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<System.Guid, SpatialAwarenessSceneObject>(256);
         private GameObject observedObjectParent = null;
@@ -382,11 +382,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
 
-#endregion Private Fields
+        #endregion Private Fields
 
 #endif // SCENE_UNDERSTANDING_PRESENT
 
-#region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// 
@@ -469,11 +469,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 #endif // SCENE_UNDERSTANDING_PRESENT
         }
 
-#endregion Public Methods
+        #endregion Public Methods
 
 #if SCENE_UNDERSTANDING_PRESENT
 
-#region Private
+        #region Private
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> sceneEventData = null;
 
@@ -1408,7 +1408,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-#endregion Private
+        #endregion Private
 
 #endif // SCENE_UNDERSTANDING_PRESENT
     }
