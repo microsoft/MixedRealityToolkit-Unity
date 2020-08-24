@@ -155,6 +155,16 @@ rather than having it be implicitly done based on the presence of a constructor 
 <p>The stored initial world pose <code>worldPoseOnManipulationStart</code> data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.</p>
 <p><strong>New Property in IMixedRealityDictationSystem</strong></p>
 <p>A new property <code>AudioClip</code> has been added to the IMixedRealityDictationSystem interface. The <code>AudioClip</code> property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.</p>
+<p><strong>Service Facades turn down</strong></p>
+<p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/06a06778e38da622b37cc299a93f16e143b7bdeb/Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs">Services facades</a>
+are being turned down in 2.5. This feature was originally added to make configuration
+of the MRTK profiles easier (by creating fake in-scene GameObjects that represented each of MRTK's
+services). In the long run, we want to avoid creating fake in-game objects and trying to keep them
+in sync (as data sync and &quot;source of truth&quot; issues are notoriously difficult to scale and get right).</p>
+<p>In 2.5, the service facade handlers are kept around to ensure that project upgrade goes smoothly -
+any facades that exist in the project will be deleted by the service facade handler to ensure that
+scenes opened up in 2.5 get automatically fixed.</p>
+<p>The remaining code associated with the service facade feature will be removed in a future release.</p>
 <p><strong>Addition of Motion Controller to Input Simulation Service</strong></p>
 <p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
 <p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
