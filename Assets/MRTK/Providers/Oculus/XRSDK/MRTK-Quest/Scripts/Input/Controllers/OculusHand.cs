@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
         new[] { Handedness.Left, Handedness.Right })]
-    public class OculusHand : BaseHand, IMixedRealityHand
+    public class OculusHand : BaseHand
     {
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
@@ -73,8 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private bool isThumbGrabbing = false;
 #endif
 
-
         private int pinchStrengthProp;
+
 
         /// <summary>
         /// Default constructor used by reflection for profiles
@@ -83,6 +83,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             pinchStrengthProp = Shader.PropertyToID(MRTKOculusConfig.Instance.PinchStrengthMaterialProperty);
+            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+        }
+
+        internal ArticulatedHandDefinition handDefinition;
+
+        // Set the interactions for each hand to the Default interactions of the hand definition
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
+
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+
+        public override void SetupDefaultInteractions()
+        {
+            AssignControllerMappings(DefaultInteractions);
         }
 
         #region IMixedRealityHand Implementation
@@ -96,26 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         #endregion IMixedRealityHand Implementation
 
-
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
-        {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
-        };
-
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
-
-        public override void SetupDefaultInteractions()
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
-        #if OCULUSINTEGRATION_PRESENT
+#if OCULUSINTEGRATION_PRESENT
         public void InitializeHand(OVRHand ovrHand, Material handMaterial)
         {
             handRenderer = ovrHand.GetComponent<Renderer>();
@@ -141,6 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 handRenderer.enabled = false;
             }
         }
+
 
         public override bool IsInPointingPose
         {

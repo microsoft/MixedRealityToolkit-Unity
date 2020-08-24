@@ -117,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
 
 #if OCULUSINTEGRATION_PRESENT
+        /// <inheritdoc/>
         public override void Enable()
         {
             base.Enable();

@@ -31,7 +31,7 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
-    [CreateAssetMenu(menuName = "MixedRealityToolkit/OculusHandtrackingConfig")]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Oculus Hand Tracking Config")]
     public class MRTKOculusConfig : ScriptableObject
     {
         private static MRTKOculusConfig instance;
@@ -141,15 +141,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         [Header("Hand Tracking Configuration")]
         [SerializeField]
         [Tooltip("Setting this to low means hands will continue to track with low confidence.")]
-        private OVRHand.TrackingConfidence _minimumHandConfidence = OVRHand.TrackingConfidence.Low;
+        private OVRHand.TrackingConfidence minimumHandConfidence = OVRHand.TrackingConfidence.Low;
 
         /// <summary>
         /// Setting this to low means hands will continue to track with low confidence.
         /// </summary>
         public OVRHand.TrackingConfidence MinimumHandConfidence
         {
-            get => _minimumHandConfidence;
-            set => _minimumHandConfidence = value;
+            get => minimumHandConfidence;
+            set => minimumHandConfidence = value;
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private float lowConfidenceTimeThreshold = 0.2f;
 
         /// <summary>
-        /// Time after which low confidence is considered unreliable, and tracking is set to false.
+        /// Time in seconds after which low confidence is considered unreliable, and tracking is set to false.
         /// </summary>
         public float LowConfidenceTimeThreshold
         {
@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private int defaultCpuLevel = 2;
 
         /// <summary>
-        /// Accessor for the Oculus CPU power level.
+        /// Accessor for the Oculus CPU performance level.
         /// https://developer.oculus.com/documentation/native/android/mobile-power-overview
         /// </summary>
         public int CPULevel
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private int defaultGpuLevel = 2;
 
         /// <summary>
-        /// Accessor for the Oculus GPU power level.
+        /// Accessor for the Oculus GPU performance level.
         /// </summary>
         public int GPULevel
         {

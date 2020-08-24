@@ -126,7 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, handedness, out var fingerTipPose) &&
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, handedness, out var fingerKnucklePose))
             {
-
                 return CalculateCurl(wristPose.Position, fingerKnucklePose.Position, fingerTipPose.Position);
             }
             return 0.0f;
@@ -143,7 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.RingTip, handedness, out var fingerTipPose) &&
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.RingKnuckle, handedness, out var fingerKnucklePose))
             {
-
                 return CalculateCurl(wristPose.Position, fingerKnucklePose.Position, fingerTipPose.Position);
             }
             return 0.0f;
@@ -160,7 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, handedness, out var fingerTipPose) &&
                            HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyKnuckle, handedness, out var fingerKnucklePose))
             {
-
                 return CalculateCurl(wristPose.Position, fingerKnucklePose.Position, fingerTipPose.Position);
             }
             return 0.0f;
@@ -177,7 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, handedness, out var thumbTip) &&
                 HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbProximalJoint, handedness, out var thumbKnuckle))
             {
-
                 return CalculateCurl(pinkyKnuckle.Position, thumbKnuckle.Position, thumbTip.Position);
             }
             return 0.0f;
@@ -195,7 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Redefining the range from [-1,1] to [0,1]
             curl = (curl + 1) / 2.0f;
             return curl;
-
         }
     }
 }
