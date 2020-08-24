@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -29,10 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
-        "Windows Mixed Reality Scene Understanding Observer",
-        "Experimental/WindowsMixedReality/SceneUnderstanding/DefaultSceneUnderstandingObserverProfile.asset",
+        "Windows  Scene Understanding Observer",
+        "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.Providers")]
-    public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver :
+    public class WindowssSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver(
+        public WindowssSceneUnderstandingObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
