@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             constraints.Initialize(new MixedRealityTransform(HostTransform));
             if (elasticsManager)
             {
-                elasticsManager.EnableElasticsUpdate(false);
+                elasticsManager.EnableElasticsUpdate = false;
             }
         }
 
@@ -781,7 +781,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ReleaseRigidBody(pointerVelocity, pointerAnglularVelocity);
             if (elasticsManager)
             {
-                elasticsManager.EnableElasticsUpdate(true);
+                elasticsManager.EnableElasticsUpdate = true;
             }
         }
 
