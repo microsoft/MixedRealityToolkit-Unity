@@ -166,7 +166,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             get
             {
-                // if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
+#if LATER
+                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
+#endif
                 if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
 
                 Camera mainCamera = CameraCache.Main;
@@ -222,7 +224,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 UpdateVelocity();
             }
 
-            // UpdateTeleport();
+#if LATER
+            UpdateTeleport(); 
+#endif
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -279,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-        /*
+#if LATER
         private void UpdateTeleport()
         {
             if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return;
@@ -342,8 +346,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                     return;
             }
         }
-        */
-        #region HandJoints
+#endif
+
+                #region HandJoints
         protected readonly Dictionary<BoneId, TrackedHandJoint> boneJointMapping = new Dictionary<BoneId, TrackedHandJoint>()
         {
             { BoneId.Hand_Thumb1, TrackedHandJoint.ThumbMetacarpalJoint },
@@ -543,7 +548,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             Vector3 jointPosition = position;
 
             // TODO Figure out kalman filter coefficients to get good quality smoothing
-            /*
+#if LATER
             if (joint == TrackedHandJoint.IndexTip)
             {
                 jointPosition = indexTipFilter.Update(position);
@@ -552,7 +557,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             {
                 jointPosition = palmFilter.Update(position);
             }
-            */
+#endif
 
             MixedRealityPose pose = new MixedRealityPose(jointPosition, rotation);
             if (!jointPoses.ContainsKey(joint))
@@ -582,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
         }
-        #endregion
+                #endregion
 #endif
-    }
-}
+            }
+        }
