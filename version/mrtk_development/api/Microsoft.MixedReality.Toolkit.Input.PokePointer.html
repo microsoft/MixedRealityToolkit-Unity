@@ -1,0 +1,1115 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PokePointer
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PokePointer
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_PokePointer" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer" class="text-break">Class PokePointer
+  </h1>
+  <div class="markdown level0 summary"><p>A near interaction pointer that generates touch events based on touchables in close proximity.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html">InputSystemGlobalHandlerListener</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html">ControllerPoseSynchronizer</a></div>
+    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html">BaseControllerPointer</a></div>
+    <div class="level4"><span class="xref">PokePointer</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerPoseSynchronizer.html">IMixedRealityControllerPoseSynchronizer</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler.html">IMixedRealitySourcePoseHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html">IMixedRealityInputHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">Vector2</span>&gt;</div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">Vector3</span>&gt;</div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">Quaternion</span>&gt;</div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">MixedRealityPose</span>&gt;</div>
+    <div><span class="xref">IEventSystemHandler</span></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityNearPointer.html">IMixedRealityNearPointer</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></div>
+    <div><span class="xref">IEqualityComparer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_DisableCursorOnStart">BaseControllerPointer.DisableCursorOnStart</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_raycastOrigin">BaseControllerPointer.raycastOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_pointerAction">BaseControllerPointer.pointerAction</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsSelectPressed">BaseControllerPointer.IsSelectPressed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_HasSelectPressedOnce">BaseControllerPointer.HasSelectPressedOnce</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsHoldPressed">BaseControllerPointer.IsHoldPressed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SetCursor_GameObject_">BaseControllerPointer.SetCursor(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Start">BaseControllerPointer.Start()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnDisable">BaseControllerPointer.OnDisable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Controller">BaseControllerPointer.Controller</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerId">BaseControllerPointer.PointerId</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerName">BaseControllerPointer.PointerName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_InputSourceParent">BaseControllerPointer.InputSourceParent</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_BaseCursor">BaseControllerPointer.BaseCursor</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_CursorModifier">BaseControllerPointer.CursorModifier</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsActive">BaseControllerPointer.IsActive</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsFocusLocked">BaseControllerPointer.IsFocusLocked</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsTargetPositionLockedOnFocusLock">BaseControllerPointer.IsTargetPositionLockedOnFocusLock</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PointerExtent">BaseControllerPointer.PointerExtent</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_DefaultPointerExtent">BaseControllerPointer.DefaultPointerExtent</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Rays">BaseControllerPointer.Rays</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_PrioritizedLayerMasksOverride">BaseControllerPointer.PrioritizedLayerMasksOverride</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_FocusTarget">BaseControllerPointer.FocusTarget</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Result">BaseControllerPointer.Result</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_RayStabilizer">BaseControllerPointer.RayStabilizer</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SceneQueryType">BaseControllerPointer.SceneQueryType</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">BaseControllerPointer.SphereCastRadius</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Position">BaseControllerPointer.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Rotation">BaseControllerPointer.Rotation</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Reset">BaseControllerPointer.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Equals_System_Object_">BaseControllerPointer.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_GetHashCode">BaseControllerPointer.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_Handedness">ControllerPoseSynchronizer.Handedness</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_DestroyOnSourceLost">ControllerPoseSynchronizer.DestroyOnSourceLost</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_IsTracked">ControllerPoseSynchronizer.IsTracked</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_TrackingState">ControllerPoseSynchronizer.TrackingState</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UseSourcePoseData">ControllerPoseSynchronizer.UseSourcePoseData</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_PoseAction">ControllerPoseSynchronizer.PoseAction</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_RegisterHandlers">ControllerPoseSynchronizer.RegisterHandlers()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers">ControllerPoseSynchronizer.UnregisterHandlers()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Microsoft_MixedReality_Toolkit_TrackingState__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Vector2__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;Vector2&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Vector3__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;Vector3&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Quaternion__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;Quaternion&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_MixedRealityPose__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;MixedRealityPose&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_System_Single__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Single&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Vector2__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Vector2&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Vector3__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Vector3&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Quaternion__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Quaternion&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_MixedRealityPose__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;MixedRealityPose&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid">InputSystemGlobalHandlerListener.EnsureInputSystemValid()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PokePointer : BaseControllerPointer, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler, IMixedRealityNearPointer, IMixedRealityPointer, IEqualityComparer</code></pre>
+  </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p><em>Reachable Objects</em> are objects with a both a <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a> and a collider within <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_TouchableDistance">TouchableDistance</a> from the poke pointer (based on <a href="https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html">OverlapSphere</a>).</p>
+<p>If a poke pointer has no <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a>, then it will try to select one from the Reachable Objects based on:</p>
+<ol>
+<li>Layer mask priority: Lower-priority layer masks will only be considered if higher-priority layers don't contain any Reachable Objects.</li>
+<li>Touchable Distance: the closest object in the highest priority layers is selected based on <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_">DistanceToTouchable</a>.</li>
+<li>Ray Distance: The object becomes the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a> once the ray cast distance becomes negative (behind the surface). At this point the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityTouchHandler_OnTouchStarted_">OnTouchStarted</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointerHandler_OnPointerDown_">OnPointerDown</a> event is raised.</li>
+</ol>
+<p>If a poke pointer <em>does</em>  have a <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a> it will not consider any other object, until the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_">DistanceToTouchable</a> exceeds the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold">DebounceThreshold</a> (in front of the surface). At this point the active object is cleared and the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityTouchHandler_OnTouchCompleted_">OnTouchCompleted</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointerHandler_OnPointerUp_">OnPointerUp</a> event is raised.</p>
+</div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_line" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.line">line</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected LineRenderer line</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">LineRenderer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_touchableDistance" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.touchableDistance">touchableDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float touchableDistance</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_triggerInteraction" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.triggerInteraction">triggerInteraction</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected QueryTriggerInteraction triggerInteraction</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">QueryTriggerInteraction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_visuals" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.visuals">visuals</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GameObject visuals</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_ClosestProximityTouchable_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.ClosestProximityTouchable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_ClosestProximityTouchable" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.ClosestProximityTouchable">ClosestProximityTouchable</h4>
+  <div class="markdown level1 summary"><p>The closest touchable component that has been detected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BaseNearInteractionTouchable ClosestProximityTouchable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_ClosestProximityTouchable_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The closest touchable component limits the set of objects which are currently touchable.
+These are all the game objects in the subtree of the closest touchable component's owner object.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown">CurrentTouchableObjectDown</h4>
+  <div class="markdown level1 summary"><p>The current object that is being touched.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject CurrentTouchableObjectDown { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IgnoreCollidersNotInFOV_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IgnoreCollidersNotInFOV*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IgnoreCollidersNotInFOV" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IgnoreCollidersNotInFOV">IgnoreCollidersNotInFOV</h4>
+  <div class="markdown level1 summary"><p>Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+This can prevent accidental touches, and will allow hand rays to turn on when you may be near
+a touchable but cannot see it. Visual FOV is defined by cone centered about display center,
+radius equal to half display height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoreCollidersNotInFOV { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsInteractionEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsInteractionEnabled">IsInteractionEnabled</h4>
+  <div class="markdown level1 summary"><p>Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsInteractionEnabled { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsNearObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsNearObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsNearObject" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsNearObject">IsNearObject</h4>
+  <div class="markdown level1 summary"><p>Returns true if the hand is near anything that's grabbable
+Currently performs a sphere cast in the direction of the hand ray.
+Currently anything that has a collider is considered &quot;Grabbable&quot;
+Eventually we need to filter based on things that can respond
+to grab events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNearObject { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PokeLayerMasks_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PokeLayerMasks" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PokeLayerMasks">PokeLayerMasks</h4>
+  <div class="markdown level1 summary"><p>The LayerMasks, in prioritized order, that are used to determine the touchable objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LayerMask[] PokeLayerMasks { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">LayerMask</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PokeLayerMasks_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchables</a> in one of the LayerMasks will raise touch events.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PreviousPosition_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PreviousPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_PreviousPosition" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.PreviousPosition">PreviousPosition</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 PreviousPosition { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_SceneQueryBufferSize_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.SceneQueryBufferSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_SceneQueryBufferSize" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.SceneQueryBufferSize">SceneQueryBufferSize</h4>
+  <div class="markdown level1 summary"><p>Maximum number of colliders that can be detected in a scene query.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SceneQueryBufferSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TouchableDistance_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TouchableDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TouchableDistance" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TouchableDistance">TouchableDistance</h4>
+  <div class="markdown level1 summary"><p>Maximum distance a which a touchable surface can be interacted with.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float TouchableDistance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TriggerInteraction_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TriggerInteraction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_TriggerInteraction" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.TriggerInteraction">TriggerInteraction</h4>
+  <div class="markdown level1 summary"><p>Specify whether queries for touchable surfaces hit triggers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QueryTriggerInteraction TriggerInteraction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">QueryTriggerInteraction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnEnable">BaseControllerPointer.OnEnable()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnInputDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnInputDown(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputDown(InputEventData)</h4>
+  <div class="markdown level1 summary"><p>Input Down updates from Interactions, Keys, or any other simple input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnInputDown(InputEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputDown(InputEventData)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnInputUp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnInputUp(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputUp(InputEventData)</h4>
+  <div class="markdown level1 summary"><p>Input Up updates from Interactions, Keys, or any other simple input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnInputUp(InputEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputUp(InputEventData)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPostSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPostSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPostSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPostSceneQuery">OnPostSceneQuery()</h4>
+  <div class="markdown level1 summary"><p>Called after performing the scene query.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnPostSceneQuery()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPostSceneQuery">BaseControllerPointer.OnPostSceneQuery()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreCurrentPointerTargetChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreCurrentPointerTargetChange*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreCurrentPointerTargetChange" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreCurrentPointerTargetChange">OnPreCurrentPointerTargetChange()</h4>
+  <div class="markdown level1 summary"><p>Called during the scene query just before the current pointer target changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnPreCurrentPointerTargetChange()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreCurrentPointerTargetChange">BaseControllerPointer.OnPreCurrentPointerTargetChange()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnPreSceneQuery()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreSceneQuery">BaseControllerPointer.OnPreSceneQuery()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceDetected(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"><p>Raised when a source is detected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnSourceDetected(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnSourceLost(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"><p>Raised when a source is lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnSourceLost(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">BaseControllerPointer.OnSourceLost(SourceStateEventData)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnValidate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnValidate" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnValidate">OnValidate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void OnValidate()</code></pre>
+  </div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetDistanceToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetDistanceToNearestSurface*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetDistanceToNearestSurface_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetDistanceToNearestSurface(System.Single@)">IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out Single)</h4>
+  <div class="markdown level1 summary"><p>Near pointers often interact with surfaces.</p>
+<p>This method provides a mechanism to get the distance to the closest surface the near pointer is interacting with.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out float distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>Out parameter filled with the distance along the surface normal from the surface to the pointer if available, otherwise 0.0f.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if a distance was retrieved, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspAxis_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspAxis*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspAxis_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspAxis(Vector3@)">IMixedRealityNearPointer.TryGetNearGraspAxis(out Vector3)</h4>
+  <div class="markdown level1 summary"><p>Because pointers shouldn't be able to interact with objects that are &quot;behind&quot; it, it is necessary to determine the forward axis of the pointer when making interaction checks.</p>
+<p>For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).</p>
+<p>This method provides a mechanism to get this forward axis. It should be normalized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetNearGraspAxis(out Vector3 axis)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">axis</span></td>
+        <td><p>Out parameter filled with the grasp's forward axis if available, otherwise returns the forward axis of the transform.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if a grasp's forward axis was retrieved, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspPoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNearGraspPoint_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNearGraspPoint(Vector3@)">IMixedRealityNearPointer.TryGetNearGraspPoint(out Vector3)</h4>
+  <div class="markdown level1 summary"><p>For near pointer we may want to draw a tether between the pointer
+and the object.</p>
+<p>The visual grasp point (average of index and thumb) may actually be different from the pointer
+position (the palm).</p>
+<p>This method provides a mechanism to get the visual grasp point.</p>
+<p>NOTE: Not all near pointers have a grasp point (for example a poke pointer).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetNearGraspPoint(out Vector3 position)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Out parameter filled with the grasp position if available, otherwise <a href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if a grasp point was retrieved, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNormalToNearestSurface_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNormalToNearestSurface*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityNearPointer_TryGetNormalToNearestSurface_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityNearPointer#TryGetNormalToNearestSurface(Vector3@)">IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3)</h4>
+  <div class="markdown level1 summary"><p>Near pointers often interact with surfaces.</p>
+<p>This method provides a mechanism to get the normal of the closest surface the near pointer is interacting with.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IMixedRealityNearPointer.TryGetNormalToNearestSurface(out Vector3 normal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">normal</span></td>
+        <td><p>Out parameter filled with the surface normal if available, otherwise <a href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if a normal was retrieved, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerPoseSynchronizer.html">IMixedRealityControllerPoseSynchronizer</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler.html">IMixedRealitySourcePoseHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html">IMixedRealityInputHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">IEventSystemHandler</span>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityNearPointer.html">IMixedRealityNearPointer</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a>
+  </div>
+  <div>
+      <span class="xref">IEqualityComparer</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

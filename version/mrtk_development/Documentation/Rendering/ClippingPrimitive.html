@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Clipping Primitive | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Clipping Primitive | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="clipping-primitive">Clipping Primitive</h1>
+
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> behaviors allow for performant <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html"><code>plane</code></a>, <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html"><code>sphere</code></a>, and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>box</code></a> shape clipping with the ability to specify which side of the primitive to clip against (inside or outside) when used with MRTK shaders.</p>
+<p><img src="../Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif" alt="primitive clipping gizmos"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> utilize <a href="https://developer.download.nvidia.com/cg/clip.html">clip/discard</a> instructions within shaders and disable Unity's ability to batch clipped renderers. Take these performance implications in mind when utilizing clipping primitives.</p>
+</div>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html"><code>ClippingPlane.cs</code></a>, <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html"><code>ClippingSphere.cs</code></a>, and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBox.cs</code></a> can be used to easily control clipping primitive properties. Use these components with the following shaders to leverage clipping scenarios.</p>
+<ul>
+<li><em>Mixed Reality Toolkit/Standard</em></li>
+<li><em>Mixed Reality Toolkit/TextMeshPro</em></li>
+<li><em>Mixed Reality Toolkit/Text3DShader</em></li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>The <strong>ClippingExamples</strong> and <strong>MaterialGallery</strong> scenes demonstrate usage of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> behaviors, and can be found at: MRTK/Examples/Demos/StandardShader/Scenes/</p>
+<h2 id="advanced-usage">Advanced Usage</h2>
+<p>By default only one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> can clip a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a> at a time. If your project requires more than one <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitive</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a>  the sample code below demonstrates how to achieve this.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Having multiple <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> clip a <a href="https://docs.unity3d.com/ScriptReference/Renderer.html">renderer</a> will increase pixel shader instructions and will impact performance. Please profile these changes within your project.</p>
+</div>
+<p><em>How to have two different <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> clip a render. For example a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html"><code>ClippingSphere</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBox</code></a> at the same time:</em></p>
+<pre><code class="lang-C#">// Within MRTK/Core/StandardAssets/Shaders/MixedRealityStandard.shader (or another MRTK shader) change:
+
+#pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
+
+// to:
+
+#pragma multi_compile _ _CLIPPING_PLANE
+#pragma multi_compile _ _CLIPPING_SPHERE
+#pragma multi_compile _ _CLIPPING_BOX
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The above change will incur additional shader compilation time.</p>
+</div>
+<p><em>How to have two of the same <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html"><code>ClippingPrimitives</code></a> clip a render. For example two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBoxes</code></a> at the same time:</em></p>
+<pre><code class="lang-C#">// 1) Add the below MonoBehaviour to your project:
+
+[ExecuteInEditMode]
+public class SecondClippingBox : ClippingBox
+{
+    /// &lt;inheritdoc /&gt;
+    protected override string Keyword
+    {
+        get { return &quot;_CLIPPING_BOX2&quot;; }
+    }
+
+    /// &lt;inheritdoc /&gt;
+    protected override string ClippingSideProperty
+    {
+        get { return &quot;_ClipBoxSide2&quot;; }
+    }
+
+    /// &lt;inheritdoc /&gt;
+    protected override void Initialize()
+    {
+        base.Initialize();
+
+        clipBoxSizeID = Shader.PropertyToID(&quot;_ClipBoxSize2&quot;);
+        clipBoxInverseTransformID = Shader.PropertyToID(&quot;_ClipBoxInverseTransform2&quot;);
+    }
+}
+
+// 2) Within MRTK/Core/StandardAssets/Shaders/MixedRealityStandard.shader (or another MRTK shader) add the following multi_compile pragma:
+
+#pragma multi_compile _ _CLIPPING_BOX2
+
+// 3) In the same shader change:
+
+#if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX)
+
+// to:
+
+#if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX) || defined(_CLIPPING_BOX2)
+
+// 4) In the same shader add the following shader variables:
+
+#if defined(_CLIPPING_BOX2)
+    fixed _ClipBoxSide2;
+    float4 _ClipBoxSize2;
+    float4x4 _ClipBoxInverseTransform2;
+#endif
+
+// 5) In the same shader change:
+
+#if defined(_CLIPPING_BOX)
+    primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+#endif
+
+// to:
+
+#if defined(_CLIPPING_BOX)
+    primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+#endif
+#if defined(_CLIPPING_BOX2)
+    primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize2.xyz, _ClipBoxInverseTransform2) * _ClipBoxSide2);
+#endif
+</code></pre>
+<p>Finally, add a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBox</code></a> and SecondClippingBox component to your scene and specify the same renderer for both boxes. The renderer should now be clipped by both boxes simultaneously.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../README_MRTKStandardShader.html">MRTK Standard Shader</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Rendering/ClippingPrimitive.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

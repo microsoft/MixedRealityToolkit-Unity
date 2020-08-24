@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spatial awareness | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spatial awareness | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spatial-awareness">Spatial awareness</h1>
+
+<p><img src="../Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png" alt="Spatial Awareness"></p>
+<p>The Spatial Awareness system provides real-world environmental awareness in mixed reality applications. When introduced on Microsoft HoloLens, Spatial Awareness provided a collection of meshes, representing the geometry of the environment, which allowed for compelling interactions between holograms and the real-world.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>At this time, the Mixed Reality Toolkit does not ship with Spatial Understanding algorithms as originally packaged in the HoloToolkit. Spatial Understanding generally involves transforming Spatial Mesh data to create simplified and/or grouped Mesh data such as planes, walls, floors, ceilings, etc.</p>
+</div>
+<h2 id="getting-started">Getting started</h2>
+<p>Adding support for Spatial Awareness requires two key components of the Mixed Reality Toolkit: the Spatial Awareness system and a supported platform provider.</p>
+<ol>
+<li><a href="#enable-the-spatial-awareness-system">Enable</a> the Spatial Awareness system</li>
+<li><a href="#register-observers">Register</a> and <a href="ConfiguringSpatialAwarenessMeshObserver.html">configure</a> one or more spatial observers to provide mesh data</li>
+<li><a href="#build-and-deploy">Build and deploy</a> to a platform that supports Spatial Awareness</li>
+</ol>
+<h3 id="enable-the-spatial-awareness-system">Enable the spatial awareness system</h3>
+<p>The Spatial Awareness system is managed by the MixedRealityToolkit object (or another <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component). Follow the steps below to enable or disable the <em>Spatial Awareness system</em> in the <em>MixedRealityToolkit</em> profile.</p>
+<p>The Mixed Reality Toolkit ships with a few default pre-configured profiles. Some of these have the Spatial Awareness system enabled OR disabled by default. The intent of this pre-configuration, particularly for when disabled, is to avoid the visual overhead of calculating and rendering the meshes.</p>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>System Enabled by Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DefaultHoloLens1ConfigurationProfile</code> (Assets/MRTK/SDK/Profiles/HoloLens1)</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>DefaultHoloLens2ConfigurationProfile</code> (Assets/MRTK/SDK/Profiles/HoloLens2)</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>DefaultMixedRealityToolkitConfigurationProfile</code> (Assets/MRTK/SDK/Profiles)</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>Select the MixedRealityToolkit object in the scene hierarchy to open in the Inspector Panel.</p>
+<p><img src="../Images/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
+</li>
+<li><p>Navigate to the <em>Spatial Awareness System</em> section and check <em>Enable Spatial Awareness System</em></p>
+<p><img src="../Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png" alt="Enable Spatial Awareness"></p>
+</li>
+<li><p>Select the desired Spatial Awareness system implementation type. The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.html"><code>MixedRealitySpatialAwarenessSystem</code></a> is the default provided.</p>
+<p><img src="../Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png" alt="Select the Spatial Awareness System Implementation"></p>
+</li>
+</ol>
+<h3 id="register-observers">Register observers</h3>
+<p>Services in the Mixed Reality Toolkit can have <a href="../Architecture/SystemsExtensionsProviders.html">Data Provider services</a> that supplement the main service with platform specific data and implementation controls. An example of this is the Mixed Reality Input System which has <a href="../Input/InputProviders.html">multiple data providers</a> to get controller and other related input information from various platform-specific APIs.</p>
+<p>The Spatial Awareness system is similar in that data providers supply the system with mesh data about the real-world. The Spatial Awareness profile must have at least one Spatial Observer registered. Spatial Observers are generally platform specific components that act as the provider for surfacing various types of mesh data from a platform specific endpoint (i.e HoloLens).</p>
+<ol>
+<li><p>Open or expand the <em>Spatial Awareness System profile</em></p>
+<p><img src="../Images/SpatialAwareness/SpatialAwarenessProfile.png" alt="Spatial Awareness System Profile"></p>
+</li>
+<li><p>Click the <em>&quot;Add Spatial Observer&quot;</em> button</p>
+</li>
+<li><p>Select the desired <em>Spatial Observer implementation type</em></p>
+<p><img src="../Images/SpatialAwareness/SpatialAwarenessSelectObserver.png" alt="Select the Spatial Observer Implementation"></p>
+</li>
+<li><p><a href="ConfiguringSpatialAwarenessMeshObserver.html">Modify configuration properties on the observer</a> as necessary</p>
+</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Users of the <code>DefaultMixedRealityToolkitConfigurationProfile</code> (Assets/MRTK/SDK/Profiles) will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
+the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html"><code>WindowsMixedRealitySpatialMeshObserver</code></a> class.</p>
+</div>
+<h3 id="build-and-deploy">Build and deploy</h3>
+<p>Once the Spatial Awareness system is configured with the desired observer(s), the project can be built and deployed to the target platform.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If targeting the Windows Mixed Reality platform (ex: HoloLens), it is important to ensure the <a href="https://docs.microsoft.com/windows/mixed-reality/spatial-mapping-in-unity">Spatial Perception capability</a> is enabled in order to use the Spatial Awareness system on device.</p>
+</div>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using a built and deployed version of the application, running on the target hardware and platform.</p>
+</div>
+<h2 id="next-steps">Next steps</h2>
+<p>After following the procedures above to enable the Spatial Awareness system, the system can be configured and controlled in more detail.</p>
+<p>Information for configuring observers in inspector:</p>
+<ul>
+<li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring Observers for on device usage</a></li>
+<li><a href="SpatialObjectMeshObserver.html">Configuring Observers for in-editor usage</a></li>
+</ul>
+<p>Information for controlling and extending observers via code:</p>
+<ul>
+<li><a href="UsageGuide.html">Configuring Observers via Code</a></li>
+<li><a href="CreateDataProvider.html">Creating a custom Observer</a></li>
+</ul>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Spatial Awareness API documentation</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/spatial-mapping">Spatial Mapping Overview WMR</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/spatial-mapping-in-unity">Spatial Mapping in Unity WMR</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

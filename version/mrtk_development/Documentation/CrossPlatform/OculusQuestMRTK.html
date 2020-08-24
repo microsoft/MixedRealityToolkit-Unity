@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>How to configure Oculus Quest in MRTK using the XRSDK pipeline | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="How to configure Oculus Quest in MRTK using the XRSDK pipeline | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="how-to-configure-oculus-quest-in-mrtk-using-the-xrsdk-pipeline">How to configure Oculus Quest in MRTK using the XRSDK pipeline</h1>
+
+<p>A <a href="https://www.oculus.com/quest/?locale=en_US">Oculus Quest</a> is required to use this data provider.</p>
+<p>The Oculus XRSDK Data Provider enables the use of the Oculus Quest with MRTK using <a href="https://docs.unity3d.com/Manual/XR.html">Unity's XR Pipeline</a>.
+This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using <strong>Unity 2019.3 or newer</strong>
+The Oculus Quest XR Plugin does not currently support hand tracking. In order to use hand tracking, consult the <a href="https://github.com/provencher/MRTK-Quest">MRTK-Quest</a>
+project which uses the Legacy XR pipeline.</p>
+<h2 id="deploying-to-oculus-quest">Deploying to Oculus Quest</h2>
+<ol>
+<li><p>Follow <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/">these steps</a> to ensure that your project is ready to deploy on Oculus Quest.</p>
+<ul>
+<li>Make sure that the Oculus Plug-in Provider is included in your project by going to <strong>Edit --&gt; Project Settings --&gt; XR Plug-in Management --&gt; Plug-in Providers</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png" alt="OculusPluginProvider"></p>
+<ul>
+<li>If it does not show up ensure that the <strong>Oculus XR Plugin</strong> is installed under <strong>Window --&gt; Package Manager</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png" alt="OculusXRPluginPackage"></p>
+</li>
+<li><p>Ensure that <a href="https://developer.oculus.com/documentation/native/android/mobile-device-setup/">developer mode</a> is enabled on your device. Installing the Oculus ADB Drivers is optional.</p>
+</li>
+<li><p>Adding the Oculus XRSDK Data Provider</p>
+<ul>
+<li>Create a new Unity scene or open a pre-existing scene like HandInteractionExamples</li>
+<li>Add MRTK to the scene by navigating to <strong>Mixed Reality Toolkit</strong> &gt; <strong>Add to Scene and Configure</strong></li>
+<li>Select the MixedRealityToolkit game object in the hierarchy and select <strong>Copy and Customize</strong> to clone the default mixed reality profile.</li>
+</ul>
+<p><img src="../Images/CrossPlatform/CloneProfile.png" alt="CloneProfile"></p>
+<ul>
+<li>Select the <strong>Input</strong> Configuration Profile</li>
+</ul>
+<p><img src="../Images/CrossPlatform/InputConfigurationProfile.png" alt="InputConfigurationProfile"></p>
+<ul>
+<li>Select <strong>Clone</strong> in the input system profile to enable modification.</li>
+</ul>
+<p><img src="../Images/CrossPlatform/CloneInputSystemProfile.png" alt="CloneInputSystemProfile"></p>
+<ul>
+<li>Open the <strong>Input Data Providers</strong> section, select <strong>Add Data Provider</strong> at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the <strong>Type</strong> to <strong>Microsoft.MixedReality.Toolkit.XRSDK.Oculus &gt; OculusXRSDKDeviceManager</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png" alt="OculusAddDataProvider"></p>
+</li>
+<li><p>Building your project to deploy on Oculus Quest</p>
+<ul>
+<li>Plug in your Oculus Quest via a USB 3.0 -&gt; USB C cable</li>
+<li>Navigate to <strong>File &gt; Build Settings</strong></li>
+<li>Change the deployment to <strong>Android</strong></li>
+<li>Ensure that the Oculus Quest is selected as the applicable run device</li>
+</ul>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusRunDevice.png" alt="OculusRunDevice"></p>
+<ul>
+<li>Select Build and Run</li>
+<li>Accept the <em>Allow USB Debugging</em> prompt from inside the quest</li>
+<li>See your scene inside the Oculus Quest</li>
+</ul>
+</li>
+</ol>
+<h2 id="common-errors">Common errors</h2>
+<h3 id="quest-not-recognized-by-unity">Quest not recognized by Unity</h3>
+<p>Make sure your Android paths are properly configured. If you continue to encounter problems, follow this <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/#install-android-tools">guide</a></p>
+<p><strong>Edit &gt; Preferences &gt; External Tools &gt; Android</strong></p>
+<p><img src="../Images/CrossPlatform/OculusQuest/AndroidToolsConfig.png" alt="AndroidToolsConfig"></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/CrossPlatform/OculusQuestMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

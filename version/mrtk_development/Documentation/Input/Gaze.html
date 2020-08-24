@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Gaze | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Gaze | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="gaze">Gaze</h1>
+
+<p><a href="https://docs.microsoft.com/windows/mixed-reality/gaze">Gaze</a> is a form of input that interacts
+with the world based on where the user is looking. Gaze exists in two different flavors</p>
+<h2 id="head-gaze">Head gaze</h2>
+<p>This type of gaze is based on the direction that the head/camera is looking at. Head gaze is active
+on systems that don't support eye gaze, or in cases where the hardware may support eye gaze, but
+the right set of <a href="../EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements-checklist">permissions and setup</a>
+has not been performed.</p>
+<p>Head gaze is usually associated with HoloLens 1 style interactions involving looking at object by
+placing it in the center of the Holographic Frame and then performing the air tap gesture.</p>
+<h2 id="eye-gaze">Eye gaze</h2>
+<p>This type of gaze is based on where the user's eyes are looking. Eye gaze is only present
+on systems that support eye tracking. See the
+<a href="../EyeTracking/EyeTracking_Main.html">eye tracking documentation</a> for more details on how
+to use eye gaze.</p>
+<h2 id="gazeprovider">GazeProvider</h2>
+<p>Gaze functionality (both head and eye) is provided by the
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.GazeProvider.html">GazeProvider</a>. This provider can be configured
+in the <em>Pointer</em> section of the input system profile:</p>
+<p><img src="../Images/Input/GazeConfigurationEntrypoint.png" alt="Gaze Configuration Entrypoint"></p>
+<p>Like other sources of input, the gaze provider interacts with objects in the scene
+through use of a pointer <a href="../Architecture/InputSystem/ControllersPointersAndFocus.html">(see this document for information on pointers)</a>.
+In the case of the gaze provider, its pointer is implemented via <code>InternalGazePointer</code>
+and is not configured through a profile.</p>
+<p>It is possible to replace the stock GazeProvider with an alternate implementation by changing
+<em>Gaze Provider Type</em> to reference a different class that implements
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">IMixedRealityGazeProvider</a>
+and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a>.
+It's generally recommended to use the stock GazeProvider (and filing issues in when finding
+bugs) as re-implementing the GazeProvider is non-trivial.</p>
+<h3 id="alternative-platform-provided-gaze-poses">Alternative platform-provided gaze poses</h3>
+<p>By default, the MRTK GazeProvider uses the center of the camera's frame as the gaze origin. Some platforms, like Windows Mixed Reality on HoloLens 2, provide an alternatively defined gaze pose. This is managed via the <code>Use Head Gaze Override</code> setting in the gaze settings. When enabled, the alternative gaze override will be used. When disabled, the default frame center origin will be used. Specifically, for HoloLens 2, the gaze angle will be raised several degrees to account for user comfort in using their head for targeting.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="how-get-the-current-gaze-target">How get the current gaze target</h3>
+<p>This sample shows how to get the current game object that is targeted by the user gaze.</p>
+<pre><code class="lang-c#">void LogCurrentGazeTarget()
+{
+    if (CoreServices.InputSystem.GazeProvider.GazeTarget)
+    {
+        Debug.Log(&quot;User gaze is currently over game object: &quot;
+            + CoreServices.InputSystem.GazeProvider.GazeTarget)
+    }
+}
+</code></pre>
+<h3 id="how-to-get-the-current-gaze-direction-and-origin">How to get the current gaze direction and origin</h3>
+<p>This sample shows how to get the Vector3 representing the direction of the user gaze
+and the origin (the point from which the direction is going).</p>
+<pre><code class="lang-c#">void LogGazeDirectionOrigin()
+{
+    Debug.Log(&quot;Gaze is looking in direction: &quot;
+        + CoreServices.InputSystem.GazeProvider.GazeDirection);
+
+    Debug.Log(&quot;Gaze origin is: &quot;
+        + CoreServices.InputSystem.GazeProvider.GazeOrigin);
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/Gaze.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HandInteractionHint
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HandInteractionHint
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint" class="text-break">Class HandInteractionHint
+  </h1>
+  <div class="markdown level0 summary"><p>This class provides wrapper functionality for triggering animations and fades for the hand rig.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">HandInteractionHint</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.html">Microsoft.MixedReality.Toolkit.Experimental.UI</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class HandInteractionHint : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_CustomShouldHideVisuals" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.CustomShouldHideVisuals">CustomShouldHideVisuals</h4>
+  <div class="markdown level1 summary"><p>Custom function to determine visibility of visuals.
+Return true to hide visuals and reset min timer (max timer will still be in effect), return false when user is doing nothing and needs a hint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;bool&gt; CustomShouldHideVisuals</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_AnimationState_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.AnimationState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_AnimationState" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.AnimationState">AnimationState</h4>
+  <div class="markdown level1 summary"><p>Name of animation to play during loop.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string AnimationState { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_AutoActivate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.AutoActivate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_AutoActivate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.AutoActivate">AutoActivate</h4>
+  <div class="markdown level1 summary"><p>If true, logic runs whenever this component is active.  If false, you must manually start the logic with StartShowTimer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoActivate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_HideIfHandTracked_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.HideIfHandTracked*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_HideIfHandTracked" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.HideIfHandTracked">HideIfHandTracked</h4>
+  <div class="markdown level1 summary"><p>React to hand tracking state to hide visuals when hands are being tracked.
+If false, only the customShouldHideHands function will be evaluated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HideIfHandTracked { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_MaxDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.MaxDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_MaxDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.MaxDelay">MaxDelay</h4>
+  <div class="markdown level1 summary"><p>Max delay for showing the visuals.  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxDelay { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_MinDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.MinDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_MinDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.MinDelay">MinDelay</h4>
+  <div class="markdown level1 summary"><p>Min delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinDelay { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_RepeatDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.RepeatDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_RepeatDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.RepeatDelay">RepeatDelay</h4>
+  <div class="markdown level1 summary"><p>Time to wait between repeats in seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RepeatDelay { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_Repeats_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.Repeats*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_Repeats" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.Repeats">Repeats</h4>
+  <div class="markdown level1 summary"><p>Number of times to repeat the hint before fading out and waiting for timer again.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Repeats { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_UseMaxDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.UseMaxDelay*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_UseMaxDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.UseMaxDelay">UseMaxDelay</h4>
+  <div class="markdown level1 summary"><p>Set to false if you don't want to use a max timer and only want to show the hint when user's hands are not tracked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseMaxDelay { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_VisualsRoot_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.VisualsRoot*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_VisualsRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.VisualsRoot">VisualsRoot</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject VisualsRoot { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_GetAnimationDuration_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.GetAnimationDuration*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_GetAnimationDuration_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.GetAnimationDuration(System.String)">GetAnimationDuration(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the duration of the animation name passed in, or 0 if the state name is not found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetAnimationDuration(string animationStateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">animationStateName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_StartHintLoop_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.StartHintLoop*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_StartHintLoop" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.StartHintLoop">StartHintLoop()</h4>
+  <div class="markdown level1 summary"><p>Starts the hint loop logic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartHintLoop()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_StopHintLoop_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.StopHintLoop*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_HandInteractionHint_StopHintLoop" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.StopHintLoop">StopHintLoop()</h4>
+  <div class="markdown level1 summary"><p>Fades out the hint and stops the hint loop logic</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopHintLoop()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

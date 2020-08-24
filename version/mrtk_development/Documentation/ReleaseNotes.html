@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Microsoft Mixed Reality Toolkit 2.5.0 draft release notes | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.0 draft release notes | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="microsoft-mixed-reality-toolkit-250-draft-release-notes">Microsoft Mixed Reality Toolkit 2.5.0 draft release notes</h1>
+
+<ul>
+<li><a href="#whats-new">What's new</a></li>
+<li><a href="#breaking-changes">Breaking changes</a></li>
+<li><a href="Updating.html#upgrading-to-a-new-version-of-mrtk">Updating guidance</a></li>
+<li><a href="#known-issues">Known issues</a></li>
+</ul>
+<h3 id="whats-new">What's new</h3>
+<p><strong>Oculus Quest XRSDK support</strong></p>
+<p>MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.</p>
+<p>For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the <a href="CrossPlatform/OculusQuestMRTK.html">Oculus XRSDK Guide</a></p>
+<p><strong>Input Simulation Cheat Sheet</strong>
+The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation</p>
+<p><img src="https://user-images.githubusercontent.com/39840334/86066480-13637f00-ba27-11ea-8814-d222d548f684.gif" alt="Input Simulation Cheat Sheet"></p>
+<p><strong>Input Simulation Eye Gaze with mouse</strong>
+Users can now use the Mouse for simulating eye tracking. See the <code>Eye Simulation Mode</code> field in the input simulation profile and set it to Mouse. This replaces the previous <code>Simulate Eye Position</code> field</p>
+<p><img src="https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif" alt="Eye Gaze Mouse"></p>
+<p><strong>Input Simulation Motion Controller in Editor Play Mode</strong></p>
+<p>Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.</p>
+<p><strong>Conical Grab Pointer</strong></p>
+<p>Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
+interface, which queries for nearby objects using a cone. The DefaultHoloLens2InputSystemProfile has also been adjusted to use the new <code>ConicalGrabPointer</code>.</p>
+<p><strong>TestUtilities package</strong></p>
+<p>There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
+PlayMode and TestMode test infrastructure that the MRTK uses to create end-to-end tests. This infrastructure has
+been extremely handy for the MRTK team itself, and we're excited to have consumers use this to add test coverage
+to their own projects.</p>
+<p>The following code shows how to create a test hand, show it at a certain location, move it around, and then
+pinch and open.</p>
+<pre><code class="lang-csharp">TestHand leftHand = new TestHand(Handedness.Left);
+yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+yield return leftHand.Move(new Vector3(0.2f, 0.2f, 0));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+</code></pre>
+<p>For instructions on how to write a test using these TestUtilities, see this section on
+<a href="Contributing/UnitTests.html#writing-tests">writing tests</a></p>
+<p>For examples of existing tests that use this infrastructure, see MRTK's <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests">PlayModeTests</a></p>
+<p><strong>Support for the Leap Motion 4.5.1 Unity Modules</strong></p>
+<p>Support for the Leap Motion Unity Modules version 4.5.1 has been added and support for the 4.4.0 assets has been removed. The current supported versions of the Leap Motion Unity Modules are 4.5.0 and 4.5.1.</p>
+<p>There is also an additional step for initial Leap Motion integration, see <a href="CrossPlatform/LeapMotionMRTK.html">How to Configure the Leap Motion Hand Tracking in MRTK</a> for more information.</p>
+<p><strong>Link.xml created in the MixedRealityToolkit.Generated folder</strong></p>
+<p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
+<p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
+<p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
+<p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
+<p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
+<p>This change also adds the ability to remove MSBulid for Unity.</p>
+<p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
+<p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
+<h3 id="breaking-changes">Breaking changes</h3>
+<p><strong>IMixedRealityPointerMediator</strong></p>
+<p>This interface has been updated to have a new function:</p>
+<pre><code class="lang-csharp">void SetPointerPreferences(IPointerPreferences pointerPreferences);
+</code></pre>
+<p>If you have a custom pointer mediator that doesn't subclass DefaultPointerMediator, you will need to implement this
+new function. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243">this issue</a> for more background
+on why this was added. This was added to ensure that pointer preferences would be explicitly passed to the mediator,
+rather than having it be implicitly done based on the presence of a constructor that took a IPointerPreferences.</p>
+<p><strong>Rest / Device Portal API</strong></p>
+<p>The <code>UseSSL</code> static property has been moved from <code>Rest</code> to <code>DevicePortal</code>.</p>
+<p>If you did this previously...</p>
+<pre><code class="lang-csharp">Rest.UseSSL = true
+</code></pre>
+<p>Do this now...</p>
+<pre><code class="lang-csharp">DevicePortal.UseSSL = true
+</code></pre>
+<p><strong>Link.xml</strong></p>
+<p>If an application was previously using the NuGet distribution of the MRTK, the <code>link.xml</code> file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default <code>link.xml</code> file in <code>Assets/MixedRealityToolkit.Generated</code>. It is recommended that this file (and <code>link.xml.meta</code>) be added to source control.</p>
+<p><strong>Transform Constraint Changes</strong></p>
+<p>TargetTransform property has been marked as obsolete as it wasn't used by constraint system. Constraint logic is based on the transform passed into Initialize and Apply methods. Derived user constraints that rely on this property can cache the TargetTransform in their implementation by storing the transform of the constraint component to achieve the same behavior.</p>
+<p>The stored initial world pose <code>worldPoseOnManipulationStart</code> data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.</p>
+<p><strong>New Property in IMixedRealityDictationSystem</strong></p>
+<p>A new property <code>AudioClip</code> has been added to the IMixedRealityDictationSystem interface. The <code>AudioClip</code> property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.</p>
+<p><strong>Service Facades turn down</strong></p>
+<p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/06a06778e38da622b37cc299a93f16e143b7bdeb/Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs">Services facades</a>
+are being turned down in 2.5. This feature was originally added to make configuration
+of the MRTK profiles easier (by creating fake in-scene GameObjects that represented each of MRTK's
+services). In the long run, we want to avoid creating fake in-game objects and trying to keep them
+in sync (as data sync and &quot;source of truth&quot; issues are notoriously difficult to scale and get right).</p>
+<p>In 2.5, the service facade handlers are kept around to ensure that project upgrade goes smoothly -
+any facades that exist in the project will be deleted by the service facade handler to ensure that
+scenes opened up in 2.5 get automatically fixed.</p>
+<p>The remaining code associated with the service facade feature will be removed in a future release.</p>
+<p><strong>Addition of Motion Controller to Input Simulation Service</strong></p>
+<p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
+<p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
+<h3 id="known-issues">Known issues</h3>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/ReleaseNotes.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

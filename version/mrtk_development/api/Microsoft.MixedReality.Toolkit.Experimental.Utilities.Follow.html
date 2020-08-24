@@ -1,0 +1,732 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Follow
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Follow
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow" class="text-break">Class Follow
+  </h1>
+  <div class="markdown level0 summary"><p>Follow solver positions an element in front of the of the tracked target (relative to its local forward axis).
+The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
+beyond user defined bounds.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Follow</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.html">Microsoft.MixedReality.Toolkit.Experimental.Utilities</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Follow : Solver</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_pitchOffset" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.pitchOffset">pitchOffset</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float pitchOffset</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_AngularClampMode_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_AngularClampMode" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampMode">AngularClampMode</h4>
+  <div class="markdown level1 summary"><p>Accessors for specifying the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Follow.AngularClampType AngularClampMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampType.html">Follow.AngularClampType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_BoundsScaler_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.BoundsScaler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_BoundsScaler" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.BoundsScaler">BoundsScaler</h4>
+  <div class="markdown level1 summary"><p>Scales the bounds to impose a larger or smaller bounds than the calculated bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float BoundsScaler { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_DefaultDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.DefaultDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_DefaultDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.DefaultDistance">DefaultDistance</h4>
+  <div class="markdown level1 summary"><p>Initial placement distance. Should be between min and max.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DefaultDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_FaceTrackedObjectWhileClamped_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.FaceTrackedObjectWhileClamped*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_FaceTrackedObjectWhileClamped" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.FaceTrackedObjectWhileClamped">FaceTrackedObjectWhileClamped</h4>
+  <div class="markdown level1 summary"><p>The object will face the tracked object while the object is outside of the distance/direction bounds defined in this component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FaceTrackedObjectWhileClamped { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_FaceUserDefinedTargetTransform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.FaceUserDefinedTargetTransform*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_FaceUserDefinedTargetTransform" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.FaceUserDefinedTargetTransform">FaceUserDefinedTargetTransform</h4>
+  <div class="markdown level1 summary"><p>Face a user defined transform rather than using the solver orientation type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FaceUserDefinedTargetTransform { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreAngleClamp_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreAngleClamp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreAngleClamp" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreAngleClamp">IgnoreAngleClamp</h4>
+  <div class="markdown level1 summary"><p>Option to ignore angle clamping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoreAngleClamp { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreDistanceClamp_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreDistanceClamp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreDistanceClamp" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreDistanceClamp">IgnoreDistanceClamp</h4>
+  <div class="markdown level1 summary"><p>Option to ignore distance clamping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoreDistanceClamp { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreReferencePitchAndRoll_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreReferencePitchAndRoll*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_IgnoreReferencePitchAndRoll" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.IgnoreReferencePitchAndRoll">IgnoreReferencePitchAndRoll</h4>
+  <div class="markdown level1 summary"><p>Option to ignore the pitch and roll of the reference target</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoreReferencePitchAndRoll { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxDistance">MaxDistance</h4>
+  <div class="markdown level1 summary"><p>Max distance from eye to element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxViewHorizontalDegrees_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxViewHorizontalDegrees*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxViewHorizontalDegrees" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxViewHorizontalDegrees">MaxViewHorizontalDegrees</h4>
+  <div class="markdown level1 summary"><p>The horizontal angle from the tracked target forward axis to this object will not exceed this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxViewHorizontalDegrees { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxViewVerticalDegrees_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxViewVerticalDegrees*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MaxViewVerticalDegrees" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MaxViewVerticalDegrees">MaxViewVerticalDegrees</h4>
+  <div class="markdown level1 summary"><p>The vertical angle from the tracked target forward axis to this object will not exceed this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxViewVerticalDegrees { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MinDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MinDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MinDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MinDistance">MinDistance</h4>
+  <div class="markdown level1 summary"><p>Min distance from eye to position element around, i.e. the sphere radius.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientationType_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientationType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientationType" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientationType">OrientationType</h4>
+  <div class="markdown level1 summary"><p>The desired orientation of this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SolverOrientationType OrientationType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SolverOrientationType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientToControllerDeadzoneDegrees_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientToControllerDeadzoneDegrees*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientToControllerDeadzoneDegrees" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientToControllerDeadzoneDegrees">OrientToControllerDeadzoneDegrees</h4>
+  <div class="markdown level1 summary"><p>The element will not reorient until the angle between the forward vector and vector to the controller is greater then this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float OrientToControllerDeadzoneDegrees { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_PitchOffset_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.PitchOffset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_PitchOffset" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.PitchOffset">PitchOffset</h4>
+  <div class="markdown level1 summary"><p>Pitch offset from reference element (relative to MaxDistance).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PitchOffset { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_PivotAxis_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.PivotAxis*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_PivotAxis" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.PivotAxis">PivotAxis</h4>
+  <div class="markdown level1 summary"><p>Rotation axes used when facing target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AxisFlags PivotAxis { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AxisFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_ReorientWhenOutsideParameters_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.ReorientWhenOutsideParameters*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_ReorientWhenOutsideParameters" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.ReorientWhenOutsideParameters">ReorientWhenOutsideParameters</h4>
+  <div class="markdown level1 summary"><p>The element will only reorient when the object is outside of the distance/direction bounds above.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReorientWhenOutsideParameters { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_TargetToFace_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.TargetToFace*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_TargetToFace" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.TargetToFace">TargetToFace</h4>
+  <div class="markdown level1 summary"><p>Transform this object should face rather than using the solver orientation type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform TargetToFace { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_TetherAngleSteps_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.TetherAngleSteps*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_TetherAngleSteps" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.TetherAngleSteps">TetherAngleSteps</h4>
+  <div class="markdown level1 summary"><p>The division of steps this object can tether to. Higher the number, the more snapping steps.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TetherAngleSteps { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_VerticalMaxDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.VerticalMaxDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_VerticalMaxDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.VerticalMaxDistance">VerticalMaxDistance</h4>
+  <div class="markdown level1 summary"><p>Max vertical distance between element and reference.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VerticalMaxDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_RecalculateBoundsExtents_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.RecalculateBoundsExtents*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_RecalculateBoundsExtents" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.RecalculateBoundsExtents">RecalculateBoundsExtents()</h4>
+  <div class="markdown level1 summary"><p>Recalculates the bounds based on the angular clamp mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RecalculateBoundsExtents()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_Recenter_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.Recenter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_Recenter" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.Recenter">Recenter()</h4>
+  <div class="markdown level1 summary"><p>Re-centers the target in the next update.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Recenter()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_SolverUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.SolverUpdate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_SolverUpdate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.SolverUpdate">SolverUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SolverUpdate()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SceneInfoUtils
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SceneInfoUtils
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils" class="text-break">Class SceneInfoUtils
+  </h1>
+  <div class="markdown level0 summary"><p>Class responsible for updating scene info structs to reflect changes made to scene assets.
+Extends AssetPostprocessor so it can respond to asset changes.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">SceneInfoUtils</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IProcessSceneWithReport</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.html">Microsoft.MixedReality.Toolkit.Editor</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SceneInfoUtils : AssetPostprocessor, IProcessSceneWithReport</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_CachedScenes_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.CachedScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_CachedScenes" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.CachedScenes">CachedScenes</h4>
+  <div class="markdown level1 summary"><p>Cached scenes used by SceneInfoDrawer to keep property drawer performant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EditorBuildSettingsScene[] CachedScenes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">EditorBuildSettingsScene</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_callbackOrder_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.callbackOrder*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_callbackOrder" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.callbackOrder">callbackOrder</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int callbackOrder { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_FindScene_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.FindScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_FindScene_SerializedProperty_SerializedProperty_UnityEngine_Object__" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.FindScene(SerializedProperty,SerializedProperty,UnityEngine.Object@)">FindScene(SerializedProperty, SerializedProperty, ref UnityEngine.Object)</h4>
+  <div class="markdown level1 summary"><p>Finds a missing scene asset reference for a SceneInfo struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool FindScene(SerializedProperty nameProperty, SerializedProperty pathProperty, ref UnityEngine.Object asset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">nameProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">pathProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td><span class="parametername">asset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if scene was found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_GetSceneInfoRelativeProperties_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.GetSceneInfoRelativeProperties*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_GetSceneInfoRelativeProperties_SerializedProperty_SerializedProperty__SerializedProperty__SerializedProperty__SerializedProperty__SerializedProperty__SerializedProperty__" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.GetSceneInfoRelativeProperties(SerializedProperty,SerializedProperty@,SerializedProperty@,SerializedProperty@,SerializedProperty@,SerializedProperty@,SerializedProperty@)">GetSceneInfoRelativeProperties(SerializedProperty, out SerializedProperty, out SerializedProperty, out SerializedProperty, out SerializedProperty, out SerializedProperty, out SerializedProperty)</h4>
+  <div class="markdown level1 summary"><p>Finds all relative properties of a SceneInfo struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void GetSceneInfoRelativeProperties(SerializedProperty property, out SerializedProperty assetProperty, out SerializedProperty nameProperty, out SerializedProperty pathProperty, out SerializedProperty buildIndexProperty, out SerializedProperty includedProperty, out SerializedProperty tagProperty)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">assetProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">nameProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">pathProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">buildIndexProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">includedProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">tagProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_OnPostProcessScene_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.OnPostProcessScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_OnPostProcessScene" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.OnPostProcessScene">OnPostProcessScene()</h4>
+  <div class="markdown level1 summary"><p>Searches for all components in a scene and refreshes any SceneInfo fields found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void OnPostProcessScene()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_OnProcessScene_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.OnProcessScene*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_OnProcessScene_Scene_BuildReport_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.OnProcessScene(Scene,BuildReport)">OnProcessScene(Scene, BuildReport)</h4>
+  <div class="markdown level1 summary"><p>Implements IProcessSceneWithReport.OnProcessScene</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnProcessScene(Scene scene, BuildReport report)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Scene</span></td>
+        <td><span class="parametername">scene</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">BuildReport</span></td>
+        <td><span class="parametername">report</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_RefreshCachedScenes_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.RefreshCachedScenes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_RefreshCachedScenes" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.RefreshCachedScenes">RefreshCachedScenes()</h4>
+  <div class="markdown level1 summary"><p>Call this when you make a change to the build settings and need those changes to be reflected immediately.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RefreshCachedScenes()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_RefreshSceneInfo_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.RefreshSceneInfo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_SceneInfoUtils_RefreshSceneInfo_UnityEngine_Object_SerializedProperty_SerializedProperty_SerializedProperty_SerializedProperty_SerializedProperty_" data-uid="Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.RefreshSceneInfo(UnityEngine.Object,SerializedProperty,SerializedProperty,SerializedProperty,SerializedProperty,SerializedProperty)">RefreshSceneInfo(UnityEngine.Object, SerializedProperty, SerializedProperty, SerializedProperty, SerializedProperty, SerializedProperty)</h4>
+  <div class="markdown level1 summary"><p>Updates all the serialized properties for a SceneInfo struct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RefreshSceneInfo(UnityEngine.Object asset, SerializedProperty nameProperty, SerializedProperty pathProperty, SerializedProperty buildIndexProperty, SerializedProperty includedProperty, SerializedProperty tagProperty)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td><span class="parametername">asset</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">nameProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">pathProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">buildIndexProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">includedProperty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">tagProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if a property has changed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IProcessSceneWithReport</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

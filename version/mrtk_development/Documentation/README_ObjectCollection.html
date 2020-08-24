@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Object collection | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Object collection | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="object-collection">Object collection</h1>
+
+<p><img src="Images/ObjectCollection/MRTK_ObjectCollection_Main.jpg" alt="Object collection"></p>
+<p>Object collection is a script to help lay out an array of objects in predefined three-dimensional shapes. It supports various surface styles including plane, cylinder, sphere, and radial. Since it supports any object in Unity, it can be used to layout both 2D and 3D objects.</p>
+<h2 id="object-collection-scripts">Object collection scripts</h2>
+<ul>
+<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html"><code>GridObjectCollection</code></a> supports Cylinder, Plane, Sphere, Radial surface types</li>
+<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ScatterObjectCollection.html"><code>ScatterObjectCollection</code></a> supports scattered style collection</li>
+<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TileGridObjectCollection.html"><code>TileGridObjectCollection</code></a> provides some additional options to GridObjectCollection. <strong>Note:</strong> TileGridObjectCollection does not extend <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html"><code>GridObjectCollection</code></a>, and has several bugs (see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6237">issue 6237</a>). Therefore, it is recommended to use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html"><code>GridObjectCollection</code></a>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png" alt="Grid Object Collection - Cylinder"> Grid Object Collection - Cylinder</th>
+<th style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionSphere.png" alt="Grid Object Collection - Sphere"> Grid Object Collection - Sphere</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionRadial.png" alt="Grid Object Collection - Radial"> Grid Object Collection - Radial</td>
+<td style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionPlane.png" alt="Grid Object Collection - Plane"> Grid Object Collection - Plane</td>
+</tr>
+<tr>
+<td style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionScattered.png" alt="Scattered Object Collection"> Scattered Object Collection</td>
+<td style="text-align: left;"><img src="Images/ObjectCollection/MRTK_ObjectCollectionTileGrid.png" alt="Tile Grid Object Collection"> Tile Grid Object Collection</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-use-an-object-collection">How to use an object collection</h2>
+<p>To create a collection, create an empty GameObject and assign one of the Object Collection scripts to it. Any object(s) can be added as a child of the GameObject. Once finished adding child objects, click the <em>Update Collection</em> button in the inspector panel to generate the object collection. The objects will be laid out in the scene according to the collection parameters. Update Collection can be accessed through the code too.</p>
+<p><img src="Images/ObjectCollection/MRTK_ObjectCollectionScript.png" alt="Object collection"></p>
+<h2 id="gridobjectcollection-content-alignment"><code>GridObjectCollection</code> content alignment</h2>
+<p>The content in a GridObjectCollection can be aligned so that the parent object is anchored to the top/middle/bottom and left/center/right of the collection. Use the <strong>anchor</strong> property to specify content alignment.</p>
+<h2 id="gridobjectcollection-layout-order"><code>GridObjectCollection</code> layout order</h2>
+<p>Use the <strong>Layout</strong> field to specify the row / column order that children are laid out:</p>
+<p><strong>Column Then Row</strong> - Children are first laid out by horizontally (by column), then vertically (by row). Use <strong>Num Columns</strong> (or Columns property in code) to specify the number of columns in the grid.</p>
+<p><img src="Images/ObjectCollection/MRTK_ColumnThenRow.png" alt="Column then row layout"></p>
+<p><strong>Row Then Column</strong> - Children are first laid out vertically (by row), then horizontally (by columns). Use <strong>Num Rows</strong> (or Rows property in code) to specify the number of rows in the grid.</p>
+<p><img src="Images/ObjectCollection/MRTK_RowThenColumn.png" alt="Row then column layout"></p>
+<p><strong>Horizontal</strong> - Children are laid out in a single row using columns only</p>
+<p><strong>Vertical</strong> - Children are laid out in a single column using rows only.</p>
+<h2 id="object-collection-examples">Object collection examples</h2>
+<p>The <code>ObjectCollectionExamples</code> (Assets/MRTK/Examples/Demos/UX/Collections/Scenes/ObjectCollectionExamples.unity) example scene contains various examples of object collection types.</p>
+<p><a href="https://github.com/Microsoft/MRDesignLabs_Unity_PeriodicTable">Periodic table of the elements</a> is an example app that demonstrates how object collections work. It uses object collection to layout the 3D element boxes in different shapes.</p>
+<h2 id="object-collection-types">Object collection types</h2>
+<p><strong>3D objects</strong></p>
+<p>An object collection can be used to layout imported 3D objects. The example below shows the plane and cylindrical layouts of 3D chair model objects using a collection.</p>
+<p><img src="Images/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg" alt="Object collection"></p>
+<p><strong>2D Objects</strong></p>
+<p>An object collection can also be crated from 2D images. For example, multiple images can be placed in a grid style.</p>
+<p><img src="Images/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg" alt="Object collection"></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ObjectCollection.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Configuring mesh observers for the editor | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Configuring mesh observers for the editor | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="configuring-mesh-observers-for-the-editor">Configuring mesh observers for the editor</h1>
+
+<p>A convenient way to provide environment mesh data in the Unity editor is to use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> class. The <em>Spatial Object Mesh Observer</em> is an editor-only data provider for the <a href="SpatialAwarenessGettingStarted.html">Spatial Awareness system</a> that enables importing 3D model data to represent a spatial mesh. One common use of the <em>Spatial Object Mesh Observer</em> is to import data scanned via a Microsoft HoloLens to test how an
+experience adapts to different environments from within Unity.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>This guide will walk through setting up a <em>Spatial Object Mesh Observer</em>. There are three key steps to enable this feature.</p>
+<ol>
+<li>Add a <em>Spatial Object Mesh Observer</em> to the Spatial Awareness system profile</li>
+<li>Set the Environment Mesh Data object</li>
+<li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configure rest of the Mesh Observer profile properties</a></li>
+</ol>
+<h3 id="set-up-a-spatial-object-mesh-observer-profile">Set up a <em>spatial object mesh observer</em> profile</h3>
+<ol>
+<li><p>Select the desired <em>Mixed Reality Toolkit</em> configuration profile or select the <em>Mixed Reality Toolkit</em> object in scene</p>
+</li>
+<li><p>Open or expand the <em>Spatial Awareness System</em> tab</p>
+</li>
+<li><p>Click on <em>&quot;Add Spatial Observer&quot;</em> button</p>
+<p><img src="../Images/SpatialAwareness/AddObserver.png" alt="Add Spatial Observer"></p>
+</li>
+<li><p>Select the <em>SpatialObjectMeshObserver</em> type</p>
+<p><img src="../Images/SpatialAwareness/SelectObjectObserver.png" alt="Select Spatial Object Mesh Observer"></p>
+</li>
+<li><p>Select the desired <em>Spatial Mesh Object</em>. By default, the observer is configured with an example model. This model was created using a Microsoft HoloLens but it is possible to <a href="#acquiring-environment-scans">create a new scan mesh object</a>.</p>
+</li>
+<li><p><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configure rest of the Mesh Observer profile properties</a></p>
+<p><img src="../Images/SpatialAwareness/ObjectObserverProfile.png" alt="Select the Mesh Object"></p>
+</li>
+</ol>
+<h3 id="spatial-object-mesh-observer-profile-notes">Spatial object mesh observer profile notes</h3>
+<p>Since the <em>Spatial Object Mesh Observer</em> loads data from a 3D model, it does not honor some of the standard mesh
+observer settings which are outlined below.</p>
+<p><strong>Update Interval</strong></p>
+<p>The  <em>Spatial Object Mesh Observer</em> sends all meshes to an application when the model is loaded. It does not
+simulate time deltas between updates. An application can re-receive the mesh events by calling <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_ClearObservations"><code>myObserver.ClearObservation()</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_Resume"><code>myObserver.Resume()</code></a>.</p>
+<p><strong>Is Stationary Observer</strong></p>
+<p>The <em>Spatial Object Mesh Observer</em> considers all 3D mesh objects to be stationary and disregards origin.</p>
+<p><strong>Observer Shape and Extents</strong></p>
+<p>The  <em>Spatial Object Mesh Observer</em> sends the entire 3D mesh to the application. Observer shape and extents are not considered.</p>
+<p><strong>Level of Detail and Triangles / Cubic Meter</strong></p>
+<p>The Observer does not attempt to find 3D model LODs when sending the meshes to the application.</p>
+<h2 id="acquiring-environment-scans">Acquiring environment scans</h2>
+<p>This section outlines additional information to create and gather <em>Spatial Mesh Object</em> files for use with the <em>Spatial Object Mesh Observer</em>.</p>
+<h3 id="windows-device-portal">Windows Device Portal</h3>
+<p>The <a href="https://docs.microsoft.com/windows/mixed-reality/using-the-windows-device-portal">Windows Device Portal</a> can be used to download the spatial mesh, as a .obj file, from a Microsoft HoloLens device.</p>
+<ol>
+<li>Scan by simply walking and viewing the desired environment with a HoloLens</li>
+<li>Connect to the HoloLens using the Windows Device Portal</li>
+<li>Navigate to the <em>3D View</em> page</li>
+<li>Click the <em>Update</em> button under <em>Spatial Mapping</em> section</li>
+<li>Click the <em>Save</em> button under <em>Spatial Mapping</em> section to save the obj file to PC</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p><strong>HoloToolkit .room files</strong></p>
+<p>Many developers will have previously used HoloToolkit to scan environments and create .room files. The Mixed Reality Toolkit now supports importing these files as GameObjects in Unity and use them as <em>Spatial Mesh Objects</em> in the observer.</p>
+</div>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../Profiles/Profiles.html">Profiles</a></li>
+<li><a href="../MixedRealityConfigurationGuide.html">Mixed Reality Toolkit Profile configuration guide</a></li>
+<li><a href="SpatialAwarenessGettingStarted.html">Spatial Awareness Getting started</a></li>
+<li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring Mesh Observers on Device</a></li>
+<li><a href="UsageGuide.html">Configuring Mesh Observers via code</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/using-the-windows-device-portal">Using the Windows Device Portal</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SpatialAwareness/SpatialObjectMeshObserver.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

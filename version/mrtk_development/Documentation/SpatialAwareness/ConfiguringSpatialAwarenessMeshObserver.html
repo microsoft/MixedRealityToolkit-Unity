@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Configuring mesh observers for device | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Configuring mesh observers for device | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="configuring-mesh-observers-for-device">Configuring mesh observers for device</h1>
+
+<p>This guide will walk through configuring the out-of-box Spatial Mesh Observer in MRTK which supports the Windows Mixed Reality platform (i.e HoloLens). The default implementation provided by the Mixed Reality Toolkit is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html">WindowsMixedRealitySpatialMeshObserver</a> class. Many of the properties in this article though apply for other <a href="CreateDataProvider.html">custom Observer implementations</a>.</p>
+<h2 id="profile-settings">Profile settings</h2>
+<p>The following two items must be defined first when configuring a Spatial Mesh Observer profile for the <a href="SpatialAwarenessGettingStarted.html">Spatial Awareness system</a>.</p>
+<ol>
+<li>The concrete observer type implementation</li>
+<li>list of supported platform(s) to run this observer</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>All observers must extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface.</p>
+</div>
+<p><img src="../Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png" alt="Mesh Observer General Settings"></p>
+<h3 id="general-settings">General settings</h3>
+<p><img src="../Images/SpatialAwareness/MeshObserverGeneralSettings.png" alt="Mesh Observer General Settings"></p>
+<p><strong>Startup Behavior</strong></p>
+<p>The startup behavior specifies whether the observer will begin running when first instantiated. The two options are:</p>
+<ul>
+<li><em>Auto Start</em> - The default value whereby the observer will begin operation after initialization</li>
+<li><em>Manual Start</em> - The Observer will wait to be directed to start</li>
+</ul>
+<p>If using <em>Manual Start</em>, one must <a href="UsageGuide.html#starting-and-stopping-mesh-observation">resume and suspend them at runtime via code</a>.</p>
+<p><strong>Update Interval</strong></p>
+<p>The time, in seconds, between requests to the platform to update spatial mesh data. Typical values fall in the range of 0.1 and 5.0 seconds.</p>
+<p><strong>Is Stationary Observer</strong></p>
+<p>Indicates whether or not the observer is to remain stationary or to move and update with the user. If true, the <em>Observer Shape</em> with volume defined by <em>Observation Extents</em> will remain at the origin on startup. If false, the Observer space will follow the user's head as the shape's origin.</p>
+<p>There will be no mesh data calculated for any physical area outside of the Observer space as defined by these properties: <em>Is Stationary Observer</em>, <em>Observer Shape</em>*, and <em>Observation Extents</em>.</p>
+<p><strong>Observer Shape</strong></p>
+<p>The observer shape defines the type of volume that the mesh observer will use when observing meshes. The supported options are:</p>
+<ul>
+<li><em>Axis Aligned Cube</em> - Rectangular shape that stays aligned with the axes of the world coordinate system, as determined at application startup.</li>
+<li><em>User Aligned Cube</em> - Rectangular shape that rotates to align with the users local coordinate system.</li>
+<li><em>Sphere</em> - A spherical volume with a center at the world space origin. The X value of the <em>Observation Extents</em> property will be used as the radius of the sphere.</li>
+</ul>
+<p><strong>Observation Extents</strong></p>
+<p>The observation extents define the distance from the observation point that meshes will be observed.</p>
+<h3 id="physics-settings">Physics settings</h3>
+<p><img src="../Images/SpatialAwareness/MeshObserverPhysicsSettings.png" alt="Mesh Observer Physics Settings"></p>
+<p><strong>Physics Layer</strong></p>
+<p>The physics layer on which spatial mesh objects will be placed in order to interact with the Unity Physics and RayCast systems.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The Mixed Reality Toolkit reserves <em>layer 31</em> by default for use by Spatial Awareness observers.</p>
+</div>
+<p><strong>Recalculate Normals</strong></p>
+<p>Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.</p>
+<h3 id="level-of-detail-settings">Level of detail settings</h3>
+<p><img src="../Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
+<p><strong>Level of Detail</strong></p>
+<p>Specifies the level of detail (LOD) of the spatial mesh data. Currently defined values are Coarse, Fine and Custom.</p>
+<ul>
+<li><p><em>Coarse</em> - Places a smaller impact on application performance and is an excellent choice for navigation/plane finding.</p>
+</li>
+<li><p><em>Medium</em> - Balanced setting often useful for experiences that continually scan the environment for both large features, floors and walls, as well as occlusion details.</p>
+</li>
+<li><p><em>Fine</em> - Generally exacts a higher impact on application performance and is a great option for occlusion meshes.</p>
+</li>
+<li><p><em>Custom</em> - Requires the application to specify the <em>Triangles / Cubic Meter</em> property and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.</p>
+</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>It is not guaranteed that all <em>Triangles/Cubic Meter</em> values are honored by all platforms. Experimentation and profiling is highly recommended when using a custom LOD.</p>
+</div>
+<p><strong>Triangles per Cubic Meter</strong></p>
+<p>Valid when using the <em>Custom</em> setting for the <strong>Level of Detail</strong> property and specifies the triangle density for the spatial mesh.</p>
+<h3 id="display-settings">Display settings</h3>
+<p><img src="../Images/SpatialAwareness/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
+<p><strong>Display Option</strong></p>
+<p>Specifies how spatial meshes are to be displayed by the observer. Supported values are:</p>
+<ul>
+<li><em>None</em> - Observer will not render the mesh</li>
+<li><em>Visible</em> - Mesh data will be visible using the <em>Visible Material</em></li>
+<li><em>Occlusion</em> - Mesh data will be occlude items in scene using the <em>Occlusion Material</em></li>
+</ul>
+<p><img src="../Images/SpatialAwareness/MRTK_SpatialAwareness_DisplayOptions.jpg" alt="Select the Spatial Awareness System Implementation"></p>
+<p>Spatial Observers can be <a href="UsageGuide.html#starting-and-stopping-mesh-observation">resumed/suspended at runtime via code.</a></p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Setting <em>Display Option</em> to <em>None</em> does <strong>NOT</strong> stop the observer from running. If you wish to stop all observers, applications will need to suspend all observers via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_SuspendObservers"><code>CoreServices.SpatialAwareness.SuspendObservers()</code></a></p>
+</div>
+<p><strong>Visible Material</strong></p>
+<p>Indicates the material to be used when visualizing the spatial mesh.</p>
+<p><strong>Occlusion Material</strong></p>
+<p>Indicates the material to be used to cause the spatial mesh to occlude holograms.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="SpatialAwarenessGettingStarted.html">Spatial Awareness System</a></li>
+<li><a href="UsageGuide.html">Configuring Spatial Awareness system via Code</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver API documentation</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver API documentation</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html">BaseSpatialObserver API documentation</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

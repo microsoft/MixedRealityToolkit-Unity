@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Using the visual profiler | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Using the visual profiler | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="using-the-visual-profiler">Using the visual profiler</h1>
+
+<p>The VisualProfiler provides an easy to use, in-application view of a mixed reality application's performance. The profiler is supported on all Mixed Reality Toolkit platforms, including:</p>
+<ul>
+<li>Microsoft HoloLens (1st gen)</li>
+<li>Microsoft HoloLens 2</li>
+<li>Windows Mixed Reality immersive headsets</li>
+<li>OpenVR</li>
+</ul>
+<p>While developing an application, focus on multiple parts of the scene as the Visual Profiler displays data relative to the current view.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Focus attention on portions of the scene with complex objects, particle effects or activity. These and other factors often contribute to reduction in application performance and a less than ideal user experience.</p>
+</div>
+<h2 id="visual-profiler-interface">Visual profiler interface</h2>
+<p><img src="../Images/Diagnostics/VisualProfiler.png" alt="Visual Profiler Interface"></p>
+<p>The Visual Profiler interface includes the following components:</p>
+<ul>
+<li><a href="#frame-rate">Frame Rate</a></li>
+<li><a href="#frame-time">Frame Time</a></li>
+<li><a href="#frame-graph">Frame Graph</a></li>
+<li><a href="#memory-utilization">Memory Utilization</a></li>
+</ul>
+<h3 id="frame-rate">Frame rate</h3>
+<p>In the upper-left corner of the interface is the frame rate, measured in frames per second. For the best user experience and comfort, this value should be as high as possible.</p>
+<p>The specific platform and hardware configuration will play a significant role in the maximum achievable frame rate. Some common target values include:</p>
+<ul>
+<li>Microsoft HoloLens: 60</li>
+<li>Windows Mixed Reality Ultra: 90</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Due to <a href="https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#what-to-expect-when-mrc-is-enabled-on-hololens">frame rate throttling on HoloLens when default MRC is active</a>, the visual profiler hides itself while videos and photos are captured. This setting can be overridden in the diagnostics system profile.</p>
+</div>
+<h3 id="frame-time">Frame time</h3>
+<p>To the right of the frame rate is the frame time, in milliseconds, spent on the CPU. To achieve the target frame rates mentioned previously, an application can spend the following amount of time per frame:</p>
+<ul>
+<li>60 fps: 16.6 ms</li>
+<li>90 fps: 11.1 ms</li>
+</ul>
+<p>GPU time is planned to be added in a future release.</p>
+<h3 id="frame-graph">Frame graph</h3>
+<p>The frame graph provides a graphical display of the application frame rate history.</p>
+<p><img src="../Images/Diagnostics/VisualProfilerMissedFrames.png" alt="Visual Profiler Frame Graph"></p>
+<p>When using the application, look for missed frames which indicate that the application is not hitting its target frame rate and may need optimization work.</p>
+<h3 id="memory-utilization">Memory utilization</h3>
+<p>The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption.</p>
+<p><img src="../Images/Diagnostics/VisualProfilerMemory.png" alt="Visual Profiler Frame Graph"></p>
+<p>When using the application, look for total memory usage. Key indicators include nearing the memory limit and rapid changes in usage.</p>
+<h2 id="customizing-the-visual-profiler">Customizing the visual profiler</h2>
+<p>The Visual Profiler's appearance and behavior are customizable via the diagnostics system profile. Please see <a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a> for more information.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="DiagnosticsSystemGettingStarted.html">Diagnostics System</a></li>
+<li><a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Diagnostics/UsingVisualProfiler.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

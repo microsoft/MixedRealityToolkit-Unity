@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LeapMotionDeviceManagerProfile
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LeapMotionDeviceManagerProfile
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile" class="text-break">Class LeapMotionDeviceManagerProfile
+  </h1>
+  <div class="markdown level0 summary"><p>The profile for the Leap Motion Device Manager. The settings for this profile can be viewed if the Leap Motion Device Manager input data provider is
+added to the MRTK input configuration profile.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></div>
+    <div class="level2"><span class="xref">LeapMotionDeviceManagerProfile</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.LeapMotion.Input.html">Microsoft.MixedReality.Toolkit.LeapMotion.Input</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MixedRealityServiceProfile(typeof(LeapMotionDeviceManager), null)]
+public class LeapMotionDeviceManagerProfile : BaseMixedRealityProfile</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_EnterPinchDistance_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.EnterPinchDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_EnterPinchDistance" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.EnterPinchDistance">EnterPinchDistance</h4>
+  <div class="markdown level1 summary"><p>The distance between the index finger tip and the thumb tip required to enter the pinch/air tap selection gesture.
+The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float EnterPinchDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_ExitPinchDistance_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.ExitPinchDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_ExitPinchDistance" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.ExitPinchDistance">ExitPinchDistance</h4>
+  <div class="markdown level1 summary"><p>The minimum distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture to deselect.  The distance between the thumb and
+the index tip must be greater than the ExitPinchDistance to raise the OnInputUp event</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ExitPinchDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOffset_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOffset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOffset" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOffset">LeapControllerOffset</h4>
+  <div class="markdown level1 summary"><p>Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation
+is LeapControllerOrientation.Desk and is necessary for the hand to appear in front of the main camera. If the leap controller is on the
+desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the hands is the position of the
+game object with the LeapServiceProvider attached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 LeapControllerOffset { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOrientation_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOrientation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOrientation" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOrientation">LeapControllerOrientation</h4>
+  <div class="markdown level1 summary"><p>The location of the leap motion controller. LeapControllerOrientation.Headset indicates the controller is mounted on a headset.
+LeapControllerOrientation.Desk indicates the controller is placed flat on desk. The default value is set to LeapControllerOrientation.Headset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LeapControllerOrientation LeapControllerOrientation { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapControllerOrientation.html">LeapControllerOrientation</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

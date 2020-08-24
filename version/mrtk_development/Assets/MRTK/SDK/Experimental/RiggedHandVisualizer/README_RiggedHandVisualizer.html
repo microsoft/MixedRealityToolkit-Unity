@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Rigged Hand Visualizer [Experimental] | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Rigged Hand Visualizer [Experimental] | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../../../../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="rigged-hand-visualizer-experimental">Rigged Hand Visualizer [Experimental]</h1>
+
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Main.png" width="600px" style="display:inline;">
+<p>The RiggedHandVisualizer can be used to control a SkinnedMesh to visualize the hands.<br>
+This works on HoloLens 2 with detected hands, when using the Ultraleap sensor or with input simulation in the Unity editor.</p>
+<h3 id="windows-mixed-reality-headset-with-attached-ultraleap-sensor">Windows Mixed Reality headset with attached Ultraleap sensor</h3>
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Leapmotion.gif" width="600px" style="display:inline;">
+<h3 id="unity-editor-inputsimulation">Unity Editor InputSimulation</h3>
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_InputSimulation.gif" width="600px" style="display:inline;">
+<h2 id="example-scene">Example scene</h2>
+<p>You can find and example in the <strong>RiggedHandVisualizer</strong> scene under:
+<strong>MRTK/Examples/Experimental/RiggedHandVisualizer/Scenes/</strong></p>
+<h2 id="using-the-riggedhandvisualizer-in-your-scene">Using the RiggedHandVisualizer in your scene</h2>
+<p>To enable the use of rigged hand visualization, select the <strong>MixedRealityToolkit</strong> game object in the hierarchy and within the <strong>Input</strong> Configuration Profile navigate to</p>
+<p><strong>Controllers &gt; Controller Visualization Settings &gt; Global Left Hand Visualizer</strong></p>
+<p>Set it to use a prefab with the skinned mesh and RiggedHandVisualizer component.  Do the same for the right hand.
+RiggedHandLeft and RiggedHandRight prefabs are included in the MRTK as defaults, but you can also configure your own skinned mesh models.</p>
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_ControllerVisualizationSettings.png" width="600px" style="display:inline;">
+<h2 id="setting-up-a-custom-rigged-mesh">Setting up a custom rigged mesh</h2>
+<p>The left and right hand use separate models with the following joint structure.
+<img src="../../../../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointNames.png" height="400px" style="display:inline;"></p>
+<p>After importing the model in Unity create a prefab that uses it and add the RiggedHandVisualizer component. Assign the wrist and palm transforms. And assign the metacarpal transforms for each finger to the corresponding variables. The rest of the finger transforms are assumed to be hierarchical children of the metacarpal transforms.</p>
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_PrefabSetup.png" width="600px" style="display:inline;">
+<h3 id="orientation-correction">Orientation correction</h3>
+<p>Since models can be imported with different orientations you may need to apply a correction.
+Configure <strong>Model Finger Pointing</strong> and <strong>Model Palm Facing</strong> values with the cardinal axes that they are closest to.<br>
+The easiest way to find these axes is to look at the model in its default orientation after importing it in Unity. Make sure the root, palm and wrist nodes have an orientation of <strong>0, 0, 0</strong><br>
+In the model below you can see that the palm is pointing in the Y-direction (green arrow) so the <strong>Model Palm Facing</strong> is set to <strong>0, 1, 0</strong>. The fingers are pointing in the negative X-direction (red arrow) so the <strong>Model Finger Pointing</strong> is set to <strong>-1, 0, 0</strong>.</p>
+<img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Orientation.png" width="600px" style="display:inline;">
+<p><strong>Model Palm At Leap Wrist</strong><br>
+Hands are typically rigged in 3D packages with the palm transform near the wrist. Uncheck this if your model's palm transform is at the center of the palm similar to Leap API hands.</p>
+<p><strong>Deform Position</strong><br>
+Allows the mesh to be stretched to align with finger joint positions.</p>
+<p><strong>Scale Last Finger Bone</strong><br>
+Because bones only exist at their roots in model rigs, the length of the last fingertip bone is lost when placing bones at positions in the tracked hand. This option scales the last bone along its length axis to match its bone length to the tracked bone length. This option only has an effect if Deform Positions In Fingers is enabled.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

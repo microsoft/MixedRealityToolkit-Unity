@@ -1,0 +1,980 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BoundsControl
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BoundsControl
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl" class="text-break">Class BoundsControl
+  </h1>
+  <div class="markdown level0 summary"><p>Bounds Control allows to transform objects (rotate and scale) and draws a cube around the object to visualize
+the possibility of user triggered transform manipulation.
+Bounds Control provides scale and rotation handles that can be used for far and near interaction manipulation
+of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material.
+Todo: replace doc link - point to BoundsControl docs</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BoundsControl</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
+    <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
+    <div><span class="xref">IMixedRealityFocusHandler</span></div>
+    <div><span class="xref">IBoundsTargetProvider</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.html">Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BoundsControl : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IBoundsTargetProvider</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_Active_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.Active*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_Active" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.Active">Active</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Active { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsControlActivation_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsControlActivation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsControlActivation" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsControlActivation">BoundsControlActivation</h4>
+  <div class="markdown level1 summary"><p>Type of activation method for showing/hiding bounds control handles and controls</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundsControlActivationType BoundsControlActivation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BoundsControlActivationType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsCorners_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsCorners*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsCorners" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsCorners">BoundsCorners</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3[] BoundsCorners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsOverride_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsOverride*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoundsOverride" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoundsOverride">BoundsOverride</h4>
+  <div class="markdown level1 summary"><p>For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of bounds control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoxCollider BoundsOverride { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BoxCollider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoxDisplayConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoxDisplayConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoxDisplayConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoxDisplayConfig">BoxDisplayConfig</h4>
+  <div class="markdown level1 summary"><p>Bounds control box display configuration section.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoxDisplayConfiguration BoxDisplayConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoxDisplayConfiguration.html">BoxDisplayConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoxPadding_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoxPadding*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_BoxPadding" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.BoxPadding">BoxPadding</h4>
+  <div class="markdown level1 summary"><p>Extra padding added to the actual Target bounds</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 BoxPadding { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_CalculationMethod_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.CalculationMethod*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_CalculationMethod" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.CalculationMethod">CalculationMethod</h4>
+  <div class="markdown level1 summary"><p>Defines the volume type and the priority for the bounds calculation</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundsCalculationMethod CalculationMethod { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BoundsCalculationMethod</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_DebugText_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.DebugText*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_DebugText" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.DebugText">DebugText</h4>
+  <div class="markdown level1 summary"><p>Component used to display debug messages.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextMesh DebugText { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TextMesh</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_FlattenAxis_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.FlattenAxis*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_FlattenAxis" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.FlattenAxis">FlattenAxis</h4>
+  <div class="markdown level1 summary"><p>Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FlattenModeType FlattenAxis { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FlattenModeType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HandleProximityEffectConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HandleProximityEffectConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HandleProximityEffectConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HandleProximityEffectConfig">HandleProximityEffectConfig</h4>
+  <div class="markdown level1 summary"><p>Configuration for Proximity Effect to scale handles or change materials on proximity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProximityEffectConfiguration HandleProximityEffectConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ProximityEffectConfiguration.html">ProximityEffectConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HideElementsInInspector_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HideElementsInInspector*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HideElementsInInspector" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HideElementsInInspector">HideElementsInInspector</h4>
+  <div class="markdown level1 summary"><p>Determines whether to hide GameObjects (i.e handles, links etc) created and managed by this component in the editor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HideElementsInInspector { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_LinksConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.LinksConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_LinksConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.LinksConfig">LinksConfig</h4>
+  <div class="markdown level1 summary"><p>This section defines the links / lines that are drawn between the corners of the control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinksConfiguration LinksConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.LinksConfiguration.html">LinksConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateLerpTime">RotateLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RotateLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateStarted_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateStarted" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateStarted">RotateStarted</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a rotation handle starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent RotateStarted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateStopped_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateStopped*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotateStopped" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotateStopped">RotateStopped</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a rotation handle stops.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent RotateStopped { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotationHandlesConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotationHandlesConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_RotationHandlesConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.RotationHandlesConfig">RotationHandlesConfig</h4>
+  <div class="markdown level1 summary"><p>Configuration of the rotation handles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RotationHandlesConfiguration RotationHandlesConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.RotationHandlesConfiguration.html">RotationHandlesConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleHandlesConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleHandlesConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleHandlesConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleHandlesConfig">ScaleHandlesConfig</h4>
+  <div class="markdown level1 summary"><p>Configuration of the scale handles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScaleHandlesConfiguration ScaleHandlesConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ScaleHandlesConfiguration.html">ScaleHandlesConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleLerpTime">ScaleLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ScaleLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleStarted_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleStarted" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleStarted">ScaleStarted</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a scale handle starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent ScaleStarted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleStopped_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleStopped*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_ScaleStopped" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.ScaleStopped">ScaleStopped</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a scale handle stops.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent ScaleStopped { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_SmoothingActive_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.SmoothingActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_SmoothingActive" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.SmoothingActive">SmoothingActive</h4>
+  <div class="markdown level1 summary"><p>Check to enable frame-rate independent smoothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SmoothingActive { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_Target_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.Target*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_Target" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.Target">Target</h4>
+  <div class="markdown level1 summary"><p>The object that the bounds control rig will be modifying.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject Target { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TargetBounds_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TargetBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TargetBounds" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TargetBounds">TargetBounds</h4>
+  <div class="markdown level1 summary"><p>The collider reference tracking the bounds utilized by this component during runtime</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoxCollider TargetBounds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BoxCollider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateLerpTime">TranslateLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float TranslateLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateStarted_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateStarted" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateStarted">TranslateStarted</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a translation handle starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent TranslateStarted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateStopped_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateStopped*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslateStopped" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslateStopped">TranslateStopped</h4>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a translation handle stops.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent TranslateStopped { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslationHandlesConfig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslationHandlesConfig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_TranslationHandlesConfig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.TranslationHandlesConfig">TranslationHandlesConfig</h4>
+  <div class="markdown level1 summary"><p>Configuration of the translation handles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TranslationHandlesConfiguration TranslationHandlesConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.TranslationHandlesConfiguration.html">TranslationHandlesConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_WireframeOnly_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.WireframeOnly*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_WireframeOnly" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.WireframeOnly">WireframeOnly</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool WireframeOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_CreateRig_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.CreateRig*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_CreateRig" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.CreateRig">CreateRig()</h4>
+  <div class="markdown level1 summary"><p>Destroys and re-creates the rig around the bounds control</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateRig()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HighlightWires_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HighlightWires*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_HighlightWires" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.HighlightWires">HighlightWires()</h4>
+  <div class="markdown level1 summary"><p>Allows to manually enable wire (edge) highlighting (edges) of the bounds control.
+This is useful if connected to the Manipulation events of a
+<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html">ObjectManipulator</a>
+when used in conjunction with this MonoBehavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void HighlightWires()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.OnSourceDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_OnSourceDetected_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.OnSourceDetected(SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnSourceDetected(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SourceStateEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.OnSourceLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_OnSourceLost_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.OnSourceLost(SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnSourceLost(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SourceStateEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_UnhighlightWires_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.UnhighlightWires*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_BoundsControl_BoundsControl_UnhighlightWires" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.BoundsControl.UnhighlightWires">UnhighlightWires()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnhighlightWires()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealitySourceStateHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityFocusChangedHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityFocusHandler</span>
+  </div>
+  <div>
+      <span class="xref">IBoundsTargetProvider</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
