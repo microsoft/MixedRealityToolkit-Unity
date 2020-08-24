@@ -29,10 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
-        "Windows  Scene Understanding Observer",
+        "Windows Scene Understanding Observer",
         "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.Providers")]
-    public class WindowssSceneUnderstandingObserver :
+    public class WindowsSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowssSceneUnderstandingObserver(
+        public WindowsSceneUnderstandingObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
