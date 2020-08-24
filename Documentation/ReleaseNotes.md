@@ -125,6 +125,20 @@ The stored initial world pose `worldPoseOnManipulationStart` data type has been 
 
 A new property `AudioClip` has been added to the IMixedRealityDictationSystem interface. The `AudioClip` property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.
 
+**Service Facades turn down**
+
+[Services facades](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/06a06778e38da622b37cc299a93f16e143b7bdeb/Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs)
+are being turned down in 2.5. This feature was originally added to make configuration
+of the MRTK profiles easier (by creating fake in-scene GameObjects that represented each of MRTK's
+services). In the long run, we want to avoid creating fake in-game objects and trying to keep them
+in sync (as data sync and "source of truth" issues are notoriously difficult to scale and get right).
+
+In 2.5, the service facade handlers are kept around to ensure that project upgrade goes smoothly -
+any facades that exist in the project will be deleted by the service facade handler to ensure that
+scenes opened up in 2.5 get automatically fixed.
+
+The remaining code associated with the service facade feature will be removed in a future release.
+
 **Addition of Motion Controller to Input Simulation Service**
 
 Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with `InputSimulationService.cs` and `MixedRealityInputSimulationProfile.cs` getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to "hand" to the more generic term "controller" (e.g. from `DefaultHandSimulationMode` to `DefaultControllerSimulationMode`). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. `GetControllerDevice` based on the original `GetHandDevice` now returns `BaseController` instead of `SimulatedHand`).
