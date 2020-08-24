@@ -30,30 +30,33 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Wall = 1 << 3,
 
         /// <summary>
-        /// A raised, horizontal surface such as a shelf.
+        /// A surface upon which a character could sit, such as a chair or a couch.
         /// </summary>
-        /// <remarks>
-        /// Platforms, like floors, that can be used for placing objects
-        /// requiring a horizontal surface.
-        /// </remarks>
-        Platform = 1 << 4,
+        Seat = 1 << 4,
 
         /// <summary>
-        /// A surface that isn't a Platform but are known as objects (not unknown)
+        /// 
         /// </summary>
-        /// <remarks>
-        /// These objects may be windows, monitors, stairs, etc.
-        /// </remarks>
-        Background = 1 << 5,
+        Table = 1 << 5,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Door = 1 << 6,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Window = 1 << 7,
 
         /// <summary>
         /// A boundless world mesh.
         /// </summary>
-        World = 1 << 6,
+        World = 1 << 30,
 
         /// <summary>
         /// Objects for which we have no observations
         /// </summary>
-        CompletelyInferred = 1 << 7
+        Inferred = 1 << 31
     }
 }
