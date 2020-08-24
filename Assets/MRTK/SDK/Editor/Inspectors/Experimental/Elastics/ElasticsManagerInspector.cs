@@ -109,8 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         /// <summary>
         /// Draws a property of type ElasticsManager, showing a button to create a component to link to
         /// </summary>
-        /// <param name="elasticsManager"></param>
-        /// <param name="hostObject"></param>
+        /// <param name="elasticsManager">Elasticsmanager property of component this ui field gets drawn in.</param>
+        /// <param name="hostObject">GameObject the component this is added to is attached to.</param>
         public static void DrawElasticsManagerLink(SerializedProperty elasticsManager, GameObject hostObject)
         {
             EditorGUILayout.LabelField(new GUIContent("Elastics"), EditorStyles.boldLabel);

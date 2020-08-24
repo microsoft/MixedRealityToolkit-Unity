@@ -8,6 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
 {
     /// <summary>
     /// ElasticsManager can be used to add elastics simulation to supporting components.
+    /// Call Initialize on manipulation start.
+    /// Call ApplyHostTransform to apply elastics calculation to target transform.
+    /// Elastics will continue simulating once manipulation ends through it's update function - 
+    /// to block the elastics auto update set EnableElasticsUpdate to false. 
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")] // todo help url
     public class ElasticsManager : MonoBehaviour
@@ -114,7 +118,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         private IElasticSystem<Vector3> scaleElastic;
 
         Transform hostTransform = null;
-        bool updateElastics = false;
+
+        /// <summary>
+        /// Enables elastics simulation in the update method.
+        /// </summary>
+        public bool EnableElasticsUpdate
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         /// <summary>
@@ -181,22 +194,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             }
         }
 
-        /// <summary>
-        /// Enables elastics simulation in the update method.
-        /// </summary>
-        /// <param name="enable">Turns update on or off.</param>
-        public void EnableElasticsUpdate(bool enable)
-        {
-            updateElastics = enable;
-        }
-
         #region MonoBehaviour Functions
         private void Update()
         {
             // If the user is not actively interacting with the object,
             // we let the elastic systems continue simulating, to allow
             // the object to naturally come to rest.
-            if (updateElastics && hostTransform != null)
+            if (EnableElasticsUpdate && hostTransform != null)
             {
                 if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
                 {
