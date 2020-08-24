@@ -5,19 +5,19 @@ using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using UnityEngine;
+
+#if SCENE_UNDERSTANDING_PRESENT
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-#if SCENE_UNDERSTANDING_PRESENT
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.Perception.Spatial.Preview;
+using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 #endif // SCENE_UNDERSTANDING_PRESENT
 
 #if WINDOWS_UWP

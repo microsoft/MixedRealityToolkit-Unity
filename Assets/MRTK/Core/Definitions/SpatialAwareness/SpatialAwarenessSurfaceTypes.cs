@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
-    /// Enumeration defining the types of planar surfaces that are supported by the spatial awareness surface finding subsystem.
+    /// Enumeration defining types of planar surfaces supported by Spatial Awareness.
     /// </summary>
     [System.Flags]
     public enum SpatialAwarenessSurfaceTypes
@@ -35,19 +35,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Seat = 1 << 4,
 
         /// <summary>
-        /// 
+        /// A horizontal surface, above the floor.
         /// </summary>
         Table = 1 << 5,
 
         /// <summary>
-        /// 
+        /// A door surface. Generally found within a wall.
         /// </summary>
         Door = 1 << 6,
 
         /// <summary>
-        /// 
+        /// A window surface. Generally appearing within a wall or other surface.
         /// </summary>
         Window = 1 << 7,
+
+        // Insert additional surface types here.
 
         /// <summary>
         /// A boundless world mesh.
