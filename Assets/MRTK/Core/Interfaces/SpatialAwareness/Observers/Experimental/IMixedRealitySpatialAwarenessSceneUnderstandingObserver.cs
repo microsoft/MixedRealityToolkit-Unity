@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,13 +23,26 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         void SaveScene(string filename);
 
-        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quadGuid"></param>
+        /// <param name="forSize"></param>
+        /// <param name="bestLocationOnPlane"></param>
+        /// <returns></returns>
+        bool TryFindCentermostPlacement(
+            Guid quadGuid, 
+            Vector2 forSize, 
+            out Vector3 bestLocationOnPlane);
 
         /// <summary>
         /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.
         /// </summary>
-        IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
+        IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
 
         /// <summary>
