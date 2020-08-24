@@ -801,7 +801,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (rigidBody == null)
             {
                 TransformFlags transformUpdated = 0;
-                if (elasticsManager)
+                if (elasticsManager != null)
                 {
                     transformUpdated = elasticsManager.ApplyTargetTransform(targetTransform);
                 }
@@ -951,4 +951,3 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
     }
 }
-
