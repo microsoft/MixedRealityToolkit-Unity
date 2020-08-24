@@ -755,7 +755,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             constraints.Initialize(new MixedRealityTransform(HostTransform));
-            if (elasticsManager)
+            if (elasticsManager != null)
             {
                 elasticsManager.EnableElasticsUpdate = false;
             }
