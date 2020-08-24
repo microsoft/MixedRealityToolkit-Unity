@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
 
-            Microsoft.MixedReality.Toolkit.Experimental.Inspectors.ElasticsManagerInspector.DrawElasticsManagerLink(elasticsManager, mh.gameObject);
+            Microsoft.MixedReality.Toolkit.Experimental.Editor.ElasticsManagerInspector.DrawElasticsManagerLink(elasticsManager, mh.gameObject);
 
             EditorGUILayout.Space();
 
