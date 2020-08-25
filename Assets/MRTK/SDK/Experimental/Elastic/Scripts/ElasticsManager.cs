@@ -134,28 +134,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// Applies elastics calculation to the passed targetTransform and applies to the host transform.
         /// </summary>
         /// <param name="targetTransform">Precalculated target transform that's influenced by elastics</param>
+        /// <param name="filter">If a filter is passed only the given transform type is going to be calculated.</param>
         /// <returns>Modified transform modes.</returns>
-        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform)
+        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags filter = TransformFlags.Move|TransformFlags.Rotate|TransformFlags.Scale)
         {
             Debug.Assert(hostTransform != null, "Can't apply target before calling Initialize with a valid transform reference.");
             if (hostTransform != null)
             {
-                if (elasticTypes.HasFlag(TransformFlags.Move))
+                TransformFlags enabledFlags = filter & elasticTypes;
+                if (enabledFlags.HasFlag(TransformFlags.Move))
                 {
                     hostTransform.position = translationElastic.ComputeIteration(targetTransform.Position, Time.deltaTime);
                 }
 
-                if (elasticTypes.HasFlag(TransformFlags.Rotate))
+                if (enabledFlags.HasFlag(TransformFlags.Rotate))
                 {
                     hostTransform.rotation = rotationElastic.ComputeIteration(targetTransform.Rotation, Time.deltaTime);
                 }
 
-                if (elasticTypes.HasFlag(TransformFlags.Scale))
+                if (enabledFlags.HasFlag(TransformFlags.Scale))
                 {
                     hostTransform.localScale = scaleElastic.ComputeIteration(targetTransform.Scale, Time.deltaTime);
                 }
 
-                elasticTypesSimulating = elasticTypes;
+                elasticTypesSimulating = enabledFlags;
                 return elasticTypes;
             }
             else 
