@@ -150,13 +150,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         private void OnDestroy()
         {
             ResetPulseMaterial();
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
-
         }
 
         private void Start()
-        {
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+        { 
+            // Add PointerHandler script to the parent of dynamically generated spatial mesh on the device
+            CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.AddComponent<PointerHandler>();
+            CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.GetComponent<PointerHandler>().OnPointerClicked.AddListener(this.OnPointerClicked);
 
             if (autoStart)
             {
