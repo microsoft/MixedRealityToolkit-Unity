@@ -131,6 +131,15 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p>This change also adds the ability to remove MSBulid for Unity.</p>
 <p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
 <p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
+<p><strong>Reduction in InitializeOnLoad overhead</strong>
+We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
+improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
+to entering play mode, and also at editor launch. These handlers now run in far fewer cases, resulting in general
+Unity responsiveness improvements.</p>
+<p>In some cases there was a tradeoff that had to be made:
+See <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Hand Tracking Configuration</a> for the extra integration step.
+For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
+See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARFoundation</a> for the new steps.</p>
 <h3 id="breaking-changes">Breaking changes</h3>
 <p><strong>IMixedRealityPointerMediator</strong></p>
 <p>This interface has been updated to have a new function:</p>
