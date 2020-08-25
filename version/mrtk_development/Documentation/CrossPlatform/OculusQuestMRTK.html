@@ -82,29 +82,59 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="how-to-configure-oculus-quest-in-mrtk-using-the-xrsdk-pipeline">How to configure Oculus Quest in MRTK using the XRSDK pipeline</h1>
 
-<p>A <a href="https://www.oculus.com/quest/?locale=en_US">Oculus Quest</a> is required to use this data provider.</p>
-<p>The Oculus XRSDK Data Provider enables the use of the Oculus Quest with MRTK using <a href="https://docs.unity3d.com/Manual/XR.html">Unity's XR Pipeline</a>.
-This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using <strong>Unity 2019.3 or newer</strong>
-The Oculus Quest XR Plugin does not currently support hand tracking. In order to use hand tracking, consult the <a href="https://github.com/provencher/MRTK-Quest">MRTK-Quest</a>
-project which uses the Legacy XR pipeline.</p>
-<h2 id="deploying-to-oculus-quest">Deploying to Oculus Quest</h2>
+<p>A <a href="https://www.oculus.com/quest/">Oculus Quest</a> is required.</p>
+<p>MRTK's support for the Oculus Quest comes via two different sources, Unity's XR pipeline and the Oculus Integration Unity package. The <strong>Oculus XRSDK Data Provider</strong> enables the use
+of both sources and must be used to use MRTK on the Oculus Quest.</p>
+<p>The <a href="https://docs.unity3d.com/Manual/XR.html">Unity's XR Pipeline</a> enables the use of Oculus Touch controllers and head tracking with the Oculus Quest.
+This pipeline is the standard for developing XR applications in Unity 2019.3 and beyond. To use this pipeline, make sure that you using <strong>Unity 2019.3 or newer</strong>.</p>
+<p>The <a href="https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022">Oculus Integration Unity package</a> allows for the use of <strong>hand tracking</strong> with the Oculus Quest.
+This data provider does <strong>NOT</strong> use Unity's <strong>XR Pipeline</strong> or <strong>Legacy XR Pipeline</strong>, but because controllers and headtracking are handeled by the Unity's XR Pipeline, the steps in
+<strong>Setting up project for the Oculus Quest</strong> must be followed to ensure that you are using the <strong>XR Pipeline</strong> and not the to-be-deprecated <strong>Legacy XR Pipeline</strong>.</p>
+<h2 id="setting-up-project-for-the-oculus-quest">Setting up project for the Oculus Quest</h2>
 <ol>
 <li><p>Follow <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/">these steps</a> to ensure that your project is ready to deploy on Oculus Quest.</p>
-<ul>
-<li>Make sure that the Oculus Plug-in Provider is included in your project by going to <strong>Edit --&gt; Project Settings --&gt; XR Plug-in Management --&gt; Plug-in Providers</strong></li>
-</ul>
-<p><img src="../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png" alt="OculusPluginProvider"></p>
-<ul>
-<li>If it does not show up ensure that the <strong>Oculus XR Plugin</strong> is installed under <strong>Window --&gt; Package Manager</strong></li>
-</ul>
-<p><img src="../Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png" alt="OculusXRPluginPackage"></p>
 </li>
 <li><p>Ensure that <a href="https://developer.oculus.com/documentation/native/android/mobile-device-setup/">developer mode</a> is enabled on your device. Installing the Oculus ADB Drivers is optional.</p>
 </li>
-<li><p>Adding the Oculus XRSDK Data Provider</p>
-<ul>
+</ol>
+<h2 id="setting-up-the-xr-pipeline-for-oculus-quest">Setting up the XR Pipeline for Oculus Quest</h2>
+<ol>
+<li><p>Ensure that the <strong>Oculus XR Plugin</strong> is installed under <strong>Window --&gt; Package Manager</strong></p>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusXRPluginPackage.png" alt="OculusXRPluginPackage"></p>
+</li>
+<li><p>Make sure that the Oculus Plug-in Provider is included in your project by going to <strong>Edit --&gt; Project Settings --&gt; XR Plug-in Management --&gt; Plug-in Providers</strong></p>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png" alt="OculusPluginProvider"></p>
+</li>
+</ol>
+<h2 id="setting-up-the-oculus-integration-unity-package">Setting up the Oculus Integration Unity package</h2>
+<ol>
+<li><p>Download and import <a href="https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022">Oculus Integration</a> from the Unity Asset Store. The latest version tested to
+work is 19.1. Older versions can be found from this <a href="https://developer.oculus.com/downloads/package/unity-integration-archive/">archive</a></p>
+</li>
+<li><p>Navigate to Mixed Reality Toolkit &gt; Utilities &gt; Oculus &gt; Configure CSC File for Oculus. Updating the csc file filters out the obsolete warnings produced by the Oculus Integration Assets.
+The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-quest configuration process.</p>
+</li>
+<li><p>In the imported Oculus folder (It should be found at Assets/Oculus), there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport
+to &quot;Controllers and Hands&quot;.</p>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png" alt="OculusIntegrationControllerAndHands"></p>
+</li>
+</ol>
+<h2 id="setting-up-the-scene">Setting up the scene</h2>
+<ol>
 <li>Create a new Unity scene or open a pre-existing scene like HandInteractionExamples</li>
 <li>Add MRTK to the scene by navigating to <strong>Mixed Reality Toolkit</strong> &gt; <strong>Add to Scene and Configure</strong></li>
+</ol>
+<h2 id="using-the-oculus-xrsdk-data-provider">Using the Oculus XRSDK Data Provider</h2>
+<ol>
+<li>Configure your profile to use the <strong>Oculus XRSDK Data Provider</strong>
+<ul>
+<li><p>If not intending to modify the configuration profiles</p>
+<ul>
+<li>Change your profile to DefaultXRSDKInputSystemProfile and go to <a href="OculusQuestMRTK.html#build-and-deploy-your-project-to-oculus-quest">Build and deploy your project to Oculus Quest</a></li>
+</ul>
+</li>
+<li><p>Otherwise follow the following:</p>
+<ul>
 <li>Select the MixedRealityToolkit game object in the hierarchy and select <strong>Copy and Customize</strong> to clone the default mixed reality profile.</li>
 </ul>
 <p><img src="../Images/CrossPlatform/CloneProfile.png" alt="CloneProfile"></p>
@@ -119,21 +149,29 @@ project which uses the Legacy XR pipeline.</p>
 <ul>
 <li>Open the <strong>Input Data Providers</strong> section, select <strong>Add Data Provider</strong> at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the <strong>Type</strong> to <strong>Microsoft.MixedReality.Toolkit.XRSDK.Oculus &gt; OculusXRSDKDeviceManager</strong></li>
 </ul>
-<p><img src="../Images/CrossPlatform/OculusQuest/OculusAddDataProvider.png" alt="OculusAddDataProvider"></p>
+<p><img src="../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png" alt="OculusAddXRSDKDataProvider"></p>
 </li>
-<li><p>Building your project to deploy on Oculus Quest</p>
-<ul>
-<li>Plug in your Oculus Quest via a USB 3.0 -&gt; USB C cable</li>
-<li>Navigate to <strong>File &gt; Build Settings</strong></li>
-<li>Change the deployment to <strong>Android</strong></li>
-<li>Ensure that the Oculus Quest is selected as the applicable run device</li>
+<li><p>You can verify that the Oculus Controllers are detected by</p>
+</li>
 </ul>
+</li>
+</ol>
+<h2 id="build-and-deploy-your-project-to-oculus-quest">Build and deploy your project to Oculus Quest</h2>
+<ol>
+<li><p>Plug in your Oculus Quest via a USB 3.0 -&gt; USB C cable</p>
+</li>
+<li><p>Navigate to <strong>File &gt; Build Settings</strong></p>
+</li>
+<li><p>Change the deployment to <strong>Android</strong></p>
+</li>
+<li><p>Ensure that the Oculus Quest is selected as the applicable run device</p>
 <p><img src="../Images/CrossPlatform/OculusQuest/OculusRunDevice.png" alt="OculusRunDevice"></p>
-<ul>
-<li>Select Build and Run</li>
-<li>Accept the <em>Allow USB Debugging</em> prompt from inside the quest</li>
-<li>See your scene inside the Oculus Quest</li>
-</ul>
+</li>
+<li><p>Select Build and Run</p>
+</li>
+<li><p>Accept the <em>Allow USB Debugging</em> prompt from inside the quest</p>
+</li>
+<li><p>See your scene inside the Oculus Quest</p>
 </li>
 </ol>
 <h2 id="common-errors">Common errors</h2>
