@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the DotNetWinRT binary.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Windows Mixed Reality/Check Configuration")]
-
         private static void ReconcileDotNetWinRTDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(FileName);
