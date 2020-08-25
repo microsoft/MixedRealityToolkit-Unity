@@ -10,20 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
     /// <summary>
     /// Class to perform checks for configuration checks for the Windows Mixed Reality provider.
     /// </summary>
-    [InitializeOnLoad]
     static class WindowsSceneUnderstandingConfigurationChecker
     {
         private const string FileName = "Microsoft.MixedReality.SceneUnderstanding.DotNet.dll";
         private static readonly string[] definitions = { "SCENEUNDERSTANDING_PRESENT" };
 
-        static WindowsSceneUnderstandingConfigurationChecker()
-        {
-            ReconcileSceneUnderstandingDefine();
-        }
-
         /// <summary>
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the SceneUnderstanding binary.
         /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Scene Understanding/Check Configuration")]
         private static void ReconcileSceneUnderstandingDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(FileName);
