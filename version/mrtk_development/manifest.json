@@ -12304,6 +12304,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.Editor.ElasticsManagerInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Editor.ElasticsManagerInspector.html",
+          "hash": "GcgsFOXVd5A/4rBolwSxVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.Editor.FollowEditor.yml",
       "output": {
         ".html": {
@@ -12320,7 +12332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Editor.html",
-          "hash": "IXAxHudwGVn5XrGgnenHSg=="
+          "hash": "YGabMZD/0u8RvhcRtvXmRw=="
         }
       },
       "is_incremental": false,
@@ -12496,6 +12508,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.html",
+          "hash": "cuJ29KiP+jUFNqX1MZmt9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.Physics.IElasticSystem-1.yml",
       "output": {
         ".html": {
@@ -12584,7 +12608,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Physics.html",
-          "hash": "Epr1SCYgQT78XHlJ1uNMtw=="
+          "hash": "ULAYuUefjgMyjZ2615t9CA=="
         }
       },
       "is_incremental": false,
@@ -24044,7 +24068,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html",
-          "hash": "hcvTT2t6iEvuZBUTYwNKig=="
+          "hash": "l6oCJLpt4ZmeBdUzKQAmSw=="
         }
       },
       "is_incremental": false,
@@ -28868,7 +28892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "tIklvi4VvXMgWL9PxbR7mQ=="
+          "hash": "4RxwhIeqTk59NcOGkWPI9A=="
         }
       },
       "is_incremental": false,
@@ -28931,6 +28955,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -28940,19 +28971,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1682,
+          "total_file_count": 1684,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
