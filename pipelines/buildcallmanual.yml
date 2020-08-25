@@ -1,6 +1,6 @@
 # Pipeline for creating files and running tests for Build Call.
 
- variables:
+variables:
 - template: config/settings.yml
 - name: packagingEnabled
   value: false
@@ -12,8 +12,6 @@ parameters:
   values:
   - all
   - common
-  
-trigger: none
 
 jobs:
 - job: BuildCallUnity2019Setup
@@ -26,15 +24,15 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-   - ${{ if contains(parameters.build, 'all') }}:
-     - template: templates/buildcallsetup.yml
+- ${{ if contains(parameters.build, 'all') }}:
+  - template: templates/buildcallsetup.yml
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2019Version)
       MRTKVersion: $(MRTKVersion)
       Binaries: 'all'
-   - ${{ if contains(parameters.build, 'common') }}:
-     - template: templates/buildcallsetup.yml
+- ${{ if contains(parameters.build, 'common') }}:
+  - template: templates/buildcallsetup.yml
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2019Version)
@@ -52,15 +50,15 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-   - ${{ if contains(parameters.build, 'all') }}:
-     - template: templates/buildcallsetup.yml
+- ${{ if contains(parameters.build, 'all') }}:
+  - template: templates/buildcallsetup.yml
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)
       MRTKVersion: $(MRTKVersion)
       Binaries: 'all'
-   - ${{ if contains(parameters.build, 'common') }}:
-     - template: templates/buildcallsetup.yml
+- ${{ if contains(parameters.build, 'common') }}:
+   - template: templates/buildcallsetup.yml
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)
