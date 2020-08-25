@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Ceiling = 1 << 2,
 
         /// <summary>
-        /// A wall within the user’s space.
+        /// A vertical surface within the user’s space.
         /// </summary>
         Wall = 1 << 3,
 
@@ -40,12 +40,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Table = 1 << 5,
 
         /// <summary>
-        /// A door surface. Generally found within a wall.
+        /// A doorway within a wall surface.
         /// </summary>
         Door = 1 << 6,
 
         /// <summary>
-        /// A window surface. Generally appearing within a wall or other surface.
+        /// Windows generally appear within a wall, ceiling or other surface.
         /// </summary>
         Window = 1 << 7,
 
