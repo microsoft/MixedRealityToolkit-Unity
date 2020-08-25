@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         // Physics settings
         private SerializedProperty meshPhysicsLayer;
         private SerializedProperty recalculateNormals;
+        private SerializedProperty physicsMaterial;
 
         // Level of Detail settings
         private SerializedProperty levelOfDetail;
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
             // Mesh settings
             meshPhysicsLayer = serializedObject.FindProperty("meshPhysicsLayer");
+            physicsMaterial = serializedObject.FindProperty("physicsMaterial");
             recalculateNormals = serializedObject.FindProperty("recalculateNormals");
             levelOfDetail = serializedObject.FindProperty("levelOfDetail");
             trianglesPerCubicMeter = serializedObject.FindProperty("trianglesPerCubicMeter");
@@ -103,6 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 {
                     EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
                     EditorGUILayout.PropertyField(recalculateNormals);
+                    EditorGUILayout.PropertyField(physicsMaterial);
                 }
 
                 EditorGUILayout.Space();

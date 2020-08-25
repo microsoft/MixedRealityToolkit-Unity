@@ -67,6 +67,8 @@
       href: CrossPlatform/UsingARFoundation.md
     - name: Configure MRTK for Leap Motion Hand Tracking
       href: CrossPlatform/LeapMotionMRTK.md
+    - name: Configure MRTK for Oculus Quest
+      href: CrossPlatform/OculusQuestMRTK.md
   - name: Detecting Platform Capabilities
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System

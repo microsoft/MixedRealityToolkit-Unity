@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -320,13 +321,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.
         /// </summary>
+        [Obsolete("Service inspectors will be removed in an upcoming release")]
         public bool UseServiceInspectors
         {
             get { return useServiceInspectors; }
         }
 
+        [Obsolete("Service inspectors will be removed in an upcoming release")]
         [SerializeField]
-        [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
+        [Tooltip("Deprecated: If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
         private bool useServiceInspectors = false;
 
         /// <summary>

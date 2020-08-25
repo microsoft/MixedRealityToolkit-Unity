@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (visualsScaleParent)
                 {
                     // get old child and remove it
-                    Transform obsoleteChild = visualsScaleParent.Find("visuals");
+                    Transform obsoleteChild = visualsScaleParent.Find(visualsName);
                     if (obsoleteChild)
                     {
                         obsoleteChild.parent = null;
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 cornerVisual.transform.Rotate(0, 0, -90);
             }
 
-            cornerVisual.name = "visuals";
+            cornerVisual.name = visualsName;
 
             // this is the size of the corner visuals
             var cornerbounds = VisualUtils.GetMaxBounds(cornerVisual);
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override Transform GetVisual(Transform handle)
         {
             Transform visual = handle.GetChild(0)?.GetChild(0);
-            if (visual != null && visual.name == "visuals")
+            if (visual != null && visual.name == visualsName)
             {
                 return visual;
             }

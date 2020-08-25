@@ -28,14 +28,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     }
 
     /// <summary>
-    /// Enum which describes whether a bounds control handle which has been grabbed, is 
-    /// a Rotation Handle (sphere) or a Scale Handle( cube)
+    /// Enum describing the type of handle grabbed; can be a rotation (edge-mounted)
+    /// handle, a scaling (corner-mounted) handle, or a translation (face-mounted)
+    /// handle.
     /// </summary>
     public enum HandleType
     {
         None = 0,
         Rotation,
-        Scale
+        Scale,
+        Translation
     }
 
     /// <summary>
@@ -51,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         Cubic = 0,
         Cylindrical
     }
-
 
     /// <summary>
     /// This enum defines what volume type the bound calculation depends on and its priority
@@ -101,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
     /// <summary>
     /// This enum defines which of the axes a given rotation handle revolves about.
     /// </summary>
-    internal enum CardinalAxisType
+    public enum CardinalAxisType
     {
         X = 0,
         Y,
@@ -121,5 +122,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes
         /// Scales non uniformly according to movement in 3d space.
         /// </summary>
         NonUniform
+    }
+
+    /// <summary>
+    /// Enum describing faces of a bounds control box
+    /// </summary>
+    internal enum Face
+    {
+        ForwardX    = 0,
+        BackwardX   = 1,
+        ForwardY    = 2,
+        BackwardY   = 3,
+        ForwardZ    = 4,
+        BackwardZ   = 5,
+    }
+
+    /// <summary>
+    /// Enum describing edges / links of a bounds control box
+    /// </summary>
+    internal enum Edges
+    {
+        FrontBottom = 0,
+        FrontLeft   = 1,
+        FrontTop    = 2,
+        FrontRight  = 3,
+        BackBottom  = 4,
+        BackLeft    = 5,
+        BackTop     = 6,
+        BackRight   = 7,
+        BottomLeft  = 8,
+        BottomRight = 9,
+        TopLeft     = 10,
+        TopRight    = 11,
     }
 }
