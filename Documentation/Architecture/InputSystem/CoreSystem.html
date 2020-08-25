@@ -10,7 +10,7 @@
     <meta name="title" content="Core system | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../.././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../../styles/docfx.css">
     <link rel="stylesheet" href="../../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../../index.html">
-                <img id="logo" class="svg" src="../../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../.././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -104,7 +104,7 @@ documentation.</li>
 <p>Input events are generally fired on two different channels:</p>
 <h3 id="objects-in-focus">Objects in focus</h3>
 <p>Events can be sent directly to a GameObject that has focus. For example, an object might
-have a script that implements <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html"><code>IMixedRealityTouchHandler</code></a>.
+have a script that implements <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Interfaces/InputSystem/Handlers/IMixedRealityHandTrackHandler.cs"><code>IMixedRealityTouchHandler</code></a>.
 This object would get touch events when focused by a hand that is near it. These types of
 events go &quot;up&quot; the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.</p>

@@ -10,7 +10,7 @@
     <meta name="title" content="Tap to Place | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -114,8 +114,7 @@
 <li><code>Auto Start</code>: If true, the Tap to Place solver will start out controlling the position of the game object to be placed. The object will immediately start following the TrackedTargetType (Head or Controller Ray). This value must be modified before Start() is invoked in order to have any effect.</li>
 <li><code>Default Placement Distance</code>: The default distance (in meters) an object will be placed relative to the TrackedTargetType forward in the SolverHandler. The game object will be placed at the default placement distance if a surface is not hit by the raycast.</li>
 <li><code>Max Raycast Distance</code>: The max distance (meters) for the raycast based on the 'TrackedTargetType' origin. This raycast looks for a surface to place a selected object.</li>
-<li><code>UseDefaultSurfaceNormalOffset</code>: This property is true by default, it ensures the object being placed is aligned on a surface. If this property is true, the default surface normal offset will be applied instead of any value specified for the <code>SurfaceNormalOffset</code> property. If false, the value for <code>SurfaceNormalOffset</code> will be applied. The default surface normal offset is the collider's extents along the z axis.</li>
-<li><code>Surface Normal Offset</code>: The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface. This property is only applied to an object if <code>UseDefaultSurfaceNormalOffset</code> is false.</li>
+<li><code>Surface Normal Offset</code>: The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface. By default, the surface normal offset is 0 but after Start() the surface normal offset is set to the collider's extents along the z axis.</li>
 <li><code>Keep Orientation Vertical</code>: If true, the game object to place will remain upright and in line with Vector3.up.</li>
 <li><code>Rotate According to Surface</code>: If false, the game object to place will not change its rotation according to the surface hit.  The object will remain facing the camera while IsBeingPlaced is true.</li>
 <li><code>Magnetic Surfaces</code>: An array of LayerMasks to execute from highest to lowest priority. First layer mask to provide a raycast hit will be used for position calculations.</li>

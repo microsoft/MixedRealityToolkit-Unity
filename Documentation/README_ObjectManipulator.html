@@ -10,7 +10,7 @@
     <meta name="title" content="Object manipulator | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -132,22 +132,15 @@
 <h4 id="go-to-component">Go to component</h4>
 <p>All constraints found on the object wil be listed here with a <em>Go to component</em> button. This button will cause the inspector to scroll to the selected constraint component so that it can be configured.</p>
 <h3 id="physics">Physics</h3>
-<p>Settings in this section appear only when the object has a RigidBody component.</p>
 <h4 id="release-behavior">Release behavior</h4>
-<p>Specify which physical properties a manipulated object should keep upon release. Because this property is a flag, both options can be selected.</p>
+<p>Specify which physical properties a manipulated object should keep upon release. Requires a rigidbody component to be on that object. Because this property is a flag, both options can be selected.</p>
 <ul>
 <li><em>Keep Velocity</em>: When the object is released, if this option is selected it will keep its linear velocity.</li>
 <li><em>Keep Angular Velocity</em>: When the object is released, if this option is selected it will keep its angular velocity.</li>
 </ul>
-<h4 id="use-forces-for-near-manipulation">Use forces for near manipulation</h4>
-<p>Whether physics forces are used to move the object when performing near manipulations. Setting this to <em>false</em> will make the object feel more directly connected to the users hand. Setting this to <em>true</em> will honor the mass and inertia of the object, but may feel as though the object is connected through a spring. The default is <em>false</em>.</p>
 <h3 id="smoothing">Smoothing</h3>
-<h4 id="smoothing-far">Smoothing far</h4>
-<p>Whether frame-rate independent smoothing is enabled for far interactions. Far smoothing is enabled by default.</p>
-<h4 id="smoothing-near">Smoothing near</h4>
-<p>Whether frame-rate independent smoothing is enabled for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.</p>
 <h4 id="smoothing-active">Smoothing active</h4>
-<p>Obsolete and will be removed in a future version. Applications should use SmoothingFar, SmoothingNear or a combination of the two.</p>
+<p>Specifies whether smoothing is active.</p>
 <h4 id="move-lerp-time">Move lerp time</h4>
 <p>Amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
 <h4 id="rotate-lerp-time">Rotate lerp time</h4>

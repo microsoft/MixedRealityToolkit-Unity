@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -92,29 +92,10 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html">TestController</a></div>
-    <div class="level2"><span class="xref">TestHand</span></div>
+    <div class="level1"><span class="xref">TestHand</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_handedness">TestController.handedness</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_position">TestController.position</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_rotation">TestController.rotation</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_simulationService">TestController.simulationService</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_GetVelocity">TestController.GetVelocity()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_GetPointer__1">TestController.GetPointer&lt;T&gt;()</a>
-    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -141,7 +122,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TestHand : TestController</code></pre>
+    <pre><code class="lang-csharp hljs">public class TestHand</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -183,7 +164,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator Click()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator Click()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,8 +181,75 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_Click">TestController.Click()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_GetPointer_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.GetPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_GetPointer__1" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.GetPointer``1">GetPointer&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Returns the first pointer of given type that is associated with this hand.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetPointer&lt;T&gt;()
+    where T : class, IMixedRealityPointer</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of pointer to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_GetVelocity_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.GetVelocity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_GetVelocity" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.GetVelocity">GetVelocity()</h4>
+  <div class="markdown level1 summary"><p>Returns the velocity of the simulated hand</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetVelocity()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_GrabAndThrowAt_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.GrabAndThrowAt*"></a>
@@ -262,12 +310,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Hide_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Hide*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Hide_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Hide(System.Boolean)">Hide(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Hide the controller</p>
+  <div class="markdown level1 summary"><p>Hide the hand</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator Hide(bool waitForFixedUpdate = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator Hide(bool waitForFixedUpdate = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -302,18 +350,16 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_Hide_System_Boolean_">TestController.Hide(Boolean)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Move_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Move*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Move_Vector3_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Move(Vector3,System.Int32)">Move(Vector3, Int32)</h4>
-  <div class="markdown level1 summary"><p>Move the controller by some given delta</p>
+  <div class="markdown level1 summary"><p>Move the hand by some given delta.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator Move(Vector3 delta, int numSteps = -1)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator Move(Vector3 delta, int numSteps = -1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -328,7 +374,7 @@
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">delta</span></td>
-        <td><p>Amount to move the controller by.</p>
+        <td><p>Amount to move the hand by.</p>
 </td>
       </tr>
       <tr>
@@ -336,7 +382,7 @@
         <td><span class="parametername">numSteps</span></td>
         <td><p>How many frames to move over. This defaults to the &quot;sentinel&quot; value which tells the system
 to use the default number of steps. For more information on this value, see
-<span class="xref">Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ControllerMoveStepsSentinelValue</span></p>
+<span class="xref">Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveStepsSentinelValue</span></p>
 </td>
       </tr>
     </tbody>
@@ -356,18 +402,16 @@ to use the default number of steps. For more information on this value, see
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_Move_Vector3_System_Int32_">TestController.Move(Vector3, Int32)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_MoveTo_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.MoveTo*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_MoveTo_Vector3_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.MoveTo(Vector3,System.Int32,System.Boolean)">MoveTo(Vector3, Int32, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Move controller to given position over some number of frames</p>
+  <div class="markdown level1 summary"><p>Moves hand to given position over some number of frames.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator MoveTo(Vector3 newPosition, int numSteps = -1, bool waitForFixedUpdate = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator MoveTo(Vector3 newPosition, int numSteps = -1, bool waitForFixedUpdate = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -382,7 +426,7 @@ to use the default number of steps. For more information on this value, see
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">newPosition</span></td>
-        <td><p>Where to move controller to</p>
+        <td><p>Where to move hand to</p>
 </td>
       </tr>
       <tr>
@@ -390,13 +434,13 @@ to use the default number of steps. For more information on this value, see
         <td><span class="parametername">numSteps</span></td>
         <td><p>How many frames to move over. This defaults to the &quot;sentinel&quot; value which tells the system
 to use the default number of steps. For more information on this value, see
-<span class="xref">Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ControllerMoveStepsSentinelValue</span></p>
+<span class="xref">Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveStepsSentinelValue</span></p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">waitForFixedUpdate</span></td>
-        <td><p>If true, waits a physics frame after moving the controller</p>
+        <td><p>If true, waits a physics frame after moving the hand</p>
 </td>
       </tr>
     </tbody>
@@ -416,8 +460,6 @@ to use the default number of steps. For more information on this value, see
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_MoveTo_Vector3_System_Int32_System_Boolean_">TestController.MoveTo(Vector3, Int32, Boolean)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_SetGesture_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.SetGesture*"></a>
@@ -472,12 +514,12 @@ to use the default number of steps. For more information on this value, see
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_SetRotation_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.SetRotation*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_SetRotation_Quaternion_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.SetRotation(Quaternion,System.Int32)">SetRotation(Quaternion, Int32)</h4>
-  <div class="markdown level1 summary"><p>Rotate the controller to new rotation</p>
+  <div class="markdown level1 summary"><p>Rotates the hand to new rotation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator SetRotation(Quaternion newRotation, int numSteps = -1)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator SetRotation(Quaternion newRotation, int numSteps = -1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -492,7 +534,7 @@ to use the default number of steps. For more information on this value, see
       <tr>
         <td><span class="xref">Quaternion</span></td>
         <td><span class="parametername">newRotation</span></td>
-        <td><p>New rotation of controller</p>
+        <td><p>New rotation of hand</p>
 </td>
       </tr>
       <tr>
@@ -518,18 +560,16 @@ to use the default number of steps. For more information on this value, see
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_SetRotation_Quaternion_System_Int32_">TestController.SetRotation(Quaternion, Int32)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Show_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Show*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_TestHand_Show_Vector3_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Tests.TestHand.Show(Vector3,System.Boolean)">Show(Vector3, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Show the controller at a specified position</p>
+  <div class="markdown level1 summary"><p>Show the hand at a specified position</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -544,13 +584,13 @@ to use the default number of steps. For more information on this value, see
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">position</span></td>
-        <td><p>Where to show the controller</p>
+        <td><p>Where to show the hand</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">waitForFixedUpdate</span></td>
-        <td><p>If true, will wait for a physics frame after showing the controller.</p>
+        <td><p>If true, will wait for a physics frame after showing the hand.</p>
 </td>
       </tr>
     </tbody>
@@ -570,8 +610,6 @@ to use the default number of steps. For more information on this value, see
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestController.html#Microsoft_MixedReality_Toolkit_Tests_TestController_Show_Vector3_System_Boolean_">TestController.Show(Vector3, Boolean)</a></div>
 </article>
           </div>
           

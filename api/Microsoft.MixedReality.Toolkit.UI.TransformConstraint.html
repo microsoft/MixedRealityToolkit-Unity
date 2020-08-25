@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -117,7 +117,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected MixedRealityTransform worldPoseOnManipulationStart</code></pre>
+    <pre><code class="lang-csharp hljs">protected MixedRealityPose worldPoseOnManipulationStart</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -129,7 +129,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="xref">MixedRealityPose</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -222,8 +222,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Deprecated: Get component transform instead.&quot;)]
-public Transform TargetTransform { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Transform TargetTransform { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -279,8 +278,7 @@ public Transform TargetTransform { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.&quot;)]
-public virtual void Initialize(MixedRealityPose worldPose)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Initialize(MixedRealityPose worldPose)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -301,51 +299,13 @@ public virtual void Initialize(MixedRealityPose worldPose)</code></pre>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.Initialize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Initialize_MixedRealityTransform_" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.Initialize(MixedRealityTransform)">Initialize(MixedRealityTransform)</h4>
-  <div class="markdown level1 summary"><p>Intended to be called on manipulation started</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Initialize(MixedRealityTransform worldPose)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MixedRealityTransform</span></td>
-        <td><span class="parametername">worldPose</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.OnDisable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.OnDisable">OnDisable()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Start_" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_Start" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.Start">Start()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnDisable()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.OnEnable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_TransformConstraint_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.UI.TransformConstraint.OnEnable">OnEnable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnEnable()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Start()</code></pre>
   </div>
 </article>
           </div>

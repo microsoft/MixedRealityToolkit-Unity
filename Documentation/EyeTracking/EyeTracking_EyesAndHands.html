@@ -10,7 +10,7 @@
     <meta name="title" content="Eyes + hand interaction | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -91,19 +91,13 @@ In our <a href="EyeTracking_ExamplesOverview.html">MRTK eye tracking demos</a>, 
 <li><a href="EyeTracking_Navigation.html">Navigation</a>: Simply look at a location you want to zoom in, pinch your index finger and thumb together and <em>pull</em> your hand toward you to zoom in.</li>
 </ul>
 <p>Please note that MRTK is currently designed in a way that at a distance hand rays act as the prioritized focus pointers.
-This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected and will become visible again after saying &quot;Select&quot;.
+This means that the head and eye gaze pointers will automatically be suppressed once a hand is detected.
 However, this may not be the way you would like to interact at a distance and rather favor a simple <em>'gaze and commit'</em> interaction independent of the presence of hands in your view.</p>
 <h3 id="how-to-disable-the-hand-ray">How to disable the hand ray</h3>
 <p>To disable the hand ray pointer, simply remove the <em>'DefaultControllerPointer'</em> in your <em>Input -&gt; Pointer</em> MRTK configuration setting.
 To use eyes and hands as described above in your app, please also make sure that you meet all of the <a href="EyeTracking_BasicSetup.html">requirements for using eye tracking</a>.</p>
 <p><img src="../Images/EyeTracking/mrtk_setup_removehandray.jpg" alt="How to remove the hand ray"></p>
 <p>You can also check out, how the input profile <em>EyeTrackingDemoPointerProfile</em> from the eye tracking sample package is set up as a reference.</p>
-<h3 id="how-to-keep-gaze-pointer-always-on">How to keep gaze pointer always on</h3>
-<p>To avoid having the head or eye gaze pointers automatically suppressed once a hand is detected, the gaze <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerBehavior.html"><code>PointerBehavior</code></a> can be specified to control whether it should be on or off.</p>
-<pre><code class="lang-c#">// Turn on gaze pointer
-PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
-</code></pre>
-<p>See <a href="../Architecture/InputSystem/ControllersPointersAndFocus.html"><code>Controllers Pointers and Focus</code></a></p>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
 </article>

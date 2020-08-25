@@ -10,7 +10,7 @@
     <meta name="title" content="Holographic Remoting | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -94,12 +94,24 @@
 <li>Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.</li>
 </ol>
 <h3 id="hololens-2">HoloLens 2</h3>
-<p>When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select <strong>Mixed Reality Toolkit</strong> &gt; <strong>MSBuild</strong> &gt; <strong>Use MSBuild for Unity dependency resolution</strong>. This will install the required dependencies for Holographic Remoting.</p>
-<p>Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the <strong>Use MSBuild for Unity dependency resolution</strong> option fails, please use the following steps to enable holographic remoting.</p>
+<p>When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features,
+configure the project using the following steps.</p>
 <ol>
-<li><p>Set the target platform in <strong>File &gt; Build Settings</strong> to <strong>Universal Windows Platform</strong></p>
+<li><p>Run the MRTK Configurator Utility (<strong>Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity Project</strong>)</p>
 </li>
-<li><p>If it does not automatically display, run the MRTK Configurator Utility (<strong>Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity Project</strong>)</p>
+<li><p>Expand <strong>Modify Configurations</strong></p>
+<p><img src="../Images/Tools/Remoting/EnableMSBuildForUnity.png" alt="MRTK Configurator"></p>
+</li>
+<li><p>Ensure that <strong>Enable MSBuild for Unity</strong> is selected</p>
+</li>
+<li><p>Click <strong>Apply</strong></p>
+</li>
+</ol>
+<p>When using <strong>Unity 2019.3</strong> and later the <strong>Enable MSBuild for Unity</strong> is not available. please follow the below procedures to enable holographic remoting.</p>
+<ol>
+<li><p>Run the MRTK Configurator Utility (<strong>Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity Project</strong>)</p>
+</li>
+<li><p>Set the target platform in <strong>File &gt; Build Settings</strong> to <strong>Universal Windows Platform</strong></p>
 </li>
 <li><p>Click <strong>Apply</strong></p>
 </li>
@@ -121,7 +133,8 @@
 <h4 id="msbuildforunity-package-import-via-writing-into-the-packagemanifest">MSBuildForUnity package import via writing into the package.manifest</h4>
 <div class="NOTE">
 <h5>Note</h5>
-<p>There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If <strong>Mixed Reality Toolkit</strong> &gt; <strong>MSBuild</strong> &gt; <strong>Use MSBuild for Unity dependency resolution</strong> does not work correctly, please refer to the <a href="#manual-dotnetadapter-installation">manual installation instructions</a>.</p>
+<p>There is a known issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. To avoid this issue, the MRTK does not support MSBuild for Unity on Unity 2019.3.</p>
+<p>To acquire the required NuGet package when running on Unity 2019.3, please refer to the <a href="#manual-dotnetadapter-installation">manual installation instructions</a>.</p>
 </div>
 <p>The best way to check is to open Window -&gt; Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -&gt; Utilities -&gt; Configure Unity and repeat the steps above for running the MRTK Configurator.</p>
 <p><img src="../Images/Tools/Remoting/MSB4UPackageManager.png" alt="MSB4U Package Manager"></p>

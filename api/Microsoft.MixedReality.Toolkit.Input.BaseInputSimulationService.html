@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -104,7 +104,7 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -331,56 +331,13 @@ protected BaseInputSimulationService(IMixedRealityServiceRegistrar registrar, IM
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_GetActiveControllers">BaseInputDeviceManager.GetActiveControllers()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetControllerDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetControllerDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetControllerDevice_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetControllerDevice(Handedness)">GetControllerDevice(Handedness)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BaseController GetControllerDevice(Handedness handedness)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseController.html">BaseController</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetHandDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetHandDevice*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetHandDevice_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetHandDevice(Handedness)">GetHandDevice(Handedness)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetControllerDevice instead.&quot;)]
-public SimulatedHand GetHandDevice(Handedness handedness)</code></pre>
+    <pre><code class="lang-csharp hljs">public SimulatedHand GetHandDevice(Handedness handedness)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -410,53 +367,6 @@ public SimulatedHand GetHandDevice(Handedness handedness)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html">SimulatedHand</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddControllerDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetOrAddControllerDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddControllerDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetOrAddControllerDevice(Handedness,Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode)">GetOrAddControllerDevice(Handedness, ControllerSimulationMode)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BaseController GetOrAddControllerDevice(Handedness handedness, ControllerSimulationMode simulationMode)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode.html">ControllerSimulationMode</a></td>
-        <td><span class="parametername">simulationMode</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseController.html">BaseController</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -464,13 +374,12 @@ public SimulatedHand GetHandDevice(Handedness handedness)</code></pre>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetOrAddHandDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetOrAddHandDevice(Handedness,Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode)">GetOrAddHandDevice(Handedness, ControllerSimulationMode)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.GetOrAddHandDevice(Handedness,Microsoft.MixedReality.Toolkit.Input.HandSimulationMode)">GetOrAddHandDevice(Handedness, HandSimulationMode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrAddControllerDevice instead.&quot;)]
-protected SimulatedHand GetOrAddHandDevice(Handedness handedness, ControllerSimulationMode simulationMode)</code></pre>
+    <pre><code class="lang-csharp hljs">protected SimulatedHand GetOrAddHandDevice(Handedness handedness, HandSimulationMode simulationMode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -488,7 +397,7 @@ protected SimulatedHand GetOrAddHandDevice(Handedness handedness, ControllerSimu
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode.html">ControllerSimulationMode</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.html">HandSimulationMode</a></td>
         <td><span class="parametername">simulationMode</span></td>
         <td></td>
       </tr>
@@ -509,16 +418,6 @@ protected SimulatedHand GetOrAddHandDevice(Handedness handedness, ControllerSimu
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveAllControllerDevices_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveAllControllerDevices*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveAllControllerDevices" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveAllControllerDevices">RemoveAllControllerDevices()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RemoveAllControllerDevices()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveAllHandDevices_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveAllHandDevices*"></a>
@@ -527,36 +426,8 @@ protected SimulatedHand GetOrAddHandDevice(Handedness handedness, ControllerSimu
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use RemoveAllControllerDevices instead.&quot;)]
-protected void RemoveAllHandDevices()</code></pre>
+    <pre><code class="lang-csharp hljs">protected void RemoveAllHandDevices()</code></pre>
   </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveControllerDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveControllerDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveControllerDevice_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveControllerDevice(Handedness)">RemoveControllerDevice(Handedness)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RemoveControllerDevice(Handedness handedness)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveHandDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.RemoveHandDevice*"></a>
@@ -565,8 +436,7 @@ protected void RemoveAllHandDevices()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use RemoveControllerDevice instead.&quot;)]
-protected void RemoveHandDevice(Handedness handedness)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void RemoveHandDevice(Handedness handedness)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -581,43 +451,6 @@ protected void RemoveHandDevice(Handedness handedness)</code></pre>
       <tr>
         <td><span class="xref">Handedness</span></td>
         <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateControllerDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.UpdateControllerDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateControllerDevice_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_Handedness_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.UpdateControllerDevice(Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode,Handedness,System.Object)">UpdateControllerDevice(ControllerSimulationMode, Handedness, Object)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void UpdateControllerDevice(ControllerSimulationMode simulationMode, Handedness handedness, object controllerData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode.html">ControllerSimulationMode</a></td>
-        <td><span class="parametername">simulationMode</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">controllerData</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -625,13 +458,12 @@ protected void RemoveHandDevice(Handedness handedness)</code></pre>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.UpdateHandDevice*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_Handedness_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.UpdateHandDevice(Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode,Handedness,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData)">UpdateHandDevice(ControllerSimulationMode, Handedness, SimulatedHandData)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Handedness_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.UpdateHandDevice(Microsoft.MixedReality.Toolkit.Input.HandSimulationMode,Handedness,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData)">UpdateHandDevice(HandSimulationMode, Handedness, SimulatedHandData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use UpdateControllerDevice instead.&quot;)]
-protected void UpdateHandDevice(ControllerSimulationMode simulationMode, Handedness handedness, SimulatedHandData handData)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void UpdateHandDevice(HandSimulationMode simulationMode, Handedness handedness, SimulatedHandData handData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -644,7 +476,7 @@ protected void UpdateHandDevice(ControllerSimulationMode simulationMode, Handedn
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode.html">ControllerSimulationMode</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.html">HandSimulationMode</a></td>
         <td><span class="parametername">simulationMode</span></td>
         <td></td>
       </tr>
@@ -671,7 +503,7 @@ protected void UpdateHandDevice(ControllerSimulationMode simulationMode, Handedn
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>

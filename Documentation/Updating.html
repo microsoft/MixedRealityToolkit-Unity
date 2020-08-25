@@ -10,7 +10,7 @@
     <meta name="title" content="Updating the Microsoft Mixed Reality Toolkit | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -92,6 +92,10 @@
 </ul>
 <h2 id="upgrading-to-a-new-version-of-mrtk">Upgrading to a new version of MRTK</h2>
 <p>The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-230-to-240"><strong>Updating 2.3.0 to 2.4.0</strong></a> article.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>At this time, it is not supported to switch between using .unitypackage files and NuGet.</p>
+</div>
 <p><em>Starting with 2.4.0, it is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a>
 after getting the MRTK update</em>* to auto-fix and upgrade from deprecated components and adjust to
 breaking changes. The migration tool is part of the <strong>Tools</strong> package.</p>
@@ -144,13 +148,8 @@ breaking changes. The migration tool is part of the <strong>Tools</strong> packa
 <li>(Optional) Examples</li>
 </ul>
 </li>
-<li>Close Unity and delete the <strong>Library</strong> folder (read the note below first!). This step is necessary to force Unity to refresh its
-asset database and reconcile existing custom profiles.
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.</p>
-</div>
-</li>
+<li>Close Unity and delete the <strong>Library</strong> folder. This step is necessary to force Unity to refresh its
+asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
 <li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
@@ -160,6 +159,22 @@ asset database and reconcile existing custom profiles.
 </ul>
 </li>
 <li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.</li>
+</ol>
+<h3 id="nuget-packages">NuGet packages</h3>
+<p>If your project was created using the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, please use the following steps.</p>
+<ol>
+<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
+<li>Select the <strong>Online</strong> tab and click <strong>Refresh</strong></li>
+<li>Select the <strong>Installed</strong> tab</li>
+<li>Click the <strong>Update</strong> button for each installed package
+<ul>
+<li>Microsoft.MixedReality.Toolkit.Foundation</li>
+<li>Microsoft.MixedReality.Toolkit.Tools</li>
+<li>Microsoft.MixedReality.Toolkit.Extensions</li>
+<li>Microsoft.MixedReality.Toolkit.Examples</li>
+</ul>
+</li>
+<li>Close and re-open the project in Unity</li>
 </ol>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
 <p><a href="#folder-renames-in-240">Folder renames</a>
@@ -216,9 +231,6 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 <h3 id="eye-gaze-setup-in-240">Eye gaze setup in 2.4.0</h3>
 <p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>
 <p>For more information on these changes and complete instructions for eye tracking setup, please see the <a href="EyeTracking/EyeTracking_BasicSetup.html">eye tracking</a> article.</p>
-<h3 id="eye-gaze-pointer-behavior-in-240">Eye gaze pointer behavior in 2.4.0</h3>
-<p>The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. The eye gaze pointer will become visible again after saying &quot;Select&quot;.</p>
-<p>Details about gaze and hand setups can be found in the <a href="EyeTracking/EyeTracking_EyesAndHands.html#how-to-keep-gaze-pointer-always-on">eyes and hands</a> article.</p>
 <h3 id="api-changes-in-240">API changes in 2.4.0</h3>
 <p><strong>Custom controller classes</strong></p>
 <p>Custom controller classes previously had to define <code>SetupDefaultInteractions(Handedness)</code>. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (<code>AssignControllerMappings(DefaultInteractions);</code>), so the full call has been refactored down into <code>BaseController</code> and made an optional override instead of required.</p>

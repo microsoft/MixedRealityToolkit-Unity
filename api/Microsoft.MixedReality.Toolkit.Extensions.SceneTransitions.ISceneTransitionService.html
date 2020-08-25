@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -119,9 +119,6 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Destroy">IMixedRealityService.Destroy()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.html">Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions</a></h6>
@@ -259,7 +256,7 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="xref">Action</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -287,7 +284,7 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="xref">Action</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -375,13 +372,13 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_IEnumerable_System_Func_Task___IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(IEnumerable{System.Func{Task}},IProgressIndicator)">DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt;, IProgressIndicator)</h4>
-  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_Func_Task__Func_Task__IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(Func{Task},Func{Task},IProgressIndicator)">DoSceneTransition(Func&lt;Task&gt;, Func&lt;Task&gt;, IProgressIndicator)</h4>
+  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, executes scene op 1, executes scene op 2, disables progress indicator, fades back in</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt; sceneOperations, IProgressIndicator progressIndicator = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task DoSceneTransition(Func&lt;Task&gt; sceneOp1, Func&lt;Task&gt; sceneOp2, IProgressIndicator progressIndicator = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -394,16 +391,19 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;&gt;</td>
-        <td><span class="parametername">sceneOperations</span></td>
-        <td><p>A set of tasks from the Scene System.</p>
-</td>
+        <td><span class="xref">Func</span>&lt;<span class="xref">Task</span>&gt;</td>
+        <td><span class="parametername">sceneOp1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Func</span>&lt;<span class="xref">Task</span>&gt;</td>
+        <td><span class="parametername">sceneOp2</span></td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">IProgressIndicator</span></td>
         <td><span class="parametername">progressIndicator</span></td>
-        <td><p>If null, default progress indicator prefab will be used (or none if default is disabled in profile)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -425,69 +425,7 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_IEnumerable_System_Func_Task___System_Single_System_Single_IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(IEnumerable{System.Func{Task}},System.Single,System.Single,IProgressIndicator)">DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt;, Single, Single, IProgressIndicator)</h4>
-  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt; sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;&gt;</td>
-        <td><span class="parametername">sceneOperations</span></td>
-        <td><p>A set of tasks from the Scene System.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td><span class="parametername">fadeOutTime</span></td>
-        <td><p>Overrides the default FadeOutTIme value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td><span class="parametername">fadeInTime</span></td>
-        <td><p>Overrides the default FadeInTime value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">IProgressIndicator</span></td>
-        <td><span class="parametername">progressIndicator</span></td>
-        <td><p>If null, default progress indicator prefab will be used (or none if default is disabled in profile)</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Task</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_System_Func_Task__IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(System.Func{Task},IProgressIndicator)">DoSceneTransition(Func&lt;Task&gt;, IProgressIndicator)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_Func_Task__IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(Func{Task},IProgressIndicator)">DoSceneTransition(Func&lt;Task&gt;, IProgressIndicator)</h4>
   <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operation, disables progress indicator, fades back in</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -506,7 +444,7 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;</td>
+        <td><span class="xref">Func</span>&lt;<span class="xref">Task</span>&gt;</td>
         <td><span class="parametername">sceneOperation</span></td>
         <td></td>
       </tr>
@@ -536,13 +474,13 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_System_Func_Task__System_Func_Task__IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(System.Func{Task},System.Func{Task},IProgressIndicator)">DoSceneTransition(Func&lt;Task&gt;, Func&lt;Task&gt;, IProgressIndicator)</h4>
-  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, executes scene op 1, executes scene op 2, disables progress indicator, fades back in</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_IEnumerable_Func_Task___IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(IEnumerable{Func{Task}},IProgressIndicator)">DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt;, IProgressIndicator)</h4>
+  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DoSceneTransition(Func&lt;Task&gt; sceneOp1, Func&lt;Task&gt; sceneOp2, IProgressIndicator progressIndicator = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt; sceneOperations, IProgressIndicator progressIndicator = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -555,19 +493,78 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;</td>
-        <td><span class="parametername">sceneOp1</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;</td>
-        <td><span class="parametername">sceneOp2</span></td>
-        <td></td>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">Task</span>&gt;&gt;</td>
+        <td><span class="parametername">sceneOperations</span></td>
+        <td><p>A set of tasks from the Scene System.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">IProgressIndicator</span></td>
         <td><span class="parametername">progressIndicator</span></td>
+        <td><p>If null, default progress indicator prefab will be used (or none if default is disabled in profile)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_ISceneTransitionService_DoSceneTransition_IEnumerable_Func_Task___System_Single_System_Single_IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.ISceneTransitionService.DoSceneTransition(IEnumerable{Func{Task}},System.Single,System.Single,IProgressIndicator)">DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt;, Single, Single, IProgressIndicator)</h4>
+  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt; sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Func</span>&lt;<span class="xref">Task</span>&gt;&gt;</td>
+        <td><span class="parametername">sceneOperations</span></td>
+        <td><p>A set of tasks from the Scene System.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeOutTime</span></td>
+        <td><p>Overrides the default FadeOutTIme value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeInTime</span></td>
+        <td><p>Overrides the default FadeInTime value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IProgressIndicator</span></td>
+        <td><span class="parametername">progressIndicator</span></td>
+        <td><p>If null, default progress indicator prefab will be used (or none if default is disabled in profile)</p>
+</td>
       </tr>
     </tbody>
   </table>
