@@ -55,8 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             SpatialAwarenessSurfaceTypes.Floor | 
             SpatialAwarenessSurfaceTypes.Ceiling | 
             SpatialAwarenessSurfaceTypes.Wall |
-            SpatialAwarenessSurfaceTypes.Seat |
-            SpatialAwarenessSurfaceTypes.Table;
+            SpatialAwarenessSurfaceTypes.Platform;
 
         /// <summary>
         /// Which plane types the observer should generate.

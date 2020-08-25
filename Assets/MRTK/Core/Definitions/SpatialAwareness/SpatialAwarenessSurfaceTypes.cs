@@ -10,8 +10,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     public enum SpatialAwarenessSurfaceTypes
     {
         /// <summary>
-        /// An unknown / unsupported type of surface.
+        /// An surface that cannot yet be categorized.
         /// </summary>
+        /// <remarks>
+        /// Unknown should not be confused with Background. Unknown surfaces may
+        /// have no classification or there may not yet be enough data to assign
+        /// a surface type. Additional environmental scanning may provide the necessary
+        /// data to classify the surface.
+        /// </remarks>
         Unknown = 1 << 0,
 
         /// <summary>
@@ -30,26 +36,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Wall = 1 << 3,
 
         /// <summary>
-        /// A surface upon which a character could sit, such as a chair or a couch.
+        /// A large, raised surface upon which objects can be placed.
         /// </summary>
-        Seat = 1 << 4,
-
-        /// <summary>
-        /// A horizontal surface, above the floor.
-        /// </summary>
-        Table = 1 << 5,
-
-        /// <summary>
-        /// A doorway within a wall surface.
-        /// </summary>
-        Door = 1 << 6,
-
-        /// <summary>
-        /// Windows generally appear within a wall, ceiling or other surface.
-        /// </summary>
-        Window = 1 << 7,
+        /// <remarks>
+        /// Platforms can represent tables, countertops, shelves or other horizontal surfaces.
+        /// </remarks>
+        Platform = 1 << 4,
 
         // Insert additional surface types here.
+
+        /// <summary>
+        /// A surface that does not fit one of the defined surface types.
+        /// </summary>
+        /// <remarks>
+        /// Background should not be confused with Unknown. There is sufficient data to 
+        /// classify the surface and it has been found to not correspond to a defined type.
+        /// </remarks>
+        Background = 1 << 29,
 
         /// <summary>
         /// A boundless world mesh.
