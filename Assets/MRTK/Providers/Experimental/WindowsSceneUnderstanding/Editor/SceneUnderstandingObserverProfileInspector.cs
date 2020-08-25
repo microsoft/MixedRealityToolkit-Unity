@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental;
 using System.Linq;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.Editor.WindowsSceneUnderstanding.Experimental
 {
-    [CustomEditor(typeof(Experimental.SpatialAwareness.MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile))]
-    public class MixedRealitySpatialAwarenessSceneUnderstandingObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    [CustomEditor(typeof(SceneUnderstandingObserverProfile))]
+    public class SceneUnderstandingObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         // BaseSpatialAwarenessObserverProfile
 

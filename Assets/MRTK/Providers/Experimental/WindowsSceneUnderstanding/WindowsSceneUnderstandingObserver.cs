@@ -24,7 +24,7 @@ using UnityEngine.EventSystems;
 using Windows.Storage;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         }
 
         /// <summary>
-        /// 
+        /// Reads the observer's configuration profile.
         /// </summary>
         private void ReadProfile()
         {
@@ -61,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
-            MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile;
+            SceneUnderstandingObserverProfile profile = ConfigurationProfile as SceneUnderstandingObserverProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a MixedRealitySceneUnderstandingObserverProfile.");
+                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
                 return;
             }
 

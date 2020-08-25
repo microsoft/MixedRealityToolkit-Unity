@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.WindowSceneUnderstanding",
+    "name": "Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding",
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],

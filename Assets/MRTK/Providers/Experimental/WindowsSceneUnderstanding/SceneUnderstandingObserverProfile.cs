@@ -6,14 +6,14 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.Experimental.WindowsSceneUnderstanding
 {
     /// <summary>
     /// Configuration profile settings for spatial awareness mesh observers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Scene Understanding Observer Profile", fileName = "MixedRealitySceneUnderstandingObserverProfile", order = (int)CreateProfileMenuItemIndices.SceneUnderstandingObserver)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Scene Understanding Observer Profile", fileName = "SceneUnderstandingObserverProfile", order = (int)CreateProfileMenuItemIndices.SceneUnderstandingObserver)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessSceneUnderstandingObserver))]
-    public class MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverProfile
+    public class SceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverProfile
     {
         #region IMixedRealityOnDemandObserver settings
 
