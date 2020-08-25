@@ -1,0 +1,45 @@
+# [Template] Compile MRTK inside Unity for Build Call.
+
+parameters: 
+  Arch: ''  # x86|arm
+  Platform: ''  # UWP|Standalone
+  UnityArgs: 'none' # [optional] additional args passed to Unity
+  ScriptingBackend: 'default'  # [optional] default|.NET
+  PublishArtifacts: false
+  PackagingDir: '' # Takes input from pipelines/templates/buildcallsetup.yml
+  Scene: '' # Possible scenes are located in the $sceneList variable in the scripts/test/SceneBuilder.ps1 script.
+  UnityVersion: "" # Takes input from pipelines/buildcallmanual.yml
+  PublishProject: '' # yes|no Tells the SceneBuilder.ps1 script to publish (or not publish) the project files to the build artifacts.
+
+# This 
+steps:
+- task: PowerShell@2
+  displayName: 'Build Example Scene'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/test/SceneBuilder.ps1
+
+- task: PowerShell@2
+  displayName: 'Validate build logs'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validatebuildlog.ps1
+    arguments: >
+      -LogFile: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.UnityVersion }}\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.Scene }}\build\build.log'
+
+- task: PublishBuildArtifacts@1
+  enabled: ${{ parameters.PublishArtifacts }}
+  displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }} ${{ parameters.Scene }} ${{ parameters.UnityVersion }}'
+  inputs:
+    ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
+    # The final location of the generated package depends on the type of scripting backend it's built against.
+    # For the default scripting backend (IL2CPP) the naming of the appx follows the form below:
+    ${{ if eq(parameters.ScriptingBackend, 'default') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.UnityVersion }}\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\${{ parameters.Scene }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+    # For .NET scripting backends, the naming is slightly different (mainly the AppPackages and MixedRealityToolkit folder
+    # names are reversed, and the Architecture is part of the AppX name)
+    ${{ if eq(parameters.ScriptingBackend, '.NET') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\${{ parameters.Scene }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'
+    # This publishes the project files for in-editor testing.
+    ${{ if eq(parameters.PublishProject, 'yes') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.UnityVersion }}\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.Scene }}\ProjectFiles'

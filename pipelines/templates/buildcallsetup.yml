@@ -1,0 +1,1843 @@
+# [Template] Build binaries for Build Call in Unity.
+parameters:
+  UnityVersion: ""
+  Binaries: "" # Brings the binaries parameter from pipelines/buildcallmanual.yml
+#
+# Build for the 'common' parameter.
+# Each step is an example scene that builds a binary for each device.
+
+# This step builds the HandInteractionExamples scene and publishes the project files.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandInteractionExamples'
+    PublishProject: 'yes'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandInteractionExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandInteractionExamples'
+    PublishProject: 'yes'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+#Builds the LeapMotion example scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build Standalone x86 with Leap Motion 4.5.1 imported.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArti'facts: true
+    Scene: 'LeapMotion'
+    PublishProject: 'no'
+
+# This step builds the SolverExamples scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SolverExamples'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SolverExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SolverExamples'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the AudioLofi scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioLofi'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioLofi'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioLofi'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the AudioOcclusion scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioOcclusion'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioOcclusion'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'AudioOcclusion'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the SpatialAwareness example scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SpatialAwareness'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SpatialAwareness'
+    PublishProject: 'no'
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the GLTF scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLTF'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLTF'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLTF'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the BoundaryVisualization scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all,common') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'BoundaryVisualization'
+    PublishProject: 'no'
+
+# Build Standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'BoundaryVisualization'
+    PublishProject: 'no'    
+
+# Begin building for only the 'all' Binaries parameter.
+# This step builds the GLB scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLB'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLB'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'GLB'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the ClippingExamples scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'ClippingExamples'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'ClippingExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'ClippingExamples'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the MaterialGallery scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MaterialGallery'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MaterialGallery'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MaterialGallery'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the StandardMaterialComparison scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterialComparison'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterialComparison'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterialComparison'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the StandardMaterials scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterials'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterials'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'StandardMaterials'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the MixedRealityCapabilityDemo scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MixedRealityCapabilityDemo'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MixedRealityCapabilityDemo'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'MixedRealityCapabilityDemo'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the SurfaceMagnetismSA scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SurfaceMagnetismSA'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SurfaceMagnetismSA'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SurfaceMagnetismSA'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the TapToPlace scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'TapToPlace'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'TapToPlace'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'TapToPlace'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the HIGestureEvents scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIGestureEvents'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIGestureEvents'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIGestureEvents'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the HIRecordAHPose scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIRecordAHPose'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIRecordAHPose'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HIRecordAHPose'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the HandMenuExamples scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandMenuExamples'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandMenuExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'HandMenuExamples'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the NearMenuExamples scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'NearMenuExamples'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'NearMenuExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'NearMenuExamples'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the DiagnosticsDemo scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DiagnosticsDemo'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DiagnosticsDemo'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DiagnosticsDemo'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the InputActionsExample scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputActionsExample'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputActionsExample'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputActionsExample'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the DisablePointersExample scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DisablePointersExample'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DisablePointersExample'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'DisablePointersExample'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the Dictation scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'Dictation'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'Dictation'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'Dictation'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the InputData scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputData'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputData'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'InputData'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the PointerResult scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PointerResult'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PointerResult'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PointerResult'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the PrimaryPointer scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PrimaryPointer'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PrimaryPointer'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'PrimaryPointer'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the SpeechInput scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SpeechInput'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SpeechInput'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'SpeechInput'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# Start building the Experimental scenes
+# This step builds the EXBoundsControlExamples scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlExamples'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlExamples'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlExamples'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXBoundsControlRuntime scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlRuntime'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlRuntime'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXBoundsControlRuntime'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXColorPicker scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXColorPicker'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXColorPicker'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXColorPicker'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXDialog scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDialog'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDialog'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDialog'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXDock scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDock'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDock'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDock'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXDwell scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDwell'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDwell'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXDwell'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXElastic scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXElastic'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXElastic'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXElastic'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXExamplesHub scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXExamplesHub'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXExamplesHub'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXExamplesHub'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXHandCoach scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandCoach'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandCoach'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandCoach'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXHandMenuLayout scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandMenuLayout'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandMenuLayout'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXHandMenuLayout'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXJoystick scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXJoystick'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXJoystick'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXJoystick'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXMRKeyboard scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXMRKeyboard'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXMRKeyboard'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXMRKeyboard'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXNNKeyboard scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXNNKeyboard'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXNNKeyboard'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXNNKeyboard'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXPulseShader scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXPulseShader'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXPulseShader'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXPulseShader'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXRiggedHandVisual scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXRiggedHandVisual'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXRiggedHandVisual'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXRiggedHandVisual'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXScrollObject scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXScrollObject'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXScrollObject'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXScrollObject'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
+
+# This step builds the EXSolvers scene.
+steps:
+- ${{ if contains(parameters.Binaries, 'all') }}:
+# Build UWP ARM64.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXSolvers'
+    PublishProject: 'no'
+    
+# Build UWP x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'UWP'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXSolvers'
+    PublishProject: 'no'
+
+# Build standalone x86.
+- template: tasks/bcunitybuild.yml
+  parameters:
+    Arch: 'x86'
+    Platform: 'Standalone'
+    PackagingDir: 'x86'
+    UnityVersion: ${{ parameters.UnityVersion }}
+    PublishArtifacts: true
+    Scene: 'EXSolvers'
+    PublishProject: 'no'    
+
+- template: tests.yml
+  parameters:
+    UnityVersion: ${{ parameters.UnityVersion }}
+
+- template: end.yml
