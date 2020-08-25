@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.WindowsSceneUnderstanding
+namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
     /// <summary>
     /// Configuration profile settings for spatial awareness mesh observers.
