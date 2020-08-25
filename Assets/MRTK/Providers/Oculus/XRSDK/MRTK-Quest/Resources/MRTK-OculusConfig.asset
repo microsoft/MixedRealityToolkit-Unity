@@ -21,7 +21,10 @@ MonoBehaviour:
   customHandMaterial: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
   updateMaterialPinchStrengthValue: 1
   pinchStrengthMaterialProperty: _PressIntensity
-  _minimumHandConfidence: 0
+  teleportPointerMode: 0
+  customTeleportPointerPrefab: {fileID: 3315140749854082096, guid: 9e55bfafd475ba34ba434f2036798b64,
+    type: 3}
+  minimumHandConfidence: 0
   lowConfidenceTimeThreshold: 0.2
   defaultCpuLevel: 2
   defaultGpuLevel: 2

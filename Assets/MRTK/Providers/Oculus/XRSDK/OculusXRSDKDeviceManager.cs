@@ -275,20 +275,29 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             var inputSource = inputSystem?.RequestNewGenericInputSource($"Oculus Quest {handedness} Hand", pointers, inputSourceType);
 
 
-            OculusHand handController = new OculusHand(TrackingState.Tracked, handedness, inputSource);
-            handController.InitializeHand(ovrHand, MRTKOculusConfig.Instance.CustomHandMaterial);
+            OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, inputSource);
+            handDevice.InitializeHand(ovrHand, MRTKOculusConfig.Instance.CustomHandMaterial);
 
-            for (int i = 0; i < handController.InputSource?.Pointers?.Length; i++)
+            for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {
-                handController.InputSource.Pointers[i].Controller = handController;
-                handController.UpdateHandMaterial(MRTKOculusConfig.Instance.CustomHandMaterial);
+                handDevice.InputSource.Pointers[i].Controller = handDevice;
+                handDevice.UpdateHandMaterial(MRTKOculusConfig.Instance.CustomHandMaterial);
             }
 
-            inputSystem?.RaiseSourceDetected(handController.InputSource, handController);
+            if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.Custom && MixedRealityToolkit.IsTeleportSystemEnabled)
+            {
+                CustomTeleportPointer pointer = GameObject.Instantiate(MRTKOculusConfig.Instance.CustomTeleportPrefab).GetComponent<CustomTeleportPointer>();
+                pointer.gameObject.SetActive(false);
 
-            trackedHands.Add(handedness, handController);
+                pointer.Controller = handDevice;
+                handDevice.TeleportPointer = pointer;
+            }
 
-            return handController;
+            inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
+
+            trackedHands.Add(handedness, handDevice);
+
+            return handDevice;
         }
 
         private void RemoveHandDevice(Handedness handedness)
@@ -311,16 +320,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             trackedHands.Clear();
         }
 
-        private void RemoveHandDevice(OculusHand hand)
+        private void RemoveHandDevice(OculusHand handDevice)
         {
-            if (hand == null) return;
+            if (handDevice == null) return;
 
-            hand.CleanupHand();
 
-            CoreServices.InputSystem?.RaiseSourceLost(hand.InputSource, hand);
-            trackedHands.Remove(hand.ControllerHandedness);
+            handDevice.TeleportPointer.Reset();
 
-            RecyclePointers(hand.InputSource);
+            handDevice.CleanupHand();
+
+            CoreServices.InputSystem?.RaiseSourceLost(handDevice.InputSource, handDevice);
+            trackedHands.Remove(handDevice.ControllerHandedness);
+
+            RecyclePointers(handDevice.InputSource);
         }
         #endregion
         

@@ -37,7 +37,7 @@ using static OVRSkeleton;
 #endif
 
 using Object = UnityEngine.Object;
-//using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
+using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
@@ -166,9 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             get
             {
-#if LATER
                 if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
-#endif
                 if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
 
                 Camera mainCamera = CameraCache.Main;
@@ -224,9 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 UpdateVelocity();
             }
 
-#if LATER
             UpdateTeleport(); 
-#endif
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -283,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-#if LATER
         private void UpdateTeleport()
         {
             if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return;
@@ -346,7 +341,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                     return;
             }
         }
-#endif
 
                 #region HandJoints
         protected readonly Dictionary<BoneId, TrackedHandJoint> boneJointMapping = new Dictionary<BoneId, TrackedHandJoint>()
