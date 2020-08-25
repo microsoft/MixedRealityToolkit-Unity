@@ -2,8 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit",
     "references": [
         "Microsoft.MixedReality.Toolkit.Async",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Unity.XR.ARSubsystems"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -13,11 +12,4 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.arsubsystems",
-            "expression": "",
-            "define": "ARSUBSYSTEMS_ENABLED"
-        }
-    ]
 }
