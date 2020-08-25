@@ -9,9 +9,9 @@
 
 **Oculus Quest XRSDK support**
 
-MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline.
+MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. Hand tracking is also supported with the [Oculus Integration Unity package](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) thanks to [Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
 
-For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus XRSDK Guide](CrossPlatform/OculusQuestMRTK.md)
+For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
 **Input Simulation Cheat Sheet**
 The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
@@ -124,6 +124,20 @@ The stored initial world pose `worldPoseOnManipulationStart` data type has been 
 **New Property in IMixedRealityDictationSystem**
 
 A new property `AudioClip` has been added to the IMixedRealityDictationSystem interface. The `AudioClip` property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.
+
+**Service Facades turn down**
+
+[Services facades](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/06a06778e38da622b37cc299a93f16e143b7bdeb/Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs)
+are being turned down in 2.5. This feature was originally added to make configuration
+of the MRTK profiles easier (by creating fake in-scene GameObjects that represented each of MRTK's
+services). In the long run, we want to avoid creating fake in-game objects and trying to keep them
+in sync (as data sync and "source of truth" issues are notoriously difficult to scale and get right).
+
+In 2.5, the service facade handlers are kept around to ensure that project upgrade goes smoothly -
+any facades that exist in the project will be deleted by the service facade handler to ensure that
+scenes opened up in 2.5 get automatically fixed.
+
+The remaining code associated with the service facade feature will be removed in a future release.
 
 **Addition of Motion Controller to Input Simulation Service**
 
