@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// Elastics will continue simulating once manipulation ends through it's update function - 
     /// to block the elastics auto update set EnableElasticsUpdate to false. 
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")] // todo help url
+    // [HelpURL("TODO add docs link as soon as it's available.")]
     public class ElasticsManager : MonoBehaviour
     {
         [SerializeField]
@@ -107,6 +107,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             set => elasticTypes = value;
         }
 
+        /// <summary>
+        /// Enables elastics simulation in the update method.
+        /// </summary>
+        public bool EnableElasticsUpdate
+        {
+            get;
+            set;
+        }
+
         #region private properties
 
         // Magnitude of the velocity at which the elastic systems will
@@ -117,17 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         private IElasticSystem<Quaternion> rotationElastic;
         private IElasticSystem<Vector3> scaleElastic;
 
-        Transform hostTransform = null;
-
-        /// <summary>
-        /// Enables elastics simulation in the update method.
-        /// </summary>
-        public bool EnableElasticsUpdate
-        {
-            get;
-            set;
-        }
-
+        private Transform hostTransform = null;
+        private TransformFlags elasticTypesSimulating = 0;
         #endregion
 
         /// <summary>
@@ -155,6 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
                     hostTransform.localScale = scaleElastic.ComputeIteration(targetTransform.Scale, Time.deltaTime);
                 }
 
+                elasticTypesSimulating = elasticTypes;
                 return elasticTypes;
             }
             else 
@@ -200,21 +201,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             // If the user is not actively interacting with the object,
             // we let the elastic systems continue simulating, to allow
             // the object to naturally come to rest.
-            if (EnableElasticsUpdate && hostTransform != null)
+            if (EnableElasticsUpdate && hostTransform != null && elasticTypesSimulating != 0)
             {
-                if (elasticTypes.HasFlag(TransformFlags.Move) && translationElastic != null && translationElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
+                TransformFlags currentlySimulatedStates = 0;
+                float squaredVelocityThreshold = elasticVelocityThreshold * elasticVelocityThreshold;
+                if (ShouldUpdateElastics(TransformFlags.Move, translationElastic) && translationElastic.GetCurrentVelocity().sqrMagnitude > squaredVelocityThreshold)
                 {
                     hostTransform.position = translationElastic.ComputeIteration(hostTransform.position, Time.deltaTime);
+                    currentlySimulatedStates |= TransformFlags.Move;
                 }
-                if (elasticTypes.HasFlag(TransformFlags.Rotate) && rotationElastic != null && rotationElastic.GetCurrentVelocity().eulerAngles.magnitude > elasticVelocityThreshold)
+                if (ShouldUpdateElastics(TransformFlags.Rotate, rotationElastic) && rotationElastic.GetCurrentVelocity().eulerAngles.sqrMagnitude > squaredVelocityThreshold)
                 {
                     hostTransform.rotation = rotationElastic.ComputeIteration(hostTransform.rotation, Time.deltaTime);
+                    currentlySimulatedStates |= TransformFlags.Rotate;
                 }
-                if (elasticTypes.HasFlag(TransformFlags.Scale) && scaleElastic != null && scaleElastic.GetCurrentVelocity().magnitude > elasticVelocityThreshold)
+                if (ShouldUpdateElastics(TransformFlags.Scale, scaleElastic) && scaleElastic.GetCurrentVelocity().sqrMagnitude > squaredVelocityThreshold)
                 {
                     hostTransform.localScale = scaleElastic.ComputeIteration(hostTransform.localScale, Time.deltaTime);
+                    currentlySimulatedStates |= TransformFlags.Scale;
                 }
+                elasticTypesSimulating = currentlySimulatedStates;
             }
+        }
+
+        private bool ShouldUpdateElastics<T>(TransformFlags elasticType, IElasticSystem<T> elasticSystem)
+        {
+            return (elasticTypes.HasFlag(elasticType) && 
+                elasticTypesSimulating.HasFlag(elasticType) && 
+                elasticSystem != null);
         }
 
         #endregion MonoBehaviour Functions
