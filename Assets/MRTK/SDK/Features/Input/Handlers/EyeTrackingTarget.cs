@@ -283,12 +283,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             lookAtStartTime = DateTime.UtcNow;
             IsLookedAt = true;
-            OnLookAtStart.Invoke();
+            OnLookAtStart?.Invoke();
         }
 
         protected void OnEyeFocusStay()
         {
-            WhileLookingAtTarget.Invoke();
+            WhileLookingAtTarget?.Invoke();
 
             if ((!IsDwelledOn) && (DateTime.UtcNow - lookAtStartTime).TotalSeconds > dwellTimeInSec)
             {
@@ -306,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsDwelledOn = false;
             IsLookedAt = false;
-            OnLookAway.Invoke();
+            OnLookAway?.Invoke();
         }
 
         #endregion 
