@@ -656,6 +656,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 meshObject.Id = cookedData.id.handle;
                 outstandingMeshObject = null;
 
+                // Check to see if this is a new or updated mesh.
+                bool isMeshUpdate = meshes.ContainsKey(cookedData.id.handle);
+
                 // Apply the appropriate material to the mesh.
                 SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
                 if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
@@ -678,14 +681,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
 
                 // Add / update the mesh to our collection
-                bool sendUpdatedEvent = false;
-                if (meshes.ContainsKey(cookedData.id.handle))
+                if (isMeshUpdate)
                 {
                     // Reclaim the old mesh object for future use.
                     ReclaimMeshObject(meshes[cookedData.id.handle]);
                     meshes.Remove(cookedData.id.handle);
-
-                    sendUpdatedEvent = true;
                 }
                 meshes.Add(cookedData.id.handle, meshObject);
 
@@ -696,7 +696,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     false);
 
                 meshEventData.Initialize(this, cookedData.id.handle, meshObject);
-                if (sendUpdatedEvent)
+                if (isMeshUpdate)
                 {
                     SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
                 }
