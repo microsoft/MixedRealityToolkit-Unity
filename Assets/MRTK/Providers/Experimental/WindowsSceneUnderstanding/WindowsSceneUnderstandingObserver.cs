@@ -680,8 +680,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 
             SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
-
+#pragma warning disable 618
             var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
+#pragma warning restore 618
             SpatialCoordinateSystem worldOrigin = SpatialCoordinateSystem.FromNativePtr(nativePtr);
 
             var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
