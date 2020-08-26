@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestClickEvents()
         {
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked);
 
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
         }
 
         [UnityTest]
@@ -129,8 +129,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestToggleEvents()
         {
-            PlayModeTestUtilities.PushHandSimulationProfile();
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.PushControllerSimulationProfile();
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(didSelect, "Toggle select did not fire");
             Assert.True(didUnselect, "Toggle unselect did not fire");
 
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
         }
 
 

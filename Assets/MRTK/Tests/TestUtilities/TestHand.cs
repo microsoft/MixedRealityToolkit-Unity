@@ -10,7 +10,6 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
@@ -20,35 +19,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     ///  Utility class to use a simulated hand
     /// </summary>
-    public class TestHand
+    public class TestHand : TestController
     {
-        private Handedness handedness;
-        private Vector3 position;
-        private Quaternion rotation = Quaternion.identity;
         private ArticulatedHandPose.GestureId gestureId = ArticulatedHandPose.GestureId.Open;
-        private InputSimulationService simulationService;
 
-        public TestHand(Handedness handedness)
-        {
-            this.handedness = handedness;
-            simulationService = PlayModeTestUtilities.GetInputSimulationService();
-        }
+        public TestHand(Handedness handedness) : base(handedness) { }
 
-        /// <summary>
-        /// Returns the velocity of the simulated hand
-        /// </summary>
-        public Vector3 GetVelocity()
-        {
-            var hand = simulationService.GetControllerDevice(handedness);
-            return hand.Velocity;
-        }
-
-        /// <summary>
-        /// Show the hand at a specified position
-        /// </summary>
-        /// <param name="position">Where to show the hand</param>
-        /// <param name="waitForFixedUpdate">If true, will wait for a physics frame after showing the hand.</param>
-        public IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
+        /// <inheritdoc />
+        public override IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             this.position = position;
             yield return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
@@ -58,11 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        /// <summary>
-        /// Hide the hand
-        /// </summary>
-        /// <param name="waitForFixedUpdate">If true, will wait a physics frame after hiding</param>
-        public IEnumerator Hide(bool waitForFixedUpdate = true)
+        /// <inheritdoc />
+        public override IEnumerator Hide(bool waitForFixedUpdate = true)
         {
             yield return PlayModeTestUtilities.HideHand(handedness, simulationService);
             if (waitForFixedUpdate)
@@ -71,17 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        /// <summary>
-        /// Moves hand to given position over some number of frames.
-        /// </summary>
-        /// <param name="newPosition">Where to move hand to</param>
-        /// <param name="numSteps">
-        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
-        /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
-        /// </param>
-        /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the hand</param>
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue, bool waitForFixedUpdate = true)
+        /// <inheritdoc />
+        public override IEnumerator MoveTo(Vector3 newPosition, int numSteps = PlayModeTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
@@ -95,16 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        /// <summary>
-        /// Move the hand by some given delta.
-        /// </summary>
-        /// <param name="delta">Amount to move the hand by.</param>
-        /// <param name="numSteps">
-        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
-        /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
-        /// </param>
-        public IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
+        /// <inheritdoc />
+        public override IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.ControllerMoveStepsSentinelValue)
         {
             for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext();)
             {
@@ -112,14 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        /// <summary>
-        /// Rotates the hand to new rotation.
-        /// </summary>
-        /// <param name="newRotation">New rotation of hand</param>
-        /// <param name="numSteps">Number of frames to rotate over.</param>
-        public IEnumerator SetRotation(
+        /// <inheritdoc />
+        public override IEnumerator SetRotation(
             Quaternion newRotation,
-            int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
+            int numSteps = PlayModeTestUtilities.ControllerMoveStepsSentinelValue)
         {
             Quaternion oldRotation = rotation;
             rotation = newRotation;
@@ -154,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Combined sequence of pinching and unpinching
         /// </summary>
-        public IEnumerator Click()
+        public override IEnumerator Click()
         {
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
@@ -182,23 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 yield return iter.Current;
             }
-        }
-
-        /// <summary>
-        /// Returns the first pointer of given type that is associated with this hand.
-        /// </summary>
-        /// <typeparam name="T">Type of pointer to look for.</typeparam>
-        public T GetPointer<T>() where T : class, IMixedRealityPointer
-        {
-            var hand = simulationService.GetControllerDevice(handedness);
-            foreach (var pointer in hand.InputSource.Pointers)
-            {
-                if (pointer is T)
-                {
-                    return pointer as T;
-                }
-            }
-            return null;
         }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -18,26 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsTracked => isTracked;
         
-        [SerializeField]
-        private bool isSelecting = false;
+        private SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState();
         /// <summary>
-        /// Whether the motion controller is selecting
+        /// States of buttons on the motion controller
         /// </summary>
-        public bool IsSelecting => isSelecting;
-
-        [SerializeField]
-        private bool isGrabbing = false;
-        /// <summary>
-        /// Whether the motion controller is grabbing
-        /// </summary>
-        public bool IsGrabbing => isGrabbing;
-
-        [SerializeField]
-        private bool isPressingMenu = false;
-        /// <summary>
-        /// Whether the menu button on the motion controller is being pressed
-        /// </summary>
-        public bool IsPressingMenu => isPressingMenu;
+        public SimulatedMotionControllerButtonState ButtonState => buttonState;
 
         /// <summary>
         /// Position of the motion controller
@@ -59,21 +45,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns>True if the motion controller data has been changed.</returns>
         /// <param name="isTrackedNew">True if the motion controller is currently tracked.</param>
-        /// <param name="isSelectingNew">True if the motion controller is currently selecting something.</param>
-        /// <param name="isGrabbingNew">True if the motion controller is currently grabbing something.</param>
-        /// <param name="isPressingMenuNew">True if the menu button of the motion controller is currently being pressed.</param>
+        /// <param name="buttonStateNew">New set of states of buttons on the motion controller.</param>
         /// <param name="updater">Delegate to function that updates the position and rotation of the motion controller. The delegate is only used when the motion controller is tracked.</param>
         /// <remarks>The timestamp of the motion controller data will be the current time, see [DateTime.UtcNow](https://docs.microsoft.com/dotnet/api/system.datetime.utcnow?view=netframework-4.8).</remarks>
-        public bool Update(bool isTrackedNew, bool isSelectingNew, bool isGrabbingNew, bool isPressingMenuNew, MotionControllerPoseUpdater updater)
+        public bool Update(bool isTrackedNew, SimulatedMotionControllerButtonState buttonStateNew, MotionControllerPoseUpdater updater)
         {
             bool motionControllerDataChanged = false;
 
-            if (isTracked != isTrackedNew || isSelecting != isSelectingNew || isGrabbing != isGrabbingNew || isPressingMenu != isPressingMenuNew)
+            if (isTracked != isTrackedNew || buttonState != buttonStateNew)
             {
                 isTracked = isTrackedNew;
-                isSelecting = isSelectingNew;
-                isGrabbing = isGrabbingNew;
-                isPressingMenu = isPressingMenuNew;
+                buttonState = buttonStateNew;
                 motionControllerDataChanged = true;
             }
 
@@ -151,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case DeviceInputType.Select:
-                        Interactions[i].BoolData = motionControllerData.IsSelecting;
+                        Interactions[i].BoolData = motionControllerData.ButtonState.IsSelecting;
                         if (Interactions[i].Changed)
                         {
                             if (Interactions[i].BoolData)
@@ -165,14 +147,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case DeviceInputType.TriggerPress:
-                        Interactions[i].FloatData = motionControllerData.IsGrabbing ? 1 : 0;
+                        Interactions[i].FloatData = motionControllerData.ButtonState.IsGrabbing ? 1 : 0;
                         if (Interactions[i].Changed)
                         {
-                            CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, motionControllerData.IsGrabbing ? 1 : 0);
+                            CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, motionControllerData.ButtonState.IsGrabbing ? 1 : 0);
                         }
                         break;
                     case DeviceInputType.Menu:
-                        Interactions[i].BoolData = motionControllerData.IsPressingMenu;
+                        Interactions[i].BoolData = motionControllerData.ButtonState.IsPressingMenu;
                         if (Interactions[i].Changed)
                         {
                             if (Interactions[i].BoolData)

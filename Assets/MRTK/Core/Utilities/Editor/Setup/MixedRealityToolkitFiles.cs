@@ -43,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
     /// within the project.
     /// </remarks>
-    [InitializeOnLoad]
     public static class MixedRealityToolkitFiles
     {
         /// <summary>
@@ -227,13 +226,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        static MixedRealityToolkitFiles()
-        {
-            Init();
-        }
-
         private static void Init()
         {
+            // Note that this file used to have an InitializeOnLoad handler to handle
+            // early initialization of the folder refresh. However, this had an effect of slowing down
+            // the Unity editor (i.e. on play mode entry, on recompile) even in cases where the MRTK
+            // isn't in the scene.
             if (!isInitialized)
             {
                 RefreshFolders();

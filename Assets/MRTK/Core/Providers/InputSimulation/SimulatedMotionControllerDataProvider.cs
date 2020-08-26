@@ -16,19 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     internal class SimulatedMotionControllerState : SimulatedControllerState
     {
         /// <summary>
-        /// Whether the motion controller is selecting
+        /// States of buttons on the motion controller
         /// </summary>
-        public bool IsSelecting { get; set; } = false;
-
-        /// <summary>
-        /// Whether the motion controller is grabbing
-        /// </summary>
-        public bool IsGrabbing { get; set; } = false;
-
-        /// <summary>
-        /// Whether the menu button on the motion controller is being pressed
-        /// </summary>
-        public bool IsPressingMenu { get; set; } = false;
+        public SimulatedMotionControllerButtonState ButtonState { get; set; } = new SimulatedMotionControllerButtonState();
 
         private const float rotationXOffset = -15f;
         private const float rotationYOffset = -10f;
@@ -46,9 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public void ResetButtonStates()
         {
-            IsSelecting = false;
-            IsGrabbing = false;
-            IsPressingMenu = false;
+            ButtonState = new SimulatedMotionControllerButtonState();
         }
 
         internal MixedRealityPose UpdateControllerPose()
@@ -98,9 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 motionControllerState.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.MouseControllerRotationSpeed, profile.ControllerJitterAmount);
 
-                motionControllerState.IsSelecting = KeyInputSystem.GetKey(profile.MotionControllerTriggerKey);
-                motionControllerState.IsGrabbing = KeyInputSystem.GetKey(profile.MotionControllerGrabKey);
-                motionControllerState.IsPressingMenu = KeyInputSystem.GetKey(profile.MotionControllerMenuKey);
+                motionControllerState.ButtonState = new SimulatedMotionControllerButtonState
+                {
+                    IsSelecting = KeyInputSystem.GetKey(profile.MotionControllerTriggerKey),
+                    IsGrabbing = KeyInputSystem.GetKey(profile.MotionControllerGrabKey),
+                    IsPressingMenu = KeyInputSystem.GetKey(profile.MotionControllerMenuKey)
+                };
             }
 
             // Update tracked state of a motion controller.
@@ -147,8 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 updaterRight = motionControllerStateRight.UpdateControllerPose;
             }
 
-            motionControllerDataLeft.Update(motionControllerStateLeft.IsTracked, motionControllerStateLeft.IsSelecting, motionControllerStateLeft.IsGrabbing, motionControllerStateLeft.IsPressingMenu, updaterLeft);
-            motionControllerDataRight.Update(motionControllerStateRight.IsTracked, motionControllerStateRight.IsSelecting, motionControllerStateRight.IsGrabbing, motionControllerStateRight.IsPressingMenu, updaterRight);
+            motionControllerDataLeft.Update(motionControllerStateLeft.IsTracked, motionControllerStateLeft.ButtonState, updaterLeft);
+            motionControllerDataRight.Update(motionControllerStateRight.IsTracked, motionControllerStateRight.ButtonState, updaterRight);
         }
 
         internal override void ResetInput(SimulatedControllerState state, bool isSimulating)
