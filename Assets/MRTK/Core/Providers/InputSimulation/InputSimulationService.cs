@@ -443,6 +443,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
+            else if (dataProvider is SimulatedMotionControllerDataProvider)
+            {
+                DebugUtilities.LogVerbose("Replacing motion controller simulation data provider with hand simulation data provider");
+                RemoveAllControllerDevices();
+                dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
+            }
         }
 
         private void EnableMotionControllerSimulation()
@@ -452,6 +458,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DebugUtilities.LogVerbose("Creating a new motion controller simulation data provider");
                 dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
             }
+            else if (dataProvider is SimulatedHandDataProvider)
+            {
+                DebugUtilities.LogVerbose("Replacing hand simulation data provider with motion controller simulation data provider");
+                RemoveAllControllerDevices();
+                dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
+            }
+
         }
 
         private void DisableControllerSimulation()

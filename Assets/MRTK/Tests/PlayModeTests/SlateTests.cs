@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
-            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.PushControllerSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
-            PlayModeTestUtilities.PopHandSimulationProfile();
+            PlayModeTestUtilities.PopControllerSimulationProfile();
             PlayModeTestUtilities.TearDown();
             yield return null;
         }
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InstantiateFromPrefab();
 
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(new Vector3(0.0f, 0.0f, 0.6f));
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
-            PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode.HandGestures);
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);

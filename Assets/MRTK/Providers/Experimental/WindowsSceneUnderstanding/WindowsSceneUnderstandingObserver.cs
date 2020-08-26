@@ -5,26 +5,26 @@ using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using UnityEngine;
+
+#if SCENE_UNDERSTANDING_PRESENT
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-#if SCENE_UNDERSTANDING_PRESENT
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.Perception.Spatial.Preview;
+using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 #endif // SCENE_UNDERSTANDING_PRESENT
 
 #if WINDOWS_UWP
 using Windows.Storage;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.SpatialAwareness
+namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         }
 
         /// <summary>
-        /// 
+        /// Reads the observer's configuration profile.
         /// </summary>
         private void ReadProfile()
         {
@@ -61,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
-            MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile;
+            SceneUnderstandingObserverProfile profile = ConfigurationProfile as SceneUnderstandingObserverProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a MixedRealitySceneUnderstandingObserverProfile.");
+                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
                 return;
             }
 
@@ -357,6 +357,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private Dictionary<System.Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<System.Guid, SpatialAwarenessSceneObject>(256);
         private GameObject observedObjectParent = null;
         protected virtual GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
+        private System.Timers.Timer firstUpdateTimer = null;
+        private System.Timers.Timer updateTimer = null;
         private Dictionary<Guid, Tuple<SceneQuad, SceneObject>> cachedSceneQuads = new Dictionary<Guid, Tuple<SceneQuad, SceneObject>>(256);
         private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private Mesh normalizedQuadMesh = new Mesh();
@@ -678,8 +680,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
 
             SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
-
+#pragma warning disable 618
             var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
+#pragma warning restore 618
             SpatialCoordinateSystem worldOrigin = SpatialCoordinateSystem.FromNativePtr(nativePtr);
 
             var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);

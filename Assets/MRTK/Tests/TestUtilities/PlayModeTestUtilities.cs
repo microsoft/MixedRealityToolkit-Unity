@@ -20,6 +20,7 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,19 +36,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
 
         /// <summary>
-        /// The default number of frames that elapse for each test hand movement.
+        /// The default number of frames that elapse for each test controller movement.
         /// Intentionally a smaller number to keep tests fast.
         /// </summary>
-        private const int HandMoveStepsDefault = 5;
+        private const int ControllerMoveStepsDefault = 5;
 
         /// <summary>
-        /// The default number of frames that elapse when in slow test hand mode.
-        /// See UseSlowTestHand for more information.
+        /// The default number of frames that elapse when in slow test controller mode.
+        /// See UseSlowTestController for more information.
         /// </summary>
-        private const int HandMoveStepsSlow = 60;
+        private const int ControllerMoveStepsSlow = 60;
 
         /// <summary>
-        /// If true, the hand movement test steps will take a longer number of frames. This is especially
+        /// If true, the controller movement test steps will take a longer number of frames. This is especially
         /// useful for seeing motion in play mode tests (where the default smaller number of frames tends
         /// to make tests too fast to be understandable to the human eye). This is false by default
         /// to ensure that tests will run quickly in general, and can be set to true manually in specific
@@ -58,34 +59,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// [UnityTest]
         /// public IEnumerator YourTestCase()
         /// {
-        ///     PlayModeTestUtilities.UseSlowTestHand = true;
+        ///     PlayModeTestUtilities.UseSlowTestController = true;
         ///     ...
-        ///     PlayModeTestUtilities.UseSlowTestHand = false;
+        ///     PlayModeTestUtilities.UseSlowTestController = false;
         /// }
         /// </code>
         /// </example>
         /// <remarks>
         /// Note that this value is reset to false after each play mode test that uses
         /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestHand = true ends up slowing all subsequent tests.
+        /// UseSlowTestController = true ends up slowing all subsequent tests.
         /// </remarks>
-        public static bool UseSlowTestHand = false;
+        public static bool UseSlowTestController = false;
 
         /// <summary>
-        /// The number of frames that elapse for each test hand movement, taking into account if
-        /// slow test hand mode has been engaged.
+        /// The number of frames that elapse for each test controller movement, taking into account if
+        /// slow test controller mode has been engaged.
         /// </summary>
-        public static int HandMoveSteps => UseSlowTestHand ? HandMoveStepsSlow : HandMoveStepsDefault;
+        public static int ControllerMoveSteps => UseSlowTestController ? ControllerMoveStepsSlow : ControllerMoveStepsDefault;
 
         /// <summary>
-        /// A sentinel value used by hand test utilities to indicate that the default number of move
+        /// A sentinel value used by controller test utilities to indicate that the default number of move
         /// steps should be used or not.
         /// </summary>
         /// <remarks>
         /// This is primarily something that exists to get around the limitation of default parameter
         /// values requiring compile-time constants.
         /// </remarks>
-        internal const int HandMoveStepsSentinelValue = -1;
+        internal const int ControllerMoveStepsSentinelValue = -1;
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -97,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
-            // See comments for UseSlowTestHand for why this is reset to false on each test case.
-            PlayModeTestUtilities.UseSlowTestHand = false;
+            // See comments for UseSlowTestController for why this is reset to false on each test case.
+            UseSlowTestController = false;
 
             bool sceneExists = false;
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -169,6 +170,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 ArticulatedHandPose gesturePose = SimulatedArticulatedHandPoses.GetGesturePose(gesture);
                 Quaternion worldRotation = rotation * CameraCache.Main.transform.rotation;
                 gesturePose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
+            };
+        }
+
+        public static SimulatedMotionControllerData.MotionControllerPoseUpdater UpdateMotionControllerPose(Handedness handedness, Vector3 worldPosition, Quaternion rotation)
+        {
+            return () =>
+            {
+                Quaternion worldRotation = rotation * CameraCache.Main.transform.rotation;
+                Vector3 eulerAngles = worldRotation.eulerAngles;
+
+                // Create an offset to rotation to align with the behavior of simulated hand
+                float rotationXOffset = -15f;
+                float rotationYOffset = -10f;
+                int yOffsetSign = handedness == Handedness.Left ? -1 : 1;
+                Quaternion modifiedRotation = Quaternion.Euler(eulerAngles.x + rotationXOffset, eulerAngles.y + rotationYOffset * yOffsetSign, eulerAngles.z);
+                return new MixedRealityPose(worldPosition, modifiedRotation);
             };
         }
 
@@ -281,19 +298,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        public static void PushHandSimulationProfile()
+        public static void PushControllerSimulationProfile()
         {
             var iss = GetInputSimulationService();
             inputSimulationProfiles.Push(iss.InputSimulationProfile);
         }
 
-        public static void PopHandSimulationProfile()
+        public static void PopControllerSimulationProfile()
         {
             var iss = GetInputSimulationService();
             iss.InputSimulationProfile = inputSimulationProfiles.Pop();
         }
 
-        public static void SetHandSimulationMode(ControllerSimulationMode mode)
+        public static void SetControllerSimulationMode(ControllerSimulationMode mode)
         {
             var iss = GetInputSimulationService();
             iss.ControllerSimulationMode = mode;
@@ -304,13 +321,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHand(handPos, handPos, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService, 2);
         }
 
+        public static IEnumerator SetMotionControllerState(Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState, Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return MoveMotionController(motionControllerPos, motionControllerPos, buttonState, handedness, inputSimulationService, 2);
+        }
+
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
             InputSimulationService simulationService = GetInputSimulationService();
-            var hand = simulationService.GetControllerDevice(handedness);
-            if (hand != null && hand.InputSource != null)
+            var controller = simulationService.GetControllerDevice(handedness);
+            if (controller != null && controller.InputSource != null)
             {
-                foreach (var pointer in hand.InputSource.Pointers)
+                foreach (var pointer in controller.InputSource.Pointers)
                 {
                     if (pointer is T result)
                     {
@@ -326,13 +348,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <remarks>
         /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. HandMoveSteps). HandMoveSteps is not a compile
+        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
         /// time constant, which is a requirement for default parameter values.
         /// </remarks>
         public static IEnumerator MoveHand(
             Vector3 startPos, Vector3 endPos,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService,
-            int numSteps = HandMoveStepsSentinelValue)
+            int numSteps = ControllerMoveStepsSentinelValue)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
@@ -349,6 +371,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         Quaternion.identity);
                 SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
                 handData.Update(true, isPinching, handDataGenerator);
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Moves the motion controller from startPos to endPos.
+        /// </summary>
+        /// <remarks>
+        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
+        /// time constant, which is a requirement for default parameter values.
+        /// </remarks>
+        public static IEnumerator MoveMotionController(
+            Vector3 startPos, Vector3 endPos, SimulatedMotionControllerButtonState buttonState,
+            Handedness handedness, InputSimulationService inputSimulationService,
+            int numSteps = ControllerMoveStepsSentinelValue)
+        {
+            Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
+            numSteps = CalculateNumSteps(numSteps);
+
+            for (int i = 1; i <= numSteps; i++)
+            {
+                float t = i / (float)numSteps;
+                Vector3 motionControllerPos = Vector3.Lerp(startPos, endPos, t);
+                var motionControllerDataUpdater = UpdateMotionControllerPose(
+                        handedness,
+                        motionControllerPos,
+                        Quaternion.identity);
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+                motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
         }
@@ -374,6 +426,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        public static IEnumerator SetMotionControllerRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState,
+            Handedness handedness, int numSteps, InputSimulationService inputSimulationService)
+        {
+            Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
+
+            for (int i = 1; i <= numSteps; i++)
+            {
+                float t = i / (float)numSteps;
+                Quaternion motionControllerRotation = Quaternion.Lerp(fromRotation, toRotation, t);
+                var motionControllerDataUpdater = UpdateMotionControllerPose(
+                        handedness,
+                        motionControllerPos,
+                        motionControllerRotation);
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+                motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
+                yield return null;
+            }
+        }
+
         public static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return null;
@@ -382,6 +453,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             handData.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero, Quaternion.identity));
 
             // Wait one frame for the hand to actually disappear
+            yield return null;
+        }
+
+        public static IEnumerator HideController(Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            yield return null;
+
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            motionControllerData.Update(false, defaultButtonState, UpdateMotionControllerPose(handedness, Vector3.zero, Quaternion.identity));
+
+            // Wait one frame for the motion controller to actually disappear
             yield return null;
         }
 
@@ -397,8 +480,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
+            Assert.That(inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures || 
+                inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand, "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));
+
+            // Wait one frame for the hand to actually appear
+            yield return null;
+        }
+
+        /// <summary>
+        /// Shows the motion controller in the default state, at the origin
+        /// </summary>
+        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService)
+        {
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            yield return ShowMontionController(handedness, inputSimulationService, defaultButtonState, Vector3.zero);
+        }
+
+        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 motionControllerLocation)
+        {
+            yield return null;
+
+            Assert.AreEqual(ControllerSimulationMode.MotionController, inputSimulationService.ControllerSimulationMode, "The current ControllerSimulationMode must be MotionController!");
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, motionControllerLocation, Quaternion.identity));
 
             // Wait one frame for the hand to actually appear
             yield return null;
@@ -452,14 +558,82 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Given a numSteps value, determines if the value is a 'sentinel' value of
-        /// HandMoveStepsSentinelValue, which should be converted to the current
-        /// default value of HandMoveSteps. If it's not the sentinel value,
+        /// ControllerMoveStepsSentinelValue, which should be converted to the current
+        /// default value of ControllerMoveSteps. If it's not the sentinel value,
         /// this returns numSteps unchanged.
         /// </summary>
         public static int CalculateNumSteps(int numSteps)
         {
-            return numSteps == HandMoveStepsSentinelValue ? HandMoveSteps : numSteps;
+            return numSteps == ControllerMoveStepsSentinelValue ? ControllerMoveSteps : numSteps;
         }
+
+        #region Obsolete Fields, Functions, and Properties
+        /// <summary>
+        /// If true, the controller movement test steps will take a longer number of frames. This is especially
+        /// useful for seeing motion in play mode tests (where the default smaller number of frames tends
+        /// to make tests too fast to be understandable to the human eye). This is false by default
+        /// to ensure that tests will run quickly in general, and can be set to true manually in specific
+        /// test cases using the example below.
+        /// </summary>
+        /// <example> 
+        /// <code>
+        /// [UnityTest]
+        /// public IEnumerator YourTestCase()
+        /// {
+        ///     PlayModeTestUtilities.UseSlowTestController = true;
+        ///     ...
+        ///     PlayModeTestUtilities.UseSlowTestController = false;
+        /// }
+        /// </code>
+        /// </example>
+        /// <remarks>
+        /// Note that this value is reset to false after each play mode test that uses
+        /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+        /// UseSlowTestController = true ends up slowing all subsequent tests.
+        /// </remarks>
+        [Obsolete("Use UseSlowTestController instead.")]
+        public static bool UseSlowTestHand
+        {
+            get => UseSlowTestController;
+            set { UseSlowTestController = value; }
+        }
+
+        /// <summary>
+        /// The number of frames that elapse for each test controller movement, taking into account if
+        /// slow test controller mode has been engaged.
+        /// </summary>
+        [Obsolete("Use ControllerMoveSteps instead.")]
+        public static int HandMoveSteps => ControllerMoveSteps;
+
+        /// <summary>
+        /// A sentinel value used by controller test utilities to indicate that the default number of move
+        /// steps should be used or not.
+        /// </summary>
+        /// <remarks>
+        /// This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.
+        /// </remarks>
+        [Obsolete("Use ControllerMoveStepsSentinelValue instead.")]
+        internal const int HandMoveStepsSentinelValue = ControllerMoveStepsSentinelValue;
+
+        [Obsolete("Use SetControllerSimulationMode instead.")]
+        public static void SetHandSimulationMode(ControllerSimulationMode mode)
+        {
+            SetControllerSimulationMode(mode);
+        }
+
+        [Obsolete("Use PushControllerSimulationProfile instead.")]
+        public static void PushHandSimulationProfile()
+        {
+            PushControllerSimulationProfile();
+        }
+
+        [Obsolete("Use PopControllerSimulationProfile instead.")]
+        public static void PopHandSimulationProfile()
+        {
+            PopControllerSimulationProfile();
+        }
+        #endregion
     }
 }
 #endif

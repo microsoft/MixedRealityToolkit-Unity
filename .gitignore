@@ -19,7 +19,8 @@ project.lock.json
 *.package
 Assets/XR/
 Assets/XR.meta
-
+Assets/Oculus/
+Assets/Oculus.meta
 # ============ #
 # Certificates #
 # ============ #

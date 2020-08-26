@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         // Physics settings
         private SerializedProperty meshPhysicsLayer;
         private SerializedProperty recalculateNormals;
+        private SerializedProperty physicsMaterial;
 
         // Level of Detail settings
         private SerializedProperty levelOfDetail;
@@ -32,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty displayOption;
         private SerializedProperty visibleMaterial;
         private SerializedProperty occlusionMaterial;
-        private SerializedProperty physicsMaterial;
 
         private readonly GUIContent displayOptionContent = new GUIContent("Display Option");
         private readonly GUIContent lodContent = new GUIContent("Level of Detail");
@@ -55,14 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
             // Mesh settings
             meshPhysicsLayer = serializedObject.FindProperty("meshPhysicsLayer");
+            physicsMaterial = serializedObject.FindProperty("physicsMaterial");
             recalculateNormals = serializedObject.FindProperty("recalculateNormals");
             levelOfDetail = serializedObject.FindProperty("levelOfDetail");
             trianglesPerCubicMeter = serializedObject.FindProperty("trianglesPerCubicMeter");
             displayOption = serializedObject.FindProperty("displayOption");
             visibleMaterial = serializedObject.FindProperty("visibleMaterial");
             occlusionMaterial = serializedObject.FindProperty("occlusionMaterial");
-            physicsMaterial = serializedObject.FindProperty("physicsMaterial");
-
         }
 
         public override void OnInspectorGUI()
@@ -106,6 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 {
                     EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
                     EditorGUILayout.PropertyField(recalculateNormals);
+                    EditorGUILayout.PropertyField(physicsMaterial);
                 }
 
                 EditorGUILayout.Space();
@@ -122,7 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(displayOption, displayOptionContent);
                     EditorGUILayout.PropertyField(visibleMaterial);
                     EditorGUILayout.PropertyField(occlusionMaterial);
-                    EditorGUILayout.PropertyField(physicsMaterial);
                 }
 
                 serializedObject.ApplyModifiedProperties();

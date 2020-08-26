@@ -365,10 +365,8 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
-    "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/UnityAR/Editor/UnityARConfigurationChecker.cs",
     "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
     "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
     "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
@@ -388,7 +386,13 @@ function CheckInitializeOnLoad {
     )
     process {
         $hasIssue = $false
-        if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
+        # This checks that the InitializeOnLoad string is both present and also not within
+        # a // comment block (cases that are inside a comment block are perfectly okay since
+        # the obviously do not have any actual effect)
+        # "^\s*//" -> will match a case where the line begins with any amount of whitespace
+        # followed by the two // characters.
+        if (($FileContent[$LineNumber] -match "InitializeOnLoad") -and 
+                ($FileContent[$LineNumber] -notmatch "^\s*//")) {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
                 Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
@@ -597,6 +601,10 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/LeapMotion/Editor/Microsoft.MixedReality.Toolkit.LeapMotion.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor.asmdef",
+    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Scripts/Utils/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities.asmdef",
     "Assets/MRTK/Providers/OpenVR/Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/Microsoft.MixedReality.Toolkit.UnityAR.Editor.asmdef",
@@ -637,7 +645,7 @@ function CheckAsmDef {
         $assetFileName = GetProjectRelativePath($FileName)
         if (-Not $AsmDefExceptions.Contains($assetFileName)) {
             Write-Warning "New Asmdef was added but is not on the allowed list: $assetFileName. An exception can be added to `$AsmDefExceptions "
-            Write-Warning "after a dicussion with the rest of the team determining if the asmdef is necessary."
+            Write-Warning "after a discussion with the rest of the team determining if the asmdef is necessary."
             $containsIssue = $true
         }
         $containsIssue
