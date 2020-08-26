@@ -54,7 +54,7 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under **MRTK** / **Providers** / **WindowsMixedReality** / **Shared** / **DotNetAdapter** and confirm that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
-#### `DOTNETWINRT_PRESENT`
+#### `DOTNETWINRT_PRESENT` #define written into player settings
 
 Beginning with MRTK version 2.5.0, for performance reasons, this define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
 
