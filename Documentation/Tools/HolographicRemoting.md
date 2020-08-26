@@ -40,7 +40,7 @@ These issues are particularly relevant when running on **Unity 2019.3** or later
 > [!Note]
 > There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution** does not work correctly, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
 
-The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
+The best way to check is to open **Window** > **Package Manager** and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running **Mixed Reality Toolkit** > **Utilities** > **Configure Unity** and repeat the steps above for running the MRTK Configurator.
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
 
@@ -52,11 +52,14 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 #### DotNetAdapter.csproj missing
 
-If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
+If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under **MRTK** / **Providers** / **WindowsMixedReality** / **Shared** / **DotNetAdapter** and confirm that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
 #### `DOTNETWINRT_PRESENT` #define written into player settings
 
-Navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
+Beginning with MRTK version 2.5.0, for performance reasons, this define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
+
+> [!Note]
+> The Check Configuration item does not display a confirmation. To confirm that the define has been set, please navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
 ![DotNetWinRT Present](../Images/Tools/Remoting/DotNetWinRTPresent.png)
 
