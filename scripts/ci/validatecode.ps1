@@ -365,7 +365,6 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
-    "Assets/MRTK/Core/Utilities/Editor/Setup/MixedRealityToolkitFiles.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
     "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
@@ -387,7 +386,13 @@ function CheckInitializeOnLoad {
     )
     process {
         $hasIssue = $false
-        if ($FileContent[$LineNumber] -match "InitializeOnLoad") {
+        # This checks that the InitializeOnLoad string is both present and also not within
+        # a // comment block (cases that are inside a comment block are perfectly okay since
+        # the obviously do not have any actual effect)
+        # "^\s*//" -> will match a case where the line begins with any amount of whitespace
+        # followed by the two // characters.
+        if (($FileContent[$LineNumber] -match "InitializeOnLoad") -and 
+                ($FileContent[$LineNumber] -notmatch "^\s*//")) {
             $assetFileName = GetProjectRelativePath($FileName)
             if (-Not $InitializeOnLoadExceptions.Contains($assetFileName)) {
                 Write-Warning "A new InitializeOnLoad handler was introduced in: $assetFileName. An exception may be added "
