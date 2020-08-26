@@ -486,6 +486,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         meshObject.Id = meshGenerationResult.MeshId.GetHashCode();
                         outstandingMeshObject = null;
 
+                        // Check to see if this is a new or updated mesh.
+                        bool isMeshUpdate = meshes.ContainsKey(cookedData.id.handle);
+
                         // Apply the appropriate material to the mesh.
                         SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
                         if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
@@ -508,21 +511,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         }
 
                         // Add / update the mesh to our collection
-                        bool sendUpdatedEvent = false;
-                        if (meshes.ContainsKey(meshObject.Id))
+                        if (isMeshUpdate)
                         {
                             // Reclaim the old mesh object for future use.
                             ReclaimMeshObject(meshes[meshObject.Id]);
                             meshes.Remove(meshObject.Id);
-
-                            sendUpdatedEvent = true;
                         }
                         meshes.Add(meshObject.Id, meshObject);
 
                         meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
 
                         meshEventData.Initialize(this, meshObject.Id, meshObject);
-                        if (sendUpdatedEvent)
+                        if (isMeshUpdate)
                         {
                             SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
                         }
