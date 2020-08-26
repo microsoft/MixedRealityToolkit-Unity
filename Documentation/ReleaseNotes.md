@@ -7,6 +7,15 @@
 
 ### What's new
 
+**Unity Package Manager (UPM) support**
+
+The Mixed Reality Toolkit can now be managed using the Unity Package Manager.
+
+![MRTK Foundation UPM Package](Images/Packaging/MRTK_FoundationUPM.png)
+
+> [!Note]
+> There are some manual steps required to import the MRTK UPM packages. Please review [Mixed Reality Toolkit and Unity Package Manager](usingupm.md) for more information. 
+
 **Oculus Quest XRSDK support**
 
 MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. Hand tracking is also supported with the [Oculus Integration Unity package](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) thanks to [Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
