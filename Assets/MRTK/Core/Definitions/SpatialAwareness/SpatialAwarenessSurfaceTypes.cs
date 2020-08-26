@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     public enum SpatialAwarenessSurfaceTypes
     {
         /// <summary>
-        /// An surface that cannot yet be categorized.
+        /// A surface that cannot yet be categorized.
         /// </summary>
         /// <remarks>
         /// Unknown should not be confused with Background. Unknown surfaces may
