@@ -2,6 +2,7 @@
 
 The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have, and continue to contribute.
 
+- a-iafrate
 - achaperon
 - AdamMitchell-ms
 - againstlightning
