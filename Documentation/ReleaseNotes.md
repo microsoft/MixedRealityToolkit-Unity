@@ -90,8 +90,8 @@ In some cases there was a tradeoff that had to be made:
 See [Leap Motion Hand Tracking Configuration](CrossPlatform/LeapMotionMRTK.md) for the extra integration step.
 For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
 See [ARFoundation](CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
-For those who will be using [Holographic Remoting](Tools/HolographicRemoting.md) on HoloLens 2, there is now a manyual step to perform.
-Please see [DOTNETWINRT_PRESENT](Tools/HolographicRemoting.md#dotnetwinrt-present-define-written-into-player-settings) for more new steps.
+For those who will be using [Holographic Remoting](Tools/HolographicRemoting.md) on HoloLens 2, there is now a manual step to perform.
+Please see [DOTNETWINRT_PRESENT](Tools/HolographicRemoting.md#dotnetwinrt-present) for more new steps.
 
 ### Breaking changes
 
