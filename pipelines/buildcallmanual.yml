@@ -58,7 +58,7 @@ jobs:
       MRTKVersion: $(MRTKVersion)
       Binaries: 'all'
 - ${{ if contains(parameters.build, 'common') }}:
-   - template: templates/buildcallsetup.yml
+  - template: templates/buildcallsetup.yml
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)

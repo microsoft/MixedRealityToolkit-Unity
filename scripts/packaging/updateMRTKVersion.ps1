@@ -40,7 +40,7 @@ function ReplaceVersionInFile($Path, $NewVersion, $Patterns, $Strict=$False)
                 $contents | Out-File -FilePath $Path -Encoding $Encoding
             }
         }
-        ElseIf ($Strict)
+        elseif ($Strict)
         {
             $errors += "${Path}: pattern not found: $pattern"
         }
@@ -70,18 +70,18 @@ foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
     {
         $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)") -Strict $True
     }
-    ElseIf ($file.Directory.FullName.StartsWith($PipelinesDir.FullName))
+    elseif ($file.Directory.FullName.StartsWith($PipelinesDir.FullName))
     {
         if (($file.Extension -eq ".yml") -or ($file.Extension -eq ".yaml"))
         {
             $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=MRTKVersion:\s+)(\d+\.\d+\.\d+)")
         }
     }
-    ElseIf ($file.Name -eq "ProjectSettings.asset")
+    elseif ($file.Name -eq "ProjectSettings.asset")
     {
         $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=bundleVersion:\s+)(\d+\.\d+\.\d+)", "(?<=metroPackageVersion:\s+)(\d+\.\d+\.\d+)(?=\.\d+)")
     }
-    ElseIf ($file.Name -eq "UwpAppxBuildToolsTest.cs")
+    elseif ($file.Name -eq "UwpAppxBuildToolsTest.cs")
     {
         $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
     }

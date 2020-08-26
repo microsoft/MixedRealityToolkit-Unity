@@ -24,21 +24,21 @@ steps:
    $sceneList = "Assets\MRTK\Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
    
    $extraArgs = ''
-   If ("${{ parameters.Platform }}" -eq "UWP")
+   if ("${{ parameters.Platform }}" -eq "UWP")
    {
        $extraArgs += '-buildTarget WSAPlayer -buildAppx'
    }
-   ElseIf ("${{ parameters.Platform }}" -eq "Standalone")
+   elseif ("${{ parameters.Platform }}" -eq "Standalone")
    {
        $extraArgs += "-buildTarget StandaloneWindows"
    }
 
-   If ("${{ parameters.UnityArgs }}" -ne "none")
+   if ("${{ parameters.UnityArgs }}" -ne "none")
    {
        $extraArgs += " ${{ parameters.UnityArgs }}"
    }
 
-   If ("${{ parameters.ScriptingBackend }}" -eq ".NET")
+   if ("${{ parameters.ScriptingBackend }}" -eq ".NET")
    {
        $extraArgs += " -scriptingBackend 2"
    }
@@ -62,7 +62,7 @@ steps:
    Write-Output '           Unity Build Player Finished               '
    Write-Output '====================================================='
 
-   If (Test-Path $logFile.FullName)
+   if (Test-Path $logFile.FullName)
    {
       Write-Output '====================================================='
       Write-Output '           Begin Unity Player Log                    '
@@ -74,16 +74,16 @@ steps:
       Write-Output '           End Unity Player Log                      '
       Write-Output '====================================================='
    }
-   Else
+   else
    {
       Write-Output 'Unity Player Log Missing!'
    }
 
    # The NuGet and AppX logs are only relevant for UWP builds.
-   If ("${{ parameters.Platform }}" -eq "UWP")
+   if ("${{ parameters.Platform }}" -eq "UWP")
    {
         $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
-        If (Test-Path $nugetRestoreLogFileName)
+        if (Test-Path $nugetRestoreLogFileName)
         {
             Write-Output '====================================================='
             Write-Output '           Begin NuGet Restore Log                   '
@@ -95,13 +95,13 @@ steps:
             Write-Output '           End NuGet Restore Log                     '
             Write-Output '====================================================='
         }
-        Else
+        else
         {
             Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
         }
 
         $appxBuildLogFileName = "$logDirectory\buildAppx.log"
-        If (Test-Path $appxBuildLogFileName)
+        if (Test-Path $appxBuildLogFileName)
         {
             Write-Output '====================================================='
             Write-Output '           Begin AppX Build Log                      '
@@ -113,13 +113,13 @@ steps:
             Write-Output '           End AppX Build Log                        '
             Write-Output '====================================================='
         }
-        Else
+        else
         {
             Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
         }
    }
 
-   If ($proc.ExitCode -ne 0)
+   if ($proc.ExitCode -ne 0)
    {
        exit $proc.ExitCode
    }

@@ -30,7 +30,7 @@ steps:
    Write-Output '====================================================='
 
    $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\retargeting_log.log'
-   If (Test-Path $unityLogFileName)
+   if (Test-Path $unityLogFileName)
    {
       Write-Output '====================================================='
       Write-Output '           Begin Unity Player Log                    '
@@ -42,7 +42,7 @@ steps:
       Write-Output '           End Unity Player Log                      '
       Write-Output '====================================================='
    }
-   Else
+   else
    {
       Write-Output 'Unity Player Log missing!'
    }
