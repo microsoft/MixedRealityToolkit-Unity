@@ -713,6 +713,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests that the toggle button states consistently return to original state
+        /// after subsequent motion controller clicks (front plate does not move back after every click).
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPressableToggleMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            var rightMotionController = new TestMotionController(Handedness.Right);
+            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.025f, 0.06f, 0.3f));
+
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultHL2ToggleButton,
+                out Interactable interactable,
+                out Transform frontPlateTransform);
+
+            Assert.True(interactable.IsEnabled);
+            interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0f, 0.1f, 0.4f));
+
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Get start position of the front plate before button is pressed
+            Vector3 frontPlateStartPosition = frontPlateTransform.localPosition;
+
+            yield return rightMotionController.Show(p2);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsTrue(interactable.HasFocus, "Interactable does not have focus when motion controller is pointing at it.");
+
+            int numClicks = 3;
+            for (int i = 0; i < numClicks; i++)
+            {
+                wasClicked = false;
+                yield return rightMotionController.Click();
+                // Wait for button animation to complete
+                yield return new WaitForSeconds(0.33f);
+
+                Assert.True(wasClicked, "Toggle button was not clicked");
+                Assert.AreEqual((i + 1) % 2, interactable.CurrentDimension, $"Toggle button is in incorrect toggle state on click {i}");
+
+                // Make sure the button depth is back at the starting position
+                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");
+            }
+
+            GameObject.Destroy(interactable.gameObject);
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
+        }
+
+        /// <summary>
         /// Test InteractableToggleCollection CurrentIndex updates
         /// </summary>
         [UnityTest]

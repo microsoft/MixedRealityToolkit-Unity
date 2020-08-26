@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         handedness,
                         motionControllerPos,
                         Quaternion.identity);
-                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
                 motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
@@ -439,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         handedness,
                         motionControllerPos,
                         motionControllerRotation);
-                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+                SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
                 motionControllerData.Update(true, buttonState, motionControllerDataUpdater);
                 yield return null;
             }
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
-            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
             SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
             motionControllerData.Update(false, defaultButtonState, UpdateMotionControllerPose(handedness, Vector3.zero, Quaternion.identity));
 
@@ -498,13 +498,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return ShowMontionController(handedness, inputSimulationService, defaultButtonState, Vector3.zero);
         }
 
-        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 handLocation)
+        public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 motionControllerLocation)
         {
             yield return null;
 
-            Assert.AreEqual(inputSimulationService.ControllerSimulationMode, ControllerSimulationMode.MotionController, "The current ControllerSimulationMode must be MotionController!");
-            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataLeft : inputSimulationService.MotionControllerDataRight;
-            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, handLocation, Quaternion.identity));
+            Assert.AreEqual(ControllerSimulationMode.MotionController, inputSimulationService.ControllerSimulationMode, "The current ControllerSimulationMode must be MotionController!");
+            SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
+            motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, motionControllerLocation, Quaternion.identity));
 
             // Wait one frame for the hand to actually appear
             yield return null;
