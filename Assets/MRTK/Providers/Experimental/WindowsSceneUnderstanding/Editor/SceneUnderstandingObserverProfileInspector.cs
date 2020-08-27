@@ -11,14 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor.WindowsSceneUnderstanding.Experi
     [CustomEditor(typeof(SceneUnderstandingObserverProfile))]
     public class SceneUnderstandingObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        // BaseSpatialAwarenessObserverProfile
-
         private SerializedProperty updateOnceOnLoad;
-        private SerializedProperty updateInterval;
-
-        // MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile
-
+        private SerializedProperty firstUpdateDelay;
         private SerializedProperty autoUpdate;
+        private SerializedProperty updateInterval;
         private SerializedProperty defaultPhysicsLayer;
         private SerializedProperty surfaceTypes;
         private SerializedProperty instantiationBatchRate;
@@ -30,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.WindowsSceneUnderstanding.Experi
         private SerializedProperty requestPlaneData;
         private SerializedProperty createGameObjects;
         private SerializedProperty inferRegions;
-        private SerializedProperty firstUpdateDelay;
         private SerializedProperty worldMeshLevelOfDetail;
         private SerializedProperty usePersistentObjects;
         private SerializedProperty queryRadius;
@@ -76,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.WindowsSceneUnderstanding.Experi
         {
             RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
 
-            //using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             using (new GUIEnabledWrapper())
             {
                 serializedObject.Update();

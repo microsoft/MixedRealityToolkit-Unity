@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
+            SceneUnderstandingObserverProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
             ReadProfile();
         }
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             SceneUnderstandingObserverProfile profile = ConfigurationProfile as SceneUnderstandingObserverProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
+                Debug.LogError("Windows Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
                 return;
             }
 
