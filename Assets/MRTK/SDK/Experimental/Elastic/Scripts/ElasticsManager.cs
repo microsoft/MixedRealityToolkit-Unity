@@ -134,30 +134,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// Applies elastics calculation to the passed targetTransform and applies to the host transform.
         /// </summary>
         /// <param name="targetTransform">Precalculated target transform that's influenced by elastics</param>
-        /// <param name="filter">If a filter is passed only the given transform type is going to be calculated.</param>
-        /// <returns>Modified transform modes.</returns>
-        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags filter = TransformFlags.Move|TransformFlags.Rotate|TransformFlags.Scale)
+        /// <param name="transformsToApply">Indicates which types of transforms are going to be applied. Default is Move, Rotate and Scale.</param>
+        /// <returns>Modified transform types.</returns>
+        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = TransformFlags.Move|TransformFlags.Rotate|TransformFlags.Scale)
         {
             Debug.Assert(hostTransform != null, "Can't apply target before calling Initialize with a valid transform reference.");
             if (hostTransform != null)
             {
-                TransformFlags enabledFlags = filter & elasticTypes;
-                if (enabledFlags.HasFlag(TransformFlags.Move))
+                TransformFlags enabledTransformTypes = transformsToApply & elasticTypes;
+                if (enabledTransformTypes.HasFlag(TransformFlags.Move))
                 {
                     hostTransform.position = translationElastic.ComputeIteration(targetTransform.Position, Time.deltaTime);
                 }
 
-                if (enabledFlags.HasFlag(TransformFlags.Rotate))
+                if (enabledTransformTypes.HasFlag(TransformFlags.Rotate))
                 {
                     hostTransform.rotation = rotationElastic.ComputeIteration(targetTransform.Rotation, Time.deltaTime);
                 }
 
-                if (enabledFlags.HasFlag(TransformFlags.Scale))
+                if (enabledTransformTypes.HasFlag(TransformFlags.Scale))
                 {
                     hostTransform.localScale = scaleElastic.ComputeIteration(targetTransform.Scale, Time.deltaTime);
                 }
 
-                elasticTypesSimulating = enabledFlags;
+                elasticTypesSimulating = enabledTransformTypes;
                 return elasticTypes;
             }
             else 
