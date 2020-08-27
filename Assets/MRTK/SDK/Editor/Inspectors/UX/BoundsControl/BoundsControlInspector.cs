@@ -9,9 +9,8 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
     [CustomEditor(typeof(BoundsControl), true)]
     [CanEditMultipleObjects]
@@ -47,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty scaleStoppedEvent;
         private SerializedProperty translateStartedEvent;
         private SerializedProperty translateStoppedEvent;
+
+        private SerializedProperty elasticsManager;
 
         private BoundsControl boundsControl;
 
@@ -89,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
             translateStartedEvent = serializedObject.FindProperty("translateStarted");
             translateStoppedEvent = serializedObject.FindProperty("translateStopped");
+
+            // Elastics
+            elasticsManager = serializedObject.FindProperty("elasticsManager");
         }
 
         public override void OnInspectorGUI()
@@ -163,6 +167,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                         EditorGUILayout.PropertyField(translateStartedEvent);
                         EditorGUILayout.PropertyField(translateStoppedEvent);
                     }
+
+                    EditorGUILayout.Space();
+
+                    ElasticsManagerInspector.DrawElasticsManagerLink(elasticsManager, boundsControl.gameObject);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Debug", "Bounds Control Debug Section"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));

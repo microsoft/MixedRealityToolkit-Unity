@@ -9,6 +9,7 @@ using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
@@ -399,6 +400,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             get => translateStopped;
             set => translateStopped = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Elastics Manager slot to enable elastics simulation when manipulating the object.")]
+        private ElasticsManager elasticsManager;
+        /// <summary>
+        /// Elastics Manager slot to enable elastics simulation when manipulating the object.
+        /// </summary>
+        public ElasticsManager ElasticsManager
+        {
+            get => elasticsManager;
+            set => elasticsManager = value;
         }
 
         #endregion Serialized Fields
@@ -958,18 +971,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             if (lastHandleType == HandleType.Scale)
             {
-                if (debugText != null) debugText.text = "OnPointerUp:ScaleStopped";
+                if (debugText != null) debugText.text = "DropController:ScaleStopped";
                 ScaleStopped?.Invoke();
             }
             else if (lastHandleType == HandleType.Rotation)
             {
-                if (debugText != null) debugText.text = "OnPointerUp:RotateStopped";
+                if (debugText != null) debugText.text = "DropController:RotateStopped";
                 RotateStopped?.Invoke();
             }
             else if (lastHandleType == HandleType.Translation)
             {
-                if (debugText != null) debugText.text = "OnPointerUp:TranslateStopped";
+                if (debugText != null) debugText.text = "DropController:TranslateStopped";
                 TranslateStopped?.Invoke();
+            }
+
+            if (elasticsManager != null)
+            {
+                elasticsManager.EnableElasticsUpdate = true;
             }
         }
 
@@ -1085,6 +1103,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
                 bool isNear = currentPointer is IMixedRealityNearPointer;
 
+
+                TransformFlags transformUpdated = 0;
                 if (transformType == HandleType.Rotation)
                 {
                     Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
@@ -1092,8 +1112,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
                     MixedRealityTransform constraintRotation = MixedRealityTransform.NewRotate(goal);
                     constraints.ApplyRotationConstraints(ref constraintRotation, true, isNear);
-                    goal = constraintRotation.Rotation;
-                    Target.transform.rotation = smoothingActive ? Smoothing.SmoothTo(Target.transform.rotation, goal, rotateLerpTime, Time.deltaTime) : goal;
+                    
+                    if (elasticsManager != null)
+                    {
+                        transformUpdated = elasticsManager.ApplyTargetTransform(constraintRotation, TransformFlags.Rotate);
+                    }
+                    if (!transformUpdated.HasFlag(TransformFlags.Rotate))
+                    {
+                        Target.transform.rotation = smoothingActive ? 
+                            Smoothing.SmoothTo(Target.transform.rotation, constraintRotation.Rotation, rotateLerpTime, Time.deltaTime) : 
+                            constraintRotation.Rotation;
+                    }
                 }
                 else if (transformType == HandleType.Scale)
                 {
@@ -1112,18 +1141,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         Vector3 currentDist = (currentGrabPoint - oppositeCorner);
                         Vector3 grabDiff = (currentDist - initialDist);
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
-
                     }
 
                     Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
                     MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
                     constraints.ApplyScaleConstraints(ref clampedTransform, true, isNear);
-                    if (clampedTransform.Scale != newScale)
+
+                    if (elasticsManager != null)
                     {
-                        scaleFactor = clampedTransform.Scale.Div(initialScaleOnGrabStart);
+                        transformUpdated = elasticsManager.ApplyTargetTransform(clampedTransform, TransformFlags.Scale);
+                    }
+                    if (!transformUpdated.HasFlag(TransformFlags.Scale))
+                    {
+                        Target.transform.localScale = smoothingActive ? 
+                            Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : 
+                            clampedTransform.Scale;
                     }
 
-                    Target.transform.localScale = smoothingActive ? Smoothing.SmoothTo(Target.transform.localScale, clampedTransform.Scale, scaleLerpTime, Time.deltaTime) : clampedTransform.Scale;
                     var originalRelativePosition = initialPositionOnGrabStart - oppositeCorner;
                     var newPosition = originalRelativePosition.Div(initialScaleOnGrabStart).Mul(Target.transform.localScale) + oppositeCorner;
                     Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, newPosition, scaleLerpTime, Time.deltaTime) : newPosition;
@@ -1135,8 +1169,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     var goal = initialPositionOnGrabStart + translateVectorAlongAxis;
                     MixedRealityTransform constraintTranslate = MixedRealityTransform.NewTranslate(goal);
                     constraints.ApplyTranslationConstraints(ref constraintTranslate, true, isNear);
-                    goal = constraintTranslate.Position;
-                    Target.transform.position = smoothingActive ? Smoothing.SmoothTo(Target.transform.position, goal, translateLerpTime, Time.deltaTime) : goal;
+
+                    if (elasticsManager != null)
+                    {
+                        transformUpdated = elasticsManager.ApplyTargetTransform(constraintTranslate, TransformFlags.Move);
+                    }
+                    if (!transformUpdated.HasFlag(TransformFlags.Move))
+                    {
+                        Target.transform.position = smoothingActive ? 
+                            Smoothing.SmoothTo(Target.transform.position, constraintTranslate.Position, translateLerpTime, Time.deltaTime) : 
+                            constraintTranslate.Position;
+                    } 
                 }
             }
         }
@@ -1253,6 +1296,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         }
                     }
 
+                    if (elasticsManager != null)
+                    {
+                        // Initialize elastic systems.
+                        elasticsManager.InitializeElastics(Target.transform);
+                        // disable auto update (elastics are going to be queried through applyTargetTransform when manipulating)
+                        elasticsManager.EnableElasticsUpdate = false;
+                    }
+
                     constraints.Initialize(new MixedRealityTransform(Target.transform));
 
                     eventData.Use();
@@ -1287,28 +1338,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             if (currentPointer != null && currentPointer.InputSourceParent.SourceId == eventData.SourceId)
             {
-                HandleType lastHandleType = currentHandleType;
-
-                currentPointer = null;
-                currentHandleType = HandleType.None;
-                // todo: move this out?
-                ResetVisuals();
-
-                if (lastHandleType == HandleType.Scale)
-                {
-                    if (debugText != null) debugText.text = "OnSourceLost:ScaleStopped";
-                    ScaleStopped?.Invoke();
-                }
-                else if (lastHandleType == HandleType.Rotation)
-                {
-                    if (debugText != null) debugText.text = "OnSourceLost:RotateStopped";
-                    RotateStopped?.Invoke();
-                }
-                else if (lastHandleType == HandleType.Translation)
-                {
-                    if (debugText != null) debugText.text = "OnSourceLost:TranslateStopped";
-                    TranslateStopped?.Invoke();
-                }
+                DropController();
             }
         }
 
