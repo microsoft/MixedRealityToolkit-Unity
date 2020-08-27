@@ -12,7 +12,6 @@ using UnityEngine;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.Perception.Spatial.Preview;
@@ -118,13 +117,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
             else
             {
-                Debug.LogError("Something went terribly wrong getting scene observer access!");
+                Debug.LogError("Something went wrong getting scene observer access!");
             }
 
             if (UpdateOnceOnLoad)
             {
                 observerState = ObserverState.GetScene;
-                //doUpdateOnceOnLoad = true;
             }
         }
 
@@ -133,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             isRemoting = UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected;
 
-            // This will kill the background thread when we stop in editor.
+            // Kill the background thread when we stop in editor.
             killToken = killTokenSource.Token;
 
             // there is odd behavior with WaitForBackgroundTask
@@ -149,13 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 // Make our new objects in batches and tell observers about it
                 int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
 
-                SpatialAwarenessSceneObject saso = null;
-
                 for (int i = 0; i < batchCount; ++i)
                 {
-                    bool status = instantiationQueue.TryDequeue(out saso);
-
-                    if (CreateGameObjects)
+                    if (instantiationQueue.TryDequeue(out SpatialAwarenessSceneObject saso) && CreateGameObjects)
                     {
                         InstantiateSceneObject(saso);
                     }
@@ -188,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             if (disposing)
             {
-                CleanupDebugGameObjects();
+                CleanupInstantiatedSceneObjects();
             }
 
             disposed = true;
@@ -224,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region IMixedRealitySpatialAwarenessSceneUnderstandingObserver
 
         /// <inheritdoc/>
-        public IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; set; }
+        public IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get => sceneObjects; }
 
         /// <inheritdoc/>
         public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
@@ -268,24 +262,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <inheritdoc/>
         public SpatialAwarenessMeshLevelOfDetail WorldMeshLevelOfDetail { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="serializedScene"></param>
+        /// <inheritdoc/>
         public void LoadScene(byte[] serializedScene)
         {
             // todo
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="prefix"></param>
-        public void SaveScene(string prefix)
+        /// <inheritdoc/>
+        public void SaveScene(string filenamePrefix)
         {
 #if WINDOWS_UWP
-            SaveToFile(prefix);
+            SaveToFile(filenamePrefix);
 #else // WINDOWS_UWP
             Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
 #endif // WINDOWS_UWP
@@ -333,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private TextAsset serializedScene = null;
 
         /// <summary>
-        /// 
+        /// The saved scene understanding file
         /// </summary>
         public TextAsset SerializedScene
         {
@@ -354,16 +342,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
         #region Private Fields
 
-        private Dictionary<System.Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<System.Guid, SpatialAwarenessSceneObject>(256);
+        private Dictionary<Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<Guid, SpatialAwarenessSceneObject>(256);
         private GameObject observedObjectParent = null;
-        protected virtual GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
+        protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
         private System.Timers.Timer firstUpdateTimer = null;
         private System.Timers.Timer updateTimer = null;
         private Dictionary<Guid, Tuple<SceneQuad, SceneObject>> cachedSceneQuads = new Dictionary<Guid, Tuple<SceneQuad, SceneObject>>(256);
         private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private Mesh normalizedQuadMesh = new Mesh();
         private string surfaceTypeName;
-        private CancellationTokenSource killTokenSource = new System.Threading.CancellationTokenSource();
+        private CancellationTokenSource killTokenSource = new CancellationTokenSource();
         private System.Numerics.Matrix4x4 correctOrientation = System.Numerics.Matrix4x4.Identity;
         private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
         
@@ -378,9 +366,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private ObserverState observerState;
         private CancellationToken killToken;
         private bool isRemoting;
-        //private bool doUpdateOnceOnLoad = false;
         private Guid sceneOriginId;
-        private System.Numerics.Matrix4x4 sceneToWorldXformSystem;
+        private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private Texture defaultTexture;
 
@@ -391,15 +378,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Gets the occlusion mask from a scene quad
         /// </summary>
-        /// <param name="quadId"></param>
-        /// <param name="textureWidth"></param>
-        /// <param name="textureHeight"></param>
-        /// <param name="mask"></param>
+        /// <param name="quadGuid">Guid of the quad</param>
+        /// <param name="textureWidth">Width of the mask</param>
+        /// <param name="textureHeight">Height of the mask</param>
+        /// <param name="mask">Mask result</param>
         /// <returns></returns>
         public bool TryGetOcclusionMask(
-            Guid quadId, 
+            Guid quadGuid, 
             ushort textureWidth, 
             ushort textureHeight, 
             out byte[] mask)
@@ -409,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 #if SCENE_UNDERSTANDING_PRESENT
            Tuple<SceneQuad, SceneObject> result;
 
-            if (!cachedSceneQuads.TryGetValue(quadId, out result))
+            if (!cachedSceneQuads.TryGetValue(quadGuid, out result))
             {
                return false;
             }
@@ -428,18 +415,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// Returns best placement position in local space to the plane
+        /// Returns best placement position in local space to the quad
         /// </summary>
-        /// <param name="plane">The <see cref="SpatialAwarenessMeshObject"/> who's plane will be used for placement</param>
+        /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
-        /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
+        /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
         public bool TryFindCentermostPlacement(
             Guid quadGuid, 
             Vector2 objExtents, 
-            out Vector3 placementPosOnPlane)
+            out Vector3 placementPosOnQuad)
         {
-            placementPosOnPlane = Vector3.zero;
+            placementPosOnQuad = Vector3.zero;
 
 #if SCENE_UNDERSTANDING_PRESENT
 
@@ -447,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             if (!cachedSceneQuads.TryGetValue(quadGuid, out result))
             {
-                placementPosOnPlane = Vector2.zero;
+                placementPosOnQuad = Vector2.zero;
                 return false;
             }
 
@@ -463,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             centerPosition -= quad.Extents / new System.Numerics.Vector2(2.0f);
 
             var centerUnity = new Vector3(centerPosition.X, centerPosition.Y, 0);
-            placementPosOnPlane = (sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem * correctOrientation).ToUnity().MultiplyPoint(centerUnity);
+            placementPosOnQuad = (sceneObject.GetLocationAsMatrix() * sceneToWorldTransformMatrix * correctOrientation).ToUnity().MultiplyPoint(centerUnity);
 
             return true;
 #else
@@ -493,18 +480,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <param name="id">the id associated with the <paramref name="sceneObj"/></param>
         protected virtual void SendSceneObjectAdded(SpatialAwarenessSceneObject sceneObj, Guid id)
         {
-            // Send the mesh removed event
             sceneEventData.Initialize(this, id, sceneObj);
             SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectAdded);
         }
 
         /// <summary>
-        /// 
+        /// Setups and starts update timers
         /// </summary>
         private void StartUpdateTimers()
         {
-            // setup and start service timers
-
             updateTimer = new System.Timers.Timer
             {
                 Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
@@ -512,11 +496,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             updateTimer.Elapsed += (sender, e) =>
             {
-                //if (AutoUpdate || doUpdateOnceOnLoad)
                 if (AutoUpdate)
                 {
                     observerState = ObserverState.GetScene;
-                    //doUpdateOnceOnLoad = false;
                 }
             };
 
@@ -536,9 +518,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Creates a quad based on extents
         /// </summary>
-        /// <param name="mesh"></param>
+        /// <param name="mesh">Mesh to contain the quad</param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         private void CreateQuadFromExtents(Mesh mesh, float x, float y)
@@ -573,15 +555,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Runs the observer asynchronously
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">CancellationToken of the task</param>
+        /// <returns>The async task</returns>
         private async Task RunObserverAsync(CancellationToken cancellationToken)
         {
             Scene scene = null;
             Scene previousScene = null;
-            var sasos = new List<SpatialAwarenessSceneObject>(256);
+            List<SpatialAwarenessSceneObject> sasos;
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -604,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         }
                         await new WaitForUpdate();
 
-                        sceneToWorldXformSystem = GetSceneToWorldTransform();
+                        sceneToWorldTransformMatrix = GetSceneToWorldTransform();
 
                         if (!UsePersistentObjects)
                         {
@@ -613,7 +595,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
                         if (OrientScene && Application.isEditor)
                         {
-                            var toUp = System.Numerics.Vector3.Zero;
+                            System.Numerics.Vector3 toUp;
 
                             await new WaitForBackgroundThread();
                             {
@@ -667,9 +649,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Gets the matrix representing the transform from scene space to world space
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The transform matrix</returns>
         private System.Numerics.Matrix4x4 GetSceneToWorldTransform()
         {
             var result = System.Numerics.Matrix4x4.Identity;
@@ -700,10 +682,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Gets scene asynchronously from file or SceneObserver
         /// </summary>
         /// <param name="previousScene"></param>
-        /// <returns></returns>
+        /// <returns>The retrieved scene</returns>
         private Scene GetSceneAsync(Scene previousScene)
         {
             Scene scene = null;
@@ -743,17 +725,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 // however this has has been problematic (buggy?)
                 // For the time being we force it to be synchronous with the ...GetAwaiter().GetResult() pattern
 
-                if (UsePersistentObjects)
+                if (UsePersistentObjects && previousScene != null)
                 {
-                    if (previousScene != null)
-                    {
-                        scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene).GetAwaiter().GetResult();
-                    }
-                    else
-                    {
-                        // first time through, we have no history
-                        scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
-                    }
+                    scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene).GetAwaiter().GetResult();
                 }
                 else
                 {
@@ -765,10 +739,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Converts a <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneObject"/> to a MRTK/platform agnostic <see cref="SpatialAwarenessSceneObject"/>.
         /// </summary>
-        /// <param name="sceneObject"></param>
-        /// <returns></returns>
+        /// <param name="sceneObject">The <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneObject"/> to convert</param>
+        /// <returns>The converted <see cref="SpatialAwarenessSceneObject"/></returns>
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
             int quadCount = sceneObject.Quads.Count;
@@ -795,7 +769,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         sceneQuad.GetSurfaceMask((ushort)OcclusionMaskResolution.x, (ushort)OcclusionMaskResolution.y, occlusionMaskBytes);
                     }
 
-                    var extents = new UnityEngine.Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
+                    var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
 
                     var quad = new SpatialAwarenessSceneObject.Quad(quadIdKey, extents, occlusionMaskBytes);
 
@@ -812,24 +786,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
             if (RequestMeshData)
             {
-                SceneMesh sceneMesh = null;
-
                 for (int i = 0; i < meshCount; ++i)
                 {
-                    sceneMesh = sceneObject.Meshes[i];
-                    var meshData = MeshData(sceneMesh);
+                    var meshData = MeshData(sceneObject.Meshes[i]);
                     meshes.Add(meshData);
                 }
             }
 
             // World space conversion
-            System.Numerics.Matrix4x4 worldXformSystem = sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem * correctOrientation;
+            System.Numerics.Matrix4x4 worldTransformMatrix = sceneObject.GetLocationAsMatrix() * sceneToWorldTransformMatrix * correctOrientation;
 
             System.Numerics.Vector3 worldTranslationSystem;
             System.Numerics.Quaternion worldRotationSytem;
             System.Numerics.Vector3 localScale;
 
-            System.Numerics.Matrix4x4.Decompose(worldXformSystem, out localScale, out worldRotationSytem, out worldTranslationSystem);
+            System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out localScale, out worldRotationSytem, out worldTranslationSystem);
 
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
@@ -843,15 +814,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Converts all SurfaceType-matching <see cref="SceneObject"/>s in a scene to <see cref="SpatialAwarenessSceneObject"/>s.
         /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
+        /// <param name="scene">The scene containing <see cref="SceneObject"/>s to convert</param>
+        /// <returns>Task containing the resulting list of converted <see cref="SpatialAwarenessSceneObject"/>s</returns>
         private async Task<List<SpatialAwarenessSceneObject>> ConvertSceneObjectsAsync(Scene scene)
         {
-            var result = new List<SpatialAwarenessSceneObject>(256);
-
-            // Add scene objects we're interested in to the stack of GameObjects to instantiate
             convertedObjects.Clear();
 
             if (scene.SceneObjects.Count == 0)
@@ -875,10 +843,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Filters SceneObject of selected SurfaceTypes
         /// </summary>
-        /// <param name="newObjects"></param>
-        /// <returns></returns>
+        /// <param name="newObjects">List of SceneObjects to be filtered</param>
+        /// <returns>The filtered list</returns>
         private List<SceneObject> FilterSelectedSurfaceTypes(IReadOnlyList<SceneObject> newObjects)
         {
             filteredSelectedSurfaceTypesResult.Clear();
@@ -899,10 +867,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Adds new SpatialAwarenessSceneObjects to the existing queue
         /// </summary>
-        /// <param name="newObjects"></param>
-        /// <param name="existing"></param>
+        /// <param name="newObjects">List of SpatialAwarenessSceneObjects to be added</param>
+        /// <param name="existing">The queue where new SpatialAwarenessSceneObjects will be added</param>
         private void AddUniqueTo(List<SpatialAwarenessSceneObject> newObjects, ConcurrentQueue<SpatialAwarenessSceneObject> existing)
         {
             int length = newObjects.Count;
@@ -917,13 +885,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Instantiate a SceneObject in the scene
         /// </summary>
-        /// <param name="saso"></param>
+        /// <param name="saso">The SpatialAwarenessSceneObject to instantiate</param>
         private void InstantiateSceneObject(SpatialAwarenessSceneObject saso)
         {
             // Until this point the SASO has been a data representation
-            surfaceTypeName = $"{saso.SurfaceType.ToString()} {saso.Guid.ToString()}";
+            surfaceTypeName = $"{saso.SurfaceType} {saso.Guid}";
 
             saso.GameObject = new GameObject(surfaceTypeName)
             {
@@ -1001,14 +969,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 {
                     var meshAlias = saso.Meshes[i];
 
-                    var go = new GameObject($"Mesh {meshAlias.guid}");
+                    var meshGo = new GameObject($"Mesh {meshAlias.guid}");
 
-                    var mf = go.AddComponent<MeshFilter>();
-                    mf.mesh = UnityMeshFromMeshData(meshAlias);
+                    var meshFilter = meshGo.AddComponent<MeshFilter>();
+                    meshFilter.mesh = UnityMeshFromMeshData(meshAlias);
 
-                    var meshRenderer = go.AddComponent<MeshRenderer>();
+                    var meshRenderer = meshGo.AddComponent<MeshRenderer>();
 
-                    go.AddComponent<MeshCollider>();
+                    meshGo.AddComponent<MeshCollider>();
 
                     if (DefaultMaterial)
                     {
@@ -1021,7 +989,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
                     }
 
-                    go.transform.SetParent(saso.GameObject.transform, false);
+                    meshGo.transform.SetParent(saso.GameObject.transform, false);
                 }
             }
 
@@ -1108,9 +1076,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Destroy the instantiated SceneObjects
         /// </summary>
-        private void CleanupDebugGameObjects()
+        private void CleanupInstantiatedSceneObjects()
         {
             if (observedObjectParent != null)
             {
@@ -1128,7 +1096,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             base.ClearObservations();
             //cachedSceneQuads.Clear();
-            CleanupDebugGameObjects();
+            CleanupInstantiatedSceneObjects();
             instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
             sceneObjects.Clear();
         }
@@ -1214,10 +1182,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        ///
+        /// Generates Unity Mesh from MeshData
         /// </summary>
-        /// <param name="meshes"></param>
-        /// <returns></returns>
+        /// <param name="meshData">The MeshData to get data from</param>
+        /// <returns>The resulting Unity Mesh</returns>
         private static Mesh UnityMeshFromMeshData(SpatialAwarenessSceneObject.MeshData meshData)
         {
             Mesh unityMesh = new Mesh();
@@ -1241,7 +1209,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <summary>
         /// Orients the root game object, such that the Scene Understanding floor lies on the Unity world's X-Z plane.
         /// The floor type with the largest area is choosen as the reference.
-        /// If no floor is found....???
         /// </summary>
         /// <param name="scene">Scene Understanding scene.</param>
         private System.Numerics.Vector3 ToUpFromBiggestFloor(IReadOnlyList<SceneObject> sasos)
@@ -1305,10 +1272,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Generates MeshData from SceneMesh
         /// </summary>
-        /// <param name="sceneMesh"></param>
-        /// <returns></returns>
+        /// <param name="sceneMesh">The SceneMesh to get data from</param>
+        /// <returns>The resulting MeshData</returns>
         private SpatialAwarenessSceneObject.MeshData MeshData(SceneMesh sceneMesh)
         {
             // Indices
@@ -1325,27 +1292,25 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 
             // Vertices
-            var vertices = new UnityEngine.Vector3[sceneMesh.VertexCount];
-            var uvs = new UnityEngine.Vector2[sceneMesh.VertexCount];
+            var vertices = new Vector3[sceneMesh.VertexCount];
+            var uvs = new Vector2[sceneMesh.VertexCount];
 
             var meshVertices = new System.Numerics.Vector3[sceneMesh.VertexCount];
             sceneMesh.GetVertexPositions(meshVertices);
 
-            var vlength = meshVertices.Length;
+            var vertexCount = meshVertices.Length;
 
             var minx = meshVertices[0].X;
             var miny = meshVertices[0].Y;
             var maxx = minx;
             var maxy = miny;
-            float x = minx;
-            float y = miny;
 
-            for (int i = 0; i < vlength; ++i)
+            for (int i = 0; i < vertexCount; ++i)
             {
-                x = meshVertices[i].X;
-                y = meshVertices[i].Y;
+                var x = meshVertices[i].X;
+                var y = meshVertices[i].Y;
 
-                vertices[i] = new UnityEngine.Vector3(x, y, -meshVertices[i].Z);
+                vertices[i] = new Vector3(x, y, -meshVertices[i].Z);
                 minx = Math.Min(minx, x);
                 miny = Math.Min(miny, y);
                 maxx = Math.Max(maxx, x);
@@ -1357,7 +1322,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             float smallestDimension = Math.Min(minx, miny);
             float biggestDimension = Math.Max(maxx, maxy);
 
-            for (int i = 0; i < vlength; ++i)
+            for (int i = 0; i < vertexCount; ++i)
             {
                 uvs[i] = new Vector2(
                     Mathf.InverseLerp(smallestDimension, biggestDimension, vertices[i].x),
