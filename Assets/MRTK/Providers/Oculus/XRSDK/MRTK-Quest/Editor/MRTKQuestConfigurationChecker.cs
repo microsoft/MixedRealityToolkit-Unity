@@ -95,9 +95,13 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
                 else
                 {
                     if(oculusAsmDefFile == oculusXRSDKAsmDefFile || oculusAsmDefFile == oculusXRSDKHandtrackingUtilsAsmDefFile)
+                    {
                         oculusAsmDef.AddReference("Oculus.VR");
+                    }
                     if (oculusAsmDefFile == oculusXRSDKHandtrackingEditorAsmDefFile)
+                    {
                         oculusAsmDef.AddReference("Oculus.VR.Editor");
+                    }
                 }
                 oculusAsmDef.Save(oculusAsmDefFile[0].FullName);
             }
@@ -115,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                ConfigureProfilesForHandtracking();
                 return true;
             }
             else
@@ -124,27 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Configures the project profiles to support handtracking
-        /// </summary>
-        static void ConfigureProfilesForHandtracking()
-        {
-#if OCULUSINTEGRATION_PRESENT
-            FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
-
-            // Make this set the application to controllers and hands on first setup
-            string configPath = "";
-            if (files[0].FullName.Replace("\\", "/").StartsWith(Application.dataPath))
-            {
-                configPath = "Assets" + files[0].FullName.Substring(Application.dataPath.Length);
-            }
-
-            OVRProjectConfig projectConfig = AssetDatabase.LoadAssetAtPath<OVRProjectConfig>(configPath);
-            projectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
-            AssetDatabase.Refresh();
-#endif
         }
 
         /// <summary>
