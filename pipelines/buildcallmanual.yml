@@ -24,20 +24,20 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-- ${{ if contains(parameters.build, 'all') }}:
-  - template: templates/buildcallsetup.yml
-    parameters:
-      packagingEnabled: false
-      UnityVersion: $(Unity2019Version)
-      MRTKVersion: $(MRTKVersion)
-      Binaries: 'all'
-- ${{ if contains(parameters.build, 'common') }}:
-  - template: templates/buildcallsetup.yml
-    parameters:
-      packagingEnabled: false
-      UnityVersion: $(Unity2019Version)
-      MRTKVersion: $(MRTKVersion)
-      Binaries: 'common'
+  - ${{ if contains(parameters.build, 'all') }}:
+    - template: templates/buildcallsetup.yml
+      parameters:
+        packagingEnabled: false
+        UnityVersion: $(Unity2019Version)
+        MRTKVersion: $(MRTKVersion)
+        Binaries: 'all'
+  - ${{ if contains(parameters.build, 'common') }}:
+    - template: templates/buildcallsetup.yml
+      parameters:
+        packagingEnabled: false
+        UnityVersion: $(Unity2019Version)
+        MRTKVersion: $(MRTKVersion)
+        Binaries: 'common'
 
 
 - job: BuildCallUnity2018Setup
@@ -51,17 +51,17 @@ jobs:
     - SDK_18362 -equals TRUE
 
   steps:
-- ${{ if contains(parameters.build, 'all') }}:
-  - template: templates/buildcallsetup.yml
-    parameters:
-      packagingEnabled: false
-      UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)
-      Binaries: 'all'
-- ${{ if contains(parameters.build, 'common') }}:
-  - template: templates/buildcallsetup.yml
-    parameters:
-      packagingEnabled: false
-      UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)
-      Binaries: 'common'
+  - ${{ if contains(parameters.build, 'all') }}:
+    - template: templates/buildcallsetup.yml
+      parameters:
+        packagingEnabled: false
+        UnityVersion: $(Unity2018Version)
+        MRTKVersion: $(MRTKVersion)
+        Binaries: 'all'
+  - ${{ if contains(parameters.build, 'common') }}:
+    - template: templates/buildcallsetup.yml
+      parameters:
+        packagingEnabled: false
+        UnityVersion: $(Unity2018Version)
+        MRTKVersion: $(MRTKVersion)
+        Binaries: 'common'
