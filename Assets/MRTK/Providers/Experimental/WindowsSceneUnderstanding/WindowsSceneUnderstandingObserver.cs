@@ -31,7 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         SupportedPlatforms.WindowsUniversal,
         "Windows Scene Understanding Observer",
         "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "MixedRealityToolkit.Providers",
+        true)]
     public class WindowsSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
-            SceneUnderstandingObserverProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
             ReadProfile();
         }
