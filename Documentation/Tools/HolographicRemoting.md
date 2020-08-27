@@ -12,11 +12,9 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
 
 ### HoloLens 2
 
-When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please run the followin:
+When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
-- **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. 
-
-These steps  will install the required dependencies for Holographic Remoting and set the appropriate compiler flags.
+Once MSBuild completes the import process, the next step is to select 
 
 Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the **Use MSBuild for Unity dependency resolution** option fails, please use the following steps to enable holographic remoting.
 
