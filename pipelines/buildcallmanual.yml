@@ -49,6 +49,7 @@ jobs:
     - Unity2018.4.26f1
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
+
   steps:
 - ${{ if contains(parameters.build, 'all') }}:
   - template: templates/buildcallsetup.yml
