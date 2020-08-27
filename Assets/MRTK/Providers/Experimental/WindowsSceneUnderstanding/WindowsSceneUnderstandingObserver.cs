@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// Setups and starts update timers
+        /// Sets up and starts update timers
         /// </summary>
         private void StartUpdateTimers()
         {
