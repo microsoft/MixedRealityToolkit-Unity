@@ -39,29 +39,28 @@ jobs:
         MRTKVersion: $(MRTKVersion)
         Binaries: 'common'
 
+  - job: BuildCallUnity2018Setup
+    displayName: Build Call Unity 2018 Binaries and manual testing setup
+    timeoutInMinutes: 120
+    pool:
+      name: On-Prem Unity
+      demands:
+      - Unity2018.4.26f1
+      - COG-UnityCache-WUS2-01
+      - SDK_18362 -equals TRUE
 
-- job: BuildCallUnity2018Setup
-  displayName: Build Call Unity 2018 Binaries and manual testing setup
-  timeoutInMinutes: 120
-  pool:
-    name: On-Prem Unity
-    demands:
-    - Unity2018.4.26f1
-    - COG-UnityCache-WUS2-01
-    - SDK_18362 -equals TRUE
-
-  steps:
-  - ${{ if contains(parameters.build, 'all') }}:
-    - template: templates/buildcallsetup.yml
-      parameters:
-        packagingEnabled: false
-        UnityVersion: $(Unity2018Version)
-        MRTKVersion: $(MRTKVersion)
-        Binaries: 'all'
-  - ${{ if contains(parameters.build, 'common') }}:
-    - template: templates/buildcallsetup.yml
-      parameters:
-        packagingEnabled: false
-        UnityVersion: $(Unity2018Version)
-        MRTKVersion: $(MRTKVersion)
-        Binaries: 'common'
+    steps:
+    - ${{ if contains(parameters.build, 'all') }}:
+      - template: templates/buildcallsetup.yml
+        parameters:
+          packagingEnabled: false
+          UnityVersion: $(Unity2018Version)
+          MRTKVersion: $(MRTKVersion)
+          Binaries: 'all'
+    - ${{ if contains(parameters.build, 'common') }}:
+      - template: templates/buildcallsetup.yml
+        parameters:
+          packagingEnabled: false
+          UnityVersion: $(Unity2018Version)
+          MRTKVersion: $(MRTKVersion)
+          Binaries: 'common'
