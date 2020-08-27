@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
                 DrawGeneralSection();
                 DrawPaginationSection();
-                DrawExtraSettingsSection();
+                DrawAdvancedSettingsSection();
                 DrawEventsSection();
 
                 serializedObject.ApplyModifiedProperties();
@@ -230,9 +230,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             }
         }
 
-        private void DrawExtraSettingsSection()
+        private void DrawAdvancedSettingsSection()
         {
-            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Extra settings", ShowAdvancedPrefKey, MixedRealityStylesUtility.BoldFoldoutStyle))
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Advanced settings", ShowAdvancedPrefKey, MixedRealityStylesUtility.BoldFoldoutStyle))
             {
                 using (new EditorGUI.IndentLevelScope(2))
                 {

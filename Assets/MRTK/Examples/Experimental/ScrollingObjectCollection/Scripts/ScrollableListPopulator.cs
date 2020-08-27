@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         [Tooltip("The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.")]
         private ScrollingObjectCollection scrollView;
 
-        private GridObjectCollection gridObjectCollection;
-
         /// <summary>
         /// The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.
         /// </summary>
@@ -102,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         [SerializeField]
         private Transform scrollPositionRef = null;
+
+        private GridObjectCollection gridObjectCollection;
 
         /// <summary>
         /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
