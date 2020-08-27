@@ -653,6 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             else
                             {
                                 SendSceneObjectUpdated(saso, saso.Guid);
+                                sceneObjects[saso.Guid] = saso;
                             }
                         }
 
