@@ -62,6 +62,12 @@ Support for the Leap Motion Unity Modules version 4.5.1 has been added and suppo
 
 There is also an additional step for initial Leap Motion integration, see [How to Configure the Leap Motion Hand Tracking in MRTK](CrossPlatform/LeapMotionMRTK.md) for more information.
 
+**Spatial Awareness Mesh Observer better handles customization of materials**
+
+With this release, the `Windows Mixed Reality Spatial Mesh Observer` and the `Generic XR SDK Spatial Mesh Observer` components have improved visual material handling. Materials are now preserved when a mesh has been updated by the observer where, previously, they were reset to the default VisibleMaterial as configured in the profile.
+
+This enables developers to alter the mesh material and not have the changes overwritten unexpectedly.
+
 **Link.xml created in the MixedRealityToolkit.Generated folder**
 
 With the introduction of Unity Package Manger MRTK, MRTK now writes a `link.xml` file to the `Assets/MixedRealityToolkit.Generated` folder, if none is present. It is recommended to add this file (and `link.xml.meta`) be added to source control. Link.xml is used to influence the [managed code stripping](https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML) functionality of the Unity linker.
