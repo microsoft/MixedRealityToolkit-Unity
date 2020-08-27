@@ -12,7 +12,11 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
 
 ### HoloLens 2
 
-When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
+When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please run the followin:
+
+- **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. 
+
+These steps  will install the required dependencies for Holographic Remoting and set the appropriate compiler flags.
 
 Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the **Use MSBuild for Unity dependency resolution** option fails, please use the following steps to enable holographic remoting.
 
@@ -37,10 +41,12 @@ These issues are particularly relevant when running on **Unity 2019.3** or later
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
-> [!Note]
-> There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution** does not work correctly, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
+To enable MSBuild for Unity, please run **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. After running this command, MSBuild should begin importing dependencies. It may take a few seconds for importing to begin.
 
-The best way to check is to open **Window** > **Package Manager** and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running **Mixed Reality Toolkit** > **Utilities** > **Configure Unity** and repeat the steps above for running the MRTK Configurator.
+The **Use MSBuild for Unity dependency resolution** command does not display a confirmation. To confirm that it succeeded, open **Window** > **Package Manager** and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded.
+
+> [!Note]
+> There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If issues are encountered, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
 
