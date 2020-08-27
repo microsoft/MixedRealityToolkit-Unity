@@ -131,12 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             isRemoting = UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected;
 
-            // Kill the background thread when we stop in editor.
-            killToken = killTokenSource.Token;
+            // Terminate the background thread when we stop in editor.
+            cancelToken = cancelTokenSource.Token;
 
             // there is odd behavior with WaitForBackgroundTask
             // it will sometimes run on the main thread unless we start it this way
-            var x = RunObserverAsync(killToken).ConfigureAwait(true);
+            var x = RunObserverAsync(cancelToken).ConfigureAwait(true);
         }
 
         /// <inheritdoc />
@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <inheritdoc />
         public override void Destroy()
         {
-            killTokenSource.Cancel();
+            cancelTokenSource.Cancel();
             CleanupObserver();
         }
 
@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private Mesh normalizedQuadMesh = new Mesh();
         private string surfaceTypeName;
-        private CancellationTokenSource killTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
         private System.Numerics.Matrix4x4 correctOrientation = System.Numerics.Matrix4x4.Identity;
         private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
         
@@ -364,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         private ObserverState observerState;
-        private CancellationToken killToken;
+        private CancellationToken cancelToken;
         private bool isRemoting;
         private Guid sceneOriginId;
         private System.Numerics.Matrix4x4 sceneToWorldTransformMatrix;
@@ -473,6 +473,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 handler.OnObservationAdded(spatialEventData);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>> OnSceneObjectUpdated =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>>(eventData);
+                handler.OnObservationUpdated(spatialEventData);
+            };
+
         /// <summary>
         /// Sends SceneObject Added event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
         /// </summary>
@@ -482,6 +489,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             sceneEventData.Initialize(this, id, sceneObj);
             SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectAdded);
+        }
+
+        /// <summary>
+        /// Sends SceneObject Updated event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
+        /// </summary>
+        /// <param name="sceneObj">The <see cref="SpatialAwarenessSceneObject"/> being updated</param>
+        /// <param name="id">the id associated with the <paramref name="sceneObj"/></param>
+        protected virtual void SendSceneObjectUpdated(SpatialAwarenessSceneObject sceneObj, Guid id)
+        {
+            sceneEventData.Initialize(this, id, sceneObj);
+            SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectUpdated);
         }
 
         /// <summary>
@@ -631,6 +649,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             {
                                 sceneObjects.Add(saso.Guid, saso);
                                 SendSceneObjectAdded(saso, saso.Guid);
+                            }
+                            else
+                            {
+                                SendSceneObjectUpdated(saso, saso.Guid);
                             }
                         }
 
