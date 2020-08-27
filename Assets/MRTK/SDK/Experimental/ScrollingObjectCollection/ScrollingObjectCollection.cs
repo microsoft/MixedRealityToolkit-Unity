@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// <summary>
     /// A scrollable frame where content scroll is triggered by manual controller click and drag or according to pagination settings.
     //// </summary>
+    ///<remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
     [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
     public class ScrollingObjectCollection : MonoBehaviour,
@@ -79,27 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get { return maskEditMode; }
             set { maskEditMode = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Number of visible tiers in the scrolling area.")]
-        [FormerlySerializedAs("viewableArea")]
-        private int tiersPerPage = 4;
-
-        /// <summary>
-        /// Number of visible tiers in the scrolling area.
-        /// </summary>
-        public int TiersPerPage
-        {
-            get
-            {
-                Debug.Assert(tiersPerPage > 0);
-                return tiersPerPage;
-            }
-            set
-            {
-                tiersPerPage = value;
-            }
         }
 
         [SerializeField]
@@ -168,7 +148,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
         [Range(0.0f, 0.05f)]
         private float frontTouchDistance = 0.005f;
-
+        /// <summary>
+        /// Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.
+        /// </summary>
+        public float FrontTouchDistance
+        {
+            get { return frontTouchDistance; }
+            set { frontTouchDistance = value; }
+        }
 
         [SerializeField]
         [Tooltip("The direction in which content should scroll.")]
@@ -294,6 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Number of cells in a row on up-down scroll view or number of cells in a column on left-right scroll view.")]
         [SerializeField]
         [FormerlySerializedAs("tiers")]
+        [Min(1)]
         private int cellsPerTier = 1;
 
         /// <summary>
@@ -303,17 +291,40 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                Debug.Assert(cellsPerTier > 0);
                 return cellsPerTier;
             }
             set
             {
-                cellsPerTier = value;
+                Debug.Assert(value > 0, "Cells per tier should have a positive non zero value");
+                cellsPerTier = Mathf.Max(1, value);
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Number of visible tiers in the scrolling area.")]
+        [FormerlySerializedAs("viewableArea")]
+        [Min(1)]
+        private int tiersPerPage = 4;
+
+        /// <summary>
+        /// Number of visible tiers in the scrolling area.
+        /// </summary>
+        public int TiersPerPage
+        {
+            get
+            {
+                return tiersPerPage;
+            }
+            set
+            {
+                Debug.Assert(value > 0, "Tiers per page should have a positive non zero value");
+                tiersPerPage = Mathf.Max(1, value);
             }
         }
 
         [Tooltip("Width of the pagination cell.")]
         [SerializeField]
+        [Min(0.001f)]
         private float cellWidth = 0.25f;
 
         /// <summary>
@@ -323,17 +334,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                Debug.Assert(cellWidth > 0, "Cell width should have a positive non zero value");
                 return cellWidth;
             }
             set
             {
-                cellWidth = value;
+                Debug.Assert(value > 0, "Cell width should have a positive non zero value");
+                cellWidth = Mathf.Max(0.001f, value);
             }
         }
 
         [Tooltip("Height of the pagination cell.")]
         [SerializeField]
+        [Min(0.001f)]
         private float cellHeight = 0.25f;
 
         /// <summary>
@@ -343,17 +355,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                Debug.Assert(cellHeight > 0, "Cell height should have a positive non zero value");
                 return cellHeight;
             }
             set
             {
-                cellHeight = value;
+                Debug.Assert(cellHeight > 0, "Cell height should have a positive non zero value");
+                cellHeight = Mathf.Max(0.001f, value);
             }
         }
 
         [Tooltip("Depth of cell used for masking out content renderers that are out of bounds.")]
         [SerializeField]
+        [Min(0.001f)]
         private float cellDepth = 0.25f;
 
         /// <summary>
@@ -363,12 +376,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                Debug.Assert(cellDepth > 0, "Cell depth should have a positive non zero value");
                 return cellDepth;
             }
             set
             {
-                cellDepth = value;
+                Debug.Assert(value > 0, "Cell depth should have a positive non zero value");
+                cellDepth = Mathf.Max(0.001f, value);
             }
         }
 
@@ -384,6 +397,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             get { return bounceMultiplier; }
             set { bounceMultiplier = value; }
         }
+
+        // Lerping time interval used for smoothing between positions during scroll drag. Number was empirically defined.
+        private const float DragLerpInterval = 0.5f;
+
+        // Lerping time interval used for smoothing between positions during release. Number was empirically defined.
+        private const float ReleaseLerpInterval = 0.9275f;
+
+        // Lerping time interval used for smoothing between positions during bouncing. Number was empirically defined.
+        private const float BounceLerpInterval = 0.2f;
 
         /// <summary>
         /// The UnityEvent type the ScrollingObjectCollection sends.
@@ -431,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                return contentMaxBounds == null || contentMaxBounds.size.y <= 0 ? 0 :
+                return (contentMaxBounds == null || contentMaxBounds.size.y <= 0) ? 0 :
                     Mathf.Max(0, SafeDivisionFloat(contentMaxBounds.size.y, transform.lossyScale.y) - TiersPerPage * CellHeight);
             }
         }
@@ -447,13 +469,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                return contentMaxBounds == null || contentMaxBounds.size.x <= 0 ? 0 :
+                return (contentMaxBounds == null || contentMaxBounds.size.x <= 0) ? 0 :
                      Mathf.Max(0, SafeDivisionFloat(contentMaxBounds.size.x, transform.lossyScale.x) - TiersPerPage * CellWidth) * -1.0f;
             }
         }
 
-        // Depth of scrolling background box collider
-        private float scrollingBackgroundDepth = 0.001f;
+        // Depth of scrolling background box collider. Used as a plane that catches pointer and touch events on empty spaces.
+        private const float ScrollingBackgroundDepth = 0.001f;
 
         // Bounds that wrap all scroll container content. Used for calculating MinX and MaxY.
         private Bounds contentMaxBounds;
@@ -592,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (clipBox == null)
                 {
                     clipBox = ClippingObject.EnsureComponent<ClippingBox>();
-                    clipBox.ClippingSide = ClippingPrimitive.Side.Outside; return clipBox;
+                    clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
                 }
 
                 return clipBox;
@@ -799,17 +821,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                scrollingBackground.size = new Vector3(CellWidth * CellsPerTier, CellHeight * TiersPerPage, scrollingBackgroundDepth);
+                scrollingBackground.size = new Vector3(CellWidth * CellsPerTier, CellHeight * TiersPerPage, ScrollingBackgroundDepth);
             }
             else
             {
-                scrollingBackground.size = new Vector3(CellWidth * TiersPerPage, CellHeight * CellsPerTier, scrollingBackgroundDepth);
+                scrollingBackground.size = new Vector3(CellWidth * TiersPerPage, CellHeight * CellsPerTier, ScrollingBackgroundDepth);
             }
 
             Vector3 colliderPosition;
             colliderPosition.x = scrollingBackground.size.x / 2;
             colliderPosition.y = -scrollingBackground.size.y / 2;
-            colliderPosition.z = cellDepth / 2 + scrollingBackgroundDepth;
+            colliderPosition.z = cellDepth / 2 + ScrollingBackgroundDepth;
             scrollingBackground.center = colliderPosition;
 
             var touchable = gameObject.EnsureComponent<NearInteractionTouchable>();
@@ -852,11 +874,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     clippingBounds.size = new Vector3((CellWidth * CellsPerTier), (CellHeight * TiersPerPage), CellDepth);
                     ClipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds);
 
-                    // Adjust where the center of the clipping box is
-                    viewableCenter.x = ClipBox.transform.localScale.x * 0.5f;
-                    viewableCenter.y = ClipBox.transform.localScale.y * -0.5f;
-                    viewableCenter.z = 0;
-
                     break;
 
                 case ScrollDirectionType.LeftAndRight:
@@ -865,14 +882,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     clippingBounds.size = new Vector3(CellWidth * TiersPerPage, CellHeight * CellsPerTier, CellDepth);
                     ClipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds);
 
-
-                    // Same as above for L <-> R
-                    viewableCenter.x = ClipBox.transform.localScale.x * 0.5f;
-                    viewableCenter.y = ClipBox.transform.localScale.y * -0.5f;
-                    viewableCenter.z = 0;
-
                     break;
             }
+
+            // Adjust where the center of the clipping box is
+            viewableCenter.x = ClipBox.transform.localScale.x * 0.5f;
+            viewableCenter.y = ClipBox.transform.localScale.y * -0.5f;
+            viewableCenter.z = 0;
 
             // Apply new values
             ClipBox.transform.localPosition = viewableCenter;
@@ -980,13 +996,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
                         // Lock X, clamp Y
-                        workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handDelta.y, minY, MaxY, 0.5f);
+                        workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handDelta.y, minY, MaxY, DragLerpInterval);
                         workingScrollerPos.x = 0.0f;
                     }
                     else
                     {
                         // Lock Y, clamp X
-                        workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handDelta.x, MinX, maxX, 0.5f);
+                        workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handDelta.x, MinX, maxX, DragLerpInterval);
                         workingScrollerPos.y = 0.0f;
                     }
 
@@ -999,7 +1015,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     lastPointerPos = currentPointerPos;
                 }
             }
-            else if ((CurrentVelocityState != VelocityState.None || previousVelocityState != VelocityState.None) && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
+            else if ((CurrentVelocityState != VelocityState.None 
+                      || previousVelocityState != VelocityState.None) 
+                      && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
             {
                 // We're not engaged, so handle any not touching behavior
                 HandleVelocityFalloff();
@@ -1187,7 +1205,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         }
                         else
                         {
-                            // Precalculate where the velocity falloff woould land our scrollContainer, then round it to the nearest cell so it feels natural
+                            // Precalculate where the velocity falloff would land our scrollContainer, then round it to the nearest cell so it feels natural
                             velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
                             newPosAfterVelocity = initialScrollerPos.y - velocitySnapshot;
                         }
@@ -1215,7 +1233,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         CurrentVelocityState = VelocityState.Resolving;
                     }
 
-                    workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                    workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, ReleaseLerpInterval);
 
                     // Clear the velocity now that we've applied a new position
                     avgVelocity = 0.0f;
@@ -1234,15 +1252,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         }
                         else
                         {
-                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, ReleaseLerpInterval);
 
                             SnapVelocityFinish();
                         }
                     }
                     else
                     {
-                        if (ScrollContainer.transform.localPosition.x > maxX + (frontTouchDistance * bounceMultiplier)
-                            || ScrollContainer.transform.localPosition.x < MinX - (frontTouchDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.x > maxX + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.x < MinX - (FrontTouchDistance * bounceMultiplier))
                         {
                             CurrentVelocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
@@ -1250,7 +1268,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         }
                         else
                         {
-                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, ReleaseLerpInterval);
 
                             SnapVelocityFinish();
                         }
@@ -1299,8 +1317,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (ScrollContainer.transform.localPosition.y > MaxY + (frontTouchDistance * bounceMultiplier)
-                            || ScrollContainer.transform.localPosition.y < minY - (frontTouchDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.y > MaxY + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.y < minY - (FrontTouchDistance * bounceMultiplier))
                         {
                             CurrentVelocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1317,8 +1335,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (ScrollContainer.transform.localPosition.x > maxX + (frontTouchDistance * bounceMultiplier)
-                            || ScrollContainer.transform.localPosition.x < MinX - (frontTouchDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.x > maxX + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.x < MinX - (FrontTouchDistance * bounceMultiplier))
                         {
                             CurrentVelocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1353,8 +1371,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void HandleBounceState()
         {
             Vector3 clampedDest = new Vector3(Mathf.Clamp(ScrollContainer.transform.localPosition.x, MinX, maxX), Mathf.Clamp(ScrollContainer.transform.localPosition.y, minY, MaxY), 0.0f);
-            if ((scrollDirection == ScrollDirectionType.UpAndDown && Mathf.Abs(ScrollContainer.transform.localPosition.y - clampedDest.y) < 0.00001)
-                || (scrollDirection == ScrollDirectionType.LeftAndRight && Mathf.Abs(ScrollContainer.transform.localPosition.x - clampedDest.x) < 0.00001))
+            if ((scrollDirection == ScrollDirectionType.UpAndDown && Mathf.Approximately(ScrollContainer.transform.localPosition.y, clampedDest.y))
+                || (scrollDirection == ScrollDirectionType.LeftAndRight && Mathf.Approximately(ScrollContainer.transform.localPosition.x, clampedDest.x)))
             {
                 CurrentVelocityState = VelocityState.None;
 
@@ -1362,8 +1380,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 initialScrollerPos = workingScrollerPos = clampedDest;
                 return;
             }
-            workingScrollerPos.y = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
-            workingScrollerPos.x = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
+            workingScrollerPos.y = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, BounceLerpInterval).y;
+            workingScrollerPos.x = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, BounceLerpInterval).x;
         }
 
         /// <summary>
@@ -1371,7 +1389,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void SnapVelocityFinish()
         {
-            if (Vector3.Distance(ScrollContainer.transform.localPosition, workingScrollerPos) > 0.00001f)
+            if (Vector3.Distance(ScrollContainer.transform.localPosition, workingScrollerPos) > Mathf.Epsilon)
             {
                 return;
             }
@@ -1482,7 +1500,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private bool HasPassedThroughFrontPlane(PokePointer pokePointer)
         {
             var p = transform.InverseTransformPoint(pokePointer.PreviousPosition);
-            return p.z <= -frontTouchDistance;
+            return p.z <= -FrontTouchDistance;
         }
 
         /// <summary>
