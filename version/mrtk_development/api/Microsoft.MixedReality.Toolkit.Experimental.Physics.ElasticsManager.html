@@ -319,13 +319,13 @@ to block the elastics auto update set EnableElasticsUpdate to false.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ApplyTargetTransform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ApplyTargetTransform*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ApplyTargetTransform_MixedRealityTransform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ApplyTargetTransform(MixedRealityTransform)">ApplyTargetTransform(MixedRealityTransform)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ApplyTargetTransform_MixedRealityTransform_TransformFlags_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ApplyTargetTransform(MixedRealityTransform,TransformFlags)">ApplyTargetTransform(MixedRealityTransform, TransformFlags)</h4>
   <div class="markdown level1 summary"><p>Applies elastics calculation to the passed targetTransform and applies to the host transform.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform)</code></pre>
+    <pre><code class="lang-csharp hljs">public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -343,6 +343,12 @@ to block the elastics auto update set EnableElasticsUpdate to false.</p>
         <td><p>Precalculated target transform that's influenced by elastics</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">TransformFlags</span></td>
+        <td><span class="parametername">transformsToApply</span></td>
+        <td><p>Indicates which types of transforms are going to be applied. Default is Move, Rotate and Scale.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -356,7 +362,7 @@ to block the elastics auto update set EnableElasticsUpdate to false.</p>
     <tbody>
       <tr>
         <td><span class="xref">TransformFlags</span></td>
-        <td><p>Modified transform modes.</p>
+        <td><p>Modified transform types.</p>
 </td>
       </tr>
     </tbody>
