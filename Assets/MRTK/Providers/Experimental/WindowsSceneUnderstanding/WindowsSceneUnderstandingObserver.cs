@@ -30,7 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         SupportedPlatforms.WindowsUniversal,
         "Windows Scene Understanding Observer",
         "Experimental/WindowsSceneUnderstanding/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "MixedRealityToolkit.Providers",
+        true)]
     public class WindowsSceneUnderstandingObserver :
         BaseSpatialObserver,
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             SceneUnderstandingObserverProfile profile = ConfigurationProfile as SceneUnderstandingObserverProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
+                Debug.LogError("Windows Scene Understanding Observer's configuration profile must be a SceneUnderstandingObserverProfile.");
                 return;
             }
 
