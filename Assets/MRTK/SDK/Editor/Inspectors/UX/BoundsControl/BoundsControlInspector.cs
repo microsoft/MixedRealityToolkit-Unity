@@ -4,13 +4,14 @@
 //
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(BoundsControl), true)]
     [CanEditMultipleObjects]
@@ -22,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
-        private SerializedProperty enabledHandles;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -69,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
-            enabledHandles = serializedObject.FindProperty("enabledHandles");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
