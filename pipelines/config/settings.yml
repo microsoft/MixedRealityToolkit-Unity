@@ -15,3 +15,6 @@ variables:
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
   ToolsRepoName: mixedrealitytoolkit.build
   ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)
+
+# Testing placement for System.Debug: true
+  System.Debug: true

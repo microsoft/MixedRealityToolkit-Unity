@@ -4,7 +4,6 @@ variables:
 - template: config/settings.yml
 - name: packagingEnabled
   value: false
-  System.Debug: true  
 
 parameters:
 - name: build
@@ -13,7 +12,7 @@ parameters:
   values:
   - all
   - common
-- name: 
+
 
 jobs:
 - job: BuildCallUnity2019Setup
