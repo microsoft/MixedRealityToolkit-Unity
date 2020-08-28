@@ -1,6 +1,7 @@
 # Pipeline for creating files and running tests for Build Call.
 
 variables:
+  System.Debug: true
 - template: config/settings.yml
 - name: packagingEnabled
   value: false
@@ -12,6 +13,7 @@ parameters:
   values:
   - all
   - common
+- name: 
 
 jobs:
 - job: BuildCallUnity2019Setup
