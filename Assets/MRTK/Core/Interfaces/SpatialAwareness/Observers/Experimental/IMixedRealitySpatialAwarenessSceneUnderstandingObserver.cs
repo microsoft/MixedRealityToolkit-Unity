@@ -16,12 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Loads the serialized scene file
         /// </summary>
+        /// <param name="serializedScene">Byte array containing the scene</param>
         void LoadScene(byte[] serializedScene);
 
         /// <summary>
         /// Save a scene file to the device
         /// </summary>
-        void SaveScene(string filename);
+        /// <param name="filenamePrefix">Prefix of the name of the saved file</param>
+        void SaveScene(string filenamePrefix);
 
         /// <summary>
         /// 
