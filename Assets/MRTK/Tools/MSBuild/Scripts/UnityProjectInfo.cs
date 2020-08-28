@@ -27,16 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         };
 
         /// <summary>
-        /// Any packages that take a direct dependency on any of these packages will not be included
-        /// in the final output
-        /// </summary>
-        private static readonly HashSet<string> ExcludedReferenceChains = new HashSet<string>()
-        {
-            "Oculus.VR",
-            "Oculus.VR.Editor",
-        };
-
-        /// <summary>
         /// Gets the name of this Unity Project.
         /// </summary>
         public string UnityProjectName { get; }
@@ -180,12 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (string reference in toReturn.AssemblyDefinitionInfo.References)
             {
-                if (ExcludedReferenceChains.Contains(reference))
-                {
-                    Debug.LogWarning($"Ignoring {reference} for {toReturn.Name}, as it's marked as having an excluded dependency chain.");
-                    projectsMap.Remove(projectKey);
-                    return null;
-                }
                 if (ExcludedPackageReferences.Contains(reference))
                 {
                     Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's marked as excluded.");
