@@ -423,15 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 AppBarButton button = buttons[i];
 
-                switch (button.ButtonType)
-                {
-                    case ButtonTypeEnum.Custom:
-                        break;
-
-                    default:
-                        button.SetVisible(GetButtonVisible(button.ButtonType));
-                        break;
-                }
+                button.SetVisible(GetButtonVisible(button.ButtonType));
 
                 if (!buttons[i].Visible)
                 {
