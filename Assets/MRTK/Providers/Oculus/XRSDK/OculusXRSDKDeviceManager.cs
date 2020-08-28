@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 var mainCamera = CameraCache.Main;
 
                 // Instantiate camera rig as a child of the MixedRealityPlayspace
-                cameraRig = GameObject.Instantiate(MRTKOculusConfig.Instance.OVRCameraRigPrefab);
+                cameraRig = GameObject.Instantiate(MRTKOculusConfig.Instance.OVRCameraRigPrefab).GetComponent<OVRCameraRig>();
 
                 // Ensure all related game objects are configured
                 cameraRig.EnsureGameObjectIntegrity();
