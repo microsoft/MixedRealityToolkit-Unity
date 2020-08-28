@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Spatial Object Mesh Observer",
-        "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "Providers/ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
+        "MixedRealityToolkit.Core")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver :
         BaseSpatialMeshObserver,
