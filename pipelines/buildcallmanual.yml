@@ -28,6 +28,7 @@ jobs:
   - ${{ if contains(parameters.build, 'all') }}:
     - template: templates/buildcallsetup.yml
       parameters:
+        System.Debug: true
         packagingEnabled: false
         UnityVersion: $(Unity2019Version)
         MRTKVersion: $(MRTKVersion)
@@ -35,6 +36,7 @@ jobs:
   - ${{ if contains(parameters.build, 'common') }}:
     - template: templates/buildcallsetup.yml
       parameters:
+        System.Debug: true
         packagingEnabled: false
         UnityVersion: $(Unity2019Version)
         MRTKVersion: $(MRTKVersion)
