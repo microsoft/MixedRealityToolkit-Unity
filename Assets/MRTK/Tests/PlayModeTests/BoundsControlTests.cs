@@ -2282,7 +2282,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // deactivate the bounds control via app bar
             yield return hand.MoveTo(appBarButtonAfterScale);
-            yield return new WaitForSeconds(0.5f); // make sure animation does not cause interference
             yield return hand.Click();
 
             // check if we can scale the box - box shouldn't scale
@@ -2299,7 +2298,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // activate the bounds control via app bar
             yield return hand.MoveTo(appBarButtonAfterScale);
-            yield return new WaitForSeconds(0.5f); // make sure animation does not cause interference
             yield return hand.Click();
 
             // try again to scale the box back
@@ -2387,7 +2385,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // deactivate the bounds control via app bar
             yield return motionController.MoveTo(appBarButtonAfterScale);
-            yield return new WaitForSeconds(0.5f); // make sure animation does not cause interference
             yield return motionController.Click();
 
             // check if we can scale the box - box shouldn't scale
@@ -2404,7 +2401,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // activate the bounds control via app bar
             yield return motionController.MoveTo(appBarButtonAfterScale);
-            yield return new WaitForSeconds(0.5f); // make sure animation does not cause interference
             yield return motionController.Click();
 
             // try again to scale the box back
