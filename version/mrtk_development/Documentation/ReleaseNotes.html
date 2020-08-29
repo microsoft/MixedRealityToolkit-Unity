@@ -146,10 +146,13 @@ We've been doing work to reduce the amount of work that runs in InitializeOnLoad
 improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
 to entering play mode, and also at editor launch. These handlers now run in far fewer cases, resulting in general
 Unity responsiveness improvements.</p>
-<p>In some cases there was a tradeoff that had to be made:
-See <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Hand Tracking Configuration</a> for the extra integration step.
-For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
-See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARFoundation</a> for the new steps.</p>
+<p>In some cases there was a tradeoff that had to be made:</p>
+<ul>
+<li>See <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Hand Tracking Configuration</a> for the extra integration step.</li>
+<li>For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
+See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARFoundation</a> for the new steps.</li>
+<li>For those who will be using <a href="Tools/HolographicRemoting.html#hololens-2">Holographic Remoting</a> on HoloLens 2, there is now a manual step to perform.</li>
+</ul>
 <h3 id="breaking-changes">Breaking changes</h3>
 <p><strong>IMixedRealityPointerMediator</strong></p>
 <p>This interface has been updated to have a new function:</p>
