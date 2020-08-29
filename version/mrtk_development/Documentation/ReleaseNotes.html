@@ -129,6 +129,9 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p><strong>Support for the Leap Motion 4.5.1 Unity Modules</strong></p>
 <p>Support for the Leap Motion Unity Modules version 4.5.1 has been added and support for the 4.4.0 assets has been removed. The current supported versions of the Leap Motion Unity Modules are 4.5.0 and 4.5.1.</p>
 <p>There is also an additional step for initial Leap Motion integration, see <a href="CrossPlatform/LeapMotionMRTK.html">How to Configure the Leap Motion Hand Tracking in MRTK</a> for more information.</p>
+<p><strong>Spatial Awareness Mesh Observer better handles customization of materials</strong></p>
+<p>With this release, the <code>Windows Mixed Reality Spatial Mesh Observer</code> and the <code>Generic XR SDK Spatial Mesh Observer</code> components have improved visual material handling. Materials are now preserved when a mesh has been updated by the observer where, previously, they were reset to the default VisibleMaterial as configured in the profile.</p>
+<p>This enables developers to alter the mesh material and not have the changes overwritten unexpectedly.</p>
 <p><strong>Link.xml created in the MixedRealityToolkit.Generated folder</strong></p>
 <p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
 <p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
