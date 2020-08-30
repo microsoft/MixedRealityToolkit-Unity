@@ -68,6 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return new MixedRealityPose(left.Position + right.Position, left.Rotation * right.Rotation);
         }
 
+        public static MixedRealityPose operator *(MixedRealityPose left, MixedRealityPose right)
+        {
+            return new MixedRealityPose(left.Position + (right.Position * right.Rotation), left.Rotation * right.Rotation);
+        }
+
         public static bool operator ==(MixedRealityPose left, MixedRealityPose right)
         {
             return left.Equals(right);
