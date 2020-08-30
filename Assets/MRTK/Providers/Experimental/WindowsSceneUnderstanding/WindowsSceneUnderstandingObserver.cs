@@ -219,7 +219,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region IMixedRealitySpatialAwarenessSceneUnderstandingObserver
 
         /// <inheritdoc/>
-        public IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get => sceneObjects; }
+        public IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects
+        {
+#if SCENE_UNDERSTANDING_PRESENT
+            get => sceneObjects;
+#else // SCENE_UNDERSTANDING_PRESENT
+            get => null;
+#endif // SCENE_UNDERSTANDING_PRESENT
+        }
 
         /// <inheritdoc/>
         public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
