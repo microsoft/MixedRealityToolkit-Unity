@@ -215,12 +215,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public SliderEvent OnHoverExited = new SliderEvent();
         #endregion
 
-        #region Private Members
-        private float startSliderValue;
-        private Vector3 startPointerPosition;
-        private Vector3 startSliderPosition;
-        private IMixedRealityPointer activePointer;
-        private Vector3 sliderThumbOffset = Vector3.zero;
+        #region Protected Members
+        protected float startSliderValue;
+        protected Vector3 startPointerPosition;
+        protected Vector3 startSliderPosition;
+        protected IMixedRealityPointer activePointer;
+        protected Vector3 sliderThumbOffset = Vector3.zero;
         #endregion
 
         #region Constants
