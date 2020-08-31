@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Performance | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Performance | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="performance">Performance</h1>
+
+<h2 id="getting-started">Getting started</h2>
+<p>The easiest way to rationalize performance is via framerate or how many times your application can render an image per second. It is important to meet the target framerate, as outlined by the platform being targeted (i.e <a href="https://docs.microsoft.com/windows/mixed-reality/understanding-performance-for-mixed-reality">Windows Mixed Reality</a>, <a href="https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/">Oculus</a>, etc). For example, on HoloLens, the target framerate is 60 FPS. Low framerate applications can result in deteriorated user experiences such as worsened <a href="../hologram-stabilization.html">hologram stabilization</a>, world tracking, hand tracking, and more. To help developers track and achieve quality framerate, the Mixed Reality Toolkit provides a variety of tools and scripts.</p>
+<h3 id="visual-profiler">Visual profiler</h3>
+<p>To continuously track performance over the lifetime of development, it is highly recommended to always show a framerate visual while running &amp; debugging an application. The Mixed Reality Toolkit provides the <a href="../Diagnostics/UsingVisualProfiler.html">Visual Profiler</a> diagnostic tool which gives real-time information about the current FPS and memory usage in application view. The Visual Profiler can be configured via the <a href="../Diagnostics/DiagnosticsSystemGettingStarted.html">Diagnostics System Settings</a> under the <a href="../MixedRealityConfigurationGuide.html">MRTK Profiles Inspector</a>.</p>
+<p>Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on the device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on the device with <a href="https://docs.microsoft.com/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019">Release configuration builds</a>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If building for Windows Mixed Reality, deploy with <a href="https://docs.microsoft.com/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution">MASTER configuration builds</a></p>
+</div>
+<p><img src="../Images/Diagnostics/VisualProfiler.png" alt="Visual Profiler Interface"></p>
+<h3 id="optimize-window">Optimize window</h3>
+<p>The <a href="../Tools/OptimizeWindow.html">MRTK Optimize Window</a> offers information and automation tools to help mixed reality developers set up their environment for the best performing results and identify potential bottlenecks in their scene &amp; assets. Certain key configurations in Unity can help deliver substantially more optimized results for mixed reality projects.</p>
+<p>Generally, these settings involve rendering configurations that are ideal for mixed reality. Mixed reality applications are unique compared to traditional 3D graphics development in that there are two screens (i.e two eyes) to render for the entire scene.</p>
+<p>The recommended settings referenced below can be auto-configured in a Unity project by leveraging the MRTK Optimize Window.</p>
+<p><img src="../Images/Performance/OptimizeWindow_Settings.png" alt="MRTK Optimize Window Settings"></p>
+<h3 id="unity-profiler">Unity Profiler</h3>
+<p>The <a href="https://docs.unity3d.com/Manual/ProfilerWindow.html">Unity Profiler</a> is a useful tool to investigate details of application performance at a frame-by-frame level.</p>
+<h4 id="time-spent-on-the-cpu">Time spent on the CPU</h4>
+<p><img src="../Images/Performance/UnityProfilerGraph.png" alt="Example Unity Profiler Graph"></p>
+<p>To maintain comfortable frame rates (typically 60 frames per second), applications need to achieve a maximum frame time of 16.6 milliseconds of CPU time. To help identify the cost of MRTK functionality, the Microsoft Mixed Reality Toolkit contains a markers for inner loop (per frame) code paths. These markers use the following format, to assist in understanding the specific functionality being utilized:</p>
+<pre><code>[MRTK] className.methodName
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>There may be additional data following the method name. This is used to identify conditionally executed, potentially expensive functionality that may be avoided by small changes to application code.</p>
+</div>
+<p><img src="../Images/Performance/UnityProfilerHierarchy.png" alt="Example Unity Profiler Hierarchy"></p>
+<p>In this example, the hierarchy has been expanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.</p>
+<p>It is highly recommended that developers instrument application code in a similar fashion. Primary areas of focus for application code instrumentation is within event handlers as these methods are charged to the MRTK update loop as events are raised. High frame times within the MRTK update loop can be indicative of expensive code in event handler methods.</p>
+<h2 id="recommended-settings-for-unity">Recommended settings for Unity</h2>
+<h3 id="single-pass-instanced-rendering">Single-Pass Instanced rendering</h3>
+<p>The default rendering configuration for XR in Unity is <a href="https://docs.unity3d.com/ScriptReference/StereoRenderingPath.MultiPass.html">Multi-pass</a>. This setting instructs Unity to execute the entire render pipeline twice, once for each eye. This can be optimized by selecting <a href="https://docs.unity3d.com/Manual/SinglePassInstancing.html">Single Pass Instanced rendering</a> instead. This configuration leverages <a href="https://en.wikipedia.org/wiki/Multiple_Render_Targets">render target arrays</a> to be able to perform a single draw call that instances into the appropriate <a href="https://en.wikipedia.org/wiki/Render_Target">render target</a> for each eye. Furthermore, this mode allows all rendering to be done in a single execution of the rendering pipeline. Thus, selecting Single Pass Instanced rendering as the rendering path for a mixed reality application can <a href="https://blogs.unity3d.com/2017/11/21/how-to-maximize-ar-and-vr-performance-with-advanced-stereo-rendering/">save substantial time on both the CPU &amp; GPU</a> and is the recommended rendering configuration.</p>
+<p>However, in order to issue a single draw call for each mesh to each eye, <a href="https://docs.unity3d.com/Manual/GPUInstancing.html">GPU instancing</a> must be supported by all shaders. Instancing allows the GPU to multiplex draw calls across both eyes. Unity built-in shaders as well as the <a href="../README_MRTKStandardShader.html">MRTK Standard shader</a> by default contain the necessary instancing instructions in shader code. If writing custom shaders though for Unity, these shaders may need to be updated to support Single Pass Instanced rendering.</p>
+<h4 id="example-code-for-custom-shader"><a href="https://docs.unity3d.com/Manual/SinglePassInstancing.html">Example Code for Custom Shader</a></h4>
+<pre><code>struct appdata
+{
+    float4 vertex : POSITION;
+    float2 uv : TEXCOORD0;
+
+    UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
+};
+
+struct v2f
+{
+    float2 uv : TEXCOORD0;
+    float4 vertex : SV_POSITION;
+
+    UNITY_VERTEX_OUTPUT_STEREO //Insert
+};
+
+v2f vert (appdata v)
+{
+    v2f o;
+
+    UNITY_SETUP_INSTANCE_ID(v); //Insert
+    UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
+
+    o.vertex = UnityObjectToClipPos(v.vertex);
+
+    o.uv = v.uv;
+
+    return o;
+}
+</code></pre>
+<h3 id="quality-settings">Quality settings</h3>
+<p>Unity provides <a href="https://docs.unity3d.com/Manual/class-QualitySettings.html">presets to control quality</a> of rendering for each platform endpoint. These presets control what graphical features can be enabled such as shadows, anti-aliasing, global illumination, and more. It is recommended to lower these settings and optimize the number of calculations performed during rendering.</p>
+<p><em>Step 1:</em> Update mixed reality Unity projects to use the <em>Low Quality</em> level setting<br>
+<strong>Edit</strong> &gt; <strong>Project Settings</strong>, then select the <strong>Quality</strong> category &gt;  Select <em>Low Quality</em> for the UWP Platform</p>
+<p><em>Step 2:</em> For every Unity scene file, disable <a href="https://docs.unity3d.com/Manual/LightMode-Realtime.html">real-time Global Illumination</a><br>
+<strong>Window</strong> &gt; <strong>Rendering</strong> &gt; <strong>Lighting Settings</strong> &gt; <a href="https://docs.unity3d.com/Manual/GlobalIllumination.html">Uncheck <em>Real-time Global Illumination</em></a></p>
+<h3 id="depth-buffer-sharing-hololens">Depth buffer sharing (HoloLens)</h3>
+<p>If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling <em>Depth Buffer Sharing</em> under <em>XR Settings</em> can help with <a href="../hologram-stabilization.html">hologram stabilization</a>. However, processing of the depth buffer can incur a performance cost, particularly if using <a href="https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html">24-bit depth format</a>. Thus, it is <em>highly recommended</em> to configure the depth buffer to 16-bit precision.</p>
+<p>If <a href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting</a> occurs due to the lower bit format, confirm the <a href="https://docs.unity3d.com/Manual/class-Camera.html">far clip plane</a> of all cameras is set to the lowest possible value for the application. Unity by default sets a far clip plane of 1000m. On HoloLens, a far clip plane of 50m is generally more than enough for most application scenarios.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If using <em>16-bit depth format</em>, stencil buffer required effects will not work because <a href="https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html">Unity does not create a stencil buffer</a> in this setting. Selecting <em>24-bit depth format</em> conversely will generally create an 8-bit stencil buffer, if applicable on the endpoint graphics platform.</p>
+<p>If using a <a href="https://docs.unity3d.com/Manual/script-Mask.html">Mask component</a> which requires the stencil buffer, consider using <a href="https://docs.unity3d.com/Manual/script-RectMask2D.html">RectMask2D</a> instead, which does not require the stencil buffer and thus can be used in conjunction with a <em>16-bit depth format</em>.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the <a href="../MixedRealityConfigurationGuide.html#editor-utilities"><em>Render Depth Buffer</em> utility</a> under the <em>Editor Settings</em> in the MRTK Configuration profile.</p>
+</div>
+<h3 id="optimize-mesh-data">Optimize Mesh Data</h3>
+<p>The <a href="https://docs.unity3d.com/ScriptReference/PlayerSettings-stripUnusedMeshComponents.html">Optimize Mesh Data</a> settings tries to remove unused vertex attributes within your application. The setting performs this by running over every shader pass in every material that is on every mesh in the build. This is good for game data size and runtime performance but can drastically hinder build times.</p>
+<p>It is recommended to disable this setting during development and re-enable during &quot;Master&quot; build creation. The setting can be found under <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong> &gt; <strong>Other Settings</strong> &gt; <strong>Optimize Mesh Data</strong>.</p>
+<h2 id="general-recommendations">General recommendations</h2>
+<p>Performance can be an ambiguous and constantly changing challenge for mixed reality developers and the spectrum of knowledge to rationalize performance is vast. There are some general recommendations for understanding how to approach performance for an application though.</p>
+<p>It is useful to simplify the execution of an application into the pieces that run on the <em>CPU</em> or the <em>GPU</em> and thus identify whether an app is bounded by either component.  There can be bottlenecks that span both processing units and some unique scenarios that have to be carefully investigated. However, for getting started, it is good to grasp where an application is executing for the most amount of time.</p>
+<h3 id="gpu-bounded">GPU bounded</h3>
+<p>Since most platforms for mixed reality applications are utilizing <a href="https://en.wikipedia.org/wiki/Stereoscopy">stereoscopic rendering</a>, it is very common to be GPU-bounded due to the nature of rendering a &quot;double-wide&quot; screen. Futhermore, mobile mixed reality platforms such as HoloLens or Oculus Quest will be limited by mobile-class CPU &amp; GPU processing power.</p>
+<p>When focusing on the GPU, there are generally two important stages that an application must complete every frame.</p>
+<ol>
+<li>Execute the <a href="https://en.wikipedia.org/wiki/Shader#Vertex_shaders">vertex shader</a></li>
+<li>Execute the <a href="https://en.wikipedia.org/wiki/Shader#Pixel_shaders">pixel shader</a> (also known as the fragment shader)</li>
+</ol>
+<p>Without deep diving into the complex field of computer graphics &amp; <a href="https://en.wikipedia.org/wiki/Graphics_pipeline">rendering pipelines</a>, each shader stage is a program that runs on the GPU to produce the following.</p>
+<ol>
+<li>Vertex shaders transform mesh vertices to coordinates in screen-space (i.e code executed per vertex)</li>
+<li>Pixel shaders calculate the color to draw for a given pixel and mesh fragment (i.e code execute per pixel)</li>
+</ol>
+<p>In regards to performance tuning, it is usually more fruitful to focus on optimizing the operations in the pixel shader. An application may only need to draw a cube which will just be 8 vertices. However, the screen space that cube occupies is likely on the order of millions of pixels. Thus, reducing shader code by say 10 operations can save significantly more work if reduced on the pixel shader than the vertex shader.</p>
+<p>This is one of the primary reasons for leveraging the <a href="../README_MRTKStandardShader.html">MRTK Standard shader</a> as this shader generally executes many less instructions per pixel &amp; vertex than the Unity Standard shader while achieving comparable aesthetic results.</p>
+<table>
+<thead>
+<tr>
+<th>CPU Optimizations</th>
+<th>GPU Optimizations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App simulation logic</td>
+<td>Rendering operations</td>
+</tr>
+<tr>
+<td>Simplify Physics</td>
+<td>Reduce lighting calculations</td>
+</tr>
+<tr>
+<td>Simplify Animations</td>
+<td>Reduce polygon count &amp; # of drawable objects</td>
+</tr>
+<tr>
+<td>Manage Garbage Collection</td>
+<td>Reduce # of transparent objects</td>
+</tr>
+<tr>
+<td>Cache References</td>
+<td>Avoid post-processing/full-screen effects</td>
+</tr>
+</tbody>
+</table>
+<h3 id="draw-call-instancing">Draw call instancing</h3>
+<p>One of the most common mistakes in Unity that reduces performance is cloning materials at runtime. If GameObjects share the same material and/or are the same mesh, they can be optimized into single draw calls via techniques such as <em><a href="https://docs.unity3d.com/Manual/DrawCallBatching.html">static batching</a></em>, <em><a href="https://docs.unity3d.com/Manual/DrawCallBatching.html">dynamic batching</a></em>, and <em><a href="https://docs.unity3d.com/Manual/GPUInstancing.html">GPU Instancing</a></em>. However, if developer's modify properties of a <a href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer's material</a> at runtime, Unity will create a clone copy of the assigned material.</p>
+<p>For example, if there are a 100 cubes in a scene, a developer may want to assign a unique color to each at runtime. The access of <a href="https://docs.unity3d.com/ScriptReference/Material-color.html"><em>renderer.material.color</em></a> in C# will make Unity create a new material in memory for this particular renderer/GameObject. Each of the 100 cubes will have its own material and thus they cannot be merged together into one draw call, but instead will become 100 draw call requests from the CPU to the GPU.</p>
+<p>To overcome this obstacle and still assign a unique color per cube, developers should leverage <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html">MaterialPropertyBlock</a>.</p>
+<pre><code class="lang-c#">private PropertyBlock m_PropertyBlock ;
+private Renderer myRenderer;
+
+private void Start()
+{
+     myRenderer = GetComponent&lt;Renderer&gt;();
+     m_PropertyBlock = new MaterialPropertyBlock();
+}
+
+private void ChangeColor()
+{
+    // Creates a copy of the material once for this renderer
+    myRenderer.material.color = Color.red;
+
+    // vs.
+
+    // Retains instancing capability for renderer
+    m_PropertyBlock.SetColor(&quot;_Color&quot;, Color.red);
+    myRenderer.SetPropertyBlock(m_PropertyBlock);
+}
+</code></pre>
+<h2 id="unity-performance-tools">Unity performance tools</h2>
+<p>Unity provides great performance tools that are built into the editor.</p>
+<ul>
+<li><a href="https://docs.unity3d.com/Manual//Profiler.html">Unity Profiler</a></li>
+<li><a href="https://docs.unity3d.com/Manual/FrameDebugger.html">Unity Frame Debugger</a></li>
+</ul>
+<p>If estimating the rough performance tradeoff between one shader and another, it is useful to compile each shader and view the number of operations per shader stage. This can be done by selecting a <a href="https://docs.unity3d.com/Manual/class-Shader.html">shader asset</a> and clicking the <em>Compile and show code</em> button. This will compile all the shader variants and open visual studio with the results. Note: The statistic results produced may vary depending on what features have been enabled on materials utilizing the given shader. Unity will only compile the shader variants being directly used in the current project.</p>
+<p>Unity Standard shader statistics example</p>
+<p><img src="../Images/Performance/UnityStandardShader-Stats.PNG" alt="Unity Standard Shader Statistics"></p>
+<p>MRTK Standard shader statistics example</p>
+<p><img src="../Images/Performance/MRTKStandardShader-Stats.PNG" alt="MRTK Standard Shader Statistics"></p>
+<h2 id="see-also">See also</h2>
+<h3 id="unity">Unity</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=1e5WY2qf600">Unity Performance Optimization for Beginners</a></li>
+<li><a href="https://unity3d.com/learn/tutorials/topics/performance-optimization">Unity Performance Optimization Tutorials</a></li>
+<li><a href="https://docs.unity3d.com/2019.1/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html">Unity Optimization Best Practices</a></li>
+<li><a href="https://docs.unity3d.com/Manual/OptimizingGraphicsPerformance.html">Optimizing graphics performance</a></li>
+<li><a href="https://docs.unity3d.com/Manual/MobileOptimizationPracticalGuide.html">Mobile Optimization Practical Guide</a></li>
+</ul>
+<h3 id="windows-mixed-reality">Windows Mixed Reality</h3>
+<ul>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/recommended-settings-for-unity">Recommended Settings for Unity</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/understanding-performance-for-mixed-reality">Understanding Performance for Mixed Reality</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/performance-recommendations-for-unity">Performance recommendations for Unity</a></li>
+<li><a href="https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf">Event Tracing for Windows Unity Guide</a></li>
+</ul>
+<h3 id="oculus">Oculus</h3>
+<ul>
+<li><a href="https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/">Performance Guidelines</a></li>
+<li><a href="https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-tools/">Performance Tools</a></li>
+</ul>
+<h3 id="mesh-optimization">Mesh optimization</h3>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/optimize-models#performance-targets">Optimize 3D models</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/best-practices">Best practices for converting and optimizing real-time 3D models</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Performance/PerfGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

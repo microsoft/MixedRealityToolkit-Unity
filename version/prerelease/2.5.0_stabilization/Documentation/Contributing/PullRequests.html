@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Pull requests | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Pull requests | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="pull-requests">Pull requests</h1>
+
+<h2 id="prerequisites">Prerequisites</h2>
+<p>If you haven't contributed to a Microsoft project before, you may be asked to sign a <a href="https://cla.microsoft.com/">contribution license agreement</a>.
+A comment in the PR will let you know if you do.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If you are a Microsoft employee and are not a member of the <a href="https://github.com/Microsoft">Microsoft organization on GitHub</a>, please link your Microsoft and GitHub accounts on corpnet by visiting <a href="https://opensource.microsoft.com/">Open Source at Microsoft</a> before you start your pull request. There's some process stuff you'll need to do ahead of time.</p>
+</div>
+<h2 id="creating-a-pull-request">Creating a pull request</h2>
+<p>When you are ready to submit a pull request, <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/compare/mrtk_development...mrtk_development?expand=1">create a pull request</a> targeting the <a href="https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development">mrtk_development</a> branch.</p>
+<p>Read the guidelines and ensure your pull request meets the guidelines.</p>
+<ul>
+<li>Make sure to reference any Issue / Feature Request or Task the PR relates to.</li>
+<li>Check the pull request contains only files / changes related to the PR.</li>
+<li>Check documentation is up to date and included. Check all public fields have comments.</li>
+<li>If adding a new feature, check that tests are included to validate the feature (see <a href="UnitTests.html">UnitTests</a>).</li>
+<li>If fixing a bug, write a test to verify the bug fix.</li>
+</ul>
+<p>The project maintainers will review your changes. We aim to review all changes within three business days. Please address any review comments, push to your topic branch, and post a comment letting us know that there's new stuff to review.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>All PR's submitted to the project will also be vetted according to the <a href="CodingGuidelines.html">MRTK coding standards guide</a>, so please review these before submitting your PR to ensure a smooth process.</p>
+</div>
+<h2 id="pull-request-guidelines">Pull request guidelines</h2>
+<p>These guidelines are based off of the <a href="https://google.github.io/eng-practices/review/developer/small-cls.html">Google's engineering practices</a>.</p>
+<h3 id="keep-pull-requests-small">Keep pull requests small</h3>
+<p>Smaller PRs are reviewed more quickly and thoroughly, are less likely to introduce bugs, easier to roll back, and easier to merge.</p>
+<p>Pull requests should be small enough that an engineer could review it in under 30 minutes. Try to make a minimal change that addresses just one thing. If you must create a large PR, split it into several PRs that go into either your local branch, or a feature branch of MRTK. Avoid adding new assets (e.g. fbx, obj files) and instead aim to re-use existing assets.</p>
+<h3 id="tests-should-be-added-in-the-same-pr-as-your-fix--feature-except-for-emergencies">Tests should be added in the same PR as your fix / feature, except for emergencies</h3>
+<p>Tests are the best way to ensure changes do not regress existing code, but it is also easy to forget about tests when submitting pull requests. Requiring that they go in with your PR are a great way to ensure that tests get written.</p>
+<p>Every feature and bug fix should have tests associated with it. If you do not have the expertise or time to write a test, create an issue to write the tests, and mark them with label <strong>Consider for Current Iteration</strong>.</p>
+<h3 id="documentation-should-be-added-in-the-same-pull-request-as-a-fix--feature">Documentation should be added in the same pull request as a fix / feature</h3>
+<p>Most developers look first at documentation, not code, when understanding how to use a feature. Ensuring documentation is up to date makes it much easier for people to consume and rely MRTK.  Documentation should always be bundled with the related pull to ensure items remain up-to-date and consistent.</p>
+<p>Ensure every public field, method, property has <a href="https://dotnet.github.io/docfx/spec/triple_slash_comments_spec.html">triple slash summary comments</a> so our docfx site can generate descriptions for fields / methods. If needed, update markdown files in Documentation folder.</p>
+<h3 id="pull-request-descriptions-should-clearly-and-completely-describe-changes">Pull request descriptions should clearly and completely describe changes</h3>
+<p>Clear and complete descriptions of pull requests ensure reviewers understand what they are reviewing.</p>
+<p>If adding features that contain UX, add an image / gif of the feature you are changing. <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">Here is a good example</a>. Another suggestion is to have a gif of Before and After, <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5896">for example in this pull request</a>. A tool we recommend for generating gifs from screen captures is <a href="https://www.screentogif.com/">ScreenToGif</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/PullRequests.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

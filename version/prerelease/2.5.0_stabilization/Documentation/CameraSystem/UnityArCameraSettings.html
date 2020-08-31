@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Unity AR camera settings provider | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Unity AR camera settings provider | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="unity-ar-camera-settings-provider">Unity AR camera settings provider</h1>
+
+<p>The Unity AR camera settings provider is an experimental MRTK component that enables mixed reality applications to run on Android and iOS devices.</p>
+<h2 id="unity-ar-camera-settings-provider-options">Unity AR camera settings provider options</h2>
+<p><img src="../Images/CameraSystem/UnityArSettingsConfiguration.png" alt="Unity AR camera settings configuration"></p>
+<p>For a guide on how to add the provider to your scene: <a href="../CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a></p>
+<h3 id="tracking-settings">Tracking settings</h3>
+<p>The Unity AR camera settings provider allows configuration options for how tracking is performed. These settings are specific to the Unity AR camera settings provider implementation.</p>
+<p><strong>Pose Source</strong></p>
+<p>The pose source defines the available types of augmented reality tracking poses. In general, these values map to a component of the device on which the application is running.</p>
+<p>The available options are described in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Center</td>
+<td>The center eye of a head mounted device.</td>
+</tr>
+<tr>
+<td>Color Camera</td>
+<td>The color camera of a mobile device.</td>
+</tr>
+<tr>
+<td>Head</td>
+<td>The head eye of a head mounted device, often slightly above the center eye.</td>
+</tr>
+<tr>
+<td>Left Eye</td>
+<td>The left eye of a head mounted device.</td>
+</tr>
+<tr>
+<td>Left Pose</td>
+<td>The left hand controller pose.</td>
+</tr>
+<tr>
+<td>Right Eye</td>
+<td>The right eye of a head mounted device.</td>
+</tr>
+<tr>
+<td>Right Pose</td>
+<td>The right hand controller pose.</td>
+</tr>
+</tbody>
+</table>
+<p>The default value for pose source is <strong>Color Camera</strong>, to enable a transparent display on mobile devices, such as a phone or tablet.</p>
+<p><strong>Tracking Type</strong></p>
+<p>The tracking type defines the portion(s) of the pose that will be used for tracking.</p>
+<p>The available options are described in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Position</td>
+<td>The position of the device.</td>
+</tr>
+<tr>
+<td>Rotation</td>
+<td>The rotation of the device.</td>
+</tr>
+<tr>
+<td>Rotation And Position</td>
+<td>The position and rotation of the device.</td>
+</tr>
+</tbody>
+</table>
+<p>The default value for tracking type is <strong>Rotation And Position</strong>, to enable the richest tracking experience.</p>
+<p><strong>Update Type</strong></p>
+<p>The update type defines at what points, during frame processing, the pose data will be sampled.</p>
+<p>The available options are described in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Before Render</td>
+<td>Just before rendering.</td>
+</tr>
+<tr>
+<td>Update</td>
+<td>During the update phase of the frame.</td>
+</tr>
+<tr>
+<td>Update And Before Render</td>
+<td>During the update phase and just before rendering.</td>
+</tr>
+</tbody>
+</table>
+<p>The default value for tracking type is <strong>Update And Before Render</strong>, to enable the lowest tracking latency.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="CameraSystemOverview.html">Camera System Overview</a></li>
+<li><a href="CreateSettingsProvider.html">Creating a Camera Settings Provider</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/CameraSystem/UnityArCameraSettings.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Hologram stabilization | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Hologram stabilization | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="hologram-stabilization">Hologram stabilization</h1>
+
+<h2 id="performance">Performance</h2>
+<p>In order for the underlying mixed reality platform and device to produce the best results, it is important to achieve performing frame rates. The target framerate (ex: 60 FPS or 90 FPS) will vary across platforms and devices. However, mixed reality applications meeting framerate will have stable holograms as well as efficient head tracking, hand tracking and more.</p>
+<h2 id="environment-tracking">Environment tracking</h2>
+<p>Stable holographic rendering heavily relies on head-pose tracking by the platform &amp; device. Unity will render the scene every frame from the camera pose estimated and supplied by the underlying platform. If this tracking does not correctly follow actual head movement, then holograms will appear visually inaccurate. This is especially evident and important for AR devices like HoloLens where users can relate virtual holograms to the real world. Performance is significant for reliable head tracking, but there can be <a href="https://docs.microsoft.com/windows/mixed-reality/environment-considerations-for-hololens">other important features</a>, as well. The types of environment elements impacting user experience will depend on the targeted platform specifics.</p>
+<h2 id="windows-mixed-reality">Windows Mixed Reality</h2>
+<p>The Windows Mixed Reality platform provides some <a href="https://docs.microsoft.com/windows/mixed-reality/hologram-stability">reference material</a> for stabilizing holograms on the platform. There are a handful of key tools though that developers can utilize to improve the hologram visual experience for users.</p>
+<h3 id="depth-buffer-sharing">Depth buffer sharing</h3>
+<p>Unity developers have the option of sharing the application's depth buffer with the platform. This provides information, where holograms exist for a current frame, that the platform can utilize to stabilize holograms via a hardware-assisted process known as Late-Stage Reprojection.</p>
+<h4 id="late-stage-reprojection">Late-stage reprojection</h4>
+<p>At the end of rendering a frame, the Windows Mixed Reality platform takes the color &amp; depth render targets produced by the application and transforms the final screen output to account for any slight head movement since the last head pose prediction. An application's game loop takes time to execute. For example, at 60 FPS, this means the application is taking ~16.667ms to render a frame. Even though this may seem like a miniscule amount of time, the user's position and orientation of their head will change resulting in new projection matrices for the camera in rendering. Late-stage reprojection transforms the pixels in the final image to account for this new perspective.</p>
+<h4 id="per-pixel-vs-stabilization-plane-lsr">Per-pixel vs stabilization plane LSR</h4>
+<p>Depending on the device endpoint and OS version running on a Windows Mixed Reality device, the Late-Stage Reprojection algorithm will either be performed per-pixel or via a <a href="https://docs.microsoft.com/windows/mixed-reality/hologram-stability#stabilization-plane">stabilization plane</a>.</p>
+<h5 id="per-pixel-depth-based">Per-pixel depth-based</h5>
+<p>Per-pixel depth-based reprojection involves utilizing the depth buffer to modify the image output per pixel and thus stabilize holograms at various distances. For example, a sphere 1m away may be in front of a pillar that is 10m away. The pixels representing the sphere will have a different transform than the far away pixels representing the pillar if the user has tilted their head slightly. Per-pixel reprojection will take into account this distance difference at every pixel for more accurate reprojection.</p>
+<h5 id="stabilization-plane">Stabilization plane</h5>
+<p>If it is not possible to create an accurate depth buffer to share with the platform, another form of LSR utilizes a stabilization plane. All holograms in a scene will receive some stabilization, but holograms lying in the desired plane will receive the maximum hardware stabilization. The point and normal for the plane can be supplied to the platform via the <em>HolographicSettings.SetFocusPointForFrame</em> <a href="https://docs.microsoft.com/windows/mixed-reality/focus-point-in-unity">API provided by Unity</a>.</p>
+<h4 id="depth-buffer-format">Depth buffer format</h4>
+<p>If targeting HoloLens for development, it is highly recommended to utilize the 16-bit depth buffer format compared to 24-bit. This can save tremendously on performance although depth values will have less precision. To compensate for the lower precision and avoid <a href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting</a>, it is recommended to reduce the <a href="https://docs.unity3d.com/Manual/class-Camera.html">far clip plane</a> from the 1000m default value set by Unity.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If using <em>16-bit depth format</em>, stencil buffer required effects will not work because <a href="https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html">Unity does not create a stencil buffer</a> in this setting. Selecting <em>24-bit depth format</em> conversely will generally create an <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">8-bit stencil buffer</a>, if applicable on the endpoint graphics platform.</p>
+</div>
+<h4 id="depth-buffer-sharing-in-unity">Depth buffer sharing in Unity</h4>
+<p>In order to utilize depth-based LSR, there are two important steps that developers need to take.</p>
+<ol>
+<li>Under <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong> &gt; <strong>XR Settings</strong> &gt; <strong>Virtual Reality SDKs</strong> &gt; Enable <strong>Depth Buffer Sharing</strong>
+<ol>
+<li>If targeting HoloLens, it is recommended to select <strong>16-bit depth format</strong> as well.</li>
+</ol>
+</li>
+<li>When rendering color on screen, render depth as well</li>
+</ol>
+<p><a href="https://docs.unity3d.com/Manual/StandardShaderMaterialParameterRenderingMode.html">Opaque GameObjects</a> in Unity will generally write to depth automatically. However, transparent &amp; text objects will generally not write to depth by default. If utilizing the MRTK Standard Shader or Text Mesh Pro, this can be easily remedied.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the <a href="MixedRealityConfigurationGuide.html#editor-utilities"><em>Render Depth Buffer</em> utility</a> under the <em>Editor Settings</em> in the MRTK Configuration profile.</p>
+</div>
+<h5 id="transparent-mrtk-standard-shader">Transparent MRTK Standard shader</h5>
+<p>For transparent materials using the <a href="README_MRTKStandardShader.html">MRTK Standard shader</a>, select the material to view it in the <em>Inspector</em> window. Then click the <em>Fix Now</em> button to convert the material to write to depth (i.e Z-Write On).</p>
+<p>Before</p>
+<p><img src="Images/Performance/DepthBufferFixNow_Before.PNG" alt="Depth Buffer Before Fix MRTK Standard Shader"></p>
+<p>After</p>
+<p><img src="Images/Performance/DepthBufferFixNow_After.PNG" alt="Depth Buffer Fixed MRTK Standard Shader"></p>
+<h5 id="text-mesh-pro">Text Mesh Pro</h5>
+<p>For Text Mesh Pro objects, select the TMP GameObject to view it in the inspector. Under the material component, switch the shader for the assigned material to use the MRTK TextMeshPro shader.</p>
+<p><img src="Images/Performance/TextMeshPro-DepthBuffer-Fix.PNG" alt="Text Mesh Pro Depth Buffer Fix"></p>
+<h5 id="custom-shader">Custom shader</h5>
+<p>If writing a custom shader, add the <a href="https://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZWrite flag</a> to the top of the <em>Pass</em> block definition to configure the shader to write to the depth buffer.</p>
+<pre><code>Shader &quot;Custom/MyShader&quot;
+{
+    SubShader
+    {
+        Pass
+        {
+            ...
+            ZWrite On
+            ...
+        }
+    }
+}
+</code></pre>
+<h5 id="opaque-backings">Opaque backings</h5>
+<p>If the above methods do not work for a given scenario (i.e using Unity UI), it is possible to have another object write to the depth buffer. A common example is using Unity UI Text on a floating panel in a scene. By making the panel opaque or at least writing to depth, then both the text &amp; the panel will be stabilized by the platform since their z-values are so close to each other.</p>
+<h3 id="worldanchors-hololens">WorldAnchors (HoloLens)</h3>
+<p>Along with ensuring the correct configurations are met to ensure visual stability, it is important to ensure holograms remain stable at their correct physical locations. To inform the platform on important locations in a physical space, developers can leverage <a href="https://docs.unity3d.com/ScriptReference/XR.WSA.WorldAnchor.html">WorldAnchors</a> on GameObjects that need to stay in one place. A <a href="https://docs.unity3d.com/ScriptReference/XR.WSA.WorldAnchor.html">WorldAnchor</a> is a component added to a GameObject that takes absolute control over that object's transform.</p>
+<p>Devices such as HoloLens are constantly scanning and learning about the environment. Thus, as the HoloLens tracks movement &amp; position in space, its estimates will be updated and the <a href="https://docs.microsoft.com/windows/mixed-reality/coordinate-systems-in-unity">Unity coordinate system adjusted</a>. For example, if a GameObject is placed 1m from the camera at start, as the HoloLens tracks the environment, it may realize the physical point where the GameObject is located is actually 1.1m away. This would result in the hologram drifting. Applying a WorldAnchor to a GameObject will enable the anchor to control the object's transform so that the object will remain at the correct physical location (i.e update to 1.1m away instead of 1m at runtime). To persist <a href="https://docs.unity3d.com/ScriptReference/XR.WSA.WorldAnchor.html">WorldAnchors</a> across app sessions, developers can employ the <a href="https://docs.unity3d.com/ScriptReference/XR.WSA.Persistence.WorldAnchorStore.html">WorldAnchorStore</a> to <a href="https://docs.microsoft.com/windows/mixed-reality/persistence-in-unity">save and load WorldAnchors</a>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Once a WorldAnchor component has been added to a GameObject, it is not possible to modify that GameObject's transform (i.e transform.position = x). A developer must remove the WorldAnchor to edit the transform.</p>
+</div>
+<pre><code class="lang-c#">WorldAnchor m_anchor;
+
+public void AddAnchor()
+{
+    this.m_anchor = this.gameObject.AddComponent&lt;WorldAnchor&gt;();
+}
+
+public void RemoveAnchor()
+{
+    DestroyImmediate(m_anchor);
+}
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="Performance/PerfGettingStarted.html">Performance</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/environment-considerations-for-hololens">Environment Considerations for HoloLens</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/hologram-stability">Hologram Stability Windows Mixed Reality</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/focus-point-in-unity">Focus point in Unity</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/coordinate-systems-in-unity">Coordinate systems in Unity</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/persistence-in-unity">Persistence in Unity</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/understanding-performance-for-mixed-reality">Understanding Performance for Mixed Reality</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/performance-recommendations-for-unity">Performance recommendations for Unity</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/hologram-stabilization.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

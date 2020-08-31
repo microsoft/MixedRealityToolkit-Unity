@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Building and deploying MRTK | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Building and deploying MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="building-and-deploying-mrtk">Building and deploying MRTK</h1>
+
+<p>To run an app on device as a standalone app (for HoloLens, Android, iOS, etc.), the build and deploy step needs to be executed in the unity project. Building and deploying an app that uses MRTK is just like building and deploying any other Unity app. There are no MRTK-specific instructions. Read below for detailed steps on how to build and deploy a Unity app for HoloLens.  Learn more about building for other platforms at <a href="https://docs.unity3d.com/Manual/PublishingBuilds.html">Publishing Builds</a>.</p>
+<h2 id="building-and-deploying-mrtk-to-hololens-1-and-hololens-2-uwp">Building and deploying MRTK to HoloLens 1 and HoloLens 2 (UWP)</h2>
+<p>Instructions on how to build and deploy for HoloLens 1 and HoloLens 2 (UWP) can be found at <a href="https://docs.microsoft.com/windows/mixed-reality/mrlearning-base-ch1#build-your-application-to-your-device">building your application to device</a>.</p>
+<p><strong>Tip:</strong> When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that the build settings &quot;Target SDK Version&quot;
+and &quot;Minimum Platform Version&quot; look like they do in the picture below:</p>
+<p><img src="Images/getting_started/BuildWindow.png" alt="Build window"></p>
+<p>The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
+be changed inside the Visual Studio solution).</p>
+<p>Make sure that the &quot;Target SDK Version&quot; dropdown includes the option &quot;10.0.18362.0&quot; - if this is missing,
+<a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">the latest Windows SDK</a> needs to be installed.</p>
+<h3 id="unity-20193-and-hololens">Unity 2019.3 and HoloLens</h3>
+<p>If a HoloLens app appears as a 2D panel on device, make sure the following settings have been configured in Unity 2019.3.x before deploying your UWP app:</p>
+<p>If using the legacy XR:</p>
+<ol>
+<li>Navigate to Edit &gt; Project Settings, Player</li>
+<li>Under <strong>XR Settings</strong> in the UWP tab, make sure <strong>Virtual Reality Supported</strong> is enabled and the <strong>Windows Mixed Reality</strong> SDK has been added to SDKs.</li>
+<li>Build and deploy in Visual Studio</li>
+</ol>
+<p>If using the XR-Plugin:</p>
+<ol>
+<li>Follow the steps found in <a href="GettingStartedWithMRTKAndXRSDK.html">Getting Started with XRSDK</a></li>
+<li>Make sure the configuration profile is the <strong>DefaultXRSDKConfigurationProfile</strong></li>
+<li>Navigate to <strong>Edit &gt; Project Settings, XR-Plugin Management</strong> and make sure <strong>Windows Mixed Reality</strong> is enabled.</li>
+<li>Build and deploy in Visual Studio</li>
+</ol>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If using Unity 2019.3.x, select <strong>ARM64</strong> and not <strong>ARM</strong> as the build architecture in Visual Studio. With the default Unity settings in Unity 2019.3.x, a Unity app will not deploy to a HoloLens if ARM is selected due to a Unity bug. This can be tracked on <a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">Unity's issue tracker</a>.</p>
+<p>If the ARM architecture is required, navigate to <strong>Edit &gt; Project Settings, Player</strong>, and under the <strong>Other Settings</strong> menu disable <strong>Graphics Jobs</strong>. Disabling <strong>Graphics Jobs</strong> will allow the app to deploy using the ARM build architecture for Unity 2019.3.x, but ARM64 is recommended.</p>
+</div>
+<h2 id="building-and-deploying-mrtk-to-a-windows-mixed-reality-headset">Building and deploying MRTK to a Windows Mixed Reality Headset</h2>
+<p>The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platform (UWP) and Standalone builds.  A Standalone build for a WMR headset requires the following extra steps:</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Unity's XR SDK also supports native WMR in Standalone builds, but does not require SteamVR or WMR plugin. These steps are required for Unity's legacy XR.</p>
+</div>
+<ol>
+<li>Install <a href="https://store.steampowered.com/about/">Steam</a></li>
+<li>Install <a href="https://store.steampowered.com/app/250820/SteamVR/">SteamVR</a></li>
+<li>Install the <a href="https://store.steampowered.com/app/719950/Windows_Mixed_Reality_for_SteamVR/">WMR Plugin</a></li>
+</ol>
+<h3 id="how-to-use-wmr-plugin">How to use WMR plugin</h3>
+<ol>
+<li><p>Open Steam and search for the Windows Mixed Reality Plugin</p>
+<ul>
+<li>Make sure SteamVR is closed before launching the WMR Plugin. Launching the WMR plugin also launches SteamVR.</li>
+<li>Make sure the WMR headset is plugged in.</li>
+</ul>
+<p><img src="Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png" alt="WMR Plugin Search"></p>
+</li>
+<li><p>Select <strong>Launch</strong> for the Windows Mixed Reality for SteamVR Plugin.</p>
+<p><img src="Images/BuildDeploy/WMR/WMRPlugin.png" alt="WMR Plugin"></p>
+<ul>
+<li><p>SteamVR and the WMR plugin will launch and a new tracking status window for the WMR headset will appear.</p>
+</li>
+<li><p>For more information visit the <a href="https://support.microsoft.com/help/4053622/windows-10-play-steamvr-games-in-windows-mixed-reality">Windows Mixed Reality Steam Documentation</a></p>
+<p><img src="Images/BuildDeploy/WMR/WMRPluginActive.png" alt="WMR Launch Appearance"></p>
+</li>
+</ul>
+</li>
+<li><p>In Unity, with your MRTK scene open, navigate to <strong>File &gt; Build Settings</strong></p>
+</li>
+<li><p>Build the scene</p>
+<ul>
+<li>Select <strong>Add Open Scene</strong></li>
+<li>Make sure the Platform is <strong>Standalone</strong></li>
+<li>Select <strong>Build</strong></li>
+<li>Choose the location for the new build in File Explorer</li>
+</ul>
+<p><img src="Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png" alt="Build Settings for Standalone"></p>
+</li>
+<li><p>A new Unity executable will be created, to launch your app select the Unity executable in File Explorer.</p>
+<p><img src="Images/BuildDeploy/WMR/FileExplorerUnityExe.png" alt="File Explorer Unity"></p>
+</li>
+</ol>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="CrossPlatform/UsingARFoundation.html">Android and iOS Support</a></li>
+<li><a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Support</a></li>
+<li><a href="DetectingPlatformCapabilities.html">Detecting Platform Capabilities</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/BuildAndDeploy.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

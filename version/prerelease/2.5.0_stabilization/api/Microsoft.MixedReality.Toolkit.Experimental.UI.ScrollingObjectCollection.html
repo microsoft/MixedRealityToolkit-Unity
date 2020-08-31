@@ -1,0 +1,1322 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ScrollingObjectCollection
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ScrollingObjectCollection
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection" class="text-break">Class ScrollingObjectCollection
+  </h1>
+  <div class="markdown level0 summary"><p>A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ScrollingObjectCollection</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
+    <div><span class="xref">IMixedRealityTouchHandler</span></div>
+    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
+    <div><span class="xref">IMixedRealityInputHandler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.html">Microsoft.MixedReality.Toolkit.Experimental.UI</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ClickEvent" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ClickEvent">ClickEvent</h4>
+  <div class="markdown level1 summary"><p>Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection.ScrollEvent ClickEvent</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollEvent.html">ScrollingObjectCollection.ScrollEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ListMomentumEnded" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ListMomentumEnded">ListMomentumEnded</h4>
+  <div class="markdown level1 summary"><p>Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent ListMomentumEnded</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TouchEnded" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TouchEnded">TouchEnded</h4>
+  <div class="markdown level1 summary"><p>Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection.ScrollEvent TouchEnded</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollEvent.html">ScrollingObjectCollection.ScrollEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TouchStarted" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TouchStarted">TouchStarted</h4>
+  <div class="markdown level1 summary"><p>Event that is fired on the target object when the ScrollingObjectCollection is touched.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection.ScrollEvent TouchStarted</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollEvent.html">ScrollingObjectCollection.ScrollEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_AnimationLength_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.AnimationLength*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_AnimationLength" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.AnimationLength">AnimationLength</h4>
+  <div class="markdown level1 summary"><p>The amount of time (in seconds) the <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_PaginationCurve">PaginationCurve</a> will take to evaluate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float AnimationLength { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_BounceMultiplier_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.BounceMultiplier*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_BounceMultiplier" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.BounceMultiplier">BounceMultiplier</h4>
+  <div class="markdown level1 summary"><p>Multiplier to add more bounce to the overscroll of a list when using <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_FalloffPerFrame">FalloffPerFrame</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_FalloffPerItem">FalloffPerItem</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float BounceMultiplier { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CanScroll_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CanScroll*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CanScroll" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CanScroll">CanScroll</h4>
+  <div class="markdown level1 summary"><p>Enables/disables scrolling with near/far interaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanScroll { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CanScroll_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Helpful for controls where you may want pagination or list movement without freeform scrolling.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CellHeight_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CellHeight*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CellHeight" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CellHeight">CellHeight</h4>
+  <div class="markdown level1 summary"><p>Height of the cell per object in the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CellHeight { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CellWidth_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CellWidth*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_CellWidth" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.CellWidth">CellWidth</h4>
+  <div class="markdown level1 summary"><p>Width of the cell per object in the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CellWidth { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ClipBox_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ClipBox*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ClipBox" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ClipBox">ClipBox</h4>
+  <div class="markdown level1 summary"><p>The ScrollingObjectCollection's <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html">ClippingBox</a>
+that is used for clipping items in and out of the list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClippingBox ClipBox { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ClippingBox</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ClippingObject_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ClippingObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ClippingObject" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ClippingObject">ClippingObject</h4>
+  <div class="markdown level1 summary"><p>The empty GameObject containing the ScrollingObjectCollection's <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html">ClippingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject ClippingObject { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_DisableClippedItems_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.DisableClippedItems*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_DisableClippedItems" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.DisableClippedItems">DisableClippedItems</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool DisableClippedItems { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_DragTimeThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.DragTimeThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_DragTimeThreshold" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.DragTimeThreshold">DragTimeThreshold</h4>
+  <div class="markdown level1 summary"><p>Seconds the user's pointer can intersect a controller item before it is considered a drag.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DragTimeThreshold { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_FirstItemInViewIndex_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.FirstItemInViewIndex*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_FirstItemInViewIndex" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.FirstItemInViewIndex">FirstItemInViewIndex</h4>
+  <div class="markdown level1 summary"><p>First item (visible) in the <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea">ViewableArea</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FirstItemInViewIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_HandDeltaMagThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.HandDeltaMagThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_HandDeltaMagThreshold" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.HandDeltaMagThreshold">HandDeltaMagThreshold</h4>
+  <div class="markdown level1 summary"><p>The distance the user's pointer can make before its considered a drag.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float HandDeltaMagThreshold { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_OcclusionPositionPadding_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.OcclusionPositionPadding*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_OcclusionPositionPadding" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.OcclusionPositionPadding">OcclusionPositionPadding</h4>
+  <div class="markdown level1 summary"><p>Manual offset adjust the position calculation of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html">ClippingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 OcclusionPositionPadding { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_OcclusionScalePadding_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.OcclusionScalePadding*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_OcclusionScalePadding" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.OcclusionScalePadding">OcclusionScalePadding</h4>
+  <div class="markdown level1 summary"><p>Manual offset adjust the scale calculation of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html">ClippingBox</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 OcclusionScalePadding { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_OcclusionScalePadding_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Setting to zero may result in z fighting.&quot;</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_PaginationCurve_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.PaginationCurve*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_PaginationCurve" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.PaginationCurve">PaginationCurve</h4>
+  <div class="markdown level1 summary"><p>Animation curve used to interpolate the pagination and movement methods.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AnimationCurve PaginationCurve { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AnimationCurve</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ScrollDirection_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ScrollDirection" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollDirection">ScrollDirection</h4>
+  <div class="markdown level1 summary"><p>The direction in which content should scroll.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection.ScrollDirectionType ScrollDirection { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollDirectionType.html">ScrollingObjectCollection.ScrollDirectionType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_SetUpAtRuntime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.SetUpAtRuntime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_SetUpAtRuntime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.SetUpAtRuntime">SetUpAtRuntime</h4>
+  <div class="markdown level1 summary"><p>Automatically set up scroller at runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SetUpAtRuntime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_Tiers_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.Tiers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_Tiers" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.Tiers">Tiers</h4>
+  <div class="markdown level1 summary"><p>Number of columns or rows in respect to <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea">ViewableArea</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ScrollDirection">ScrollDirection</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Tiers { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TypeOfVelocity_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TypeOfVelocity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TypeOfVelocity" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TypeOfVelocity">TypeOfVelocity</h4>
+  <div class="markdown level1 summary"><p>The desired type of velocity for the scroller.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection.VelocityType TypeOfVelocity { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType.html">ScrollingObjectCollection.VelocityType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UseNearScrollBoundary_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UseNearScrollBoundary*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UseNearScrollBoundary" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UseNearScrollBoundary">UseNearScrollBoundary</h4>
+  <div class="markdown level1 summary"><p>Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseNearScrollBoundary { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UseOnPreRender_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UseOnPreRender*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UseOnPreRender" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UseOnPreRender">UseOnPreRender</h4>
+  <div class="markdown level1 summary"><p>Toggles whether the ScrollingObjectCollection&quot; will use the Camera OnPreRender
+event to hide items in the list. The fallback is MonoBehaviour.LateUpdate().</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseOnPreRender { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UseOnPreRender_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after LateUpdate,</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityDampen_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityDampen*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityDampen" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityDampen">VelocityDampen</h4>
+  <div class="markdown level1 summary"><p>Amount of drag applied to velocity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VelocityDampen { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityDampen_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This can't be 0.0f since that won't allow ANY velocity - set <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TypeOfVelocity">TypeOfVelocity</a> to <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_None">None</a>. It can't be 1.0f since that won't allow ANY drag.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityMultiplier_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityMultiplier*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityMultiplier" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityMultiplier">VelocityMultiplier</h4>
+  <div class="markdown level1 summary"><p>Amount of (extra) velocity to be applied to scroller.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VelocityMultiplier { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityMultiplier_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Helpful if you want a small movement to fling the list.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ViewableArea*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ViewableArea">ViewableArea</h4>
+  <div class="markdown level1 summary"><p>Number of lines visible in scroller. Orthogonal to <span class="xref">Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.tiers</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ViewableArea { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_IsItemVisible_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.IsItemVisible*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_IsItemVisible_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.IsItemVisible(System.Int32)">IsItemVisible(Int32)</h4>
+  <div class="markdown level1 summary"><p>Checks whether the given item is visible in the list</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsItemVisible(int indexOfItem)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">indexOfItem</span></td>
+        <td><p>the index of the item in the list</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true when item is visible</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_LayoutChildren_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.LayoutChildren*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_LayoutChildren" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.LayoutChildren">LayoutChildren()</h4>
+  <div class="markdown level1 summary"><p>Arranges our child objects in the scrollContainer per our set up instructions
+The layout method uses modulo with Columns / Rows</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void LayoutChildren()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ModuloCheck_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ModuloCheck*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ModuloCheck_System_Int32_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ModuloCheck(System.Int32,System.Int32)">ModuloCheck(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Helper to get the remainder from an itemindex in the list in relation to rows/columns</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ModuloCheck(int itemIndex, int divisor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">itemIndex</span></td>
+        <td><p>Index of node item in
+<a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.html#Microsoft_MixedReality_Toolkit_Utilities_BaseObjectCollection_NodeList">NodeList</a>
+to be compared</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">divisor</span></td>
+        <td><p>Rows / Columns</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The remainder from the divisor</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveByItems_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveByItems*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveByItems_System_Int32_System_Boolean_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveByItems(System.Int32,System.Boolean,System.Action)">MoveByItems(Int32, Boolean, Action)</h4>
+  <div class="markdown level1 summary"><p>Moves scroller a relative number of items</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveByItems(int numberOfItemsToMove, bool animateToPosition = true, Action callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numberOfItemsToMove</span></td>
+        <td><p>number of items to move by</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">animateToPosition</span></td>
+        <td><p>if true, scroller will animate to new position</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveByLines_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveByLines*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveByLines_System_Int32_System_Boolean_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveByLines(System.Int32,System.Boolean,System.Action)">MoveByLines(Int32, Boolean, Action)</h4>
+  <div class="markdown level1 summary"><p>Moves scroller a relative number of <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_Tiers">Tiers</a> of items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveByLines(int numberOfLinesToMove, bool animateToPosition = true, Action callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numberOfLinesToMove</span></td>
+        <td><p>number of lines to move by</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">animateToPosition</span></td>
+        <td><p>if true, scroller will animate to new position</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>An optional action to pass in to get notified that the <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> is finished moving</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveTo_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveTo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_MoveTo_System_Int32_System_Boolean_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.MoveTo(System.Int32,System.Boolean,System.Action)">MoveTo(Int32, Boolean, Action)</h4>
+  <div class="markdown level1 summary"><p>Moves scroller to an absolute position where indexOfItem
+is in the first column of the viewable area</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveTo(int indexOfItem, bool animateToPosition = true, Action callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">indexOfItem</span></td>
+        <td><p>Item to move to, will be first (or closest to in respect to scroll maximum) in viewable area</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">animateToPosition</span></td>
+        <td><p>if true, scroller will animate to new position</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_PageBy_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.PageBy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_PageBy_System_Int32_System_Boolean_System_Action_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.PageBy(System.Int32,System.Boolean,System.Action)">PageBy(Int32, Boolean, Action)</h4>
+  <div class="markdown level1 summary"><p>Moves scroller by a multiplier of <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea">ViewableArea</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PageBy(int numOfPages, bool animateToPage = true, Action callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numOfPages</span></td>
+        <td><p>number of <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html#Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_ViewableArea">ViewableArea</a> to move scroller by</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">animateToPage</span></td>
+        <td><p>if true, scroller will animate to new position</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>An optional action to pass in to get notified that the <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> is finished moving</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_StepMultiplier_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.StepMultiplier*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_StepMultiplier_System_Int32_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.StepMultiplier(System.Int32,System.Int32)">StepMultiplier(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Helper to get the number of rows / columns deep the item is</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int StepMultiplier(int itemIndex, int divisor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">itemIndex</span></td>
+        <td><p>Index of node item in <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.html#Microsoft_MixedReality_Toolkit_Utilities_BaseObjectCollection_NodeList">NodeList</a> to be compared</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">divisor</span></td>
+        <td><p>Rows / Columns</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The multiplier to get the row / column index the item is in</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TimeTest_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TimeTest*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TimeTest_System_Single_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TimeTest(System.Single,System.Single,System.Single)">TimeTest(Single, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Simple time threshold check</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TimeTest(float initTime, float currTime, float pressMargin)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">initTime</span></td>
+        <td><p>Initial time</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">currTime</span></td>
+        <td><p>Current time</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">pressMargin</span></td>
+        <td><p>Time threshold</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if amount of time surpasses <code data-dev-comment-type="paramref" class="paramref">pressMargin</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TryGetObjectAlignedBoundsSize_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TryGetObjectAlignedBoundsSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_TryGetObjectAlignedBoundsSize_Transform_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.TryGetObjectAlignedBoundsSize(Transform,Vector3@)">TryGetObjectAlignedBoundsSize(Transform, out Vector3)</h4>
+  <div class="markdown level1 summary"><p>Finds the object-aligned size of a <a href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Transform representing the object to get offset from</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">alignedSize</span></td>
+        <td><p>the object-aligned size of obj</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if alignedSize is valid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UpdateCollection_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UpdateCollection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_UpdateCollection" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.UpdateCollection">UpdateCollection()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void UpdateCollection()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityPointerHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityTouchHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealitySourceStateHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityInputHandler</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

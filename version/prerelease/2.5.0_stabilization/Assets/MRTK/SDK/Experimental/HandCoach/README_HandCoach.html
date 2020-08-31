@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Hand coach | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Hand coach | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../../../../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../Documentation/toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="hand-coach">Hand coach</h1>
+
+<p><img src="../../../../../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg" alt=""></p>
+<p>Hand coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand coach could be used to represent pressing a button or picking up a hologram.</p>
+<p>The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing Hand coach examples:</p>
+<ul>
+<li>Near tap – Used for buttons or close interactable objects</li>
+<li>Far select – Used for objects that are far away</li>
+<li>Move – Used to move a hologram in space</li>
+<li>Rotate – Used to show how to rotate holograms or objects</li>
+<li>Scale – Used to show how to manipulate holograms to be bigger or smaller</li>
+<li>Hand flip – Used for bringing up a UI start panel or Hand Menus</li>
+<li>Palm up – Used for hummingbird moment in out of the box experience. Another suggestion could be to bring up a UI start panel</li>
+<li>Scroll – Used for scrolling a list or a long document</li>
+</ul>
+<h2 id="example-scene">Example scene</h2>
+<p>You can find examples in the <strong>HandCoachExample</strong> scene under:
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/HandCoach/Scenes">MixedRealityToolkit.Examples/Experimental/HandCoach/Scenes</a></p>
+<h2 id="hand-3d-assets">Hand 3D Assets</h2>
+<p>You can find the assets under:
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Experimental/HandCoach">MixedRealityToolkit.SDK/Experimental/HandCoach</a></p>
+<h2 id="quality">Quality</h2>
+<p>If you notice distortions on the skinned mesh, you need to make sure your project is using the proper amount of joints.
+Go to Unity's Edit &gt; Project Settings &gt; Quality &gt; Other &gt; Blend Weights. Make sure &quot;4 bones&quot; are selected to see Smooth Joints.
+<img src="../../../../../Documentation/Images/HandCoach/MRTK_ProjectSettings.png" alt=""></p>
+<h2 id="scripts">Scripts</h2>
+<h3 id="interaction-hint">Interaction hint</h3>
+<p>The <code>InteractionHint.cs</code> script provides wrapper functionality for triggering animations and fades for the hand rig.</p>
+<h4 id="how-to-set-up-an-interaction-hint">How to set up an interaction hint</h4>
+<p>To set up an interaction hint, it is recommended to use the provided prefabs “StaticHandCoachRoot_L.prefab” and “StaticHandCoachRoot_R.prefab”. This prefab contains the InteractionHint script and hand rig as well as the proper hierarchy to ensure that the provided hint animations work as intended.
+Otherwise, you'll need to place the script on a gameObject one parent level up from your hand rig with animator.</p>
+<h4 id="inspector-properties">Inspector properties</h4>
+<ul>
+<li><p><strong>HideIfHandTracked</strong> This boolean specifies whether hand tracking state should be used to hide visuals when a user’s hands are being tracked. If this is set to false, only the scripting property “customShouldHideVisuals” will be used to determine whether to hide the hint.</p>
+</li>
+<li><p><strong>MinDelay</strong> This property specifies the minimum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds if the user’s hands are not being tracked.</p>
+</li>
+<li><p><strong>MaxDelay</strong> This property specifies the maximum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds even if the user’s hands are being tracked.</p>
+</li>
+<li><p><strong>UseMaxTimer</strong> If this boolean is set to false, it disables the max timer and only allows the hand hint to be shown when the user’s hands are out of view, or the custom condition returns false.</p>
+</li>
+<li><p><strong>Repeats</strong> This property controls how many times the hint animation plays when the min or max timer has passed. The hint then hides and waits for the delay again.</p>
+</li>
+<li><p><strong>AutoActivate</strong> When this boolean is set to true, the hint will automatically run through the timer logic when the GameObject of the script is active in the hierarchy and the script is enabled. This should only be set to false if you intend to manually control the hint appearance and disappearance via code.</p>
+</li>
+<li><p><strong>AnimationState</strong> The name of the animation state that should play when the hint is active. This must be set before the StartHintLoop() function is called (during OnEnable if AutoActivate is checked).</p>
+</li>
+</ul>
+<h4 id="controlling-interactionhint-via-script">Controlling InteractionHint via script</h4>
+<ul>
+<li><strong>StartHintLoop</strong> This function starts the show/hide loop that otherwise starts OnEnable if the AutoActivate flag is set to true.</li>
+<li><strong>StopHintLoop</strong> This function calls the fade out animation state if it is not currently playing, then will deactivate the show/hide loop and set the hand rig inactive in the hierarchy.</li>
+<li><strong>AnimationState</strong> This string determines which animation state is played during the loop. You may change this string to change which state plays, but you must do so after calling StopHintLoop, and you must call StartHintLoop again after you have changed the state.</li>
+<li><strong>CustomShouldHideVisuals</strong> You can set this with your own function, which should return true when you want to hide the hand visuals (keep in mind the MinMaxTimer, specifically the max parameter)</li>
+</ul>
+<h4 id="custom-animation-considerations">Custom animation considerations</h4>
+<p>Fades are defaulted to 0.5 seconds, so any custom animations created for use with the rig should be 1.5 seconds minimum for any meaningful information to be conveyed</p>
+<p>The provided default fade in and fade out states, Fade_In and Fade_Out may be adjusted by changing the timestamp of the second keyframe to set the fade length.</p>
+<p>The animator and script were set up in a way that should make setup as simple as possible. To add new animation states, simply import your fbx, ensure the animation name is set with a distinct name, and drag that animation into the animator.</p>
+<h3 id="movetotarget">MoveToTarget</h3>
+<p>The MoveToTarget.cs script provides functionality to move the hand hint from a tracking position to a target position over time.</p>
+<h4 id="how-to-set-up-movetotarget">How to set up MoveToTarget</h4>
+<p>The provided prefabs “MovingHandCoachRoot_L.prefab” and “MovingHandCoachRoot_R.prefab” contain a MoveToTarget in their hierarchies. If you want to use this script on your own setup, you need to place it on the root gameobject containing the Animator for your rig.</p>
+<h4 id="inspector-properties-1">Inspector properties</h4>
+<ul>
+<li><strong>TrackingObject</strong> Set this with the object you want the rig to follow before it starts its motion. It is recommended to create an empty GameObject and move it to a specific position to help you pinpoint the tracking.</li>
+<li><strong>TargetObject</strong> Set this with the object you want the rig to move to during its motion. It is recommended to create an empty GameObject and move it to a specific position to help you pinpoint the tracking.</li>
+<li><strong>RootObject</strong> Set this to a shared parent between tracking and target object so that the relative positions can be calculated correctly. The included prefab has both tracking and target objects in its hierarchy, but you can set the target object as a gameObject outside of the prefab and change the root object to a shared parent.</li>
+<li><strong>Duration</strong> The amount of time it should take (in seconds) to move from TrackingObject to TargetObject in seconds.</li>
+<li><strong>TargetOffset</strong> A tunable offset to get the GameObject to arrive at the right target position. This is useful if your animation includes a position offset during the animation.</li>
+<li><strong>AnimationCurve</strong> This is defaulted to a linear curve, but you can alter the curve to provide easing in/out when starting and stopping the motion path.</li>
+</ul>
+<h4 id="controlling-movetotarget-via-script">Controlling MoveToTarget via script</h4>
+<p>In your custom script, make a call to Follow() while you want the hand rig to be following the TrackingObject, then make a call to MoveToTargetPosition() when you want the hand rig to begin its motion to the TargetObject.</p>
+<h4 id="controlling-movetotarget-via-animations">Controlling MoveToTarget via animations</h4>
+<p>In the animation that needs to move, set two events: one with a call to Follow() and one with a call to MoveToTargetPosition(). Follow should be set on the first keyframe, since it causes the hand rig to follow your TrackingObject. MoveToTargetPosition should be set on the keyframe where you want the rig to begin moving to the target. This is how the script functionality is used in the provided prefabs.</p>
+<h3 id="rotatearoundpoint">RotateAroundPoint</h3>
+<p>The RotateAroundPoint.cs script provides functionality to rotate the hand hint around a pivot point over time.</p>
+<h4 id="how-to-set-up-rotatearoundpoint">How to set up RotateAroundPoint</h4>
+<p>The provided prefabs “RotatingHandCoachRoot_L.prefab” and “RotatingHandCoachRoot_R.prefab” contain a RotateAroundPoint in their hierarchies. If you want to use this script on your own setup, you need to place it on the root gameobject containing the Animator for your rig.</p>
+<h4 id="inspector-properties-2">Inspector properties</h4>
+<ul>
+<li><strong>CenteredParent</strong> Set this with the parent object you want the rig to pivot around.</li>
+<li><strong>InverseParent</strong> Set this with the parent to rotate inverse to centeredParent in order to keep the hand orientation the same. In general, this will be the parent object with the InteractionHint script on it.</li>
+<li><strong>PivotPosition</strong> Set this to a point where you want the hint to start movement at.</li>
+<li><strong>Duration</strong> The amount of time it should take (in seconds) to rotate around the CenteredParent.</li>
+<li><strong>AnimationCurve</strong> This is defaulted to a linear curve, but you can alter the curve to provide easing in/out when starting and stopping the motion path.</li>
+<li><strong>RotationVector</strong> How many degrees to rotate along each axis.</li>
+</ul>
+<h4 id="controlling-rotatearoundpoint-via-script">Controlling RotateAroundPoint via script</h4>
+<p>In your custom script, make a call to RotateToTarget() when you want the hand rig to begin its rotation around the CenteredParent. When you want the position to reset to the original PivotPosition, make a call to ResetAndDeterminePivot().</p>
+<h4 id="controlling-rotatearoundpoint-via-animations">Controlling RotateAroundPoint via animations</h4>
+<p>In the animation that needs to move, set two events: one with a call to ResetAndDeterminePivot() and one with a call to RotateToTarget(). ResetAndDeterminePivot should be set on the first keyframe, since it causes the hand rig to reset to the PivotPosition. RotateToTarget should be set on the keyframe where you want the rig to begin rotating around the CenteredParent. This is how the script functionality is used in the provided prefabs.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

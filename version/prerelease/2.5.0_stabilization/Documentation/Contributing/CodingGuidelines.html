@@ -1,0 +1,674 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Coding guidelines | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Coding guidelines | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="coding-guidelines">Coding guidelines</h1>
+
+<p>This document outlines coding principles and conventions to follow when contributing to MRTK.</p>
+<hr>
+<h2 id="philosophy">Philosophy</h2>
+<h3 id="be-concise-and-strive-for-simplicity">Be concise and strive for simplicity</h3>
+<p>The simplest solution is often the best. This is an overriding aim of these guidelines and should be the goal of all coding activity. Part of being simple is being concise, and consistent with existing code. Try to keep your code simple.</p>
+<p>Readers should only encounter artifacts that provide useful information. For example, comments that restate what is obvious provide no extra information and increase the noise to signal ratio.</p>
+<p>Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.</p>
+<h3 id="produce-consistent-readable-code">Produce consistent, readable code</h3>
+<p>Code readability is correlated with low defect rates. Strive to create code that is easy to read. Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.</p>
+<p>All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.</p>
+<h3 id="support-configuring-components-both-in-editor-and-at-run-time">Support configuring components both in editor and at run-time</h3>
+<p>MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.</p>
+<p>All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.</p>
+<h3 id="play-in-editor-is-your-first-and-primary-target-platform">Play-in-editor is your first and primary target platform</h3>
+<p>Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.</p>
+<p>Make everything work in editor, then make it work on any other platform. Keep it working in the editor. It is easy to add a new platform to Play-In-Editor. It is very difficult to get Play-In-Editor working if your app only works on a device.</p>
+<h3 id="add-new-public-fields-properties-methods-and-serialized-private-fields-with-care">Add new public fields, properties, methods and serialized private fields with care</h3>
+<p>Every time you add a public method, field, property, it becomes part of MRTK’s public API surface. Private fields marked with <code>[SerializeField]</code> also expose fields to the editor and are part of the public API surface. Other people might use that public method, configure custom prefabs with your public field, and take a dependency on it.</p>
+<p>New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.</p>
+<h3 id="prioritize-writing-tests">Prioritize writing tests</h3>
+<p>MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. <a href="https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build?definitionId=16">MRTK runs continuous integration tests</a> before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.</p>
+<p>When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.</p>
+<h2 id="c-coding-conventions">C# Coding conventions</h2>
+<h3 id="script-license-information-headers">Script license information headers</h3>
+<p>All Microsoft employees contributing new files should add the following standard License header at the top of any new files, exactly as shown below:</p>
+<pre><code class="lang-c#">// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+</code></pre>
+<h3 id="function--method-summary-headers">Function / method summary headers</h3>
+<p>All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to its purpose and use, exactly as shown below:</p>
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// The Controller definition defines the Controller as defined by the SDK / Unity.
+/// &lt;/summary&gt;
+public struct Controller
+{
+    /// &lt;summary&gt;
+    /// The ID assigned to the Controller
+    /// &lt;/summary&gt;
+    public string ID;
+}
+</code></pre>
+<p>This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.</p>
+<p>Any script files submitted without proper summary tags will be rejected.</p>
+<h3 id="mrtk-namespace-rules">MRTK namespace rules</h3>
+<p>The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with &quot;Microsoft.MixedReality.Toolkit&quot;. In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.</p>
+<p>The currently defined namespaces are:</p>
+<ul>
+<li>Microsoft.MixedReality.Toolkit</li>
+<li>Microsoft.MixedReality.Toolkit.Boundary</li>
+<li>Microsoft.MixedReality.Toolkit.Diagnostics</li>
+<li>Microsoft.MixedReality.Toolkit.Editor</li>
+<li>Microsoft.MixedReality.Toolkit.Input</li>
+<li>Microsoft.MixedReality.Toolkit.SpatialAwareness</li>
+<li>Microsoft.MixedReality.Toolkit.Teleport</li>
+<li>Microsoft.MixedReality.Toolkit.Utilities</li>
+</ul>
+<p>For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.</p>
+<p>Omitting the namespace for an interface, class or data type will cause your change to be blocked.</p>
+<h3 id="adding-new-monobehaviour-scripts">Adding new MonoBehaviour scripts</h3>
+<p>When adding new MonoBehaviour scripts with a pull request, ensure the <a href="https://docs.unity3d.com/ScriptReference/AddComponentMenu.html"><code>AddComponentMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the <em>Add Component</em> button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
+<p>In the example below, the <em>Package here</em> should be filled with the package location of the component. If placing an item in <em>MRTK/SDK</em> folder, then the package will be <em>SDK</em>.</p>
+<pre><code class="lang-c#">[AddComponentMenu(&quot;Scripts/MRTK/{Package here}/MyNewComponent&quot;)]
+public class MyNewComponent : MonoBehaviour
+</code></pre>
+<h3 id="adding-new-unity-inspector-scripts">Adding new Unity inspector scripts</h3>
+<p>In general, try to avoid creating custom inspector scripts for MRTK components. It adds additional overhead and management of the codebase that could be handled by the Unity engine.</p>
+<p>If an inspector class is necessary, try to use Unity's <a href="https://docs.unity3d.com/ScriptReference/Editor.DrawDefaultInspector.html"><code>DrawDefaultInspector()</code></a>. This again simplifies the inspector class and leaves much of the work to Unity.</p>
+<pre><code class="lang-c#">public override void OnInspectorGUI()
+{
+    // Do some custom calculations or checks
+    // ....
+    DrawDefaultInspector();
+}
+</code></pre>
+<p>If custom rendering is required in the inspector class, try to utilize <a href="https://docs.unity3d.com/ScriptReference/SerializedProperty.html"><code>SerializedProperty</code></a> and <a href="https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html"><code>EditorGUILayout.PropertyField</code></a>. This will ensure Unity correctly handles rendering nested prefabs and modified values.</p>
+<p>If <a href="https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html"><code>EditorGUILayout.PropertyField</code></a> cannot be used due to a requirement in custom logic, ensure all usage is wrapped around a <a href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyScope.html"><code>EditorGUI.PropertyScope</code></a>. This will ensure Unity renders the inspector correctly for nested prefabs and modified values with the given property.</p>
+<p>Furthermore, try to decorate the custom inspector class with a <a href="https://docs.unity3d.com/ScriptReference/CanEditMultipleObjects.html"><code>CanEditMultipleObjects</code></a>. This tag ensure multiple objects with this component in the scene can be selected and modified together. Any new inspector classes should test that their code works in this situation in the scene.</p>
+<pre><code class="lang-c#">    // Example inspector class demonstrating usage of SerializedProperty &amp; EditorGUILayout.PropertyField
+    // as well as use of EditorGUI.PropertyScope for custom property logic
+    [CustomEditor(typeof(MyComponent))]
+    public class MyComponentInspector : UnityEditor.Editor
+    {
+        private SerializedProperty myProperty;
+        private SerializedProperty handedness;
+
+        protected virtual void OnEnable()
+        {
+            myProperty = serializedObject.FindProperty(&quot;myProperty&quot;);
+            handedness = serializedObject.FindProperty(&quot;handedness&quot;);
+        }
+
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.PropertyField(destroyOnSourceLost);
+
+            Rect position = EditorGUILayout.GetControlRect();
+            var label = new GUIContent(handedness.displayName);
+            using (new EditorGUI.PropertyScope(position, label, handedness))
+            {
+                var currentHandedness = (Handedness)handedness.enumValueIndex;
+
+                handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(
+                    position,
+                    label,
+                    currentHandedness,
+                    (value) =&gt; {
+                        // This function is executed by Unity to determine if a possible enum value
+                        // is valid for selection in the editor view
+                        // In this case, only Handedness.Left and Handedness.Right can be selected
+                        return (Handedness)value == Handedness.Left
+                        || (Handedness)value == Handedness.Right;
+                    });
+            }
+        }
+    }
+</code></pre>
+<h3 id="adding-new-scriptableobjects">Adding new ScriptableObjects</h3>
+<p>When adding new ScriptableObject scripts, ensure the <a href="https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html"><code>CreateAssetMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
+<p>In the example below, the <em>Subfolder</em> should be filled with the MRTK subfolder, if applicable. If placing an item in <em>MRTK/Providers</em> folder, then the package will be <em>Providers</em>. If placing an item in the <em>MRTK/Core</em> folder, set this to &quot;Profiles&quot;.</p>
+<p>In the example below, the <em>MyNewService | MyNewProvider</em> should be filled with the your new class' name, if applicable. If placing an item in the <em>MixedRealityToolkit</em> folder, leave this string out.</p>
+<pre><code class="lang-c#">[CreateAssetMenu(fileName = &quot;MyNewProfile&quot;, menuName = &quot;Mixed Reality Toolkit/{Subfolder}/{MyNewService | MyNewProvider}/MyNewProfile&quot;)]
+public class MyNewProfile : ScriptableObject
+</code></pre>
+<h3 id="logging">Logging</h3>
+<p>When adding new features or updating existing features, consider adding DebugUtilities.LogVerbose
+logs to interesting code that may be useful for future debugging. There's a tradeoff here between
+adding logging and the added noise and not enough logging (which makes diagnosis difficult).</p>
+<p>An interesting example where having logging is useful (along with interesting payload):</p>
+<pre><code class="lang-c#">DebugUtilities.LogVerboseFormat(&quot;RaiseSourceDetected: Source ID: {0}, Source Type: {1}&quot;, source.SourceId, source.SourceType);
+</code></pre>
+<p>This type of logging can help catch issues like <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8016">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8016</a>,
+which were caused by mismatched source detected and source lost events.</p>
+<p>Avoid adding logs for data and events that are occurring on every frame - ideally logging should
+cover &quot;interesting&quot; events driven by distinct user inputs (i.e. a &quot;click&quot; by a user and the set of
+changes and events that come from that are interesting to log). The ongoing state of &quot;user is still
+holding a gesture&quot; logged every frame is not interesting and will overwhelm the logs.</p>
+<p>Note that this verbose logging is not turned on by default (it must be enabled in the
+<a href="../Diagnostics/ConfiguringDiagnostics.html#enable-verbose-logging">Diagnostic System settings</a>)</p>
+<h3 id="spaces-vs-tabs">Spaces vs tabs</h3>
+<p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
+<h3 id="spacing">Spacing</h3>
+<p>Do not to add additional spaces between square brackets and parenthesis:</p>
+<h4 id="dont">Don't</h4>
+<pre><code class="lang-c#">private Foo()
+{
+    int[ ] var = new int [ 9 ];
+    Vector2 vector = new Vector2 ( 0f, 10f );
+}
+
+</code></pre>
+<h4 id="do">Do</h4>
+<pre><code class="lang-c#">private Foo()
+{
+    int[] var = new int[9];
+    Vector2 vector = new Vector2(0f, 10f);
+}
+</code></pre>
+<h3 id="naming-conventions">Naming conventions</h3>
+<p>Always use <code>PascalCase</code> for properties. Use <code>camelCase</code> for most fields, except use <code>PascalCase</code> for <code>static readonly</code> and <code>const</code> fields. The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
+<h4 id="dont-1">Don't</h4>
+<pre><code class="lang-c#">public string myProperty; // &lt;- Starts with a lowercase letter
+private string MyField; // &lt;- Starts with an uppercase letter
+</code></pre>
+<h4 id="do-1">Do</h4>
+<pre><code class="lang-c#">public string MyProperty;
+protected string MyProperty;
+private static readonly string MyField;
+private string myField;
+</code></pre>
+<h3 id="access-modifiers">Access modifiers</h3>
+<p>Always declare an access modifier for all fields, properties and methods.</p>
+<ul>
+<li><p>All Unity API Methods should be <code>private</code> by default, unless you need to override them in a derived class. In this case <code>protected</code> should be used.</p>
+</li>
+<li><p>Fields should always be <code>private</code>, with <code>public</code> or <code>protected</code> property accessors.</p>
+</li>
+<li><p>Use <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members">expression-bodied members</a> and <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements">auto properties</a> where possible</p>
+</li>
+</ul>
+<h4 id="dont-2">Don't</h4>
+<pre><code class="lang-c#">// protected field should be private
+protected int myVariable = 0;
+
+// property should have protected setter
+public int MyVariable =&gt; myVariable;
+
+// No public / private access modifiers
+void Foo() { }
+void Bar() { }
+</code></pre>
+<h4 id="do-2">Do</h4>
+<pre><code class="lang-c#">public int MyVariable { get; protected set; } = 0;
+
+private void Foo() { }
+public void Bar() { }
+protected virtual void FooBar() { }
+</code></pre>
+<h3 id="use-braces">Use braces</h3>
+<p>Always use braces after each statement block, and place them on the next line.</p>
+<h4 id="dont-3">Don't</h4>
+<pre><code class="lang-c#">private Foo()
+{
+    if (Bar==null) // &lt;- missing braces surrounding if action
+        DoThing();
+    else
+        DoTheOtherThing();
+}
+</code></pre>
+<h4 id="dont-4">Don't</h4>
+<pre><code class="lang-c#">private Foo() { // &lt;- Open bracket on same line
+    if (Bar==null) DoThing(); &lt;- if action on same line with no surrounding brackets
+    else DoTheOtherThing();
+}
+</code></pre>
+<h4 id="do-3">Do</h4>
+<pre><code class="lang-c#">private Foo()
+{
+    if (Bar==true)
+    {
+        DoThing();
+    }
+    else
+    {
+        DoTheOtherThing();
+    }
+}
+</code></pre>
+<h3 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files</h3>
+<p>If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.</p>
+<h4 id="dont-5">Don't</h4>
+<pre><code class="lang-c#">public class MyClass
+{
+    public struct MyStruct() { }
+    public enum MyEnumType() { }
+    public class MyNestedClass() { }
+}
+</code></pre>
+<h4 id="do-4">Do</h4>
+<pre><code class="lang-c#"> // Private references for use inside the class only
+public class MyClass
+{
+    private struct MyStruct() { }
+    private enum MyEnumType() { }
+    private class MyNestedClass() { }
+}
+</code></pre>
+<h4 id="do-5">Do</h4>
+<p>MyStruct.cs</p>
+<pre><code class="lang-c#">// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
+public struct MyStruct
+{
+    public string Var1;
+    public string Var2;
+}
+</code></pre>
+<p>MyEnumType.cs</p>
+<pre><code class="lang-c#">public enum MuEnumType
+{
+    Value1,
+    Value2 // &lt;- note, no &quot;,&quot; on last value to denote end of list.
+}
+</code></pre>
+<p>MyClass.cs</p>
+<pre><code class="lang-c#">public class MyClass
+{
+    private MyStruct myStructReference;
+    private MyEnumType myEnumReference;
+}
+</code></pre>
+<h3 id="initialize-enums">Initialize enums</h3>
+<p>To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)</p>
+<h4 id="dont-6">Don't</h4>
+<pre><code class="lang-c#">public enum Value
+{
+    Value1, &lt;- no initializer
+    Value2,
+    Value3
+}
+</code></pre>
+<h4 id="do-6">Do</h4>
+<pre><code class="lang-c#">public enum ValueType
+{
+    Value1 = 0,
+    Value2,
+    Value3
+}
+</code></pre>
+<h3 id="order-enums-for-appropriate-extension">Order enums for appropriate extension</h3>
+<p>It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.</p>
+<h4 id="dont-7">Don't</h4>
+<pre><code class="lang-c#">public enum SDKType
+{
+    WindowsMR,
+    OpenVR,
+    OpenXR,
+    None, &lt;- default value not at start
+    Other &lt;- anonymous value left to end of enum
+}
+</code></pre>
+<h4 id="do-7">Do</h4>
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// &lt;/summary&gt;
+public enum SDKType
+{
+    /// &lt;summary&gt;
+    /// No specified type or Standalone / non-VR type
+    /// &lt;/summary&gt;
+    None = 0,
+    /// &lt;summary&gt;
+    /// Undefined SDK.
+    /// &lt;/summary&gt;
+    Other,
+    /// &lt;summary&gt;
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// &lt;/summary&gt;
+    WindowsMR,
+    /// &lt;summary&gt;
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// &lt;/summary&gt;
+    OpenVR,
+    /// &lt;summary&gt;
+    /// The OpenXR platform. SDK to be determined once released.
+    /// &lt;/summary&gt;
+    OpenXR
+}
+</code></pre>
+<h3 id="review-enum-use-for-bitfields">Review enum use for bitfields</h3>
+<p>If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left &amp; Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly</p>
+<p>The Handedness.cs file has a concrete implementation for this</p>
+<h3 id="dont-8">Don't</h3>
+<pre><code class="lang-c#">public enum Handedness
+{
+    None,
+    Left,
+    Right
+}
+</code></pre>
+<h3 id="do-8">Do</h3>
+<pre><code class="lang-c#">[Flags]
+public enum Handedness
+{
+    None = 0 &lt;&lt; 0,
+    Left = 1 &lt;&lt; 0,
+    Right = 1 &lt;&lt; 1,
+    Both = Left | Right
+}
+</code></pre>
+<h3 id="hard-coded-file-paths">Hard-coded file paths</h3>
+<p>When generating string file paths, and in particular writing hard-coded string paths, do the following:</p>
+<ol>
+<li>Use C#'s <a href="https://docs.microsoft.com/dotnet/api/system.io.path?view=netframework-4.8"><code>Path</code> APIs</a> whenever possible such as <code>Path.Combine</code> or <code>Path.GetFullPath</code>.</li>
+<li>Use / or <a href="https://docs.microsoft.com/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8"><code>Path.DirectorySeparatorChar</code></a> instead of \ or \\.</li>
+</ol>
+<p>These steps ensure that MRTK works on both Windows and Unix-based systems.</p>
+<h3 id="dont-9">Don't</h3>
+<pre><code class="lang-c#">private const string FilePath = &quot;MyPath\\to\\a\\file.txt&quot;;
+private const string OtherFilePath = &quot;MyPath\to\a\file.txt&quot;;
+
+string filePath = myVarRootPath + myRelativePath;
+</code></pre>
+<h3 id="do-9">Do</h3>
+<pre><code class="lang-c#">private const string FilePath = &quot;MyPath/to/a/file.txt&quot;;
+private const string OtherFilePath = &quot;folder{Path.DirectorySeparatorChar}file.txt&quot;;
+
+string filePath = Path.Combine(myVarRootPath,myRelativePath);
+
+// Path.GetFullPath() will return the full length path of provided with correct system directory separators
+string cleanedFilePath = Path.GetFullPath(unknownSourceFilePath);
+</code></pre>
+<h2 id="best-practices-including-unity-recommendations">Best practices, including Unity recommendations</h2>
+<p>Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.</p>
+<h3 id="encapsulation">Encapsulation</h3>
+<p>Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>, where a data class is required to have all public fields for the serialization to work.</p>
+</div>
+<h4 id="dont-10">Don't</h4>
+<pre><code class="lang-c#">private float myValue1;
+private float myValue2;
+
+public float MyValue1
+{
+    get{ return myValue1; }
+    set{ myValue1 = value }
+}
+
+public float MyValue2
+{
+    get{ return myValue2; }
+    set{ myValue2 = value }
+}
+</code></pre>
+<h4 id="do-10">Do</h4>
+<pre><code class="lang-c#">// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+[SerializeField]
+[ToolTip(&quot;If using a tooltip, the text should match the public property's summary documentation, if appropriate.&quot;)]
+private float myValue; // &lt;- Notice we co-located the backing field above our corresponding property.
+
+/// &lt;summary&gt;
+/// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+/// &lt;/summary&gt;
+public float MyValue
+{
+    get =&gt; myValue;
+    set =&gt; myValue = value;
+}
+
+/// &lt;summary&gt;
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// &lt;/summary&gt;
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue &lt; 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
+}
+</code></pre>
+<h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible</h3>
+<p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
+<h4 id="dont-11">Don't</h4>
+<pre><code class="lang-c#">void Update()
+{
+    gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
+}
+</code></pre>
+<h4 id="do-11">Do</h4>
+<pre><code class="lang-c#">[SerializeField] // To enable setting the reference in the inspector.
+private Renderer myRenderer;
+
+private void Awake()
+{
+    // If you didn't set it in the inspector, then we cache it on awake.
+    if (myRenderer == null)
+    {
+        myRenderer = gameObject.GetComponent&lt;Renderer&gt;();
+    }
+}
+
+private void Update()
+{
+    myRenderer.Foo(Bar);
+}
+</code></pre>
+<h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time</h3>
+<p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
+<h4 id="dont-12">Don't</h4>
+<pre><code class="lang-c#">public class MyClass
+{
+    void Update()
+    {
+        Material myMaterial = GetComponent&lt;Renderer&gt;().material;
+        myMaterial.SetColor(&quot;_Color&quot;, Color.White);
+    }
+}
+</code></pre>
+<h4 id="do-12">Do</h4>
+<pre><code class="lang-c#">// Private references for use inside the class only
+public class MyClass
+{
+    private Material cachedMaterial;
+
+    private void Awake()
+    {
+        cachedMaterial = GetComponent&lt;Renderer&gt;().material;
+    }
+
+    void Update()
+    {
+        cachedMaterial.SetColor(&quot;_Color&quot;, Color.White);
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(cachedMaterial);
+    }
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Alternatively, use Unity's &quot;SharedMaterial&quot; property which does not create a new material each time it is referenced.</p>
+</div>
+<h3 id="use-platform-dependent-compilation-to-ensure-the-toolkit-wont-break-the-build-on-another-platform">Use <a href="https://docs.unity3d.com/Manual/PlatformDependentCompilation.html">platform dependent compilation</a> to ensure the Toolkit won't break the build on another platform</h3>
+<ul>
+<li>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</li>
+<li>Use <code>UNITY_WSA</code> to use UWP-specific Unity APIs, such as the <code>UnityEngine.XR.WSA</code> namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.</li>
+</ul>
+<p>This chart can help you decide which <code>#if</code> to use, depending on your use cases and the build settings you expect.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>UWP IL2CPP</th>
+<th>UWP .NET</th>
+<th>Editor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNITY_EDITOR</code></td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>UNITY_WSA</code></td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>WINDOWS_UWP</code></td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code></td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>ENABLE_WINMD_SUPPORT</code></td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>NETFX_CORE</code></td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prefer-datetimeutcnow-over-datetimenow">Prefer DateTime.UtcNow over DateTime.Now</h3>
+<p>DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. <a href="https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now">Others have hit the same issue</a>.</p>
+<p>Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.</p>
+<h2 id="powershell-coding-conventions">PowerShell coding conventions</h2>
+<p>A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the <a href="https://poshcode.gitbooks.io/powershell-practice-and-style/">PoshCode style</a>.</p>
+<h2 id="see-also">See also</h2>
+<p><a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# coding conventions from MSDN</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/CodingGuidelines.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Configuring mesh observers via code | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Configuring mesh observers via code | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="configuring-mesh-observers-via-code">Configuring mesh observers via code</h1>
+
+<p>This article will discuss some of the key mechanisms and APIs to programmatically configure the <a href="SpatialAwarenessGettingStarted.html">Spatial Awareness system</a> and related <em>Mesh Observer</em> data providers.</p>
+<h2 id="accessing-mesh-observers">Accessing mesh observers</h2>
+<p>Mesh Observer classes that implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html"><code>IMixedRealitySpatialAwarenessMeshObserver</code></a> interface provide platform-specific mesh data to the Spatial Awareness system. Multiple Observers can be configured in the Spatial Awareness profile.</p>
+<p>Accessing the data providers of the Spatial Awareness system is mostly the same as for any other Mixed Reality Toolkit service. The Spatial Awareness service must be casted to the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> interface to access via the <code>GetDataProvider&lt;T&gt;</code> APIs, which can then be utilized to access the Mesh Observer objects directly at runtime.</p>
+<pre><code class="lang-c#">// Use CoreServices to quickly get access to the IMixedRealitySpatialAwarenessSystem
+var spatialAwarenessService = CoreServices.SpatialAwarenessSystem;
+
+// Cast to the IMixedRealityDataProviderAccess to get access to the data providers
+var dataProviderAccess = spatialAwarenessService as IMixedRealityDataProviderAccess;
+
+var meshObserver = dataProviderAccess.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+</code></pre>
+<p>The <code>CoreServices.GetSpatialAwarenessSystemDataProvider&lt;T&gt;()</code> helper simplifies this access pattern as demonstrated below.</p>
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var meshObserver = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+
+// Get the SpatialObjectMeshObserver specifically
+var meshObserverName = &quot;Spatial Object Mesh Observer&quot;;
+var spatialObjectMeshObserver = dataProviderAccess.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;(meshObserverName);
+</code></pre>
+<h2 id="starting-and-stopping-mesh-observation">Starting and stopping mesh observation</h2>
+<p>One of the most common tasks when dealing with the Spatial Awareness system is turning the feature off/on dynamically at runtime. This is done per Observer via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_Resume"><code>IMixedRealitySpatialAwarenessObserver.Resume</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_Suspend"><code>IMixedRealitySpatialAwarenessObserver.Suspend</code></a> APIs.</p>
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+
+// Suspends observation of spatial mesh data
+observer.Suspend();
+
+// Resumes observation of spatial mesh data
+observer.Resume();
+</code></pre>
+<p>This code functionality can also be simplified via access through the Spatial Awareness system directly.</p>
+<pre><code class="lang-c#">var meshObserverName = &quot;Spatial Object Mesh Observer&quot;;
+CoreServices.SpatialAwarenessSystem.ResumeObserver&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;(meshObserverName);
+</code></pre>
+<h3 id="starting-and-stopping-all-mesh-observation">Starting and stopping all mesh observation</h3>
+<p>It is generally convenient to start/stop all mesh observation in the application. This can be achieved through the helpful Spatial Awareness system APIs, <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ResumeObservers"><code>ResumeObservers()</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_SuspendObservers"><code>SuspendObservers()</code></a>.</p>
+<pre><code class="lang-c#">// Resume Mesh Observation from all Observers
+CoreServices.SpatialAwarenessSystem.ResumeObservers();
+
+// Suspend Mesh Observation from all Observers
+CoreServices.SpatialAwarenessSystem.SuspendObservers();
+</code></pre>
+<h2 id="enumerating-and-accessing-the-meshes">Enumerating and accessing the meshes</h2>
+<p>Accessing the meshes can be done per Observer and then enumerating through the
+meshes known to that Mesh Observer via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html"><code>IMixedRealitySpatialAwarenessMeshObserver</code></a> API.</p>
+<p>If running in editor, one can use the <a href="https://docs.unity3d.com/ScriptReference/AssetDatabase.CreateAsset.html"><code>AssetDatabase.CreateAsset()</code></a> to save the <code>Mesh</code> object to an asset file.</p>
+<p>If running on device, there are many community and store plugins available to serialize the <code>MeshFilter</code> data into a model file type(<a href="http://wiki.unity3d.com/index.php/ObjExporter">OBJ Example</a>).</p>
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+
+// Loop through all known Meshes
+foreach (SpatialAwarenessMeshObject meshObject in observer.Meshes.Values)
+{
+    Mesh mesh = meshObject.Filter.mesh;
+    // Do something with the Mesh object
+}
+</code></pre>
+<h2 id="showing-and-hiding-the-spatial-mesh">Showing and hiding the spatial mesh</h2>
+<p>It's possible to programmatically hide/show meshes using the sample code below:</p>
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+
+// Set to not visible
+observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.None;
+
+// Set to visible and the Occlusion material
+observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.Occlusion;
+</code></pre>
+<h2 id="registering-for-mesh-observation-events">Registering for mesh observation events</h2>
+<p>Components can implement the <code>IMixedRealitySpatialAwarenessObservationHandler&lt;SpatialAwarenessMeshObject&gt;</code> and then register with the Spatial Awareness system to receive Mesh Observation events.</p>
+<p>The <code>DemoSpatialMeshHandler</code> (Assets/MRTK/Examples/Demos/SpatialAwareness/Scripts) script is a useful example and starting point for listening to Mesh Observer events.</p>
+<p>This is a simplified example of <em>DemoSpatialMeshHandler</em> script and Mesh Observation event listening.</p>
+<pre><code class="lang-c#">// Simplify type
+using SpatialAwarenessHandler = IMixedRealitySpatialAwarenessObservationHandler&lt;SpatialAwarenessMeshObject&gt;;
+
+public class MyMeshObservationExample : MonoBehaviour, SpatialAwarenessHandler
+{
+    private void OnEnable()
+    {
+        // Register component to listen for Mesh Observation events, typically done in OnEnable()
+        CoreServices.SpatialAwarenessSystem.RegisterHandler&lt;SpatialAwarenessHandler&gt;(this);
+    }
+
+    private void OnDisable()
+    {
+        // Unregister component from Mesh Observation events, typically done in OnDisable()
+        CoreServices.SpatialAwarenessSystem.UnregisterHandler&lt;SpatialAwarenessHandler&gt;(this);
+    }
+
+    public virtual void OnObservationAdded(MixedRealitySpatialAwarenessEventData&lt;SpatialAwarenessMeshObject&gt; eventData)
+    {
+        // Do stuff
+    }
+
+    public virtual void OnObservationUpdated(MixedRealitySpatialAwarenessEventData&lt;SpatialAwarenessMeshObject&gt; eventData)
+    {
+        // Do stuff
+    }
+
+    public virtual void OnObservationRemoved(MixedRealitySpatialAwarenessEventData&lt;SpatialAwarenessMeshObject&gt; eventData)
+    {
+        // Do stuff
+    }
+}
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="SpatialAwarenessGettingStarted.html">Spatial Awareness Getting Started</a></li>
+<li><a href="ConfiguringSpatialAwarenessMeshObserver.html">Configuring the Spatial Awareness Mesh Observer</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Spatial Awareness API documentation</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/SpatialAwareness/UsageGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

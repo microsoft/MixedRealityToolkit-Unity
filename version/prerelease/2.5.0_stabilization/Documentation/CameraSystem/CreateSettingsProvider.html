@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Creating a camera settings provider | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Creating a camera settings provider | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../.././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="creating-a-camera-settings-provider">Creating a camera settings provider</h1>
+
+<p>The Camera system is an extensible system for providing support for platform specific camera configurations. To add support for a new camera configuration, a custom settings provider may be required.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The complete source code used in this example can be found in the <strong>MRTK/Providers/UnityAR</strong> folder.</p>
+</div>
+<h2 id="namespace-and-folder-structure">Namespace and folder structure</h2>
+<p>Data providers can be distributed in one of two ways:</p>
+<ol>
+<li>Third party add-ons</li>
+<li>Part of the Microsoft Mixed Reality Toolkit</li>
+</ol>
+<p>The approval process for submissions of new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal. Proposals can be submitted by creating a new <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues"><em>Feature Request</em> type issue</a>.</p>
+<h3 id="third-party-add-ons">Third party add-ons</h3>
+<p><strong>Namespace</strong></p>
+<p>Data providers are required to have a namespace to mitigate potential name collisions. It is recommended that the namespace includes the following components.</p>
+<ul>
+<li>Company name producing the add-on</li>
+<li>Feature area</li>
+</ul>
+<p>For example, a camera settings provider created and shipped by the Contoso company may be <em>&quot;Contoso.MixedReality.Toolkit.Camera&quot;</em>.</p>
+<p><strong>Folder structure</strong></p>
+<p>It is recommended that the source code for data providers be layed out in a folder hierarchy as shown in the following image.</p>
+<p><img src="../Images/CameraSystem/ExampleProviderFolderStructure.png" alt="Example folder structure"></p>
+<p>Where the <em>ContosoCamera</em> folder contains the implementation of the data provider, the <em>Editor</em> folder contains the inspector (and any other Unity editor specific code), and the <em>Profiles</em>
+folder contains one or more pre-made profile scriptable objects.</p>
+<h3 id="mrtk-submission">MRTK submission</h3>
+<p><strong>Namespace</strong></p>
+<p>If a camera settings provider is being submitted to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity">Mixed Reality Toolkit repository</a>, the namespace <strong>must</strong> begin with
+Microsoft.MixedReality.Toolkit (ex: <em>Microsoft.MixedReality.Toolkit.CameraSystem</em>).</p>
+<p><strong>Folder structure</strong></p>
+<p>All code must be located in a folder beneath MRTK/Providers (ex: MRTK/Providers/UnityAR).</p>
+<h2 id="define-the-camera-settings-object">Define the camera settings object</h2>
+<p>The first step in creating a camera settings provider is determining the type of data (ex: meshes or planes) it will provide to applications.</p>
+<p>All spatial data objects must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html"><code>IMixedRealityCameraSettingsProvider</code></a>
+interface.</p>
+<h2 id="implement-the-settings-provider">Implement the settings provider</h2>
+<h3 id="specify-interface-andor-base-class-inheritance">Specify interface and/or base class inheritance</h3>
+<p>All camera settings providers must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html"><code>IMixedRealityCameraSettingsProvider</code></a>
+interface, which specifies the minimum functionality required by the camera system. The MRTK foundation includes the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.html"><code>BaseCameraSettingsProvider</code></a>
+class which provides a default implementation of the required functionality.</p>
+<pre><code class="lang-c#">namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+{
+    public class UnityARCameraSettings : BaseCameraSettingsProvider
+    { }
+}
+</code></pre>
+<h4 id="apply-the-mixedrealitydataprovider-attribute">Apply the MixedRealityDataProvider attribute</h4>
+<p>A key step in creating a camera settings provider is to apply the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute.html"><code>MixedRealityDataProvider</code></a>
+attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the Camera System profile as well as name, folder path, and more.</p>
+<pre><code class="lang-c#">    [MixedRealityDataProvider(
+        typeof(IMixedRealityCameraSystem),
+        SupportedPlatforms.Android | SupportedPlatforms.IOS,
+        &quot;Unity AR Foundation Camera Settings&quot;,
+        &quot;UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset&quot;,
+        &quot;MixedRealityToolkit.Providers&quot;)]
+    public class UnityARCameraSettings : BaseCameraSettingsProvider
+    { }
+</code></pre>
+<h3 id="implement-the-imixedrealitydataprovider-methods">Implement the IMixedRealityDataProvider methods</h3>
+<p>Once the class has been defined, the next step is to provide the implementation of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code></a> interface.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html"><code>BaseDataProvider</code></a> class, via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.BaseService.html"><code>BaseService</code></a> class, provides empty implementations for <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code></a> methods. The details of these methods are generally data provider specific.</p>
+</div>
+<p>The methods that should be implemented by the data provider are:</p>
+<ul>
+<li><code>Destroy()</code></li>
+<li><code>Disable()</code></li>
+<li><code>Enable()</code></li>
+<li><code>Initialize()</code></li>
+<li><code>Reset()</code></li>
+<li><code>Update()</code></li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Not all settings providers will require implementations for all of these methods. It is highly recommended that <code>Destroy()</code> and <code>Initialize()</code> be implemented at a minimum.</p>
+</div>
+<h3 id="implement-the-data-provider-logic">Implement the data provider logic</h3>
+<p>The next step is to add the logic of the settings provider by implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html"><code>IMixedRealityCameraSettingsProvider</code></a>. This portion of the data provider will typically be camera configuration specific.</p>
+<h2 id="create-the-profile-and-inspector">Create the profile and inspector</h2>
+<p>In the Mixed Reality Toolkit, data providers are configured using <a href="../Profiles/Profiles.html">profiles</a>.</p>
+<h3 id="define-the-profile">Define the profile</h3>
+<p>Profile contents should mirror the developer selectable configuration options. Any user configurable properties defined in each interface should also be contained with the profile.</p>
+<pre><code class="lang-c#">using UnityEngine.SpatialTracking;
+
+namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+{
+    [CreateAssetMenu(
+        menuName = &quot;Mixed Reality Toolkit/Profiles/Unity AR Camera Settings Profile&quot;,
+        fileName = &quot;UnityARCameraSettingsProfile&quot;,
+        order = 100)]
+    public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
+    {
+        [SerializeField]
+        [Tooltip(&quot;The portion of the device (ex: color camera) from which to read the pose.&quot;)]
+        private ArTrackedPose poseSource = TrackedPoseDriver.TrackedPose.ColorCamera;
+
+        /// &lt;summary&gt;
+        /// The portion of the device (ex: color camera) from which to read the pose.
+        /// &lt;/summary&gt;
+        public ArTrackedPose PoseSource =&gt; poseSource;
+
+        [SerializeField]
+        [Tooltip(&quot;The type of tracking (position and/or rotation) to apply.&quot;)]
+        private ArTrackingType trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
+
+        /// &lt;summary&gt;
+        /// The type of tracking (position and/or rotation) to apply.
+        /// &lt;/summary&gt;
+        public ArTrackingType TrackingType =&gt; trackingType;
+
+        [SerializeField]
+        [Tooltip(&quot;Specifies when (during Update and/or just before rendering) to update the tracking of the pose.&quot;)]
+        private ArUpdateType updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
+
+        /// &lt;summary&gt;
+        /// Specifies when (during Update and/or just before rendering) to update the tracking of the pose.
+        /// &lt;/summary&gt;
+        public ArUpdateType UpdateType =&gt; updateType;
+    }
+}
+</code></pre>
+<p>The <code>CreateAssetMenu</code> attribute can be applied to the profile class to enable customers to create a profile instance using the <strong>Create</strong> &gt; <strong>Assets</strong> &gt; <strong>Mixed Reality Toolkit</strong> &gt; <strong>Profiles</strong> menu.</p>
+<h3 id="implement-the-inspector">Implement the inspector</h3>
+<p>Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html"><code>BaseMixedRealityToolkitConfigurationProfileInspector</code></a> class.</p>
+<p>The <code>CustomEditor</code> attribute informs Unity the type of asset to which the inspector applies.</p>
+<pre><code class="lang-c#">namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+{
+    [CustomEditor(typeof(UnityARCameraSettingsProfile))]
+    public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    { }
+}
+</code></pre>
+<h2 id="create-assembly-definitions">Create assembly definition(s)</h2>
+<p>The Mixed Reality Toolkit uses assembly definition (<a href="https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html">.asmdef</a>) files to specify dependencies
+between components as well as to assist Unity in reducing compilation time.</p>
+<p>It is recommended that assembly definition files are created for all data providers and their editor components.</p>
+<p>Using the <a href="#namespace-and-folder-structure">folder structure</a> in the earlier example, there would be two .asmdef files for the ContosoCamera data provider.</p>
+<p>The first assembly definition is for the data provider. For this example, it will be called ContosoCamera and will be located in the example's <em>ContosoCamera</em> folder. This assembly definition must specify a dependency on Microsoft.MixedReality.Toolkit and any other assemblies upon which it depends.</p>
+<p>The ContosoCameraEditor assembly definition will specify the profile inspector and any editor specific code. This file must be located in the root folder of the editor code. In this example, the file will be located in the <em>ContosoCamera\Editor</em> folder. This assembly definition will contain a reference to the ContosoCamera assembly as well as:</p>
+<ul>
+<li>Microsoft.MixedReality.Toolkit</li>
+<li>Microsoft.MixedReality.Toolkit.Editor.Inspectors</li>
+<li>Microsoft.MixedReality.Toolkit.Editor.Utilities</li>
+</ul>
+<h2 id="register-the-data-provider">Register the data provider</h2>
+<p>Once created, the data provider can be registered with the Camera system to be used in the application.</p>
+<p><img src="../Images/CameraSystem/SelectUnityArSettings.png" alt="Selecting the camera settings provider"></p>
+<h2 id="packaging-and-distribution">Packaging and distribution</h2>
+<p>Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.</p>
+<p>If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK offerings.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="CameraSystemOverview.html">Camera System Overview</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.html"><code>BaseCameraSettingsProvider</code> class</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html"><code>IMixedRealityCameraSettingsProvider</code> interface</a></li>
+<li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code> interface</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/CameraSystem/CreateSettingsProvider.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

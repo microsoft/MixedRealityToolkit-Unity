@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>MRTK Examples Hub | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="MRTK Examples Hub | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="mrtk-examples-hub">MRTK Examples Hub</h1>
+
+<p><img src="Images/ExamplesHub/MRTK_ExamplesHub.png" alt="MRTK Examples Hub"></p>
+<p>MRTK Examples Hub is a Unity scene that makes it easy to experience multiple scenes. It uses MRTK's Scene System to load &amp; unload the scenes.</p>
+<p><strong>MRTKExamplesHub.unity</strong> is the container scene that has shared components including <code>MixedRealityToolkit</code> and <code>MixedRealityPlayspace</code>. <strong>MRTKExamplesHubMainMenu.unity</strong> scene has the cube buttons.</p>
+<h2 id="prerequisite">Prerequisite</h2>
+<p>MRTK Examples Hub uses <a href="Extensions/SceneTransitionService/SceneTransitionServiceOverview.html">Scene Transition Service</a> and related scripts. If you are using MRTK through Unity packages, please import <strong>Microsoft.MixedReality.Toolkit.Unity.Extensions.x.x.x.unitypackage</strong> which is part of the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases">release packages</a>. If you are using MRTK through the repository clone, you should already have the <strong>MRTK/Extensions</strong> folder in your project.</p>
+<h2 id="mrtkexampleshub-scene-and-the-scene-system">MRTKExamplesHub scene and the scene system</h2>
+<p>Open <strong>MRTKExamplesHub.unity</strong> which is located at <code>MRTK/Examples/Experimental/Demos/ExamplesHub/Scenes/</code> It is an empty scene with MixedRealityToolkit, MixedRealityPlayspace and LoadHubOnStartup. This scene is configured to use MRTK's Scene System. Click <code>MixedRealitySceneSystem</code> under MixedRealityToolkit. It will display the Scene System's information in the Inspector panel.</p>
+<p><br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_Hierarchy.png" width="300">
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_Inspector1.png" width="450"></p>
+<p>On the bottom of the Inspector, it displays the list of the scenes defined in the Scene System Profile. You can click the scene names to load/unload them.</p>
+<p><br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_Inspector2.png" width="550">
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem3.png">Example of loading <em>MRTKExamplesHub</em> scene by clicking the scene name in the list.
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem4.png">Example of loading <em>HandInteractionExamples</em> scene.
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem5.png">
+Example of loading multiple scenes.</p>
+<h2 id="running-the-scene">Running the scene</h2>
+<p>The scene works in both Unity's game mode and on device. Run the <strong>MRTKExamplesHub</strong> scene in the Unity editor and use MRTK's input simulation to interact with the scene contents. To build and deploy, simply build <strong>MRTKExamplesHub</strong> scene with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings. In the Building Settings, make sure <strong>MRTKExamplesHub</strong> scene is on the top of the list at index 0.</p>
+<img src="Images/ExamplesHub/MRTK_ExamplesHub_BuildSettings.png" width="450">
+<h2 id="how-mrtkexampleshub-loads-a-scene">How MRTKExamplesHub loads a scene</h2>
+<p>In the <strong>MRTKExamplesHub</strong> scene, you can find the <code>ExamplesHubButton</code> prefab.
+There is a <strong>FrontPlate</strong> object in the prefab which contains <code>Interactable</code>.
+Using the Interactable's <code>OnClick()</code> and <code>OnTouch()</code> event, it triggers the <strong>LoadContentScene</strong> script's <strong>LoadContent()</strong> function.
+In the <strong>LoadContentScene</strong> script's Inspector, you can define the scene name to load.</p>
+<p><br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem6.png">
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem8.png" width="450">
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem7.png" width="450"></p>
+<p>The script uses the Scene System's LoadContent() function to load the scene.
+Please refer to the <a href="SceneSystem/SceneSystemGettingStarted.html">Scene System</a> page for more details.</p>
+<pre><code class="lang-c#">MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
+</code></pre>
+<h2 id="returning-to-the-main-menu-scene">Returning to the main menu scene</h2>
+<p>To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the same Scene System <code>LoadContent()</code> method. The <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> provides the 'Home' button which contains the <strong>LoadContentScene</strong> script. Use this prefab or provide a custom home button in each scene to allow the user to return to the main scene. One can put the <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> in the <strong>MRTKExamplesHub</strong> scene to make it always visible since <strong>MRTKExamplesHub</strong> is a shared container scene. Make sure to hide/deactivate <strong>ToggleFeaturesPanel.prefab</strong> in each example scene.</p>
+<img src="Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png">
+<img src="Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png" width="450">
+<h2 id="adding-additional-buttons">Adding additional buttons</h2>
+<p>In the <strong>CubeCollection</strong> object, duplicate (or add) <em>ExampleHubButton</em> prefabs and click <strong>Update Collection</strong> in the <code>GridObjectCollection</code>.
+This will update the cylinder layout based on the new total number of buttons.
+Please refer to the <a href="README_ObjectCollection.html">Object Collection</a> page for more details.</p>
+<p><br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem9.png">
+<br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem10.png"></p>
+<p>After adding the buttons, update the scene name in the <strong>LoadContentScene</strong> script(explained above).
+Add additional scenes to the Scene System's profile.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ExampleHub.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

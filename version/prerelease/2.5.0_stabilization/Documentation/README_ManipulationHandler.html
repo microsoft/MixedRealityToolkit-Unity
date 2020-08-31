@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Manipulation handler | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Manipulation handler | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="manipulation-handler">Manipulation handler</h1>
+
+<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Manipulation handler"></p>
+<p>The <em>ManipulationHandler</em> script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation. The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens (1st gen) gesture input, and immersive headset motion controller input.</p>
+<h2 id="how-to-use-the-manipulation-handler">How to use the manipulation handler</h2>
+<p>Add the <code>ManipulationHandler</code> script component to a GameObject. Make sure to also add a collider to the object, matching its grabbable bounds.</p>
+<p>To make the object respond to near articulated hand input, add the <code>NearInteractionGrabbable</code> script as well.</p>
+<p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png" alt="Manipulation Handler"></p>
+<h2 id="inspector-properties">Inspector properties</h2>
+<img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
+<p><strong>Host Transform</strong>
+Transform that will be dragged. Defaults to the object of the component.</p>
+<p><strong>Manipulation Type</strong>
+Specifies whether the object can be manipulated using one hand, two hands, or both.</p>
+<ul>
+<li><em>One handed only</em></li>
+<li><em>Two handed only</em></li>
+<li><em>One and Two handed</em></li>
+</ul>
+<p><strong>Two Handed Manipulation Type</strong></p>
+<ul>
+<li><em>Scale</em>: Only scaling is allowed.</li>
+<li><em>Rotate</em>: Only rotation is allowed.</li>
+<li><em>Move Scale</em>: Moving and scaling is allowed.</li>
+<li><em>Move Rotate</em>: Moving and rotating is allowed.</li>
+<li><em>Rotate Scale</em>: Rotating and scaling is allowed.</li>
+<li><em>Move Rotate Scale</em>: Moving, rotating and scaling is allowed.</li>
+</ul>
+<p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg" alt="Manipulation Handler"></p>
+<p><strong>Allow Far Manipulation</strong>
+Specifies whether manipulation can be done using far interaction with pointers.</p>
+<p><strong>One Hand Rotation Mode Near</strong>
+Specifies how the object will behave when it is being grabbed with one hand / controller near.</p>
+<p><strong>One Hand Rotation Mode Far</strong>
+Specifies how the object will behave when it is being grabbed with one hand / controller at distance.</p>
+<p><strong>One Hand Rotation Mode Options</strong>
+Specifies how the object will rotate when it is being grabbed with one hand.</p>
+<ul>
+<li><em>Maintain original rotation</em>: Does not rotate object as it is being moved</li>
+<li><em>Maintain rotation to user</em>: Maintains the object's original rotation for X/Y axis to the user</li>
+<li><em>Gravity aligned maintain rotation to user</em>: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.</li>
+<li><em>Face user</em>: Ensures object always faces the user. Useful for slates/panels.</li>
+<li><em>Face away from user</em>: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.</li>
+<li><em>Rotate about object center</em>:  Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.</li>
+<li><em>Rotate about grab point</em>:  Only works for articulated hands/controllers. Rotate object as if it was being held by hand/controller. Useful for inspection.</li>
+</ul>
+<p><strong>Release Behavior</strong>
+When an object is released, specify its physical movement behavior. Requires a rigidbody component to be on that object.</p>
+<ul>
+<li><em>Nothing</em></li>
+<li><em>Everything</em></li>
+<li><em>Keep Velocity</em></li>
+<li><em>Keep Angular Velocity</em></li>
+</ul>
+<p><strong>Constraints on Rotation</strong>
+Specifies on which axis the object will rotate when interacted with.</p>
+<ul>
+<li><em>None</em></li>
+<li><em>X-Axis Only</em></li>
+<li><em>Y-Axis Only</em></li>
+<li><em>Z-Axis Only</em></li>
+</ul>
+<p><strong>Use Local Space For Constraint</strong>
+A toggle to switch between applying constraints in respect to world-space axis, or local space axis.</p>
+<p><strong>Constraints on Movement</strong></p>
+<ul>
+<li><em>None</em></li>
+<li><em>Fix distance from head</em></li>
+</ul>
+<p><strong>Smoothing Active</strong>
+Specifies whether smoothing is active.</p>
+<p><strong>Smoothing Amount One Hand</strong>
+Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+<h2 id="events">Events</h2>
+<p>Manipulation handler provides the following events:</p>
+<ul>
+<li><em>OnManipulationStarted</em>: Fired when manipulation starts.</li>
+<li><em>OnManipulationEnded</em>: Fires when the manipulation ends.</li>
+<li><em>OnHoverStarted</em>: Fires when a hand / controller hovers the manipulatable, near or far.</li>
+<li><em>OnHoverEnded</em>: Fires when a hand / controller un-hovers the manipulatable, near or far.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ManipulationHandler.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

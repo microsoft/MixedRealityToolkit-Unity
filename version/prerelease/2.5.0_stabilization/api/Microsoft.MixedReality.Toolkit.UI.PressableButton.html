@@ -1,0 +1,735 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PressableButton
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PressableButton
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_UI_PressableButton" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton" class="text-break">Class PressableButton
+  </h1>
+  <div class="markdown level0 summary"><p>A button that can be pushed via direct touch.
+You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter.html">PhysicalPressEventRouter</a> to route these events to <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">PressableButton</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html">PressableButtonHoloLens2</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityTouchHandler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ButtonPressed" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ButtonPressed">ButtonPressed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent ButtonPressed</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ButtonReleased" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ButtonReleased">ButtonReleased</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent ButtonReleased</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_movingButtonVisuals" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.movingButtonVisuals">movingButtonVisuals</h4>
+  <div class="markdown level1 summary"><p>The object that is being pushed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GameObject movingButtonVisuals</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_startPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.startPushDistance">startPushDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float startPushDistance</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_TouchBegin" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.TouchBegin">TouchBegin</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent TouchBegin</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_TouchEnd" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.TouchEnd">TouchEnd</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent TouchEnd</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_CurrentPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.CurrentPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_CurrentPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.CurrentPushDistance">CurrentPushDistance</h4>
+  <div class="markdown level1 summary"><p>Current push distance relative to the start push plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CurrentPushDistance { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_DistanceSpaceMode_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.DistanceSpaceMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_DistanceSpaceMode" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.DistanceSpaceMode">DistanceSpaceMode</h4>
+  <div class="markdown level1 summary"><p>Describes in which coordinate space the plane distances are stored and calculated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PressableButton.SpaceMode DistanceSpaceMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.html">PressableButton.SpaceMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_EnforceFrontPush_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.EnforceFrontPush*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_EnforceFrontPush" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.EnforceFrontPush">EnforceFrontPush</h4>
+  <div class="markdown level1 summary"><p>Ensures that the button can only be pushed from the front. Touching the button from the back or side is prevented.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnforceFrontPush { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_IsPressing_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.IsPressing*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_IsPressing" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.IsPressing">IsPressing</h4>
+  <div class="markdown level1 summary"><p>Represents the state of whether the button is currently being pressed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPressing { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_IsTouching_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.IsTouching*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_IsTouching" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.IsTouching">IsTouching</h4>
+  <div class="markdown level1 summary"><p>Represents the state of whether or not a finger is currently touching this button.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTouching { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_LocalToWorldScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.LocalToWorldScale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_LocalToWorldScale" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.LocalToWorldScale">LocalToWorldScale</h4>
+  <div class="markdown level1 summary"><p>Transform for local to world space in the world direction of a press
+Multiply local scale positions by this value to convert to world space</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LocalToWorldScale { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_MaxPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.MaxPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_MaxPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.MaxPushDistance">MaxPushDistance</h4>
+  <div class="markdown level1 summary"><p>Maximum push distance. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxPushDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_PressDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.PressDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_PressDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.PressDistance">PressDistance</h4>
+  <div class="markdown level1 summary"><p>Distance the button must be pushed until it is considered pressed. Distance is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PressDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ReleaseDistanceDelta_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ReleaseDistanceDelta*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ReleaseDistanceDelta" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ReleaseDistanceDelta">ReleaseDistanceDelta</h4>
+  <div class="markdown level1 summary"><p>Withdraw amount needed to transition from Pressed to Released.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ReleaseDistanceDelta { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ReleaseOnTouchEnd_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ReleaseOnTouchEnd*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_ReleaseOnTouchEnd" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.ReleaseOnTouchEnd">ReleaseOnTouchEnd</h4>
+  <div class="markdown level1 summary"><p>Button will send the release event on touch end after successful press even if release plane hasn't been passed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReleaseOnTouchEnd { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_StartPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.StartPushDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_StartPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.StartPushDistance">StartPushDistance</h4>
+  <div class="markdown level1 summary"><p>The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float StartPushDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetDistanceAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetDistanceAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetDistanceAlongPushDirection_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetDistanceAlongPushDirection(Vector3)">GetDistanceAlongPushDirection(Vector3)</h4>
+  <div class="markdown level1 summary"><p>Returns the local distance along the push direction for the passed in world position</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">positionWorldSpace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetLocalPositionAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetLocalPositionAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetLocalPositionAlongPushDirection_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetLocalPositionAlongPushDirection(System.Single)">GetLocalPositionAlongPushDirection(Single)</h4>
+  <div class="markdown level1 summary"><p>Returns local position along the push direction for the given local distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetLocalPositionAlongPushDirection(float localDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">localDistance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetWorldPositionAlongPushDirection_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetWorldPositionAlongPushDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_GetWorldPositionAlongPushDirection_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.GetWorldPositionAlongPushDirection(System.Single)">GetWorldPositionAlongPushDirection(Single)</h4>
+  <div class="markdown level1 summary"><p>Returns world space position along the push direction for the given local distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetWorldPositionAlongPushDirection(float localDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">localDistance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_Start_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_Start" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.Start">Start()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_UpdateMovingVisualsPosition_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.UpdateMovingVisualsPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_UpdateMovingVisualsPosition" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.UpdateMovingVisualsPosition">UpdateMovingVisualsPosition()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void UpdateMovingVisualsPosition()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityTouchHandler</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

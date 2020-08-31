@@ -1,0 +1,810 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MixedRealityDiagnosticsSystem
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MixedRealityDiagnosticsSystem
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem" class="text-break">Class MixedRealityDiagnosticsSystem
+  </h1>
+  <div class="markdown level0 summary"><p>The default implementation of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem.html">IMixedRealityDiagnosticsSystem</a></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html">BaseEventSystem</a></div>
+    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html">BaseCoreSystem</a></div>
+    <div class="level4"><span class="xref">MixedRealityDiagnosticsSystem</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem.html">IMixedRealityDiagnosticsSystem</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a></div>
+    <div><span class="xref">IEqualityComparer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseCoreSystem_Registrar">BaseCoreSystem.Registrar</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_enableDanglingHandlerDiagnostics">BaseEventSystem.enableDanglingHandlerDiagnostics</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_EventHandlersByType">BaseEventSystem.EventHandlersByType</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_EventListeners">BaseEventSystem.EventListeners</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__">BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_RegisterHandler__1_IEventSystemHandler_">BaseEventSystem.RegisterHandler&lt;T&gt;(IEventSystemHandler)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_UnregisterHandler__1_IEventSystemHandler_">BaseEventSystem.UnregisterHandler&lt;T&gt;(IEventSystemHandler)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Register_GameObject_">BaseEventSystem.Register(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Unregister_GameObject_">BaseEventSystem.Unregister(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Priority">BaseService.Priority</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_ConfigurationProfile">BaseService.ConfigurationProfile</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Disable">BaseService.Disable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose">BaseService.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose_System_Boolean_">BaseService.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.html">Microsoft.MixedReality.Toolkit.Diagnostics</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor(Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile)">MixedRealityDiagnosticsSystem(MixedRealityDiagnosticsProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityDiagnosticsSystem(MixedRealityDiagnosticsProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html">MixedRealityDiagnosticsProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td><p>The configuration profile for the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile)">MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar, MixedRealityDiagnosticsProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.&quot;)]
+public MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar registrar, MixedRealityDiagnosticsProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
+        <td><span class="parametername">registrar</span></td>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html">MixedRealityDiagnosticsProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td><p>The configuration profile for the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_DiagnosticsSystemProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.DiagnosticsSystemProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_DiagnosticsSystemProfile" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.DiagnosticsSystemProfile">DiagnosticsSystemProfile</h4>
+  <div class="markdown level1 summary"><p>Typed representation of the ConfigurationProfile property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html">MixedRealityDiagnosticsProfile</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_FrameSampleRate_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.FrameSampleRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_FrameSampleRate" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.FrameSampleRate">FrameSampleRate</h4>
+  <div class="markdown level1 summary"><p>The amount of time, in seconds, to collect frames for frame rate calculation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FrameSampleRate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Name_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Name*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Name" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Optional Priority attribute if multiple services of the same type are required, enables targeting a service for action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Name { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Name">BaseService.Name</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowDiagnostics_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowDiagnostics*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowDiagnostics" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowDiagnostics">ShowDiagnostics</h4>
+  <div class="markdown level1 summary"><p>Enable / disable diagnostic display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowDiagnostics { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowDiagnostics_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When set to true, visibility settings for individual diagnostics are honored. When set to false,
+all visualizations are hidden.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowFrameInfo_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowFrameInfo*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowFrameInfo" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowFrameInfo">ShowFrameInfo</h4>
+  <div class="markdown level1 summary"><p>Show or hide the frame info (per frame stats).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowFrameInfo { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowMemoryStats_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowMemoryStats*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowMemoryStats" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowMemoryStats">ShowMemoryStats</h4>
+  <div class="markdown level1 summary"><p>Show or hide the memory stats (used, peak, and limit).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowMemoryStats { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowProfiler_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowProfiler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowProfiler" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowProfiler">ShowProfiler</h4>
+  <div class="markdown level1 summary"><p>Enable / disable the profiler display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowProfiler { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowProfilerDuringMRC_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowProfilerDuringMRC*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowProfilerDuringMRC" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.ShowProfilerDuringMRC">ShowProfilerDuringMRC</h4>
+  <div class="markdown level1 summary"><p>If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShowProfilerDuringMRC { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_ShowProfilerDuringMRC_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is not usually recommended, as MRC can have an effect on an app's frame rate.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_SourceId_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.SourceId*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_SourceId" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.SourceId">SourceId</h4>
+  <div class="markdown level1 summary"><p>The unique source id of this event source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint SourceId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_SourceName_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.SourceName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_SourceName" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.SourceName">SourceName</h4>
+  <div class="markdown level1 summary"><p>The name of this event source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SourceName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowAnchor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowAnchor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowAnchor" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowAnchor">WindowAnchor</h4>
+  <div class="markdown level1 summary"><p>What part of the view port to anchor the window to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextAnchor WindowAnchor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TextAnchor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowFollowSpeed_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowFollowSpeed*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowFollowSpeed" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowFollowSpeed">WindowFollowSpeed</h4>
+  <div class="markdown level1 summary"><p>How quickly to interpolate the window towards its target position and rotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float WindowFollowSpeed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowOffset_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowOffset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowOffset" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowOffset">WindowOffset</h4>
+  <div class="markdown level1 summary"><p>The offset from the view port center applied based on the window anchor selection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 WindowOffset { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowScale_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowScale*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_WindowScale" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.WindowScale">WindowScale</h4>
+  <div class="markdown level1 summary"><p>Use to scale the window size up or down, can simulate a zooming effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float WindowScale { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Destroy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Destroy" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Destroy">Destroy()</h4>
+  <div class="markdown level1 summary"><p>Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Destroy()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_Destroy">BaseEventSystem.Destroy()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Equals_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Equals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Equals_System_Object_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Equals(System.Object,System.Object)">Equals(Object, Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(object x, object y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_GetHashCode_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.GetHashCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_GetHashCode_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.GetHashCode(System.Object)">GetHashCode(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetHashCode(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Initialize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem_Initialize" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.Initialize">Initialize()</h4>
+  <div class="markdown level1 summary"><p>The initialize function is used to setup the service once created.
+This method is called once all services have been registered in the Mixed Reality Toolkit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Initialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem.html">IMixedRealityDiagnosticsSystem</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a>
+  </div>
+  <div>
+      <span class="xref">IEqualityComparer</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
