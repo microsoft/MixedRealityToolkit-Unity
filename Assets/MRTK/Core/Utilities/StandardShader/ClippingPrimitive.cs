@@ -79,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private int clippingSideID;
         private CameraEventRouter cameraMethods;
 
+        // Keeping track of any clipping transformation to optimize material property block setting.
+        private bool clippingTransformChanged;
+
         /// <summary>
         /// Adds a renderer to the list of objects this clipping primitive clips.
         /// </summary>
@@ -90,9 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 if (!renderers.Contains(_renderer))
                 {
                     renderers.Add(_renderer);
+                    ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), true);
                 }
-
-                ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), gameObject.activeInHierarchy);
             }
         }
 
@@ -139,6 +141,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public IEnumerable<Renderer> GetRenderersCopy()
         {
             return new List<Renderer>(renderers);
+        }
+
+        /// <summary>
+        /// Checks is renderer is being clipped by this clipping primitive.
+        /// </summary>
+        public bool CheckIfClipped(Renderer renderer)
+        {
+            return renderers.Contains(renderer);
         }
 
         #region MonoBehaviour Implementation
@@ -234,19 +244,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (var i = 0; i < renderers.Count; ++i)
+            CheckTranformChange();
+
+            for (var i = renderers.Count - 1; i >= 0; --i)
             {
                 var _renderer = renderers[i];
 
                 if (_renderer == null)
                 {
+                    renderers.RemoveAt(i);
                     continue;
                 }
 
-                _renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
-                UpdateShaderProperties(materialPropertyBlock);
-                _renderer.SetPropertyBlock(materialPropertyBlock);
+                if (clippingTransformChanged && _renderer.enabled)
+                {
+                    _renderer.GetPropertyBlock(materialPropertyBlock);
+                    materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
+                    UpdateShaderProperties(materialPropertyBlock);
+                    _renderer.SetPropertyBlock(materialPropertyBlock);
+                }
             }
         }
 
@@ -292,6 +308,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     material.DisableKeyword(Keyword);
                 }
             }
+        }
+
+        private void CheckTranformChange()
+        {
+            if (transform.hasChanged)
+            {
+                clippingTransformChanged = true;
+                transform.hasChanged = false;
+            }          
         }
     }
 }
