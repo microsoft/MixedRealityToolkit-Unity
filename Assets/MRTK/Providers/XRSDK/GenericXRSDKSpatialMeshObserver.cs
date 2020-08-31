@@ -486,20 +486,20 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         meshObject.Id = meshGenerationResult.MeshId.GetHashCode();
                         outstandingMeshObject = null;
 
-                        // Apply the appropriate material to the mesh.
-                        SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
-                        if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
-                        {
-                            meshObject.Renderer.enabled = true;
-                            meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
-                                VisibleMaterial :
-                                OcclusionMaterial;
-                            meshObject.Collider.material = PhysicsMaterial;
-                        }
-                        else
-                        {
-                            meshObject.Renderer.enabled = false;
-                        }
+                        // Check to see if this is a new or updated mesh.
+                        bool isMeshUpdate = meshes.ContainsKey(meshObject.Id);
+
+                        // We presume that if the display option is not occlusion, that we should 
+                        // default to the visible material. 
+                        // Note: We check explicitly for a display option of none later in this method.
+                        Material material = (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion) ?
+                            OcclusionMaterial : VisibleMaterial;
+
+                        // If this is a mesh update, we want to preserve the mesh's previous material.
+                        material = isMeshUpdate ? meshes[meshObject.Id].Renderer.sharedMaterial : material;
+
+                        // Apply the appropriate material.
+                        meshObject.Renderer.sharedMaterial = material;
 
                         // Recalculate the mesh normals if requested.
                         if (RecalculateNormals)
@@ -507,22 +507,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                             meshObject.Filter.sharedMesh.RecalculateNormals();
                         }
 
+                        // Check to see if the display option is set to none. If so, we disable
+                        // the renderer.
+                        meshObject.Renderer.enabled = (DisplayOption != SpatialAwarenessMeshDisplayOptions.None);
+
+                        // Set the physics material
+                        if (meshObject.Renderer.enabled)
+                        {
+                            meshObject.Collider.material = PhysicsMaterial;
+                        }
+
                         // Add / update the mesh to our collection
-                        bool sendUpdatedEvent = false;
-                        if (meshes.ContainsKey(meshObject.Id))
+                        if (isMeshUpdate)
                         {
                             // Reclaim the old mesh object for future use.
                             ReclaimMeshObject(meshes[meshObject.Id]);
                             meshes.Remove(meshObject.Id);
-
-                            sendUpdatedEvent = true;
                         }
                         meshes.Add(meshObject.Id, meshObject);
 
-                        meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+                        meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ?
+                            ObservedObjectParent.transform : null;
 
                         meshEventData.Initialize(this, meshObject.Id, meshObject);
-                        if (sendUpdatedEvent)
+                        if (isMeshUpdate)
                         {
                             SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
                         }

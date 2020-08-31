@@ -54,17 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-#if OCULUSINTEGRATION_PRESENT
         [Header("Prefab references")]
         [SerializeField]
         [Tooltip("Prefab reference for OVRCameraRig to load, if none are found in scene.")]
-        private OVRCameraRig ovrCameraRigPrefab = null;
+        private GameObject ovrCameraRigPrefab = null;
 
         /// <summary>
         /// Prefab reference for OVRCameraRig to load, if none are found in scene.
         /// </summary>
-        public OVRCameraRig OVRCameraRigPrefab => ovrCameraRigPrefab;
-#endif
+        public GameObject OVRCameraRigPrefab => ovrCameraRigPrefab;
 
 
         [SerializeField]

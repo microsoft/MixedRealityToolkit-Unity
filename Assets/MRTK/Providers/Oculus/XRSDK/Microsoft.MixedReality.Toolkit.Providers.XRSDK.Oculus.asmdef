@@ -4,7 +4,6 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities",
-        "Oculus.VR",
         "Unity.XR.Oculus"
     ],
     "includePlatforms": [
