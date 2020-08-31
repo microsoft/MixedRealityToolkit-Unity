@@ -1120,6 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawBoundsGizmo: 0
+  drawLocalBoundsGizmo: 0
 --- !u!114 &683731866780316538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1145,6 +1146,8 @@ MonoBehaviour:
   hideHandCursorsOnActivate: 1
   rotationBehavior: 2
   offsetBehavior: 0
+  forwardOffset: 0
+  safeZoneAngleOffset: 0
   onHandActivate:
     m_PersistentCalls:
       m_Calls: []
@@ -1616,7 +1619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 4316553457508561126}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -1634,6 +1636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
+  IsBoundsHandles: 0
 --- !u!114 &4859614109152361450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1650,10 +1653,12 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -1761,6 +1766,30 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
+  translationElasticConfigurationObject: {fileID: 0}
+  rotationElasticConfigurationObject: {fileID: 0}
+  scaleElasticConfigurationObject: {fileID: 0}
+  translationElasticExtent:
+    StretchBounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    UseBounds: 0
+    SnapPoints: []
+    RepeatSnapPoints: 0
+    SnapRadius: 0
+  rotationElasticExtent:
+    SnapPoints: []
+    RepeatSnapPoints: 0
+    SnapRadius: 0
+  scaleElasticExtent:
+    StretchBounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}
+    UseBounds: 0
+    SnapPoints: []
+    RepeatSnapPoints: 0
+    SnapRadius: 0
+  elasticTypes: 0
 --- !u!1 &7127482986725950285
 GameObject:
   m_ObjectHideFlags: 0
@@ -3248,7 +3277,9 @@ PrefabInstance:
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_text
-      value: Environmental Lighting
+      value: 'Toggle Switch
+
+        Item Two'
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3263,22 +3294,27 @@ PrefabInstance:
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 931921211232301408, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3343,7 +3379,7 @@ PrefabInstance:
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.000007994473
       objectReference: {fileID: 0}
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3363,7 +3399,7 @@ PrefabInstance:
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.0039967285
       objectReference: {fileID: 0}
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3373,7 +3409,7 @@ PrefabInstance:
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.999992
       objectReference: {fileID: 0}
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3388,7 +3424,7 @@ PrefabInstance:
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -0.45800003
       objectReference: {fileID: 0}
     - target: {fileID: 611597232225160026, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3408,32 +3444,39 @@ PrefabInstance:
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_text
-      value: Spatial Mapping
+      value: 'Toggle Switch
+
+        Item One'
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 15
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 931921211232301408, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
@@ -3563,32 +3606,39 @@ PrefabInstance:
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_text
-      value: Wireframes
+      value: 'Toggle Switch
+
+        Item Three'
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 10
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611597233232026699, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 931921211232301408, guid: f1dfa3ff1f171964fa0717ff4d0131cb,
         type: 3}

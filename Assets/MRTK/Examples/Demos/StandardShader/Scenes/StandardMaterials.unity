@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1428268608}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -307,6 +307,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -339,12 +347,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Green'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -381,21 +390,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Green'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -420,6 +420,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -452,12 +460,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Purple'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -494,25 +507,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Purple'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -801,6 +801,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -833,12 +841,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Purple'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -875,25 +888,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Purple'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -1043,6 +1043,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1075,12 +1083,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        White'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -1117,21 +1126,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        White'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -1394,6 +1394,420 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300002, guid: 1104611d051d4e42a68391888b61b32e, type: 3}
+--- !u!1001 &313225563
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1229001242}
+    m_Modifications:
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_text
+      value: MRTK Standard Materials
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_fontSize
+      value: 34.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 34.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641405841635922537, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641405841635922537, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641405841635922537, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641405841635922537, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641405841635922537, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685343061998419463, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685343061998419463, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685343061998419463, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685343061998419463, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685343061998419463, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 520
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_text
+      value: 'This scene shows the standard materials provided by the Mixed Reality
+        Toolkit. These materials are located in the MixedRealityToolkit-SDK\Resources\Materials
+        folder.
+
+
+        <size=32><b>Materials list</size></b>
+
+        MRTK_Standard_Blue.mat
+
+        MRTK_Standard_Charcoal.mat
+
+        MRTK_Standard_Cyan.mat
+
+        MRTK_Standard_Emerald.mat
+
+        MRTK_Standard_Gray.mat
+
+        MRTK_Standard_Green.mat
+
+        MRTK_Standard_Lime.mat
+
+        MRTK_Standard_Magenta.mat
+
+        MRTK_Standard_Orange.mat
+
+        MRTK_Standard_Pink.mat
+
+        MRTK_Standard_Purple.mat
+
+        MRTK_Standard_Red.mat
+
+        MRTK_Standard_White.mat
+
+        MRTK_Standard_Yellow.mat'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 182
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.3461
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.82201266
+      objectReference: {fileID: 0}
+    - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5245681700994389642, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520512445149134010, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520512445149134010, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520512445149134010, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520512445149134010, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231224962994365, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231224962994371, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231224962994371, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231224962994371, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231224962994371, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225784487120, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287546, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_Name
+      value: SceneDescriptionPanelRev
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.092
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.144
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.092
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770154, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770156, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770156, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770156, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770156, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614231226555770156, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239495094510916357, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239495094510916357, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239495094510916357, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239495094510916357, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18470d71939382448be2ecd06efa9662, type: 3}
+--- !u!4 &313225564 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
+    type: 3}
+  m_PrefabInstance: {fileID: 313225563}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &379741029
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1406,6 +1820,14 @@ PrefabInstance:
       value: Placard
       objectReference: {fileID: 0}
     - target: {fileID: 1188282787330574, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -1441,12 +1863,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Orange'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -1483,21 +1906,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Orange'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -1522,6 +1936,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1554,12 +1976,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Cyan'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -1596,21 +2019,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Cyan'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -1705,6 +2119,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1737,12 +2159,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Orange'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -1779,21 +2202,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Orange'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -2669,7 +3083,7 @@ Transform:
   - {fileID: 998519847}
   - {fileID: 1965316998}
   m_Father: {fileID: 1229001242}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &919995020
 PrefabInstance:
@@ -2683,6 +3097,14 @@ PrefabInstance:
       value: Placard
       objectReference: {fileID: 0}
     - target: {fileID: 1188282787330574, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -2718,12 +3140,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Lime'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -2760,21 +3183,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Lime'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -3022,118 +3436,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300002, guid: 1104611d051d4e42a68391888b61b32e, type: 3}
---- !u!1001 &946941487
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1229001242}
-    m_Modifications:
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.38268343
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92387956
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 1054075472835142, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114107642412081004, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: MRTK Standard Materials
-      objectReference: {fileID: 0}
-    - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: 'This scene shows the standard materials provided by the Mixed Reality
-        Toolkit. These materials are located in the MixedRealityToolkit-SDK\Resources\Materials
-        folder.
-
-
-
-
-        MRTK_Standard_Blue.mat
-
-        MRTK_Standard_Charcoal.mat
-
-        MRTK_Standard_Cyan.mat
-
-        MRTK_Standard_Emerald.mat
-
-        MRTK_Standard_Gray.mat
-
-        MRTK_Standard_Green.mat
-
-        MRTK_Standard_Lime.mat
-
-        MRTK_Standard_Magenta.mat
-
-        MRTK_Standard_Orange.mat
-
-        MRTK_Standard_Pink.mat
-
-        MRTK_Standard_Purple.mat
-
-        MRTK_Standard_Red.mat
-
-        MRTK_Standard_White.mat
-
-        MRTK_Standard_Yellow.mat'
-      objectReference: {fileID: 0}
-    - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: Materials list
-      objectReference: {fileID: 0}
-    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.192
-      objectReference: {fileID: 0}
-    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
---- !u!4 &946941488 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c,
-    type: 3}
-  m_PrefabInstance: {fileID: 946941487}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &959524419
 GameObject:
   m_ObjectHideFlags: 0
@@ -3192,6 +3494,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3224,12 +3534,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Cyan'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -3266,21 +3577,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Cyan'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -3305,6 +3607,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3337,14 +3647,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Emerald
-
-'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -3381,21 +3690,14 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Emerald
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -3452,6 +3754,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3484,12 +3794,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Charcoal'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -3526,25 +3841,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Charcoal'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -3671,6 +3973,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3703,12 +4013,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent White'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -3745,21 +4056,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent White'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -3902,6 +4204,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3934,14 +4244,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Emerald
-
-'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -3978,21 +4287,14 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Emerald
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -4011,6 +4313,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4043,12 +4353,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Yellow'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -4085,21 +4396,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Yellow'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -4362,6 +4664,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4394,12 +4704,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Magenta'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -4436,21 +4747,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Magenta'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -4703,9 +5005,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 946941488}
   - {fileID: 2032790225}
   - {fileID: 918344904}
+  - {fileID: 313225564}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4721,6 +5023,14 @@ PrefabInstance:
       value: Placard
       objectReference: {fileID: 0}
     - target: {fileID: 1188282787330574, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -4756,12 +5066,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Blue'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -4798,25 +5113,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Blue'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -4896,6 +5198,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4928,12 +5238,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Green'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -4970,21 +5281,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Green'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -5062,6 +5364,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5094,12 +5404,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Pink'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -5136,21 +5447,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Pink'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -5218,6 +5520,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5250,12 +5560,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Red'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -5292,21 +5603,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Red'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -5517,6 +5819,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5549,12 +5859,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Charcoal'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -5591,25 +5906,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Charcoal'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -5715,6 +6017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockCursorWhenFocusLocked: 1
   setCursorInvisibleWhenFocusLocked: 0
   maxGazeCollisionDistance: 10
   raycastLayerMasks:
@@ -5725,7 +6028,6 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
-  useEyeTracking: 0
 --- !u!114 &1491404206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5836,6 +6138,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5868,12 +6178,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Lime'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -5910,21 +6221,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Lime'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -5975,6 +6277,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6007,12 +6317,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Red'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -6049,21 +6360,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Red'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -6088,6 +6390,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6120,12 +6430,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Gray'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -6162,21 +6473,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Gray'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -6201,6 +6503,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6233,12 +6543,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Gray'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -6275,21 +6586,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Gray'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -6314,6 +6616,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6346,12 +6656,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Pink'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -6388,21 +6699,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Pink'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -7165,6 +7467,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7197,12 +7507,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Magenta'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -7239,21 +7550,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Magenta'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -7403,6 +7705,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7435,12 +7745,13 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Yellow'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -7477,21 +7788,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Yellow'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
@@ -7569,7 +7871,7 @@ Transform:
   - {fileID: 124892822}
   - {fileID: 575727334}
   m_Father: {fileID: 1229001242}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2081836808
 PrefabInstance:
@@ -7709,6 +8011,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7741,12 +8051,17 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
-        type: 3}
-      propertyPath: m_Text
-      value: 'MRTK Standard
-
-        Transparent Blue'
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 23341247914484290, guid: 28f445004b874b329a03cd0e3cc63e5d,
         type: 3}
@@ -7783,25 +8098,12 @@ PrefabInstance:
       propertyPath: m_MotionVectors
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1815568970368836, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937578906433374, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332148759565260, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
+    - target: {fileID: 102882196181455140, guid: 28f445004b874b329a03cd0e3cc63e5d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'MRTK Standard
+
+        Transparent Blue'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f445004b874b329a03cd0e3cc63e5d, type: 3}
