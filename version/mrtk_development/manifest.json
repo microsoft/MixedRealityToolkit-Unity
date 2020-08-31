@@ -21627,6 +21627,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.MixedRealityPoseTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.MixedRealityPoseTests.html",
+          "hash": "6n3faslr5gMHbB6R2K+moA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.yml",
       "output": {
         ".html": {
@@ -21703,7 +21715,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.html",
-          "hash": "suFuu5Epy4RZ+0Bq+03KSw=="
+          "hash": "/pUVLnMxb2hBzesMdOkQvw=="
         }
       },
       "is_incremental": false,
@@ -24727,7 +24739,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.AwaiterExtensions.SimpleCoroutineAwaiter-1.html",
-          "hash": "3hyrWuVdjzorVMk0V8mNjQ=="
+          "hash": "d3NbHmzwUyLhHpRoH+ta0A=="
         }
       },
       "is_incremental": false,
@@ -24739,7 +24751,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.AwaiterExtensions.SimpleCoroutineAwaiter.html",
-          "hash": "mZr+POhZHMIcNG+GqACLSQ=="
+          "hash": "h/nk70gGR9Yb/Tdwp67ZUA=="
         }
       },
       "is_incremental": false,
@@ -27055,7 +27067,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html",
-          "hash": "YJkM8VSfuX9L0NU9r0ieoA=="
+          "hash": "RtDP247sCpKTE+Wh8TQ55Q=="
         }
       },
       "is_incremental": false,
@@ -28891,7 +28903,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "P6E1Dpzr98rxWe8C655vnA=="
+          "hash": "CZUD9eUFiUXSZ8uytYxg+w=="
         }
       },
       "is_incremental": false,
@@ -28963,7 +28975,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1683,
+          "total_file_count": 1684,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
