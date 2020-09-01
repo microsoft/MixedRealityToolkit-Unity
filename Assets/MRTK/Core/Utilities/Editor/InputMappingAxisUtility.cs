@@ -36,12 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// Simple static function to check Unity InputManager Axis configuration, and apply if needed.
         /// </summary>
         /// <remarks>
-        /// This only exists as the Unity input manager CANNOT map Axis to an id, it has to be through a mapping
+        /// This only exists as the Unity input manager CANNOT map Axis to an id; it has to be through a mapping.
         /// </remarks>
-        /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
-        public static void CheckUnityInputManagerMappings(InputManagerAxis[] axisMappings)
+        /// <param name="axisMappings">Array of axis mappings, to configure your own custom set.</param>
+        /// <param name="updateMappings">If the mappings should be updated to match axisMappings or simply check that they match. Defaults to true.</param>
+        /// <returns>True if the mappings needed an update. False if they match axisMappings already.</returns>
+        public static bool CheckUnityInputManagerMappings(InputManagerAxis[] axisMappings, bool updateMappings = true)
         {
             EnsureInputManagerReference();
+
+            bool mappingsNeedUpdate = false;
 
             if (axisMappings != null)
             {
@@ -49,12 +53,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     if (!DoesAxisNameExist(axisMappings[i].Name))
                     {
-                        AddAxis(axisMappings[i]);
+                        if (updateMappings)
+                        {
+                            AddAxis(axisMappings[i]);
+                        }
+                        mappingsNeedUpdate = true;
                     }
                 }
 
-                inputManagerAsset.ApplyModifiedProperties();
+                if (mappingsNeedUpdate && updateMappings)
+                {
+                    inputManagerAsset.ApplyModifiedProperties();
+                }
             }
+
+            return mappingsNeedUpdate;
         }
 
         /// <summary>
