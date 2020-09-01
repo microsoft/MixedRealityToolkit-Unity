@@ -22,6 +22,8 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: GitHub Pull Request Action
+        # This is synced directly to the v2.3's commit hash, to avoid cases where a tag gets added/removed
+        # and the tag itself is now pointing at a different commit.
         uses: repo-sync/pull-request@ea6773388b83b337e4da9a223293309f2c3670e7
         with:
           source_branch: "prerelease/2.5.0_stabilization"
