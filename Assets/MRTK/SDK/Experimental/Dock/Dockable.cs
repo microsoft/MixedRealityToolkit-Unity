@@ -43,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public bool CanUndock => dockingState == DockingState.Docked;
 
         // Constants
-        private static readonly float DistanceTolerance = 0.01f; // in meters
-        private static readonly float AngleTolerance = 3.0f; // in degrees
-        private static readonly float ScaleTolerance = 0.01f; // in percentage
+        private const float DistanceTolerance = 0.01f; // in meters
+        private const float AngleTolerance = 3.0f; // in degrees
+        private const float ScaleTolerance = 0.01f; // in percentage
 
         private DockPosition dockedPosition = null;
         private Vector3 dockedPositionScale = Vector3.one;

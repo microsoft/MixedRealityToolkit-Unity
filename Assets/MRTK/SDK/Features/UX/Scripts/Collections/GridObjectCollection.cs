@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
-        private static readonly int DefaultValueRowsCols = 3;
+        private const int DefaultValueRowsCols = 3;
 
         [Tooltip("Number of rows per column")]
         [SerializeField]

@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Aspect ratios used when fitting rectangles within the boundary.
         /// </summary>
-        private static float[] aspectRatios = {
+        private static readonly float[] AspectRatios = {
                 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f,
                 5.0f, 5.5f, 6, 6.5f, 7, 7.5f, 8.0f, 8.5f, 9.0f,
                 9.5f, 10.0f, 10.5f, 11.0f, 11.5f, 12.0f, 12.5f,
@@ -510,19 +510,19 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             // For each aspect ratio we do a binary search to find the maximum rectangle that fits, 
             // though once we start increasing our area by minimumHeightGain we call it good enough.
-            for (int i = 0; i < aspectRatios.Length; i++)
+            for (int i = 0; i < AspectRatios.Length; i++)
             {
                 // The height is limited by the width. If a height would make our width exceed maxWidth, it can't be used
-                float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / aspectRatios[i]);
+                float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / AspectRatios[i]);
 
                 // Set to the min height that will out perform our previous area at the given aspect ratio. This is 0 the first time.
                 // Derived from biggestAreaSoFar=height*(height*aspectRatio)
-                float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / aspectRatios[i]);
+                float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / AspectRatios[i]);
 
                 // If the lowest value needed to outperform the previous best is greater than our max, 
                 // this aspect ratio can't outperform what we've already calculated.
                 if ((searchHeightLowerBound > searchHeightUpperBound) ||
-                    (searchHeightLowerBound * aspectRatios[i] > maxWidth))
+                    (searchHeightLowerBound * AspectRatios[i] > maxWidth))
                 {
                     continue;
                 }
@@ -536,16 +536,16 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     if (CheckRectangleFit(geometryEdges,
                         centerPoint,
                         angleRadians,
-                        aspectRatios[i] * currentTestingHeight,
+                        AspectRatios[i] * currentTestingHeight,
                         currentTestingHeight))
                     {
                         // Binary search up-ward
                         // If the rectangle will fit, increase the lower bounds of our binary search
                         searchHeightLowerBound = currentTestingHeight;
 
-                        width = currentTestingHeight * aspectRatios[i];
+                        width = currentTestingHeight * AspectRatios[i];
                         height = currentTestingHeight;
-                        aspectRatio = aspectRatios[i];
+                        aspectRatio = AspectRatios[i];
                         currentTestingHeight = (searchHeightUpperBound + currentTestingHeight) * 0.5f;
                     }
                     else
