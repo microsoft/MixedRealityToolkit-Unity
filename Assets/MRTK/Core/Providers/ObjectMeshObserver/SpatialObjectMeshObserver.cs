@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Update()
         {
-            if (!WaitingForSceneObserverAccess) 
+            if (!IsRunning) 
             {
                 return;
             }
@@ -129,36 +129,34 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            if (WaitingForSceneObserverAccess)
+            if (IsRunning)
             {
-                if (IsRunning)
-                {
-                    Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
-                    Suspend();
-                }
-
-                foreach (int id in Meshes.Keys)
-                {
-                    RemoveMeshObject(id);
-                }
-
-                // Resend file observations when resumed.
-                sendObservations = true;
+                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                Suspend();
             }
+
+            foreach (int id in Meshes.Keys)
+            {
+                RemoveMeshObject(id);
+            }
+
+            // Resend file observations when resumed.
+            sendObservations = true;
+            
         }
 
         /// <inheritdoc />
         public override void Resume()
         {
-            if (WaitingForSceneObserverAccess) { return; }
-            WaitingForSceneObserverAccess = true;
+            if (IsRunning) { return; }
+            IsRunning = true;
         }
 
         /// <inheritdoc />
         public override void Suspend()
         {
-            if (!WaitingForSceneObserverAccess) { return; }
-            WaitingForSceneObserverAccess = false;
+            if (!IsRunning) { return; }
+            IsRunning = false;
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver Implementation
