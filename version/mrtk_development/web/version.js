@@ -9,7 +9,8 @@ function createDropdown()
 		"releases/2.1.0",
 		"releases/2.2.0",
 		"releases/2.3.0",
-		"releases/2.4.0"
+		"releases/2.4.0",
+		"prerelease/2.5.0_stabilization",
 	];
 	
 	var ignoreDefaultInVersionFolder = true;
