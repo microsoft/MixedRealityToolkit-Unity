@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: GitHub Pull Request Action
-        uses: repo-sync/pull-request@v2.3
+        uses: repo-sync/pull-request@ea6773388b83b337e4da9a223293309f2c3670e7
         with:
           source_branch: "prerelease/2.5.0_stabilization"
           destination_branch: "mrtk_development"
