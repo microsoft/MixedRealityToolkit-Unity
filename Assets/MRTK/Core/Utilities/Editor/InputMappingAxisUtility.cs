@@ -9,11 +9,8 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     /// <summary>
-    /// Utility class for Unity's Input Manager Mappings.
+    /// Utility class for Unity's Input Manager mappings.
     /// </summary>
-    /// <remarks>
-    /// Note, with any luck this will be temporary.  If it is to remain beyond Alpha, then this needs some refactoring to make a proper component.
-    /// </remarks>
     public static class InputMappingAxisUtility
     {
         #region Configuration elements
