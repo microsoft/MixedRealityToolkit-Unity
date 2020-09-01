@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -161,37 +161,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7833269
+      value: -0.39124265
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.62161
+      value: 1.0280707
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.04456748
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.43496558
+      value: -0.18063232
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.008193665
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.90044713
+      value: 0.9825063
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -212,32 +212,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: TooltipExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -268,6 +242,32 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.lineCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
+      value: 
+      objectReference: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28,
+        type: 3}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Name
+      value: TooltipExamples
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.BuildIndex
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97e77b91a85a1c844aee31efd81859a2, type: 3}
@@ -487,6 +487,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -495,37 +500,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.09983336
+      value: 0.00000002235174
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.9950042
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.045314416
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.049979147
+      value: 0.000000010149445
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 4.603891e-10
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99875027
+      value: 0.9989728
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -547,41 +552,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: HandBasedMenuExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 2792ec9767804e644906ab978f2eed23,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: HandMenuExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -643,29 +632,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: HandBasedMenuExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 2792ec9767804e644906ab978f2eed23,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: HandMenuExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -683,6 +683,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -691,37 +696,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9635582
+      value: -0.5706873
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.26749885
+      value: 0.9403808
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.043639597
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6051864
+      value: -0.26908216
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.012205839
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7960838
+      value: 0.9620506
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -743,10 +748,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isAlignmentEnumConverted
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isAlignmentEnumConverted
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -774,51 +819,6 @@ PrefabInstance:
       propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945024179261787, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97e77b91a85a1c844aee31efd81859a2, type: 3}
 --- !u!4 &451417617 stripped
@@ -834,6 +834,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -842,37 +847,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.8912074
+      value: 0.5706875
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.45359606
+      value: 0.94038075
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.04363959
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.52268726
+      value: 0.26908222
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.012205843
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8525245
+      value: 0.9620506
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -894,41 +899,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: EyeTrackingDemo-04-TargetPositioning
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: EyeTrackingDemo-04-TargetPositioning
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -990,29 +979,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: EyeTrackingDemo-04-TargetPositioning
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: EyeTrackingDemo-04-TargetPositioning
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1030,6 +1030,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -1038,37 +1043,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7833269
+      value: 0.3912427
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.6216099
+      value: 1.0280706
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.044567488
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.43496558
+      value: 0.18063237
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.008193669
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.90044713
+      value: 0.9825063
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1090,41 +1095,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: EyeTrackingDemo-03-Navigation
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: EyeTrackingDemo-03-Navigation
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1186,29 +1175,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: EyeTrackingDemo-03-Navigation
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: EyeTrackingDemo-03-Navigation
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1429,6 +1429,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -1437,37 +1442,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6442177
+      value: 0.3912427
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76484215
+      value: 1.0280706
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.04456748
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.34289783
+      value: 0.18063237
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.008193667
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9393727
+      value: 0.9825063
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1489,41 +1494,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: EyeTrackingDemo-02-TargetSelection
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: EyeTrackingDemo-02-TargetSelection
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1585,29 +1574,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: EyeTrackingDemo-02-TargetSelection
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: EyeTrackingDemo-02-TargetSelection
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1625,6 +1625,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -1633,37 +1638,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.29552025
+      value: 0.1988999
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.95533645
+      value: 1.0818683
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.045127295
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.14943816
+      value: 0.090690665
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.0041138195
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9887711
+      value: 0.99484766
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1685,41 +1690,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: SlateExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 86e8b0c6246dbb74aa04ecd40a57d89c,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: SlateExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1781,29 +1770,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: SlateExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 86e8b0c6246dbb74aa04ecd40a57d89c,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: SlateExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2024,6 +2024,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -2032,37 +2037,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.29552013
+      value: -0.19889987
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.9553365
+      value: 1.0818683
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.04512731
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.1494381
+      value: -0.09069065
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.0041138204
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9887711
+      value: 0.99484766
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2084,41 +2089,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: PressableButtonExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: PressableButtonExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2170,29 +2159,40 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: PressableButtonExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: PressableButtonExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2210,6 +2210,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -2218,37 +2223,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8912074
+      value: -0.5706873
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.45359606
+      value: 0.9403808
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.043639608
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.52268726
+      value: -0.26908216
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.012205843
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8525245
+      value: 0.9620506
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2270,41 +2275,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: ClippingExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: ClippingExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2351,29 +2340,40 @@ PrefabInstance:
       propertyPath: m_textInfo.lineCount
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: ClippingExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: ClippingExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2391,6 +2391,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -2399,37 +2404,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4794256
+      value: 0.1988999
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.87758255
+      value: 1.0818683
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.04512731
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.24740401
+      value: 0.090690665
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.004113821
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9689124
+      value: 0.99484766
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2451,41 +2456,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: SliderExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 086aad2912678d04e968264b2398004b,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: SliderExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2547,29 +2536,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: SliderExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 086aad2912678d04e968264b2398004b,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: SliderExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2681,18 +2681,21 @@ MonoBehaviour:
     Transform: {fileID: 1684109406}
     Colliders: []
   ignoreInactiveTransforms: 1
-  sortType: 1
+  sortType: 0
   surfaceType: 0
   orientType: 1
-  layout: 2
+  layout: 1
   anchor: 4
-  radius: 1
+  anchorAlongAxis: 0
+  columnAlignment: 0
+  rowAlignment: 0
+  radius: 1.1
   radialRange: 180
-  distance: 1
-  rows: 1
-  columns: 14
+  distance: 0
+  rows: 2
+  columns: 7
   cellWidth: 0.2
-  cellHeight: 0.16
+  cellHeight: 0.2
   assetVersion: 1
 --- !u!4 &1552594808
 Transform:
@@ -2729,6 +2732,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -2737,37 +2745,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.47942552
+      value: -0.19889987
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.87758255
+      value: 1.0818683
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.045127295
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.24740396
+      value: -0.09069065
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.004113819
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9689124
+      value: 0.99484766
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2789,41 +2797,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: BoundingBoxExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: 9da574c0affd04d42a6b1e5db09e82b4,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: BoundingBoxExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2872,29 +2864,40 @@ PrefabInstance:
       propertyPath: m_textInfo.lineCount
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: BoundingBoxExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 9da574c0affd04d42a6b1e5db09e82b4,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: BoundingBoxExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2912,6 +2915,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -2920,37 +2928,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.9635582
+      value: 0.5706875
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.26749885
+      value: 0.94038075
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.0436396
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6051864
+      value: 0.26908222
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.012205846
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.79608387
+      value: 0.9620506
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2972,42 +2980,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: EyeTrackingDemo-05-Visualizer
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: EyeTrackingDemo-05-Visualizer
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentScene.Asset
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Mesh
@@ -3068,31 +3060,42 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: EyeTrackingDemo-05-Visualizer
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Name
+      value: EyeTrackingDemo-05-Visualizer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97e77b91a85a1c844aee31efd81859a2, type: 3}
 --- !u!4 &1684109406 stripped
@@ -3156,6 +3159,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configProfile: {fileID: 11400000, guid: b5df82ea596774f4d88ab073112aafee, type: 2}
+--- !u!1 &1754150379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1754150381}
+  - component: {fileID: 1754150380}
+  m_Layer: 0
+  m_Name: AsyncCoroutineRunner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1754150380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754150379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6ecbbf0b5840b09d7b4ee7f0a62b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1754150381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1754150379}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1958878974
 GameObject:
   m_ObjectHideFlags: 0
@@ -3242,6 +3288,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -3250,37 +3301,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09983345
+      value: 0.00000002235174
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.9950042
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.045314427
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.049979188
+      value: 0.000000010149445
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -4.603892e-10
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99875027
+      value: 0.9989728
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3302,41 +3353,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: HandBasedMenuExample
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: bf3eb3415bffceb41810526380c2c71c,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: NearMenuExamples
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3398,29 +3433,40 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 36.62
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: HandBasedMenuExample
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: bf3eb3415bffceb41810526380c2c71c,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: NearMenuExamples
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3438,6 +3484,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1552594808}
     m_Modifications:
+    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 448945022785841421, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_Name
@@ -3446,37 +3497,37 @@ PrefabInstance:
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.64421767
+      value: -0.39124265
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.7648422
+      value: 1.0280707
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.04456749
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.3428978
+      value: -0.18063232
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.008193667
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9393728
+      value: 0.9825063
       objectReference: {fileID: 0}
     - target: {fileID: 448945022785841422, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3498,41 +3549,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: contentName
-      value: MaterialGallery
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.BuildIndex
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Tag
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Asset
-      value: 
-      objectReference: {fileID: 102900000, guid: c6b1477d31864dff836e9738518eae60,
-        type: 3}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Name
-      value: MaterialGallery
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Path
-      value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
-        type: 3}
-      propertyPath: contentScene.Included
+      propertyPath: m_isAlignmentEnumConverted
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3581,29 +3616,40 @@ PrefabInstance:
       propertyPath: m_textInfo.lineCount
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 448945022486645497, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: contentName
+      value: MaterialGallery
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975870, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_Mesh
+      propertyPath: contentScene.BuildIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Tag
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Asset
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+      objectReference: {fileID: 102900000, guid: c6b1477d31864dff836e9738518eae60,
         type: 3}
-      propertyPath: m_isAlignmentEnumConverted
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
+      propertyPath: contentScene.Name
+      value: MaterialGallery
       objectReference: {fileID: 0}
-    - target: {fileID: 448945023547975868, guid: 97e77b91a85a1c844aee31efd81859a2,
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
-      propertyPath: m_isInputParsingRequired
+      propertyPath: contentScene.Path
+      value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
+        type: 3}
+      propertyPath: contentScene.Included
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
