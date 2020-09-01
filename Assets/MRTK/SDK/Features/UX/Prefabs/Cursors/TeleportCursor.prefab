@@ -355,73 +355,8 @@ MonoBehaviour:
     defaultBool: 0
     name: 
   cursorAnimator: {fileID: 8380588812706100631}
+  RingCursorVisual: {fileID: 4225457691201094}
   arrowTransform: {fileID: 4831552014908524}
---- !u!1 &5214081585433183894
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6667354872023012092}
-  - component: {fileID: 7983533538558680779}
-  - component: {fileID: 4082247986006694151}
-  m_Layer: 0
-  m_Name: TeleportLight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6667354872023012092
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5214081585433183894}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5553356017475256125}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7983533538558680779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5214081585433183894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61e55d5030302974a867024ab486d306, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settings:
-    nearRadius: 0.05
-    farRadius: 0.2
-    nearDistance: 0.02
-    minNearSizePercentage: 0.35
-    centerColor: {r: 0.21176471, g: 0.5568628, b: 0.98039216, a: 0}
-    middleColor: {r: 0.18431373, g: 0.5176471, b: 1, a: 0.2}
-    outerColor: {r: 0.9647059, g: 0.3647059, b: 2.2470589, a: 1}
---- !u!114 &4082247986006694151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5214081585433183894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9296b71443954db1b4571935a43e5266, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 0.15
-  color: {r: 0.32156864, g: 0.54901963, b: 0.5803922, a: 1}
 --- !u!1 &6702420154085209241
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +388,6 @@ Transform:
   - {fileID: 4243005549109458}
   - {fileID: 4225457691201094}
   - {fileID: 4831552014908524}
-  - {fileID: 6667354872023012092}
   m_Father: {fileID: 4492646588632774}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
