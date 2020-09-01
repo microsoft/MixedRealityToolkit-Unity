@@ -118,9 +118,32 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+
+        #region Audio Management
+        [Header("Audio management")]
+        [SerializeField]
+        private AudioSource PointerAudioSource = null;
+
+        [SerializeField]
+        private AudioClip TeleportRequestedClip = null;
+
+        [SerializeField]
+        private AudioClip TeleportCompletedClip = null;
+        #endregion
+
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            // Disable renderers so that they don't display before having been processed (which manifests as a flash at the origin).
+            var renderers = GetComponents<Renderer>();
+            if (renderers != null)
+            {
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = false;
+                }
+            }
 
             if (gravityDistorter == null)
             {
@@ -257,6 +280,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
                 }
 
+                if (currentInputPosition != Vector2.zero && Controller != null)
+                {
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+                }
+
                 // Use the results from the last update to set our NavigationResult
                 float clearWorldLength = 0f;
                 TeleportSurfaceResult = TeleportSurfaceResult.None;
@@ -323,6 +351,22 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        //public void Reset()
+        //{
+        //    if (gameObject == null) return;
+
+        //    if (TeleportHotSpot != null)
+        //    {
+        //        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+        //        TeleportHotSpot = null;
+        //    }
+        //    OnInputChanged(Vector2.zero, false);
+        //    IsActive = false;
+        //    IsFocusLocked = false;
+        //    Controller = null;
+        //    gameObject.SetActive(false);
+        //}
+
         #endregion IMixedRealityPointer Implementation
 
         #region IMixedRealityInputHandler Implementation
@@ -365,6 +409,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportRequestRaised = true;
 
                             CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                            if (PointerAudioSource != null && TeleportCompletedClip != null)
+                            {
+                                PointerAudioSource.PlayOneShot(TeleportRequestedClip);
+                            }
                         }
                         else if (canMove)
                         {
@@ -431,6 +479,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                         {
                             CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                            if (PointerAudioSource != null && TeleportCompletedClip != null)
+                            {
+                                PointerAudioSource.PlayOneShot(TeleportCompletedClip);
+                            }
                         }
                     }
 

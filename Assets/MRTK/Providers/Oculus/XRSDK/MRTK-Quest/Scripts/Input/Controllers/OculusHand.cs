@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Teleport pointer reference. Needs custom pointer because MRTK does not support teleporting with articulated hands.
         /// </summary>
-        public CustomTeleportPointer TeleportPointer { get; set; }
+        public TeleportPointer TeleportPointer { get; set; }
 
 #if OCULUSINTEGRATION_PRESENT
         private Material handMaterial = null;
@@ -312,10 +312,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
 
             // If not ready for teleport, we raise a cancellation event to prevent accidental teleportation.
-            if (!isReadyForTeleport && teleportPointer != null)
-            {
-                CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
-            }
+            //if (!isReadyForTeleport && teleportPointer != null)
+            //{
+            //    CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
+            //}
 
             Vector2 stickInput = isReadyForTeleport ? Vector2.up : Vector2.zero;
 
@@ -327,11 +327,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             switch (MRTKOculusConfig.Instance.ActiveTeleportPointerMode)
             {
                 case MRTKOculusConfig.TeleportPointerMode.Custom:
-                    if (TeleportPointer == null) return;
-                    TeleportPointer.gameObject.SetActive(IsPositionAvailable);
-                    TeleportPointer.transform.position = currentPointerPose.Position;
-                    TeleportPointer.transform.rotation = currentPointerPose.Rotation;
-                    TeleportPointer.UpdatePointer(isReadyForTeleport, teleportInput);
                     break;
                 case MRTKOculusConfig.TeleportPointerMode.Official:
                     if (teleportAction.Equals(MixedRealityInputAction.None)) return;

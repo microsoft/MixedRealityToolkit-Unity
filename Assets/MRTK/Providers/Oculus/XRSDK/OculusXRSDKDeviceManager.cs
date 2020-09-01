@@ -289,15 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 handDevice.UpdateHandMaterial(MRTKOculusConfig.Instance.CustomHandMaterial);
             }
 
-            if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.Custom && MixedRealityToolkit.IsTeleportSystemEnabled)
-            {
-                CustomTeleportPointer pointer = GameObject.Instantiate(MRTKOculusConfig.Instance.CustomTeleportPrefab).GetComponent<CustomTeleportPointer>();
-                pointer.gameObject.SetActive(false);
-
-                pointer.Controller = handDevice;
-                handDevice.TeleportPointer = pointer;
-            }
-
             inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
 
             trackedHands.Add(handedness, handDevice);
@@ -330,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (handDevice == null) return;
 
 
-            handDevice.TeleportPointer.Reset();
+            //handDevice.TeleportPointer();
 
             handDevice.CleanupHand();
 

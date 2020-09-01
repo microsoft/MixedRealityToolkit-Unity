@@ -22,8 +22,7 @@ MonoBehaviour:
   updateMaterialPinchStrengthValue: 1
   pinchStrengthMaterialProperty: _PressIntensity
   teleportPointerMode: 1
-  customTeleportPointerPrefab: {fileID: 3315140749854082096, guid: 9e55bfafd475ba34ba434f2036798b64,
-    type: 3}
+  customTeleportPointerPrefab: {fileID: 0}
   minimumHandConfidence: 0
   lowConfidenceTimeThreshold: 0.2
   defaultCpuLevel: 2
