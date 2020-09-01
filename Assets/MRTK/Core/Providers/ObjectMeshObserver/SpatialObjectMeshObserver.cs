@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Spatial Object Mesh Observer",
-        "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "Providers/ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
+        "MixedRealityToolkit.Core")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver :
         BaseSpatialMeshObserver,
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Update()
         {
-            if (!IsRunning) 
+            if (!IsRunning)
             {
                 return;
             }
@@ -129,20 +129,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            if (IsRunning)
+            using (ClearObservationsPerfMarker.Auto())
             {
-                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
-                Suspend();
-            }
+                if (IsRunning)
+                {
+                    Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                    Suspend();
+                }
 
-            foreach (int id in Meshes.Keys)
-            {
-                RemoveMeshObject(id);
-            }
+                foreach (int id in Meshes.Keys)
+                {
+                    RemoveMeshObject(id);
+                }
 
-            // Resend file observations when resumed.
-            sendObservations = true;
-            
+                // Resend file observations when resumed.
+                sendObservations = true;
+            }
         }
 
         /// <inheritdoc />
