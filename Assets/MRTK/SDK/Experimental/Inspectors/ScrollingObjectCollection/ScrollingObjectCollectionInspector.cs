@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty canScroll;
         private SerializedProperty scrollDirection;
         private SerializedProperty maskEditMode;
+        private SerializedProperty maskEnabled;
+        private SerializedProperty colliderEditMode;
         private SerializedProperty tiersPerPage;
         private SerializedProperty cellsPerTier;
         private SerializedProperty useCameraPreRender;
@@ -89,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             canScroll = serializedObject.FindProperty("canScroll");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
             maskEditMode = serializedObject.FindProperty("maskEditMode");
+            maskEnabled = serializedObject.FindProperty("maskEnabled");
+            colliderEditMode = serializedObject.FindProperty("colliderEditMode");
             tiersPerPage = serializedObject.FindProperty("tiersPerPage");
             useCameraPreRender = serializedObject.FindProperty("useOnPreRender");
 
@@ -200,12 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 rect.x += rect.width + 2f;
                 EditorGUI.PropertyField(rect, cellHeight, new GUIContent("Height"));
 
-                // Cell depth not needded for pagination. Hiding it if clipping box is to be modified manually.
-                if ((EditMode)maskEditMode.enumValueIndex == EditMode.Auto)
-                {
-                    rect.x += rect.width + 2f;
-                    EditorGUI.PropertyField(rect, cellDepth, new GUIContent("Depth"));
-                }
+                rect.x += rect.width + 2f;
+                EditorGUI.PropertyField(rect, cellDepth, new GUIContent("Depth"));
 
                 // Reseting layout
                 EditorGUIUtility.labelWidth = 0;
@@ -223,9 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             }
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.PropertyField(canScroll);
                 EditorGUILayout.PropertyField(scrollDirection);
-                EditorGUILayout.PropertyField(maskEditMode);
                 EditorGUILayout.Space();
             }
         }
@@ -236,6 +234,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 using (new EditorGUI.IndentLevelScope(2))
                 {
+                    EditorGUILayout.PropertyField(maskEditMode);
+                    EditorGUILayout.PropertyField(colliderEditMode);
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.PropertyField(canScroll);
+                    EditorGUILayout.Space();
+
                     EditorGUILayout.PropertyField(useCameraPreRender);
                     EditorGUILayout.Space();
 
@@ -265,6 +270,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    using (var check = new EditorGUI.ChangeCheckScope())
+                    {
+                        EditorGUILayout.PropertyField(maskEnabled);
+                        if (check.changed)
+                        {
+                            scrollView.MaskEnabled = maskEnabled.boolValue;
+                        }
+                    }              
+
                     using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying))
                     {
                         visibleDebugPlanes = EditorGUILayout.Toggle("Show Threshold Planes", visibleDebugPlanes);

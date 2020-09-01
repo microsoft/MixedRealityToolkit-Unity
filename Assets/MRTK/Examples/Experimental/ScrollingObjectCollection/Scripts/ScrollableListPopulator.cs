@@ -126,9 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             if (scrollView == null)
             {
                 GameObject newScroll = new GameObject("Scrolling Object Collection");
-                newScroll.transform.parent = transform;
-                newScroll.transform.localPosition = scrollPositionRef ? scrollPositionRef.localPosition : Vector3.zero;
-                newScroll.transform.localRotation = scrollPositionRef ? scrollPositionRef.rotation : Quaternion.identity;
+                newScroll.transform.parent = scrollPositionRef ? scrollPositionRef : transform;
+                newScroll.transform.localPosition = Vector3.zero;
+                newScroll.transform.localRotation = Quaternion.identity;
                 newScroll.SetActive(false);
                 scrollView = newScroll.AddComponent<ScrollingObjectCollection>();
 

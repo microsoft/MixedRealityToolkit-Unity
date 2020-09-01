@@ -19,8 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private Material mrtkMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
 
-        // SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_32x96.prefab
-        private const string PressableHololens2_32x96_PrefabGuid = "4f44c0d070528944c9bff425c6932763";
+        //Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_32x96_NoLabel.prefab
+        private const string PressableHololens2_32x96_PrefabGuid = "eb36a4319b6be77409716f5a41e6da51";
+
+        //Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_NoLabel.prefab
+        private const string PressableHololens2PrefabGuid = "b20573eb9bf8a914882fa4a571d2e8dc";
+
 
         [SetUp]
         public override void Setup()
@@ -39,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsNearInteractionWithChildren()
         {
             // Setting up a vertical 1x2 scroll view with three pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -181,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsFarInteractionWithChildren()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -268,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NoJumpsWhenInteractingWithChildren()
         {
             // Setting up a vertical 1x2 scroll view with three pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -319,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator InteractionWithBackgroundEmptySpace()
         {
             // Setting up a vertical 2x1 scroll view with three pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -379,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ChildrenCanBeAddedAndDeleted()
         {
             // Setting up a vertical 1x1 scroll view with three pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 3);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -400,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             scrollView.AddContent(objectCollection.gameObject);
 
             // This button will be added later to the scroll collection
-            GameObject button4 = InstantiatePrefab(TestButtonUtilities.PressableHoloLens2PrefabPath);
+            GameObject button4 = InstantiatePrefab(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid));
 
             PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
             PressableButton button3Component = contentItems[2].GetComponentInChildren<PressableButton>();
@@ -527,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageResetsWhenOutOfBoundaryThreshold()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -667,7 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollEngageOnlyFromFrontInteraction()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -762,7 +766,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollViewCanBeScaled()
         {
             // Setting up a vertical 1x1 scroll view with one single pressable button item
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 1);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 1);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -812,7 +816,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ScrollViewCanbeRotated()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -870,7 +874,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator CanBeScrolledByTierOrIndexOrPage()
         {
             // Setting up a horizontal 2x2 scroll view with nine pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 9);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 9);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.RowThenColumn,
@@ -983,7 +987,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             // Setting up a horizontal 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -1027,7 +1031,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ContentClickHappensOnTouchUp()
         {
             // Setting up a horizontal 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
                                                                                 LayoutOrder.ColumnThenRow,
@@ -1136,20 +1140,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var collider1 = contentItems[1].GetComponent<Collider>();
             var collider2 = contentItems[2].GetComponent<Collider>();
 
-            // Completely visible items should have renderers enabled. Colliders should remain enabled for interaction.
+            // Completely visible objects should be active and have renderers clipped. Colliders should be enabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
-            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
-            // Barelly visible content should still have renderers enabled. Colliders should be disabled for interaction.
+            // Barelly visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
-            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
+            Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
 
-            // Hidden content should have renderers disabled. Colliders should be disabled for interaction.
-            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is being clipped");
-            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
-            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
+            // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
+            Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
+            Assert.IsFalse(contentItems[2].activeSelf, "Sphere 2 is active");
 
             // Scrolling half item up
             yield return hand.MoveTo(preTouchPos);
@@ -1159,25 +1162,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
 
-            // Partially visible content should have renderers enabled. Colliders should be enabled for interaction.
+            // Partially visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
-            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
-            Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
+            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
+            Assert.IsFalse(collider0.enabled, "Collider 0 is enabled");
 
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
-            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
-            Assert.IsTrue(collider1.enabled, "Collider 1 is disabled");
+            Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
+            Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
 
-            // Hidden content should have renderers disabled. Colliders should be disabled for interaction.
+            // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
             Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
-            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
-            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
+            Assert.IsFalse(contentItems[2].activeSelf, "Sphere 2 is active");
 
-            // Removing content from scroll content should also remove its renderers from the scroll clipping box.
+            // Removing content from scroll content should also remove its renderers from the scroll clipping box
             scrollView.RemoveItem(contentItems[0]);
             clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
 
-            // Object is still visible, but renderer should not be clipped.
+            // Object is still visible but renderer should not be clipped
             Assert.IsFalse(clippedRenderers.Contains(renderer0), "Renderer 0 is being clipped");
         }
 
@@ -1188,7 +1190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator CanScrollNonCollectionContent()
         {
             // Setting up a vertical 1x1 scroll view with two pressable buttons items
-            var contentItems = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
 
             var cellWidth = contentItems[0].GetComponent<NearInteractionTouchable>().Bounds.x;
             var cellHeight = contentItems[0].GetComponent<NearInteractionTouchable>().Bounds.y;
@@ -1241,7 +1243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Setting up a vertical 1x1 scroll view with four pressable buttons items with two different sizes
             // Buttons are layouted in two grid object collection
-            var contentItems1 = InstantiatePrefabItems(TestButtonUtilities.PressableHoloLens2PrefabPath, 2);
+            var contentItems1 = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
             var contentItems2 = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2_32x96_PrefabGuid), 2);
 
             GridObjectCollection objectCollection1 = InstantiateObjectCollection(contentItems1,
