@@ -651,7 +651,7 @@ MonoBehaviour:
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}
   PointerAudioSource: {fileID: 5571717125842689191}
-  TeleportRequestedClip: {fileID: 8300000, guid: 87a84230b5a2c76429d1cb32ac10009e,
+  TeleportRequestedClip: {fileID: 8300000, guid: a16c53885bdbc54469088880ea44a9fd,
     type: 3}
   TeleportCompletedClip: {fileID: 8300000, guid: 32ed0f57ec075c5488287533a75b164a,
     type: 3}

@@ -147,35 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// </summary>
         public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
 
-        [Header("Teleporter Pointer Configuration")]
-        [SerializeField]
-        [Tooltip("Controls which teleport mode is utilized by MRTK-Quest controllers." +
-                 "Note to use the official pointer, you must add a parabollic pointer to your pointer input profile that supports articulated hands.")]
-        private TeleportPointerMode teleportPointerMode = TeleportPointerMode.Custom;
-
-        /// <summary>
-        /// Controls which teleport mode is utilized by MRTK-Quest controllers.
-        /// Note to use the official pointer, you must add a parabollic pointer to your pointer input profile that supports articulated hands.
-        /// </summary>
-        public TeleportPointerMode ActiveTeleportPointerMode
-        {
-#if OVRPLUGIN_UNSUPPORTED_PLATFORM
-            // If the platform is not supported by oculus, we need to ensure we don't create a teleport pointer that can't be used.
-            get => TeleportPointerMode.None;
-#else
-            get => teleportPointerMode;
-#endif
-        }
-
-        [SerializeField]
-        [Tooltip("Custom teleport pointer prefab, to be managed directly by MRTK-Quest, given that MRTK doesn't currently officially support teleport with articulated hands.")]
-        private GameObject customTeleportPointerPrefab = null;
-
-        /// <summary>
-        /// Custom teleport pointer prefab, to be managed directly by MRTK-Quest, given that MRTK doesn't currently support teleport with articulated hands.
-        /// </summary>
-        public GameObject CustomTeleportPrefab => customTeleportPointerPrefab;
-
 #if OCULUSINTEGRATION_PRESENT
         [Header("Hand Tracking Configuration")]
         [SerializeField]

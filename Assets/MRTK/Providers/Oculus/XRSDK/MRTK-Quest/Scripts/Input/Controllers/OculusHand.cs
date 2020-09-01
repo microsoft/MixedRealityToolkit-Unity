@@ -166,7 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             get
             {
-                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return false;
                 if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
 
                 Camera mainCamera = CameraCache.Main;
@@ -281,8 +280,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         private void UpdateTeleport()
         {
-            if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.None) return;
-
             MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
             IMixedRealityTeleportPointer teleportPointer = TeleportPointer;
@@ -300,8 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 anyPointersLockedWithHand |= InputSource.Pointers[i].IsFocusLocked;
 
                 // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
-                if (MRTKOculusConfig.Instance.ActiveTeleportPointerMode == MRTKOculusConfig.TeleportPointerMode.Official
-                    && InputSource.Pointers[i] is IMixedRealityTeleportPointer)
+                if (InputSource.Pointers[i] is IMixedRealityTeleportPointer)
                 {
                     teleportPointer = (TeleportPointer)InputSource.Pointers[i];
                     teleportAction = ((TeleportPointer)teleportPointer).TeleportInputAction;
@@ -324,16 +320,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction, bool isReadyForTeleport)
         {
-            switch (MRTKOculusConfig.Instance.ActiveTeleportPointerMode)
+            if (!teleportAction.Equals(MixedRealityInputAction.None))
             {
-                case MRTKOculusConfig.TeleportPointerMode.Custom:
-                    break;
-                case MRTKOculusConfig.TeleportPointerMode.Official:
-                    if (teleportAction.Equals(MixedRealityInputAction.None)) return;
-                    CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, teleportAction, teleportInput);
-                    break;
-                default:
-                    return;
+                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, teleportAction, teleportInput);
             }
         }
 
