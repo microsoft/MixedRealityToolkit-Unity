@@ -1613,7 +1613,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void ManageVisibility(bool isRestoring = false)
         {
-            if (!MaskEnabled)
+            if (!MaskEnabled && !isRestoring)
             {
                 return;
             }
@@ -1641,7 +1641,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Check render visibility
             foreach (var renderer in contentRenderers)
             {
-                if (MaskEnabled && !clippedRenderers.Contains(renderer))
+                // All content renderers should be added to clipping primitive
+                if (!isRestoring && MaskEnabled && !clippedRenderers.Contains(renderer))
                 {
                     renderersToClip.Add(renderer);
                 }
