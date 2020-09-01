@@ -59,11 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
-        /// <summary>
-        /// Teleport pointer reference. Needs custom pointer because MRTK does not support teleporting with articulated hands.
-        /// </summary>
-        public TeleportPointer TeleportPointer { get; set; }
-
 #if OCULUSINTEGRATION_PRESENT
         private Material handMaterial = null;
         private Renderer handRenderer = null;
@@ -282,8 +277,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
-            IMixedRealityTeleportPointer teleportPointer = TeleportPointer;
-
             // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
             bool anyPointersLockedWithHand = false;
             for (int i = 0; i < InputSource?.Pointers?.Length; i++)
@@ -299,28 +292,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
                 if (InputSource.Pointers[i] is IMixedRealityTeleportPointer)
                 {
-                    teleportPointer = (TeleportPointer)InputSource.Pointers[i];
+                    IMixedRealityTeleportPointer teleportPointer = (TeleportPointer)InputSource.Pointers[i];
                     teleportAction = ((TeleportPointer)teleportPointer).TeleportInputAction;
                 }
             }
 
             // We close middle finger to signal spider-man gesture, and as being ready for teleport
             bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
+            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
 
-            // If not ready for teleport, we raise a cancellation event to prevent accidental teleportation.
-            //if (!isReadyForTeleport && teleportPointer != null)
-            //{
-            //    CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
-            //}
-
-            Vector2 stickInput = isReadyForTeleport ? Vector2.up : Vector2.zero;
-
-            RaiseTeleportInput(isIndexGrabbing ? Vector2.zero : stickInput, teleportAction, isReadyForTeleport);
+            RaiseTeleportInput(stickInput, teleportAction, isReadyForTeleport);
         }
 
         private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction, bool isReadyForTeleport)
         {
-            if (!teleportAction.Equals(MixedRealityInputAction.None))
+            if (isReadyForTeleport && !teleportAction.Equals(MixedRealityInputAction.None))
             {
                 CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, teleportAction, teleportInput);
             }
