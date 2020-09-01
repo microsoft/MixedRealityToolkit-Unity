@@ -177,9 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public bool IsRunning { get; protected set; } = false;
 
         /// <inheritdoc />
-        public bool WaitingForSceneObserverAccess { get; protected set; } = true;
-
-        /// <inheritdoc />
         public bool IsStationaryObserver { get; set; } = false;
 
         /// <inheritdoc />

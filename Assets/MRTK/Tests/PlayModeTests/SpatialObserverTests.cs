@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var spatialObserver = CoreServices.GetSpatialAwarenessSystemDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
-            Assert.IsTrue(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsTrue(spatialObserver.IsRunning);
             Assert.IsNotEmpty(spatialObserver.Meshes);
 
             CoreServices.SpatialAwarenessSystem.Disable();
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CoreServices.SpatialAwarenessSystem.Enable();
             spatialObserver = CoreServices.GetSpatialAwarenessSystemDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
-            Assert.IsTrue(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsTrue(spatialObserver.IsRunning);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsNotEmpty(spatialObserver.Meshes);
         }
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var spatialAwarenesssDataProvider = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
             var spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
-            Assert.IsFalse(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsFalse(spatialObserver.IsRunning);
             Assert.IsEmpty(spatialObserver.Meshes);
 
             CoreServices.SpatialAwarenessSystem.Disable();
@@ -85,11 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CoreServices.SpatialAwarenessSystem.Enable();
             spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
-            Assert.IsFalse(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsFalse(spatialObserver.IsRunning);
             Assert.IsEmpty(spatialObserver.Meshes);
 
             CoreServices.SpatialAwarenessSystem.ResumeObservers();
-            Assert.IsTrue(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsTrue(spatialObserver.IsRunning);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsNotEmpty(spatialObserver.Meshes);
 
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CoreServices.SpatialAwarenessSystem.Enable();
             spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
-            Assert.IsFalse(spatialObserver.WaitingForSceneObserverAccess);
+            Assert.IsFalse(spatialObserver.IsRunning);
             Assert.IsEmpty(spatialObserver.Meshes);
         }
 
