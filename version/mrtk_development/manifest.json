@@ -24739,7 +24739,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.AwaiterExtensions.SimpleCoroutineAwaiter-1.html",
-          "hash": "d3NbHmzwUyLhHpRoH+ta0A=="
+          "hash": "3hyrWuVdjzorVMk0V8mNjQ=="
         }
       },
       "is_incremental": false,
@@ -24751,7 +24751,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.AwaiterExtensions.SimpleCoroutineAwaiter.html",
-          "hash": "h/nk70gGR9Yb/Tdwp67ZUA=="
+          "hash": "mZr+POhZHMIcNG+GqACLSQ=="
         }
       },
       "is_incremental": false,
