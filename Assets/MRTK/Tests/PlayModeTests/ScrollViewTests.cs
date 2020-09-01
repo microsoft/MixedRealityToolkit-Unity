@@ -19,10 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private Material mrtkMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
 
-        //Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_32x96_NoLabel.prefab
+        // Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_32x96_NoLabel.prefab
         private const string PressableHololens2_32x96_PrefabGuid = "eb36a4319b6be77409716f5a41e6da51";
 
-        //Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_NoLabel.prefab
+        // Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_NoLabel.prefab
         private const string PressableHololens2PrefabGuid = "b20573eb9bf8a914882fa4a571d2e8dc";
 
 
