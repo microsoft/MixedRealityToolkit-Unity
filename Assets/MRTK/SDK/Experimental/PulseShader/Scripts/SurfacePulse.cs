@@ -226,7 +226,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         public void StartPulsing()
         {
-            Debug.Log("######### StartPulsing");
             repeatingPulse = true;
             cancelPulse = false;
             if (RepeatPulseCoroutine == null)
@@ -237,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         public void StopPulsing(bool bFinishCurrentPulse = true)
         {
-            Debug.Log("######### StopPulsing");
             repeatingPulse = false;
             if (!bFinishCurrentPulse)
             {
@@ -251,7 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         /////////////////////////////////////////////////////////////////////////////////////////
         IEnumerator CoSinglePulse()
         {
-            Debug.Log("######### CoSinglePulse");
             yield return CoWaitForRepeatDelay();
             if (!cancelPulse)
             {
@@ -261,7 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         IEnumerator CoRepeatPulse()
         {
-            Debug.Log("######### CoRepeatPulse");
             while (repeatingPulse && !cancelPulse)
             {
                 yield return CoSinglePulse();
@@ -272,13 +268,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private IEnumerator CoAnimatePulse()
         {
-            Debug.Log("######### CoAnimatePulse 1 ");
             pulseStartedTime = Time.time;
             float t = 0;
             while (t < PulseDuration && !cancelPulse)
             {
-                Debug.Log("######### CoAnimatePulse 2");
-
                 t += Time.deltaTime;
                 ApplyPulseRadiusToMaterial(t / PulseDuration);
                 yield return null;
@@ -287,7 +280,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         IEnumerator CoWaitForRepeatDelay()
         {
-            Debug.Log("######### CoWaitForRepeatDelay");
             // Wait for minimum time between pulses starting
             if (pulseStartedTime > 0)
             {
