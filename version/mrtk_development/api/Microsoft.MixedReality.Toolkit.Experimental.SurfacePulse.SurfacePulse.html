@@ -86,31 +86,37 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse" class="text-break">Class SurfacePulse
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Script for generating pulse shader effect on the surface.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">SurfacePulse</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.html">Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SurfacePulse : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public class SurfacePulse : MonoBehaviour, IMixedRealityPointerHandler</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_bAutoStart" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.bAutoStart">bAutoStart</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_AutoStart_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.AutoStart*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_AutoStart" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.AutoStart">AutoStart</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool bAutoStart</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AutoStart { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -127,14 +133,15 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_bOriginFollowCamera" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.bOriginFollowCamera">bOriginFollowCamera</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OriginFollowCamera_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OriginFollowCamera*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OriginFollowCamera" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OriginFollowCamera">OriginFollowCamera</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool bOriginFollowCamera</code></pre>
+    <pre><code class="lang-csharp hljs">public bool OriginFollowCamera { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -151,14 +158,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OriginParamName_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OriginParamName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OriginParamName" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OriginParamName">OriginParamName</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string OriginParamName</code></pre>
+    <pre><code class="lang-csharp hljs">public string OriginParamName { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -175,14 +183,16 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_ParamName_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.ParamName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_ParamName" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.ParamName">ParamName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Shader parameter name to drive the pulse radius</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ParamName</code></pre>
+    <pre><code class="lang-csharp hljs">public string ParamName { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -199,14 +209,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseDuration_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseDuration*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseDuration" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseDuration">PulseDuration</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float PulseDuration</code></pre>
+    <pre><code class="lang-csharp hljs">public float PulseDuration { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -223,14 +234,15 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseRepeatDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseRepeatDelay">PulseRepeatDelay</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseOnSelect_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseOnSelect*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseOnSelect" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseOnSelect">PulseOnSelect</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float PulseRepeatDelay</code></pre>
+    <pre><code class="lang-csharp hljs">public bool PulseOnSelect { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -240,21 +252,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseRepeatMinDelay_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseRepeatMinDelay*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseRepeatMinDelay" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseRepeatMinDelay">PulseRepeatMinDelay</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float PulseRepeatMinDelay</code></pre>
+    <pre><code class="lang-csharp hljs">public float PulseRepeatMinDelay { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -271,14 +284,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_SurfaceMat_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.SurfaceMat*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_SurfaceMat" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.SurfaceMat">SurfaceMat</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Material SurfaceMat</code></pre>
+    <pre><code class="lang-csharp hljs">public Material SurfaceMat { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -295,6 +309,114 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerClicked_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerClicked*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerClicked_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerClicked(MixedRealityPointerEventData)">OnPointerClicked(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerClicked(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerDown_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerDown_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerDown(MixedRealityPointerEventData)">OnPointerDown(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerDown(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerDragged_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerDragged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerDragged_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerDragged(MixedRealityPointerEventData)">OnPointerDragged(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerUp_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerUp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_OnPointerUp_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.OnPointerUp(MixedRealityPointerEventData)">OnPointerUp(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerUp(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_SurfacePulse_SurfacePulse_PulseOnce_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.PulseOnce*"></a>
@@ -379,6 +501,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityPointerHandler</span>
+  </div>
 </article>
           </div>
           
