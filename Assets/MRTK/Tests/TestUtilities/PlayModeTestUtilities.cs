@@ -13,7 +13,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
-using NUnit.Framework;
 using System.Collections;
 using System.IO;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
@@ -96,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void Setup(MixedRealityToolkitConfigurationProfile profile = null)
         {
-            Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+            Debug.Assert(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
 
             // See comments for UseSlowTestController for why this is reset to false on each test case.
             UseSlowTestController = false;
@@ -191,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static IMixedRealityInputSystem GetInputSystem()
         {
-            Assert.IsNotNull(CoreServices.InputSystem, "MixedRealityInputSystem is null!");
+            Debug.Assert((CoreServices.InputSystem != null), "MixedRealityInputSystem is null!");
             return CoreServices.InputSystem;
         }
 
@@ -202,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static InputSimulationService GetInputSimulationService()
         {
             InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
-            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
+            Debug.Assert((inputSimulationService != null), "InputSimulationService is null!");
             return inputSimulationService;
         }
 
@@ -255,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield break;
             }
 
-            Assert.IsNotNull(CoreServices.InputSystem, "Input system must be initialized");
+            Debug.Assert((CoreServices.InputSystem != null), "Input system must be initialized");
 
             // Let input system to register all cursors and managers.
             yield return null;
@@ -292,8 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Check that input system is clean
-            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventListeners, "Input event system handler registry is not empty in the beginning of the test.");
-            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
+            Debug.Assert(((BaseEventSystem)CoreServices.InputSystem).EventListeners.Count == 0, "Input event system handler registry is not empty in the beginning of the test.");
+            Debug.Assert(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType.Count == 0, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
         }
@@ -480,8 +479,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
-            Assert.That(inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures || 
-                inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand, "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
+            Debug.Assert(
+                ((inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.HandGestures) || 
+                (inputSimulationService.ControllerSimulationMode == ControllerSimulationMode.ArticulatedHand)), 
+                "The current ControllerSimulationMode must be HandGestures or ArticulatedHand!");
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
             handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));
 
@@ -502,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
 
-            Assert.AreEqual(ControllerSimulationMode.MotionController, inputSimulationService.ControllerSimulationMode, "The current ControllerSimulationMode must be MotionController!");
+            Debug.Assert((ControllerSimulationMode.MotionController == inputSimulationService.ControllerSimulationMode), "The current ControllerSimulationMode must be MotionController!");
             SimulatedMotionControllerData motionControllerData = handedness == Handedness.Right ? inputSimulationService.MotionControllerDataRight : inputSimulationService.MotionControllerDataLeft;
             motionControllerData.Update(true, buttonState, UpdateMotionControllerPose(handedness, motionControllerLocation, Quaternion.identity));
 
