@@ -303,12 +303,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
             Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
 
-            RaiseTeleportInput(stickInput, teleportAction, isReadyForTeleport);
+            RaiseTeleportInput(stickInput, teleportAction);
         }
 
-        private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction, bool isReadyForTeleport)
+        private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction)
         {
-            if (isReadyForTeleport && !teleportAction.Equals(MixedRealityInputAction.None))
+            if (!teleportAction.Equals(MixedRealityInputAction.None))
             {
                 CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, teleportAction, teleportInput);
             }
