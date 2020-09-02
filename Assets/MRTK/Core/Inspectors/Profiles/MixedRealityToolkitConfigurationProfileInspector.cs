@@ -126,6 +126,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
             renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
 
+            if (enableInputSystem.boolValue)
+            {
+                // Make sure Unity axis mappings are set.
+                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+            }
+            else
+            {
+                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+            }
+
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
             if (RenderProfileFuncs == null)
@@ -169,16 +179,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 EditorGUILayout.PropertyField(inputSystemType);
 
-                                // Make sure Unity axis mappings are set.
-                                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-
                                 changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                             }
                             else
                             {
                                 RenderSystemDisabled(service);
-
-                                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
                             }
 
                             changed |= c.changed;
