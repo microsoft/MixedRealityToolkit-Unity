@@ -86,7 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.InputMappingAxisUtility" class="text-break">Class InputMappingAxisUtility
   </h1>
-  <div class="markdown level0 summary"><p>Utility class for Unity's Input Manager Mappings.</p>
+  <div class="markdown level0 summary"><p>Utility class for Unity's Input Manager mappings.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,21 +124,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class InputMappingAxisUtility</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Note, with any luck this will be temporary.  If it is to remain beyond Alpha, then this needs some refactoring to make a proper component.</p>
-</div>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_CheckUnityInputManagerMappings_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_CheckUnityInputManagerMappings_InputManagerAxis___" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(InputManagerAxis[])">CheckUnityInputManagerMappings(InputManagerAxis[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_CheckUnityInputManagerMappings_InputManagerAxis___System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(InputManagerAxis[],System.Boolean)">CheckUnityInputManagerMappings(InputManagerAxis[], Boolean)</h4>
   <div class="markdown level1 summary"><p>Simple static function to check Unity InputManager Axis configuration, and apply if needed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void CheckUnityInputManagerMappings(InputManagerAxis[] axisMappings)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool CheckUnityInputManagerMappings(InputManagerAxis[] axisMappings, bool updateMappings = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,13 +150,35 @@
       <tr>
         <td><span class="xref">InputManagerAxis</span>[]</td>
         <td><span class="parametername">axisMappings</span></td>
-        <td><p>Optional array of Axis Mappings, to configure your own custom set</p>
+        <td><p>Array of axis mappings, to configure your own custom set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">updateMappings</span></td>
+        <td><p>If the mappings should be updated to match axisMappings or simply check that they match. Defaults to true.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_CheckUnityInputManagerMappings_InputManagerAxis____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This only exists as the Unity input manager CANNOT map Axis to an id, it has to be through a mapping</p>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the mappings needed an update. False if they match axisMappings already.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_Editor_InputMappingAxisUtility_CheckUnityInputManagerMappings_InputManagerAxis___System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This only exists as the Unity input manager CANNOT map Axis to an id; it has to be through a mapping.</p>
 </div>
   
   
