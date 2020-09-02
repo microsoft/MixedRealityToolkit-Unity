@@ -80,10 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 parabolicLineData.LineTransform.rotation = Quaternion.identity;
                 parabolicLineData.Direction = stabilizedRay.StabilizedDirection;
 
-                // when pointing straight up, upDot should be close to 1.
-                // when pointing straight down, upDot should be close to -1.
-                // when pointing straight forward in any direction, upDot should be 0.
-                var upDot = Mathf.Clamp(Vector3.Dot(stabilizedRay.StabilizedDirection, Vector3.up) + 0.5f, -1f, 1f);
+                var upDot = Vector3.Dot(transform.forward, Vector3.up);
 
                 var velocity = minParabolaVelocity;
                 var distance = minDistanceModifier;
