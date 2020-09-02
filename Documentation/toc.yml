@@ -13,7 +13,7 @@
     href: MRTK_and_managed_code_stripping.md
   - name: Updates and Deployment
     items: 
-      - name: Updating from earlier versions
+    - name: Updating from earlier versions
       href: Updating.md
     - name: Upgrading from HTK
       href: HTKToMRTKPortingGuide.md
