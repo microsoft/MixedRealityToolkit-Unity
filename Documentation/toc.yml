@@ -1,6 +1,8 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
   items:
+  - name: Installation Guide
+    href: Installation.md
   - name: Release Notes
     href: ReleaseNotes.md
   - name: MRTK Packages
