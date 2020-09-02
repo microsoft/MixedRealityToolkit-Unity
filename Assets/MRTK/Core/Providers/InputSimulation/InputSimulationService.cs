@@ -425,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cameraControl == null)
             {
                 cameraControl = new ManualCameraControl(InputSimulationProfile);
+            
+                if (CameraCache.Main)
+                {
+                    cameraControl.SetInitialTransform(CameraCache.Main.transform);
+                }
             }
         }
 

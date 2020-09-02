@@ -31,6 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Mathf.Sign(x) * (1.0f - Mathf.Cos(0.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f)));
         }
 
+
+        public void SetInitialTransform(Transform transform)
+        {
+            transform.Translate(profile.CameraOriginOffset);
+        }
+
         /// <summary>
         /// Translate and rotate the camera transform based on keyboard and mouse input.
         /// </summary>
