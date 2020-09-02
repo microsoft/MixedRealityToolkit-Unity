@@ -291,8 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             var inputSource = inputSystem?.RequestNewGenericInputSource($"Oculus Quest {handedness} Hand", pointers, inputSourceType);
 
 
-            OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, SettingsProfile, inputSource);
-            handDevice.InitializeHand(ovrHand, SettingsProfile.CustomHandMaterial);
+            OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, inputSource);
+            handDevice.InitializeHand(ovrHand, SettingsProfile);
 
             for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {

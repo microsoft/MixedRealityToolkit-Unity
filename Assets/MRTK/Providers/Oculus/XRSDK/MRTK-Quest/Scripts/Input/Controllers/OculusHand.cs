@@ -75,11 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, OculusXRSDKDeviceManagerProfile DeviceManagerSettings, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            SettingsProfile = DeviceManagerSettings;
-            pinchStrengthProp = Shader.PropertyToID(SettingsProfile.PinchStrengthMaterialProperty);
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
         }
 
@@ -109,10 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         #endregion IMixedRealityHand Implementation
 
 #if OCULUSINTEGRATION_PRESENT
-        public void InitializeHand(OVRHand ovrHand, Material handMaterial)
+        public void InitializeHand(OVRHand ovrHand, OculusXRSDKDeviceManagerProfile deviceManagerSettings)
         {
+            SettingsProfile = deviceManagerSettings;
+
             handRenderer = ovrHand.GetComponent<Renderer>();
-            UpdateHandMaterial(handMaterial);
+            UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
+            pinchStrengthProp = Shader.PropertyToID(SettingsProfile.PinchStrengthMaterialProperty);
         }
 
         public void UpdateHandMaterial(Material newHandMaterial)
