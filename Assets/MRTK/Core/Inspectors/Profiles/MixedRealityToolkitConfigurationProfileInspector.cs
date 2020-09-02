@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -125,16 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
             renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
-
-            if (enableInputSystem.boolValue)
-            {
-                // Make sure Unity axis mappings are set.
-                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-            }
-            else
-            {
-                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-            }
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
