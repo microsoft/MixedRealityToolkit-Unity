@@ -7,7 +7,7 @@ jobs:
 - job: CIDeveloperValidation
   timeoutInMinutes: 90
   pool:
-    name: Analog On-Prem
+    name: Analog N-1
     demands:
     - Unity2018.4.23f1
     - COG-UnityCache-WUS2-01

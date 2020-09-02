@@ -1,9 +1,15 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 {
+    /// <summary>
+    /// Script for triggering the pulse shader effect on hand mesh.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/HandPulseLogic")]
     public class HandPulseLogic : MonoBehaviour, IMixedRealityPointerHandler
     {
@@ -20,12 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private void Start()
         {
-            MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>().RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+
         }
 
         private void OnDestroy()
         {
-            MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>().UnregisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         // Update is called once per frame
