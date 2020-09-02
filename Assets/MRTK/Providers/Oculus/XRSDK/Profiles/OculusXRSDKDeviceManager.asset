@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17acf00f59af96c4bb501d1f9620d1c4, type: 3}
-  m_Name: MRTK-OculusConfig
+  m_Script: {fileID: 11500000, guid: 4f726b4cb3605994fac74d508110ec62, type: 3}
+  m_Name: OculusXRSDKDeviceManager
   m_EditorClassIdentifier: 
+  isCustomProfile: 1
   ovrCameraRigPrefab: {fileID: 2343937678421323989, guid: 69a746aa83d0d0e45b4e2d33eab0fff4,
     type: 3}
   renderAvatarHandsInsteadOfControllers: 1
@@ -21,8 +22,6 @@ MonoBehaviour:
   customHandMaterial: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
   updateMaterialPinchStrengthValue: 1
   pinchStrengthMaterialProperty: _PressIntensity
-  teleportPointerMode: 1
-  customTeleportPointerPrefab: {fileID: 0}
   minimumHandConfidence: 0
   lowConfidenceTimeThreshold: 0.2
   defaultCpuLevel: 2

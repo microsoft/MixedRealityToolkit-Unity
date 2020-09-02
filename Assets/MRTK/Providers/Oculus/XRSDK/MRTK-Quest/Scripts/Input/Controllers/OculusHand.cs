@@ -68,16 +68,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private bool isThumbGrabbing = false;
 #endif
 
+        private OculusXRSDKDeviceManagerProfile SettingsProfile;
         private int pinchStrengthProp;
 
 
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, OculusXRSDKDeviceManagerProfile DeviceManagerSettings, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            pinchStrengthProp = Shader.PropertyToID(MRTKOculusConfig.Instance.PinchStrengthMaterialProperty);
+            SettingsProfile = DeviceManagerSettings;
+            pinchStrengthProp = Shader.PropertyToID(SettingsProfile.PinchStrengthMaterialProperty);
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
         }
 
@@ -115,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         public void UpdateHandMaterial(Material newHandMaterial)
         {
-            if (newHandMaterial == null || !MRTKOculusConfig.Instance.UseCustomHandMaterial) return;
+            if (newHandMaterial == null || !SettingsProfile.UseCustomHandMaterial) return;
 
             if (handMaterial != null)
             {
@@ -348,15 +350,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
             if (ovrHand.HandConfidence == OVRHand.TrackingConfidence.Low)
             {
-                if (MRTKOculusConfig.Instance.MinimumHandConfidence == OVRHand.TrackingConfidence.High)
+                if (SettingsProfile.MinimumHandConfidence == OVRHand.TrackingConfidence.High)
                 {
                     isTracked = false;
                 }
                 else
                 {
                     float lowConfidenceTime = Time.time - _lastHighConfidenceTime;
-                    if (MRTKOculusConfig.Instance.LowConfidenceTimeThreshold > 0 &&
-                        MRTKOculusConfig.Instance.LowConfidenceTimeThreshold < lowConfidenceTime)
+                    if (SettingsProfile.LowConfidenceTimeThreshold > 0 &&
+                        SettingsProfile.LowConfidenceTimeThreshold < lowConfidenceTime)
                     {
                         isTracked = false;
                     }
@@ -365,11 +367,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
             if (ControllerHandedness == Handedness.Left)
             {
-                MRTKOculusConfig.Instance.CurrentLeftHandTrackingConfidence = ovrHand.HandConfidence;
+                SettingsProfile.CurrentLeftHandTrackingConfidence = ovrHand.HandConfidence;
             }
             else
             {
-                MRTKOculusConfig.Instance.CurrentRightHandTrackingConfidence = ovrHand.HandConfidence;
+                SettingsProfile.CurrentRightHandTrackingConfidence = ovrHand.HandConfidence;
             }
 
             // Disable hand if not tracked
@@ -432,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 IsGrabbing = isIndexGrabbing && isMiddleGrabbing;
             }
 
-            if (MRTKOculusConfig.Instance.UpdateMaterialPinchStrengthValue && handMaterial != null)
+            if (SettingsProfile.UpdateMaterialPinchStrengthValue && handMaterial != null)
             {
                 float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
                 gripStrength /= 4.0f;
