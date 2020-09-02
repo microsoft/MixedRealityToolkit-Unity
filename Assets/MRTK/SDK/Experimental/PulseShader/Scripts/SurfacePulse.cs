@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEditor;
@@ -12,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
     /// Script for generating pulse shader effect on the surface.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/SurfacePulse")]
-    public class SurfacePulse : MonoBehaviour
+    public class SurfacePulse : MonoBehaviour, IMixedRealityPointerHandler
     {
         [SerializeField]
         [Tooltip("Shader parameter name to drive the pulse radius")]
@@ -122,6 +123,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
             }
         }
 
+        [SerializeField]
+        [Tooltip("Pulse on select(air-tap)")]
+        private bool pulseOnSelect = true;
+        public bool PulseOnSelect
+        {
+            get { return pulseOnSelect; }
+            set
+            {
+                if (pulseOnSelect != value)
+                {
+                    pulseOnSelect = value;
+                }
+            }
+        }
+
         // Internal state
         Coroutine RepeatPulseCoroutine;
 
@@ -157,6 +173,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private void Start()
         {
+            if(pulseOnSelect)
+            {
+                // Add PointerHandler script to the parent of dynamically generated spatial mesh on the device
+                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.AddComponent<PointerHandler>();
+                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.GetComponent<PointerHandler>().OnPointerClicked.AddListener(this.OnPointerClicked);
+            }
+
             if (autoStart)
             {
                 StartPulsing();
@@ -195,6 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         public void StartPulsing()
         {
+            Debug.Log("######### StartPulsing");
             repeatingPulse = true;
             cancelPulse = false;
             if (RepeatPulseCoroutine == null)
@@ -205,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         public void StopPulsing(bool bFinishCurrentPulse = true)
         {
+            Debug.Log("######### StopPulsing");
             repeatingPulse = false;
             if (!bFinishCurrentPulse)
             {
@@ -218,6 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         /////////////////////////////////////////////////////////////////////////////////////////
         IEnumerator CoSinglePulse()
         {
+            Debug.Log("######### CoSinglePulse");
             yield return CoWaitForRepeatDelay();
             if (!cancelPulse)
             {
@@ -227,6 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         IEnumerator CoRepeatPulse()
         {
+            Debug.Log("######### CoRepeatPulse");
             while (repeatingPulse && !cancelPulse)
             {
                 yield return CoSinglePulse();
@@ -237,10 +264,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         private IEnumerator CoAnimatePulse()
         {
+            Debug.Log("######### CoAnimatePulse 1 ");
             pulseStartedTime = Time.time;
             float t = 0;
             while (t < PulseDuration && !cancelPulse)
             {
+                Debug.Log("######### CoAnimatePulse 2");
+
                 t += Time.deltaTime;
                 ApplyPulseRadiusToMaterial(t / PulseDuration);
                 yield return null;
@@ -249,6 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         IEnumerator CoWaitForRepeatDelay()
         {
+            Debug.Log("######### CoWaitForRepeatDelay");
             // Wait for minimum time between pulses starting
             if (pulseStartedTime > 0)
             {
@@ -263,7 +294,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         void ApplyPulseRadiusToMaterial(float radius)
         {
-            SurfaceMat.SetFloat(ParamName, radius);
+            surfaceMat.SetFloat(paramName, radius);
+        }
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            cancelPulse = true;
+            SetLocalOrigin(eventData.Pointer.Result.Details.Point);
+            PulseOnce();
         }
     }
 }
