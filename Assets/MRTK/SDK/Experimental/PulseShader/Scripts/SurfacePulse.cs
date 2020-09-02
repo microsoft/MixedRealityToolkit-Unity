@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 {
@@ -17,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
     {
         [SerializeField]
         [Tooltip("Shader parameter name to drive the pulse radius")]
+        [FormerlySerializedAs("ParamName")]
         private string paramName = "_Pulse_";
         /// <summary>
         /// Shader parameter name to drive the pulse radius
@@ -35,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("Shader parameter name to set the pulse origin, in local space")]
+        [FormerlySerializedAs("OriginParamName")]
         private string originParamName = "_Pulse_Origin_";
         public string OriginParamName
         {
@@ -50,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("How long in seconds the pulse should animate")]
+        [FormerlySerializedAs("PulseDuration")]
         private float pulseDuration = 5f;
         public float PulseDuration
         {
@@ -65,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("Minimum time to wait between each pulse")]
+        [FormerlySerializedAs("PulseRepeatMinDelay")]
         private float pulseRepeatMinDelay = 1f;
         public float PulseRepeatMinDelay
         {
@@ -80,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("Automatically begin repeated pulsing")]
+        [FormerlySerializedAs("AutoStart")]
         private bool autoStart = false;
         public bool AutoStart
         {
@@ -95,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("Automatically set pulse origin to the main camera location")]
+        [FormerlySerializedAs("OriginFollowCamera")]
         private bool originFollowCamera = false;
         public bool OriginFollowCamera
         {
@@ -110,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("The material to animate")]
+        [FormerlySerializedAs("SurfaceMat")]
         private Material surfaceMat;
         public Material SurfaceMat
         {
