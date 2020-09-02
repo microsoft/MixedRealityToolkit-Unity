@@ -486,10 +486,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        private const string RigRootName = "rigRoot";
 
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
-        private static List<Vector3> totalBoundsCorners = new List<Vector3>();
+        private static readonly List<Vector3> TotalBoundsCorners = new List<Vector3>();
 
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
@@ -766,7 +766,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private Bounds GetTargetBounds()
         {
-            totalBoundsCorners.Clear();
+            TotalBoundsCorners.Clear();
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
@@ -781,7 +781,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
             foreach (Transform childTransform in Target.transform)
             {
-                if (childTransform.name.Equals(rigRootName)) { continue; }
+                if (childTransform.name.Equals(RigRootName)) { continue; }
                 childTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
             }
 
@@ -797,16 +797,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             Transform targetTransform = Target.transform;
 
             // In case we found nothing and this is the Target, we add its inevitable collider's bounds
-            if (totalBoundsCorners.Count == 0 && Target == gameObject)
+            if (TotalBoundsCorners.Count == 0 && Target == gameObject)
             {
                 ExtractBoundsCorners(targetTransform, BoundsCalculationMethod.ColliderOnly);
             }
 
-            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
+            Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(TotalBoundsCorners[0]), Vector3.zero);
 
-            for (int i = 1; i < totalBoundsCorners.Count; i++)
+            for (int i = 1; i < TotalBoundsCorners.Count; i++)
             {
-                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(totalBoundsCorners[i]));
+                finalBounds.Encapsulate(targetTransform.InverseTransformPoint(TotalBoundsCorners[i]));
             }
 
             return finalBounds;
@@ -870,7 +870,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
-            totalBoundsCorners.AddRange(cornersToWorld);
+            TotalBoundsCorners.AddRange(cornersToWorld);
             return true;
         }
 
@@ -878,7 +878,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             if (colliderByTransform.Key != null)
             {
-                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, TotalBoundsCorners, 0);
             }
 
             return colliderByTransform.Key != null;
@@ -1080,7 +1080,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         private void InitializeRigRoot()
         {
-            var rigRootObj = new GameObject(rigRootName);
+            var rigRootObj = new GameObject(RigRootName);
             rigRoot = rigRootObj.transform;
             rigRoot.parent = Target.transform;
 
@@ -1349,7 +1349,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         #endregion Unused Event Handlers
 
-
         #region BoundsControl Visuals Private Methods
 
         private void SetHighlighted(Transform activeHandle, IMixedRealityPointer pointer = null)
@@ -1445,6 +1444,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         #endregion BoundsControl Visuals Private Methods
-
     }
 }
