@@ -30,7 +30,7 @@
     - name: Performance
       href: Performance/PerfGettingStarted.md
     - name: Hologram Stabilization
-      href: Hologram-Stabilization.md
+      href: hologram-stabilization.md
     - name: Using MRTK in large projects
       href: LargeProjects.md
   - name: MRTK and Managed Code Stripping
