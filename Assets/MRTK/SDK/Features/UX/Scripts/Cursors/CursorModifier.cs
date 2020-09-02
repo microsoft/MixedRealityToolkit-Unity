@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (cursor.Pointer == null)
             {
-                Debug.LogError($"{cursor.GameObjectReference.name} has no pointer set in it's cursor component!");
+                Debug.LogError($"{cursor.GameObjectReference.name} has no pointer set in its cursor component!");
                 return Vector3.zero;
             }
 

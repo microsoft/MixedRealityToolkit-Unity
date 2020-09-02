@@ -12,22 +12,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// <summary>
     /// Class to perform checks for configuration checks for the UnityAR provider.
     /// </summary>
-    [InitializeOnLoad]
+    /// <remarks>
+    /// Note that the checks that this class runs are fairly expensive and are only done manually by the user
+    /// as part of their setup steps described here:
+    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/UsingARFoundation.html
+    /// </remarks>
     static class UnityARConfigurationChecker
     {
         private const string FileName = "Unity.XR.ARFoundation.asmdef";
         private static readonly string[] definitions = { "ARFOUNDATION_PRESENT" };
 
-        static UnityARConfigurationChecker()
+        [MenuItem("Mixed Reality Toolkit/Utilities/UnityAR/Update Assembly Definitions")]
+        private static void UpdateAssemblyDefinitions()
         {
-            // TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8188)
-            // This should be updated to only run on editor launch and on large asset changes
-            // (i.e. post import of asset packages). This should remove this from the inner compile
-            // loop.
-            if (!EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                UpdateAsmDef(ReconcileArFoundationDefine());
-            }
+            UpdateAsmDef(ReconcileArFoundationDefine());
         }
 
         /// <summary>
@@ -102,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             if (arFoundationPresent)
             {
-#if UNITY_2018 || UNITY_2019_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER
                 if (!references.Contains(arFoundationReference))
                 {
                     // Add a reference to the ARFoundation assembly

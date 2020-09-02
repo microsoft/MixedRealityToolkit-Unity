@@ -245,9 +245,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Update gaze info from stabilizer
                         if (stabilizer != null)
                         {
-                            stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
-                            newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
-                            newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
+                            stabilizer.UpdateStability(MixedRealityPlayspace.InverseTransformPoint(newGazeOrigin), MixedRealityPlayspace.InverseTransformDirection(newGazeNormal));
+                            newGazeOrigin = MixedRealityPlayspace.TransformPoint(stabilizer.StablePosition);
+                            newGazeNormal = MixedRealityPlayspace.TransformDirection(stabilizer.StableRay.direction);
                         }
                     }
 
@@ -528,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetectec");
+        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetected");
 
         private async void RaiseSourceDetected()
         {

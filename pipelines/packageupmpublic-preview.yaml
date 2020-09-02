@@ -1,0 +1,22 @@
+# Create UPM packages for public PREVIEW release
+
+variables:
+- template: config/settings.yml
+
+jobs:
+- job: UPMPublicPreviewRelease
+  timeoutInMinutes: 30
+  pool:
+    name: On-Prem Unity
+  steps:
+  - template: templates/tasks/upmpackages.yml
+    parameters:
+      excludeBuildNumber: 0
+  - task: PowerShell@2
+    displayName: 'UPM packages to registry'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/packaging/publishupmpackages.ps1
+      arguments: >
+        -PackageDirectory $(Build.ArtifactStagingDirectory)\build\upm\output
+        -RegistryPath $(UpmRegistry)

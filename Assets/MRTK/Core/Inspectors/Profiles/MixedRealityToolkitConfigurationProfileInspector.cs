@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
@@ -168,11 +169,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 EditorGUILayout.PropertyField(inputSystemType);
 
+                                // Make sure Unity axis mappings are set.
+                                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+
                                 changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
                             }
                             else
                             {
                                 RenderSystemDisabled(service);
+
+                                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
                             }
 
                             changed |= c.changed;
@@ -465,12 +471,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Render helpbox that provided service string is disabled and none of it's functionality will be loaded at runtime
+        /// Render helpbox that provided service string is disabled and none of its functionality will be loaded at runtime
         /// </summary>
         protected static void RenderSystemDisabled(string service)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
+            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of its features will be available at runtime.", MessageType.Info);
             EditorGUILayout.Space();
         }
 

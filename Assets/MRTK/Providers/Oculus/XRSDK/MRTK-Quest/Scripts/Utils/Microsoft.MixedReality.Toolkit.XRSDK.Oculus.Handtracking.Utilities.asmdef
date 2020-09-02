@@ -1,0 +1,18 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

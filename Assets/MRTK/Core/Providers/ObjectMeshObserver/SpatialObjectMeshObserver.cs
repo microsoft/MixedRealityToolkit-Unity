@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+// Licensed under the MIT License.license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Spatial Object Mesh Observer",
-        "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "Providers/ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
+        "MixedRealityToolkit.Core")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver :
         BaseSpatialMeshObserver,
@@ -248,6 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 meshObject.Renderer.sharedMaterial = (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
                     VisibleMaterial :
                     OcclusionMaterial;
+
+                meshObject.Collider.material = PhysicsMaterial;
             }
 
             meshObject.Renderer.enabled = enable;
