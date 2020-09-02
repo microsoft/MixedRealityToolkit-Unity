@@ -31,7 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Mathf.Sign(x) * (1.0f - Mathf.Cos(0.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f)));
         }
 
-
+        /// <summary>
+        /// Moves the camera transform based on the profile's origin offset
+        /// </summary>
         public void SetInitialTransform(Transform transform)
         {
             transform.Translate(profile.CameraOriginOffset);
