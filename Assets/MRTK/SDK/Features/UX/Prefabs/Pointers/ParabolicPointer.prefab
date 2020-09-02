@@ -653,8 +653,7 @@ MonoBehaviour:
   PointerAudioSource: {fileID: 5571717125842689191}
   TeleportRequestedClip: {fileID: 8300000, guid: a16c53885bdbc54469088880ea44a9fd,
     type: 3}
-  TeleportCompletedClip: {fileID: 8300000, guid: 32ed0f57ec075c5488287533a75b164a,
-    type: 3}
+  TeleportCompletedClip: {fileID: 0}
   pointerOrientation: 0
   minParabolaVelocity: 5
   maxParabolaVelocity: 20

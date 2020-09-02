@@ -331,9 +331,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             if (handDevice == null) return;
 
-
-            //handDevice.TeleportPointer();
-
             handDevice.CleanupHand();
 
             CoreServices.InputSystem?.RaiseSourceLost(handDevice.InputSource, handDevice);
