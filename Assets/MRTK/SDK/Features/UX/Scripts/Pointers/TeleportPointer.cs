@@ -351,21 +351,17 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
-        //public void Reset()
-        //{
-        //    if (gameObject == null) return;
+        public override void Reset()
+        {
+            base.Reset();
+            if (gameObject == null) return;
 
-        //    if (TeleportHotSpot != null)
-        //    {
-        //        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
-        //        TeleportHotSpot = null;
-        //    }
-        //    OnInputChanged(Vector2.zero, false);
-        //    IsActive = false;
-        //    IsFocusLocked = false;
-        //    Controller = null;
-        //    gameObject.SetActive(false);
-        //}
+            if (TeleportHotSpot != null)
+            {
+                CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                TeleportHotSpot = null;
+            }
+        }
 
         #endregion IMixedRealityPointer Implementation
 
@@ -409,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportRequestRaised = true;
 
                             CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
-                            if (PointerAudioSource != null && TeleportCompletedClip != null)
+                            if (PointerAudioSource != null && TeleportRequestedClip != null)
                             {
                                 PointerAudioSource.PlayOneShot(TeleportRequestedClip);
                             }

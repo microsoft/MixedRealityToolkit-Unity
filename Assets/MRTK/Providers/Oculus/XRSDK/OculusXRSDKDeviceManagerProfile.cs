@@ -74,7 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Prefab reference for LocalAvatar to load, if none are found in scene.
         /// </summary>
-        public GameObject LocalAvatarPrefab => localAvatarPrefab;[Header("Hand Mesh Visualization")]
+        public GameObject LocalAvatarPrefab => localAvatarPrefab;
+
+        [Header("Hand Mesh Visualization")]
         [SerializeField]
         [Tooltip("If true, hand mesh material will be replaced with custom material.")]
         private bool useCustomHandMaterial = true;

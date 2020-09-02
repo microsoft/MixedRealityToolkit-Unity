@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         private bool isThumbGrabbing = false;
 #endif
 
+        private TeleportPointer teleportPointer;
         private OculusXRSDKDeviceManagerProfile SettingsProfile;
         private int pinchStrengthProp;
 
@@ -130,6 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         public void CleanupHand()
         {
+            teleportPointer.Reset();
             if (handRenderer != null)
             {
                 handRenderer.enabled = false;
@@ -295,8 +297,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
                 if (InputSource.Pointers[i] is IMixedRealityTeleportPointer)
                 {
-                    IMixedRealityTeleportPointer teleportPointer = (TeleportPointer)InputSource.Pointers[i];
-                    teleportAction = ((TeleportPointer)teleportPointer).TeleportInputAction;
+                    teleportPointer = (TeleportPointer)InputSource.Pointers[i];
+                    teleportAction = teleportPointer.TeleportInputAction;
                 }
             }
 
