@@ -22,6 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected LeapMotionDeviceManagerProfile instance;
         protected SerializedProperty leapControllerOrientation;
         protected SerializedProperty leapControllerOffset;
+
+        protected SerializedProperty leapVRDeviceOffsetMode;
+        protected SerializedProperty leapVRDeviceOffsetY;
+        protected SerializedProperty leapVRDeviceOffsetZ;
+        protected SerializedProperty leapVRDeviceOffsetTiltX;
+        protected SerializedProperty leapVRDeviceOrigin;
+
         protected SerializedProperty enterPinchDistance;
         protected SerializedProperty exitPinchDistance;
 
@@ -34,6 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
             instance = (LeapMotionDeviceManagerProfile)target;
             leapControllerOrientation = serializedObject.FindProperty("leapControllerOrientation");
             leapControllerOffset = serializedObject.FindProperty("leapControllerOffset");
+
+            leapVRDeviceOffsetMode = serializedObject.FindProperty("leapVRDeviceOffsetMode");
+            leapVRDeviceOffsetY = serializedObject.FindProperty("leapVRDeviceOffsetY");
+            leapVRDeviceOffsetZ = serializedObject.FindProperty("leapVRDeviceOffsetZ");
+            leapVRDeviceOffsetTiltX = serializedObject.FindProperty("leapVRDeviceOffsetTiltX");
+            leapVRDeviceOrigin = serializedObject.FindProperty("leapVRDeviceOrigin");
+
             enterPinchDistance = serializedObject.FindProperty("enterPinchDistance");
             exitPinchDistance = serializedObject.FindProperty("exitPinchDistance");
         }
@@ -79,9 +93,27 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                     {
                         EditorGUILayout.PropertyField(leapControllerOffset);
                     }
+                    else if (instance.LeapControllerOrientation == LeapControllerOrientation.Headset)
+                    {
+                        // Allow selection of the LeapVRDeviceOffsetMode if the LeapControllerOrientation is Headset
+                        EditorGUILayout.PropertyField(leapVRDeviceOffsetMode);
 
+                        if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.ManualHeadOffset)
+                        {
+                            // Display the properties for editing the head offset 
+                            EditorGUILayout.PropertyField(leapVRDeviceOffsetY);
+                            EditorGUILayout.PropertyField(leapVRDeviceOffsetZ);
+                            EditorGUILayout.PropertyField(leapVRDeviceOffsetTiltX);   
+                        }
+                        else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
+                        {
+                            // Display the transform property 
+                            EditorGUILayout.PropertyField(leapVRDeviceOrigin);
+                        }
+                    }
+
+                    // Display pinch thresholds
                     EditorGUILayout.PropertyField(enterPinchDistance);
-
                     EditorGUILayout.PropertyField(exitPinchDistance);
 
                     serializedObject.ApplyModifiedProperties();
