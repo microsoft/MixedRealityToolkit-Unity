@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -624,15 +625,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
                     }
 
-                    // This checks if the scriptable object reference is linking to an asset.
-                    // A local version of the scriptable won't be associated to an asset.
-                    // Depending on having a scriptable asset linked or referring to a local version of the scriptable
-                    // we're displaying different information as guidance for the user.
+                    // We have currently 4 different states to display to the user:
+                    // 1. the scriptable is local to the object instance
+                    // 2. the scriptable is a linked nested scriptable inside of the currently displayed prefab
+                    // 3. the scriptable is a linked nested scriptable inside of another prefab
+                    // 4. the scriptable is a shared standalone asset
+                    // Depending on the type of link we show the user the scriptable configuration either
+                    // editable inlined (case 1 & 2) or greyed out readonly (case 3 & 4)
                     bool isStoredAsset = AssetDatabase.Contains(scriptable.objectReferenceValue);
-                    if (isStoredAsset)
+                    bool isNestedInCurrentPrefab = false;
+                    var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                    if (prefabStage != null)
                     {
+                        var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                        isNestedInCurrentPrefab = (instancePath != "" && instancePath == prefabStage.prefabAssetPath);
+                    }
+                        
+                    if (isStoredAsset && !isNestedInCurrentPrefab)
+                    {
+                        bool isMainAsset = AssetDatabase.IsMainAsset(scriptable.objectReferenceValue);
                         var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                        EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                        if (isMainAsset)
+                        {
+                            EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                        }
+                        else
+                        {
+                            EditorGUILayout.HelpBox("Editing a nested " + scriptable.displayName + ", located inside of " + sharedAssetPath, MessageType.Warning);
+                        }
                         EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
 
                         // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
@@ -643,7 +663,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                     else
                     {
-                        EditorGUILayout.HelpBox("Editing a local version of "+ scriptable.displayName +".", MessageType.Info);
+                        if (isNestedInCurrentPrefab)
+                        {
+                            EditorGUILayout.HelpBox("Editing a nested version of " + scriptable.displayName + ".", MessageType.Info);
+                        }
+                        else
+                        {
+                            EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
+                        }
                         EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
                         DrawScriptableSubEditor(scriptable);
                     }
