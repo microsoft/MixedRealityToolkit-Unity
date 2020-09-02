@@ -4,8 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// The states with already defined state settting logic within an Interactive Element.
-    /// A CoreInteractionState can be added
+    /// A state with already defined state settting logic within an Interactive Element is considered a Core Interaction State.
     /// </summary>
     public enum CoreInteractionState
     {

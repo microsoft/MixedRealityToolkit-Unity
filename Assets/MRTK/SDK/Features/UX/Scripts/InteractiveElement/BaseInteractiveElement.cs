@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
+    /// <summary>
+    /// Base class for an Interaction Element.  Contains state management methods, event management and the state setting logic for
+    /// Core Interaction States.
+    /// </summary>
     public abstract class BaseInteractiveElement :
         MonoBehaviour,
         IMixedRealityFocusHandler
