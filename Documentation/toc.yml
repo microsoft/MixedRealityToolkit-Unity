@@ -21,18 +21,18 @@
       href: BuildAndDeploy.md
   - name: Packages and Release Notes
     items: 
-      - name: Release Notes
-        href: ReleaseNotes.md
-      - name: MRTK Packages
-        href: Packaging/MRTK_Packages.md
+    - name: Release Notes
+      href: ReleaseNotes.md
+    - name: MRTK Packages
+      href: Packaging/MRTK_Packages.md
   - name: Performance and Best Practices
     items: 
-      - name: Performance
-        href: Performance/PerfGettingStarted.md
-      - name: Hologram Stabilization
-        href: Hologram-Stabilization.md
-      - name: Using MRTK in large projects
-        href: LargeProjects.md
+    - name: Performance
+      href: Performance/PerfGettingStarted.md
+    - name: Hologram Stabilization
+      href: Hologram-Stabilization.md
+    - name: Using MRTK in large projects
+      href: LargeProjects.md
 - name: Architecture
   items:
   - name: Overview
