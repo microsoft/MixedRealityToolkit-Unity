@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Boolean HasVanishDelayElapsed()
         {
-            return Time.time - focusExitTime > vanishDelay;
+            return Time.unscaledTime - focusExitTime > vanishDelay;
         }
     }
 }
