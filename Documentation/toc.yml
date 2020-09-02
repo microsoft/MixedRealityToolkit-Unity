@@ -3,14 +3,14 @@
   items:
   - name: Installation Guide
     href: Installation.md
-  - name: Using the Unity Package Manager
-    href: usingupm.md
-  - name: MRTK configuration dialog
-    href: MRTK_Configuration_Dialog.md
-  - name: Getting started with MRTK and XR SDK
-    href: GettingStartedWithMRTKAndXRSDK.md
-  - name: MRTK and Managed Code Stripping
-    href: MRTK_and_managed_code_stripping.md
+  - name: Configuration 
+    items: 
+    - name: Using the Unity Package Manager
+      href: usingupm.md
+    - name: MRTK configuration dialog
+      href: MRTK_Configuration_Dialog.md
+    - name: Getting started with MRTK and XR SDK
+      href: GettingStartedWithMRTKAndXRSDK.md
   - name: Updates and Deployment
     items: 
     - name: Updating from earlier versions
@@ -33,6 +33,8 @@
       href: Hologram-Stabilization.md
     - name: Using MRTK in large projects
       href: LargeProjects.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
 - name: Architecture
   items:
   - name: Overview
