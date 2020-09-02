@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty useServiceInspectors;
         private SerializedProperty renderDepthBuffer;
 
-        private Func<bool>[] RenderProfileFuncs;
+        private Func<bool>[] renderProfileFuncs;
 
         private static readonly string[] ProfileTabTitles = {
             "Camera",
@@ -138,9 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
-            if (RenderProfileFuncs == null)
+            if (renderProfileFuncs == null)
             {
-                RenderProfileFuncs = new Func<bool>[]
+                renderProfileFuncs = new Func<bool>[]
                 {
                     () => {
                         bool changed = false;
@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             using (new EditorGUI.IndentLevelScope())
             {
-                changed |= RenderProfileFuncs[SelectedProfileTab]();
+                changed |= renderProfileFuncs[SelectedProfileTab]();
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
