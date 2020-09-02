@@ -79,8 +79,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private int clippingSideID;
         private CameraEventRouter cameraMethods;
 
-        // Keeping track of any clipping transformation to optimize material property block setting.
-        private bool clippingTransformChanged;
+        private bool isDirty;
+        /// <summary>
+        /// Keeping track of any field, property or transformation changes to optimize material property block setting.
+        /// </summary>
+        public bool IsDirty
+        {
+            get => isDirty;
+            set => isDirty = value;
+        }
 
         /// <summary>
         /// Adds a renderer to the list of objects this clipping primitive clips.
@@ -93,8 +100,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 if (!renderers.Contains(_renderer))
                 {
                     renderers.Add(_renderer);
-                    ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), true);
                 }
+
+                ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), gameObject.activeInHierarchy);
+                IsDirty = true;
             }
         }
 
@@ -244,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            CheckTranformChange();
+            CheckTransformChange();
 
             for (var i = renderers.Count - 1; i >= 0; --i)
             {
@@ -256,12 +265,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     continue;
                 }
 
-                if (clippingTransformChanged && _renderer.enabled)
+                if (IsDirty)
                 {
                     _renderer.GetPropertyBlock(materialPropertyBlock);
                     materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
                     UpdateShaderProperties(materialPropertyBlock);
                     _renderer.SetPropertyBlock(materialPropertyBlock);
+
+                    IsDirty = false;
                 }
             }
         }
@@ -310,11 +321,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private void CheckTranformChange()
+        private void CheckTransformChange()
         {
             if (transform.hasChanged)
             {
-                clippingTransformChanged = true;
+                IsDirty = true;
                 transform.hasChanged = false;
             }          
         }
