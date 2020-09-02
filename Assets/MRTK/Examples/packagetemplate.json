@@ -27,10 +27,12 @@
         "com.microsoft.mixedreality.toolkit.foundation": "%version%"
     },
     "files": [
+        "Common*",
         "Samples~*",
         "StandardAssets*",
-        "MRTK.Examples*",
         "License*",
+        "Microsoft.MixedReality.Toolkit.Examples*",
+        "MRTK.Examples*",
         "package.json.meta"
     ],
     %samples%
