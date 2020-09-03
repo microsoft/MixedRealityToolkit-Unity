@@ -40,7 +40,7 @@ The [Boundary System uses a configuration profile](ConfiguringBoundaryVisualizat
 ![Boundary Visualization Options](../../Documentation/Images/Boundary/BoundaryVisualizationProfile.png)
 
 > [!NOTE]
-> Users of the default profile ([DefaultMixedRealityBoundaryVisualizationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityBoundaryVisualizationProfile.asset)) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.
+> Users of the default profile, `DefaultMixedRealityBoundaryVisualizationProfile` (Assets/MRTK/SDK/Profiles) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.
 
 ## Build and deploy
 

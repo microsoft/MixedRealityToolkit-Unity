@@ -25,21 +25,16 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
     ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
 1. Navigate the Inspector panel to the Diagnostics System section and check Enable
-
-    ![Enable the Diagnostics System](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
-
 1. Select the Diagnostics System implementation
 
     ![Select the Diagnostics System Implementation](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
 > [!NOTE]
-> Users of the default profile, [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset), will have the diagnostics system pre-configured to use the [`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) object.
+> Users of the default profile, `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles), will have the diagnostics system pre-configured to use the [`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) object.
 
 ### Configure diagnostic options
 
 The diagnostics system uses a configuration profile to specify which components are to be displayed and to configure their settings. Please see [Configuring the Diagnostics System](ConfiguringDiagnostics.md) for more information pertaining to the available component settings.
-
-![Diagnostics Options](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png)
 
 > [!IMPORTANT]
 > While it is possible to use Unity's Play Mode while developing applications without requiring the build and deploy steps, it is important to evaluate the diagnostics system results using a compiled application running on the target hardware and platform.

@@ -1,0 +1,83 @@
+# Weekly build for compliance tasks
+pr: none
+trigger: none
+schedules:
+- cron: 0 8 * * 1  # every Monday at 8:00 UTC
+  displayName: Weekly build
+  branches:
+    include: 
+    - mrtk_development
+
+variables:
+- template: config/settings.yml
+- name: 'SOMWorkspaceID'
+  value: '9aee72fc-a4e1-4f86-8343-8bcb69b03955'
+- name: 'ComplianceBranch'
+  value: 'refs/heads/mrtk_development'
+
+jobs:
+- job: Compliance
+  timeoutInMinutes: 90
+  pool:
+    name: Analog N-1
+    demands:
+    - Unity2018.4.23f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  # the following tasks should only be run on mrtk_development branch, otherwise we risk issue being reported multiple times on topic/release branches
+  - task: PoliCheck@1
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], variables['ComplianceBranch']))
+    inputs:
+      inputType: 'Basic'
+      targetType: 'F'
+      targetArgument: '$(Build.SourcesDirectory)'
+      result: 'PoliCheck.xml'
+      optionsUEPATH: '$(Build.SourcesDirectory)\pipelines\config\PolicheckUserExclusion.xml'
+      SOMEnabled: true
+      uploadToSOM: true
+      workspaceId: $(SOMWorkspaceID)
+      uploadErrorLevel: 'Error'
+
+  - task: PoliCheck@1
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], variables['ComplianceBranch']))
+    inputs:
+      inputType: 'Basic'
+      targetType: 'F'
+      targetArgument: '$(Build.SourcesDirectory)'
+      result: 'PoliCheck.xml'
+      optionsUEPATH: '$(Build.SourcesDirectory)\pipelines\config\PolicheckUserExclusion.xml'
+      SOMEnabled: false
+      uploadToSOM: false
+
+  - task: CredScan@2
+    inputs:
+      toolMajorVersion: 'V2'
+      # suppressionsFile: '$(Build.SourcesDirectory)\pipelines\config\CredScanSuppressions.json'
+
+  - template: templates/compilemsbuild.yml
+    parameters:
+      UnityVersion: $(Unity2018VersionInternal)
+
+  - task: BinSkim@3
+    inputs:
+      InputType: 'Basic'
+      Function: 'analyze'
+      AnalyzeTarget: 'Microsoft.MixedReality.Toolkit.*.dll'
+      AnalyzeSymPath: '$(Build.SourcesDirectory)'
+      AnalyzeRecurse: true
+      toolVersion: '1.4.5'
+      AnalyzeVerbose: true
+
+  - task: PublishSecurityAnalysisLogs@2
+    inputs:
+      ArtifactName: 'CodeAnalysisLogs'
+      ArtifactType: 'Container'
+
+  - task: PostAnalysis@1
+    inputs:
+      BinSkim: true
+      CredScan: true
+      PoliCheck: true
+      PoliCheckBreakOn: 'Severity4Above'
+      ToolLogsNotFoundAction: 'Standard'

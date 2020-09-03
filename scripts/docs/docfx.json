@@ -1,0 +1,71 @@
+{
+  "metadata": [
+    {
+      // generate meta data for api docs
+      "src": [
+        {
+          "files": [ "**/*.sln", "**/*.cs" ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "src": "../../Assets"
+        }
+      ],
+      "dest": "../../obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        // generate html for api docs
+        "files": [ "**/*.yml"],
+        "src": "../../obj/api", // temp meta data folder from previous step
+        "dest": "./api"
+      },
+      {
+        // generate html for conceptual docs
+        "files": ["*.md", "*.yml", //root dir md and toc files
+                "Documentation/**/*.md", "Assets/**/*.md",
+				"Documentation/**/*.yml", "Assets/**/*.yml" // conceptual docs subfolders toc yml files
+                ],
+		"src": "../..",
+		"dest": "./"
+      }
+    ],
+    "resource": [
+      // resource files that will be copied over without modifications
+      {
+        // website related resource files
+        "files": ["index.html", "web/**"],
+		"dest": "./"
+      },
+      {
+        // resources documentation is referring to (eg images, videos, audio, etc)
+		"files": ["**/*.*"],
+		"src": "../../Documentation/Images",
+		"dest": "./Documentation/Images"
+      },
+    ],
+    "template": [
+        // gets default template (html/css/jscript) from docfx and copies subsequent templates on top
+        "default",
+        "templates/mrtk"
+    ],
+    "globalMetadata": {
+      // global docfx config - see docfx documentation for more config params (https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
+      "_appTitle": "Mixed Reality Toolkit Documentation",
+      "_enableSearch": true,
+      "_disableNavbar": false,
+      "_appLogoPath": "./Documentation/Images/mrt_logo_icon.png",
+      "_appFaviconPath": "./Documentation/Images/favicon.ico",
+      // section contribute start
+	  // remove this section if you want to restore default behavior which publishes a version of the docs that keeps the "improve this doc" link pointing to the publishing branch
+      "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
+        "branch": "mrtk_development"
+      }
+	  // section contribute end
+    },
+    "markdownEngineName": "markdig",
+    "dest": "./doc",
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ] //msdn xref service for resolving crefs
+  }
+}
