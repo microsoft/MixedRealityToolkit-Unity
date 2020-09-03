@@ -216,10 +216,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region Protected Members
+        /// <summary>
+        /// Float value that holds the starting value of the slider.
+        /// </summary>
         protected float startSliderValue;
+        /// <summary>
+        /// Starting position of mixed reality pointer in world space
+        /// Used to track pointer movement
+        /// </summary>
         protected Vector3 startPointerPosition;
+        /// <summary>
+        /// Starting position of slider in world space
+        /// Used to track slider movement
+        /// </summary>
         protected Vector3 startSliderPosition;
+        /// <summary>
+        /// Interface for handling pointer being used in UX interaction.
+        /// </summary>
         protected IMixedRealityPointer activePointer;
+        /// <summary>
+        /// Position offset for slider handle in world space.
+        /// </summary>
         protected Vector3 sliderThumbOffset = Vector3.zero;
         #endregion
 

@@ -556,7 +556,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
@@ -2895,6 +2895,16 @@ PrefabInstance:
       propertyPath: sliderStepDivisions
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 470391161006487335, guid: bf032ee87cdd3f34682d4db5b8d03e3d,
+        type: 3}
+      propertyPath: sliderInitStep
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 470391161006487335, guid: bf032ee87cdd3f34682d4db5b8d03e3d,
+        type: 3}
+      propertyPath: sliderValue
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7307063429480177090, guid: bf032ee87cdd3f34682d4db5b8d03e3d,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -3158,7 +3168,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434851, guid: bf032ee87cdd3f34682d4db5b8d03e3d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434851, guid: bf032ee87cdd3f34682d4db5b8d03e3d,
         type: 3}
@@ -4068,7 +4078,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
@@ -5112,7 +5122,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
@@ -5333,7 +5343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 1309776862}
-  sliderValue: 0.5
+  sliderValue: 0.355
   trackVisuals: {fileID: 1309776858}
   tickMarks: {fileID: 1309776857}
   thumbVisuals: {fileID: 1309776860}
@@ -5688,12 +5698,12 @@ Transform:
   m_Children:
   - {fileID: 1991327016}
   - {fileID: 245639567}
-  - {fileID: 1106542585}
   - {fileID: 8119976}
+  - {fileID: 1106542585}
   - {fileID: 258672078}
-  - {fileID: 1801926010}
   - {fileID: 690074684}
   - {fileID: 1309776856}
+  - {fileID: 1801926010}
   - {fileID: 241566325}
   - {fileID: 1810040792}
   - {fileID: 1457671031}
@@ -7071,7 +7081,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434851, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
@@ -7292,7 +7302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 1801926013}
-  sliderValue: 0.5
+  sliderValue: 0.45
   trackVisuals: {fileID: 1801926015}
   tickMarks: {fileID: 1801926014}
   thumbVisuals: {fileID: 1801926016}

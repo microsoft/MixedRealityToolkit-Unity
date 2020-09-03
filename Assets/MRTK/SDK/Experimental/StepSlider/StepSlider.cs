@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// A slider with a fixed number of step values that can be moved by grabbing / pinching a slider thumb
+    /// Number of steps defaults to 0
+    /// </summary>
     [AddComponentMenu("MRTK/SDK/Experimental/StepSlider")]
     public class StepSlider : PinchSlider, IMixedRealityPointerHandler
     {
@@ -13,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region Serialized Fields and Properties
         [Experimental]
         [SerializeField]
-        [Tooltip("Number of subdivisions of slider values.")]
+        [Tooltip("Number of subdvisions the slider is split into.")]
         
         private int sliderStepDivisions = 0;
         /// <summary>
@@ -43,13 +47,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         new void Start()
         {
             updateStepVal();
+            checkSliderInit();
             base.Start();
         }
         #endregion
 
         #region Private Methods
         /// <summary>
-        /// Private method used to calculate and update the slider step divisions based on the number provided 
+        /// Private method used to calculate and update the slider step divisions based on the sliderStepDivisions provided 
+        /// Slider value initialized to provided sliderInitStep value
         /// </summary>
         private void updateStepVal()
         {
@@ -58,13 +64,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 var startVal = 0.0f;
                 var endVal = 1.0f;
                 sliderStepVal = (endVal - startVal) / sliderStepDivisions;
-                SliderValue = (startVal + (sliderStepDivisions / 2) * sliderStepVal);
             }
+        }
+
+        /// <summary>
+        /// Private method used to adjust initial slider value to stepwise values
+        /// </summary>
+        private void checkSliderInit()
+        {
+            var percent = SliderValue / sliderStepVal;
+            var value = ((sliderStepVal * Mathf.FloorToInt(percent)));
+            SliderValue = Mathf.Clamp(value, 0.0f, 1.0f);
         }
         #endregion
 
         #region IMixedRealityPointerHandler
 
+        /// <summary>
+        /// Called every frame a pointer is down. Can be used to implement drag-like behaviors.
+        /// Uses member sliderStepVal to move up and down the steps on the slider.
+        /// </summary>
         public new void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             if (eventData.Pointer == activePointer && !eventData.used)
