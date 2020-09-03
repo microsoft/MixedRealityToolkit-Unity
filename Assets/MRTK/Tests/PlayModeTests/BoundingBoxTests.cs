@@ -45,44 +45,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a bounding box at 0, 0, -1.5f
         /// box is at scale .5, .5, .5
+        /// Target is set to its child if targetIsChild is true
         /// </summary>
-        private BoundingBox InstantiateSceneAndDefaultBbox()
+        private BoundingBox InstantiateSceneAndDefaultBbox(bool targetIsChild = false)
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = boundingBoxStartCenter;
-            cube.transform.localScale = boundingBoxStartScale;
-            BoundingBox bbox = cube.AddComponent<BoundingBox>();
-
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(cube.transform.position);
-            });
-
-            bbox.Target = cube;
-            bbox.Active = true;
-
-            return bbox;
-        }
-
-        /// <summary>
-        /// Instantiates a bounding box at 0, 0, -1.5f
-        /// box is at scale .5, .5, .5
-        /// Target is set to its child
-        /// </summary>
-        private BoundingBox InstantiateSceneAndDefaultBboxWithChildTarget()
-        {
-            
-            var bboxGameObject = new GameObject();
+            var bboxGameObject = targetIsChild ? new GameObject() : GameObject.CreatePrimitive(PrimitiveType.Cube);
             bboxGameObject.transform.position = boundingBoxStartCenter;
             bboxGameObject.transform.localScale = boundingBoxStartScale;
             BoundingBox bbox = bboxGameObject.AddComponent<BoundingBox>();
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.parent = bboxGameObject.transform;
-            cube.transform.localScale = Vector3.one;
-            cube.transform.localPosition = Vector3.zero;
-            cube.transform.localRotation = Quaternion.identity;
+            GameObject cube = null;
+            if (targetIsChild)
+            {
+                cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.parent = bboxGameObject.transform;
+                cube.transform.localScale = Vector3.one;
+                cube.transform.localPosition = Vector3.zero;
+                cube.transform.localRotation = Quaternion.identity;
+            }
 
             MixedRealityPlayspace.PerformTransformation(
             p =>
@@ -91,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(bboxGameObject.transform.position);
             });
 
-            bbox.Target = cube;
+            bbox.Target = targetIsChild ? cube : bboxGameObject;
             bbox.Active = true;
 
             return bbox;
@@ -367,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float minScale = 0.5f;
             float maxScale = 2f;
 
-            var bbox = InstantiateSceneAndDefaultBboxWithChildTarget();
+            var bbox = InstantiateSceneAndDefaultBbox(targetIsChild: true);
             var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
@@ -401,11 +380,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Assert scale at min
             Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, bbox.Target.transform.localScale);
-
-            GameObject.Destroy(bbox.gameObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
-
         }
 
         /// <summary>
