@@ -714,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
-          "hash": "hNTg45UjXU2hRvTbzhh5Sg=="
+          "hash": "gx4XJKpsH98GjLoyqIQ0gg=="
         }
       },
       "is_incremental": false,
@@ -2460,39 +2460,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapHandsGif3.gif",
       "output": {
         "resource": {
@@ -2530,6 +2497,39 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerDesk.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerDesk.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerHeadset.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerHeadset.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerProfile.png"
         }
       },
       "is_incremental": false,
@@ -17107,7 +17107,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.html",
-          "hash": "LfyvMu0rQUNTiuiW40EApg=="
+          "hash": "yOBa7/OKmvHaTnZyHdyHjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapVRDeviceOffsetMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapVRDeviceOffsetMode.html",
+          "hash": "WcBkXyZsD8kmh35l88AY7w=="
         }
       },
       "is_incremental": false,
@@ -17119,7 +17131,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.html",
-          "hash": "oS7kiqhqQFSZ/fi2yJ0INA=="
+          "hash": "qiExifqrgDCoygrt3jGc6A=="
         }
       },
       "is_incremental": false,
@@ -17131,7 +17143,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.LeapMotionDeviceManagerProfileInspector.html",
-          "hash": "8bgzoNLKnp5bbHKfJ0maXg=="
+          "hash": "H6USEIEu8ywa6+VPM6g4Tg=="
         }
       },
       "is_incremental": false,
@@ -28903,7 +28915,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "SownNov+jTwh0z5aU+Xn0w=="
+          "hash": "/moip+BJBbCNB97D2z4h4Q=="
         }
       },
       "is_incremental": false,
@@ -28966,13 +28978,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -28986,10 +28991,17 @@
           "total_file_count": 159,
           "skipped_file_count": 0
         },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1684,
+          "total_file_count": 1685,
           "skipped_file_count": 0
         }
       }
