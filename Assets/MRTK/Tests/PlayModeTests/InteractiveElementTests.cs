@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests adding listeners to the event configuration of the focus state.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSettingEventConfiguraitonsOfATrackedCoreState()
         {

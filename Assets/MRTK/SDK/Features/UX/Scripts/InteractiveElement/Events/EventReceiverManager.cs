@@ -52,10 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Send event data to an event receiver for a given state.
+        /// Invoke a state event with its associated event data.
         /// </summary>
-        /// <param name="stateName"></param>
-        /// <param name="eventData"></param>
+        /// <param name="stateName">The name of the state</param>
+        /// <param name="eventData">The event data for the state event</param>
         public void InvokeStateEvent(string stateName, BaseEventData eventData)
         {
             BaseEventReceiver receiver = (BaseEventReceiver)EventReceivers.Find((eventReceiver) => eventReceiver.Name.StartsWith(stateName));

@@ -268,8 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <summary>
         /// Gets and sets state given the state name and state value.
         /// </summary>
-        /// <param name="stateName"></param>
-        /// <param name="value"></param>
+        /// <param name="stateName">The name of the state to set</param>
+        /// <param name="value">The new state value</param>
         /// <returns>The state that was set</returns>
         public InteractionState SetState(string stateName, int value)
         {
