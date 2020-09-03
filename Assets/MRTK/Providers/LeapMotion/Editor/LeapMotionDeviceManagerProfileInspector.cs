@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         {
             base.OnEnable();
 
-            instance = (LeapMotionDeviceManagerProfile)target;
+            instance = target as LeapMotionDeviceManagerProfile;
             leapControllerOrientation = serializedObject.FindProperty("leapControllerOrientation");
             leapControllerOffset = serializedObject.FindProperty("leapControllerOffset");
 
