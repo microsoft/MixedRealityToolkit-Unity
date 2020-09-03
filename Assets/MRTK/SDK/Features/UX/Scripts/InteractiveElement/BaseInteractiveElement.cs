@@ -219,14 +219,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             StateManager.AddNewStateWithEventConfiguration(stateName, eventConfiguration);
         }
 
+        /// <summary>
+        /// Check if a state is currently being tracked.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
         public bool IsStateTracking(string stateName)
         {
-           if (StateManager.GetState(stateName) == null)
-           {
-                return false;
-           }
-           
-           return true;
+            return StateManager.IsStateTracking(stateName);
+        }
+
+        /// <summary>
+        /// Check if a state is currently active.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is active, false if the state is not active</returns>
+        public bool IsStateActive(string stateName)
+        {
+            return StateManager.IsStateActive(stateName);
         }
 
         #endregion

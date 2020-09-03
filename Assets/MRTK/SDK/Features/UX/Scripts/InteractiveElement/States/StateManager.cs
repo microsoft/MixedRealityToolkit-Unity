@@ -459,12 +459,55 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     Debug.LogError($"The state name {stateName} is a defined core state, please use AddCoreState() to add to Tracked States.");
                     return null;
                 }
-
             }
             else
             {
                 Debug.LogError($"The {stateName} state is already tracking, please use another name.");
                 return state;
+            }
+        }
+
+        /// <summary>
+        /// Check if a state is currently being tracked.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
+        public bool IsStateTracking(string stateName)
+        {
+            InteractionState state = GetState(stateName);
+            
+            if (state != null)
+            {
+                return true;
+            }
+
+            return false;    
+        }
+
+        /// <summary>
+        /// Check if a state is currently active.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is active, false if the state is not active</returns>
+        public bool IsStateActive(string stateName)
+        {
+            InteractionState state = GetState(stateName);
+
+            if (state != null)
+            {
+                if (state.Active == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.LogError($"The {stateName} state is not being tracked, add this state using AddNewState(state) to track whether or not it is active.");
+                return false;
             }
         }
 
