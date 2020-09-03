@@ -116,7 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                             leapVRDeviceOriginTransform = EditorGUILayout.ObjectField("Leap VR Device Origin", leapVRDeviceOrigin.objectReferenceValue, typeof(Transform), true) as Transform;
 
                             instance.LeapVRDeviceOrigin = leapVRDeviceOriginTransform;
-
                         }
                     }
 
