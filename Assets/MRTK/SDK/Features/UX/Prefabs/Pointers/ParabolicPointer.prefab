@@ -455,8 +455,8 @@ MonoBehaviour:
   sphereCastRadius: 0.1
   LineColorSelected:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0, g: 0, b: 1, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -484,8 +484,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   LineColorValid:
     serializedVersion: 2
-    key0: {r: 0, g: 1, b: 0, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -501,8 +501,8 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 3277
-    atime2: 62258
+    atime1: 1311
+    atime2: 64224
     atime3: 65535
     atime4: 0
     atime5: 0
@@ -571,8 +571,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -650,10 +650,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}
-  PointerAudioSource: {fileID: 5571717125842689191}
-  TeleportRequestedClip: {fileID: 8300000, guid: a16c53885bdbc54469088880ea44a9fd,
-    type: 3}
-  TeleportCompletedClip: {fileID: 0}
+  pointerAudioSource: {fileID: 0}
+  teleportRequestedClip: {fileID: 0}
+  teleportCompletedClip: {fileID: 0}
   pointerOrientation: 0
   minParabolaVelocity: 5
   maxParabolaVelocity: 20

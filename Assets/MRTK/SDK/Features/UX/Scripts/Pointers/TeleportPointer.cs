@@ -122,13 +122,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         #region Audio Management
         [Header("Audio management")]
         [SerializeField]
-        private AudioSource PointerAudioSource = null;
+        private AudioSource pointerAudioSource = null;
 
         [SerializeField]
-        private AudioClip TeleportRequestedClip = null;
+        private AudioClip teleportRequestedClip = null;
 
         [SerializeField]
-        private AudioClip TeleportCompletedClip = null;
+        private AudioClip teleportCompletedClip = null;
         #endregion
 
         protected override void OnEnable()
@@ -405,9 +405,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportRequestRaised = true;
 
                             CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
-                            if (PointerAudioSource != null && TeleportRequestedClip != null)
+                            if (pointerAudioSource != null && teleportRequestedClip != null)
                             {
-                                PointerAudioSource.PlayOneShot(TeleportRequestedClip);
+                                pointerAudioSource.PlayOneShot(teleportRequestedClip);
                             }
                         }
                         else if (canMove)
@@ -475,9 +475,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                         {
                             CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
-                            if (PointerAudioSource != null && TeleportCompletedClip != null)
+                            if (pointerAudioSource != null && teleportCompletedClip != null)
                             {
-                                PointerAudioSource.PlayOneShot(TeleportCompletedClip);
+                                pointerAudioSource.PlayOneShot(teleportCompletedClip);
                             }
                         }
                     }
