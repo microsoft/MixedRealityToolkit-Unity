@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f726b4cb3605994fac74d508110ec62, type: 3}
   m_Name: OculusXRSDKDeviceManager
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   ovrCameraRigPrefab: {fileID: 2343937678421323989, guid: 69a746aa83d0d0e45b4e2d33eab0fff4,
     type: 3}
   renderAvatarHandsInsteadOfControllers: 1
