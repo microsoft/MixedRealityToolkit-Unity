@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// Tests for a BaseInteractiveElement and the StateVisualizer
+    /// Tests for an Interactive Element 
     /// </summary>
     public class InteractiveElementTests : BasePlayModeTests
     {
@@ -112,6 +112,80 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(myNewState.Value, 0);
         }
 
+        /// <summary>
+        /// Test the OnStateActivated event in the State Manager.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestOnStateActivatedNewState()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Create a new state
+            interactiveElement.AddNewState("MyNewState");
+
+            bool stateActivated = false;
+
+            // Use the OnStateActivated event in the State Manager to set stateActivated
+            interactiveElement.StateManager.OnStateActivated.AddListener((state) =>
+            {
+                if (state.Name == "MyNewState")
+                {
+                    stateActivated = true;
+                }
+            });
+
+            // Set the state on
+            interactiveElement.SetStateOn("MyNewState");
+
+            // Make sure the state was activated
+            Assert.True(stateActivated);  
+        }
+
+        /// <summary>
+        /// Test the internal setting of the Default state.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDefaultStateSetting()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            int newStateCount = 5;
+
+            // Add new states
+            for (int i = 0; i < newStateCount; i++)
+            {
+                interactiveElement.AddNewState("State"+ i.ToString());
+            }
+
+            yield return null;
+
+            // The Default state should only be active if no other states are active
+            Assert.True(interactiveElement.IsStateActive("Default"));
+
+            // Set each new states to active
+            for (int i = 0; i < newStateCount; i++)
+            {
+                interactiveElement.SetStateOn("State" + i.ToString());
+
+                // If any other state is active, the Default state should not be active 
+                Assert.False(interactiveElement.IsStateActive("Default"));
+            }
+
+            // Set all states to not be active 
+            for (int i = 0; i < newStateCount; i++)
+            {
+                interactiveElement.SetStateOff("State" + i.ToString());   
+            }
+
+            yield return null;
+
+            // After all the states are deactivated, the Default state should be active
+            Assert.True(interactiveElement.IsStateActive("Default"));
+        }
 
         #region Interaction Tests Helpers
 
@@ -139,7 +213,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #endregion
-
-
     }
 }
