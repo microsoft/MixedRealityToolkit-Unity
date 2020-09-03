@@ -687,8 +687,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(control);
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // move camera to look at rotation sphere
             CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
@@ -720,9 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -857,8 +856,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
@@ -884,9 +884,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -1024,8 +1022,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return VerifyInitialBoundsCorrect(control);
             control.TranslationHandlesConfig.ShowHandleForZ = true;
             control.SmoothingActive = false;
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // move camera to look at translation sphere
             Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
@@ -1052,9 +1051,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
