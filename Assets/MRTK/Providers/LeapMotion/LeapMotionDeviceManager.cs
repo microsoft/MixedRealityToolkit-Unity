@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// </summary>
         private Vector3 leapHandsOffset => SettingsProfile.LeapControllerOffset;
 
-        // If the Leap Controller Orientation is the headset, then expose the settings for controller offset while using the LeapXRService Provider
+        // If the Leap Controller Orientation is the Headset, controller offset settings will be exposed in the inspector while using the LeapXRServiceProvider
         private LeapVRDeviceOffsetMode leapVRDeviceOffsetMode => SettingsProfile.LeapVRDeviceOffsetMode;
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                     }
                     else
                     {
-                        Debug.LogError("The LeapDeviceOrigin Transform was not set in the LeapMotionDeviceManagerProfile and is null");
+                        Debug.LogError("The Leap VR Device Origin Transform was not set in the LeapMotionDeviceManagerProfile and is null.");
                     }
                 }
             }
