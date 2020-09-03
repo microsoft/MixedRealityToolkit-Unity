@@ -172,13 +172,6 @@ Have fun exploring the scene! You can learn more about the UI controls [in the h
 
 Congratulations, you just used your first MRTK scene! Now onto creating your own experiences.
 
-## Getting help
-
-If you run into issues caused by MRTK or otherwise have questions about how to do something, there are a few resources that can help:
-
-* For bug reports, please [file an issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/new/choose) on the GitHub repo.
-* For questions, please reach out on either [StackOverflow](https://stackoverflow.com/questions/tagged/mrtk) or the [mixed-reality-toolkit channel](https://holodevelopers.slack.com/messages/C2H4HT858) on Slack. You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
-
 ## Upgrading from the HoloToolkit (HTK/MRTK v1)
 
 There is no direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it's possible to import MRTK into your HoloToolkit project and migrate your implementation. For more information, see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
