@@ -1,5 +1,5 @@
-- name: Getting Started with MRTK
-  href: GettingStartedWithTheMRTK.md
+- name: Welcome to MRTK
+  href: WelcomeToMRTK.md
   items:
   - name: Installation Guide
     href: Installation.md
