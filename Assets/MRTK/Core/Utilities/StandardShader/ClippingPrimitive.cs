@@ -271,10 +271,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
                     UpdateShaderProperties(materialPropertyBlock);
                     _renderer.SetPropertyBlock(materialPropertyBlock);
-
-                    IsDirty = false;
-                }
+                }              
             }
+            
+            IsDirty = false;
         }
 
         protected abstract void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock);
