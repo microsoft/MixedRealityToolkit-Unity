@@ -2,7 +2,7 @@
 
 ![Solver](Images/Solver/MRTK_Solver_Main.png)
 
-Solvers are components that facilitate the means of calculating an object's position & orientation according to a predefine algorithm. An example may be placing an object on the surface the user's gaze raycast currently hits.  
+Solvers are components that facilitate the means of calculating an object's position & orientation according to a predefined algorithm. An example may be placing an object on the surface the user's gaze raycast currently hits.
 
 Furthermore, the Solver system deterministically defines an order of operations for these transform calculations as there is no reliable way to specify to Unity the update order for components.
 
