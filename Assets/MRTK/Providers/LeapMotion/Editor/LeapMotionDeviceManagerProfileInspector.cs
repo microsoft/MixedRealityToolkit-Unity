@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.LeapMotion.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
 {
@@ -33,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected SerializedProperty exitPinchDistance;
 
         private const string leapDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
+
+        // Used for setting the leapVRDeviceOrigin object reference value
+        Transform leapVRDeviceOriginTransform;
 
         protected override void OnEnable()
         {
@@ -108,7 +112,11 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
                         else if (leapVRDeviceOffsetMode.enumValueIndex == (int)LeapVRDeviceOffsetMode.Transform)
                         {
                             // Display the transform property 
-                            EditorGUILayout.PropertyField(leapVRDeviceOrigin);
+                            // EditorGUILayout.PropertyField() did not allow the setting the transform property in editor 
+                            leapVRDeviceOriginTransform = EditorGUILayout.ObjectField("Leap VR Device Origin", leapVRDeviceOrigin.objectReferenceValue, typeof(Transform), true) as Transform;
+
+                            instance.LeapVRDeviceOrigin = leapVRDeviceOriginTransform;
+
                         }
                     }
 
