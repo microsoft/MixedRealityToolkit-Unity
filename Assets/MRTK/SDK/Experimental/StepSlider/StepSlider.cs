@@ -46,8 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region Unity methods
         new void Start()
         {
-            updateStepVal();
-            checkSliderInit();
+            UpdateStepVal();
+            CheckSliderInit();
             base.Start();
         }
         #endregion
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Private method used to calculate and update the slider step divisions based on the sliderStepDivisions provided 
         /// Slider value initialized to provided sliderInitStep value
         /// </summary>
-        private void updateStepVal()
+        private void UpdateStepVal()
         {
             if (SliderStepDivisions >= 1)
             {
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Private method used to adjust initial slider value to stepwise values
         /// </summary>
-        private void checkSliderInit()
+        private void CheckSliderInit()
         {
             var percent = SliderValue / sliderStepVal;
             var value = ((sliderStepVal * Mathf.FloorToInt(percent)));
