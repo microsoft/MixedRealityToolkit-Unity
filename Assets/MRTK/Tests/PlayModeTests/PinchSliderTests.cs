@@ -115,8 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
 
             // Set up ggv simulation
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             var rightHand = new TestHand(Handedness.Right);
             Vector3 initialPos = new Vector3(0.05f, 0, 1.0f);
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
-            PlayModeTestUtilities.PopControllerSimulationProfile();
+            iss.ControllerSimulationMode = oldSimMode;
         }
 
         /// <summary>
