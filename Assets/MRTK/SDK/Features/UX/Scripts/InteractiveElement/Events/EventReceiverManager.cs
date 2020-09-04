@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="eventData">The event data for the state event</param>
         public void InvokeStateEvent(string stateName, BaseEventData eventData)
         {
-            BaseEventReceiver receiver = (BaseEventReceiver)EventReceivers.Find((eventReceiver) => eventReceiver.Name.StartsWith(stateName));
+            BaseEventReceiver receiver = EventReceivers.Find((eventReceiver) => eventReceiver.Name.StartsWith(stateName));
 
             if (receiver != null)
             {
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public BaseInteractionEventConfiguration GetEventConfiguration(string stateName)
         {
             // Find the event receiver that has the state name in it and return the configuration
-            BaseEventReceiver eventReceiver = (BaseEventReceiver)EventReceivers.Find((receiver) => receiver.Name.StartsWith(stateName));
+            BaseEventReceiver eventReceiver = EventReceivers.Find((receiver) => receiver.Name.StartsWith(stateName));
 
             if (eventReceiver == null)
             {
