@@ -16,7 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         [Tooltip("The ScrollingObjectCollection to navigate")]
         private ScrollingObjectCollection scrollView;
 
-        public ScrollingObjectCollection Scrollview
+        /// <summary>
+        /// The ScrollingObjectCollection to navigate.
+        /// </summary>
+        public ScrollingObjectCollection ScrollView
         {
             get
             {
@@ -32,9 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
+        /// <summary>
+        /// Smoothly moves the scroll container a relative number of tiers of cells.
+        /// </summary>
         public void ScrollByTier(int amount)
         {
-            Debug.Assert(Scrollview != null, "Scroll view needs to be defined before using pagination.");
+            Debug.Assert(ScrollView != null, "Scroll view needs to be defined before using pagination.");
             scrollView.MoveByTiers(amount);
         }
     }

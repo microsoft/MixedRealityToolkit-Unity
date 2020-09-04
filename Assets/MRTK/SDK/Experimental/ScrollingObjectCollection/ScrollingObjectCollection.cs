@@ -115,7 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        // Workaround for serializing mask enabled as the editor dot not handle property setters
+        // Helps catching any changes on the mask enabled value made from the inspector.
+        // With the custom editor, the mask enabled field is changed before mask enabled setter is called.
         private bool wasMaskEnabled = true;
 
         [SerializeField]
@@ -886,7 +887,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             transform.rotation = originalRotation;
         }
 
-        // Setting  up the initial transform values for the scrolling interaction collider and near touchable.
+        // Setting up the initial transform values for the scrolling interaction collider and near touchable.
         private void SetupScrollingInteractionCollider()
         {
             // Boundaries will be defined by direct manipulation of the scroll interaction components
@@ -1611,9 +1612,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Checks visibility of scroll content by iterating through all content renderers and colliders.
         /// All inactive content objects and colliders are reactivated during visibility restoration. 
         /// </summary>
-        private void ManageVisibility(bool isRestoring = false)
+        private void ManageVisibility(bool isRestoringVisibility = false)
         {
-            if (!MaskEnabled && !isRestoring)
+            if (!MaskEnabled && !isRestoringVisibility)
             {
                 return;
             }
@@ -1622,7 +1623,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
 
             Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
-            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList(); 
+            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
 
             // Remove all renderers from clipping primitive that are not part of scroll content
             foreach (var clippedRenderer in clippedRenderers)
@@ -1642,13 +1643,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             foreach (var renderer in contentRenderers)
             {
                 // All content renderers should be added to clipping primitive
-                if (!isRestoring && MaskEnabled && !clippedRenderers.Contains(renderer))
+                if (!isRestoringVisibility && MaskEnabled && !clippedRenderers.Contains(renderer))
                 {
                     renderersToClip.Add(renderer);
                 }
 
                 // Complete or partialy visible renders should be clipped and its game object should be active
-                if (isRestoring
+                if (isRestoringVisibility
                     || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
                     || clippingThresholdBounds.Intersects(renderer.bounds)) 
                 {
@@ -1679,7 +1680,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 foreach (var collider in colliders)
                 {
                     // Disabling content colliders during drag to stop interaction even if game object is inactive
-                    if (!isRestoring && IsDragging)
+                    if (!isRestoringVisibility && IsDragging)
                     {
                         if (collider.enabled)
                         {
@@ -1690,7 +1691,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
 
                     // No need to manage collider visibility in case game object is inactive and no pointer is dragging the scroll
-                    if (!isRestoring && !collider.gameObject.activeSelf)
+                    if (!isRestoringVisibility && !collider.gameObject.activeSelf)
                     {
                         continue;
                     }
@@ -1704,7 +1705,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
 
                     // Completely or partially visible colliders should be enabled if scroll is not drag engaged
-                    if (isRestoring || outerClippingThresholdBounds.ContainsBounds(collider.bounds))
+                    if (isRestoringVisibility || outerClippingThresholdBounds.ContainsBounds(collider.bounds))
                     {
                         if (!wasColliderEnabled)
                         {
@@ -1727,7 +1728,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             ClippingBoundsCollider.enabled = false;
 
-            if(!isRestoring)
+            if (!isRestoringVisibility)
             {
                 ReconcileClippingContent();
             }
@@ -2013,6 +2014,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            // Current pointer owns scroll interaction until scroll release happens. Ignoring any interaction with other pointers.
             if (currentPointer != null)
             {
                 return;
@@ -2066,6 +2068,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            // Current pointer owns scroll interaction until scroll release happens. Ignoring any interaction with other pointers.
             if (currentPointer != null)
             {
                 return;
