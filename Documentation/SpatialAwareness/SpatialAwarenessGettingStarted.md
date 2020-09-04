@@ -23,9 +23,9 @@ The Mixed Reality Toolkit ships with a few default pre-configured profiles. Some
 
 | Profile | System Enabled by Default |
 | --- | --- |
-| [DefaultHoloLens1ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens1/DefaultHoloLens1ConfigurationProfile.asset) | False |
-| [DefaultHoloLens2ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset) | False |
-| [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) | True |
+| `DefaultHoloLens1ConfigurationProfile` (Assets/MRTK/SDK/Profiles/HoloLens1) | False |
+| `DefaultHoloLens2ConfigurationProfile` (Assets/MRTK/SDK/Profiles/HoloLens2) | False |
+| `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) | True |
 
 1. Select the MixedRealityToolkit object in the scene hierarchy to open in the Inspector Panel.
 
@@ -57,7 +57,7 @@ The Spatial Awareness system is similar in that data providers supply the system
 1. [Modify configuration properties on the observer](ConfiguringSpatialAwarenessMeshObserver.md) as necessary
 
 > [!NOTE]
-> Users of the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
+> Users of the `DefaultMixedRealityToolkitConfigurationProfile` (Assets/MRTK/SDK/Profiles) will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
 the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class.
 
 ### Build and deploy

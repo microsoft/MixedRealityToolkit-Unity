@@ -58,6 +58,6 @@ There are two principal chains of events, depending on user input:
 
 ## Example scene
 
-The **HandInteractionGestureEventsExample** scene in `MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` shows how to use the pointer Result to spawn an object at the hit location.
+The **HandInteractionGestureEventsExample** (Assets/MRTK/Examples/Demos/HandTracking/Scenes) scene shows how to use the pointer Result to spawn an object at the hit location.
 
-[Gesture Tester script](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs) is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.
+The `GestureTester` (Assets/MRTK/Examples/Demos/HandTracking/Script) script is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.

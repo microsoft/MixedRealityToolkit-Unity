@@ -36,7 +36,7 @@ of one or more services. Components that implement IMixedRealityServiceRegistrar
 adding and removing the data within the MixedRealityServiceRegistry. The [MixedRealityToolkit](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit)
 object is one such component.
 
-Other registrars can be found in the MixedRealityToolkit.SDK.Experimental.Features
+Other registrars can be found in the MRTK/SDK/Experimental/Features
 folder. These components can be used to add single service (ex: Spatial Awareness) support
 to an application. These single service managers are listed below.
 

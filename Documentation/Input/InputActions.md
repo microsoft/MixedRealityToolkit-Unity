@@ -58,6 +58,6 @@ If you want more control, you can implement the [`IMixedRealityInputActionHandle
 
 ## Examples
 
-See `MixedRealityToolkit.Examples\Demos\Input\Scenes\InputActions` for an example scene showing how to create an action, map it to controller, speech and gesture inputs and use it to rotate an object on command.
+See `MRTK/Examples/Demos/Input/Scenes/InputActions` for an example scene showing how to create an action, map it to controller, speech and gesture inputs and use it to rotate an object on command.
 
 <img src="../../Documentation/Images/Input/InputActionsExample.PNG" style="max-width:100%;">

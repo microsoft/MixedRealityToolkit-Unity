@@ -103,7 +103,7 @@ observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.Occlusion;
 
 Components can implement the `IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>` and then register with the Spatial Awareness system to receive Mesh Observation events.
 
-The [DemoSpatialMeshHandler](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/SpatialAwareness/Scripts/DemoSpatialMeshHandler.cs) script is a useful example and starting point for listening to Mesh Observer events.
+The `DemoSpatialMeshHandler` (Assets/MRTK/Examples/Demos/SpatialAwareness/Scripts) script is a useful example and starting point for listening to Mesh Observer events.
 
 This is a simplified example of *DemoSpatialMeshHandler* script and Mesh Observation event listening.
 

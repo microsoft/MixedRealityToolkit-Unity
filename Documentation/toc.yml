@@ -3,22 +3,28 @@
   items:
   - name: Release Notes
     href: ReleaseNotes.md
-  - name: MRTK Package Contents
-    href: MRTK_PackageContents.md
+  - name: MRTK Packages
+    href: Packaging/MRTK_Packages.md
   - name: Updating from earlier versions
     href: Updating.md
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
-  - name: NuGet Packages
-    href: MRTKNuGetPackage.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
+  - name: Using the Unity Package Manager
+    href: usingupm.md
+  - name: MRTK configuration dialog
+    href: MRTK_Configuration_Dialog.md
   - name: Getting started with MRTK and XR SDK
     href: GettingStartedWithMRTKAndXRSDK.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
+  - name: Using MRTK in large projects
+    href: LargeProjects.md
 - name: Architecture
   items:
   - name: Overview
@@ -59,6 +65,10 @@
     items: 
     - name: Configure MRTK for iOS and Android
       href: CrossPlatform/UsingARFoundation.md
+    - name: Configure MRTK for Leap Motion Hand Tracking
+      href: CrossPlatform/LeapMotionMRTK.md
+    - name: Configure MRTK for Oculus Quest
+      href: CrossPlatform/OculusQuestMRTK.md
   - name: Detecting Platform Capabilities
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System
@@ -94,7 +104,15 @@
     - name: Controllers
       href: Input/Controllers.md
     - name: Eyes
-      href: EyeTracking/EyeTracking_Main.md
+      items:
+      - name: Overview
+        href: EyeTracking/EyeTracking_Main.md
+      - name: Getting Started
+        href: EyeTracking/EyeTracking_BasicSetup.md
+      - name: Access Data via Code
+        href: EyeTracking/EyeTracking_EyeGazeProvider.md
+      - name: Validate Tracking Calibration
+        href: EyeTracking/EyeTracking_IsUserCalibrated.md
     - name: Gaze
       href: Input/Gaze.md
     - name: Gestures
@@ -139,12 +157,16 @@
       href: MixedRealityConfigurationGuide.md
   - name: Rendering
     items:
+    - name: MRTK Standard Shader
+      href: README_MRTKStandardShader.md
     - name: Material Instance Overview
       href: Rendering/MaterialInstance.md
-    - name: Shaders
-      items:
-      - name: MRTK Standard Shader
-        href: README_MRTKStandardShader.md
+    - name: Hover Light Overview
+      href: Rendering/HoverLight.md
+    - name: Proximity Light Overview
+      href: Rendering/ProximityLight.md
+    - name: Clipping Primitive Overview
+      href: Rendering/ClippingPrimitive.md
   - name: Services
     items:
     - name: What makes a mixed reality feature
@@ -187,36 +209,62 @@
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
+        href: Tools/ControllerMappingTool.md
+      - name: InputFeatureUsage tool
+        href: Tools/InputFeatureUsageTool.md 
   - name: UX Building Blocks
     items:
-    - name: Interactable
-      href: README_Interactable.md
+    - name: Toolbox Window
+      href: README_Toolbox.md
     - name: Button
       href: README_Button.md
     - name: Bounding Box
       href: README_BoundingBox.md
-    - name: Object Manipulation
+    - name: Object Manipulator
+      href: README_ObjectManipulator.md
+    - name: Manipulation Handler [Obsolete]
       href: README_ManipulationHandler.md
-    - name: Sliders
-      href: README_Sliders.md
-    - name: Fingertip Visualization
-      href: README_FingertipVisualization.md
-    - name: App Bar
-      href: README_AppBar.md
-    - name: Object Collection
-      href: README_ObjectCollection.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
       href: README_SystemKeyboard.md
-    - name: Tooltips
-      href: README_Tooltip.md
+    - name: Interactable
+      href: README_Interactable.md
     - name: Solvers
       href: README_Solver.md
       items:
       - name: Tap to Place
         href: README_TapToPlace.md
+    - name: Object Collection
+      href: README_ObjectCollection.md
+    - name: Tooltips
+      href: README_Tooltip.md
+    - name: Slider
+      href: README_Sliders.md
+    - name: Hand Menu
+      href: README_HandMenu.md
+    - name: Near Menu
+      href: README_NearMenu.md
+    - name: App Bar
+      href: README_AppBar.md
+    - name: Fingertip Visualization
+      href: README_FingertipVisualization.md
+    - name: Progress Indicator
+      href: README_ProgressIndicator.md
+    - name: Dialog [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md
+    - name: Hand Coach [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
+    - name: Scrolling Object Collection [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.md
+    - name: Pulse Shader [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
+    - name: Dock Control [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
+    - name: HoloLens Keyboard Helpers [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
+    - name: Rigged Hand Visualizer [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md      
   - name: Example Scenes
     items:
     - name: Examples Hub
@@ -225,14 +273,6 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
-  - name: Experimental
-    items:
-    - name: Scrolling Object Collection
-      href: ../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md
-    - name: Hand Coach UX
-      href: ../Assets/MixedRealityToolkit.SDK/Experimental/HandCoach/README_HandCoach.md
-    - name: Pulse Shader
-      href: ../Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md
 - name: Contributing
   items:
   - name: Contributing Overview

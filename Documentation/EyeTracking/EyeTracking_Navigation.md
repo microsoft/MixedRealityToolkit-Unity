@@ -5,7 +5,7 @@
 Imagine you are reading information on a slate and when you reach the end of the displayed text, the text automatically scrolls up to reveal more content. Or you can fluently zoom in where you are looking at. The map also automatically adjusts the content to keep the things of interest within your field of view. Another interesting application is the hands-free observation of 3D holograms by automatically bringing the parts of the hologram that you are looking at to the front. These are some of the examples that are described on this page in context of eye-supported navigation.
 
 The following descriptions assume that you are already familiar with how to [set up eye tracking in your MRTK scene](EyeTracking_BasicSetup.md) and with the basics of [accessing eye tracking data](EyeTracking_TargetSelection.md) in MRTK Unity.
-The examples discussed in the following are all part of the [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity)
+The examples discussed in the following are all part of the `EyeTrackingDemo-03-Navigation` (Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation)
 scene.
 
 **Summary:** Auto scroll of text, eye-gaze-supported pan and zoom of a virtual map, hands-free gaze-directed 3D rotation.
@@ -14,7 +14,7 @@ scene.
 
 Auto scroll enables the user to scroll through texts without lifting a finger.
 Simply continue reading and the text will automatically scroll up or down depending on where the user is looking.
-You can start off from the example provided in [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity).
+You can start off from the example provided in `EyeTrackingDemo-03-Navigation` (Assets/MRTK/Examples/Demos/EyeTracking/Scenes).
 This example uses a [TextMesh](https://docs.unity3d.com/ScriptReference/TextMesh.html) component to allow for flexibly loading and formatting new text.
 To enable auto scroll, simply add the following two scripts to your collider component of the textbox:
 
@@ -80,7 +80,7 @@ You can tweak several parameters that are listed below to limit how fast and in 
 
 As you can imagine, having this behavior active at all times may quickly become pretty distracting in a crowded scene.
 This is why you may want to start out with this behavior disabled and then enable it quickly using voice commands.
-Alternatively, we added an example in [EyeTrackingDemo-03-Navigation.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity)
+Alternatively, we added an example in `EyeTrackingDemo-03-Navigation` (Assets/MRTK/Examples/Demos/EyeTracking/Scenes)
 to use [TargetMoveToCamera](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.TargetMoveToCamera) for which you can select a focused target and it flies in front of you - simply say *"Come to me"*.
 
 Once in the near mode, the auto rotation mode is automatically enabled.

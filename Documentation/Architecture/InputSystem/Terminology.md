@@ -17,7 +17,7 @@ The input system has some of its own terminology that are worth defining:
 
 - **Controller**
 
-    A representation of a physical controller (whether it’s a 6-degree-of-freedom controller, a HoloLens 1-style
+    A representation of a physical controller (whether it's a 6-degree-of-freedom controller, a HoloLens 1-style
     hand with gesture support, a fully articulated hand, a leap motion controller, etc.). Controllers are spawned
     by device managers (i.e. the WMR device manager will spawn a controller and manage its lifetime when it sees an
     articulated hand coming into existence).
@@ -26,7 +26,7 @@ The input system has some of its own terminology that are worth defining:
 
     Controllers use pointers to interact with game objects. For example, the near interaction pointer is
     responsible for detecting when the hand (which is a controller) is close to objects that advertise
-    themselves as supporting ‘near interaction’. Other examples for pointers are teleportation or far
+    themselves as supporting 'near interaction'. Other examples for pointers are teleportation or far
     pointers (i.e. the shell hand ray pointer) that use far raycasts to engage with content that is
     longer than arms-length from the user.
 
@@ -34,7 +34,7 @@ The input system has some of its own terminology that are worth defining:
     pointers for a controller, do: `controller.InputSource.Pointers`
 
     Note that a controller can be associated with many different pointers at the same time. In order
-    to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which
+    to ensure that this doesn't devolve into chaos, there is a pointer mediator which controls which
     pointers are allowed to be active (for example, the mediator will disable far interaction pointers
     when near interaction is detected).
 
@@ -45,13 +45,13 @@ The input system has some of its own terminology that are worth defining:
     IMixedRealityFocusHandler to receive focus. It's possible to globally register an object to receive
     unfiltered pointer events, but this approach is not recommended.
 
-    The component that updates which objects are in focus is the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs)
+    The component that updates which objects are in focus is the [FocusProvider](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider)
 
 - **Cursor**
 
     An entity associated with a pointer that gives additional visual cues around pointer interaction. For example,
     the FingerCursor will render a ring around your finger and may rotate that ring when your finger is close to
-    ‘near interactable’ objects. A pointer can be associated with a single cursor at time.
+    'near interactable' objects. A pointer can be associated with a single cursor at time.
 
 - **Interaction and Manipulation**
 
