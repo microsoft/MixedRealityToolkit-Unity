@@ -87,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             if (autoDestroy && materialOwners.Count == 0)
             {
                 DestorySafe(this);
+
+                // OnDestroy not called on inactive objects
+                if (!gameObject.activeInHierarchy)
+                {
+                    RestoreRenderer();
+                }
             }
         }
 
@@ -177,6 +183,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         }
 
         private void OnDestroy()
+        {
+            RestoreRenderer();
+        }
+
+        private void RestoreRenderer()
         {
             if (CachedRenderer != null && defaultMaterials != null)
             {
