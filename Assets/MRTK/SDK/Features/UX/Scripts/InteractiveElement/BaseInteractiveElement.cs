@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="coreState">The Core Interaction State to remove</param>
         public void RemoveCoreState(CoreInteractionState state)
         {
-            StateManager.RemoveCoreState(state);
+            StateManager.RemoveState(state);
         }
 
         /// <summary>
@@ -237,6 +237,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public bool IsStateActive(string stateName)
         {
             return StateManager.IsStateActive(stateName);
+        }
+
+        /// <summary>
+        /// Check if a core state is currently active.
+        /// </summary>
+        /// <param name="coreState">The name of the core state to check</param>
+        /// <returns>True if the state is active, false if the state is not active</returns>
+        public bool IsStateActive(CoreInteractionState coreState)
+        {
+            return StateManager.IsStateActive(coreState);
         }
 
         #endregion

@@ -53,199 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // List of active states, used for tracking the current and previous states
         private List<InteractionState> activeStates = new List<InteractionState>();
 
-        #region State Methods for CoreInteractionStates 
-
-        /// <summary>
-        /// Gets a Core Interaction State.
-        /// </summary>
-        /// <param name="coreState">The CoreInteractionState to retrieve</param>
-        /// <returns>The Core Interaction State contained in the Tracked States scriptable object.</returns>
-        public InteractionState GetState(CoreInteractionState coreState)
-        {
-            InteractionState interactionState = states.Find((state) => state.Name == coreState.ToString());
-
-            if (interactionState != null)
-            {
-                return interactionState;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets a Core Interaction State given the value.
-        /// </summary>
-        /// <param name="coreState">The Core Interaction State to set</param>
-        /// <param name="value">The Core Interaction State's new value</param>
-        /// <returns>The Core Interaction State that was set</returns>
-        public InteractionState SetState(CoreInteractionState coreState, int value)
-        {
-            InteractionState state = GetState(coreState);
-
-            if (state != null)
-            {
-                if (value > 0)
-                {
-                    SetStateOn(coreState);
-
-                }
-                else
-                {
-                    SetStateOff(coreState);
-                }
-
-                return state;
-            }
-            else
-            {
-                Debug.LogError($"The {coreState} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets a Core Interaction State to On and invokes the OnStateActivated event. Setting a 
-        /// state on changes state value to 1.
-        /// </summary>
-        /// <param name="coreState">The Core Interaction state to set to on</param>
-        /// <returns>The Core Interaction state that was set to on</returns>
-        public InteractionState SetStateOn(CoreInteractionState coreState)
-        {
-            InteractionState state = GetState(coreState);
-
-            if (state != null)
-            {
-                if (state.Value != 1)
-                {
-                    state.Value = 1;
-                    state.Active = 1;
-
-                    OnStateActivated.Invoke(state);
-
-                    // Only add the state to activeStates if it is not present 
-                    if (!activeStates.Contains(state))
-                    {
-                        activeStates.Add(state);
-                    }
-
-                    InteractionState defaultState = GetState(CoreInteractionState.Default);
-
-                    // If the state getting switched on is NOT the default state, then make sure the default state is off
-                    // The default state is only active when ALL other states are not active
-                    if (state.Name != "Default" && defaultState.Value == 1)
-                    {
-                        SetStateOff(CoreInteractionState.Default);
-                    }
-                }
-
-                return state;
-            }
-            else
-            {
-                Debug.LogError($"The {coreState} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets a Core Interaction State to Off and invokes the OnStateDeactivated event.  Setting a 
-        /// state off changes the state value to 0.
-        /// </summary>
-        /// <param name="coreState">The Core Interaction state to set to off</param>
-        /// <returns>The Core Interaction state that was set to off</returns>
-        public InteractionState SetStateOff(CoreInteractionState coreState)
-        {
-            InteractionState state = GetState(coreState);
-
-            if (state != null)
-            {
-                if (state.Value != 0)
-                {
-                    state.Value = 0;
-                    state.Active = 0;
-
-                    // If the only state in active states is going to be removed, then activate the default state
-                    if (activeStates.Count == 1 && activeStates.First() == state)
-                    {
-                        SetStateOn(CoreInteractionState.Default);
-                    }
-
-                    // We need to save the last state active state so we can add transitions 
-                    OnStateDeactivated.Invoke(state, activeStates.Last());
-
-                    activeStates.Remove(state);
-                }
-
-                return state;
-            }
-            else
-            {
-                Debug.LogError($"The {coreState} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Adds a new Core Interaction State to track.
-        /// </summary>
-        /// <param name="coreState">The Core Interaction State to add</param>
-        /// <returns>The newly added Core Interaction State</returns>
-        public InteractionState AddCoreState(CoreInteractionState coreState)
-        {
-            InteractionState state = GetState(coreState);
-
-            if (state == null)
-            {
-                // Create a new core state
-                InteractionState newState = new InteractionState(coreState.ToString());
-
-                // Set the event configuration if one exists for the core interaction state
-                SetEventConfigurationOfCoreState(newState);
-
-                states.Add(newState);
-
-                return newState;
-            }
-            else
-            {
-                Debug.Log($" The {coreState} state is already being tracked and does not need to be added.");
-                return state;
-            }
-        }
-
-        /// <summary>
-        /// Removes a Core Interaction State. The state will no longer be tracked if it is removed.
-        /// </summary>
-        /// <param name="coreState">The Core Interaction State to remove</param>
-        public void RemoveCoreState(CoreInteractionState coreState)
-        {
-            InteractionState state = GetState(coreState);
-
-            if (state != null)
-            {
-                if (coreState != CoreInteractionState.Default)
-                {
-                    states.Remove(state);
-                }
-                else
-                {
-                    Debug.LogError($"The Default state cannot be removed");
-                }
-            }
-            else
-            {
-                Debug.LogError($"The {coreState} state is not being tracked and was not removed.");
-
-            }
-        }
-
-        #endregion
-
-
-        #region State Methods for Non-CoreInteractionStates
-
         /// <summary>
         /// Gets a state by using the state name.
         /// </summary>
@@ -263,6 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets a Core Interaction State.
+        /// </summary>
+        /// <param name="coreState">The CoreInteractionState to retrieve</param>
+        /// <returns>The Core Interaction State contained in the Tracked States scriptable object.</returns>
+        public InteractionState GetState(CoreInteractionState coreState)
+        {
+            return GetState(coreState.ToString());
         }
 
         /// <summary>
@@ -293,6 +110,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 Debug.LogError($"The {stateName} state is not being tracked, add this state using AddState(state) to set it");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets and sets a Core Interaction State given the value.
+        /// </summary>
+        /// <param name="coreState">The Core Interaction State to set</param>
+        /// <param name="value">The Core Interaction State's new value</param>
+        /// <returns>The Core Interaction State that was set</returns>
+        public InteractionState SetState(CoreInteractionState coreState, int value)
+        {
+            return SetState(coreState.ToString(), value);
         }
 
         /// <summary>
@@ -340,6 +168,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
+        /// Gets and sets a Core Interaction State to On and invokes the OnStateActivated event. Setting a 
+        /// state on changes state value to 1.
+        /// </summary>
+        /// <param name="coreState">The Core Interaction state to set to on</param>
+        /// <returns>The Core Interaction state that was set to on</returns>
+        public InteractionState SetStateOn(CoreInteractionState coreState)
+        {
+            return SetStateOn(coreState.ToString());
+        }
+
+        /// <summary>
         /// Gets and sets a state to Off and invokes the OnStateDeactivated event.  Setting a 
         /// state off changes the state value to 0.
         /// </summary>
@@ -378,23 +217,40 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Creates and adds a new state to track given the new state name.
+        /// Gets and sets a Core Interaction State to Off and invokes the OnStateDeactivated event.  Setting a 
+        /// state off changes the state value to 0.
         /// </summary>
-        /// <param name="stateName">The name of the state to add</param>
-        /// <returns>The new state added</returns>
-        public InteractionState AddNewState(string stateName)
+        /// <param name="coreState">The Core Interaction state to set to off</param>
+        /// <returns>The Core Interaction state that was set to off</returns>
+        public InteractionState SetStateOff(CoreInteractionState coreState)
         {
-            InteractionState state = GetState(stateName);
+            return SetStateOff(coreState.ToString());
+        }
+
+        /// <summary>
+        /// Adds a new Core Interaction State to track.
+        /// </summary>
+        /// <param name="coreState">The Core Interaction State to add</param>
+        /// <returns>The newly added Core Interaction State</returns>
+        public InteractionState AddCoreState(CoreInteractionState coreState)
+        {
+            InteractionState state = GetState(coreState);
 
             if (state == null)
             {
-                InteractionState newState = new InteractionState(stateName);
+                // Create a new core state
+                InteractionState newState = new InteractionState(coreState.ToString());
+
+                // Set the event configuration if one exists for the core interaction state
+                SetEventConfigurationOfCoreState(newState);
+
                 states.Add(newState);
-                return state;
+
+                return newState;
             }
             else
             {
-                Debug.Log($" The {stateName} state is already being tracked and does not need to be added.");
+                Debug.Log($" The {coreState} state is already being tracked and does not need to be added.");
                 return state;
             }
         }
@@ -422,7 +278,102 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 Debug.LogError($"The {stateName} state is not being tracked and was not removed.");
             }
+        }
 
+        /// <summary>
+        /// Removes a Core Interaction State. The state will no longer be tracked if it is removed.
+        /// </summary>
+        /// <param name="coreState">The Core Interaction State to remove</param>
+        public void RemoveState(CoreInteractionState coreState)
+        {
+            RemoveState(coreState.ToString());
+        }
+
+        /// <summary>
+        /// Check if a state is currently active.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is active, false if the state is not active</returns>
+        public bool IsStateActive(string stateName)
+        {
+            InteractionState state = GetState(stateName);
+
+            if (state != null)
+            {
+                if (state.Active == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.LogError($"The {stateName} state is not being tracked, add this state using AddNewState(state) to track whether or not it is active.");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if a core state is currently active.
+        /// </summary>
+        /// <param name="coreState">The name of the core state to check</param>
+        /// <returns>True if the state is active, false if the state is not active</returns>
+        public bool IsStateActive(CoreInteractionState coreState)
+        {
+            return IsStateActive(coreState.ToString());
+        }
+
+
+        /// <summary>
+        /// Check if a state is currently being tracked.
+        /// </summary>
+        /// <param name="stateName">The name of the state to check</param>
+        /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
+        public bool IsStateTracking(string stateName)
+        {
+            InteractionState state = GetState(stateName);
+
+            if (state != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if a state is currently being tracked.
+        /// </summary>
+        /// <param name="coreState">The name of the core state to check</param>
+        /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
+        public bool IsStateTracking(CoreInteractionState coreState)
+        {
+            return IsStateTracking(coreState.ToString());
+        }
+
+        /// <summary>
+        /// Creates and adds a new state to track given the new state name.
+        /// </summary>
+        /// <param name="stateName">The name of the state to add</param>
+        /// <returns>The new state added</returns>
+        public InteractionState AddNewState(string stateName)
+        {
+            InteractionState state = GetState(stateName);
+
+            if (state == null)
+            {
+                InteractionState newState = new InteractionState(stateName);
+                states.Add(newState);
+                return state;
+            }
+            else
+            {
+                Debug.Log($" The {stateName} state is already being tracked and does not need to be added.");
+                return state;
+            }
         }
 
         /// <summary>
@@ -467,51 +418,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
         }
 
-        /// <summary>
-        /// Check if a state is currently being tracked.
-        /// </summary>
-        /// <param name="stateName">The name of the state to check</param>
-        /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
-        public bool IsStateTracking(string stateName)
-        {
-            InteractionState state = GetState(stateName);
-            
-            if (state != null)
-            {
-                return true;
-            }
-
-            return false;    
-        }
-
-        /// <summary>
-        /// Check if a state is currently active.
-        /// </summary>
-        /// <param name="stateName">The name of the state to check</param>
-        /// <returns>True if the state is active, false if the state is not active</returns>
-        public bool IsStateActive(string stateName)
-        {
-            InteractionState state = GetState(stateName);
-
-            if (state != null)
-            {
-                if (state.Active == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                Debug.LogError($"The {stateName} state is not being tracked, add this state using AddNewState(state) to track whether or not it is active.");
-                return false;
-            }
-        }
-
-        #endregion
 
         // Set the event configuration of an existing core state if it exists
         private void SetEventConfigurationOfCoreState(InteractionState coreState)
