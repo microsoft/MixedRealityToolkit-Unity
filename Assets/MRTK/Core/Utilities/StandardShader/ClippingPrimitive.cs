@@ -152,14 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return new List<Renderer>(renderers);
         }
 
-        /// <summary>
-        /// Checks is renderer is being clipped by this clipping primitive.
-        /// </summary>
-        public bool CheckIfClipped(Renderer renderer)
-        {
-            return renderers.Contains(renderer);
-        }
-
         #region MonoBehaviour Implementation
 
         protected void OnEnable()
