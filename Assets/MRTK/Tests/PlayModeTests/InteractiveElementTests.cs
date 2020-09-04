@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests adding listeners to the event configuration of the focus state.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestSettingEventConfiguraitonsOfATrackedCoreState()
+        public IEnumerator TestFocusEventConfiguration()
         {
             // Create an interactive cube 
             InteractiveElement interactiveElement = CreateInteractiveCube();
