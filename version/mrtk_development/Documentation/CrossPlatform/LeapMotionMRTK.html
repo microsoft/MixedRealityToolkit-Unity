@@ -146,10 +146,27 @@
 <ul>
 <li>Select <strong>Clone</strong> to change the default Leap Motion settings.</li>
 </ul>
-<p><img src="../Images/CrossPlatform/LeapMotion/LeapDeviceManagerProfileBeforeClone.png" alt="LeapDataProviderPreClone"></p>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerProfile.png" alt="LeapDataProviderPreClone"></p>
 <ul>
-<li>The Leap Motion Data Provider contains the <code>LeapControllerOrientation</code> property which is the location of the Leap Motion Controller. <code>LeapControllerOrientation.Headset</code> indicates the controller is mounted on a headset. <code>LeapControllerOrientation.Desk</code> indicates the controller is placed flat on desk. The default value is set to <code>LeapControllerOrientation.Headset</code>.  If the orientation is the desk, an extra property <code>LeapControllerOffset</code> will appear.  <code>LeapControllerOffset</code> is the anchor for the position of the desk leap hands.  The offset is calculated relative to the main camera position and the default value is (0,-0.2, 0.2) to make sure the hands appear in front and in view of the camera.</li>
-<li><code>EnterPinchDistance</code> and <code>ExitPinchDistance</code> are the distance thresholds for pinch/air tap gesture detection.  The pinch gesture is calculated by measuring the distance between the index finger tip and the thumb tip.  To raise an on input down event, the default <code>EnterPinchDistance</code> is set to 0.02.  To raise an on input up event (exiting the pinch), the default distance between the index finger tip and the thumb tip is 0.05.</li>
+<li><p>The Leap Motion Data Provider contains the <code>LeapControllerOrientation</code> property which is the location of the Leap Motion Controller. <code>LeapControllerOrientation.Headset</code> indicates the controller is mounted on a headset. <code>LeapControllerOrientation.Desk</code> indicates the controller is placed flat on desk. The default value is set to <code>LeapControllerOrientation.Headset</code>.</p>
+</li>
+<li><p>Each controller orientation contains offset properties:</p>
+<ul>
+<li><p>The <strong>Headset</strong> orientation offset properties mirror the offset properties in the LeapXRServiceProvider component.  The <code>LeapVRDeviceOffsetMode</code> has three options: Default, Manual Head Offset and Transform.  If the offset mode is Default, then an offset will not be applied to the Leap Motion Controller.  The Manual Head Offset mode allows for the modification of three properties: <code>LeapVRDeviceOffsetY</code>, <code>LeapVRDeviceOffsetZ</code> and <code>LeapVRDeviceTiltX</code>.  The axis offset property values are then applied to default controller placement.  The Transform offset mode contains the <code>LeapVRDeviceOrigin</code> Transform property which specifies a new origin for the Leap Motion Controller.</p>
+</li>
+<li><p>The <strong>Desk</strong> orientation contains the <code>LeapControllerOffset</code> property which defines the anchor position of the desk leap hands.  The offset is calculated relative to the main camera position and the default value is (0,-0.2, 0.35) to make sure the hands appear in front and in view of the camera.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The offset properties in the profile are applied once when the application starts.  To modify the values during runtime, get the Leap Motion Service Provider from the Leap Motion Device Manager:</p>
+<pre><code>LeapMotionDeviceManager leapMotionDeviceManager = CoreServices.GetInputSystemDataProvider&lt;LeapMotionDeviceManager&gt;();
+LeapXRServiceProvider leapXRServiceProvider = leapMotionDeviceManager.LeapMotionServiceProvider as LeapXRServiceProvider; 
+</code></pre>
+</div>
+</li>
+</ul>
+</li>
+<li><p><code>EnterPinchDistance</code> and <code>ExitPinchDistance</code> are the distance thresholds for pinch/air tap gesture detection.  The pinch gesture is calculated by measuring the distance between the index finger tip and the thumb tip.  To raise an on input down event, the default <code>EnterPinchDistance</code> is set to 0.02.  To raise an on input up event (exiting the pinch), the default distance between the index finger tip and the thumb tip is 0.05.</p>
+</li>
 </ul>
 <table>
 <thead>
@@ -164,8 +181,8 @@
 <td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDeskOrientationExampleMetacarpals.gif" alt="LeapDeskGif"></td>
 </tr>
 <tr>
-<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDeviceManagerHeadset.png" alt="LeapHeadsetInspector"></td>
-<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDeviceManagerDesk.png" alt="LeapDeskInspector"></td>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerHeadset.png" alt="LeapHeadsetInspector"></td>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapMotionDeviceManagerDesk.png" alt="LeapDeskInspector"></td>
 </tr>
 </tbody>
 </table>
