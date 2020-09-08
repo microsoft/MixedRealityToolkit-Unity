@@ -98,5 +98,6 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Weasy666
 - witian
 - wiwei
+- xwipeoutx
 - Yoyozilla
 - Zee2
