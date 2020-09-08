@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// scriptable object is contained within a class that derives from BaseInteractionElement.  This class contains helper
     /// methods for setting, getting and creating new Interaction States to track.
     /// </summary>
-    public class StateManager 
+    public class StateManager
     {
         /// <summary>
         /// Create a new state manager with a given states scriptable object.
         /// </summary>
         /// <param name="trackedStates">TrackedStates scriptable object</param>
-        public StateManager(TrackedStates trackedStates) 
+        /// <param name="interactiveElement">The interactive element source</param>
+        public StateManager(TrackedStates trackedStates, BaseInteractiveElement interactiveElementSource)
         {
             states = trackedStates.States;
+
+            interactiveElement = interactiveElementSource;
+
+            InitializeEventReceiverManager();
         }
 
         // List of states to be tracked by this state manager
@@ -34,6 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// RemoveState() methods, to set the value of a state in this list use SetStateOn/Off() methods.
         /// </summary>
         public IList<InteractionState> States => states.AsReadOnly();
+
+        /// <summary>
+        /// The Event Receiver Manager for this State Manager. Each state can contain an event configuration scriptable which defines
+        /// the events associated with the state.  The Event Receiver Manager depends on a State Manager.
+        /// </summary>
+        public EventReceiverManager EventReceiverManager { get; internal set; } = null;
+
+        // The interactive element for this state manager
+        private BaseInteractiveElement interactiveElement = null;
 
         /// <summary>
         /// The Unity Event with the activated state as the event data. This event is invoked when a state is 
@@ -52,6 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         // List of active states, used for tracking the current and previous states
         private List<InteractionState> activeStates = new List<InteractionState>();
+
+        // Initializes the EventReceiverManager and creates the runtime classes for states that contain a valid 
+        // configuration
+        internal void InitializeEventReceiverManager()
+        {
+            // Create a new event receiver manager for this state manager
+            EventReceiverManager = new EventReceiverManager(this);
+            EventReceiverManager.InitializeEventReceivers();
+        }
 
         /// <summary>
         /// Gets a state by using the state name.
@@ -241,10 +263,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 // Create a new core state
                 InteractionState newState = new InteractionState(coreState.ToString());
 
-                // Set the event configuration if one exists for the core interaction state
-                SetEventConfigurationOfCoreState(newState);
-
                 states.Add(newState);
+
+                // Set the event configuration if one exists for the core interaction state
+                EventReceiverManager.SetEventConfiguration(newState);
 
                 return newState;
             }
@@ -397,11 +419,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     {
                         newState.EventConfiguration = eventConfiguration;
                     }
-                    else 
+                    else
                     {
                         Debug.LogError("The event configuration entered is null and the event configuration was not set");
                     }
-                    
+
                     states.Add(newState);
                     return newState;
                 }
@@ -415,27 +437,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 Debug.LogError($"The {stateName} state is already tracking, please use another name.");
                 return state;
-            }
-        }
-
-
-        // Set the event configuration of an existing core state if it exists
-        private void SetEventConfigurationOfCoreState(InteractionState coreState)
-        {
-            var eventConfigurationTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-            var eventConfigType = eventConfigurationTypes.Find(t => t.Name.StartsWith(coreState.ToString()));
-
-            // Check if the core state has a custom event configuration
-            if (eventConfigType != null)
-            {
-                string className = eventConfigType.Name;
-
-                // Set the state event configuration 
-                coreState.EventConfiguration = (BaseInteractionEventConfiguration)ScriptableObject.CreateInstance(className);
-            }
-            else
-            {
-                Debug.Log($" The {coreState.Name} state does not have an existing event configuration");
             }
         }
     }

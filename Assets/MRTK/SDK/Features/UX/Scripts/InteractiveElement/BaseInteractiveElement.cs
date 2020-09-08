@@ -34,17 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public StateManager StateManager { get; protected set; }
 
         /// <summary>
-        /// Entry point for event management. 
+        /// Manages the associated state events contained in a state. 
         /// </summary>
-        public EventReceiverManager EventReceiverManager { get; protected set; }
+        public EventReceiverManager EventReceiverManager => StateManager.EventReceiverManager;
 
-        // Initialize the State Manager and the Event Manager in Awake because 
-        // the States Visualizer depends on the initialization of these elements
+        // Initialize the State Manager in Awake because the State Visualizer depends on the initialization of these elements
         private void Awake()
         {
             InitializeStateManager();
-
-            InitializeEventReceiverManager();
 
             // Initially set the default state to on
             SetStateOn(CoreInteractionState.Default);
@@ -62,19 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 TrackedStates = ScriptableObject.CreateInstance<TrackedStates>();
             }
 
-            StateManager = new StateManager(TrackedStates);
-        }
-
-        /// <summary>
-        /// Initializes the EventReceiverManager and creates the runtime classes for states that contain a valid 
-        /// configuration.
-        /// </summary>
-        private void InitializeEventReceiverManager()
-        {
-            EventReceiverManager = new EventReceiverManager(StateManager);
-
-            // Create runtime classes for each state that has a valid associated event configuration
-            EventReceiverManager.InitializeEventReceivers();
+            StateManager = new StateManager(TrackedStates, this);
         }
 
         #region Focus
@@ -102,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         #endregion
-
 
         #region State Utilities
 
