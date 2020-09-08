@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     public enum CoreInteractionState
     {
         /// <summary>
-        /// Represents the Default state.  The Default state is only active when all other states are not active.
+        /// Represents the Default state. The Default state is only active when all other states are not active.
         /// </summary>
         Default = 0,
 

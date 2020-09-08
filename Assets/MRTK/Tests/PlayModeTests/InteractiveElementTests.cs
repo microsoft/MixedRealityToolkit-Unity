@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// Tests for an Interactive Element 
+    /// Tests for an Interactive Element. 
     /// </summary>
     public class InteractiveElementTests : BasePlayModeTests
     {

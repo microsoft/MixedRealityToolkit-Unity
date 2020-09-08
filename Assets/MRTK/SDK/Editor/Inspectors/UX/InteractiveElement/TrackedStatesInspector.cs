@@ -80,17 +80,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             EditorGUILayout.LabelField(stateValue.intValue.ToString());
                         }
 
-                        // Do not draw a - button for the default state
+                        // Do not draw a remove button for the default state
                         if (stateName.stringValue != "Default")
                         {
-                            // Draw - button to remove a state
+                            // Draw a button with a '-' for state removal
                             if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
                             {
                                 stateList.DeleteArrayElementAtIndex(i);
                                 break;
                             }
                         }
-
                     }
 
                     using (new EditorGUILayout.VerticalScope())
@@ -121,7 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     if (GUILayout.Button("Set State Name"))
                                     {
                                         stateName.stringValue = newStateName;
-
                                     }
                                 }
                             }
@@ -133,11 +131,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-
+        // Render the event configuration of a state
         private void RenderStateEventConfiguration(SerializedProperty stateName, SerializedProperty stateEventConfiguration)
         {
+            // If the current state does have a matching event configuration but the event configuration is null, draw a button to 
+            // give the user an option to 'Add State Events'.
             if (stateEventConfiguration.objectReferenceValue == null && StateHasExistingEventConfiguration(stateName.stringValue))
             {
+                // Draw a button in the state container titled 'Add State Event'. On button press, an instance of the matching
+                // event configuration scriptable is created and assigned to the state
                 if (GUILayout.Button("Add " + stateName.stringValue + " State Events"))
                 {
                     CreateEventScriptable(stateEventConfiguration, stateName.stringValue);
@@ -147,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 string stateFoldoutID = stateName.stringValue + "EventConfiguration";
 
+                // Draw a foldout for the event configuration
                 if (InspectorUIUtility.DrawSectionFoldoutWithKey(stateName.stringValue + " State Events", stateFoldoutID, MixedRealityStylesUtility.TitleFoldoutStyle, false))
                 {
                     // Draw the events for the associated state if this state has an event configuration
@@ -167,7 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (eventConfigType != null)
             {
                 return true;
-
             }
             // If an associated class for the state could not be found then the event config is not valid
             else
@@ -215,8 +217,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 int id = Array.IndexOf(coreInteractionStateNames, -1);
                 int newId = EditorGUI.Popup(position, id, coreInteractionStateNames);
 
-                // Sort the core states in a menu that indicates whether a core state is a near interaction state, 
-                // far interaction state, or both to futher push the mental model of the MRTK interaction model
+                // NOTE FOR THE FUTURE: Sort the core states in a menu that indicates whether a core state is a near 
+                // interaction state, far interaction state, or both to futher push the mental model of the MRTK interaction model
 
                 if (newId != -1)
                 {
@@ -237,18 +239,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        // Add a new state to track.  
         private SerializedProperty AddNewState(string initialStateName)
         {
             stateList.InsertArrayElementAtIndex(stateList.arraySize);
 
             SerializedProperty newState = stateList.GetArrayElementAtIndex(stateList.arraySize - 1);
-
             SerializedProperty name = newState.FindPropertyRelative("stateName");
-
             SerializedProperty eventConfiguration = newState.FindPropertyRelative("eventConfiguration");
 
             eventConfiguration.objectReferenceValue = null;
 
+            // Set the initial name of the state added.  This name will be changed once a core state is selected from the list or after a new 
+            // name is set via text field.
             name.stringValue = initialStateName;
 
             return name;

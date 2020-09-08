@@ -1,10 +1,10 @@
 # Interactive Element 
 
-An Interactive Element is the next generation of MRTK's Interactable.  An Interactive Element is an object that receives input and fires events depending on the type of input.  The type of input supported is defined in the form of states. 
+An Interactive Element is the next generation of MRTK's Interactable. An Interactive Element is an object that receives input and fires events depending on the type of input.  The type of input supported is defined in the form of states. 
 
-## Adding a Core States
+## Adding a Core State
 
-A CoreInteractionState is a state where the setting logic is already defined.  For example, in BaseInteractiveElement, the Focus state is set to on when the IMixedRealityFocusHandler's OnFocusOn is called, making the state setting logic already defined.
+A CoreInteractionState is a state where the setting logic is already defined. For example, in BaseInteractiveElement, the Focus state is set to on when the IMixedRealityFocusHandler's OnFocusOn is called, making the state setting logic already defined.
 
 Currently, Focus is the only core state supported but the following core states will be added in the future:
 

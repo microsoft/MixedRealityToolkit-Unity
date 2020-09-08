@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// Custom inspector for the BaseInteractiveElement class. 
+    /// </summary>
     [CanEditMultipleObjects]
     [CustomEditor(typeof(BaseInteractiveElement))]
     public class BaseInteractiveElementInspector : UnityEditor.Editor
@@ -37,6 +40,5 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
         }
-
     }
 }

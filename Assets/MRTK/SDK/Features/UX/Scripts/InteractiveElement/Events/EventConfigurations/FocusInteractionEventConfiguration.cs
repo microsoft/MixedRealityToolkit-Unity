@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public override string StateName => "Focus";
 
         /// <summary>
-        /// A Unity event with FocusEventData.  This event is fired when focus enters an object.
+        /// A Unity event with FocusEventData. This event is fired when focus enters an object.
         /// </summary>
         public FocusInteractionEvent OnFocusOn = new FocusInteractionEvent();
 
         /// <summary>
-        /// A Unity event with FocusEventData.  This event is fired when focus exits an object.
+        /// A Unity event with FocusEventData. This event is fired when focus exits an object.
         /// </summary>
         public FocusInteractionEvent OnFocusOff = new FocusInteractionEvent();
 

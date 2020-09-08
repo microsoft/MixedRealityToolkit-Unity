@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// The internal event receiver for the events defined in the Focus Interaction Event Configuration
+    /// The internal event receiver for the events defined in the Focus Interaction Event Configuration.
     /// </summary>
     internal class FocusReceiver : BaseEventReceiver
     {
@@ -46,6 +46,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             hadFocus = hasFocus;
         }
-
     }
 }

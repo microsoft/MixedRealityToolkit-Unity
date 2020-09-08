@@ -7,7 +7,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom inspector for an InteractiveElement
+    /// Custom inspector for an InteractiveElement.
     /// </summary>
     [CustomEditor(typeof(InteractiveElement))]
     public class InteractiveElementInspector : BaseInteractiveElementInspector
