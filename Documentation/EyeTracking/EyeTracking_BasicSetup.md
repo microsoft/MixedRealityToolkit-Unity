@@ -114,7 +114,7 @@ This means that if you had already built your Unity project and set up the appxm
 
 You don't see a _'GazeInput'_ capability?
 
-- Check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md#prerequisites) (in particular the Windows SDK version).
+- Check that your system meets the [prerequisites for using MRTK](../Installation.md#prerequisites) (in particular the Windows SDK version).
 - You can also manually add the entry by opening the appxmanifest in an XML editor and adding the following:
 
 ```xml
