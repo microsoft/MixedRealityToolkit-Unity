@@ -47,20 +47,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// box is at scale .5, .5, .5
         /// Target is set to its child if targetIsChild is true
         /// </summary>
-        private BoundingBox InstantiateSceneAndDefaultBbox(bool targetIsChild = false)
+        private BoundingBox InstantiateSceneAndDefaultBbox(GameObject target = null)
         {
-            var bboxGameObject = targetIsChild ? new GameObject() : GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject bboxGameObject;
+            if (target != null)
+            {
+                bboxGameObject = new GameObject();
+            }
+            else
+            {
+                bboxGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
             bboxGameObject.transform.position = boundingBoxStartCenter;
             bboxGameObject.transform.localScale = boundingBoxStartScale;
             BoundingBox bbox = bboxGameObject.AddComponent<BoundingBox>();
-            GameObject cube = null;
-            if (targetIsChild)
+            if (target != null)
             {
-                cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.parent = bboxGameObject.transform;
-                cube.transform.localScale = Vector3.one;
-                cube.transform.localPosition = Vector3.zero;
-                cube.transform.localRotation = Quaternion.identity;
+                target.transform.parent = bboxGameObject.transform;
+                target.transform.localScale = Vector3.one;
+                target.transform.localPosition = Vector3.zero;
+                bbox.Target = target;
             }
 
             MixedRealityPlayspace.PerformTransformation(
@@ -70,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(bboxGameObject.transform.position);
             });
 
-            bbox.Target = targetIsChild ? cube : bboxGameObject;
             bbox.Active = true;
 
             return bbox;
@@ -346,7 +351,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float minScale = 0.5f;
             float maxScale = 2f;
 
-            var bbox = InstantiateSceneAndDefaultBbox(targetIsChild: true);
+            var target = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var bbox = InstantiateSceneAndDefaultBbox(target);
             var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
