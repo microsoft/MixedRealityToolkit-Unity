@@ -530,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Bounds contentBounds;
 
         /// <summary>
-        // Index of the first visible cell.
+        /// Index of the first visible cell.
         /// </summary>
         public int FirstVisibleCellIndex
         {
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        // Index of the first hidden cell.
+        /// Index of the first hidden cell.
         /// </summary>
         public int FirstHiddenCellIndex
         {
