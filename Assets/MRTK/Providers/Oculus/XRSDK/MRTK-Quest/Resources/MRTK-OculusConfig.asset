@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17acf00f59af96c4bb501d1f9620d1c4, type: 3}
   m_Name: MRTK-OculusConfig
   m_EditorClassIdentifier: 
-  ovrCameraRigPrefab: {fileID: 2343937678411072827, guid: 69a746aa83d0d0e45b4e2d33eab0fff4,
-    type: 3}
+  ovrCameraRigPrefab: {fileID: 100004, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
   renderAvatarHandsInsteadOfControllers: 1
   localAvatarPrefab: {fileID: 6297684789857299957, guid: 5357c8e6c4495c04f90e97272375c294,
     type: 3}

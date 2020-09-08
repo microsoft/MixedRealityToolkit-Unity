@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
-using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
@@ -69,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // In playmode the scene needs to be set up manually.
 
 #if UNITY_EDITOR
-            Assert.False(EditorApplication.isPlaying, "This method should only be called during edit mode tests. Use PlaymodeTestUtilities.");
+            Debug.Assert(!EditorApplication.isPlaying, "This method should only be called during edit mode tests. Use PlaymodeTestUtilities.");
 
             List<Scene> additiveTestScenesList = new List<Scene>();
 
@@ -306,12 +305,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 BaseEventSystem.enableDanglingHandlerDiagnostics = true;
             }
 
-            Assert.IsTrue(MixedRealityToolkit.IsInitialized);
-            Assert.IsNotNull(MixedRealityToolkit.Instance);
+            Debug.Assert(MixedRealityToolkit.IsInitialized);
+            Debug.Assert(MixedRealityToolkit.Instance != null);
 
 
             MixedRealityToolkit.Instance.ActiveProfile = configuration;
-            Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
+            Debug.Assert(MixedRealityToolkit.Instance.ActiveProfile != null);
         }
 
         public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
@@ -320,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
                 : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
 
-            Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
+            Debug.Assert(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
             InitializeMixedRealityToolkit(configuration);
         }
 
@@ -377,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void AssertLessOrEqual(float observed, float expected, float tolerance = 0.01f)
         {
-            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.LessThan(expected));
+            Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed < expected));
         }
 
         /// <summary>
@@ -389,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void AssertLessOrEqual(float observed, float expected, string message, float tolerance = 0.01f)
         {
-            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.LessThan(expected), message);
+            Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed < expected), message);
         }
 
         /// <summary>
@@ -401,7 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void AssertGreaterOrEqual(float observed, float expected, float tolerance = 0.01f)
         {
-            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.GreaterThan(expected));
+            Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed > expected));
         }
         /// <summary>
         /// Equvalent to NUnit.Framework.Assert.GreaterOrEqual, except this also
@@ -412,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </remarks>
         public static void AssertGreaterOrEqual(float observed, float expected, string message, float tolerance = 0.01f)
         {
-            Assert.That(observed, Is.EqualTo(expected).Within(tolerance).Or.GreaterThan(expected), message);
+            Debug.Assert((Mathf.Abs(observed - expected) <= tolerance) || (observed > expected), message);
         }
 
 #if UNITY_EDITOR

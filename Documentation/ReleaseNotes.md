@@ -7,6 +7,15 @@
 
 ### What's new
 
+**Unity Package Manager (UPM) support**
+
+The Mixed Reality Toolkit can now be managed using the Unity Package Manager.
+
+![MRTK Foundation UPM Package](Images/Packaging/MRTK_FoundationUPM.png)
+
+> [!Note]
+> There are some manual steps required to import the MRTK UPM packages. Please review [Mixed Reality Toolkit and Unity Package Manager](usingupm.md) for more information. 
+
 **Oculus Quest XRSDK support**
 
 MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. Hand tracking is also supported with the [Oculus Integration Unity package](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) thanks to [Eric Provencher's](https://twitter.com/prvncher) work on MRTK-Quest!
@@ -62,6 +71,12 @@ Support for the Leap Motion Unity Modules version 4.5.1 has been added and suppo
 
 There is also an additional step for initial Leap Motion integration, see [How to Configure the Leap Motion Hand Tracking in MRTK](CrossPlatform/LeapMotionMRTK.md) for more information.
 
+**Spatial Awareness Mesh Observer better handles customization of materials**
+
+With this release, the `Windows Mixed Reality Spatial Mesh Observer` and the `Generic XR SDK Spatial Mesh Observer` components have improved visual material handling. Materials are now preserved when a mesh has been updated by the observer where, previously, they were reset to the default VisibleMaterial as configured in the profile.
+
+This enables developers to alter the mesh material and not have the changes overwritten unexpectedly.
+
 **Link.xml created in the MixedRealityToolkit.Generated folder**
 
 With the introduction of Unity Package Manger MRTK, MRTK now writes a `link.xml` file to the `Assets/MixedRealityToolkit.Generated` folder, if none is present. It is recommended to add this file (and `link.xml.meta`) be added to source control. Link.xml is used to influence the [managed code stripping](https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML) functionality of the Unity linker.
@@ -87,9 +102,11 @@ to entering play mode, and also at editor launch. These handlers now run in far 
 Unity responsiveness improvements.
 
 In some cases there was a tradeoff that had to be made:
-See [Leap Motion Hand Tracking Configuration](CrossPlatform/LeapMotionMRTK.md) for the extra integration step.
-For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
+
+- See [Leap Motion Hand Tracking Configuration](CrossPlatform/LeapMotionMRTK.md) for the extra integration step.
+- For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
 See [ARFoundation](CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
+- For those who will be using [Holographic Remoting](Tools/HolographicRemoting.md#hololens-2) on HoloLens 2, there is now a manual step to perform.
 
 ### Breaking changes
 

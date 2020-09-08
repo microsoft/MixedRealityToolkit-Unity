@@ -134,28 +134,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
         /// Applies elastics calculation to the passed targetTransform and applies to the host transform.
         /// </summary>
         /// <param name="targetTransform">Precalculated target transform that's influenced by elastics</param>
-        /// <returns>Modified transform modes.</returns>
-        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform)
+        /// <param name="transformsToApply">Indicates which types of transforms are going to be applied. Default is Move, Rotate and Scale.</param>
+        /// <returns>Modified transform types.</returns>
+        public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = TransformFlags.Move|TransformFlags.Rotate|TransformFlags.Scale)
         {
             Debug.Assert(hostTransform != null, "Can't apply target before calling Initialize with a valid transform reference.");
             if (hostTransform != null)
             {
-                if (elasticTypes.HasFlag(TransformFlags.Move))
+                TransformFlags enabledTransformTypes = transformsToApply & elasticTypes;
+                if (enabledTransformTypes.HasFlag(TransformFlags.Move))
                 {
                     hostTransform.position = translationElastic.ComputeIteration(targetTransform.Position, Time.deltaTime);
                 }
 
-                if (elasticTypes.HasFlag(TransformFlags.Rotate))
+                if (enabledTransformTypes.HasFlag(TransformFlags.Rotate))
                 {
                     hostTransform.rotation = rotationElastic.ComputeIteration(targetTransform.Rotation, Time.deltaTime);
                 }
 
-                if (elasticTypes.HasFlag(TransformFlags.Scale))
+                if (enabledTransformTypes.HasFlag(TransformFlags.Scale))
                 {
                     hostTransform.localScale = scaleElastic.ComputeIteration(targetTransform.Scale, Time.deltaTime);
                 }
 
-                elasticTypesSimulating = elasticTypes;
+                elasticTypesSimulating = enabledTransformTypes;
                 return elasticTypes;
             }
             else 

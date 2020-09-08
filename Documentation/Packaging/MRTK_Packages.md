@@ -289,6 +289,7 @@ More details on the process of using packages containing example projects can be
 Dependencies:
 
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
+- Extensions (`com.microsoft.mixedreality.toolkit.extensions`)
 
 ## See also
 
