@@ -188,6 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // Initialize the associated scriptable object event configuration with the correct state 
                 eventConfiguration.objectReferenceValue = ScriptableObject.CreateInstance(className);
+                
+                // Label the newly created event config scriptable instance
                 eventConfiguration.objectReferenceValue.name = stateName + "EventConfiguration";
             }
         }
