@@ -1224,6 +1224,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ResetHandleVisibility();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
+            CaptureInitialState();
         }
 
         #endregion
@@ -2038,7 +2039,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 #pragma warning restore 0618
                 }
 
-                scaleConstraint.Initialize(new MixedRealityTransform(transform));
+                scaleConstraint.Initialize(new MixedRealityTransform(target.transform));
             }
         }
 

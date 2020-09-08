@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 1b1d8c45e1e584240b13d1fc6fbb99a6
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Arm
+    100002: Arm001
+    100004: Arm002
+    100006: ArmBushings
+    100008: ArmBushings001
+    100010: ArmBushings002
+    100012: Cabin
+    100014: Chasis
+    100016: Engines
+    100018: //RootNode
+    100020: Leg
+    100022: Leg001
+    100024: Leg002
+    400000: Arm
+    400002: Arm001
+    400004: Arm002
+    400006: ArmBushings
+    400008: ArmBushings001
+    400010: ArmBushings002
+    400012: Cabin
+    400014: Chasis
+    400016: Engines
+    400018: //RootNode
+    400020: Leg
+    400022: Leg001
+    400024: Leg002
+    2100000: Lander_Mat
+    2300000: Arm
+    2300002: Arm001
+    2300004: Arm002
+    2300006: ArmBushings
+    2300008: ArmBushings001
+    2300010: ArmBushings002
+    2300012: Cabin
+    2300014: Chasis
+    2300016: Engines
+    2300018: Leg
+    2300020: Leg001
+    2300022: Leg002
+    3300000: Arm
+    3300002: Arm001
+    3300004: Arm002
+    3300006: ArmBushings
+    3300008: ArmBushings001
+    3300010: ArmBushings002
+    3300012: Cabin
+    3300014: Chasis
+    3300016: Engines
+    3300018: Leg
+    3300020: Leg001
+    3300022: Leg002
+    4300000: Chasis
+    4300002: Cabin
+    4300004: Engines
+    4300006: Arm
+    4300008: Leg
+    4300010: Arm001
+    4300012: Leg001
+    4300014: Arm002
+    4300016: Leg002
+    4300018: ArmBushings
+    4300020: ArmBushings001
+    4300022: ArmBushings002
+    6400000: Arm
+    6400002: Arm001
+    6400004: Arm002
+    6400006: ArmBushings
+    6400008: ArmBushings001
+    6400010: ArmBushings002
+    6400012: Cabin
+    6400014: Chasis
+    6400016: Engines
+    6400018: Leg
+    6400020: Leg001
+    6400022: Leg002
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lander_Mat
+    second: {fileID: 2100000, guid: 2de1d67e38b75484a8b6510ba7dd2080, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.15
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.0254
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
