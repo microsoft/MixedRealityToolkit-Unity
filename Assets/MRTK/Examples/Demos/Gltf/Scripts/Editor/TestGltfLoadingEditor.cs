@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
     [CustomEditor(typeof(TestGltfLoading))]
     public class TestGltfLoadingEditor : UnityEditor.Editor
     {
-        private static readonly string GLTFModelsPath = "Common/Gltf/Models";
+        private static readonly string GLTFModelsPath = $"Common{Path.DirectorySeparatorChar}Gltf{Path.DirectorySeparatorChar}Models";
 
         public override void OnInspectorGUI()
         {
