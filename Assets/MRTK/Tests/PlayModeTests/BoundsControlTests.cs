@@ -105,12 +105,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates a bounds control at boundsControlStartCenter
         /// transform is at scale boundsControlStartScale
         /// </summary>
-        private BoundsControl InstantiateSceneAndDefaultBoundsControl()
+        private BoundsControl InstantiateSceneAndDefaultBoundsControl(GameObject target = null)
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = boundsControlStartCenter;
-            cube.transform.localScale = boundsControlStartScale;
-            BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
+            GameObject boundsControlGameObject;
+            if(target != null)
+            {
+                boundsControlGameObject = new GameObject();
+            }
+            else
+            {
+                boundsControlGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
+            boundsControlGameObject.transform.position = boundsControlStartCenter;
+            boundsControlGameObject.transform.localScale = boundsControlStartScale;
+            BoundsControl boundsControl = boundsControlGameObject.AddComponent<BoundsControl>();
+            if (target != null)
+            {
+                target.transform.parent = boundsControlGameObject.transform;
+                target.transform.localScale = Vector3.one;
+                target.transform.localPosition = Vector3.zero;
+                boundsControl.Target = target;
+            }
             TestUtilities.PlayspaceToOriginLookingForward();
             boundsControl.Active = true;
 
@@ -125,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
             yield return new WaitForFixedUpdate();
-            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
+            BoxCollider boxCollider = boundsControl.Target.GetComponent<BoxCollider>();
             var bounds = boxCollider.bounds;
             TestUtilities.AssertAboutEqual(bounds.center, boundsControlStartCenter, "bounds control incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
@@ -846,6 +861,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
+        }
+
+        /// <summary>
+        /// This tests the minimum and maximum scaling for the bounds control when target is its child.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleChildTargetMinMax()
+        {
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            var target = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl(target);
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            var scaleHandler = boundsControl.EnsureComponent<MinMaxScaleConstraint>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+
+            Vector3 initialScale = boundsControl.Target.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = boundsControl.Target.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(initialScale, boundsControl.Target.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, boundsControl.Target.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return hand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum * 2, -scaleHandler.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, boundsControl.Target.transform.localScale);
         }
 
         /// <summary>
