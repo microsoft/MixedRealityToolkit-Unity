@@ -113,6 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsControllerLookInverted => isControllerLookInverted;
 
         [SerializeField]
+        [Tooltip("Amount to offset the starting position of the camera from the origin")]
+        private Vector3 cameraOriginOffset = Vector3.zero;
+        /// <summary>
+        /// Amount to offset the starting position of the camera from the origin
+        /// </summary>
+        public Vector3 CameraOriginOffset => cameraOriginOffset;
+
+        [SerializeField]
         [Tooltip("Camera movement mode")]
         private InputSimulationControlMode currentControlMode = InputSimulationControlMode.Fly;
         /// <summary>

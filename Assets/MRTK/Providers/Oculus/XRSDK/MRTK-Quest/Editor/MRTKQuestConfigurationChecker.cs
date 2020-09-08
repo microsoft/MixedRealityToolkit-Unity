@@ -54,19 +54,71 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         private static readonly string[] Definitions = { "OCULUSINTEGRATION_PRESENT" };
 
         /// <summary>
+        /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
+        private static void ConfigureOculusIntegration()
+        {
+            bool OculusIntegrationPresent = ReconcileOculusIntegrationDefine();
+
+            FileInfo[] oculusXRSDKAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef");
+            FileInfo[] oculusXRSDKHandtrackingUtilsAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities.asmdef");
+            FileInfo[] oculusXRSDKHandtrackingEditorAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor.asmdef");
+
+            List<FileInfo[]> oculusAsmDefFiles = new List<FileInfo[]>() { oculusXRSDKAsmDefFile, oculusXRSDKHandtrackingUtilsAsmDefFile, oculusXRSDKHandtrackingEditorAsmDefFile };
+
+            foreach (FileInfo[] oculusAsmDefFile in oculusAsmDefFiles)
+            {
+                // When MRTK is used through NuGet compiled assemblies, there will not be an asmdef file in the assets directory to configure.
+                if (oculusAsmDefFile.Length == 0)
+                {
+                    return;
+                }
+
+                AssemblyDefinition oculusAsmDef = AssemblyDefinition.Load(oculusAsmDefFile[0].FullName);
+
+                List<string> references = oculusAsmDef.References.ToList();
+
+                if (!OculusIntegrationPresent)
+                {
+                    Debug.Log("Oculus Integration package not detected, removing references from asmdefs");
+                    if (references.Contains("Oculus.VR"))
+                    {
+                        references.Remove("Oculus.VR");
+                    }
+                    if (references.Contains("Oculus.VR.Editor"))
+                    {
+                        references.Remove("Oculus.VR.Editor");
+                    }
+                    oculusAsmDef.References = references.ToArray();
+                }
+                else
+                {
+                    if(oculusAsmDefFile == oculusXRSDKAsmDefFile || oculusAsmDefFile == oculusXRSDKHandtrackingUtilsAsmDefFile)
+                    {
+                        oculusAsmDef.AddReference("Oculus.VR");
+                    }
+                    if (oculusAsmDefFile == oculusXRSDKHandtrackingEditorAsmDefFile)
+                    {
+                        oculusAsmDef.AddReference("Oculus.VR.Editor");
+                    }
+                }
+                oculusAsmDef.Save(oculusAsmDefFile[0].FullName);
+            }
+        }
+
+        /// <summary>
         /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
         /// </summary>
         /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Update Assembly Definitions")]
-        private static bool UpdateAssemblyDefinitions()
+        private static bool ReconcileOculusIntegrationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
-            if (files.Length > 0) 
+            if (files.Length > 0)
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                ConfigureProfilesForHandtracking();
                 return true;
             }
             else
@@ -75,27 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Configures the project profiles to support handtracking
-        /// </summary>
-        static void ConfigureProfilesForHandtracking()
-        {
-#if OCULUSINTEGRATION_PRESENT
-            FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
-
-            // Make this set the application to controllers and hands on first setup
-            string configPath = "";
-            if (files[0].FullName.Replace("\\", "/").StartsWith(Application.dataPath))
-            {
-                configPath = "Assets" + files[0].FullName.Substring(Application.dataPath.Length);
-            }
-
-            OVRProjectConfig projectConfig = AssetDatabase.LoadAssetAtPath<OVRProjectConfig>(configPath);
-            projectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
-            AssetDatabase.Refresh();
-#endif
         }
 
         /// <summary>

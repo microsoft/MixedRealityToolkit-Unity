@@ -343,8 +343,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
 
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            // Switch to hand gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
 
@@ -369,7 +371,62 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
+            iss.ControllerSimulationMode = oldSimMode;
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Uses motion controller to scale the bounding box
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaMotionControllerInteraction()
+        {
+            var bbox = InstantiateSceneAndDefaultBbox();
+            yield return null;
+            yield return null;
+
+            var bounds = bbox.GetComponent<BoxCollider>().bounds;
+            var startCenter = new Vector3(0, 0, 1.5f);
+            var startSize = new Vector3(.5f, .5f, .5f);
+            TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
+            TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
+
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
+
+            var startPos = CameraCache.Main.transform.TransformPoint(new Vector3(0.21f, -0.35f, 0f));
+            TestMotionController rightMotionController = new TestMotionController(Handedness.Right);
+            yield return rightMotionController.Show(startPos);
+            SimulatedMotionControllerButtonState selectButtonState = new SimulatedMotionControllerButtonState
+            {
+                IsSelecting = true
+            };
+            yield return rightMotionController.SetState(selectButtonState);
+            yield return null;
+
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            yield return rightMotionController.Move(delta);
+            yield return null;
+
+            SimulatedMotionControllerButtonState defaultButtonState = new SimulatedMotionControllerButtonState();
+            yield return rightMotionController.SetState(defaultButtonState);
+            yield return null;
+
+            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
 
             yield return null;
         }

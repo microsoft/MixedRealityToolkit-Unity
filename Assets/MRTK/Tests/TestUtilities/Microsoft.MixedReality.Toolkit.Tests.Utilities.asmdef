@@ -10,9 +10,7 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

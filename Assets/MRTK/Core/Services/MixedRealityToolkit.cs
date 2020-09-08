@@ -18,6 +18,7 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using UnityEditor;
 #endif
 
@@ -400,6 +401,11 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 DebugUtilities.LogVerbose("Begin registration of the input system");
 
+#if UNITY_EDITOR
+                // Make sure unity axis mappings are set.	
+                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
                 object[] args = { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || CoreServices.InputSystem == null)
                 {
@@ -421,6 +427,12 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 DebugUtilities.LogVerbose("End registration of the input system");
+            }
+            else
+            {
+#if UNITY_EDITOR
+                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project

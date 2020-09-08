@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
-            PlayModeTestUtilities.PushControllerSimulationProfile();
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
         }
@@ -44,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject.Destroy(panObject);
             GameObject.Destroy(panZoom);
-            PlayModeTestUtilities.PopControllerSimulationProfile();
             PlayModeTestUtilities.TearDown();
             yield return null;
         }
@@ -130,7 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InstantiateFromPrefab();
 
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.Show(new Vector3(0.0f, 0.0f, 0.6f));
@@ -148,6 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
+
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
 
         /// <summary>
@@ -226,7 +229,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
@@ -242,6 +247,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.1, "pan delta is not correct");
 
             yield return handRight.Hide();
+
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
         }
 
         private void InstantiateFromCode(Vector3? position = null, Quaternion? rotation = null)

@@ -35,6 +35,13 @@ work is 19.1. Older versions can be found from this [archive](https://developer.
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Configure CSC File for Oculus. Updating the csc file filters out the obsolete warnings produced by the Oculus Integration Assets. 
 The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-quest configuration process.
 
+    ![OculusIntegrationCsc](../Images/CrossPlatform/OculusQuest/OculusIntegrationCsc.png)
+
+1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules. Doing this will update the asmdefs with definitions and references needed for the
+relevant Oculus Quest code to function.
+
+    ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
+
 1. In the imported Oculus folder (It should be found at Assets/Oculus), there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport 
 to "Controllers and Hands".
 

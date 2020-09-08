@@ -14,6 +14,8 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
+Once MSBuild completes the import process, the next step is to select **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration**. This step adds a scripting define that enables the DotNetWinRT dependency that is installed by MSBuild for Unity.
+
 Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the **Use MSBuild for Unity dependency resolution** option fails, please use the following steps to enable holographic remoting.
 
 1. Set the target platform in **File > Build Settings** to **Universal Windows Platform**
@@ -37,10 +39,12 @@ These issues are particularly relevant when running on **Unity 2019.3** or later
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
-> [!Note]
-> There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution** does not work correctly, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
+To enable MSBuild for Unity, please run **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. After running this command, MSBuild should begin importing dependencies. It may take a few seconds for importing to begin.
 
-The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
+The **Use MSBuild for Unity dependency resolution** command does not display a confirmation. To confirm that it succeeded, open **Window** > **Package Manager** and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded.
+
+> [!Note]
+> There is an issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. If issues are encountered, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
 
@@ -52,11 +56,14 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 #### DotNetAdapter.csproj missing
 
-If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
+If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under **MRTK** / **Providers** / **WindowsMixedReality** / **Shared** / **DotNetAdapter** and confirm that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
 #### `DOTNETWINRT_PRESENT` #define written into player settings
 
-Navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
+Beginning with MRTK version 2.5.0, for performance reasons, this define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
+
+> [!Note]
+> The Check Configuration item does not display a confirmation. To confirm that the define has been set, please navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
 ![DotNetWinRT Present](../Images/Tools/Remoting/DotNetWinRTPresent.png)
 

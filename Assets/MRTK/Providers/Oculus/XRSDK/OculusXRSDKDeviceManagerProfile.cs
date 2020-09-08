@@ -53,8 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// Prefab reference for OVRCameraRig to load, if none are found in scene.
         /// This prefab is required for MRTK on Oculus Quest to support handtracking
         /// </summary>
-        public OVRCameraRig OVRCameraRigPrefab => ovrCameraRigPrefab;
-#endif
+        public GameObject OVRCameraRigPrefab => ovrCameraRigPrefab;
 
         [SerializeField]
         [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +

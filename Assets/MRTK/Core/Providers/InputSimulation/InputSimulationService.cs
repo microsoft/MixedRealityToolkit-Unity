@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 }
 
-                if (cameraControl != null && CameraCache.Main)
+                if (cameraControl != null && CameraCache.Main  != null)
                 {
                     cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
                 }
@@ -425,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cameraControl == null)
             {
                 cameraControl = new ManualCameraControl(InputSimulationProfile);
+            
+                if (CameraCache.Main != null)
+                {
+                    cameraControl.SetInitialTransform(CameraCache.Main.transform);
+                }
             }
         }
 
@@ -443,6 +448,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DebugUtilities.LogVerbose("Creating a new hand simulation data provider");
                 dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
             }
+            else if (dataProvider is SimulatedMotionControllerDataProvider)
+            {
+                DebugUtilities.LogVerbose("Replacing motion controller simulation data provider with hand simulation data provider");
+                RemoveAllControllerDevices();
+                dataProvider = new SimulatedHandDataProvider(InputSimulationProfile);
+            }
         }
 
         private void EnableMotionControllerSimulation()
@@ -452,6 +463,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DebugUtilities.LogVerbose("Creating a new motion controller simulation data provider");
                 dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
             }
+            else if (dataProvider is SimulatedHandDataProvider)
+            {
+                DebugUtilities.LogVerbose("Replacing hand simulation data provider with motion controller simulation data provider");
+                RemoveAllControllerDevices();
+                dataProvider = new SimulatedMotionControllerDataProvider(InputSimulationProfile);
+            }
+
         }
 
         private void DisableControllerSimulation()
