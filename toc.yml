@@ -1,4 +1,4 @@
-- name: Guides
+- name: Features and Architecture
   href: Documentation/
   homepage: Documentation/GettingStartedWithTheMRTK.md
 - name: API Documentation
