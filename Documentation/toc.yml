@@ -1,18 +1,24 @@
-- name: Getting Started with MRTK
-  href: GettingStartedWithTheMRTK.md
+- name: Welcome to MRTK
+  href: WelcomeToMRTK.md
   items:
-  - name: Upgrading from HTK
-    href: HTKToMRTKPortingGuide.md
-  - name: Updating from earlier versions
-    href: Updating.md
+  - name: Installation Guide
+    href: Installation.md
+  - name: Updates and Deployment
+    items: 
+    - name: Updating from RC2 
+      href: Updating.md
+    - name: Upgrading from HTK
+      href: HTKToMRTKPortingGuide.md
+    - name: Building and Deploying MRTK
+      href: BuildAndDeploy.md
+  - name: Performance and Best Practices
+    items: 
+    - name: Performance
+      href: Performance/PerfGettingStarted.md
+    - name: Hologram Stabilization
+      href: hologram-stabilization.md
   - name: Release Notes
     href: ReleaseNotes.md
-  - name: Building and Deploying MRTK
-    href: BuildAndDeploy.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: Hologram Stabilization
-    href: Hologram-Stabilization.md
 - name: Architecture
   items:
   - name: Overview

@@ -1,8 +1,14 @@
-# Getting Started with MRTK
+---
+title: Installation Guide
+description: Guide for installing MRTK-Unity in a new project.
+author: hferrone
+ms.author: v-hferrone
+ms.date: 09/8/2020
+ms.localizationpriority: high
+keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
+---
 
-![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
-
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).
+# Installation Guide
 
 ## Prerequisites
 
