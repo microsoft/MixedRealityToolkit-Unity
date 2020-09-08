@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -24,7 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static GUIContent RemoveStateButtonLabel;
         private static GUIContent AddStateButtonLabel;
 
-        private static string newStateName = "New State Name"; 
+        // Used to set the default name for the text input field when a user creates a new state
+        private static string newStateName = "New State Name";
+
+        private const string newCoreStateName = "New Core State";
+        private const string createNewStateName = "Create New State";
+        private const string defaultStateName = "Default";
 
         protected virtual void OnEnable()
         {
@@ -81,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
 
                         // Do not draw a remove button for the default state
-                        if (stateName.stringValue != "Default")
+                        if (stateName.stringValue != defaultStateName)
                         {
                             // Draw a button with a '-' for state removal
                             if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
@@ -104,14 +110,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                             // When a new core state is added via inspector, the name is initialized to "New Core State" and then changed
                             // to the name the user selects from the enum list of CoreInteractionStates
-                            if (stateName.stringValue == "New Core State")
+                            if (stateName.stringValue == newCoreStateName)
                             {
                                 SetCoreStateType(state, stateName);
                             }
 
                             // When a new state is added via inspector, the name is initialized to "Create New State" and then changed
                             // to the name the user enters a name in the text field and then selects the "Set State Name" button
-                            if (stateName.stringValue == "Create New State")
+                            if (stateName.stringValue == createNewStateName)
                             {
                                 using (new EditorGUILayout.HorizontalScope())
                                 {
@@ -164,18 +170,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Get the list of the subclasses for BaseInteractionEventConfiguration and find the
             // event configuration that contains the given state name
             var eventConfigurationTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-            var eventConfigType = eventConfigurationTypes.Find(t => t.Name.StartsWith(stateName));
 
-            // If there is associated event configuration for the state, then it is valid
-            if (eventConfigType != null)
-            {
-                return true;
-            }
+            // If there is associated event configuration present for the state, then it is valid
             // If an associated class for the state could not be found then the event config is not valid
-            else
-            {
-                return false;
-            }
+            bool eventConfigPresent = eventConfigurationTypes.Find(t => t.Name.StartsWith(stateName)) != null;
+
+            return eventConfigPresent;
         }
 
         // Create an instance of an associated event scriptable object given the state.
@@ -213,28 +213,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Rect position = EditorGUILayout.GetControlRect();
             using (new EditorGUI.PropertyScope(position, new GUIContent("State"), stateProp))
             {
-                string[] coreInteractionStateNames = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
-                int id = Array.IndexOf(coreInteractionStateNames, -1);
-                int newId = EditorGUI.Popup(position, id, coreInteractionStateNames);
+                List<string> coreInteractionStateNames = Enum.GetNames(typeof(CoreInteractionState)).ToList();
+
+                // If the state is already being tracked then do not display the state name as an option to add
+                foreach(string coreState in coreInteractionStateNames.ToList())
+                {
+                    if (instance.IsStateTracked(coreState))
+                    {
+                        coreInteractionStateNames.Remove(coreState);
+                    }
+                }
+
+                // Convert coreInteractionStateNames to an array to allow the use of EditorGUI.Popup
+                string[] availableCoreInteractionStates = coreInteractionStateNames.ToArray();
+
+                int id = Array.IndexOf(availableCoreInteractionStates, -1);
+                int newId = EditorGUI.Popup(position, id, availableCoreInteractionStates);
 
                 // NOTE FOR THE FUTURE: Sort the core states in a menu that indicates whether a core state is a near 
                 // interaction state, far interaction state, or both to futher push the mental model of the MRTK interaction model
 
                 if (newId != -1)
                 {
-                    string selectedState = coreInteractionStateNames[newId];
+                    string selectedState = availableCoreInteractionStates[newId];
 
-                    // If this state is not already being tracked then change the name
-                    if (!instance.IsStateTracked(selectedState))
-                    {
-                        stateNameProp.stringValue = selectedState;
-                    }
-                    else
-                    {
-                        // If a state that is already being tracked is selected, reset the id until a 
-                        // state that is not being tracked is selected
-                        newId = -1;
-                    }
+                    stateNameProp.stringValue = selectedState;                  
                 }
             }
         }
@@ -263,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (InspectorUIUtility.FlexButton(AddStateButtonLabel))
                 {
-                    AddNewState("New Core State");
+                    AddNewState(newCoreStateName);
                 }
             }
         }
@@ -274,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (GUILayout.Button("Create New State"))
                 {
-                    AddNewState("Create New State");
+                    AddNewState(createNewStateName);
                 }
             }
         }

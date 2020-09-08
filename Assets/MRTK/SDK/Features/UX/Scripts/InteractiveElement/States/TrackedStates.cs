@@ -40,15 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <returns>True if the state is being tracked, false otherwise</returns>
         public bool IsStateTracked(string stateName)
         {
-            if (States.Exists((state) => state.Name == stateName))
-            {
-                Debug.LogError($"The {stateName} state is already being tracked and cannot be added to states.");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return States.Exists((state) => state.Name == stateName);
         }
     }
 }
