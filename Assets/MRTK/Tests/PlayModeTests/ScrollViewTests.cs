@@ -25,12 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2_NoLabel.prefab
         private const string PressableHololens2PrefabGuid = "b20573eb9bf8a914882fa4a571d2e8dc";
 
-
-        [SetUp]
-        public override void Setup()
+        [UnitySetUp]
+        public override IEnumerator Setup()
         {
-            base.Setup();
+            yield return base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
         }
 
         #region Tests
@@ -984,7 +984,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator GGVScroll()
         {
-            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
 
             // Setting up a horizontal 1x1 scroll view with two pressable buttons items
             var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 2);
