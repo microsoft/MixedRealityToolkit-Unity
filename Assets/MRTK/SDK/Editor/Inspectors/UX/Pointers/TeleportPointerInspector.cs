@@ -45,9 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             validLayers = serializedObject.FindProperty("ValidLayers");
             invalidLayers = serializedObject.FindProperty("InvalidLayers");
 
-            pointerAudioSource = serializedObject.FindProperty("PointerAudioSource");
-            teleportRequestedClip = serializedObject.FindProperty("TeleportRequestedClip");
-            teleportCompletedClip = serializedObject.FindProperty("TeleportCompletedClip");
+            pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
+            teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
+            teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");
         }
 
         public override void OnInspectorGUI()
