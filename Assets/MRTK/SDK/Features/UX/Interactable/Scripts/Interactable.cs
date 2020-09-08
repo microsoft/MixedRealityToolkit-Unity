@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        rollOffTimer = rollOffTime;
+                        rollOffTimer = RollOffTime;
                     }
 
                     SetState(InteractableStates.InteractableStateEnum.Focus, value);
@@ -564,9 +564,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
-        // allows for switching colliders without firing a lose focus immediately
-        // for advanced controls like drop-downs
-        protected float rollOffTime = 0.25f;
+        /// <summary>
+        /// Allows for switching colliders without firing a lose focus immediately for advanced controls like drop-downs
+        /// </summary>
+        public float RollOffTime { get; protected set; } = 0.25f;
         protected float rollOffTimer = 0.25f;
 
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
@@ -679,11 +680,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InternalUpdate()
         {
-            if (rollOffTimer < rollOffTime && HasPress)
+            if (rollOffTimer < RollOffTime && HasPress)
             {
                 rollOffTimer += Time.deltaTime;
 
-                if (rollOffTimer >= rollOffTime)
+                if (rollOffTimer >= RollOffTime)
                 {
                     HasPress = false;
                     HasGesture = false;

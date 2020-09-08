@@ -2,22 +2,28 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.
-    /// </summary>
+    /// A scrollable frame where content scroll is triggered by manual controller click and drag or according to pagination settings.
+    //// </summary>
+    ///<remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
+    [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
-    public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler
+    public class ScrollingObjectCollection : MonoBehaviour,
+            IMixedRealityPointerHandler,
+            IMixedRealitySourceStateHandler,
+            IMixedRealityTouchHandler
     {
         /// <summary>
         /// How velocity is applied to a <see cref="ScrollingObjectCollection"/> when a scroll is released.
@@ -39,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             LeftAndRight,
         }
 
-        [Experimental]
         [SerializeField]
         [Tooltip("Enables/disables scrolling with near/far interaction.")]
         private bool canScroll = true;
@@ -54,71 +59,139 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { canScroll = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Automatically set up scroller at runtime.")]
-        private bool setUpAtRuntime = true;
-
         /// <summary>
-        /// Automatically set up scroller at runtime.
+        /// Edit modes for defining scroll viewable area and scroll interaction boundaries.
         /// </summary>
-        public bool SetUpAtRuntime
+        public enum EditMode
         {
-            get { return setUpAtRuntime; }
-            set { setUpAtRuntime = value; }
+            Auto = 0, // Use pagination values
+            Manual, // Use direct manipulation of the object
         }
 
         [SerializeField]
-        [Tooltip("Number of lines visible in scroller. Orthogonal to tiers.")]
-        private int viewableArea = 4;
+        [Tooltip("Edit modes for defining the clipping box masking boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the clipping box object.")]
+        private EditMode maskEditMode;
 
         /// <summary>
-        /// Number of lines visible in scroller. Orthogonal to <see cref="tiers"/>.
+        /// Edit modes for defining the clipping box masking boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the clipping box object.
         /// </summary>
-        public int ViewableArea
+        public EditMode MaskEditMode
         {
-            get { return (viewableArea > 0) ? viewableArea : 1; }
-            set { viewableArea = value; }
+            get { return maskEditMode; }
+            set { maskEditMode = value; }
         }
 
         [SerializeField]
-        [Tooltip("The distance the user's pointer can make before its considered a drag.")]
-        [Range(0.0f, 2.0f)]
-        private float handDeltaMagThreshold = 0.4f;
+        [Tooltip("Edit modes for defining the scroll interaction collider boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the collider.")]
+        private EditMode colliderEditMode;
 
         /// <summary>
-        /// The distance the user's pointer can make before its considered a drag.
+        /// Edit modes for defining the scroll interaction collider boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the collider.
         /// </summary>
-        public float HandDeltaMagThreshold
+        public EditMode ColliderEditMode
         {
-            get { return handDeltaMagThreshold; }
-            set { handDeltaMagThreshold = value; }
+            get { return colliderEditMode; }
+            set { colliderEditMode = value; }
         }
 
         [SerializeField]
-        [Tooltip("Seconds the user's pointer can intersect a controller item before it is considered a drag.")]
-        [Range(0.0f, 2.0f)]
-        private float dragTimeThreshold = 0.75f;
+        [HideInInspector]
+        private bool maskEnabled = true;
 
         /// <summary>
-        /// Seconds the user's pointer can intersect a controller item before it is considered a drag.
+        /// Visibility mode of scroll content. Default value will mask all objects outside of the scroll viewable area.
         /// </summary>
-        public float DragTimeThreshold
+        public bool MaskEnabled
         {
-            get { return dragTimeThreshold; }
-            set { dragTimeThreshold = value; }
+            get { return maskEnabled; }
+            set 
+            {
+                if (!value && value != wasMaskEnabled)
+                {
+                    RestoreContentVisibility();
+                }
+                wasMaskEnabled = value;
+                maskEnabled = value;
+            }
+        }
+
+        // Helps catching any changes on the mask enabled value made from the inspector.
+        // With the custom editor, the mask enabled field is changed before mask enabled setter is called.
+        private bool wasMaskEnabled = true;
+
+        [SerializeField]
+        [Tooltip("The distance, in meters, the current pointer can travel along the scroll direction before triggering a scroll drag.")]
+        [Range(0.0f, 0.2f)]
+        private float handDeltaScrollThreshold = 0.02f;
+
+        /// <summary>
+        /// The distance, in meters, the current pointer can travel along the scroll direction before triggering a scroll drag.
+        /// </summary>
+        public float HandDeltaScrollThreshold
+        {
+            get { return handDeltaScrollThreshold; }
+            set { handDeltaScrollThreshold = value; }
         }
 
         [SerializeField]
-        [Tooltip("Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.")]
-        private bool useNearScrollBoundary = false;
-
+        [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")]
+        private float releaseThresholdFront = 0.03f;
         /// <summary>
-        /// Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.
+        /// Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.
         /// </summary>
-        public bool UseNearScrollBoundary
+        public float ReleaseThresholdFront
         {
-            get { return useNearScrollBoundary; }
-            set { useNearScrollBoundary = value; }
+            get { return releaseThresholdFront; }
+            set { releaseThresholdFront = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.")]
+        private float releaseThresholdBack = 0.20f;
+        /// <summary>
+        /// Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.
+        /// </summary>
+        public float ReleaseThresholdBack
+        {
+            get { return releaseThresholdBack; }
+            set { releaseThresholdBack = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
+        private float releaseThresholdLeftRight = 0.20f;
+        /// <summary>
+        /// Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.
+        /// </summary>
+        public float ReleaseThresholdLeftRight
+        {
+            get { return releaseThresholdLeftRight; }
+            set { releaseThresholdLeftRight = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
+        private float releaseThresholdTopBottom = 0.20f;
+        /// <summary>
+        /// Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.
+        /// </summary>
+        public float ReleaseThresholdTopBottom
+        {
+            get { return releaseThresholdTopBottom; }
+            set { releaseThresholdTopBottom = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
+        [Range(0.0f, 0.05f)]
+        private float frontTouchDistance = 0.005f;
+        /// <summary>
+        /// Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.
+        /// </summary>
+        public float FrontTouchDistance
+        {
+            get { return frontTouchDistance; }
+            set { frontTouchDistance = value; }
         }
 
         [SerializeField]
@@ -135,12 +208,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField]
-        [Tooltip("Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to hide items in the list.")]
+        [Tooltip("Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to manage content visibility.")]
         private bool useOnPreRender;
 
         /// <summary>
-        /// Toggles whether the ScrollingObjectCollection" will use the Camera OnPreRender
-        /// event to hide items in the list. The fallback is MonoBehaviour.LateUpdate().
+        /// Toggles whether Camera OnPreRender callback will be used to manage content visibility.
+        /// The fallback is MonoBehaviour.LateUpdate().
         /// </summary>
         /// <remarks>
         /// This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after LateUpdate,
@@ -157,10 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 }
 
-                if (clipBox != null)
-                {
-                    clipBox.UseOnPreRender = true;
-                }
+                ClipBox.UseOnPreRender = true;
 
                 if (value)
                 {
@@ -172,13 +242,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
 
                 useOnPreRender = value;
+
+                ClipBox.UseOnPreRender = useOnPreRender;
             }
         }
 
         [SerializeField]
         [Tooltip("Amount of (extra) velocity to be applied to scroller")]
-        [Range(0.0f, 2.0f)]
-        private float velocityMultiplier = 0.8f;
+        [Range(0.0f, 0.02f)]
+        private float velocityMultiplier = 0.008f;
 
         /// <summary>
         /// Amount of (extra) velocity to be applied to scroller.
@@ -245,82 +317,111 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { animationLength = value; }
         }
 
-        [Tooltip("Number of columns or rows in respect to ViewableArea and ScrollDirection.")]
+        [Tooltip("Number of cells in a row on up-down scroll view or number of cells in a column on left-right scroll view.")]
         [SerializeField]
-        [Range(1, 500)]
-        private int tiers = 2;
+        [FormerlySerializedAs("tiers")]
+        [Min(1)]
+        private int cellsPerTier = 1;
 
         /// <summary>
-        /// Number of columns or rows in respect to <see cref="ViewableArea"/> and <see cref="ScrollDirection"/>.
+        /// Number of cells in a row on up-down scroll or number of cells in a column on left-right scroll.
         /// </summary>
-        public int Tiers
+        public int CellsPerTier
         {
-            get { return (tiers > 0) ? tiers : 1; }
-            set { tiers = value; }
-        }
-
-        [Tooltip("Whether items that are partially clipped are disabled for input hit testing")]
-        [SerializeField]
-        private bool disableClippedItems = true;
-        public bool DisableClippedItems
-        {
-            get => disableClippedItems;
-            set => disableClippedItems = value;
+            get
+            {
+                return cellsPerTier;
+            }
+            set
+            {
+                Debug.Assert(value > 0, "Cells per tier should have a positive non zero value");
+                cellsPerTier = Mathf.Max(1, value);
+            }
         }
 
         [SerializeField]
-        [Tooltip("Manual offset adjust the scale calculation of the ClippingBox.")]
-        private Vector3 occlusionScalePadding = new Vector3(0.0f, 0.0f, 0.001f);
+        [Tooltip("Number of visible tiers in the scrolling area.")]
+        [FormerlySerializedAs("viewableArea")]
+        [Min(1)]
+        private int tiersPerPage = 2;
 
         /// <summary>
-        /// Manual offset adjust the scale calculation of the <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
+        /// Number of visible tiers in the scrolling area.
         /// </summary>
-        /// <remarks>Setting to zero may result in z fighting."</remarks>
-        public Vector3 OcclusionScalePadding
+        public int TiersPerPage
         {
-            get { return occlusionScalePadding; }
-            set { occlusionScalePadding = value; }
+            get
+            {
+                return tiersPerPage;
+            }
+            set
+            {
+                Debug.Assert(value > 0, "Tiers per page should have a positive non zero value");
+                tiersPerPage = Mathf.Max(1, value);
+            }
         }
 
+        [Tooltip("Width of the pagination cell.")]
         [SerializeField]
-        [Tooltip("Manual offset adjust the position calculation of the ClippingBox.")]
-        private Vector3 occlusionPositionPadding = Vector3.zero;
-
-        /// <summary>
-        /// Manual offset adjust the position calculation of the <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
-        /// </summary>
-        public Vector3 OcclusionPositionPadding
-        {
-            get { return occlusionPositionPadding; }
-            set { occlusionPositionPadding = value; }
-        }
-
-        [Tooltip("Width of cell per object.")]
-        [SerializeField]
-        [Range(0.00001f, 100.0f)]
+        [Min(0.001f)]
         private float cellWidth = 0.25f;
 
         /// <summary>
-        /// Width of the cell per object in the collection.
+        /// Width of the pagination cell.
         /// </summary>
         public float CellWidth
         {
-            get { return (cellWidth > 0) ? cellWidth : 0.00001f; }
-            set { cellWidth = value; }
+            get
+            {
+                return cellWidth;
+            }
+            set
+            {
+                Debug.Assert(value > 0, "Cell width should have a positive non zero value");
+                cellWidth = Mathf.Max(0.001f, value);
+            }
         }
 
-        [Tooltip("Height of cell per object.")]
+        [Tooltip("Height of the pagination cell.")]
         [SerializeField]
-        [Range(0.00001f, 100.0f)]
+        [Min(0.001f)]
         private float cellHeight = 0.25f;
 
         /// <summary>
-        /// Height of the cell per object in the collection.
+        /// Height of the pagination cell.Hhide
         /// </summary>
         public float CellHeight
         {
-            get { return (cellHeight > 0) ? cellHeight : 0.00001f; }
-            set { cellHeight = value; }
+            get
+            {
+                return cellHeight;
+            }
+            set
+            {
+                Debug.Assert(cellHeight > 0, "Cell height should have a positive non zero value");
+                cellHeight = Mathf.Max(0.001f, value);
+            }
+        }
+
+        [Tooltip("Depth of cell used for masking out content renderers that are out of bounds.")]
+        [SerializeField]
+        [Min(0.001f)]
+        private float cellDepth = 0.25f;
+
+        /// <summary>
+        /// Depth of cell used for masking out content renderers that are out of bounds.
+        /// </summary>
+        public float CellDepth
+        {
+            get
+            {
+                return cellDepth;
+            }
+            set
+            {
+                Debug.Assert(value > 0, "Cell depth should have a positive non zero value");
+                cellDepth = Mathf.Max(0.001f, value);
+            }
         }
 
         [SerializeField]
@@ -336,6 +437,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { bounceMultiplier = value; }
         }
 
+        // Lerping time interval used for smoothing between positions during scroll drag. Number was empirically defined.
+        private const float DragLerpInterval = 0.5f;
+
+        // Lerping time interval used for smoothing between positions during bouncing. Number was empirically defined.
+        private const float BounceLerpInterval = 0.2f;
+
         /// <summary>
         /// The UnityEvent type the ScrollingObjectCollection sends.
         /// GameObject is the object the fired the scroll.
@@ -347,55 +454,51 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.")]
-        public ScrollEvent ClickEvent = new ScrollEvent();
+        public ScrollEvent OnClick = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is touched.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is touched.")]
-        public ScrollEvent TouchStarted = new ScrollEvent();
+        public ScrollEvent OnTouchStarted = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.")]
-        public ScrollEvent TouchEnded = new ScrollEvent();
+        public ScrollEvent OnTouchEnded = new ScrollEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity.")]
-        public UnityEvent ListMomentumEnded = new UnityEvent();
+        public UnityEvent OnMomentumEnded = new UnityEvent();
 
         /// <summary>
-        /// First item (visible) in the <see cref="ViewableArea"/>. 
+        /// Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.
         /// </summary>
-        public int FirstItemInViewIndex
-        {
-            get
-            {
-                if (scrollDirection == ScrollDirectionType.UpAndDown)
-                {
-                    return (scrollContainer.transform.localPosition.y != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) : 0;
-                }
-                else
-                {
-                    return (scrollContainer.transform.localPosition.x != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) : 0;
-                }
-            }
-        }
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
+        public UnityEvent OnMomentumStarted = new UnityEvent();
 
         [SerializeField]
         [HideInInspector]
         private CameraEventRouter cameraMethods;
 
         // Maximum amount the scroller can travel (vertically)
-        private float maxY
+        private float MaxY
         {
             get
             {
-                int hasMod = (ModuloCheck(NodeList.Count, Tiers) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? (StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + hasMod) * CellHeight : 0.0f;
+                var max = (contentBounds == null || contentBounds.size.y <= 0) ? 0 :
+                        Mathf.Max(0, contentBounds.size.y - TiersPerPage * CellHeight);
+
+                if (maskEditMode == EditMode.Auto)
+                {
+                    // Making it a multiple of cell height
+                    max = Mathf.Round(SafeDivisionFloat(max, CellHeight)) * CellHeight;
+                }
+
+                return max;
             }
         }
 
@@ -406,54 +509,136 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private readonly float maxX = 0.0f;
 
         // Minimum amount the scroller can travel (horizontally)
-        private float minX
+        private float MinX
         {
             get
             {
-                int hasMod = (ModuloCheck(NodeList.Count, Tiers) != 0) ? 1 : 0;
-                return NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + hasMod) * CellWidth) : 0.0f;
-            }
+                var max = (contentBounds == null || contentBounds.size.x <= 0) ? 0 :
+                     Mathf.Max(0, contentBounds.size.x - TiersPerPage * CellWidth);
 
-        }
+                if (maskEditMode == EditMode.Auto)
+                {
+                    // Making it a multiple of cell width
+                    max = Mathf.Round(SafeDivisionFloat(max, CellWidth)) * CellWidth;
+                }
 
-        // Item index for items that should be visible
-        private int numItemsPrevView
-        {
-            get
-            {
-                if (scrollDirection == ScrollDirectionType.UpAndDown)
-                {
-                    return (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) * Tiers;
-                }
-                else
-                {
-                    return -((int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) * Tiers);
-                }
+                return max * -1.0f;
             }
         }
 
-        // Take the previous view and then subtract the column remainder and we add the viewable area as a multiplier (minus 1 since the index is zero based).
-        // The first item not viewable in the list
-        private int numItemsPostView
+        // Bounds that wrap all scroll container content. Used for calculating MinX and MaxY.
+        private Bounds contentBounds;
+
+        /// <summary>
+        /// Index of the first visible cell.
+        /// </summary>
+        public int FirstVisibleCellIndex
         {
             get
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return ((int)Mathf.Floor((scrollContainer.transform.localPosition.y + occlusionPositionPadding.y) / CellHeight) * Tiers) + (ViewableArea * Tiers) - 1;
+                    return (int)Mathf.Ceil(ScrollContainer.transform.localPosition.y / CellHeight) * CellsPerTier;
                 }
                 else
                 {
-                    return ((int)Mathf.Floor((-(scrollContainer.transform.localPosition.x) + occlusionPositionPadding.x) / CellWidth) * Tiers) + (ViewableArea * Tiers) - 1;
+                    // Scroll container most to the right local position has x component equals to zero. This value goes negative as scroll container moves to the left. 
+                    return ((int)Mathf.Ceil(Mathf.Abs(ScrollContainer.transform.localPosition.x / CellWidth)) * CellsPerTier);
                 }
-
             }
         }
+
+        /// <summary>
+        /// Index of the first hidden cell.
+        /// </summary>
+        public int FirstHiddenCellIndex
+        {
+            get
+            {
+                if (scrollDirection == ScrollDirectionType.UpAndDown)
+                {
+                    return ((int)Mathf.Floor(ScrollContainer.transform.localPosition.y / CellHeight) * CellsPerTier) + (TiersPerPage * CellsPerTier);
+                }
+                else
+                {
+                    return ((int)Mathf.Floor(-ScrollContainer.transform.localPosition.x / CellWidth) * CellsPerTier) + (TiersPerPage * CellsPerTier);
+                }
+            }
+        }
+
+        private BoxCollider scrollingCollider;
+        /// <summary>
+        /// Scrolling interaction collider used to catch pointer and touch events on empty spaces.
+        /// </summary>
+        public BoxCollider ScrollingCollider
+        {
+            get
+            {
+                if (scrollingCollider == null)
+                {
+                    scrollingCollider = gameObject.EnsureComponent<BoxCollider>();
+                }
+
+                return scrollingCollider;
+            }
+        }
+
+        // Depth of the scrolling interaction collider. Used for defining a plane depth if 'Auto' collider edit mode is selected.
+        private const float ScrollingColliderDepth = 0.001f;
+
+        private NearInteractionTouchable scrollingTouchable;
+        /// <summary>
+        /// Scrolling interaction touchable used to catch touch events on empty spaces.
+        /// </summary>
+        public NearInteractionTouchable ScrollingTouchable
+        {
+            get
+            {
+                if (scrollingTouchable == null)
+                {
+                    scrollingTouchable = gameObject.EnsureComponent<NearInteractionTouchable>();
+                }
+
+                return scrollingTouchable;
+            }
+        }
+
+        /// <summary>
+        /// The local position of the moving scroll container. Can be used to represent the container drag displacement.
+        /// </summary>
+        public Vector3 ScrollContainerPosition => ScrollContainer.transform.localPosition;
 
         // The empty game object that contains our nodes and be scrolled
         [SerializeField]
         [HideInInspector]
         private GameObject scrollContainer;
+
+        private GameObject ScrollContainer
+        {
+            get
+            {
+                if (scrollContainer == null)
+                {
+                    Transform oldContainer = transform.Find("Container");
+
+                    if (oldContainer != null)
+                    {
+                        scrollContainer = oldContainer.gameObject;
+                        Debug.LogWarning(name + " ScrollingObjectCollection found an existing Container object, using it for the list");
+                    }
+                    else
+                    {
+                        scrollContainer = new GameObject();
+                        scrollContainer.name = "Container";
+                        scrollContainer.transform.parent = transform;
+                        scrollContainer.transform.localPosition = Vector3.zero;
+                        scrollContainer.transform.localRotation = Quaternion.identity;
+                    }
+                }
+
+                return scrollContainer;
+            }
+        }
 
         // The empty game object that contains the ClipppingBox
         [SerializeField]
@@ -465,7 +650,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public GameObject ClippingObject
         {
-            get { return clippingObject; }
+            get
+            {
+                if (clippingObject == null)
+                {
+                    Transform oldClippingObj = transform.Find("Clipping Bounds");
+
+                    if (oldClippingObj != null)
+                    {
+                        clippingObject = oldClippingObj.gameObject;
+                        Debug.LogWarning(name + " ScrollingObjectCollection found an existing Clipping object, using it for the list");
+                    }
+                    else
+                    {
+                        clippingObject = new GameObject();
+                    }
+
+                    clippingObject.name = "Clipping Bounds";
+                    clippingObject.transform.parent = transform;
+                    clippingObject.transform.localRotation = Quaternion.identity;
+                    clippingObject.transform.localPosition = Vector3.zero;
+                }
+
+                return clippingObject;
+            }
         }
 
         [SerializeField]
@@ -478,21 +686,63 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public ClippingBox ClipBox
         {
-            get { return clipBox; }
+            get
+            {
+                if (clipBox == null)
+                {
+                    clipBox = ClippingObject.EnsureComponent<ClippingBox>();
+                    clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
+                }
+
+                return clipBox;
+            }
         }
+       
+        // This collider will be used for checking intersection of the scroll visible area with any content collider or renderer bounds.
+        private Collider clippingBoundsCollider;
+        private Collider ClippingBoundsCollider
+        {
+            get
+            {
+                if (clippingBoundsCollider == null)
+                {
+                    clippingBoundsCollider = ClippingObject.EnsureComponent<BoxCollider>();
+                    clippingBoundsCollider.enabled = false;
+                }
+
+                return clippingBoundsCollider;
+            }
+        }
+
+        // Ratio that defines the outer clipping bounds size relative to the actual clipping bounds.
+        // The outer clipping bounds is used for ensuring that content collider that are mostly visible can still stay interactable.
+        private readonly float contentVisibilityThresholdRatio = 1.025f;
 
         private bool oldIsTargetPositionLockedOnFocusLock;
 
         #region scroll state variables
 
-        // Tracks whether an item in the list is being interacted with
-        private bool isEngaged = false;
+        /// <summary>
+        /// Tracks whether content or scroll background is being interacted with.
+        /// </summary>
+        public bool IsEngaged { get; private set; } = false;
 
-        // Tracks whether a movement action resulted in dragging the list  
-        private bool isDragging = false;
+        /// <summary>
+        /// Tracks whether the scroll is being dragged due to a controller movement. 
+        /// </summary>
+        public bool IsDragging { get; private set; } = false;
 
-        // we need to know if the pointer was a touch so we can do the threshold test (dot product test)
-        private bool isTouched = false;
+        /// <summary>
+        /// Tracks whether the scroll content or background is touched by a near pointer.
+        /// Remains true while the same near pointer does not cross the scrolling release boundaries.
+        /// </summary>
+        public bool IsTouched { get; private set; } = false;
+
+        /// <summary>
+        /// Tracks whether the scroll has any kind of momentum.
+        /// True if scroll is being dragged by a controller, the velocity is falling off after a drag release or during pagination movement.
+        /// </summary>
+        public bool HasMomentum { get; private set; } = false;
 
         // The position of the scollContainer before we do any updating to it
         private Vector3 initialScrollerPos;
@@ -500,25 +750,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // The new of the scollContainer before we've set the position / finished the updateloop
         private Vector3 workingScrollerPos;
 
-        // A list of new child nodes that have new child renderers that need to be added to the clippingBox
-        private List<ObjectCollectionNode> nodesToClip = new List<ObjectCollectionNode>();
+        // A list of content renderers that need to be added to the clippingBox
+        private List<Renderer> renderersToClip = new List<Renderer>();
 
-        // A list of new child nodes that have new child renderers that need to be removed to the clippingBox
-        private List<ObjectCollectionNode> nodesToUnclip = new List<ObjectCollectionNode>();
+        // A list of content renderers that need to be removed from the clippingBox
+        private List<Renderer> renderersToUnclip = new List<Renderer>();
 
         private IMixedRealityPointer currentPointer;
 
-        // The initial contact object for the list. this may not always be currentPointer.Result.CurrentPointerTarget
+        // The initial focused object from scroll content. This may not always be currentPointer.Result.CurrentPointerTarget
         private GameObject initialFocusedObject;
-
-        // The point where the original PointerDown occurred
-        private Vector3 pointerHitPoint;
-
-        // The ray length of original pointer down
-        private float pointerHitDistance;
-
-        // This flag is set by PointerUp to prevent InputUp from continuing to propagate. e.g. Interactables
-        private bool shouldSwallowEvents = false;
 
         #endregion scroll state variables
 
@@ -529,18 +770,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         // Hand position previous frame
         private Vector3 lastPointerPos;
-
-        [SerializeField]
-        [HideInInspector]
-        /// <summary>
-        /// The distance in front of the scroller, in local space, for a touch release.
-        /// We serialize and then hide this because we want to use the value
-        /// when drawing the touch plane, but not actually expose the value publicly.
-        /// </summary>
-        private float releaseDistance;
-
-        // Current time at initial press
-        private float initialPressTime;
 
         #endregion drag position calculation variables
 
@@ -555,17 +784,43 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // How much we should filter the velocity - yes this is a magic number. Its been tuned so lets leave it.
         private readonly float velocityFilterWeight = 0.97f;
 
-        // Simple state enum to handle velocity logic
+        // Simple state enum to handle velocity falloff logic
         private enum VelocityState
         {
             None = 0,
             Resolving,
             Calculating,
-            Bouncing
+            Bouncing,
+            Dragging,
+            Animating,
         }
 
         // Internal enum for tracking the velocity state of the list
-        private VelocityState velocityState = VelocityState.None;
+        private VelocityState currentVelocityState;
+
+        private VelocityState CurrentVelocityState
+        {
+            get => currentVelocityState;
+
+            set
+            {
+                if (value != currentVelocityState)
+                {
+                    if (value == VelocityState.None)
+                    {
+                        OnMomentumEnded.Invoke();
+                    }
+                    else if (currentVelocityState == VelocityState.None)
+                    {
+                        OnMomentumStarted.Invoke();
+                    }
+                    previousVelocityState = currentVelocityState;
+                    currentVelocityState = value;
+                }
+            }
+        }
+
+        private VelocityState previousVelocityState;
 
         // Pre calculated destination with velocity and falloff when using per item snapping
         private Vector3 velocityDestinationPos;
@@ -578,264 +833,113 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // The Animation CoRoutine
         private IEnumerator animateScroller;
 
-        #region ObjectCollection methods
-
-        /// <inheritdoc/>
-        public override void UpdateCollection()
+        /// <summary>
+        /// Scroll pagination modes.
+        /// </summary>
+        public enum PaginationMode
         {
-            // Generate our scroll specific objects
-            SetUpScrollContainer();
-            SetUpClippingPrimitive();
+            ByTier = 0, // By number of tiers
+            ByPage, // By number of pages
+            ToCellIndex // To selected cell
+        }
 
-            // ensure IgnoreInactiveTransforms is set to false, otherwise the node prune will remove any hidden items in the list.g
-            IgnoreInactiveTransforms = false;
-            // stash our children in a list so the count doesn't change or reverse the order if we were to count down
-            List<Transform> children = new List<Transform>();
-            for (int i = 0; i < transform.childCount; i++)
+        #region Setup methods
+
+        /// <summary>
+        /// Sets up the scroll clipping object and the interactable components according to the scroll content and chosen settings.
+        /// </summary>
+        public void UpdateContent()
+        {
+            UpdateContentBounds();
+            SetupScrollingInteractionCollider();
+            SetupClippingObject();
+            ManageVisibility();
+        }
+
+        private void UpdateContentBounds()
+        {
+            var originalRotation = transform.rotation;
+            transform.rotation = Quaternion.identity;
+
+            var childrenRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
+            if (childrenRenderers != null)
             {
-                Transform child = transform.GetChild(i);
-
-                if (child != scrollContainer.transform && child != clippingObject.transform)
+                contentBounds = new Bounds
                 {
-                    children.Add(child);
-                }
-            }
+                    size = Vector3.zero,
+                    center = ClipBox.transform.position
+                };
 
-            // move any objects to the scrollContainer
-            for (int i = 0; i < children.Count; i++)
-            {
-                children[i].parent = scrollContainer.transform;
-            }
-
-            // Check for empty nodes and remove them
-            List<ObjectCollectionNode> emptyNodes = new List<ObjectCollectionNode>();
-
-            for (int i = 0; i < NodeList.Count; i++)
-            {
-                // Make sure we respect our special scroll objects
-                if (NodeList[i].Transform == null
-                    || (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf)
-                    || NodeList[i].Transform.parent == null
-                    || !(NodeList[i].Transform.parent.gameObject == scrollContainer))
+                foreach (var renderer in childrenRenderers)
                 {
-                    emptyNodes.Add(NodeList[i]);
+                    contentBounds.Encapsulate(renderer.bounds);
                 }
+               
+                Vector3 localSize;
+
+                localSize.y = SafeDivisionFloat(contentBounds.size.y, transform.lossyScale.y);
+                localSize.x = SafeDivisionFloat(contentBounds.size.x, transform.lossyScale.x);
+                localSize.z = SafeDivisionFloat(contentBounds.size.z, transform.lossyScale.z);
+
+                contentBounds.size = localSize;
             }
 
-            // Now delete the empty nodes
-            for (int i = 0; i < emptyNodes.Count; i++)
+            transform.rotation = originalRotation;
+        }
+
+        // Setting up the initial transform values for the scrolling interaction collider and near touchable.
+        private void SetupScrollingInteractionCollider()
+        {
+            // Boundaries will be defined by direct manipulation of the scroll interaction components
+            if (colliderEditMode == EditMode.Manual)
             {
-                NodeList.Remove(emptyNodes[i]);
-            }
-
-            emptyNodes.Clear();
-
-            // Check when children change and adjust
-            for (int i = 0; i < scrollContainer.transform.childCount; i++)
-            {
-                Transform child = scrollContainer.transform.GetChild(i);
-
-                if (ContainsNode(child, out int nodeIndex) && NodeList[nodeIndex].GetType() != typeof(ScrollingObjectCollectionNode))
-                {
-                    // This node is in the list, but of the wrong type
-                    NodeList[nodeIndex] = new ScrollingObjectCollectionNode(NodeList[nodeIndex]);
-                }
-
-                if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
-                {
-                    NodeList.Add(new ScrollingObjectCollectionNode { Name = child.name, Transform = child, Colliders = child.GetComponentsInChildren<Collider>() });
-                }
-            }
-
-            if (NodeList.Count <= 0)
-            {
-                Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
                 return;
             }
 
-            SortNodes();
-
-            LayoutChildren();
-
-            OnCollectionUpdated?.Invoke(this);
-        }
-
-        private void SetUpScrollContainer()
-        {
-            // ScrollContainer empty game object null check - ensure its set up properly
-            if (scrollContainer == null)
+            if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                Transform oldContainer = transform.Find("Container");
-
-                if (oldContainer != null)
-                {
-                    scrollContainer = oldContainer.gameObject;
-                    Debug.LogWarning(name + " ScrollingObjectCollection found an existing Container object, using it for the list");
-                }
-                else
-                {
-                    scrollContainer = new GameObject();
-                }
-
-                scrollContainer.name = "Container";
-                scrollContainer.transform.parent = transform;
-                scrollContainer.transform.localPosition = Vector3.zero;
-                scrollContainer.transform.localRotation = Quaternion.identity;
+                ScrollingCollider.size = new Vector3(CellWidth * CellsPerTier, CellHeight * TiersPerPage, ScrollingColliderDepth);
             }
-        }
-
-        private void SetUpClippingPrimitive()
-        {
-            // ClippingObject empty game object null check - ensure its set up properly
-            if (clippingObject == null)
+            else
             {
-                Transform oldClippingObj = transform.Find("Clipping Bounds");
-
-                if (oldClippingObj != null)
-                {
-                    clippingObject = oldClippingObj.gameObject;
-                    Debug.LogWarning(name + " ScrollingObjectCollection found an existing Clipping object, using it for the list");
-                }
-                else
-                {
-                    clippingObject = new GameObject();
-                }
-
-                clippingObject.name = "Clipping Bounds";
-                clippingObject.transform.parent = transform;
-                clippingObject.transform.localRotation = Quaternion.identity;
-                clippingObject.transform.localPosition = Vector3.zero;
+                ScrollingCollider.size = new Vector3(CellWidth * TiersPerPage, CellHeight * CellsPerTier, ScrollingColliderDepth);
             }
 
-            // ClippingBox component null check - ensure its set up properly
-            if (clipBox == null)
-            {
-                clipBox = clippingObject.GetComponent<ClippingBox>();
+            Vector3 colliderPosition;
+            colliderPosition.x = ScrollingCollider.size.x / 2;
+            colliderPosition.y = - ScrollingCollider.size.y / 2;
+            colliderPosition.z = cellDepth / 2 + ScrollingColliderDepth;
+            ScrollingCollider.center = colliderPosition;
 
-                if (clipBox == null)
-                {
-                    clipBox = clippingObject.AddComponent<ClippingBox>();
-                }
+            Vector2 size = new Vector2(
+                        Math.Abs(Vector3.Dot(ScrollingCollider.size, ScrollingTouchable.LocalRight)),
+                        Math.Abs(Vector3.Dot(ScrollingCollider.size, ScrollingTouchable.LocalUp)));
 
-                clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
+            Vector3 touchablePosition = colliderPosition;
+            touchablePosition.z = - cellDepth / 2;
 
-                if (useOnPreRender)
-                {
-                    clipBox.UseOnPreRender = true;
-
-                    // Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
-                    // any dynamically created children in our list
-                    cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
-                    cameraMethods.OnCameraPreRender += OnCameraPreRender;
-                }
-            }
+            ScrollingTouchable.SetBounds(size);
+            ScrollingTouchable.SetLocalCenter(touchablePosition);
         }
 
         /// <summary>
-        /// Arranges our child objects in the scrollContainer per our set up instructions
-        /// The layout method uses modulo with Columns / Rows
+        /// Setting up the initial transform values for the clippingBox.
         /// </summary>
-        protected override void LayoutChildren()
+        private void SetupClippingObject()
         {
-            Vector2 halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
-
-            if (NodeList.Count <= 0)
+            // Boundaries will be defined by direct manipulation of the clipping object
+            if (maskEditMode == EditMode.Manual)
             {
-                Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
                 return;
             }
-
-            for (int i = 0; i < NodeList.Count; i++)
-            {
-                ObjectCollectionNode node = NodeList[i];
-
-                Vector3 newPos;
-
-                if (scrollDirection == ScrollDirectionType.UpAndDown)
-                {
-                    newPos.x = (ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellWidth) + halfCell.x : halfCell.x;
-                    newPos.y = ((StepMultiplier(i, Tiers) * CellHeight) + halfCell.y) * -1;
-                    newPos.z = 0.0f;
-
-                }
-                else // Left or right
-                {
-                    newPos.x = (StepMultiplier(i, Tiers) * CellWidth) + halfCell.x;
-                    newPos.y = ((ModuloCheck(i, Tiers) != 0) ? (ModuloCheck(i, Tiers) * CellHeight) + halfCell.y : halfCell.y) * -1;
-                    newPos.z = 0.0f;
-                }
-                node.Transform.localPosition = newPos;
-                NodeList[i] = node;
-            }
-
-            ResolveLayout();
-            HideItems();
-        }
-
-        /// <summary>
-        /// Sets up the initial position of the scroller object as well as the configuration for the clippingBox
-        /// </summary>
-        private void ResolveLayout()
-        {
-            if (NodeList.Count <= 0)
-            {
-                Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
-                return;
-            }
-
-            // temporarily turn on the first item in the list if its inactive
-            bool resetActiveState = false;
-            if (!NodeList[FirstItemInViewIndex].Transform.gameObject.activeSelf)
-            {
-                resetActiveState = true;
-                NodeList[FirstItemInViewIndex].Transform.gameObject.SetActive(true);
-            }
-
-            // create the offset for our thresholdCalculation -- grab the first item in the list
-
-            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInViewIndex].Transform, out Vector3 offsetSize);
-            releaseDistance = offsetSize.z * 0.5f;
-
-            // Use the first element for collection bounds for occluder positioning
-            // temporarily zero out the rotation so we can get an accurate bounds
-            Quaternion origRot = NodeList[FirstItemInViewIndex].Transform.rotation;
-            NodeList[FirstItemInViewIndex].Transform.rotation = Quaternion.identity;
 
             // The bounds of the clipping object, this is to make helper math easier later, it doesn't matter that its AABB since we're really not using it for bounds operations
             Bounds clippingBounds = new Bounds();
-            clippingBounds.size = Vector3.zero;
-
-            List<Vector3> boundsPoints = new List<Vector3>();
-            BoundsExtensions.GetColliderBoundsPoints(NodeList[FirstItemInViewIndex].Transform.gameObject, boundsPoints, 0);
-            clippingBounds.center = boundsPoints[0];
-
-            foreach (Vector3 point in boundsPoints)
-            {
-                clippingBounds.Encapsulate(point);
-            }
-
-            // lets check whether the collection cell dimensions are a better fit
-            // this prevents negative offset from ruining the scroll effect
-            Vector3 tempClippingSize = clippingBounds.size;
-
-            tempClippingSize.x = (tempClippingSize.x > CellWidth) ? tempClippingSize.x : CellWidth;
-            tempClippingSize.y = (tempClippingSize.y > CellHeight) ? tempClippingSize.y : CellHeight;
-
-            clippingBounds.size = tempClippingSize;
-            clippingBounds.center = clippingBounds.size * 0.5f;
-
-            // put the rotation back
-            NodeList[FirstItemInViewIndex].Transform.rotation = origRot;
-
-            // Set the first item back to its original state
-            if (resetActiveState)
-            {
-                NodeList[FirstItemInViewIndex].Transform.gameObject.SetActive(false);
-            }
+            clippingBounds.size = Vector3.one;
 
             Vector3 viewableCenter = new Vector3();
 
-            // Adjust scale and position of our clipping box
+            // Adjust scale and position of clipping box
             switch (scrollDirection)
             {
                 case ScrollDirectionType.UpAndDown:
@@ -843,62 +947,46 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     // Apply the viewable area and column/row multiplier
                     // Use a dummy bounds of one to get the local scale to match;
-                    clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
-                    clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds, OcclusionScalePadding);
+                    clippingBounds.size = new Vector3((CellWidth * CellsPerTier), (CellHeight * TiersPerPage), CellDepth);
+                    ClipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds);
 
-                    // Adjust where the center of the clipping box is
-                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
-                    viewableCenter.y = (((clipBox.transform.localScale.y * 0.5f) - (OcclusionScalePadding.y * 0.5f)) * -1) + OcclusionPositionPadding.y;
-                    viewableCenter.z = OcclusionPositionPadding.z;
                     break;
 
                 case ScrollDirectionType.LeftAndRight:
 
                     // Same as above for L <-> R
-                    clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Tiers, clippingBounds.size.z);
-                    clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds, OcclusionScalePadding);
+                    clippingBounds.size = new Vector3(CellWidth * TiersPerPage, CellHeight * CellsPerTier, CellDepth);
+                    ClipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).GetScaleToMatchBounds(clippingBounds);
 
-                    // Same as above for L <-> R
-                    viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
-                    viewableCenter.y = ((clipBox.transform.localScale.y * 0.5f) - (OcclusionScalePadding.y * 0.5f) + OcclusionPositionPadding.y) * -1.0f;
-                    viewableCenter.z = OcclusionPositionPadding.z;
                     break;
             }
 
-            // Apply our new values
-            clipBox.transform.localPosition = viewableCenter;
+            // Adjust where the center of the clipping box is
+            viewableCenter.x = ClipBox.transform.localScale.x * 0.5f;
+            viewableCenter.y = ClipBox.transform.localScale.y * -0.5f;
+            viewableCenter.z = 0;
 
-            // Add our objects to the clippingBox queue
-            AddAllItemsToClippingObject();
+            // Apply new values
+            ClipBox.transform.localPosition = viewableCenter;
         }
 
-        #endregion ObjectCollection methods
+        #endregion Setup methods
 
         #region MonoBehaviour Implementation
 
         private void OnEnable()
         {
             // Register for global input events
-            if (CoreServices.InputSystem != null)
-            {
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-            }
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityTouchHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
 
             if (useOnPreRender)
             {
-                if (clippingObject == null || clipBox == null)
-                {
-                    Debug.Log(name + " UseOnPreRender is enabled, but ScrollingObjectCollection needs UpdateCollection() to be called first.");
-                    return;
-                }
-
-                clipBox.UseOnPreRender = true;
+                ClipBox.UseOnPreRender = true;
 
                 // Subscribe to the preRender callback on the main camera so we can intercept it and make sure we catch
-                // any dynamically created children in our list
+                // any dynamically added content
                 cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
                 cameraMethods.OnCameraPreRender += OnCameraPreRender;
             }
@@ -906,111 +994,90 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void Start()
         {
-            if (setUpAtRuntime)
-            {
-                UpdateCollection();
-            }
+            UpdateContent();
         }
 
         private void Update()
         {
-            // Early bail, the component isn't set up properly
-            if (scrollContainer == null) { return; }
+            if (!Application.isPlaying)
+            {
+                return;
+            }
 
-            bool nodeLengthCheck = NodeList.Count > (ViewableArea * Tiers);
-
-            // Force the position if the total number of items in the list is less than the scrollable area
-            if (!nodeLengthCheck)
+            // Force the scroll container position if no content
+            if (ScrollContainer.GetComponentInChildren<Renderer>(true) == null)
             {
                 workingScrollerPos = Vector3.zero;
                 ApplyPosition(workingScrollerPos);
+
+                return;
             }
 
             // The scroller has detected input and has a valid pointer
-            if (isEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
+            if (IsEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
             {
                 Vector3 handDelta = initialPointerPos - currentPointerPos;
                 handDelta = transform.InverseTransformDirection(handDelta);
 
+                if (IsDragging && currentPointer != null) // Changing lock after drag started frame to allow for focus provider to move pointer focus to scroll background before locking
+                {
+                    currentPointer.IsFocusLocked = true;
+                }
+
                 // Lets see if this is gonna be a click or a drag
                 // Check the scroller's length state to prevent resetting calculation
-                if (!isDragging && nodeLengthCheck)
+                if (!IsDragging)
                 {
                     // Grab the delta value we care about
                     float absAxisHandDelta = (scrollDirection == ScrollDirectionType.UpAndDown) ? Mathf.Abs(handDelta.y) : Mathf.Abs(handDelta.x);
 
                     // Catch an intentional finger in scroller to stop momentum, this isn't a drag its definitely a stop
-                    if (absAxisHandDelta > (handDeltaMagThreshold * 0.1f) || TimeTest(initialPressTime, Time.time, dragTimeThreshold))
+                    if (absAxisHandDelta > handDeltaScrollThreshold)
                     {
                         scrollVelocity = 0.0f;
                         avgVelocity = 0.0f;
 
-                        isDragging = true;
-                        velocityState = VelocityState.None;
+                        IsDragging = true;
+                        handDelta = Vector3.zero;
 
-                        // Now that we're dragging, reset the interacted with interactable if it exists
-                        Interactable ixable = initialFocusedObject.GetComponent<Interactable>();
-                        if (ixable != null)
-                        {
-                            ixable.ResetInputTrackingStates();
-                        }
+                        CurrentVelocityState = VelocityState.Dragging;
 
                         // Reset initialHandPos to prevent the scroller from jumping
-                        initialScrollerPos = workingScrollerPos = scrollContainer.transform.localPosition;
+                        initialScrollerPos = workingScrollerPos = ScrollContainer.transform.localPosition;
                         initialPointerPos = currentPointerPos;
                     }
                 }
 
-                var thresholdPoint = transform.TransformPoint((Vector3.forward * -1.0f) * releaseDistance);
-                // Make sure we're actually (near) touched and not a pointer event, do a dot product check            
-                bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
-                                                           : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
-
-                if (isTouched && scrollRelease)
+                if (IsTouched && DetectScrollRelease(currentPointerPos))
                 {
                     // We're on the other side of the original touch position. This is a release.
-                    if (isDragging)
+                    if (IsDragging)
                     {
                         // Its a drag release
                         initialScrollerPos = workingScrollerPos;
-                        velocityState = VelocityState.Calculating;
+                        CurrentVelocityState = VelocityState.Calculating;
                     }
                     else
                     {
                         // Its a click release
-                        Collider[] c = NodeList.Find(x => x.Transform.gameObject == initialFocusedObject).Colliders;
-                        bool isColliderActive = false;
-                        foreach (Collider col in c)
-                        {
-                            if (col.enabled)
-                            {
-                                isColliderActive = true;
-                                break;
-                            }
-                        }
-                        if (isColliderActive)
-                        {
-                            // Fire the UnityEvent
-                            ClickEvent?.Invoke(initialFocusedObject);
-                        }
+                        OnClick?.Invoke(initialFocusedObject);
                     }
 
-                    ResetState();
-
+                    ResetInteraction();
                 }
-                else if (isDragging && canScroll)
+                else if (IsDragging && canScroll)
                 {
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
                         // Lock X, clamp Y
-                        workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handDelta.y, minY, maxY, 0.5f);
+                        workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handDelta.y, minY, MaxY, DragLerpInterval);
                         workingScrollerPos.x = 0.0f;
                     }
                     else
                     {
                         // Lock Y, clamp X
-                        workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handDelta.x, minX, maxX, 0.5f);
+                        workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handDelta.x, MinX, maxX, DragLerpInterval);
                         workingScrollerPos.y = 0.0f;
                     }
 
@@ -1023,7 +1090,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     lastPointerPos = currentPointerPos;
                 }
             }
-            else if (animateScroller == null && nodeLengthCheck)// Prevent the Animation coroutine from being overridden
+            else if ((CurrentVelocityState != VelocityState.None 
+                      || previousVelocityState != VelocityState.None) 
+                      && CurrentVelocityState != VelocityState.Animating) // Prevent the Animation coroutine from being overridden
             {
                 // We're not engaged, so handle any not touching behavior
                 HandleVelocityFalloff();
@@ -1031,24 +1100,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Apply our position
                 ApplyPosition(workingScrollerPos);
             }
+
+            // Setting HasMomentum to true if scroll velocity state has changed or any movement happend during this update
+            if (CurrentVelocityState != VelocityState.None || previousVelocityState != VelocityState.None)
+            {
+                HasMomentum = true;
+            }
+
+            else
+            {
+                HasMomentum = false;
+            }
+
+            previousVelocityState = CurrentVelocityState;
         }
 
         private void LateUpdate()
         {
-            // Hide the items not in view
-            HideItems();
+            if (!UseOnPreRender)
+            {
+                ManageVisibility();
+            }
         }
 
         private void OnDisable()
         {
             // Unregister global input events
-            if (CoreServices.InputSystem != null)
-            {
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityTouchHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-            }
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityTouchHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+
+            RestoreContentVisibility();
 
             if (useOnPreRender && cameraMethods != null)
             {
@@ -1067,30 +1149,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="router">The active <see cref="CameraEventRouter"/> on the camera.</param>
         private void OnCameraPreRender(CameraEventRouter router)
         {
-            // Clip any new items that may have shown up
-            if (nodesToClip.Count > 0)
-            {
-                AddItemsToClippingObject(nodesToClip);
+            ManageVisibility();
+        }
 
-                // Reset the list for next time
-                nodesToClip.Clear();
+        // Add or remove renderers from clipping primitive
+        private void ReconcileClippingContent()
+        {
+            if (renderersToClip.Count > 0)
+            {
+                AddRenderersToClippingObject(renderersToClip);
+
+                renderersToClip.Clear();
             }
 
-            // Unclip any new items that may have shown up
-            if (nodesToUnclip.Count > 0)
+            if (renderersToUnclip.Count > 0)
             {
-                RemoveItemsFromClippingObject(nodesToUnclip);
+                RemoveRenderersFromClippingObject(renderersToUnclip);
 
-                // Reset the list for next time
-                nodesToUnclip.Clear();
+                renderersToUnclip.Clear();
             }
-
         }
 
         /// <summary>
         /// Gets the cursor position (pointer end point) on the scrollable plane,
-        /// projected onto the direction being scrolled.
-        /// Returns false if the pointer is null or pointer details is null.
+        /// projected onto the direction being scrolled if far pointer.
+        /// Returns false if the pointer is null.
         /// </summary>
         private bool TryGetPointerPositionOnPlane(out Vector3 result)
         {
@@ -1105,15 +1188,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 result = currentPointer.Position;
                 return true;
             }
-            if (currentPointer.Result?.Details != null)
-            {
-                var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
-                var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
-                result = pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
-                return true;
-            }
 
-            return false;
+            var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
+
+            result = transform.position + Vector3.Project(currentPointer.Position - transform.position, scrollVector);
+            return true;
         }
 
         /// <summary>
@@ -1136,38 +1215,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 case VelocityType.NoVelocitySnapToItem:
 
-                    velocityState = VelocityState.None;
+                    CurrentVelocityState = VelocityState.None;
 
                     avgVelocity = 0.0f;
 
-                    // Round to the nearest list item
+                    // Round to the nearest cell
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        workingScrollerPos.y = Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight) * CellHeight;
+                        workingScrollerPos.y = Mathf.Round(ScrollContainer.transform.localPosition.y / CellHeight) * CellHeight;
                     }
                     else
                     {
-                        workingScrollerPos.x = Mathf.Round(scrollContainer.transform.localPosition.x / CellWidth) * CellWidth;
+                        workingScrollerPos.x = Mathf.Round(ScrollContainer.transform.localPosition.x / CellWidth) * CellWidth;
                     }
 
                     initialScrollerPos = workingScrollerPos;
-                    ListMomentumEnded?.Invoke();
-
                     break;
 
                 case VelocityType.None:
 
-                    velocityState = VelocityState.None;
+                    CurrentVelocityState = VelocityState.None;
 
                     avgVelocity = 0.0f;
-                    ListMomentumEnded?.Invoke();
                     break;
             }
 
-            if (velocityState == VelocityState.None)
+            if (CurrentVelocityState == VelocityState.None)
             {
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
+                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, MaxY);
+                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, MinX, maxX);
             }
         }
 
@@ -1176,8 +1252,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void HandleFalloffPerItem()
         {
-
-            switch (velocityState)
+            switch (CurrentVelocityState)
             {
                 case VelocityState.Calculating:
 
@@ -1188,39 +1263,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         if (avgVelocity == 0.0f)
                         {
                             // Velocity was cleared out so we should just snap
-                            newPosAfterVelocity = scrollContainer.transform.localPosition.y;
+                            newPosAfterVelocity = ScrollContainer.transform.localPosition.y;
                         }
                         else
                         {
-                            // Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
+                            // Precalculate where the velocity falloff would land our scrollContainer, then round it to the nearest cell so it feels natural
                             velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
                             newPosAfterVelocity = initialScrollerPos.y - velocitySnapshot;
                         }
 
                         velocityDestinationPos.y = (Mathf.Round(newPosAfterVelocity / CellHeight)) * CellHeight;
 
-                        velocityState = VelocityState.Resolving;
+                        CurrentVelocityState = VelocityState.Resolving;
                     }
                     else
                     {
                         if (avgVelocity == 0.0f)
                         {
                             // Velocity was cleared out so we should just snap
-                            newPosAfterVelocity = scrollContainer.transform.localPosition.x;
+                            newPosAfterVelocity = ScrollContainer.transform.localPosition.x;
                         }
                         else
                         {
-                            // Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
+                            // Precalculate where the velocity falloff would land our scrollContainer, then round it to the nearest cell so it feels natural
                             velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
                             newPosAfterVelocity = initialScrollerPos.x + velocitySnapshot;
                         }
 
                         velocityDestinationPos.x = (Mathf.Round(newPosAfterVelocity / CellWidth)) * CellWidth;
 
-                        velocityState = VelocityState.Resolving;
+                        CurrentVelocityState = VelocityState.Resolving;
                     }
 
-                    workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                    workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, BounceLerpInterval);
 
                     // Clear the velocity now that we've applied a new position
                     avgVelocity = 0.0f;
@@ -1230,32 +1305,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.y > MaxY
+                            || ScrollContainer.transform.localPosition.y < minY)
                         {
-                            velocityState = VelocityState.Bouncing;
+                            CurrentVelocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
                             break;
                         }
                         else
                         {
-                            workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, BounceLerpInterval);
 
                             SnapVelocityFinish();
                         }
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.x > maxX + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.x < MinX - (FrontTouchDistance * bounceMultiplier))
                         {
-                            velocityState = VelocityState.Bouncing;
+                            CurrentVelocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
                             break;
                         }
                         else
                         {
-                            workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+                            workingScrollerPos = Solver.SmoothTo(ScrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, BounceLerpInterval);
 
                             SnapVelocityFinish();
                         }
@@ -1272,6 +1347,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     // clean up our position for next frame
                     initialScrollerPos = workingScrollerPos;
                     break;
+
             }
         }
 
@@ -1280,7 +1356,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void HandleFalloffPerFrame()
         {
-            switch (velocityState)
+            switch (CurrentVelocityState)
             {
                 case VelocityState.Calculating:
 
@@ -1293,7 +1369,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
                     }
 
-                    velocityState = VelocityState.Resolving;
+                    CurrentVelocityState = VelocityState.Resolving;
 
                     // clean up our position for next frame
                     initialScrollerPos = workingScrollerPos;
@@ -1303,10 +1379,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.y > MaxY + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.y < minY - (FrontTouchDistance * bounceMultiplier))
                         {
-                            velocityState = VelocityState.Bouncing;
+                            CurrentVelocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
                             break;
                         }
@@ -1321,10 +1397,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
+                        if (ScrollContainer.transform.localPosition.x > maxX + (FrontTouchDistance * bounceMultiplier)
+                            || ScrollContainer.transform.localPosition.x < MinX - (FrontTouchDistance * bounceMultiplier))
                         {
-                            velocityState = VelocityState.Bouncing;
+                            CurrentVelocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
                             break;
                         }
@@ -1352,24 +1428,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// Smooths <see cref="ScrollContainer"/>'s position to the proper clamped edge 
-        /// while <see cref="velocityState"/> is <see cref="VelocityState.Bouncing"/>.
+        /// while <see cref="CurrentVelocityState"/> is <see cref="VelocityState.Bouncing"/>.
         /// </summary>
         private void HandleBounceState()
         {
-            Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
-            if ((scrollDirection == ScrollDirectionType.UpAndDown && Mathf.Abs(scrollContainer.transform.localPosition.y - clampedDest.y) < 0.00001)
-                || (scrollDirection == ScrollDirectionType.LeftAndRight && Mathf.Abs(scrollContainer.transform.localPosition.x - clampedDest.x) < 0.00001))
+            Vector3 clampedDest = new Vector3(Mathf.Clamp(ScrollContainer.transform.localPosition.x, MinX, maxX), Mathf.Clamp(ScrollContainer.transform.localPosition.y, minY, MaxY), 0.0f);
+            if ((scrollDirection == ScrollDirectionType.UpAndDown && Mathf.Approximately(ScrollContainer.transform.localPosition.y, clampedDest.y))
+                || (scrollDirection == ScrollDirectionType.LeftAndRight && Mathf.Approximately(ScrollContainer.transform.localPosition.x, clampedDest.x)))
             {
-                velocityState = VelocityState.None;
-
-                ListMomentumEnded?.Invoke();
+                CurrentVelocityState = VelocityState.None;
 
                 // clean up our position for next frame
                 initialScrollerPos = workingScrollerPos = clampedDest;
                 return;
             }
-            workingScrollerPos.y = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
-            workingScrollerPos.x = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
+            workingScrollerPos.y = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, BounceLerpInterval).y;
+            workingScrollerPos.x = Solver.SmoothTo(ScrollContainer.transform.localPosition, clampedDest, Time.deltaTime, BounceLerpInterval).x;
         }
 
         /// <summary>
@@ -1377,7 +1451,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void SnapVelocityFinish()
         {
-            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) > 0.00001f)
+            if (Vector3.Distance(ScrollContainer.transform.localPosition, workingScrollerPos) > Mathf.Epsilon)
             {
                 return;
             }
@@ -1387,18 +1461,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
                     // Ensure we've actually snapped the position to prevent an extreme in-between state
-                    workingScrollerPos.y = (Mathf.Round(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
+                    workingScrollerPos.y = (Mathf.Round(ScrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
                 }
                 else
                 {
-                    workingScrollerPos.x = (Mathf.Round(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
+                    workingScrollerPos.x = (Mathf.Round(ScrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
                 }
             }
 
-            velocityState = VelocityState.None;
+            CurrentVelocityState = VelocityState.None;
             avgVelocity = 0.0f;
-
-            ListMomentumEnded?.Invoke();
 
             // clean up our position for next frame
             initialScrollerPos = workingScrollerPos;
@@ -1413,8 +1485,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             TryGetPointerPositionOnPlane(out Vector3 newPos);
 
             scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown)
-                             ? (newPos.y - lastPointerPos.y) / Time.deltaTime * (velocityMultiplier * 0.01f)
-                             : (newPos.x - lastPointerPos.x) / Time.deltaTime * (velocityMultiplier * 0.01f);
+                             ? (newPos.y - lastPointerPos.y) / Time.deltaTime * velocityMultiplier
+                             : (newPos.x - lastPointerPos.x) / Time.deltaTime * velocityMultiplier;
 
             // And filter it...
             avgVelocity = (avgVelocity * (1.0f - velocityFilterWeight)) + (scrollVelocity * velocityFilterWeight);
@@ -1422,7 +1494,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// The Animation Override to position our scroller based on manual movement <see cref="PageBy(int, bool)"/>, <see cref="MoveTo(int, bool)"/>,
-        /// <see cref="MoveByItems(int, bool)"/>, or <see cref="MoveByTiers(int, bool)"/>
         /// </summary>
         /// <param name="initialPos">The start position of the scrollContainer</param>
         /// <param name="finalPos">Where we want the scrollContainer to end up, typically this should be <see cref="workingScrollerPos"/></param>
@@ -1431,8 +1502,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="callback">Optional callback action to be invoked after animation coroutine has finished</param>
         private IEnumerator AnimateTo(Vector3 initialPos, Vector3 finalPos, AnimationCurve curve = null, float? time = null, System.Action callback = null)
         {
-            velocityState = VelocityState.None;
-
             if (curve == null)
             {
                 curve = paginationCurve;
@@ -1447,7 +1516,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             while (counter <= time)
             {
                 workingScrollerPos = Vector3.Lerp(initialPos, finalPos, curve.Evaluate(counter / (float)time));
-                scrollContainer.transform.localPosition = workingScrollerPos;
+                ScrollContainer.transform.localPosition = workingScrollerPos;
 
                 counter += Time.deltaTime;
                 yield return null;
@@ -1468,217 +1537,200 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 callback?.Invoke();
             }
 
+            CurrentVelocityState = VelocityState.None;
             animateScroller = null;
         }
 
         /// <summary>
-        /// Checks to see if the engaged joint has released the scrollable list
+        /// Checks if the engaged joint has released the scrollable list
         /// </summary>
-        /// <param name="initialDirection">The plane normal direction.</param>
-        /// <param name="initialPosition">The point representing the plane's origin.</param>
-        /// <param name="pointToCompare">The point compared to the normal and origin.</param>
-        /// <param name="clippingObj">The object representing the maximum scrollable area.</param>
-        /// <param name="transformMatrix">The world Matrix for the scrollable area to be compared in.</param>
-        /// <param name="direction"><see cref="ScrollDirectionType"/> the list is scrolling in.</param>
-        /// <returns><see cref="true"/> if released.</returns>
-        private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj = null, Matrix4x4? transformMatrix = null, ScrollDirectionType? direction = null)
+        private bool DetectScrollRelease(Vector3 pointerPos)
         {
-            Plane testPlane = new Plane(initialDirection.normalized, initialPosition);
+            Vector3 scrollToPointerVector = pointerPos - ClipBox.transform.position;
 
-            if (testPlane.GetSide(pointToCompare))
-            {
-                return true;
-            }
+            // Projecting vector onto every clip box space coordinate and using clip box lossy scale as reference to dimensions to scroll view visible bounds
+            // Using dot product to check if pointer is in front or behind the scroll view plane
+            bool isScrollRelease = Vector3.Magnitude(Vector3.Project(scrollToPointerVector, ClipBox.transform.up)) > ClipBox.transform.lossyScale.y / 2 + releaseThresholdTopBottom
+                                || Vector3.Magnitude(Vector3.Project(scrollToPointerVector, ClipBox.transform.right)) > ClipBox.transform.lossyScale.x / 2 + releaseThresholdLeftRight
 
-            bool hasPassedBoundary = false;
+                                || (Vector3.Dot(scrollToPointerVector, transform.forward) > 0 ?
+                                        Vector3.Magnitude(Vector3.Project(scrollToPointerVector, ClipBox.transform.forward)) > ClipBox.transform.lossyScale.z / 2 + releaseThresholdBack :
+                                        Vector3.Magnitude(Vector3.Project(scrollToPointerVector, ClipBox.transform.forward)) > ClipBox.transform.lossyScale.z / 2 + releaseThresholdFront);
+            return isScrollRelease;
+        }
 
-            if (clippingObj != null && transformMatrix != null && direction != null)
-            {
-                Matrix4x4 tMat = (Matrix4x4)transformMatrix;
-                Vector3 posToClip = tMat.MultiplyPoint3x4(pointToCompare) - clippingObj.localPosition;
-                Vector3 halfScale = clippingObj.localScale * 0.5f;
-
-                if (direction == ScrollDirectionType.UpAndDown)
-                {
-                    hasPassedBoundary = posToClip.y > halfScale.y || posToClip.y < -halfScale.y;
-                }
-                else
-                {
-                    hasPassedBoundary = posToClip.x > halfScale.x || posToClip.x < -halfScale.x;
-                }
-            }
-
-            return hasPassedBoundary;
+        private bool HasPassedThroughFrontPlane(PokePointer pokePointer)
+        {
+            var p = transform.InverseTransformPoint(pokePointer.PreviousPosition);
+            return p.z <= -FrontTouchDistance;
         }
 
         /// <summary>
-        /// Grab all child renderers in each node from NodeList and add them to the ClippingBox
+        /// Adds list of renderers to the ClippingBox
         /// </summary>
-        private void AddAllItemsToClippingObject()
+        private void AddRenderersToClippingObject(List<Renderer> renderers)
         {
-            // Register all of the renderers to be clipped by the clippingBox
-            foreach (ObjectCollectionNode node in NodeList)
+            foreach (var renderer in renderers)
             {
-                Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-                for (int i = 0; i < childRends.Length; i++)
-                {
-                    clipBox.AddRenderer(childRends[i]);
-                }
+                ClipBox.AddRenderer(renderer);
             }
         }
 
         /// <summary>
-        /// Grab all child renderers in a list of nodes from NodeList and add them to the ClippingBox
+        /// Removes list of renderers from the ClippingBox
         /// </summary>
-        private void AddItemsToClippingObject(List<ObjectCollectionNode> nodes)
+        private void RemoveRenderersFromClippingObject(List<Renderer> renderers)
         {
-            foreach (ObjectCollectionNode node in nodes)
+            foreach (var renderer in renderers)
             {
-                // Register all of the renderers to be clipped by the clippingBox
-                Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-                for (int i = 0; i < childRends.Length; i++)
-                {
-                    clipBox.AddRenderer(childRends[i]);
-                }
+                ClipBox.RemoveRenderer(renderer);
             }
         }
 
         /// <summary>
-        /// Grab all child renderers in each node from NodeList and remove them to the ClippingBox
+        /// Removes all renderers currently being clipped by the clipping box
         /// </summary>
-        private void RemoveAllItemsFromClippingObject()
+        private void ClearClippingBox()
         {
-            // Register all of the renderers to be clipped by the clippingBox
-            foreach (ObjectCollectionNode node in NodeList)
+            ClipBox.ClearRenderers();
+        }
+
+        /// <summary>
+        /// Helper to perform division operations and prevent division by 0.
+        /// </summary>
+        private static int SafeDivisionInt(int numerator, int denominator)
+        {
+            return (denominator != 0) ? numerator / denominator : 0;
+        }
+
+        private float SafeDivisionFloat(float numerator, float denominator)
+        {
+            return (denominator != 0) ? numerator / denominator : 0;
+        }
+
+        /// <summary>
+        /// Checks visibility of scroll content by iterating through all content renderers and colliders.
+        /// All inactive content objects and colliders are reactivated during visibility restoration. 
+        /// </summary>
+        private void ManageVisibility(bool isRestoringVisibility = false)
+        {
+            if (!MaskEnabled && !isRestoringVisibility)
             {
-                Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-                for (int i = 0; i < childRends.Length; i++)
-                {
-                    clipBox.RemoveRenderer(childRends[i]);
-                }
+                return;
             }
-        }
 
-        /// <summary>
-        /// Grab all child renderers in a list of nodes from NodeList and remove them to the ClippingBox
-        /// </summary>
-        private void RemoveItemsFromClippingObject(List<ObjectCollectionNode> nodes)
-        {
-            foreach (ObjectCollectionNode node in nodes)
+            ClippingBoundsCollider.enabled = true;
+            Bounds clippingThresholdBounds = ClippingBoundsCollider.bounds;
+
+            Renderer[] contentRenderers = ScrollContainer.GetComponentsInChildren<Renderer>(true);
+            List<Renderer> clippedRenderers = ClipBox.GetRenderersCopy().ToList();
+
+            // Remove all renderers from clipping primitive that are not part of scroll content
+            foreach (var clippedRenderer in clippedRenderers)
             {
-                // Register all of the renderers to be clipped by the clippingBox
-                Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-                for (int i = 0; i < childRends.Length; i++)
+                if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    clipBox.RemoveRenderer(childRends[i]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Helper to get the remainder from an itemindex in the list in relation to rows/columns
-        /// </summary>
-        /// <param name="itemIndex">Index of node item in 
-        /// <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> 
-        /// to be compared</param>
-        /// <param name="divisor">Rows / Columns</param>
-        /// <returns>The remainder from the divisor</returns>
-        public static int ModuloCheck(int itemIndex, int divisor)
-        {
-            // Prevent divide by 0
-            return (divisor > 0) ? itemIndex % divisor : 0;
-        }
-
-        /// <summary>
-        /// Helper to get the number of rows / columns deep the item is
-        /// </summary>
-        /// <param name="itemIndex">Index of node item in <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> to be compared</param>
-        /// <param name="divisor">Rows / Columns</param>
-        /// <returns>The multiplier to get the row / column index the item is in</returns>
-        public static int StepMultiplier(int itemIndex, int divisor)
-        {
-            // Prevent divide by 0
-            return (divisor != 0) ? itemIndex / divisor : 0;
-        }
-
-        /// <summary>
-        /// Iterates the <see cref="BaseObjectCollection.NodeList"/> to determine which <see cref="ObjectCollectionNode"/>s needs to be
-        /// disabled (<see cref="GameObject.SetActive(bool)"/>) and their <see cref="Collider"/> disabled.
-        /// </summary>
-        /// <remarks>When <see cref="useOnPreRender"/> is set to <see cref="true"/>, <see cref="HideItems"/> will populate a list of <see cref="ObjectCollectionNode"/>
-        /// to be added to the <see cref="ClipBox"/>.</remarks>
-        private void HideItems()
-        {
-            // Early Bail - our list is empty
-            if (NodeList.Count == 0) { return; }
-
-            // Stash the values from numItems to cut down on redundant calculations
-            int prevItems = numItemsPrevView;
-            int postItems = numItemsPostView;
-
-            int listLength = NodeList.Count;
-
-            for (int i = 0; i < listLength; i++)
-            {
-                ScrollingObjectCollectionNode node = NodeList[i] as ScrollingObjectCollectionNode;
-                if (node == null)
-                {
-                    // The object we grabbed isn't a ScrollingObjectCollectionNode
-                    NodeList[i] = new ScrollingObjectCollectionNode(NodeList[i]);
-                    node = NodeList[i] as ScrollingObjectCollectionNode;
-                }
-
-                // Hide the items that have no chance of being seen
-                if (i < prevItems - Tiers || i > postItems + Tiers)
-                {
-                    // Quick check to cut down on the redundant calls
-                    if (node.Transform.gameObject.activeSelf)
+                    if (!clippedRenderer.gameObject.activeSelf)
                     {
-                        node.Transform.gameObject.SetActive(false);
+                        clippedRenderer.gameObject.SetActive(true);
                     }
 
-                    // The node is inactive, and has been previously clipped, make sure we remove it from the rendering list, this keeps the calls in ClippingBox as small as possible
-                    if (node.isClipped)
+                    renderersToUnclip.Add(clippedRenderer);
+                }
+            }
+
+            // Check render visibility
+            foreach (var renderer in contentRenderers)
+            {
+                // All content renderers should be added to clipping primitive
+                if (!isRestoringVisibility && MaskEnabled && !clippedRenderers.Contains(renderer))
+                {
+                    renderersToClip.Add(renderer);
+                }
+
+                // Complete or partialy visible renders should be clipped and its game object should be active
+                if (isRestoringVisibility
+                    || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
+                    || clippingThresholdBounds.Intersects(renderer.bounds)) 
+                {
+                    if (!renderer.gameObject.activeSelf)
                     {
-                        nodesToUnclip.Add(NodeList[i]);
-                        node.isClipped = false;
+                        renderer.gameObject.SetActive(true);
                     }
                 }
+
+                // Hidden renderer game objects should be inactive
                 else
                 {
-                    bool disableNode = disableClippedItems ?
-                        i < prevItems || i > postItems :
-                        i < prevItems - Tiers || i > postItems + Tiers;
-
-                    // Disable colliders on items that will be scrolling in and out of view
-                    if (disableNode)
+                    if (renderer.gameObject.activeSelf)
                     {
-                        foreach (Collider c in node.Colliders)
+                        renderer.gameObject.SetActive(false);
+                    }
+                }
+            }
+
+            // Check collider visibility
+            if (Application.isPlaying)
+            {
+                // Outer clipping bounds is used to ensure collider has minimum visibility to stay enabled
+                Bounds outerClippingThresholdBounds = ClippingBoundsCollider.bounds;
+                outerClippingThresholdBounds.size *= contentVisibilityThresholdRatio;
+
+                var colliders = ScrollContainer.GetComponentsInChildren<Collider>(true);
+                foreach (var collider in colliders)
+                {
+                    // Disabling content colliders during drag to stop interaction even if game object is inactive
+                    if (!isRestoringVisibility && IsDragging)
+                    {
+                        if (collider.enabled)
                         {
-                            c.enabled = false;
+                            collider.enabled = false;
+                        }
+
+                        continue;
+                    }
+
+                    // No need to manage collider visibility in case game object is inactive and no pointer is dragging the scroll
+                    if (!isRestoringVisibility && !collider.gameObject.activeSelf)
+                    {
+                        continue;
+                    }
+
+                    // Temporary activating for getting bounds
+                    var wasColliderEnabled = collider.enabled;
+
+                    if (!wasColliderEnabled)
+                    {
+                        collider.enabled = true;
+                    }
+
+                    // Completely or partially visible colliders should be enabled if scroll is not drag engaged
+                    if (isRestoringVisibility || outerClippingThresholdBounds.ContainsBounds(collider.bounds))
+                    {
+                        if (!wasColliderEnabled)
+                        {
+                            wasColliderEnabled = true;
                         }
                     }
+                    // Hidden colliders should be disabled
                     else
                     {
-                        foreach (Collider c in node.Colliders)
+                        if (wasColliderEnabled)
                         {
-                            c.enabled = true;
+                            wasColliderEnabled = false;
                         }
                     }
 
-                    // Otherwise show the item
-                    if (!node.Transform.gameObject.activeSelf)
-                    {
-                        node.Transform.gameObject.SetActive(true);
-                    }
-
-                    // The node has a new item, send it to the clipping box and see if its a renderer
-                    if (!node.isClipped)
-                    {
-                        nodesToClip.Add(node);
-                        node.isClipped = true;
-                    }
+                    // Update collider state or revert to previous state
+                    collider.enabled = wasColliderEnabled;
                 }
+            }
+
+            ClippingBoundsCollider.enabled = false;
+
+            if (!isRestoringVisibility)
+            {
+                ReconcileClippingContent();
             }
         }
 
@@ -1719,33 +1771,108 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 case ScrollDirectionType.UpAndDown:
                 default:
 
-                    newScrollPos = new Vector3(scrollContainer.transform.localPosition.x, workingPos.y, 0.0f);
+                    newScrollPos = new Vector3(ScrollContainer.transform.localPosition.x, workingPos.y, 0.0f);
                     break;
 
                 case ScrollDirectionType.LeftAndRight:
 
-                    newScrollPos = new Vector3(workingPos.x, scrollContainer.transform.localPosition.y, 0.0f);
+                    newScrollPos = new Vector3(workingPos.x, ScrollContainer.transform.localPosition.y, 0.0f);
 
                     break;
             }
-            scrollContainer.transform.localPosition = newScrollPos;
+            ScrollContainer.transform.localPosition = newScrollPos;
         }
 
         /// <summary>
-        /// Resets the state of the ScrollingObjectCollection for the next scroll
+        /// Resets the interaction state of the ScrollingObjectCollection for the next scroll.
         /// </summary>
-        private void ResetState()
+        private void ResetInteraction()
         {
-            TouchEnded?.Invoke(initialFocusedObject);
+            OnTouchEnded?.Invoke(initialFocusedObject);
 
             // Release the pointer
+            if (currentPointer != null) currentPointer.IsFocusLocked = false;
             currentPointer = null;
             initialFocusedObject = null;
 
             // Clear our states
-            isTouched = false;
-            isEngaged = false;
-            isDragging = false;
+            IsTouched = false;
+            IsEngaged = false;
+            IsDragging = false;
+        }
+
+        /// <summary>
+        /// Resets the scroll offset state of the ScrollingObjectCollection.
+        /// </summary>
+        private void ResetScrollOffset()
+        {
+            MoveToIndex(0, false);
+            workingScrollerPos = Vector3.zero;
+            ApplyPosition(workingScrollerPos);
+        }
+
+        /// <summary>
+        /// All inactive content objects and colliders are reactivated and renderers are unclipped.
+        /// </summary>
+        private void RestoreContentVisibility()
+        {
+            ClearClippingBox();
+            ManageVisibility(true);
+        }
+
+        /// <summary>
+        /// Moves the scroll container to the position that makes the tier with the tierIndex the first in the viewable area
+        /// </summary>
+        private void MoveToTier(int tierIndex, bool animateToPosition = true, System.Action callback = null)
+        {
+            if (animateScroller != null)
+            {
+                CurrentVelocityState = VelocityState.None;
+                StopAllCoroutines();
+            }
+
+            if (scrollDirection == ScrollDirectionType.UpAndDown)
+            {
+                workingScrollerPos.y = tierIndex * CellHeight;
+
+                // Clamp the working pos since we already have calculated it
+                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, MaxY);
+
+                // Zero out the other axes
+                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
+            }
+            else
+            {
+                workingScrollerPos.x = tierIndex * CellWidth * -1.0f;
+
+                // Clamp the working pos since we already have calculated it
+                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, MinX, maxX);
+
+                // Zero out the other axes
+                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
+            }
+
+            if (initialScrollerPos != workingScrollerPos)
+            {
+                CurrentVelocityState = VelocityState.Animating;
+
+                if (animateToPosition)
+                {
+                    animateScroller = AnimateTo(ScrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
+                    StartCoroutine(animateScroller);
+                }
+                else
+                {
+                    CurrentVelocityState = VelocityState.None; // Flagging the instant position change to trigger momentum events
+                    initialScrollerPos = workingScrollerPos;
+                }
+
+                if (callback != null)
+                {
+                    callback?.Invoke();
+                }
+            }
+
         }
 
         #endregion private methods
@@ -1753,305 +1880,107 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region public methods
 
         /// <summary>
-        /// Checks whether the given item is visible in the list
+        /// Resets the ScrollingObjectCollection
         /// </summary>
-        /// <param name="indexOfItem">the index of the item in the list</param>
-        /// <returns>true when item is visible</returns>
-        public bool IsItemVisible(int indexOfItem)
+        public void Reset()
         {
-            bool itemLoc = true;
+            ResetInteraction();
+            UpdateContent();
+            ResetScrollOffset();
+        }
 
-            if (indexOfItem < numItemsPrevView)
+        /// <summary>
+        /// Safely adds a child game object to scroll collection.
+        /// </summary>
+        public void AddContent(GameObject content)
+        {
+            content.transform.parent = ScrollContainer.transform;
+            Reset();
+        }
+
+        /// <summary>
+        /// Safely removes a child game object from scroll content and clipping box.
+        /// </summary>
+        public void RemoveItem(GameObject item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            var itemRenderers = item.GetComponentsInChildren<Renderer>();
+            if (itemRenderers != null)
+            {
+                foreach (var renderer in item.GetComponentsInChildren<Renderer>())
+                {
+                    renderersToUnclip.Add(renderer);
+                }
+            }
+
+            item.transform.parent = null;
+            Reset();
+        }
+
+        /// <summary>
+        /// Checks whether the given cell is visible relative to viewable area or page.
+        /// </summary>
+        /// <param name="cellIndex">the index of the pagination cell</param>
+        /// <returns>true when cell is visible</returns>
+        public bool IsCellVisible(int cellIndex)
+        {
+            bool isCellVisible = true;
+
+            if (cellIndex < FirstVisibleCellIndex)
             {
                 // It's above the visible area
-                itemLoc = false;
+                isCellVisible = false;
             }
-            else if (indexOfItem > numItemsPostView)
+            else if (cellIndex >= FirstHiddenCellIndex)
             {
                 // It's below the visible area
-                itemLoc = false;
+                isCellVisible = false;
             }
-            return itemLoc;
+            return isCellVisible;
         }
 
         /// <summary>
-        /// Moves scroller by a multiplier of <see cref="ViewableArea"/>
+        /// Moves scroller container by a multiplier of the number of tiers in the viewable area.
         /// </summary>
-        /// <param name="numOfPages">number of <see cref="ViewableArea"/> to move scroller by</param>
-        /// <param name="animateToPage">if true, scroller will animate to new position</param>
+        /// <param name="numberOfPages">Amount of pages to move by</param>
+        /// <param name="animate"> If true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void PageBy(int numOfPages, bool animateToPage = true, System.Action callback = null)
+        public void MoveByPages(int numberOfPages, bool animate = true, System.Action callback = null)
         {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
+            int tierIndex = SafeDivisionInt(FirstVisibleCellIndex, CellsPerTier) + (numberOfPages * TiersPerPage);
 
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = Mathf.Clamp((FirstItemInViewIndex + (numOfPages * ViewableArea)) * CellHeight, minY, maxY);
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = Mathf.Clamp((FirstItemInViewIndex + (numOfPages * ViewableArea)) * CellWidth, minX, maxX);
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPage)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
+            MoveToTier(tierIndex, animate, callback);
         }
 
         /// <summary>
-        /// Moves scroller a relative number of items
+        /// Moves scroller container a relative number of tiers of cells.
         /// </summary>
-        /// <param name="numberOfItemsToMove">number of items to move by</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
-        public void MoveByItems(int numberOfItemsToMove, bool animateToPosition = true, System.Action callback = null)
-        {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
-
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = (FirstItemInViewIndex + StepMultiplier(numberOfItemsToMove, Tiers)) * CellHeight;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = ((FirstItemInViewIndex + StepMultiplier(numberOfItemsToMove, Tiers)) * CellWidth) * -1.0f;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPosition)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Moves scroller a relative number of <see cref="Tiers"/> of items.
-        /// </summary>
-        /// <param name="numberOfLinesToMove">number of lines to move by</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
+        /// <param name="numberOfTiers">Amount of tiers to move by</param>
+        /// <param name="animate">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
-        public void MoveByLines(int numberOfLinesToMove, bool animateToPosition = true, System.Action callback = null)
+        public void MoveByTiers(int numberOfTiers, bool animate = true, System.Action callback = null)
         {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
+            int tierIndex = SafeDivisionInt(FirstVisibleCellIndex, CellsPerTier) + numberOfTiers;
 
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = (FirstItemInViewIndex + numberOfLinesToMove) * CellHeight;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = ((FirstItemInViewIndex + numberOfLinesToMove) * CellWidth) * -1.0f;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPosition)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
+            MoveToTier(tierIndex, animate, callback);
         }
 
         /// <summary>
-        /// Moves scroller to an absolute position where indexOfItem 
-        /// is in the first column of the viewable area
+        /// Moves scroller container to a position where the selected cell is in the first tier of the viewable area.
         /// </summary>
-        /// <param name="indexOfItem">Item to move to, will be first (or closest to in respect to scroll maximum) in viewable area</param>
-        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
-        public void MoveTo(int indexOfItem, bool animateToPosition = true, System.Action callback = null)
+        /// <param name="cellIndex">Index of the cell to move to</param>
+        /// <param name="animate">if true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
+        public void MoveToIndex(int cellIndex, bool animateToPosition = true, System.Action callback = null)
         {
-            StopAllCoroutines();
-            velocityState = VelocityState.None;
+            cellIndex = (cellIndex < 0) ? 0 : cellIndex;
+            int tierIndex = SafeDivisionInt(cellIndex, CellsPerTier);
 
-            indexOfItem = (indexOfItem < 0) ? 0 : indexOfItem;
-
-            if (scrollDirection == ScrollDirectionType.UpAndDown)
-            {
-                workingScrollerPos.y = StepMultiplier(indexOfItem, Tiers) * CellHeight;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.up);
-            }
-            else
-            {
-                workingScrollerPos.x = (StepMultiplier(indexOfItem, Tiers) * CellWidth) * -1.0f;
-
-                // Clamp the working pos since we already have calculated it
-                workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
-
-                // Zero out the other axes
-                workingScrollerPos = workingScrollerPos.Mul(Vector3.right);
-            }
-
-            if (animateToPosition)
-            {
-                animateScroller = AnimateTo(scrollContainer.transform.localPosition, workingScrollerPos, paginationCurve, animationLength, callback);
-                StartCoroutine(animateScroller);
-            }
-            else
-            {
-                initialScrollerPos = workingScrollerPos;
-
-                if (callback != null)
-                {
-                    callback?.Invoke();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Simple time threshold check
-        /// </summary>
-        /// <param name="initTime">Initial time</param>
-        /// <param name="currTime">Current time</param>
-        /// <param name="pressMargin">Time threshold</param>
-        /// <returns>true if amount of time surpasses <paramref name="pressMargin"/></returns>
-        public static bool TimeTest(float initTime, float currTime, float pressMargin)
-        {
-            if (currTime - initTime > pressMargin)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Finds the object-aligned size of a <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see>.
-        /// </summary>
-        /// <param name="obj">Transform representing the object to get offset from</param>
-        /// <param name="alignedSize">the object-aligned size of obj</param>
-        /// <returns>true if alignedSize is valid</returns>
-        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
-        {
-            Collider c = obj.GetComponentInChildren<Collider>();
-            alignedSize = Vector3.zero;
-
-            // Store and clear the original rotation
-            Quaternion origRot = obj.rotation;
-            obj.rotation = Quaternion.identity;
-
-            bool canGetSize = false;
-
-            if (c != null)
-            {
-                if (c.GetType() == typeof(BoxCollider))
-                {
-                    BoxCollider bC = c as BoxCollider;
-                    alignedSize = bC.bounds.size;
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(SphereCollider))
-                {
-                    SphereCollider sC = c as SphereCollider;
-                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(CapsuleCollider))
-                {
-                    CapsuleCollider cc = c as CapsuleCollider;
-                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                    switch (cc.direction)
-                    {
-                        case 0:
-                            alignedSize = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                            break;
-
-                        case 1:
-                            alignedSize = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                            break;
-
-                        case 2:
-                            alignedSize = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                            break;
-                    }
-                }
-                else
-                {
-                    canGetSize = false;
-                }
-
-            }
-            else if (obj.GetComponentInChildren<Renderer>() != null)
-            {
-                List<Vector3> points = new List<Vector3>();
-                Bounds rendBound = new Bounds();
-                BoundsExtensions.GetRenderBoundsPoints(obj.gameObject, points, 0);
-                rendBound.center = points[0];
-
-                foreach (Vector3 p in points)
-                {
-                    rendBound.Encapsulate(p);
-                }
-
-                alignedSize = rendBound.size;
-                canGetSize = true;
-            }
-            else
-            {
-                canGetSize = false;
-            }
-
-            // Reapply our rotation
-            obj.rotation = origRot;
-
-            return (canGetSize) ? true : false;
+            MoveToTier(tierIndex, animateToPosition, callback);
         }
 
         #endregion public methods
@@ -2061,75 +1990,76 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            // Quick check for the global listener to bail if the object is not in the list
             if (currentPointer == null || eventData.Pointer.PointerId != currentPointer.PointerId)
             {
                 return;
             }
 
-            if (!isTouched && isEngaged && animateScroller == null)
+            // Release the pointer
+            currentPointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
+
+            if (!IsTouched && IsEngaged && animateScroller == null)
             {
-                if (isDragging)
+                if (IsDragging)
                 {
-                    eventData.Use();
-                    shouldSwallowEvents = true;
                     // Its a drag release
                     initialScrollerPos = workingScrollerPos;
-                    velocityState = VelocityState.Calculating;
+                    CurrentVelocityState = VelocityState.Calculating;
                 }
 
-                // Release the pointer
-                currentPointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
-
-                ResetState();
+                ResetInteraction();
             }
         }
 
         /// <inheritdoc/>
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            currentPointer = eventData.Pointer;
-            oldIsTargetPositionLockedOnFocusLock = currentPointer.IsTargetPositionLockedOnFocusLock;
-
-            // Quick check for the global listener to bail if the object is not in the list
-            if (currentPointer?.Result?.CurrentPointerTarget == null
-                || !ContainsNode(currentPointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
+            // Current pointer owns scroll interaction until scroll release happens. Ignoring any interaction with other pointers.
+            if (currentPointer != null)
             {
                 return;
             }
+
+            var selectedObject = eventData.Pointer.Result?.CurrentPointerTarget;
+
+            if (selectedObject == null || !selectedObject.transform.IsChildOf(transform))
+            {
+                return;
+            }
+
+            currentPointer = eventData.Pointer;
+            oldIsTargetPositionLockedOnFocusLock = currentPointer.IsTargetPositionLockedOnFocusLock;
 
             if (!(currentPointer is IMixedRealityNearPointer) && currentPointer.Controller.IsRotationAvailable)
             {
                 currentPointer.IsTargetPositionLockedOnFocusLock = false;
             }
 
-            pointerHitPoint = currentPointer.Result.Details.Point;
-            pointerHitDistance = currentPointer.Result.Details.RayDistance;
-
-            initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
+            initialFocusedObject = selectedObject;
+            currentPointer.IsFocusLocked = false; // Unwanted focus locked on children items
 
             // Reset the scroll state
             scrollVelocity = 0.0f;
 
             if (TryGetPointerPositionOnPlane(out initialPointerPos))
             {
-                initialPressTime = Time.time;
-                initialScrollerPos = scrollContainer.transform.localPosition;
-                velocityState = VelocityState.None;
+                initialScrollerPos = ScrollContainer.transform.localPosition;
+                CurrentVelocityState = VelocityState.None;
 
-                isTouched = false;
-                isEngaged = true;
-                isDragging = false;
+                IsTouched = false;
+                IsEngaged = true;
+                IsDragging = false;
 
-                TouchStarted?.Invoke(initialFocusedObject);
+                OnTouchStarted?.Invoke(initialFocusedObject);
             }
         }
 
         /// <inheritdoc/>
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-            // We ignore this event and calculate click in the Update() loop;
-        }
+        /// Pointer Click handled during Update.
+        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
+
+        /// <inheritdoc/>
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         #endregion IMixedRealityPointerHandler implementation
 
@@ -2138,78 +2068,60 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (isDragging || initialFocusedObject)
+            // Current pointer owns scroll interaction until scroll release happens. Ignoring any interaction with other pointers.
+            if (currentPointer != null)
             {
-                eventData.Use();
                 return;
             }
 
-            currentPointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
-            if (currentPointer != null)
+            PokePointer pokePointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
+
+            var selectedObject = pokePointer.Result?.CurrentPointerTarget;
+            if (selectedObject == null || !selectedObject.transform.IsChildOf(transform))
             {
-                // Quick check for the global listener to bail if the object is not in the list
-                if (currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(currentPointer.Result?.CurrentPointerTarget.transform))
-                {
-                    return;
-                }
-
-                StopAllCoroutines();
-                animateScroller = null;
-
-                if (!isTouched && !isEngaged)
-                {
-                    initialPointerPos = currentPointer.Position;
-                    initialPressTime = Time.time;
-                    initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
-                    initialScrollerPos = scrollContainer.transform.localPosition;
-                    shouldSwallowEvents = true;
-
-                    isTouched = true;
-                    isEngaged = true;
-                    isDragging = false;
-
-                    TouchStarted?.Invoke(initialFocusedObject);
-
-                }
+                return;
             }
 
+            if (!HasPassedThroughFrontPlane(pokePointer))
+            {
+                return;
+            }
+
+            currentPointer = pokePointer;
+
+            StopAllCoroutines();
+            CurrentVelocityState = VelocityState.None;
+            animateScroller = null;
+
+            if (!IsTouched && !IsEngaged)
+            {
+                initialPointerPos = currentPointer.Position;
+                initialFocusedObject = selectedObject;
+                initialScrollerPos = ScrollContainer.transform.localPosition;
+
+                IsTouched = true;
+                IsEngaged = true;
+                IsDragging = false;
+
+                OnTouchStarted?.Invoke(initialFocusedObject);
+            }
         }
 
         /// <inheritdoc/>
-        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
-        {
-            // Quick check for the global listener to bail if the object is not in the list
-            if (currentPointer != null && currentPointer.Result?.CurrentPointerTarget != null
-                && ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
-            {
-                if (isDragging)
-                {
-                    eventData.Use();
-                }
-                return;
-            }
-        }
+        /// Touch release handled during Update.
+        void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData) { }
 
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            IMixedRealityPointer p = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
-
-            if (p != null)
+            if (currentPointer == null || eventData.SourceId != currentPointer.InputSourceParent.SourceId)
             {
-                // Quick check for the global listener to bail if the object is not in the list
-                if (currentPointer == null ||
-                    currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(p.Result.CurrentPointerTarget.transform) || initialFocusedObject != p.Result.CurrentPointerTarget)
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (p == currentPointer && isDragging)
-                {
-                    eventData.Use();
-                }
+            if (IsDragging)
+            {
+                eventData.Use();
             }
         }
 
@@ -2221,34 +2133,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            // We'll consider this a drag release
-            if (isEngaged && animateScroller == null && currentPointer != null && currentPointer.InputSourceParent.SourceId == eventData.SourceId)
+            if (currentPointer == null || eventData.SourceId != currentPointer.InputSourceParent.SourceId)
             {
-                if (isTouched || isDragging)
+                return;
+            }
+
+            // We'll consider this a drag release
+            if (IsEngaged && animateScroller == null)
+            {
+                if (IsTouched || IsDragging)
                 {
                     // Its a drag release
                     initialScrollerPos = workingScrollerPos;
                 }
 
-                ResetState();
+                ResetInteraction();
 
-                velocityState = VelocityState.Calculating;
+                CurrentVelocityState = VelocityState.Calculating;
             }
         }
-
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
-
-        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
-        {
-            if (shouldSwallowEvents)
-            {
-                // Prevents the handled event from PointerUp to continue propagating
-                eventData.Use();
-                shouldSwallowEvents = false;
-            }
-        }
-
-        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) { }
 
         #endregion IMixedRealitySourceStateHandler implementation
     }
