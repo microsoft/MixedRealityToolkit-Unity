@@ -32,6 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
+        /// Moves the camera transform based on the profile's origin offset
+        /// </summary>
+        public void SetInitialTransform(Transform transform)
+        {
+            transform.Translate(profile.CameraOriginOffset);
+        }
+
+        /// <summary>
         /// Translate and rotate the camera transform based on keyboard and mouse input.
         /// </summary>
         public void UpdateTransform(Transform transform, MouseDelta mouseDelta)
