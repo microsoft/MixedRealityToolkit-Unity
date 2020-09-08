@@ -1,3 +1,13 @@
+---
+title: Welcome to MRTK
+description: Landing page for the MRTK-Unity documentation site.
+author: hferrone
+ms.author: v-hferrone
+ms.date: 08/25/2020
+ms.localizationpriority: high
+keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
+---
+
 # Welcome to MRTK
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
@@ -6,10 +16,16 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 
 ## Development 
 
-If you're new to MRTK or Mixed Reality development, we recommend you start at the beginning of our [Unity development journey](https://docs.microsoft.com/en-us/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2). The Unity development journey is the **recommended starting point for MRTK**, specifically created to walk you through the installation, core concepts, and usage of MRTK in Unity. 
+If you're new to MRTK or Mixed Reality development in Unity, we recommend you start at the beginning of our [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2). The Unity development journey is the **recommended starting point for MRTK**, specifically created to walk you through the installation, core concepts, and usage of MRTK in Unity. 
 
 > [!CAUTION]
 > The Unity development journey currently uses **MRTK version 2.4.0** and **Unity 2019.3.15**. If you're working with other configurations it's still recommended that you start there, but you can also refer to the [installation instructions](Installation.md).
+
+## Documentation Versioning
+
+We have complete documentation for all release versions. The **mrtk_development** branch is the latest and greatest but is still in active development. We recommend using the highest numbered release branch for stability. Versions can be selected from the dropdown at the top-right of the screen:
+
+![MRTK version reference](../Documentation/Images/MRTK-Doc-Versions.png)
 
 ## Getting help
 

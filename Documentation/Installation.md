@@ -1,3 +1,13 @@
+---
+title: Installation Guide
+description: Guide for installing MRTK-Unity in a new project.
+author: hferrone
+ms.author: v-hferrone
+ms.date: 09/8/2020
+ms.localizationpriority: high
+keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
+---
+
 # Installation Guide
 
 ## Prerequisites
