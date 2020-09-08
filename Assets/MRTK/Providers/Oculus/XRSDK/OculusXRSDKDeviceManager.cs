@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
         /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
         /// </summary>
-        public OculusXRSDKDeviceManagerProfile SettingsProfile => ConfigurationProfile as OculusXRSDKDeviceManagerProfile;
+        public OculusXRSDKDeviceManagerProfile settingsProfile => ConfigurationProfile as OculusXRSDKDeviceManagerProfile;
 #endif
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             base.Enable();
             SetupInput();
             ConfigurePerformancePreferences();
-            SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
+            settingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
         }
 
 
@@ -157,20 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 var mainCamera = CameraCache.Main;
 
                 // Instantiate camera rig as a child of the MixedRealityPlayspace
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                cameraRig = GameObject.Instantiate(MRTKOculusConfig.Instance.OVRCameraRigPrefab);
-=======
-                var cameraRigObject = GameObject.Instantiate(MRTKOculusConfig.Instance.OVRCameraRigPrefab);
-=======
-                var cameraRigObject = GameObject.Instantiate(SettingsProfile.OVRCameraRigPrefab);
->>>>>>> 69d3f1c8fb... removed MRTK-config and added oculusXRSDK device manager settings
+
+                var cameraRigObject = GameObject.Instantiate(settingsProfile.OVRCameraRigPrefab);
                 cameraRig = cameraRigObject.GetComponent<OVRCameraRig>();
->>>>>>> 78cd58ed38... initial set of animation and adjustments brought over from MRTK-Quest
-=======
-                cameraRig = GameObject.Instantiate(MRTKOculusConfig.Instance.OVRCameraRigPrefab).GetComponent<OVRCameraRig>();
->>>>>>> upstream/prerelease/2.5.0_stabilization
 
                 // Ensure all related game objects are configured
                 cameraRig.EnsureGameObjectIntegrity();
@@ -192,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 cameraRig.EnsureGameObjectIntegrity();
             }
 
-            bool useAvatarHands = SettingsProfile.RenderAvatarHandsInsteadOfController;
+            bool useAvatarHands = settingsProfile.RenderAvatarHandsInsteadOfController;
             // If using Avatar hands, de-activate ovr controller rendering
             foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
             {
@@ -202,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (useAvatarHands)
             {
                 // Initialize the local avatar controller
-                GameObject.Instantiate(SettingsProfile.LocalAvatarPrefab, cameraRig.trackingSpace);
+                GameObject.Instantiate(settingsProfile.LocalAvatarPrefab, cameraRig.trackingSpace);
             }
 
             var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
@@ -238,14 +227,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         private void ConfigurePerformancePreferences()
         {
-            SettingsProfile.ApplyConfiguredPerformanceSettings();
+            settingsProfile.ApplyConfiguredPerformanceSettings();
         }
 
         public override void Disable()
         {
             base.Disable();
 
-            SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
+            settingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
 
         #region Hand Utilities
@@ -276,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             foreach (var hand in trackedHands.Values)
             {
-                hand.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
+                hand.UpdateHandMaterial(settingsProfile.CustomHandMaterial);
             }
         }
 
@@ -296,12 +285,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
 
             OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, inputSource);
-            handDevice.InitializeHand(ovrHand, SettingsProfile);
+            handDevice.InitializeHand(ovrHand, settingsProfile);
 
             for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {
                 handDevice.InputSource.Pointers[i].Controller = handDevice;
-                handDevice.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
+                handDevice.UpdateHandMaterial(settingsProfile.CustomHandMaterial);
             }
 
             inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
