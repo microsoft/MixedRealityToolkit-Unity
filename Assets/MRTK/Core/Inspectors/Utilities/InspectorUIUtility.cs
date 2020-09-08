@@ -625,54 +625,75 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
                     }
 
-                    // We have currently 4 different states to display to the user:
+                    // We have currently 5 different states to display to the user:
                     // 1. the scriptable is local to the object instance
                     // 2. the scriptable is a linked nested scriptable inside of the currently displayed prefab
                     // 3. the scriptable is a linked nested scriptable inside of another prefab
                     // 4. the scriptable is a shared standalone asset
-                    // Depending on the type of link we show the user the scriptable configuration either
-                    // editable inlined (case 1 & 2) or greyed out readonly (case 3 & 4)
-                    bool isStoredAsset = AssetDatabase.Contains(scriptable.objectReferenceValue);
-                    bool isNestedInCurrentPrefab = false;
-                    var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-                    if (prefabStage != null)
-                    {
-                        var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                        isNestedInCurrentPrefab = (instancePath != "" && instancePath == prefabStage.prefabAssetPath);
-                    }
-                        
-                    if (isStoredAsset && !isNestedInCurrentPrefab)
-                    {
-                        bool isMainAsset = AssetDatabase.IsMainAsset(scriptable.objectReferenceValue);
-                        var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                        if (isMainAsset)
-                        {
-                            EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
-                        }
-                        else
-                        {
-                            EditorGUILayout.HelpBox("Editing a nested " + scriptable.displayName + ", located inside of " + sharedAssetPath, MessageType.Warning);
-                        }
-                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
+                    // 5. the scriptable slot is empty but inside of a prefab asset which needs special handling as 
+                    // prefabs can only display linked or nested scriptables.
 
-                        // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
-                        // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
-                        GUI.enabled = false;
-                        DrawScriptableSubEditor(scriptable);
-                        GUI.enabled = true;
+                    // Depending on the type of link we show the user the scriptable configuration either:
+                    // case 1 &2: editable inlined 
+                    // case 3 & 4: greyed out readonly
+                    // case 5: only show the link
+
+                    // case 5 -> can't create and/or store the local scriptable above - show link
+                    bool isStoredAsset = (scriptable.objectReferenceValue == null) ? false : AssetDatabase.Contains(scriptable.objectReferenceValue);
+                    bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
+                    if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
+                    {
+                        EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
+                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Empty): "));
                     }
                     else
                     {
-                        if (isNestedInCurrentPrefab)
+                        bool isNestedInCurrentPrefab = false;
+                        var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                        if (prefabStage != null)
                         {
-                            EditorGUILayout.HelpBox("Editing a nested version of " + scriptable.displayName + ".", MessageType.Info);
+                            var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                            isNestedInCurrentPrefab = (instancePath != "" && instancePath == prefabStage.prefabAssetPath);
+                        }
+                        
+                        
+                        if (isStoredAsset && !isNestedInCurrentPrefab)
+                        {
+                            // case 3 & 4 - greyed out drawer
+                            bool isMainAsset = AssetDatabase.IsMainAsset(scriptable.objectReferenceValue);
+                            var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                            if (isMainAsset)
+                            {
+                                EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                            }
+                            else
+                            {
+                                EditorGUILayout.HelpBox("Editing a nested " + scriptable.displayName + ", located inside of " + sharedAssetPath, MessageType.Warning);
+                            }
+                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
+
+                            // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
+                            // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
+                            GUI.enabled = false;
+                            DrawScriptableSubEditor(scriptable);
+                            GUI.enabled = true;
                         }
                         else
                         {
-                            EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
+                            // case 1 & 2 - inline editable drawer
+                            if (isNestedInCurrentPrefab)
+                            {
+                                EditorGUILayout.HelpBox("Editing a nested version of " + scriptable.displayName + ".", MessageType.Info);
+                            }
+                            else
+                            {
+                                EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
+                            }
+                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
+                            DrawScriptableSubEditor(scriptable);
                         }
-                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
-                        DrawScriptableSubEditor(scriptable);
+
+                        
                     }
                 }
             }
