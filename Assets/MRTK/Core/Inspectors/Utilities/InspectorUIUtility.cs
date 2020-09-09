@@ -643,7 +643,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
                     if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
                     {
-                        EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store " +
+                            "local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
                         EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Empty): "));
                     }
                     else
