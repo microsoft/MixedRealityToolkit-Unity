@@ -95,17 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
             {
                 foreach (GltfMaterial gltfMaterial in gltfAsset.GltfObject.materials)
                 {
-                    if (context.assetPath.EndsWith(".glb"))
-                    {
-                        context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
-                    }
-                    else
-                    {
-                        var relativePath = Path.GetFullPath(Path.GetDirectoryName(context.assetPath)).Replace(Path.GetFullPath(Application.dataPath), "Assets");
-                        relativePath = Path.Combine(relativePath, $"{gltfMaterial.name}.mat");
-                        AssetDatabase.CreateAsset(gltfMaterial.Material, relativePath);
-                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(relativePath);
-                    }
+                    context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
                 }
             }
         }
