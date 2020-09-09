@@ -650,8 +650,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}
-  pointerAudioSource: {fileID: 0}
-  teleportRequestedClip: {fileID: 0}
+  pointerAudioSource: {fileID: 5571717125842689191}
+  teleportRequestedClip: {fileID: 8300000, guid: a16c53885bdbc54469088880ea44a9fd,
+    type: 3}
   teleportCompletedClip: {fileID: 0}
   pointerOrientation: 0
   minParabolaVelocity: 5

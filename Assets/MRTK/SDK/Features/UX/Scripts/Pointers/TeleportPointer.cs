@@ -459,6 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
                 else
                 {
+                    canTeleport = TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot;
                     if (!canTeleport && !TeleportRequestRaised)
                     {
                         // Reset the move flag when the user stops moving the joystick
@@ -468,7 +469,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                     if (canTeleport)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
 
                         if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
@@ -484,17 +484,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                     if (TeleportRequestRaised)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
                         CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                     }
-                }
-
-                if (TeleportRequestRaised &&
-                    TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                    TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-                {
-                    canTeleport = true;
                 }
             }
         }
@@ -556,6 +548,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             using (OnTeleportCanceledPerfMarker.Auto())
             {
+                TeleportRequestRaised = false;
                 isTeleportRequestActive = false;
                 BaseCursor?.SetVisibility(false);
             }

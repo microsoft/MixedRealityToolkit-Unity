@@ -276,9 +276,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
+        //used to track the input that was last raised
+        private Vector2 previousStickInput = Vector2.zero;
+        private bool previousReadyToTeleport = false;
+        private MixedRealityInputAction previousTeleportAction = MixedRealityInputAction.None;
+
         private void UpdateTeleport()
         {
             MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
+            TeleportPointer teleportPointer = null;
 
             // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
             bool anyPointersLockedWithHand = false;
@@ -295,16 +301,31 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
                 if (InputSource.Pointers[i] is IMixedRealityTeleportPointer)
                 {
-                    TeleportPointer teleportPointer = (TeleportPointer)InputSource.Pointers[i];
+                    teleportPointer = (TeleportPointer)InputSource.Pointers[i];
                     teleportAction = teleportPointer.TeleportInputAction;
                 }
             }
 
             // We close middle finger to signal spider-man gesture, and as being ready for teleport
             bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
-            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
 
-            RaiseTeleportInput(stickInput, teleportAction);
+
+            // The teleport event needs to be canceled if we have not completed the teleport motion and we were previously ready to teleport, but for some reason we
+            // are no longer doing the ready to teleport gesture
+            bool teleportCanceled = previousReadyToTeleport && !isReadyForTeleport && !isIndexGrabbing;
+            if (teleportCanceled && teleportPointer != null)
+            {
+                CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
+                return;
+            }
+
+            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
+            bool teleportInputChanged = stickInput != previousStickInput;
+            if (teleportInputChanged)
+                RaiseTeleportInput(stickInput, teleportAction);
+
+            previousStickInput = stickInput;
+            previousReadyToTeleport = isReadyForTeleport;
         }
 
         private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction)
