@@ -698,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // also only use proximity effect if nothing is being dragged or grabbed
                 if (!wireframeOnly && currentPointer == null)
                 {
-                    proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position, currentBoundsExtents);
+                    proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + Target.transform.position, currentBoundsExtents);
                 }
             }
         }
