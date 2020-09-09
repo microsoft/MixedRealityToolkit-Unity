@@ -1107,22 +1107,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 591
+      value: 611
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 91
+      value: 94
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 91
+      value: 93
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1132,22 +1132,20 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'Dictation allows users to record audio clips and obtain a transcription
-        of the audio. To use it make sure that a dication data provider is registered
-        in the *Input System Profile*. **Windows Dictation Input Provider** is the
-        dication system provided out of the box.
-
-
-        In this example we use the Dictation Handler script in DictationPanel to set
-        the text of TranscribedText with the transcription produced by the dictation
-        service. If you need more control than Dictation Handler allows, you can implement
-        you own dictation handler by implementing IMixedRealityDictationHandler in
-        your script.'
+      value: "<size=42><b>Dictation Example</b></size>\r\n\nDictation allows users
+        to record audio clips and obtain a transcription of the audio. To use it make
+        sure that a dication data provider is registered in the *Input System Profile*.
+        **Windows Dictation Input Provider** is the dication system provided out of
+        the box.\n\nIn this example we use the Dictation Handler script in DictationPanel
+        to set the text of TranscribedText with the transcription produced by the
+        dictation service. If you need more control than Dictation Handler allows,
+        you can implement you own dictation handler by implementing IMixedRealityDictationHandler
+        in your script."
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 266
+      value: 142
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
