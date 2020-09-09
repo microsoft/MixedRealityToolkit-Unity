@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             }
             else // y axis 
             {
-                return Quaternion.FromToRotation(Vector3.forward, Vector3.up);
+                return Quaternion.identity;
             }
         }
 
