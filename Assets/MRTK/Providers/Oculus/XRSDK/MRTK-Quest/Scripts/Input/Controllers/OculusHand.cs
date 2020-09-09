@@ -308,6 +308,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             // We close middle finger to signal spider-man gesture, and as being ready for teleport
             bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
 
+            // Tracks the input vector that should be sent out based on the gesture that is made
+            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
 
             // The teleport event needs to be canceled if we have not completed the teleport motion and we were previously ready to teleport, but for some reason we
             // are no longer doing the ready to teleport gesture
@@ -315,11 +317,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (teleportCanceled && teleportPointer != null)
             {
                 CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
+                previousStickInput = stickInput;
                 previousReadyToTeleport = isReadyForTeleport;
                 return;
             }
 
-            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
             bool teleportInputChanged = stickInput != previousStickInput;
             if (teleportInputChanged)
             {
