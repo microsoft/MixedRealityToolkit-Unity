@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// </summary>
     internal class FocusReceiver : BaseEventReceiver
     {
+        /// <inheritdoc />
         public FocusReceiver(FocusInteractionEventConfiguration focusEventConfiguration) : base(focusEventConfiguration, "FocusReceiver") 
         {
             EventConfiguration = focusEventConfiguration;

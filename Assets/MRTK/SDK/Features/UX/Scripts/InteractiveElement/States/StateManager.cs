@@ -84,14 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             InteractionState interactionState = states.Find((state) => state.Name == stateName);
 
-            if (interactionState != null)
-            {
-                return interactionState;
-            }
-            else
-            {
-                return null;
-            }
+            return interactionState;
         }
 
         /// <summary>
@@ -124,14 +117,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 {
                     SetStateOff(stateName);
                 }
-
-                return state;
             }
             else
             {
                 Debug.LogError($"The {stateName} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
             }
+
+            return state;
         }
 
         /// <summary>
@@ -178,15 +170,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     {
                         SetStateOff(CoreInteractionState.Default);
                     }
-                }
-
-                return state;
+                }  
             }
             else
             {
                 Debug.LogError($"The {stateName} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
             }
+
+            return state;
         }
 
         /// <summary>
@@ -227,15 +218,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     OnStateDeactivated.Invoke(state, activeStates.Last());
 
                     activeStates.Remove(state);
-                }
-
-                return state;
+                }  
             }
             else
             {
                 Debug.LogError($"The {stateName} state is not being tracked, add this state using AddState(state) to set it");
-                return null;
             }
+
+            return state;
         }
 
         /// <summary>
@@ -322,20 +312,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             if (state != null)
             {
-                if (state.Active == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return state.Active == 1;
             }
             else
             {
                 Debug.LogError($"The {stateName} state is not being tracked, add this state using AddNewState(state) to track whether or not it is active.");
-                return false;
             }
+
+            return false;
         }
 
         /// <summary>
@@ -358,12 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             InteractionState state = GetState(stateName);
 
-            if (state != null)
-            {
-                return true;
-            }
-
-            return false;
+            return state != null;
         }
 
         /// <summary>
@@ -389,13 +368,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 InteractionState newState = new InteractionState(stateName);
                 states.Add(newState);
-                return state;
             }
             else
             {
                 Debug.Log($" The {stateName} state is already being tracked and does not need to be added.");
-                return state;
             }
+
+            return state;
         }
 
         /// <summary>
