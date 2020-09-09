@@ -29,6 +29,15 @@
     },
     {
       "Component": {
+        "Type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/provencher/MRTK-Quest",
+          "commitHash": "896d2e1639b571c6d177cac143259cd1094aa867"
+        }
+      }
+    },
+    {
+      "Component": {
         "Type": "other",
         "Other": {
           "Name": "Oculus Controller Art",

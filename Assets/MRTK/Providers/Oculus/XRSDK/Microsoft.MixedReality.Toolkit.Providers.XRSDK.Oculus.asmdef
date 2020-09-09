@@ -2,6 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
     "references": [
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
         "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities",
         "Unity.XR.Oculus"
