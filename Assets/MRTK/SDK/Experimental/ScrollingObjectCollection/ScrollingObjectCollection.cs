@@ -133,6 +133,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { handDeltaScrollThreshold = value; }
         }
 
+        /// <summary>
+        /// HandDeltaScrollThreshold in local space.
+        /// </summary>
+        private float HandLocalDeltaScrollThreshold
+        {
+            get 
+            {
+                float lossyScale = scrollDirection == ScrollDirectionType.UpAndDown ? transform.lossyScale.y : transform.lossyScale.x;
+                return SafeDivisionFloat(HandDeltaScrollThreshold, lossyScale);
+            }
+        }
+
         [SerializeField]
         [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")]
         private float releaseThresholdFront = 0.03f;
@@ -1017,7 +1029,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (IsEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
             {
                 Vector3 handDelta = initialPointerPos - currentPointerPos;
-                handDelta = transform.InverseTransformDirection(handDelta);
+                handDelta = transform.InverseTransformPoint(handDelta);
 
                 if (IsDragging && currentPointer != null) // Changing lock after drag started frame to allow for focus provider to move pointer focus to scroll background before locking
                 {
@@ -1032,7 +1044,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     float absAxisHandDelta = (scrollDirection == ScrollDirectionType.UpAndDown) ? Mathf.Abs(handDelta.y) : Mathf.Abs(handDelta.x);
 
                     // Catch an intentional finger in scroller to stop momentum, this isn't a drag its definitely a stop
-                    if (absAxisHandDelta > handDeltaScrollThreshold)
+                    if (absAxisHandDelta > HandLocalDeltaScrollThreshold)
                     {
                         scrollVelocity = 0.0f;
                         avgVelocity = 0.0f;

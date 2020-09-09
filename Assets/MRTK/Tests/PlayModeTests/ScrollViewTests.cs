@@ -1298,6 +1298,68 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(0.032f, scrollView.ScrollContainerPosition.y, 0.0005, "Scroll container should be on second tier");
         }
 
+        /// <summary>
+        /// Tests if touch scroll amount follows 1:1 proportion in relation to hand delta.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator OneToOneTouchScrollAmount()
+        {
+            // Setting up a vertical 1x2 scroll view with three pressable buttons items
+            var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
+
+            GridObjectCollection objectCollection = InstantiateObjectCollection(contentItems,
+                                                                                LayoutOrder.ColumnThenRow,
+                                                                                LayoutAnchor.UpperLeft,
+                                                                                1,
+                                                                                Vector3.forward,
+                                                                                Quaternion.identity,
+                                                                                0.032f,
+                                                                                0.032f);
+
+            ScrollingObjectCollection scrollView = InstantiateScrollView(1,
+                                                                         2,
+                                                                         objectCollection.CellWidth,
+                                                                         objectCollection.CellHeight,
+                                                                         0.016f,
+                                                                         Vector3.forward,
+                                                                         Quaternion.identity);
+            scrollView.AddContent(objectCollection.gameObject);
+
+            PressableButton button1Component = contentItems[0].GetComponentInChildren<PressableButton>();
+
+            Assert.IsNotNull(button1Component);
+
+            // Hand positions
+            float offset = 0.001f;
+            float handTouchDelta = 0.05f;
+            Vector3 initialPos = Vector3.zero;
+            Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
+            Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
+            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * handTouchDelta;
+
+            // Touch scrolling and moving hand five centimeters up
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.AreEqual(handTouchDelta - scrollView.HandDeltaScrollThreshold, scrollView.ScrollContainerPosition.y, 0.005, "Touch scroll drag amount was not 1:1");
+
+            // Scaling scroll object and reseting scroll interaction and offset
+            var newScale = 2.0f;
+            scrollView.transform.localScale *= newScale;
+            scrollView.Reset();
+            yield return null;
+
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedPos);
+
+            Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Touch scroll drag amount was not 1:1");
+        }
+
         #endregion Tests
 
         #region Utilities
