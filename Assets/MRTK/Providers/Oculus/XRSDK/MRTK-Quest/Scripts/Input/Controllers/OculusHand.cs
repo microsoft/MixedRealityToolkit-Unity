@@ -279,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         // Used to track the input that was last raised
         private Vector2 previousStickInput = Vector2.zero;
         private bool previousReadyToTeleport = false;
-        private MixedRealityInputAction previousTeleportAction = MixedRealityInputAction.None;
 
         private void UpdateTeleport()
         {
@@ -316,6 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (teleportCanceled && teleportPointer != null)
             {
                 CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
+                previousReadyToTeleport = isReadyForTeleport;
                 return;
             }
 
