@@ -48,10 +48,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
 
         /// <summary>
-        /// The profile that contains settings for the Leap Motion Device Manager input data provider.  This profile is nested under 
-        /// Input > Input Data Providers > Leap Motion Device Manager in the MixedRealityToolkit object in the hierarchy.
+        /// The profile that contains settings for the Oculus XRSDK Device Manager input data provider.  This profile is nested under 
+        /// Input > Input Data Providers > Oculus XRSDK Device Manager in the MixedRealityToolkit object in the hierarchy.
         /// </summary>
-        public OculusXRSDKDeviceManagerProfile settingsProfile => ConfigurationProfile as OculusXRSDKDeviceManagerProfile;
+        private OculusXRSDKDeviceManagerProfile SettingsProfile => ConfigurationProfile as OculusXRSDKDeviceManagerProfile;
 #endif
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             base.Enable();
             SetupInput();
             ConfigurePerformancePreferences();
-            settingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
+            SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
         }
 
 
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
                 // Instantiate camera rig as a child of the MixedRealityPlayspace
 
-                var cameraRigObject = GameObject.Instantiate(settingsProfile.OVRCameraRigPrefab);
+                var cameraRigObject = GameObject.Instantiate(SettingsProfile.OVRCameraRigPrefab);
                 cameraRig = cameraRigObject.GetComponent<OVRCameraRig>();
 
                 // Ensure all related game objects are configured
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
                 cameraRig.EnsureGameObjectIntegrity();
             }
 
-            bool useAvatarHands = settingsProfile.RenderAvatarHandsInsteadOfController;
+            bool useAvatarHands = SettingsProfile.RenderAvatarHandsInsteadOfController;
             // If using Avatar hands, de-activate ovr controller rendering
             foreach (var controllerHelper in cameraRig.gameObject.GetComponentsInChildren<OVRControllerHelper>())
             {
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (useAvatarHands)
             {
                 // Initialize the local avatar controller
-                GameObject.Instantiate(settingsProfile.LocalAvatarPrefab, cameraRig.trackingSpace);
+                GameObject.Instantiate(SettingsProfile.LocalAvatarPrefab, cameraRig.trackingSpace);
             }
 
             var ovrHands = cameraRig.GetComponentsInChildren<OVRHand>();
@@ -227,14 +227,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
         private void ConfigurePerformancePreferences()
         {
-            settingsProfile.ApplyConfiguredPerformanceSettings();
+            SettingsProfile.ApplyConfiguredPerformanceSettings();
         }
 
         public override void Disable()
         {
             base.Disable();
 
-            settingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
+            SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
 
         #region Hand Utilities
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         {
             foreach (var hand in trackedHands.Values)
             {
-                hand.UpdateHandMaterial(settingsProfile.CustomHandMaterial);
+                hand.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
             }
         }
 
@@ -285,12 +285,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 
 
             OculusHand handDevice = new OculusHand(TrackingState.Tracked, handedness, inputSource);
-            handDevice.InitializeHand(ovrHand, settingsProfile);
+            handDevice.InitializeHand(ovrHand, SettingsProfile);
 
             for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {
                 handDevice.InputSource.Pointers[i].Controller = handDevice;
-                handDevice.UpdateHandMaterial(settingsProfile.CustomHandMaterial);
+                handDevice.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
             }
 
             inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
