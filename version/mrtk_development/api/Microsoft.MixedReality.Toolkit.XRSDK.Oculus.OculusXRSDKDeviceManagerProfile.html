@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class MRTKOculusConfig
+    <title>Class OculusXRSDKDeviceManagerProfile
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class MRTKOculusConfig
+    <meta name="title" content="Class OculusXRSDKDeviceManagerProfile
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -81,35 +81,39 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig" class="text-break">Class MRTKOculusConfig
+  <h1 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile" class="text-break">Class OculusXRSDKDeviceManagerProfile
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>The profile for the Oculus XRSDK Device Manager. The settings for this profile can be viewed if the Leap Motion Device Manager input data provider is
+added to the MRTK input configuration profile.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">MRTKOculusConfig</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></div>
+    <div class="level2"><span class="xref">OculusXRSDKDeviceManagerProfile</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.html">Microsoft.MixedReality.Toolkit.XRSDK.Oculus</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MRTKOculusConfig : ScriptableObject</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityServiceProfile(typeof(OculusXRSDKDeviceManager), null)]
+public class OculusXRSDKDeviceManagerProfile : BaseMixedRealityProfile</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_OnCustomHandMaterialUpdate" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.OnCustomHandMaterialUpdate">OnCustomHandMaterialUpdate</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_OnCustomHandMaterialUpdate" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.OnCustomHandMaterialUpdate">OnCustomHandMaterialUpdate</h4>
   <div class="markdown level1 summary"><p>Event triggered when the custom material for hand mesh is updated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Action OnCustomHandMaterialUpdate</code></pre>
+    <pre><code class="lang-csharp hljs">public Action OnCustomHandMaterialUpdate</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -130,8 +134,8 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_CPULevel_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.CPULevel*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_CPULevel" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.CPULevel">CPULevel</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_CPULevel_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.CPULevel*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_CPULevel" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.CPULevel">CPULevel</h4>
   <div class="markdown level1 summary"><p>Accessor for the Oculus CPU performance level.
 <a href="https://developer.oculus.com/documentation/native/android/mobile-power-overview">https://developer.oculus.com/documentation/native/android/mobile-power-overview</a></p>
 </div>
@@ -157,8 +161,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_CustomHandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.CustomHandMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_CustomHandMaterial" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.CustomHandMaterial">CustomHandMaterial</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_CustomHandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.CustomHandMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_CustomHandMaterial" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.CustomHandMaterial">CustomHandMaterial</h4>
   <div class="markdown level1 summary"><p>Custom hand material to use for hand tracking hand mesh.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -183,8 +187,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_GPULevel_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.GPULevel*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_GPULevel" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.GPULevel">GPULevel</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_GPULevel_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.GPULevel*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_GPULevel" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.GPULevel">GPULevel</h4>
   <div class="markdown level1 summary"><p>Accessor for the Oculus GPU performance level.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -209,33 +213,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_Instance_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.Instance*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_Instance" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.Instance">Instance</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static MRTKOculusConfig Instance { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.html">MRTKOculusConfig</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_LocalAvatarPrefab_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.LocalAvatarPrefab*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_LocalAvatarPrefab" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.LocalAvatarPrefab">LocalAvatarPrefab</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_LocalAvatarPrefab_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.LocalAvatarPrefab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_LocalAvatarPrefab" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.LocalAvatarPrefab">LocalAvatarPrefab</h4>
   <div class="markdown level1 summary"><p>Prefab reference for LocalAvatar to load, if none are found in scene.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -260,8 +239,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_LowConfidenceTimeThreshold_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.LowConfidenceTimeThreshold*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_LowConfidenceTimeThreshold" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.LowConfidenceTimeThreshold">LowConfidenceTimeThreshold</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_LowConfidenceTimeThreshold_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.LowConfidenceTimeThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_LowConfidenceTimeThreshold" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.LowConfidenceTimeThreshold">LowConfidenceTimeThreshold</h4>
   <div class="markdown level1 summary"><p>Time in seconds after which low confidence is considered unreliable, and tracking is set to false.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -286,9 +265,10 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_OVRCameraRigPrefab_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.OVRCameraRigPrefab*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_OVRCameraRigPrefab" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.OVRCameraRigPrefab">OVRCameraRigPrefab</h4>
-  <div class="markdown level1 summary"><p>Prefab reference for OVRCameraRig to load, if none are found in scene.</p>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_OVRCameraRigPrefab_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.OVRCameraRigPrefab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_OVRCameraRigPrefab" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.OVRCameraRigPrefab">OVRCameraRigPrefab</h4>
+  <div class="markdown level1 summary"><p>Prefab reference for OVRCameraRig to load, if none are found in scene.
+This prefab is required for MRTK on Oculus Quest to support handtracking</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -312,8 +292,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_PinchStrengthMaterialProperty_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.PinchStrengthMaterialProperty*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_PinchStrengthMaterialProperty" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.PinchStrengthMaterialProperty">PinchStrengthMaterialProperty</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_PinchStrengthMaterialProperty_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.PinchStrengthMaterialProperty*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_PinchStrengthMaterialProperty" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.PinchStrengthMaterialProperty">PinchStrengthMaterialProperty</h4>
   <div class="markdown level1 summary"><p>Property in custom material used to visualize pinch strength.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -338,9 +318,10 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_RenderAvatarHandsInsteadOfController_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.RenderAvatarHandsInsteadOfController*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_RenderAvatarHandsInsteadOfController" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.RenderAvatarHandsInsteadOfController">RenderAvatarHandsInsteadOfController</h4>
-  <div class="markdown level1 summary"><p>Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.</p>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_RenderAvatarHandsInsteadOfController_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.RenderAvatarHandsInsteadOfController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_RenderAvatarHandsInsteadOfController" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.RenderAvatarHandsInsteadOfController">RenderAvatarHandsInsteadOfController</h4>
+  <div class="markdown level1 summary"><p>Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
+&quot;Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.&quot;)]</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -364,8 +345,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_UpdateMaterialPinchStrengthValue_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.UpdateMaterialPinchStrengthValue*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_UpdateMaterialPinchStrengthValue" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.UpdateMaterialPinchStrengthValue">UpdateMaterialPinchStrengthValue</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_UpdateMaterialPinchStrengthValue_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.UpdateMaterialPinchStrengthValue*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_UpdateMaterialPinchStrengthValue" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.UpdateMaterialPinchStrengthValue">UpdateMaterialPinchStrengthValue</h4>
   <div class="markdown level1 summary"><p>If true, will update material pinch strength using OVR Values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -390,8 +371,8 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_UseCustomHandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.UseCustomHandMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_UseCustomHandMaterial" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.UseCustomHandMaterial">UseCustomHandMaterial</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_UseCustomHandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.UseCustomHandMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_UseCustomHandMaterial" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.UseCustomHandMaterial">UseCustomHandMaterial</h4>
   <div class="markdown level1 summary"><p>If true, hand mesh material will be replaced with custom material.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -418,8 +399,8 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_ApplyConfiguredPerformanceSettings_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.ApplyConfiguredPerformanceSettings*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_MRTKOculusConfig_ApplyConfiguredPerformanceSettings" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.ApplyConfiguredPerformanceSettings">ApplyConfiguredPerformanceSettings()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_ApplyConfiguredPerformanceSettings_" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.ApplyConfiguredPerformanceSettings*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_XRSDK_Oculus_OculusXRSDKDeviceManagerProfile_ApplyConfiguredPerformanceSettings" data-uid="Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.ApplyConfiguredPerformanceSettings">ApplyConfiguredPerformanceSettings()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

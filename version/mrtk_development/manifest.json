@@ -8887,7 +8887,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "wBQHfRJaRj75+WoZrasakA=="
+          "hash": "9xqUPHlvvN5sNszkOB+3IQ=="
         }
       },
       "is_incremental": false,
@@ -21223,7 +21223,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.html",
-          "hash": "VOEQnYUjg1FsNWbLwwTgwQ=="
+          "hash": "Smn7cs/EwFiNTQ0dM0edvQ=="
         }
       },
       "is_incremental": false,
@@ -21271,7 +21271,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html",
-          "hash": "Hzb0pXaHnCZOW4y/M1Kdow=="
+          "hash": "B7s2QJAIJRFH80q5pHyNkg=="
         }
       },
       "is_incremental": false,
@@ -28755,23 +28755,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.MRTKOculusConfig.html",
-          "hash": "XyR4UemZFYgHYB1+bGkPnA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand.html",
-          "hash": "BDHzCUgnck1zQWwjnBCzwA=="
+          "hash": "v6lwwhIR4fJfoWiMh2SiQQ=="
         }
       },
       "is_incremental": false,
@@ -28784,6 +28772,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManager.html",
           "hash": "FQHqoXifVwzdXSSo4ak4RA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManagerProfile.html",
+          "hash": "bdfO/HVwRuwxSOv8MSL8CQ=="
         }
       },
       "is_incremental": false,
@@ -28807,7 +28807,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.html",
-          "hash": "HKWbsD1PhtaQTxdxgye2yg=="
+          "hash": "Qxh5zE+altlvyYjFokgC0A=="
         }
       },
       "is_incremental": false,
@@ -28975,7 +28975,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FH1K/gIpTT+aKH4rsquJEw=="
+          "hash": "nqng8SXNTYSruYcFBDkDiQ=="
         }
       },
       "is_incremental": false,
@@ -29045,16 +29045,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1690,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 159,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1690,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
