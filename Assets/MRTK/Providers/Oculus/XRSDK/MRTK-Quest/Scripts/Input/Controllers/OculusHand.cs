@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             }
         }
 
-        //used to track the input that was last raised
+        // Used to track the input that was last raised
         private Vector2 previousStickInput = Vector2.zero;
         private bool previousReadyToTeleport = false;
         private MixedRealityInputAction previousTeleportAction = MixedRealityInputAction.None;
@@ -322,7 +322,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
             bool teleportInputChanged = stickInput != previousStickInput;
             if (teleportInputChanged)
+            {
                 RaiseTeleportInput(stickInput, teleportAction);
+            }
 
             previousStickInput = stickInput;
             previousReadyToTeleport = isReadyForTeleport;
