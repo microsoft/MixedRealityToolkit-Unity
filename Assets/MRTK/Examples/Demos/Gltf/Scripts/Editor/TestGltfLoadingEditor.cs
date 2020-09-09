@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
             {
                 string modelsPath = AssetDatabase.GUIDToAssetPath(GLTFModelsFolderGUID);
                 DirectoryCopy(modelsPath, Path.Combine(Application.streamingAssetsPath, "GltfModels"));
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
                 Debug.Log("Copied glTF model files to Streaming Assets folder");
             }
         }
