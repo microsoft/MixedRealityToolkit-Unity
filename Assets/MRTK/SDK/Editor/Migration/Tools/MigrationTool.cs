@@ -452,5 +452,48 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Log += msg;
             }
         }
+
+        /// <summary>
+        /// Util method to draw a deprecated warning for a given component in the inspector as well
+        /// as a button to migrate / trigger the migration tool to upgrade to the new version via the 
+        /// indicated migration handler.
+        /// </summary>
+        /// <typeparam name="T">Deprecated component type.</typeparam>
+        /// <typeparam name="THandler">Migration handler to call for migrating the component.</typeparam>
+        /// <param name="target">Component to migrate.</param>
+        static public void DrawDeprecated<T, THandler>(T target)
+            where T : MonoBehaviour
+            where THandler : IMigrationHandler
+        {
+            List<Type> requiringTypes;
+
+            if (target.gameObject.IsComponentRequired<T>(out requiringTypes))
+            {
+                string requiringComponentNames = null;
+
+                for (int i = 0; i < requiringTypes.Count; i++)
+                {
+                    requiringComponentNames += "- " + requiringTypes[i].FullName;
+                    if (i < requiringTypes.Count - 1)
+                    {
+                        requiringComponentNames += '\n';
+                    }
+                }
+
+                EditorGUILayout.HelpBox($"This component is deprecated. Please migrate object to up to date version. Remove the RequiredComponentAttribute from:\n{requiringComponentNames}", MessageType.Error);
+                return;
+            }
+
+            EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", MessageType.Warning);
+            if (GUILayout.Button("Migrate Object"))
+            {
+                Utilities.MigrationTool migrationTool = new Utilities.MigrationTool();
+
+                var component = target;
+
+                migrationTool.TryAddObjectForMigration(typeof(THandler), (GameObject)component.gameObject);
+                migrationTool.MigrateSelection(typeof(THandler), true);
+            }
+        }
     }
 }

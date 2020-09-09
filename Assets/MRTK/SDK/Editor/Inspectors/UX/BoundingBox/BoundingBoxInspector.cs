@@ -5,6 +5,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -44,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             DrawDefaultInspector();
+
+            // Draws warning message for deprecated object with button for migration option
+            MigrationTool.DrawDeprecated<BoundingBox, BoundsControlMigrationHandler>((BoundingBox)target);
         }
     }
 }
