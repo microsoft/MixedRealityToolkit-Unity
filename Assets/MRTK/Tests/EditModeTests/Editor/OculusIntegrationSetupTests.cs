@@ -15,24 +15,30 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
 {
+
+
     /// <summary>
-    /// Set of tests to validate MRTK Toolbox Editor window.
+    /// Tests which ensure that our Oculus Integration setup process works.
     /// </summary>
     public class OculusIntegrationSetupTests
     {
-        /// <summary>
-        /// Tests that the MixedRealityToolboxWindow can load without exception and that none of
-        /// its internal item contents are null or invalid.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator TestOculusIntegrationSetup()
+        [SetUp]
+        public void SetUp()
         {
             string filepath = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\OculusProjectConfig.asset");
 
             // Create a dummy asset for the OculusProjectConfig
             Material DummyAsset = new Material(Shader.Find("Specular"));
             AssetDatabase.CreateAsset(DummyAsset, "Assets/OculusProjectConfig.asset");
+        }
 
+        /// <summary>
+        /// Tests that the appropriate definitions and asmdef references are configured based on the presence of 
+        /// the OculusProjectConfig.asset file
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestOculusIntegrationSetup()
+        {
             // Configure the oculus settings successfully
             OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration();
 
@@ -41,13 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
             ValidateAsmdefs(true);
 
             // Remove the dummy asset and clean up the project to prevent errors
-            AssetDatabase.DeleteAsset("Assets/OculusProjectConfig.asset");
+            TearDown();
             OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration();
 
             // Check that the definitions and amdefs are set up correctly when Oculus Integration is not present
             Assert.IsFalse(OculusXRSDKHandtrackingConfigurationChecker.ReconcileOculusIntegrationDefine());
             ValidateAsmdefs(false);
-
 
             yield return null;
         }
@@ -94,6 +99,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
                     }
                 }
             }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            AssetDatabase.DeleteAsset("Assets/OculusProjectConfig.asset");
+            AssetDatabase.Refresh();
         }
     }
 }

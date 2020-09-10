@@ -34,9 +34,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
 {
     /// <summary>
@@ -57,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
-        public static void ConfigureOculusIntegration()
+        internal static void ConfigureOculusIntegration()
         {
             bool OculusIntegrationPresent = ReconcileOculusIntegrationDefine();
 
@@ -111,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
         /// </summary>
         /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        public static bool ReconcileOculusIntegrationDefine()
+        internal static bool ReconcileOculusIntegrationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
