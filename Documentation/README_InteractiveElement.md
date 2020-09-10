@@ -28,7 +28,7 @@ All Core Interaction States will have an associated custom event configuration.
         InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus);
 
         // Get the event configuration for the Focus state
-        var focusEventConfiguration = focusState.EventConfiguration as FocusInteractionEventConfiguration;
+        var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
 
         focusEventConfiguration.OnFocusOn.AddListener((focusEventData) =>
         {
