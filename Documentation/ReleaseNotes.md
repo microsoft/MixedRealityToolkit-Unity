@@ -22,6 +22,14 @@ MRTK now supports running Oculus Quest Headsets and Controllers using the native
 
 For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
+**Teleport pointer animation, handling, and sound improvements**
+
+The teleport pointer now has improved animations and audio feedback. We also improved the handling of the teleport pointer so it handles smoother when transitioning from pointing at nearby surfaces to farther away surfaces.
+
+**Teleport pointer enabled for articulated hands on Oculus Quest**
+
+We now support using the teleport pointer with articulated hands on Oculus Quest!
+
 **Input Simulation Cheat Sheet**
 The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
 
