@@ -24853,22 +24853,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 1198
+      value: 1224
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 177
+      value: 181
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 179
+      value: 182
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 26
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -24878,35 +24878,28 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'The Elastic system allows for dynamic, responsive, and procedural feedback
-        and animations within MRTK. The Elastic system is built around a robust damped
-        harmonic oscillator simulation system, which is extensible to an arbitrary
-        number of dimensions. The output of an elastic system can be used to drive
-        shaders, materials, transforms, or pretty much anything your heart desires!
-
-
-        <b><size="32">Configurability</size></b>
-
-        The Elastic system is driven by two pieces of configuration info: the extent
-        info and and the properties of the elastic spring itself. The extent of the
-        spring can be configured to have defined min/max endpoints and snapping intervals/points,
+      value: "<size=42><b>Elastic System Examples</b></size>\r\n\nThe Elastic system
+        allows for dynamic, responsive, and procedural feedback and animations within
+        MRTK. The Elastic system is built around a robust damped harmonic oscillator
+        simulation system, which is extensible to an arbitrary number of dimensions.
+        The output of an elastic system can be used to drive shaders, materials, transforms,
+        or pretty much anything your heart desires!\n\n<b><size=\"32\">Configurability</size></b>\nThe
+        Elastic system is driven by two pieces of configuration info: the extent info
+        and and the properties of the elastic spring itself. The extent of the spring
+        can be configured to have defined min/max endpoints and snapping intervals/points,
         and the spring itself can have its mass, input spring constant, end-snap spring
         constant, snapping-interval spring constant, drag/damping factor, and the
-        snapping-point radius.
-
-
-        <b><size="32">Extensibility</size></b>
-
-        The base Elastic can be extended to suit several higher-dimensional use cases;
-        for instance, instead of using three one-dimensional springs to snap an object
+        snapping-point radius.\n\n<b><size=\"32\">Extensibility</size></b>\nThe base
+        Elastic can be extended to suit several higher-dimensional use cases; for
+        instance, instead of using three one-dimensional springs to snap an object
         in 3D space, you can use a three-dimensional spring! And, for rotations, you
         can use a four-dimensional spring to simulate elastic interactions in quaternion
-        4-space. Several of these extensions are included.'
+        4-space. Several of these extensions are included."
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 298
+      value: 141
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
