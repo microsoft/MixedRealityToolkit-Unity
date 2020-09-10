@@ -181,14 +181,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Create an instance of an associated event scriptable object given the state.
         private void CreateEventScriptable(SerializedProperty eventConfiguration, string stateName)
         {
-            string className = stateName + "InteractionEventConfiguration";
+            string className = stateName + "Events";
 
             // If the event configuration for the state is currently, then create a scrpitable instance
             if (eventConfiguration.objectReferenceValue == null)
             {
                 // Initialize the associated scriptable object event configuration with the correct state 
                 eventConfiguration.objectReferenceValue = ScriptableObject.CreateInstance(className);
-                
+
                 // Label the newly created event config scriptable instance
                 eventConfiguration.objectReferenceValue.name = stateName + "EventConfiguration";
             }
