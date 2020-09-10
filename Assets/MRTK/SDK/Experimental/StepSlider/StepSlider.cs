@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// A slider with a fixed number of step values that can be moved by grabbing / pinching a slider thumb
-    /// Number of steps defaults to 0
+    /// Number of steps defaults to 0, if number isnt set then slider behaves just like a regular PinchSlider
     /// </summary>
     [AddComponentMenu("MRTK/SDK/Experimental/StepSlider")]
     public class StepSlider : PinchSlider, IMixedRealityPointerHandler
