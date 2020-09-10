@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
     /// as part of their setup steps described here:
     /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/OculusQuestMRTK.html
     /// </remarks>
-    static class OculusConfigurationChecker
+    public static class OculusXRSDKHandtrackingConfigurationChecker
     {
         // The presence of the OculusProjectConfig.asset is used to determine if the Oculus Integration Assets are in the project.
         private const string OculusIntegrationProjectConfig = "OculusProjectConfig.asset";
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
-        private static void ConfigureOculusIntegration()
+        public static void ConfigureOculusIntegration()
         {
             bool OculusIntegrationPresent = ReconcileOculusIntegrationDefine();
 
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
         /// </summary>
         /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        private static bool ReconcileOculusIntegrationDefine()
+        public static bool ReconcileOculusIntegrationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
