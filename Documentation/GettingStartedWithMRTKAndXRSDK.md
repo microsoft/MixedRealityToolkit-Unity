@@ -22,6 +22,7 @@ Windows Mixed Reality and Oculus are supported on XR SDK.
 1. Click on the XR Plug-in Management tab in the Project Settings window.
 1. Go to the Universal Windows Platform settings and ensure Windows Mixed Reality is checked under Plug-in Providers.
 1. Ensure that Initialize XR on Startup is checked.
+1. (**_Required for in-editor HoloLens Remoting, otherwise optional_**) Go to the Standalone settings and ensure Windows Mixed Reality is checked under Plug-in Providers. Also ensure that Initialize XR on Startup is checked.
 1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.
 
 ![Plugin management](Images/XRSDK/PluginManagement.png)
