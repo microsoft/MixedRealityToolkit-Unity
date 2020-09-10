@@ -1299,10 +1299,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests if touch scroll amount follows 1:1 proportion in relation to hand delta.
+        /// Tests if scroll amount corresponds to a smooth copy of hand movement delta.
+        /// Overdamping is applied when scroll position is out of min and max bounds.
         /// </summary>
         [UnityTest]
-        public IEnumerator OneToOneTouchScrollAmount()
+        public IEnumerator ScrollAmountHasCorrectDamp()
         {
             // Setting up a vertical 1x2 scroll view with three pressable buttons items
             var contentItems = InstantiatePrefabItems(AssetDatabase.GUIDToAssetPath(PressableHololens2PrefabGuid), 3);
@@ -1335,29 +1336,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialPos = Vector3.zero;
             Vector3 preButtonTouchPos = button1Component.transform.position + new Vector3(0, 0, button1Component.StartPushDistance - offset);
             Vector3 pastButtonPressPos = button1Component.transform.position + new Vector3(0, 0, button1Component.PressDistance + offset);
-            Vector3 scrollEngagedPos = pastButtonPressPos + Vector3.up * handTouchDelta;
+            Vector3 scrollEngagedUpPos = pastButtonPressPos + Vector3.up * handTouchDelta;
+            Vector3 scrollEngagedDownPos = pastButtonPressPos - Vector3.up * handTouchDelta;
 
-            // Touch scrolling and moving hand five centimeters up
+            // Scrolling out of min bounds by moving hand five centimeters down
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(initialPos);
             yield return hand.MoveTo(preButtonTouchPos);
             yield return hand.MoveTo(pastButtonPressPos);
-            yield return hand.MoveTo(scrollEngagedPos);
+            yield return hand.MoveTo(scrollEngagedDownPos);
 
-            Assert.AreEqual(handTouchDelta - scrollView.HandDeltaScrollThreshold, scrollView.ScrollContainerPosition.y, 0.005, "Touch scroll drag amount was not 1:1");
+            // Scroll amount should follow hand movement with applied overdamp of roughly 90 percent
+            Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) * 0.1f, scrollView.ScrollContainerPosition.y, 0.005, "Out of bounds scroll drag amount was not overdamped");
 
-            // Scaling scroll object and reseting scroll interaction and offset
+            // Scrolling within min max bounds by moving hand five centimeters up
+            scrollView.Reset();
+            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(preButtonTouchPos);
+            yield return hand.MoveTo(pastButtonPressPos);
+            yield return hand.MoveTo(scrollEngagedUpPos);
+
+            // Scroll amount should roughly follow hand movement with 1:1 ratio
+            Assert.AreEqual(handTouchDelta - scrollView.HandDeltaScrollThreshold, scrollView.ScrollContainerPosition.y, 0.005, "Scroll drag amount was not 1:1");
+
+            // Scaling scroll object and scrolling within min max bounds by moving hand five centimeters up
             var newScale = 2.0f;
             scrollView.transform.localScale *= newScale;
             scrollView.Reset();
             yield return null;
 
-            yield return hand.Show(initialPos);
+            yield return hand.MoveTo(initialPos);
             yield return hand.MoveTo(preButtonTouchPos);
             yield return hand.MoveTo(pastButtonPressPos);
-            yield return hand.MoveTo(scrollEngagedPos);
+            yield return hand.MoveTo(scrollEngagedUpPos);
 
-            Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Touch scroll drag amount was not 1:1");
+            // Scroll amount should roughly follow hand movement with 1:1 ratio
+            Assert.AreEqual((handTouchDelta - scrollView.HandDeltaScrollThreshold) / newScale, scrollView.ScrollContainerPosition.y, 0.005, "Scroll drag amount was not 1:1");
         }
 
         #endregion Tests

@@ -440,6 +440,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // Lerping time interval used for smoothing between positions during scroll drag. Number was empirically defined.
         private const float DragLerpInterval = 0.5f;
 
+        // Lerping time interval used for smoothing between positions during scroll drag passed max and min scroll positions. Number was empirically defined.
+        private const float OverDampLerpInterval = 0.9f;
+
         // Lerping time interval used for smoothing between positions during bouncing. Number was empirically defined.
         private const float BounceLerpInterval = 0.2f;
 
@@ -1067,20 +1070,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else if (IsDragging && canScroll)
                 {
-                    float handLocalDelta;
-
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
                         // Lock X, clamp Y
-                        handLocalDelta = SafeDivisionFloat(handDelta.y, transform.lossyScale.y);
-                        workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, DragLerpInterval);
+                        float handLocalDelta = SafeDivisionFloat(handDelta.y, transform.lossyScale.y);
+
+                        // Over damp if scroll position out of bounds
+                        if (workingScrollerPos.y > MaxY || workingScrollerPos.y < minY)
+                        {
+                            workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, OverDampLerpInterval);
+                        }
+                        else 
+                        {
+                            workingScrollerPos.y = MathUtilities.CLampLerp(initialScrollerPos.y - handLocalDelta, minY, MaxY, DragLerpInterval);
+                        }
                         workingScrollerPos.x = 0.0f;
                     }
                     else
                     {
                         // Lock Y, clamp X
-                        handLocalDelta = SafeDivisionFloat(handDelta.x, transform.lossyScale.x);
-                        workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handLocalDelta, MinX, maxX, DragLerpInterval);
+                        float handLocalDelta = SafeDivisionFloat(handDelta.x, transform.lossyScale.x);
+
+                        // Over damp if scroll position out of bounds
+                        if (workingScrollerPos.x > maxX || workingScrollerPos.x < MinX)
+                        {
+                            workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handLocalDelta, MinX, maxX, OverDampLerpInterval);
+                        }
+                        else
+                        {
+                            workingScrollerPos.x = MathUtilities.CLampLerp(initialScrollerPos.x - handLocalDelta, MinX, maxX, DragLerpInterval);
+                        }
                         workingScrollerPos.y = 0.0f;
                     }
 
