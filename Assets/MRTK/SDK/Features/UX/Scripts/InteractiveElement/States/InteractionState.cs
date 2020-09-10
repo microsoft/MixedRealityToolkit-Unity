@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         [SerializeField]
         [Tooltip("The event configuration of a state. The event configuration is an already defined scriptable object that contains the " +
-            "serialized Unity Events with specific event data for the state. For example, the FocusInteractionEventConfiguration contains serialized" +
+            "serialized Unity Events with specific event data for the state. For example, the FocusEvents contains serialized" +
             "OnFocusOn and OnFocusOff Unity Events with Focus Event Data. These events are exposed in the inspector." +
             "The event configuration of a state is null when an associated event configuration does not exist" +
             "for the specific state. For example, the Default state does not have an associated event configuration therefore EventConfiguration " +
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         /// <summary>
         /// The event configuration of a state. The event configuration is an already defined scriptable object that contains the 
-        /// serialized Unity Events with specific event data for the state. For example, the FocusInteractionEventConfiguration contains serialized
+        /// serialized Unity Events with specific event data for the state. For example, the FocusEvents contains serialized
         /// OnFocusOn and OnFocusOff Unity Events with Focus Event Data. These events are exposed in the inspector.
         /// The event configuration of a state is null when an associated event configuration does not exist
         /// for the specific state. For example, the Default state does not have an associated event configuration therefore EventConfiguration 

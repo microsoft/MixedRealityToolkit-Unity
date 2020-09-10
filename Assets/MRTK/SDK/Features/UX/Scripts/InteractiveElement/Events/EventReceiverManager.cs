@@ -76,15 +76,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <returns>The Interaction Event Configuration of the state</returns>
         public BaseInteractionEventConfiguration GetEventConfiguration(string stateName)
         {
-            // Find the event receiver that has the state name in it and return the configuration
-            BaseEventReceiver eventReceiver = EventReceivers.Find((receiver) => receiver.Name.StartsWith(stateName));
+            InteractionState state = stateManager.GetState(stateName);
 
-            if (eventReceiver == null)
+            if (state == null)
             {
                 Debug.LogError($"An event configuration for the {stateName} state does not exist");
             }
 
-            return eventReceiver.EventConfiguration;
+            var eventConfig = state.EventConfiguration;
+
+            return eventConfig;
         }
 
         /// <summary>

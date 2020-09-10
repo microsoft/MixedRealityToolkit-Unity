@@ -8,8 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// The event configuration for the Focus state.
     /// </summary>
-    [CreateAssetMenu(fileName = "FocusInteractionEventConfiguration", menuName = "Mixed Reality Toolkit/Interactive Element/Event Configurations/Focus Event Configuration")]
-    public class FocusInteractionEventConfiguration : BaseInteractionEventConfiguration
+    [CreateAssetMenu(fileName = "FocusEvents", menuName = "Mixed Reality Toolkit/Interactive Element/Event Configurations/Focus Event Configuration")]
+    public class FocusEvents : BaseInteractionEventConfiguration
     {
         public override string StateName => "Focus";
 

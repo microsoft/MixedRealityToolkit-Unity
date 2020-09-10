@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Get the event configuration for the focus state
-            FocusInteractionEventConfiguration eventConfiguration = focusState.EventConfiguration as FocusInteractionEventConfiguration;
+            var eventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
 
             bool onFocusOn = false;
             bool onFocusOff = false;
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Change the value of my new state by using the focus state events to set the new state
             InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus);
 
-            FocusInteractionEventConfiguration focusEventConfiguration = focusState.EventConfiguration as FocusInteractionEventConfiguration;
+            var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
 
             focusEventConfiguration.OnFocusOn.AddListener((focusEventData) => 
             {
@@ -159,9 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             for (int i = 0; i < newStateCount; i++)
             {
                 interactiveElement.AddNewState("State"+ i.ToString());
+                yield return null;
             }
-
-            yield return null;
 
             // The Default state should only be active if no other states are active
             Assert.True(interactiveElement.IsStateActive("Default"));

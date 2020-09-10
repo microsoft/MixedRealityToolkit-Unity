@@ -88,6 +88,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         #endregion
 
+        #region Event Utilities
+
+        public T GetStateEvents<T>(string stateName) where T : BaseInteractionEventConfiguration
+        {
+            return EventReceiverManager.GetEventConfiguration(stateName) as T;
+        }
+
+        #endregion
+
         #region State Utilities
 
         /// <summary>
