@@ -21,7 +21,7 @@ If you're new to MRTK or Mixed Reality development in Unity, we recommend you st
 > [!CAUTION]
 > The Unity development journey currently uses **MRTK version 2.4.0** and **Unity 2019.3.15**. If you're working with other configurations it's still recommended that you start there, but you can also refer to the [installation instructions](Installation.md).
 
-## Documentation Versioning
+## Documentation versioning
 
 We have complete documentation for all release versions. The **mrtk_development** branch is the latest and greatest but is still in active development. We recommend using the highest numbered release branch for stability. Versions can be selected from the dropdown at the top-right of the screen:
 
