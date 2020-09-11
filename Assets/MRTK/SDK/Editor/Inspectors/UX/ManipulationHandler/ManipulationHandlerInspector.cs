@@ -71,6 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            // Draws warning message for deprecated object with button for migration option
+            MigrationTool.DrawDeprecated<ManipulationHandler, ObjectManipulatorMigrationHandler>((ManipulationHandler)target);
+
             EditorGUILayout.PropertyField(hostTransform);
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
@@ -165,11 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             style.fontStyle = previousStyle;
 
             serializedObject.ApplyModifiedProperties();
-
-            // Draws warning message for deprecated object with button for migration option
-            MigrationTool.DrawDeprecated<ManipulationHandler, ObjectManipulatorMigrationHandler>((ManipulationHandler)target);
-        }
-
-        
+         }   
     }
 }

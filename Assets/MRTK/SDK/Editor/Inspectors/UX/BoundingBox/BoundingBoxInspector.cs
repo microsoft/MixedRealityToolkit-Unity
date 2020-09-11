@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         public override void OnInspectorGUI()
         {
+            // Draws warning message for deprecated object with button for migration option
+            MigrationTool.DrawDeprecated<BoundingBox, BoundsControlMigrationHandler>((BoundingBox)target);
+
             if (target != null)
             {
                 // check if rigidbody is attached - if so show warning in case input profile is not configured for individual collider raycast
@@ -45,9 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             DrawDefaultInspector();
-
-            // Draws warning message for deprecated object with button for migration option
-            MigrationTool.DrawDeprecated<BoundingBox, BoundsControlMigrationHandler>((BoundingBox)target);
         }
     }
 }
