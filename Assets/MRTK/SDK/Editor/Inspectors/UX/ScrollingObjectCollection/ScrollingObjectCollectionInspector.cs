@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-using EditMode = Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.EditMode;
-using PaginationMode = Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.PaginationMode;
+using EditMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.EditMode;
+using PaginationMode = Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.PaginationMode;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(ScrollingObjectCollection))]
     public class ScrollingObjectCollectionInspector : UnityEditor.Editor
