@@ -528,22 +528,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 338
+      value: 356
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 46
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 43
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -553,32 +553,16 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'This scene demonstrates using the diagnostics system to determine application
-        performance at runtime.
-
-
-
-        <size=32><b>DiagnosticDemoControls.cs</size></b>
-
-        Controls the diagnostic information display by responding to the following
-        keywords.
-
-
-        <size=24><b>Toggle Diagnostics</size></b>
-
-        Shows or hides all currently enabled diagnostics.
-
-
-        <size=24><b>Toggle Profiler</size></b>
-
-        Shows or hides the visual profiler.
-
-'
+      value: "<size=42><b>Diagnostics Demo</b></size>\r\nThis scene demonstrates using
+        the diagnostics system to determine application performance at runtime.\n\n\n<size=32><b>DiagnosticDemoControls.cs</size></b>\nControls
+        the diagnostic information display by responding to the following keywords.\n\n<size=24><b>Toggle
+        Diagnostics</size></b>\nShows or hides all currently enabled diagnostics.\n\n<size=24><b>Toggle
+        Profiler</size></b>\nShows or hides the visual profiler.\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 130
+      value: 121
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

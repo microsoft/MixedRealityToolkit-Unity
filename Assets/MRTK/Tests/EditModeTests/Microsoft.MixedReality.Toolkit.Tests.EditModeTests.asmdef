@@ -15,6 +15,7 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Tests.Utilities",
+        "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor",
         "Microsoft.MixedReality.Toolkit.Tools"
     ],
     "optionalUnityReferences": [

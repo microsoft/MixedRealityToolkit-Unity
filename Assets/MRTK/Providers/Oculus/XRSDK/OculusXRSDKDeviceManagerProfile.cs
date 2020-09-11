@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------ -
+﻿//------------------------------------------------------------------------------ -
 //MRTK - Quest
 //https ://github.com/provencher/MRTK-Quest
 //------------------------------------------------------------------------------ -
@@ -26,52 +26,43 @@
 //SOFTWARE.
 //------------------------------------------------------------------------------ -
 
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
+
 using UnityEngine;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Oculus Hand Tracking Config")]
-    public class MRTKOculusConfig : ScriptableObject
+    /// <summary>
+    /// The profile for the Oculus XRSDK Device Manager. The settings for this profile can be viewed if the Leap Motion Device Manager input data provider is 
+    /// added to the MRTK input configuration profile.
+    /// </summary>
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Oculus XRSDK Profile", fileName = "OculusXRSDKDeviceManagerProfile", order = 4)]
+    [MixedRealityServiceProfile(typeof(OculusXRSDKDeviceManager))]
+    public class OculusXRSDKDeviceManagerProfile : BaseMixedRealityProfile
     {
-        private static MRTKOculusConfig instance;
-        public static MRTKOculusConfig Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    // Creating a configurable instance so that making any runtime changes won't affect the original. 
-                    MRTKOculusConfig configFile = Resources.Load<MRTKOculusConfig>("MRTK-OculusConfig");
-                    instance = Instantiate(configFile);
-
-                    if (instance == null)
-                    {
-                        UnityEngine.Debug.LogError("Failure to detect MRTK-OculusConfig. Please create an instance using the asset context menu, and place it in any Resources folder.");
-                    }
-                }
-                return instance;
-            }
-        }
-
+        [Space(10)]
         [Header("Prefab references")]
         [SerializeField]
-        [Tooltip("Prefab reference for OVRCameraRig to load, if none are found in scene.")]
+        [Tooltip("Prefab reference for OVRCameraRig to load, if none are found in scene." +
+            "This prefab is required for MRTK on Oculus Quest to support handtracking.")]
         private GameObject ovrCameraRigPrefab = null;
 
         /// <summary>
         /// Prefab reference for OVRCameraRig to load, if none are found in scene.
+        /// This prefab is required for MRTK on Oculus Quest to support handtracking
         /// </summary>
         public GameObject OVRCameraRigPrefab => ovrCameraRigPrefab;
 
-
         [SerializeField]
         [Tooltip("Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed. \n\n" +
-                 "Note: In order to render avatar hands, you will need to set an app id in OvrAvatarSettings. Any number will do, but it needs to be set.")]
+         "Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.")]
         private bool renderAvatarHandsInsteadOfControllers = true;
 
         /// <summary>
         /// Using avatar hands requires a local avatar prefab. Failure to provide one will result in nothing being displayed.
+        /// "Note: In order to render avatar hands, you will need to set an app id in Assets/Resources/OvrAvatarSettings. Any number will do, but it needs to be set.")]
         /// </summary>
         public bool RenderAvatarHandsInsteadOfController => renderAvatarHandsInsteadOfControllers;
 
@@ -101,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// <summary>
         /// Event triggered when the custom material for hand mesh is updated.
         /// </summary>
-        public static System.Action OnCustomHandMaterialUpdate;
+        public System.Action OnCustomHandMaterialUpdate;
 
         /// <summary>
         /// Custom hand material to use for hand tracking hand mesh.
@@ -222,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         [Header("Fixed Foveated Rendering")]
         [SerializeField]
         bool useDynamicFixedFoveatedRendering = true;
-        
+
         [SerializeField]
         OVRManager.FixedFoveatedRenderingLevel fixedFoveatedRenderingLevel = OVRManager.FixedFoveatedRenderingLevel.High;
 #endif
@@ -242,4 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
 #endif
         }
     }
+
 }
+

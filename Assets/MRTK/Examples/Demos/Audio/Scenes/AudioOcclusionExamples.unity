@@ -239,22 +239,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 323
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 58
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 56
+      value: 59
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -264,23 +264,16 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'This scene demonstrates how audio occlusion can enhance the immersiveness
-        of your experiences by simulating the effect of hearing a sound from outside
-        of an enclosed space.
-
-
-        If you can see the blue sphere, you will be hearing the natural sound of the
-        object.
-
-
-        If you move behind the cyan panel, the sound will be occluded.
-
-'
+      value: "<size=42><b>Audio Occlusion Examples</b></size>\r\n\nThis scene demonstrates
+        how audio occlusion can enhance the immersiveness of your experiences by simulating
+        the effect of hearing a sound from outside of an enclosed space.\n\nIf you
+        can see the blue sphere, you will be hearing the natural sound of the object.\n\nIf
+        you move behind the cyan panel, the sound will be occluded.\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 238
+      value: 139
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

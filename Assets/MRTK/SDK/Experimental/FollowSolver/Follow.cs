@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         [SerializeField]
         [Tooltip("Min distance from eye to position element around, i.e. the sphere radius")]
-        private float minDistance = 1f;
+        private float minDistance = 0.3f;
 
         /// <summary>
         /// Min distance from eye to position element around, i.e. the sphere radius.
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         [SerializeField]
         [Tooltip("Max distance from eye to element")]
-        private float maxDistance = 2f;
+        private float maxDistance = 0.9f;
 
         /// <summary>
         /// Max distance from eye to element.
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         [SerializeField]
         [Tooltip("Default distance from eye to position element around, i.e. the sphere radius")]
-        private float defaultDistance = 1f;
+        private float defaultDistance = 0.7f;
 
         /// <summary>
         /// Initial placement distance. Should be between min and max.
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         [SerializeField]
         [Tooltip("The vertical angle from the tracked target forward axis to this object will not exceed this value")]
-        private float maxViewVerticalDegrees = 30f;
+        private float maxViewVerticalDegrees = 20f;
 
         /// <summary>
         /// The vertical angle from the tracked target forward axis to this object will not exceed this value.

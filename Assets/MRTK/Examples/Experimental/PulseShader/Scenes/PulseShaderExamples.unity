@@ -3142,22 +3142,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 292
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 38
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 43
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -3167,15 +3167,18 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: This scene demonstrates the use of pulse shader for hand mesh and spatial
-        mesh visualization. Please make sure to turn on the 'Hand Mesh Visualization
-        Mode' and 'Spatial Awareness' in the MRTK Profiles. PulseControlScripts_SpatialMesh.cs
-        and PulseControlScripts_HandMesh.cs control the pulse.
+      value: '<size=42><b>Pulse Shader Examples</size></b>
+
+
+        This scene demonstrates the use of pulse shader for hand mesh and spatial
+        mesh visualization. Please make sure to turn on the ''Hand Mesh Visualization
+        Mode'' and ''Spatial Awareness'' in the MRTK Profiles. PulseControlScripts_SpatialMesh.cs
+        and PulseControlScripts_HandMesh.cs control the pulse.'
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 242
+      value: 142
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

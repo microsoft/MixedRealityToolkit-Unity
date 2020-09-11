@@ -1041,22 +1041,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 483
+      value: 509
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 81
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 77
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1066,32 +1066,19 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'The controller mapping tool enables developers to examine the Unity
-        input axis and button mappings for a hardware controller.
-
-
-        This tool is ideal for
-
-        * Adding support for a new controller
-
-        * Investigating a suspected input mapping issue
-
-
-        <size=32><b>All Controls</size></b>
-
-        The large panel displays the current state of all of the Unity input axes
-        and buttons.
-
-
-        <size=32><b>Active Controls</size></b>
-
-        The smaller, narrow panel displays a summary of the controls that are currently
-        active (not in their neutral or unpressed state).'
+      value: "<size=42><b>Controller Mapping Tool</b></size>\r\n\nThe controller mapping
+        tool enables developers to examine the Unity input axis and button mappings
+        for a hardware controller.\n\nThis tool is ideal for\n* Adding support for
+        a new controller\n* Investigating a suspected input mapping issue\n\n<size=32><b>All
+        Controls</size></b>\nThe large panel displays the current state of all of
+        the Unity input axes and buttons.\n\n<size=32><b>Active Controls</size></b>\nThe
+        smaller, narrow panel displays a summary of the controls that are currently
+        active (not in their neutral or unpressed state)."
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 150
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

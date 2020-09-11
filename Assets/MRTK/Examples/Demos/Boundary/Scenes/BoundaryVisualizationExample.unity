@@ -454,22 +454,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 737
+      value: 762
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 116
+      value: 119
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 112
+      value: 114
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 25
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -479,56 +479,38 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'This scene demonstrates visualizing the boundary geometry and a rectangular
-        playspace inscribed within those bounds.
-
-
-        <size=32><b>BoundaryVisualizationDemo.cs</size></b>
-
-        Contols the visualization of the user''s configured boundary, including spheres
-        that indicate the shape of the space.
-
-
-        <size=24><b>Show Floor</size></b>
-
-        Instructs the Boundary System to show or hide the floor.
-
-
-        <size=24><b>Show Play Area</size></b>
-
-        Instructs the Boundary System to show or hide a rectanglular representation
-        of the user''s Play Area.
-
-
-        <size=24><b>Show Tracked Area</size></b>
-
-        Instructs the Boundary System to show or hide the outline of the boundary
-        geometry.
-
-
-        <size=24><b>Show Boundary Walls</size></b>
-
-        Instructs the Boundary System to show or hide boundary walls.
-
-
-        <size=24><b>Show Boundary Ceiling</size></b>
-
-        Instructs the Boundary System to show or hide the upper limit of the boundary.'
+      value: "<size=42><b>Boundary Visualization</b></size>\r\n\nThis scene demonstrates
+        visualizing the boundary geometry and a rectangular playspace inscribed within
+        those bounds.\n\n<size=32><b>BoundaryVisualizationDemo.cs</size></b>\nContols
+        the visualization of the user's configured boundary, including spheres that
+        indicate the shape of the space.\n\n<size=24><b>Show Floor</size></b>\nInstructs
+        the Boundary System to show or hide the floor.\n\n<size=24><b>Show Play Area</size></b>\nInstructs
+        the Boundary System to show or hide a rectanglular representation of the user's
+        Play Area.\n\n<size=24><b>Show Tracked Area</size></b>\nInstructs the Boundary
+        System to show or hide the outline of the boundary geometry.\n\n<size=24><b>Show
+        Boundary Walls</size></b>\nInstructs the Boundary System to show or hide boundary
+        walls.\n\n<size=24><b>Show Boundary Ceiling</size></b>\nInstructs the Boundary
+        System to show or hide the upper limit of the boundary."
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 208
+      value: 142
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.4395
+      value: -0.4553
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0088603
+      value: 1.0405457
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.03520002
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

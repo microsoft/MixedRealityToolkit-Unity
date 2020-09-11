@@ -556,22 +556,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 1064
+      value: 1079
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 191
+      value: 194
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 168
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 26
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -581,27 +581,28 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: "The Mixed Reality Toolkit's built in lines are split into two components:
-        Data and Renderers.\n\n<size=32><b>Line Data Providers</size></b>\nLine components
-        that define all the characteristics of that line and all the data associated
-        with it. This does not handle any aspect of rendering a line in the scene,
-        and can be used for paths, interpolation, and more.\n\n\u2022 Simple Line
-        \u2013 a line with two points\n\u2022 Parabola \u2013  parabolic arc between
-        two points\n\u2022 Rectange \u2013 a line that loops back on itself with 4
-        corners\n\u2022 Ellipse \u2013 a line that loops back on itself with no corners\n\u2022
-        Spline \u2013 a multi-point line with Bezier interpolation\n\n<size=32><b>Line
-        Renderers</size></b>\nThe components take the line data and render it in the
-        scene.\n\n\u2022 MixedRealityLineRenderer \u2013 Implements Unity's built
-        in line renderer component, and applies the line data to it\n\u2022 ParticleSystemLineRenderer
-        \u2013 attaches a set of particle systems along the length of the line\n\u2022
-        MeshLineRenderer \u2013 creates insances of a mesh, then places them along
-        the length of the line\n\u2022 StripMeshLineRenderer \u2013 draws a strip
-        of polygons along the length of the line\n"
+      value: "<size=42><b>Line Examples</b></size>\n\nThe Mixed Reality Toolkit's
+        built in lines are split into two components: Data and Renderers.\n\n<size=32><b>Line
+        Data Providers</size></b>\nLine components that define all the characteristics
+        of that line and all the data associated with it. This does not handle any
+        aspect of rendering a line in the scene, and can be used for paths, interpolation,
+        and more.\n\n\u2022 Simple Line \u2013 a line with two points\n\u2022 Parabola
+        \u2013  parabolic arc between two points\n\u2022 Rectange \u2013 a line that
+        loops back on itself with 4 corners\n\u2022 Ellipse \u2013 a line that loops
+        back on itself with no corners\n\u2022 Spline \u2013 a multi-point line with
+        Bezier interpolation\n\n<size=32><b>Line Renderers</size></b>\nThe components
+        take the line data and render it in the scene.\n\n\u2022 MixedRealityLineRenderer
+        \u2013 Implements Unity's built in line renderer component, and applies the
+        line data to it\n\u2022 ParticleSystemLineRenderer \u2013 attaches a set of
+        particle systems along the length of the line\n\u2022 MeshLineRenderer \u2013
+        creates insances of a mesh, then places them along the length of the line\n\u2022
+        StripMeshLineRenderer \u2013 draws a strip of polygons along the length of
+        the line\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 180
+      value: 109
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -616,12 +617,12 @@ PrefabInstance:
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.457
+      value: -0.4641
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0438455
+      value: 1.0580623
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

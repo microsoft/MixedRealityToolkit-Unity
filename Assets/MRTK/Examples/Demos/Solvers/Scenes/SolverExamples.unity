@@ -682,22 +682,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 686
+      value: 703
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 115
+      value: 118
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 108
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -707,12 +707,12 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: "Solvers are components that facilitate the means of calculating an object's
-        position & orientation according to a predefine algorithm. An example may
-        be placing an object on the surface the user's gaze raycast currently hits.
-        \ \r\n\r\nFurthermore, the Solver system deterministically defines an order
-        of operations for these transform calculations as there is no reliable way
-        to specify to Unity the update order for components.\n\n\n<size=32><b>How
+      value: "<size=42><b>Solver Examples</size></b>\n\nSolvers are components that
+        facilitate the means of calculating an object's position & orientation according
+        to a predefine algorithm. An example may be placing an object on the surface
+        the user's gaze raycast currently hits.  \r\n\r\nFurthermore, the Solver system
+        deterministically defines an order of operations for these transform calculations
+        as there is no reliable way to specify to Unity the update order for components.\n\n\n<size=32><b>How
         to use</size></b>\nTo use this scene, use the buttons below to configure the
         type of Solver attached to the coffee cup.  Furthermore, there is an example
         of the InBetween solver to the left. The surfaces in front are useful for
@@ -721,7 +721,7 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 231
+      value: 131
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
