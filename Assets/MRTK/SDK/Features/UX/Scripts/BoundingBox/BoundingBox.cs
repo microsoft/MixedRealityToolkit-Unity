@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return scaleConstraint.ScaleMinimum;
                 }
-                return 0.0f;
+                return scaleMinimum;
             }
         }
 
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return scaleConstraint.ScaleMaximum;
                 }
-                return 0.0f;
+                return scaleMaximum;
             }
         }
 
