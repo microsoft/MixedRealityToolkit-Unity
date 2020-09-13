@@ -22,6 +22,8 @@ MRTK now supports running Oculus Quest Headsets and Controllers using the native
 
 For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
+There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
+
 **Teleport pointer enabled for articulated hands on Oculus Quest**
 
 We now support using the teleport pointer with articulated hands on Oculus Quest!
