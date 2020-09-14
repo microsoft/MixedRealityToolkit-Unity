@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A scrollable frame where content scroll is triggered by manual controller click and drag or according to pagination settings.
