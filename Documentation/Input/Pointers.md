@@ -298,10 +298,10 @@ PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
 // Note, if on HoloLens 2, you must configure your pointer profile to make the GGV pointer show up for articulated hands.
 public void SetHoloLens1()
 {
-    PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-    PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-    PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-    PointerUtils.SetGGVBehavior(PointerBehavior.Default);
+    PointerUtils.SetHandPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
 }
 ```
 
