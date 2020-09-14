@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A <see cref=" Microsoft.MixedReality.Toolkit.Utilities.ObjectCollectionNode"/> specific for <see cref="ScrollingObjectCollection"/>.
