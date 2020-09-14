@@ -184,3 +184,9 @@ Motion Controller simulation is now offered in editor play mode along side the e
 `IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
 
 ### Known issues
+
+There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
+
+The bug is signified with this set of 3 errors:
+
+![Oculus XR Plugin Error](https://forum.unity.com/attachments/erori-unity-png.644204/)
