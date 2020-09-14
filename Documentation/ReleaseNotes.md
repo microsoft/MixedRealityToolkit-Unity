@@ -189,4 +189,4 @@ There is currently a known issue for using the [Oculus XR plugin with when targe
 
 The bug is signified with this set of 3 errors:
 
-![Oculus XR Plugin Error]https://forum.unity.com/attachments/erori-unity-png.644204/
+![Oculus XR Plugin Error](https://forum.unity.com/attachments/erori-unity-png.644204/)
