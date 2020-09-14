@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum ScrollingObjectCollection.VelocityType
+    <title>Class ScrollablePagination
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum ScrollingObjectCollection.VelocityType
+    <meta name="title" content="Class ScrollablePagination
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -81,48 +81,84 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.VelocityType" class="text-break">Enum ScrollingObjectCollection.VelocityType
+  <h1 id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination" class="text-break">Class ScrollablePagination
   </h1>
-  <div class="markdown level0 summary"><p>How velocity is applied to a <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> when a scroll is released.</p>
+  <div class="markdown level0 summary"><p>Example script of how to navigate a <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> by pagination.
+Allows the call to scroll pagination methods from the inspector.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.html">Microsoft.MixedReality.Toolkit.Experimental.UI</a></h6>
-  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum VelocityType</code></pre>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ScrollablePagination</span></div>
   </div>
-  <h3 id="fields">Fields
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.html">Microsoft.MixedReality.Toolkit.Examples.Demos</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ScrollablePagination : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination_ScrollView_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination.ScrollView*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination_ScrollView" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination.ScrollView">ScrollView</h4>
+  <div class="markdown level1 summary"><p>The ScrollingObjectCollection to navigate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScrollingObjectCollection ScrollView { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
-        <th>Name</th>
+        <th>Type</th>
         <th>Description</th>
       </tr>
-    <thead>
+    </thead>
     <tbody>
       <tr>
-        <td id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_FalloffPerFrame">FalloffPerFrame</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_FalloffPerItem">FalloffPerItem</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_None">None</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Microsoft_MixedReality_Toolkit_Experimental_UI_ScrollingObjectCollection_VelocityType_NoVelocitySnapToItem">NoVelocitySnapToItem</td>
+        <td><span class="xref">ScrollingObjectCollection</span></td>
         <td></td>
       </tr>
     </tbody>
-  </thead></thead></table>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination_ScrollByTier_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination.ScrollByTier*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_ScrollablePagination_ScrollByTier_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination.ScrollByTier(System.Int32)">ScrollByTier(Int32)</h4>
+  <div class="markdown level1 summary"><p>Smoothly moves the scroll container a relative number of tiers of cells.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ScrollByTier(int amount)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">amount</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
