@@ -7,7 +7,7 @@
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
-## Upgrading new version of MRTK
+## Upgrading to a new version of MRTK
 
 *It is strongly recommended to run the [migration tool](Tools/MigrationWindow.md) after getting the MRTK update*
 to auto-fix and upgrade from deprecated components and adjust to breaking changes. The migration tool is part of
