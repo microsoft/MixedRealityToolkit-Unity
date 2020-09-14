@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // The focus state is a state that is added by default
-            InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus);
+            InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus.ToString());
             yield return null;
 
             // Get the event configuration for the focus state
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactiveElement.AddNewState("MyNewState");
 
             // Change the value of my new state by using the focus state events to set the new state
-            InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus);
+            InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus.ToString());
 
             var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
 

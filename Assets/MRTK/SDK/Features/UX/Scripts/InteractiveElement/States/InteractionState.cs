@@ -50,13 +50,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         [SerializeField]
         [Tooltip("The active value of the state. If the state is currently active the value will be 1, 0 if the " +
             " state is not active.")]
-        private int active = 0;
+        private bool active = false;
 
         /// <summary>
         /// The active value of the state. If the state is currently active the value will be 1, 0 if the 
         /// state is not active.
         /// </summary>
-        public int Active
+        public bool Active
         {
             get => active;
             internal set => active = value; 

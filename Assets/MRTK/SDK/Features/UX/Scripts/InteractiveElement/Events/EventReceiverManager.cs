@@ -29,27 +29,27 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <summary>
         /// List of active event receivers for the state events.
         /// </summary>
-        public List<BaseEventReceiver> EventReceivers { get; protected set; } = new List<BaseEventReceiver>();
+        public Dictionary<string, BaseEventReceiver> EventReceivers { get; protected set; } = new Dictionary<string, BaseEventReceiver>();
 
         /// <summary>
         /// Initialize the event receivers for each state that has an existing event configuration.
         /// </summary>
         internal void InitializeEventReceivers()
         {
-            foreach (InteractionState state in stateManager.States)
+            foreach (KeyValuePair<string,InteractionState> state in stateManager.States)
             {
                 // Initialize Event Configurations for each state if the configuration exists
-                if (IsEventConfigurationValid(state.Name))
+                if (IsEventConfigurationValid(state.Key))
                 {
                     // If an interactive element component is created via script instead of initialized in the inspector,
                     // an instance of the event config scriptable needs to be created
-                    if (state.EventConfiguration == null)
+                    if (state.Value.EventConfiguration == null)
                     {
-                        state.EventConfiguration = CreateEventConfigurationInstance(state.Name);
+                        state.Value.EventConfiguration = CreateEventConfigurationInstance(state.Key);
                     }
 
                     // Initialize runtime event receiver classes for states that have an event configuration 
-                    InitializeEventReceiver(state.Name);
+                    InitializeEventReceiver(state.Key);
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="eventData">The event data for the state event</param>
         public void InvokeStateEvent(string stateName, BaseEventData eventData = null)
         {
-            BaseEventReceiver receiver = EventReceivers.Find((eventReceiver) => eventReceiver.Name.StartsWith(stateName));
+            BaseEventReceiver receiver = EventReceivers[stateName];
 
             if (receiver != null)
             {
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
             else
             {
-                Debug.Log($"The event configuration for the {state.Name} was not set because the {state.Name}InteractionEventConfiguration file does not exist.");
+                Debug.Log($"The event configuration for the {state.Name} was not set because the {state.Name}Events file does not exist.");
             }
 
             return eventConfiguration;
@@ -116,7 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             if (IsEventConfigurationValid(stateName))
             {
-                var eventConfiguration = (BaseInteractionEventConfiguration)ScriptableObject.CreateInstance(stateName + "InteractionEventConfiguration");
+                var eventConfiguration = (BaseInteractionEventConfiguration)ScriptableObject.CreateInstance(stateName + "Events");
+                
                 return eventConfiguration;
             }
             else
@@ -132,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 BaseEventReceiver receiver = stateManager.GetState(stateName).EventConfiguration.InitializeRuntimeEventReceiver();
 
-                EventReceivers.Add(receiver);
+                EventReceivers.Add(stateName, receiver);
 
                 return receiver;
             }
