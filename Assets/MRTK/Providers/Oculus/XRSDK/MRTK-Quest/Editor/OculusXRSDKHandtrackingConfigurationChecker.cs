@@ -84,6 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 if (!OculusIntegrationPresent)
                 {
                     Debug.Log("Oculus Integration package not detected, removing references from asmdefs");
+                    if (references.Contains("Unity.XR.Oculus"))
+                    {
+                        references.Remove("Unity.XR.Oculus");
+                    }
                     if (references.Contains("Oculus.VR"))
                     {
                         references.Remove("Oculus.VR");
@@ -96,7 +100,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 }
                 else
                 {
-                    if(oculusAsmDefFile == oculusXRSDKAsmDefFile || oculusAsmDefFile == oculusXRSDKHandtrackingUtilsAsmDefFile)
+                    if (oculusAsmDefFile == oculusXRSDKAsmDefFile)
+                    {
+                        oculusAsmDef.AddReference("Unity.XR.Oculus");
+                    }
+                    if (oculusAsmDefFile == oculusXRSDKAsmDefFile || oculusAsmDefFile == oculusXRSDKHandtrackingUtilsAsmDefFile)
                     {
                         oculusAsmDef.AddReference("Oculus.VR");
                     }
