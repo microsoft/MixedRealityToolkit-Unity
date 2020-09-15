@@ -15,7 +15,6 @@ using UnityEngine.TestTools;
 
 #if UNITY_2019_3_OR_NEWER
 using Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
 {
@@ -24,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
     /// </summary>
     public class OculusIntegrationSetupTests
     {
-#if UNITY_2019_3_OR_NEWER
         [SetUp]
         public void SetUp()
         {
@@ -111,5 +109,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
             AssetDatabase.Refresh();
         }
     }
-#endif
 }
+#endif
