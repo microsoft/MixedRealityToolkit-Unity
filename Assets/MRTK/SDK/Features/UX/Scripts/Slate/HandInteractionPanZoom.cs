@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<Vector2> uvsOrig = new List<Vector2>();
         private bool oldIsTargetPositionLockedOnFocusLock;
 
-#if UNITY_2019_4_OR_NEWER
+#if UNITY_2019_3_OR_NEWER
         // Quad meshes by default (in 2019 and higher) appear to follow the vertex order
         // specified here: https://docs.unity3d.com/Manual/Example-CreatingaBillboardPlane.html
         // That is, LowerLeft->LowerRight->UpperLeft->UpperRight
@@ -181,13 +181,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private const int UpperLeftQuadIndex = 2;
         private const int UpperRightQuadIndex = 3;
         private const int LowerLeftQuadIndex = 0;
-#else // !UNITY_2019_4_OR_NEWER
+#else // !UNITY_2019_3_OR_NEWER
         // Quad meshes in 2018 and lower appear to follow a vertex order that looks like this:
         // [0] "(-0.5, -0.5, 0.0)"
         // [1] "(0.5, 0.5, 0.0)"
         // [2] "(0.5, -0.5, 0.0)"
         // [3] "(-0.5, 0.5, 0.0)"
         // That is, LowerLeft->UpperRight->LowerRight->UpperLeft
+        // Note that the ifdefs only cover +/- 2019.3 because that was the min tested version
+        // for Unity 2019 - this could very well be needed for 2019.2 and 2019.1, but with 2019.4
+        // out at this point, support is mainly on the LTS release.
         private const int UpperLeftQuadIndex = 3;
         private const int UpperRightQuadIndex = 1;
         private const int LowerLeftQuadIndex = 0;
