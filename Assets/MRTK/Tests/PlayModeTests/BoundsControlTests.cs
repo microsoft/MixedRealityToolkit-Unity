@@ -155,8 +155,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator BoundsControlInstantiate()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            Assert.IsNotNull(boundsControl, "Bounds control creation failed!");
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            Assert.IsNotNull(boundsControl);
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -170,8 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator HandleColliderInstantiation([ValueSource("handleTestData")] HandleTestData testData)
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            Assert.IsNotNull(boundsControl, "Bounds control creation failed!");
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            Assert.IsNotNull(boundsControl);
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
             yield return null;
 
