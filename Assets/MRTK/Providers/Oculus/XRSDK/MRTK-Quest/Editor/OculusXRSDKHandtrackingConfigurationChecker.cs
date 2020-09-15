@@ -30,6 +30,7 @@
 
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.XRSDK.Oculus;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -63,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
         {
             bool OculusIntegrationPresent = ReconcileOculusIntegrationDefine();
 
+            // Updating asmdefs
             FileInfo[] oculusXRSDKAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef");
             FileInfo[] oculusXRSDKHandtrackingUtilsAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Utilities.asmdef");
             FileInfo[] oculusXRSDKHandtrackingEditorAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor.asmdef");
@@ -106,6 +108,43 @@ namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
                     }
                 }
                 oculusAsmDef.Save(oculusAsmDefFile[0].FullName);
+            }
+
+            // Updating the device manager profile to point to the right gameobjects
+            string[] ovrCameraRigPPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_OVRCameraRig.prefab"));
+            string[] localAvatarPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_LocalAvatar.prefab"));
+            GameObject ovrCameraRigPrefab = null;
+            GameObject localAvatarPrefab = null;
+
+            if (ovrCameraRigPPrefabGuids.Length > 0)
+            {
+                string ovrCameraRigPrefabPath = AssetDatabase.GUIDToAssetPath(ovrCameraRigPPrefabGuids[0]);
+                ovrCameraRigPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ovrCameraRigPrefabPath);
+            }
+
+            if (localAvatarPrefabGuids.Length > 0)
+            {
+                string localAvatarPrefabPath = AssetDatabase.GUIDToAssetPath(localAvatarPrefabGuids[0]);
+                localAvatarPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(localAvatarPrefabPath);
+            }
+
+            string[] deviceManagerProfileGuids = AssetDatabase.FindAssets("t:OculusXRSDKDeviceManagerProfile");
+            if(deviceManagerProfileGuids.Length > 0)
+            {
+                string deviceManagerProfilePath = AssetDatabase.GUIDToAssetPath(deviceManagerProfileGuids[0]);
+                OculusXRSDKDeviceManagerProfile deviceManagerProfile = AssetDatabase.LoadAssetAtPath<OculusXRSDKDeviceManagerProfile>(deviceManagerProfilePath);
+                if (OculusIntegrationPresent)
+                {
+                    deviceManagerProfile.OVRCameraRigPrefab = ovrCameraRigPrefab;
+                    deviceManagerProfile.LocalAvatarPrefab = localAvatarPrefab;
+                }
+                else
+                {
+                    deviceManagerProfile.OVRCameraRigPrefab = null;
+                    deviceManagerProfile.LocalAvatarPrefab = null;
+                }
+
+                AssetDatabase.SaveAssets();
             }
         }
 
