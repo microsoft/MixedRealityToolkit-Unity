@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus"
     ],
     "includePlatforms": [
         "Editor"
