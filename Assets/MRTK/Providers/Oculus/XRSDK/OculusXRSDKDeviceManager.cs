@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     /// <summary>
     /// Manages XR SDK devices on the Oculus platform.

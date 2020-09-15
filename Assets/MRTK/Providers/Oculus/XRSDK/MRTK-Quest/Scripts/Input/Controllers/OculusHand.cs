@@ -39,7 +39,7 @@ using static OVRSkeleton;
 using Object = UnityEngine.Object;
 using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     /// <summary>
     /// Oculus Integration Asset package implementation of Oculus Quest articulated hands.
