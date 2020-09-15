@@ -204,6 +204,8 @@
       items:
       - name: Input Animation File Format Specification
         href: InputSimulation/InputAnimationFileFormat.md
+    - name: Migration Window
+      href: Tools/MigrationWindow.md
     - name: Optimize Window
       href: Tools/OptimizeWindow.md
     - name: Runtime tools
