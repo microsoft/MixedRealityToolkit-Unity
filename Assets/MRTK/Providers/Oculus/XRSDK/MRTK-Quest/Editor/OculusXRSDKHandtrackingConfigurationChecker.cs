@@ -30,8 +30,6 @@
 
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.XRSDK.Oculus;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
