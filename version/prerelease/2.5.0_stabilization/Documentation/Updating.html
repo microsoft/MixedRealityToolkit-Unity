@@ -91,16 +91,15 @@
 <li><a href="#updating-rc2-to-200">RC2 to 2.0.0</a></li>
 </ul>
 <h2 id="upgrading-to-a-new-version-of-mrtk">Upgrading to a new version of MRTK</h2>
-<p>The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-230-to-240"><strong>Updating 2.3.0 to 2.4.0</strong></a> article.</p>
-<p><em>Starting with 2.4.0, it is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a>
-after getting the MRTK update</em>* to auto-fix and upgrade from deprecated components and adjust to
-breaking changes. The migration tool is part of the <strong>Tools</strong> package.</p>
+<p><em>It is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a> after getting the MRTK update</em>
+to auto-fix and upgrade from deprecated components and adjust to breaking changes. The migration tool is part of
+the <strong>Tools</strong> package.</p>
 <h3 id="unity-asset-unitypackage-files">Unity asset (.unitypackage) files</h3>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.</li>
 <li>Close Unity</li>
-<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete the following <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
 <li>MixedRealityToolkit</li>
 <li>MixedRealityToolkit.Examples</li>
