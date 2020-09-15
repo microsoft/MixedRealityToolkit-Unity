@@ -40,7 +40,7 @@ using UnityEditor;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
-namespace Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 {
     /// <summary>
     /// Class that checks if the Oculus Integration Assets are present and configures the project if they are.

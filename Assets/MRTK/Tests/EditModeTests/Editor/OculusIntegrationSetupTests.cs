@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor;
+using Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using System.Collections;
