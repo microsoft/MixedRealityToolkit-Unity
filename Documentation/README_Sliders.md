@@ -4,7 +4,7 @@
 
 Sliders are UI components that allow you to continuously change a value by moving a slider on a track. Currently the Pinch Slider can be moved by directly grabbing the slider, either directly or at a distance. Sliders work on AR and VR, using motion controllers, hands, or Gesture + Voice.
 
-A Slider with specificied step increments is currently an experimental feature and a demo can be in the example scene under `MRTK/Examples/Experimental/StepSlider/`
+A Slider with specificied step increments is currently an experimental feature and a demo can be found in the example scene under `MRTK/Examples/Experimental/StepSlider/`
 
 ## Example scene
 
