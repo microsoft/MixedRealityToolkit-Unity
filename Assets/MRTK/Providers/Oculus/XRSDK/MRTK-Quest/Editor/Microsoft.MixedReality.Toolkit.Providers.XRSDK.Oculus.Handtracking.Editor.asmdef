@@ -13,7 +13,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
