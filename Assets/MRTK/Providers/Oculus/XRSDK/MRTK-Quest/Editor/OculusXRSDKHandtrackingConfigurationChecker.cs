@@ -30,6 +30,7 @@
 
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -151,6 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 }
 
                 AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
         }
 
