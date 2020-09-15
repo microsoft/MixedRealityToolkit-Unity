@@ -2653,6 +2653,7 @@ MonoBehaviour:
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -2689,30 +2690,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1001 &576226217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4790,6 +4767,7 @@ MonoBehaviour:
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -4872,30 +4850,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &974037536
 GameObject:
   m_ObjectHideFlags: 0
@@ -5765,6 +5719,7 @@ MonoBehaviour:
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -5889,30 +5844,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!65 &1349317008
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7665,7 +7596,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[1].x
-      value: -0.44176364
+      value: -0.4421754
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7680,7 +7611,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[2].x
-      value: -0.4466692
+      value: -0.44819626
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7695,7 +7626,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[3].x
-      value: -0.45706964
+      value: -0.4602397
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7710,7 +7641,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[4].x
-      value: -0.47203234
+      value: -0.47719717
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7725,7 +7656,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[5].x
-      value: -0.4906246
+      value: -0.49796003
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7740,7 +7671,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[6].x
-      value: -0.511914
+      value: -0.5214199
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7755,7 +7686,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[7].x
-      value: -0.5349678
+      value: -0.54646814
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7770,7 +7701,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[8].x
-      value: -0.5588534
+      value: -0.5719964
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7785,7 +7716,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[9].x
-      value: -0.5826382
+      value: -0.59689593
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7800,7 +7731,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[10].x
-      value: -0.6053896
+      value: -0.6200583
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7815,7 +7746,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[11].x
-      value: -0.626175
+      value: -0.6403749
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7830,7 +7761,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[12].x
-      value: -0.6440617
+      value: -0.6567373
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7845,7 +7776,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[13].x
-      value: -0.6581172
+      value: -0.66803694
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7860,7 +7791,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[14].x
-      value: -0.6674087
+      value: -0.67316526
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -7875,7 +7806,7 @@ PrefabInstance:
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
       propertyPath: m_Positions.Array.data[15].x
-      value: -0.6710038
+      value: -0.6710137
       objectReference: {fileID: 0}
     - target: {fileID: 120134443969394850, guid: 44ac04f8e1e21474991e4b59809859f4,
         type: 3}
@@ -8393,22 +8324,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 392
+      value: 410
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 62
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 61
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -8418,9 +8349,12 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'Tooltips are usually used to convey a hint or extra information upon
-        closer inspection of an object. Tooltip can be used to annotate objects in
-        the physical environment.
+      value: '<size=42><b>Tooltip Examples</size></b>
+
+
+        Tooltips are usually used to convey a hint or extra information upon closer
+        inspection of an object. Tooltip can be used to annotate objects in the physical
+        environment.
 
 
         Tooltips utilize the LineDataProvider concept allowing for straight lines,
@@ -8432,7 +8366,7 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 230
+      value: 142
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

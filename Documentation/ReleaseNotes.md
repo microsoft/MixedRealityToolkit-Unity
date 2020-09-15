@@ -22,6 +22,16 @@ MRTK now supports running Oculus Quest Headsets and Controllers using the native
 
 For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
+**Teleport pointer enabled for articulated hands on Oculus Quest**
+
+We now support using the teleport pointer with articulated hands on Oculus Quest!
+
+**Teleport pointer animation, handling, and sound improvements**
+
+The teleport pointer now has improved animations and audio feedback. We also improved the handling of the teleport pointer so it handles smoother when transitioning from pointing at nearby surfaces to farther away surfaces.
+
+https://streamable.com/3f222q
+
 **Input Simulation Cheat Sheet**
 The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation
 
@@ -174,3 +184,9 @@ Motion Controller simulation is now offered in editor play mode along side the e
 `IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
 
 ### Known issues
+
+There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
+
+The bug is signified with this set of 3 errors:
+
+![Oculus XR Plugin Error](https://forum.unity.com/attachments/erori-unity-png.644204/)

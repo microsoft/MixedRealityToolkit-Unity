@@ -698,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 // also only use proximity effect if nothing is being dragged or grabbed
                 if (!wireframeOnly && currentPointer == null)
                 {
-                    proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position, currentBoundsExtents);
+                    proximityEffect.UpdateScaling(Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + Target.transform.position, currentBoundsExtents);
                 }
             }
         }
@@ -1106,8 +1106,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 TransformFlags transformUpdated = 0;
                 if (transformType == HandleType.Rotation)
                 {
-                    Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - transform.position, currentRotationAxis).normalized;
-                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - transform.position, currentRotationAxis).normalized;
+                    Vector3 initDir = Vector3.ProjectOnPlane(initialGrabPoint - Target.transform.position, currentRotationAxis).normalized;
+                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - Target.transform.position, currentRotationAxis).normalized;
                     Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
                     MixedRealityTransform constraintRotation = MixedRealityTransform.NewRotate(goal);
                     constraints.ApplyRotationConstraints(ref constraintRotation, true, isNear);

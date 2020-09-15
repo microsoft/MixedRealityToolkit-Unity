@@ -286,6 +286,12 @@ MonoBehaviour:
   onSelected:
     m_PersistentCalls:
       m_Calls: []
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
+    m_PersistentCalls:
+      m_Calls: []
   eyeCursorSnapToTargetCenter: 0
 --- !u!65 &6659678
 BoxCollider:
@@ -1297,6 +1303,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
+    m_PersistentCalls:
+      m_Calls: []
   eyeCursorSnapToTargetCenter: 0
 --- !u!135 &90523960
 SphereCollider:
@@ -1356,6 +1368,30 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90523954}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &111213555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d3e2fcd636d0243820f1bebf6e167b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
+    type: 2}
+  handlePrefab: {fileID: 1361136173122186969, guid: ba9083550f965e545a628b53bfa80c9e,
+    type: 3}
+  handleSize: 0.03
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handleSlatePrefab: {fileID: 0}
+  showScaleHandles: 0
+  scaleBehavior: 0
 --- !u!1 &112267210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,13 +1589,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -15.30367, w: -14.342575}
   m_textInfo:
     textComponent: {fileID: 115070431}
-    characterCount: 91
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 16
-    wordCount: 16
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 3
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -1875,13 +1911,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -15.30367, w: -3.88032}
   m_textInfo:
     textComponent: {fileID: 127616191}
-    characterCount: 89
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 15
-    wordCount: 16
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 3
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -2132,6 +2168,12 @@ MonoBehaviour:
   onSelected:
     m_PersistentCalls:
       m_Calls: []
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
+    m_PersistentCalls:
+      m_Calls: []
   eyeCursorSnapToTargetCenter: 0
 --- !u!65 &151708623
 BoxCollider:
@@ -2272,9 +2314,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224634334}
-  - component: {fileID: 224634336}
   - component: {fileID: 224634337}
   - component: {fileID: 224634335}
+  - component: {fileID: 224634339}
+  - component: {fileID: 224634338}
+  - component: {fileID: 224634336}
   m_Layer: 0
   m_Name: TheModuleBoundingBox
   m_TagString: Untagged
@@ -2309,7 +2353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 1882516428}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -2323,65 +2366,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 224634333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 820f94d57893bf843a0cd6d93313fe6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 0}
-  boundsOverride: {fileID: 775880687}
-  boundsCalculationMethod: 0
-  activation: 3
+  handType: 3
+  proximityType: 3
   scaleMinimum: 0.2
   scaleMaximum: 2
-  flattenAxis: 0
-  flattenAxisDisplayScale: 0
-  boxPadding: {x: 0, y: 0, z: 0}
-  boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
-  boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
-  showWireframe: 0
-  wireframeShape: 0
-  wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.005
-  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
-    type: 2}
-  scaleHandlePrefab: {fileID: 1361136173122186969, guid: ba9083550f965e545a628b53bfa80c9e,
-    type: 3}
-  scaleHandleSlatePrefab: {fileID: 0}
-  scaleHandleSize: 0.03
-  scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
-  rotationHandleSize: 0.016
-  rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  rotationHandlePrefabColliderType: 1
-  showScaleHandles: 0
-  showRotationHandleForX: 1
-  showRotationHandleForY: 1
-  showRotationHandleForZ: 1
-  drawTetherWhenManipulating: 1
-  proximityEffectActive: 1
-  handleMediumProximity: 0.1
-  handleCloseProximity: 0.03
-  farScale: 1
-  mediumScale: 1.2
-  closeScale: 1.5
-  farGrowRate: 0.3
-  mediumGrowRate: 0.2
-  closeGrowRate: 0.3
-  handlesIgnoreCollider: {fileID: 0}
-  debugText: {fileID: 0}
-  hideElementsInInspector: 1
-  RotateStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  RotateStopped:
-    m_PersistentCalls:
-      m_Calls: []
-  ScaleStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  ScaleStopped:
-    m_PersistentCalls:
-      m_Calls: []
+  relativeToInitialState: 1
 --- !u!114 &224634337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2398,13 +2390,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 3
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: -1
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -2417,6 +2412,66 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &224634338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224634333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8200a044a5affb843ba856b902d9fd3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 224634333}
+  boundsOverride: {fileID: 775880687}
+  boundsCalculationMethod: 0
+  activation: 3
+  flattenAxis: 0
+  boxPadding: {x: 0, y: 0, z: 0}
+  boxDisplayConfiguration: {fileID: 1129875403}
+  linksConfiguration: {fileID: 510879433}
+  scaleHandlesConfiguration: {fileID: 111213555}
+  rotationHandlesConfiguration: {fileID: 1665395027}
+  translationHandlesConfiguration: {fileID: 0}
+  handleProximityEffectConfiguration: {fileID: 1550193561}
+  hideElementsInInspector: 1
+  smoothingActive: 0
+  rotateLerpTime: 0.001
+  scaleLerpTime: 0.001
+  translateLerpTime: 0.001
+  rotateStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  rotateStopped:
+    m_PersistentCalls:
+      m_Calls: []
+  scaleStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  scaleStopped:
+    m_PersistentCalls:
+      m_Calls: []
+  translateStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  translateStopped:
+    m_PersistentCalls:
+      m_Calls: []
+  elasticsManager: {fileID: 0}
+--- !u!114 &224634339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224634333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &231954695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,13 +2580,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -9.175957, w: 0}
   m_textInfo:
     textComponent: {fileID: 231954696}
-    characterCount: 48
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 6
-    wordCount: 7
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 2
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3615,6 +3670,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afaef0108a478c44a9eac26658bc29bf, type: 3}
+--- !u!114 &510879433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wireframeMaterial: {fileID: 0}
+  wireframeEdgeRadius: 0.005
+  wireframeShape: 0
+  showWireframe: 0
 --- !u!1001 &539827680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4774,6 +4845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!65 &775880687
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5092,7 +5164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 914966062}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -5113,13 +5184,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -5402,13 +5476,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -28.694397, w: -14.342575}
   m_textInfo:
     textComponent: {fileID: 971199808}
-    characterCount: 307
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 62
-    wordCount: 59
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 9
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -5843,6 +5917,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122880588}
   m_CullTransparentMesh: 0
+--- !u!114 &1129875403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240d9483db94993408ff1d02335ea212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
+  boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
+  flattenAxisDisplayScale: 0
 --- !u!1 &1174330771
 GameObject:
   m_ObjectHideFlags: 0
@@ -5970,13 +6059,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -15.426361, w: 0}
   m_textInfo:
     textComponent: {fileID: 1174330773}
-    characterCount: 30
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 2
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -6208,6 +6297,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
     m_PersistentCalls:
       m_Calls: []
   eyeCursorSnapToTargetCenter: 0
@@ -6455,13 +6550,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -15.177133, w: 0}
   m_textInfo:
     textComponent: {fileID: 1273851901}
-    characterCount: 15
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -7125,6 +7220,12 @@ MonoBehaviour:
   onSelected:
     m_PersistentCalls:
       m_Calls: []
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
+    m_PersistentCalls:
+      m_Calls: []
   eyeCursorSnapToTargetCenter: 0
 --- !u!65 &1380263303
 BoxCollider:
@@ -7385,13 +7486,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -15.426361, w: 0}
   m_textInfo:
     textComponent: {fileID: 1435622156}
-    characterCount: 24
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 3
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 2
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -8261,13 +8362,13 @@ MonoBehaviour:
   m_margin: {x: -1.2789195, y: 0, z: -14.308076, w: -25.542933}
   m_textInfo:
     textComponent: {fileID: 1485732672}
-    characterCount: 275
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 55
-    wordCount: 55
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 10
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -8464,6 +8565,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1539824536}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1550193561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae6b815054539c4cbce3013daf8f276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  proximityEffectActive: 1
+  objectMediumProximity: 0.1
+  objectCloseProximity: 0.03
+  farScale: 1
+  mediumScale: 1.2
+  closeScale: 1.5
+  farGrowRate: 0.3
+  mediumGrowRate: 0.2
+  closeGrowRate: 0.3
 --- !u!21 &1553971856
 Material:
   serializedVersion: 6
@@ -9189,6 +9311,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639770236}
   m_CullTransparentMesh: 0
+--- !u!114 &1665395027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36981d974b5546a4cbfa0b4bfa0c0ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
+    type: 2}
+  handlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handlePrefabColliderType: 1
+  showHandleForX: 1
+  showHandleForY: 1
+  showHandleForZ: 1
 --- !u!1 &1666938306 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1486990241750050, guid: afaef0108a478c44a9eac26658bc29bf,
@@ -10102,14 +10248,14 @@ MonoBehaviour:
   m_margin: {x: 5, y: 5, z: 5, w: 5}
   m_textInfo:
     textComponent: {fileID: 1852894735}
-    characterCount: 2035
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 394
-    wordCount: 331
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 51
-    pageCount: 1
-    materialCount: 2
+    lineCount: 0
+    pageCount: 0
+    materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -10259,6 +10405,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
+    m_PersistentCalls:
+      m_Calls: []
   eyeCursorSnapToTargetCenter: 0
 --- !u!135 &1882516431
 SphereCollider:
@@ -10711,6 +10863,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapDown:
+    m_PersistentCalls:
+      m_Calls: []
+  onTapUp:
     m_PersistentCalls:
       m_Calls: []
   eyeCursorSnapToTargetCenter: 0
