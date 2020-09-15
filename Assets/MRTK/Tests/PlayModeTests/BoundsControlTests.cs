@@ -164,6 +164,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Verify correct collider attachment for handles after bounds control instantiation
+        /// </summary>
+        [UnityTest]
+        public IEnumerator HandleColliderInstantiation([ValueSource("handleTestData")] HandleTestData testData)
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            Assert.IsNotNull(boundsControl);
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            yield return null;
+
+            // get handle and their visuals and check if collider is only attached to the handle gameobject
+            // but not the handle visuals
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            Transform handle = rigRoot.transform.Find(testData.handleName);
+            Assert.IsNotNull(handle, "couldn't find handle");
+            Transform handleVisual = rigRoot.transform.Find(testData.handleVisualPath);
+            Assert.IsNotNull(handleVisual, "couldn't find handle visual");
+
+            Assert.IsNotNull(handle.GetComponent<Collider>(), "Handle should have collider.");
+            Assert.IsNull(handleVisual.GetComponent<Collider>(), "Visual should not have collider.");
+
+            yield return null;
+        }
+
+        /// <summary>
         /// Test that if we update the bounds of a box collider, that the corners will move correctly
         /// </summary>
         [UnityTest]
