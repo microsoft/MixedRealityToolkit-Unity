@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 List<InputDevice> devices = new List<InputDevice>();
                 InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
-                return devices.Count <= 0;
+                return devices.Count > 0;
             }
         }
 
