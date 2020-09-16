@@ -30,6 +30,18 @@ function createSharedTags()
 	link.href = rootDir+'web/version.css';
 	link.media = 'all';
 	head.appendChild(link);
+
+	var analytics = `<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-177859076-1');
+	</script>
+	`
+	head.insertAdjacentHTML('afterbegin', analytics);
 }
 
 createSharedTags();
