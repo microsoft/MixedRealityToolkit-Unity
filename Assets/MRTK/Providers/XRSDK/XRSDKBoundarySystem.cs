@@ -26,6 +26,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
         }
 
+        /// <inheritdoc/>
+        protected override bool IsXRDevicePresent
+        {
+            get
+            {
+                List<InputDevice> devices = new List<InputDevice>();
+                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
+                return devices.Count <= 0;
+            }
+        }
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
@@ -34,12 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc/>
         public override void Initialize()
         {
-            if (!Application.isPlaying) { return; }
-
-            List<InputDevice> devices = new List<InputDevice>();
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeadMounted, devices);
-
-            if (devices.Count <= 0) { return; }
+            if (!Application.isPlaying || !IsXRDevicePresent) { return; }
 
             base.Initialize();
         }
