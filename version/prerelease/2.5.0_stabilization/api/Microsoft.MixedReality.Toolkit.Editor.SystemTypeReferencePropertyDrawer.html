@@ -134,7 +134,7 @@ no types are to be excluded.</p>
   <div class="markdown level1 remarks"><p>This property must be set immediately before presenting a class
 type reference property field using <a href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</a>
 since the value of this property is reset to <code>null</code> each time the control is drawn.</p>
-<p>Since filtering makes extensive use of <span class="xref">System.Collections.Generic.ICollection`1.Contains(`0)</span>
+<p>Since filtering makes extensive use of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains#System_Collections_Generic_ICollection_1_Contains__0_">Contains(T)</a>
 it is recommended to use a collection that is optimized for fast
 look ups such as HashSet for better performance.</p>
 </div>
