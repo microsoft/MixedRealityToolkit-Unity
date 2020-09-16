@@ -415,6 +415,55 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         // This is where zoom is applied if Active
                         uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
                     }
+
+                    // Put pan limits
+                    if (!unlimitedPan)
+                    {
+                        var correctX = false;
+                        var correctY = false;
+                        var positionCorrection = Vector2.zero;
+
+                        for (int i = 0; i < uvs.Count; ++i)
+                        {
+                            var uv = uvs[i];
+
+                            if (!correctX)
+                            {
+                                if (uv.x > tiling.x * maxPanHorizontal)
+                                {
+                                    positionCorrection.x = tiling.x * maxPanHorizontal - uv.x;
+                                    correctX = true;
+                                }
+                                else if (uv.x < -(tiling.x * maxPanHorizontal))
+                                {
+                                    positionCorrection.x = tiling.x * (-maxPanHorizontal) - uv.x;
+                                    correctX = true;
+                                }
+                            }
+
+                            if (!correctY)
+                            {
+                                if (uv.y > tiling.y * maxPanVertical)
+                                {
+                                    positionCorrection.y = tiling.y * maxPanVertical - uv.y;
+                                    correctY = true;
+                                }
+                                else if (uv.y < -(tiling.y * maxPanVertical))
+                                {
+                                    positionCorrection.y = tiling.y * (-maxPanVertical) - uv.y;
+                                    correctY = true;
+                                }
+                            }
+                        }
+
+                        if (correctX || correctY)
+                        {
+                            for (int i = 0; i < uvs.Count; ++i)
+                            {
+                                uvs[i] += positionCorrection;
+                            }
+                        }
+                    }
                 }
             }
 
