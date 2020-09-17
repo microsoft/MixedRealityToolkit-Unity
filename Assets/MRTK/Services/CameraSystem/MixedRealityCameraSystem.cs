@@ -79,6 +79,50 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
 
         /// <inheritdoc />
+        public bool ProjectionOverrideEnabled
+        {
+            get
+            {
+                ProjectionOverride projectionOverride;
+                if(TryGetProjectionOverrideComponent(out projectionOverride, false))
+                {
+                    return projectionOverride.EnableOverride;
+                }
+                return false;
+            }
+            set
+            {
+                ProjectionOverride projectionOverride;
+                if (TryGetProjectionOverrideComponent(out projectionOverride, true))
+                {
+                    projectionOverride.EnableOverride = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper to get the <see cref="ProjectionOverride"> component that's attached to the main camera
+        /// </summary>
+        /// <param name="projectionOverride">The <see cref="ProjectionOverride"> component if there is one</param>
+        /// <param name="createIfAbsent">Create the <see cref="ProjectionOverride"> if it's not there</param>
+        /// <returns></returns>
+        private bool TryGetProjectionOverrideComponent(out ProjectionOverride projectionOverride, bool createIfAbsent)
+        {
+            if(CameraCache.Main.TryGetComponent<ProjectionOverride>(out projectionOverride))
+            {
+                return true;
+            }
+
+            if(!createIfAbsent)
+            {
+                return false;
+            }
+
+            projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
+            return true;
+        }
+
+        /// <inheritdoc />
         public uint SourceId { get; } = 0;
 
         /// <inheritdoc />
