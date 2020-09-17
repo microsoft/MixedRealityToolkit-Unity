@@ -44,10 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         }
 
         /// <summary>
-        /// 
+        /// Gets the current native SpatialInteractionSourceState for this InteractionSource.
         /// </summary>
-        /// <param name="interactionSource"></param>
-        /// <returns></returns>
+        /// <param name="interactionSource">This InteractionSource to search for via the native Windows APIs.</param>
+        /// <returns>The current native SpatialInteractionSourceState.</returns>
         public static SpatialInteractionSourceState GetSpatialInteractionSourceState(this InteractionSource interactionSource)
         {
             IReadOnlyList<SpatialInteractionSourceState> sources = WindowsMixedRealityUtilities.SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.UtcNow));
@@ -64,10 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         }
 
         /// <summary>
-        /// 
+        /// Gets the current native SpatialInteractionSource for this InteractionSource.
         /// </summary>
-        /// <param name="interactionSource"></param>
-        /// <returns></returns>
+        /// <param name="interactionSource">This InteractionSource to search for via the native Windows APIs.</param>
+        /// <returns>The current native SpatialInteractionSource.</returns>
         public static SpatialInteractionSource GetSpatialInteractionSource(this InteractionSource interactionSource) => interactionSource.GetSpatialInteractionSourceState()?.Source;
 #endif // WINDOWS_UWP
     }

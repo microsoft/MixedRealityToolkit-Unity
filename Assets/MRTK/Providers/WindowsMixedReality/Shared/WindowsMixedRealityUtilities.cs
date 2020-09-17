@@ -35,6 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         private static SpatialInteractionManager spatialInteractionManager = null;
+
+        /// <summary>
+        /// Provides access to the current native SpatialInteractionManager.
+        /// </summary>
         public static SpatialInteractionManager SpatialInteractionManager
         {
             get
