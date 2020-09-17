@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: OculusXRSDKDeviceManagerProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  ovrCameraRigPrefab: {fileID: -6479404110534306751, guid: 69a746aa83d0d0e45b4e2d33eab0fff4,
-    type: 3}
+  ovrCameraRigPrefab: {fileID: 0}
   renderAvatarHandsInsteadOfControllers: 1
-  localAvatarPrefab: {fileID: 1703282039130822552, guid: 5357c8e6c4495c04f90e97272375c294,
-    type: 3}
+  localAvatarPrefab: {fileID: 0}
   useCustomHandMaterial: 1
   customHandMaterial: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
   updateMaterialPinchStrengthValue: 1

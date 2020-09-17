@@ -24,20 +24,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             MixedRealityBoundaryVisualizationProfile profile,
             ExperienceScale scale) : base(profile, scale) { }
 
+        /// <inheritdoc/>
+        protected override bool IsXRDevicePresent => XRDevice.isPresent;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
-
-        /// <inheritdoc/>
-        public override void Initialize()
-        {
-            // The base class initialization should be run every time. This ensures
-            // that profile settings are read at the correct time.
-            base.Initialize();
-
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-        }
 
         #endregion IMixedRealityService Implementation
 

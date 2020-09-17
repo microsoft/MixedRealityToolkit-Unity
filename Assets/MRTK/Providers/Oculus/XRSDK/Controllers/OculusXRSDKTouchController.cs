@@ -12,7 +12,7 @@ using UnityEngine.XR;
 using Unity.XR.Oculus;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     [MixedRealityController(
         SupportedControllerType.OculusTouch,

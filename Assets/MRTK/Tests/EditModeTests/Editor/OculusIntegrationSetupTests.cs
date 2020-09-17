@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using System.Collections;
@@ -13,10 +12,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+
+#if UNITY_2019_3_OR_NEWER
+using Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor;
+
 namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
 {
-
-
     /// <summary>
     /// Tests which ensure that our Oculus Integration setup process works.
     /// </summary>
@@ -109,3 +110,4 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
         }
     }
 }
+#endif

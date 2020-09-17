@@ -1,7 +1,8 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Handtracking.Editor",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "includePlatforms": [
@@ -12,7 +13,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
