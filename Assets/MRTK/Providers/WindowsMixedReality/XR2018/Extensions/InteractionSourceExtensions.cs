@@ -19,6 +19,7 @@ using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
 #elif (UNITY_WSA && DOTNETWINRT_PRESENT)
+using Microsoft.Windows.Devices.Haptics;
 using Microsoft.Windows.Perception;
 using Microsoft.Windows.UI.Input.Spatial;
 #endif
@@ -64,6 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         private const string SimpleHapticsController = "SimpleHapticsController";
         private const string SendHapticFeedback = "SendHapticFeedback";
 
+        /// <summary>
+        /// This value is standardized according to https://www.usb.org/sites/default/files/hutrr63b_-_haptics_page_redline_0.pdf.
+        /// </summary>
+        private const ushort ContinuousBuzzWaveform = 0x1004;
+
         private static readonly bool IsHapticsAvailable = WindowsApiChecker.IsMethodAvailable(HapticsNamespace, SimpleHapticsController, SendHapticFeedback);
 
         /// <summary>
@@ -71,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// </summary>
         /// <param name="interactionSource"></param>
         /// <param name="intensity"></param>
-        /// <remarks>Doesn't work in-editor.</remarks>
         public static void StartHaptics(this InteractionSource interactionSource, float intensity) => interactionSource.StartHaptics(intensity, float.MaxValue);
 
         /// <summary>
@@ -80,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="interactionSource"></param>
         /// <param name="intensity"></param>
         /// <param name="durationInSeconds"></param>
-        /// <remarks>Doesn't work in-editor.</remarks>
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
             if (!IsHapticsAvailable)
@@ -88,11 +92,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-#if WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
             SimpleHapticsController simpleHapticsController = interactionSource.GetSpatialInteractionSource()?.Controller.SimpleHapticsController;
             foreach (SimpleHapticsControllerFeedback hapticsFeedback in simpleHapticsController?.SupportedFeedback)
             {
-                if (hapticsFeedback.Waveform.Equals(KnownSimpleHapticsControllerWaveforms.BuzzContinuous))
+                if (hapticsFeedback.Waveform.Equals(ContinuousBuzzWaveform))
                 {
                     if (durationInSeconds.Equals(float.MaxValue))
                     {
@@ -105,14 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                     return;
                 }
             }
-#endif // WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="interactionSource"></param>
-        /// <remarks>Doesn't work in-editor.</remarks>
         public static void StopHaptics(this InteractionSource interactionSource)
         {
             if (!IsHapticsAvailable)
@@ -120,9 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 return;
             }
 
-#if WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
             interactionSource.GetSpatialInteractionSource()?.Controller.SimpleHapticsController.StopFeedback();
-#endif // WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 #endif // UNITY_WSA
 
