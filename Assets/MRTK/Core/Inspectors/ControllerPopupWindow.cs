@@ -196,6 +196,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             window = null;
 
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                throw new InvalidOperationException("Mixed Reality Toolkit hasn't been initialized yet! Open a scene with a Mixed Reality Toolkit to initialize it before editing the controller mappings.");
+            }
+
             window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
             window.titleContent = new GUIContent($"{controllerMapping.Description} - Input Action Assignment");
