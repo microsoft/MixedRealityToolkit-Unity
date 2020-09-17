@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <returns></returns>
         public static SpatialInteractionSourceState GetSpatialInteractionSourceState(this InteractionSource interactionSource)
         {
-            IReadOnlyList<SpatialInteractionSourceState> sources = WindowsMixedRealityUtilities.SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+            IReadOnlyList<SpatialInteractionSourceState> sources = WindowsMixedRealityUtilities.SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.UtcNow));
 
             for (var i = 0; i < sources?.Count; i++)
             {
