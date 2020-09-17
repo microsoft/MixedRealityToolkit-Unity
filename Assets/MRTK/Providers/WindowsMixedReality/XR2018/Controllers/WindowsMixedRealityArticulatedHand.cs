@@ -118,6 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 SpatialInteractionSourceState sourceState = interactionSourceState.source.GetSpatialInteractionSourceState();
 
+                if (sourceState == null)
+                {
+                    return;
+                }
+
 #if WINDOWS_UWP
                 handMeshProvider?.UpdateHandMesh(sourceState);
 #endif // WINDOWS_UWP

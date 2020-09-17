@@ -90,11 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             using (UpdateHandMeshPerfMarker.Auto())
             {
-                if (sourceState == null)
-                {
-                    return;
-                }
-
                 MixedRealityHandTrackingProfile handTrackingProfile = null;
                 MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
                 if (inputSystemProfile != null)
