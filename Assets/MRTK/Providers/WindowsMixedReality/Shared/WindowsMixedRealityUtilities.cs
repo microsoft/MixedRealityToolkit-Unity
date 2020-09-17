@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
+using Windows.UI.Input.Spatial;
 #if DOTNETWINRT_PRESENT
 using Microsoft.Windows.Graphics.Holographic;
 #else
@@ -15,6 +16,7 @@ using Windows.Graphics.Holographic;
 #elif DOTNETWINRT_PRESENT
 using Microsoft.Windows.Graphics.Holographic;
 using Microsoft.Windows.Perception.Spatial;
+using Microsoft.Windows.UI.Input.Spatial;
 #endif
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
@@ -32,6 +34,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+        private static SpatialInteractionManager spatialInteractionManager = null;
+        public static SpatialInteractionManager SpatialInteractionManager
+        {
+            get
+            {
+                if (spatialInteractionManager == null)
+                {
+                    UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                    {
+                        spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    }, true);
+                }
+
+                return spatialInteractionManager;
+            }
+        }
+
 #if ENABLE_DOTNET
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
         private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
@@ -66,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         /// <remarks>
         /// Changing the state of the native objects received via this API may cause unpredictable
-        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.
         /// </remarks>
         public static SpatialCoordinateSystem SpatialCoordinateSystem
         {

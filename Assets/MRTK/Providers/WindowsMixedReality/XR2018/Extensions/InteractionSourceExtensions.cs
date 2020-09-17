@@ -20,6 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
     public static class InteractionSourceExtensions
     {
 #if WINDOWS_UWP
+        /// <summary>
+        /// Attempts to call the Windows API for loading the controller renderable model at runtime.
+        /// </summary>
+        /// <param name="interactionSource">The source to try loading the model for.</param>
+        /// <returns>A stream of the glTF model for loading.</returns>
+        /// <remarks>Doesn't work in-editor.</remarks>
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
@@ -31,24 +37,38 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 "SpatialInteractionManager",
                 "GetForCurrentView"))
             {
-                IReadOnlyList<SpatialInteractionSourceState> sources = null;
-
-                UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-                {
-                    sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-                }, true);
-
-                for (var i = 0; i < sources?.Count; i++)
-                {
-                    if (sources[i].Source.Id.Equals(interactionSource.id))
-                    {
-                        returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
-                    }
-                }
+                returnValue = interactionSource.GetSpatialInteractionSource()?.Controller.TryGetRenderableModelAsync();
             }
 
             return returnValue;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interactionSource"></param>
+        /// <returns></returns>
+        public static SpatialInteractionSourceState GetSpatialInteractionSourceState(this InteractionSource interactionSource)
+        {
+            IReadOnlyList<SpatialInteractionSourceState> sources = WindowsMixedRealityUtilities.SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+
+            for (var i = 0; i < sources?.Count; i++)
+            {
+                if (sources[i].Source.Id.Equals(interactionSource.id))
+                {
+                    return sources[i];
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interactionSource"></param>
+        /// <returns></returns>
+        public static SpatialInteractionSource GetSpatialInteractionSource(this InteractionSource interactionSource) => interactionSource.GetSpatialInteractionSourceState()?.Source;
 #endif // WINDOWS_UWP
     }
 }

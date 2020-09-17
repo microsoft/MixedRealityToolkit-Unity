@@ -90,6 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             using (UpdateHandMeshPerfMarker.Auto())
             {
+                if (sourceState == null)
+                {
+                    return;
+                }
+
                 MixedRealityHandTrackingProfile handTrackingProfile = null;
                 MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
                 if (inputSystemProfile != null)
@@ -174,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
                             /// Hands should follow the Playspace to accommodate teleporting, so fold in the Playspace transform.
                             Vector3 positionUnity = MixedRealityPlayspace.TransformPoint(translation.ToUnityVector3());
-                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion(); 
+                            Quaternion rotationUnity = MixedRealityPlayspace.Rotation * rotation.ToUnityQuaternion();
 
                             HandMeshInfo handMeshInfo = new HandMeshInfo
                             {
