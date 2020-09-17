@@ -191,6 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 #if !UNITY_2019_3_OR_NEWER
                 if(PackageReferencesUnity2019.Contains(reference))
                 {
+                    Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's for Unity 2019.3+");
                     continue;
                 }
 #endif
