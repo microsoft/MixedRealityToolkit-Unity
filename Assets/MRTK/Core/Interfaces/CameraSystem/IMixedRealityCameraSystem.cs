@@ -19,5 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// Is the current camera displaying on an opaque (VR / immersive) or a transparent (AR) device
         /// </summary>
         bool IsOpaque { get; }
+
+        /// <summary>
+        /// Override the camera's projection matrices for a smaller field of view
+        /// but rendered content will have more detail.  If holograms are not stable,
+        /// change the Stereo Rendering Mode from "Single Pass Instanced" to "Multi Pass."
+        /// </summary>
+        bool ProjectionOverrideEnabled { get; set; }
     }
 }
