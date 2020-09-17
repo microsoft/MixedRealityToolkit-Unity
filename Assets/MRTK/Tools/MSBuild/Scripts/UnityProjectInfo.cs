@@ -27,6 +27,18 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         };
 
         /// <summary>
+        /// These package refernces are only for Unity 2019.3+ and shouldn't be included when using older versions
+        /// </summary>
+        private static readonly HashSet<string> PackageReferencesUnity2019 = new HashSet<string>()
+        {
+            "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
+            "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor",
+            "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor",
+            "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
+            "Microsoft.MixedReality.Toolkit.Providers.XRSDK"
+        };
+
+        /// <summary>
         /// Gets the name of this Unity Project.
         /// </summary>
         public string UnityProjectName { get; }
@@ -175,6 +187,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's marked as excluded.");
                     continue;
                 }
+
+#if !UNITY_2019_3_OR_NEWER
+                if(PackageReferencesUnity2019.Contains(reference))
+                {
+                    Debug.LogWarning($"Skipping processing {reference} for {toReturn.Name}, as it's for Unity 2019.3+");
+                    continue;
+                }
+#endif
+
                 string packageCandidate = $"com.{reference.ToLower()}";
                 if (builtInPackagesWithoutSource.Any(t => packageCandidate.StartsWith(t)))
                 {

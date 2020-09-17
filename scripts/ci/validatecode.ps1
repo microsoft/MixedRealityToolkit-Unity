@@ -602,7 +602,6 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/Editor/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Scripts/Utils/Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Utilities.asmdef",
     "Assets/MRTK/Providers/OpenVR/Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/Microsoft.MixedReality.Toolkit.UnityAR.Editor.asmdef",
