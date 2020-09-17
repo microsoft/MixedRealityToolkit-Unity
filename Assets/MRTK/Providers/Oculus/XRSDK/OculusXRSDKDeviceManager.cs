@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -18,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.Android,
         "XRSDK Oculus Device Manager")]
+#if UNITY_EDITOR
+    [InitializeOnLoad]
+#endif
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
@@ -31,7 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
+        {
+#if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
+            Debug.LogWarning(@"Be sure to download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
+#endif
+
+        }
 
         private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 
@@ -122,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
         #endregion Controller Utilities
 
-
+        
 #if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc/>
         public override void Enable()
@@ -237,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
 
-        #region Hand Utilities
+#region Hand Utilities
         protected void UpdateHands()
         {
             UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
@@ -331,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
             RecyclePointers(handDevice.InputSource);
         }
-        #endregion
+#endregion
         
 #endif
     }

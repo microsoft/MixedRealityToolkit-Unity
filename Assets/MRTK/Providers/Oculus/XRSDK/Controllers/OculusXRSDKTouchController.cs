@@ -8,7 +8,7 @@ using UnityEngine;
 using Unity.Profiling;
 using UnityEngine.XR;
 
-#if OCULUS_ENABLED
+#if OCULUSINTEGRATION_PRESENT
 using Unity.XR.Oculus;
 #endif
 
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 InputFeatureUsage<bool> buttonUsage;
                 bool usingOculusButtonData = false;
 
-#if OCULUS_ENABLED
+#if OCULUSINTEGRATION_PRESENT
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.TriggerTouch:
