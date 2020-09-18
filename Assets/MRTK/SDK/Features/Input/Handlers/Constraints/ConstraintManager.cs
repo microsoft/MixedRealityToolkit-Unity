@@ -45,6 +45,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private HashSet<TransformConstraint> constraints = new HashSet<TransformConstraint>();
         private MixedRealityTransform initialWorldPose;
 
+        /// <summary>	
+        /// Adds a constraint to the manual selection list.
+        /// Note that only unique components will be added to the list.
+        /// </summary>	
+        /// <param name="constraint">Constraint to add to the managers manual constraint list.</param>
+        /// <returns>Returns true if insertion was successful. If the comopnent was already in the list the insertion will fail.</returns>	
+        public bool AddConstraintToManualSelection(TransformConstraint constraint)
+        {
+            var existingConstraint = selectedConstraints.Find(t => t == constraint);
+            if (existingConstraint == null)
+            {
+                selectedConstraints.Add(constraint);
+            }
+
+            return existingConstraint == null;
+        }
+
+        /// <summary>
+        /// Removes the given component from the manually selected constraint list.
+        /// </summary>
+        /// <param name="constraint">Constraint to remove.</param>
+        public void RemoveConstraintFromManualSelection(TransformConstraint constraint)
+        {
+            selectedConstraints.Remove(constraint);
+        }
+
         public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Scale);
@@ -70,38 +96,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Registering of a constraint in case a constraint gets added during runtime.
-        /// If auto mode is disabled the component will be added to the manually selected
-        /// constraint list as well.
-        /// Constraints in either of the lists (auto or manual) are unique. The same component 
-        /// can't be added twice.
+        /// Registering of a constraint during runtime. This method gets called by the constraint
+        /// components to auto register in their OnEnable method.
         /// </summary>
         /// <param name="constraint">Constraint to add to the manager.</param>
-        public void RegisterConstraint(TransformConstraint constraint)
+        internal void AutoRegisterConstraint(TransformConstraint constraint)
         {
-            // don't add anything that isn't attached to this gameobject
-            if (gameObject != constraint.gameObject)
-            {
-                return;
-            }
-
             // add to auto component list
             if (constraint.isActiveAndEnabled)
             {
                 constraints.Add(constraint);
                 constraint.Initialize(initialWorldPose);
-            }
-
-            // if we are in manual mode add to manual list as well
-            if (AutoConstraintSelection == false)
-            {
-                // check if unique here (in case of manual list we have to operate on a list (serialization)
-                // which doesn't do unique checks automatically for us)
-                var existingConstraint = selectedConstraints.Find(t => t == constraint);
-                if (existingConstraint == null)
-                {
-                    selectedConstraints.Add(constraint);
-                }
             }
         }
 
@@ -110,13 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Removes the constraint from the manual list if auto mode is disabled.
         /// </summary>
         /// <param name="constraint">Constraint to remove from the manager.</param>
-        public void UnregisterConstraint(TransformConstraint constraint)
+        internal void AutoUnregisterConstraint(TransformConstraint constraint)
         {
             constraints.Remove(constraint);
-            if (AutoConstraintSelection == false)
-            {
-                selectedConstraints.Remove(constraint);
-            }
         }
 
         protected void Awake()
