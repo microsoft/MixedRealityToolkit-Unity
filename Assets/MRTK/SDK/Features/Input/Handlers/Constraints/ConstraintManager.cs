@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         [SerializeField]
         [Tooltip("Per default constraint manager will apply all to this gameobject attached constraint components." +
-            "If this flag is enabled only the selected list of constraint components will be applied.")]
+            "If this flag is enabled only the selected constraint list will be applied.")]
         private bool autoConstraintSelection = true;
         /// <summary>
         /// Per default constraint manager will apply all to this gameobject attached constraint components automatically.
-        /// If this flag is disabled only the selected list of constraint components will be applied.
+        /// If this flag is enabled only the selected constraint list will be applied.
         /// </summary>
         public bool AutoConstraintSelection
         {
@@ -29,41 +29,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Optional set of transform constraints if applied constraints should be limited / user selected.")]
+        [Tooltip("Manually selected list of transform constraints. Note that this list will only be processed by the" +
+            "manager if AutoConstraintSelection is disabled.")]
         private List<TransformConstraint> selectedConstraints = new List<TransformConstraint>();
         /// <summary>
-        /// Optional set of transform constraints if applied constraints should be limited / user selected.
+        /// Manually selected list of transform constraints. Note that this list will only be processed by the
+        /// manager if AutoConstraintSelection is disabled.
+        /// Note that this is a read only property. To add new constraints to the list call RegisterConstraint.
         /// </summary>
         public List<TransformConstraint> SelectedConstraints
         {
             get => selectedConstraints;
-        }
-
-        /// <summary>
-        /// Adds a constraint
-        /// </summary>
-        /// <param name="constraint"></param>
-        /// <returns></returns>
-        public bool AddConstraint(TransformConstraint constraint)
-        {
-            var existingConstraint = selectedConstraints.Find(t => t == constraint);
-            if (existingConstraint == null)
-            {
-                selectedConstraints.Add(constraint);
-            }
-
-            return existingConstraint == null;
-        }
-
-        /// <summary>
-        /// Returns the currently processed constraints by this manager.
-        /// </summary>
-        public TransformConstraint[] ProcessedConstraints
-        {
-            get
-            {
-                return autoConstraintSelection ? gameObject.GetComponents<TransformConstraint>() : selectedConstraints.ToArray();
-            }
         }
 
         private HashSet<TransformConstraint> constraints = new HashSet<TransformConstraint>();
@@ -94,24 +70,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Manual registering of a constraint in case a constraint gets added during runtime.
-        /// Only active and enabled constraints can be registered to the constraint manager.
+        /// Registering of a constraint in case a constraint gets added during runtime.
+        /// If auto mode is disabled the component will be added to the manually selected
+        /// constraint list as well.
+        /// Constraints in either of the lists (auto or manual) are unique. The same component 
+        /// can't be added twice.
         /// </summary>
+        /// <param name="constraint">Constraint to add to the manager.</param>
         public void RegisterConstraint(TransformConstraint constraint)
         {
+            // don't add anything that isn't attached to this gameobject
+            if (gameObject != constraint.gameObject)
+            {
+                return;
+            }
+
+            // add to auto component list
             if (constraint.isActiveAndEnabled)
             {
                 constraints.Add(constraint);
                 constraint.Initialize(initialWorldPose);
             }
+
+            // if we are in manual mode add to manual list as well
+            if (AutoConstraintSelection == false)
+            {
+                // check if unique here (in case of manual list we have to operate on a list (serialization)
+                // which doesn't do unique checks automatically for us)
+                var existingConstraint = selectedConstraints.Find(t => t == constraint);
+                if (existingConstraint == null)
+                {
+                    selectedConstraints.Add(constraint);
+                }
+            }
         }
 
         /// <summary>
         /// Unregister a constraint from the manager.
+        /// Removes the constraint from the manual list if auto mode is disabled.
         /// </summary>
+        /// <param name="constraint">Constraint to remove from the manager.</param>
         public void UnregisterConstraint(TransformConstraint constraint)
         {
             constraints.Remove(constraint);
+            if (AutoConstraintSelection == false)
+            {
+                selectedConstraints.Remove(constraint);
+            }
         }
 
         protected void Awake()
