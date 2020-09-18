@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -34,14 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
+#if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
         public override void Initialize()
         {
             base.Initialize();
-#if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
-            Debug.Log(@"Detected a potential deployment to the Oculus Quest. In order to use handtracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+            Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use handtracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
-#endif
         }
+#endif
 
         private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 
@@ -131,7 +130,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         }
 
         #endregion Controller Utilities
-
         
 #if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc/>
@@ -247,7 +245,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
 
-#region Hand Utilities
+        #region Hand Utilities
         protected void UpdateHands()
         {
             UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
@@ -341,7 +339,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
             RecyclePointers(handDevice.InputSource);
         }
-#endregion
+        #endregion
         
 #endif
     }
