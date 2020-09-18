@@ -1,24 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#if WINDOWS_UWP || DOTNETWINRT_PRESENT
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
-#if WINDOWS_UWP
-using Windows.Perception;
-using Windows.UI.Input.Spatial;
-#elif DOTNETWINRT_PRESENT
-using Microsoft.Windows.Perception;
-using Microsoft.Windows.UI.Input.Spatial;
-#endif
-#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Windows.Foundation;
+using Windows.Perception;
 using Windows.Storage.Streams;
+using Windows.UI.Input.Spatial;
+#elif (UNITY_WSA && DOTNETWINRT_PRESENT)
+using Microsoft.Windows.Perception;
+using Microsoft.Windows.UI.Input.Spatial;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Input
@@ -28,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
     /// </summary>
     public static class InteractionSourceExtensions
     {
-#if WINDOWS_UWP || DOTNETWINRT_PRESENT
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         /// <summary>
         /// Gets the current native SpatialInteractionSourceState for this InteractionSource.
         /// </summary>
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="interactionSource">This InteractionSource to search for via the native Windows APIs.</param>
         /// <returns>The current native SpatialInteractionSource.</returns>
         public static SpatialInteractionSource GetSpatialInteractionSource(this InteractionSource interactionSource) => interactionSource.GetSpatialInteractionSourceState()?.Source;
-#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 #if WINDOWS_UWP
         /// <summary>
