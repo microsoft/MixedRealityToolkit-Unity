@@ -1,6 +1,6 @@
 # Constraint manager
 
-The constraint manager allows to apply a set of constraint components to a transform. Components of type [TransformConstraint] (#transform-constraints) that are attached to the game object can be taken into consideration.
+The constraint manager allows to apply a set of constraint components to a transform. Components of type [`TransformConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.TransformConstraint) that are attached to the game object can be taken into consideration.
 Per default constraint manager will automatically collect all [constraint components](#transform-constraints) attached to the game object and apply them to processed transforms.
 However users can opt for configuring the list of applied constraints manually and allowing only a subset of attached constraints to be applied.
 
