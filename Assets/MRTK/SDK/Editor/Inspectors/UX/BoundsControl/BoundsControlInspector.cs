@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.Editor;
+using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -46,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty scaleStoppedEvent;
         private SerializedProperty translateStartedEvent;
         private SerializedProperty translateStoppedEvent;
+
+        private SerializedProperty enableConstraints;
+        private SerializedProperty constraintManager;
 
         private SerializedProperty elasticsManager;
 
@@ -89,6 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
             translateStartedEvent = serializedObject.FindProperty("translateStarted");
             translateStoppedEvent = serializedObject.FindProperty("translateStopped");
+
+            // constraints
+            enableConstraints = serializedObject.FindProperty("enableConstraints");
+            constraintManager = serializedObject.FindProperty("constraintsManager");
 
             // Elastics
             elasticsManager = serializedObject.FindProperty("elasticsManager");
@@ -154,7 +162,121 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
                     EditorGUILayout.Space();
-                    constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(boundsControl.gameObject, constraintsFoldout, "Constraint");
+
+                    
+                    //if (enableConstraints == false)
+                    //{
+                    //    GUI.enabled = false;
+                    //}
+                    constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, "Constraints", true);
+
+                    if (constraintsFoldout)
+                    {
+                        EditorGUILayout.PropertyField(enableConstraints);
+                        GUI.enabled = enableConstraints.boolValue;
+                        //EditorGUILayout.LabelField(new GUIContent("Constraints"), EditorStyles.boldLabel);
+                        var constraintManagers = boundsControl.gameObject.GetComponents<ConstraintManager>();
+
+                        int selected = 0;
+
+                        string[] options = new string[constraintManagers.Length];
+
+                        int manualSelectionCount = 0;
+                        for (int i = 0; i < constraintManagers.Length; ++i)
+                        {
+                            var manager = constraintManagers[i];
+                            if (constraintManager.objectReferenceValue == manager)
+                            {
+                                selected = i;
+                            }
+
+                            // popups will only show unqiue elements
+                            // in case of auto selection we don't care which one we're selecting as the behavior will be the same.
+                            // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
+                            if (manager.AutoConstraintSelection == true)
+                            {
+                                options[i] = manager.name + " auto selection";
+                            }
+                            else
+                            {
+                                manualSelectionCount++;
+                                options[i] = manager.name + " manual selection " + manualSelectionCount;
+                            }
+                        }
+
+
+                        EditorGUILayout.BeginHorizontal();
+
+                        selected = EditorGUILayout.Popup("Constraint Manager", selected, options, GUILayout.ExpandWidth(true));
+                        ConstraintManager selectedConstraintManager = constraintManagers[selected];
+                        constraintManager.objectReferenceValue = selectedConstraintManager;
+                        if (GUILayout.Button("Go to component"))
+                        {
+                            EditorGUIUtility.PingObject(selectedConstraintManager);
+                            Highlighter.Highlight("Inspector", $"ComponentId: {selectedConstraintManager.GetInstanceID()}");
+                            EditorGUIUtility.ExitGUI();
+                        }
+                        EditorGUILayout.EndHorizontal();
+
+
+                        //foreach (var constraint in selectedConstraintManager.ProcessedConstraints)
+                        //{
+                        //    if (constraint != null)
+                        //    {
+                        //        EditorGUILayout.BeginHorizontal();
+                        //        string constraintName = constraint.GetType().Name;
+                        //        EditorGUILayout.LabelField(constraintName);
+                        //        if (GUILayout.Button("Go to component"))
+                        //        {
+                        //            Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        //            EditorGUIUtility.ExitGUI();
+                        //        }
+                        //        EditorGUILayout.EndHorizontal();
+                        //    }
+                        //}
+
+                        //EditorGUILayout.PropertyField(constraintManager);
+                        //string typeDescription = "Constraint";
+                        //GameObject gameObject = boundsControl.gameObject;
+                        //if (constraintManager.objectReferenceValue != null)
+                        //{
+                        //        EditorGUILayout.Space();
+                        //        EditorGUILayout.LabelField(new GUIContent("Constraints"), EditorStyles.boldLabel);
+                        //        //constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, typeDescription + "s", true);
+
+                        //        //if (constraintsFoldout)
+                        //        //{
+                        //        System.Collections.Generic.List<TransformConstraint> constraints;
+                        //        if (selectedConstraintManager.AutoConstraintSelection == true)
+                        //        {
+                        //            constraints = gameObject.GetComponents<TransformConstraint>().ToList();
+
+                        //        }
+                        //        else
+                        //        {
+                        //            constraints = selectedConstraintManager.AppliedConstraints;
+                        //        }
+
+                        //        foreach (var constraint in constraints)
+                        //        {
+                        //            EditorGUILayout.BeginHorizontal();
+                        //            string constraintName = constraint.GetType().Name;
+                        //            EditorGUILayout.LabelField(constraintName);
+                        //            if (GUILayout.Button("Go to component"))
+                        //            {
+                        //                Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        //                EditorGUIUtility.ExitGUI();
+                        //            }
+                        //            EditorGUILayout.EndHorizontal();
+                        //        }
+
+                        //    }
+
+
+                        //}
+
+                        GUI.enabled = true;
+                    }
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
