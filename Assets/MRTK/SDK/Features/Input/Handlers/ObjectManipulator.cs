@@ -204,14 +204,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Frame-rate independent smoothing for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.")]
-        private bool smoothingNear = false;
+        [Tooltip("Frame-rate independent smoothing for near interactions. Note that enabling near smoothing may be perceived as being 'disconnected' from the hand.")]
+        private bool smoothingNear = true;
 
         /// <summary>
         /// Whether to enable frame-rate independent smoothing for near interactions.
         /// </summary>
         /// <remarks>
-        /// Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.
+        /// Note that enabling near smoothing may be perceived as being 'disconnected' from the hand.
         /// </remarks>
         public bool SmoothingNear
         {

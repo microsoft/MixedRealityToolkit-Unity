@@ -13,28 +13,32 @@
 to auto-fix and upgrade from deprecated components and adjust to breaking changes. The migration tool is part of
 the **Tools** package.
 
+The instructions below describe the 2.4.0 to 2.5.0 upgrade path. If your project is on 2.3.0 or earlier, read on
+to the changes [between versions](#updating-230-to-240) to understand the upgrade path, or read the previous
+[release's instructions](https://microsoft.github.io/MixedRealityToolkit-Unity/version/releases/2.4.0/Documentation/Updating.html)
+to do a version-by-version upgrade.
+
 ### Unity asset (.unitypackage) files
 
 For the smoothest upgrade path, please use the following steps.
 
 1. Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.
 1. Close Unity
-1. Inside the *Assets* folder, delete the following **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
-    - MixedRealityToolkit
-    - MixedRealityToolkit.Examples
-    - MixedRealityToolkit.Extensions
+1. Inside the *Assets* folder, delete the following **MRTK** folders, along with their .meta files (the project may not have all listed folders)
+    - MRTK/Core
+    - MRTK/Examples
+    - MRTK/Extensions
     > [!NOTE]
     > If additional extensions have been installed, please make a backup prior to deleting these folders.
-    - MixedRealityToolkit.Providers
-    - MixedRealityToolkit.SDK
-    - MixedRealityToolkit.Services
-    - MixedRealityToolkit.Staging
-    > [!NOTE]
-    > The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.
-    - MixedRealityToolkit.Tools
+    - MRTK/Providers
+    - MRTK/SDK
+    - MRTK/Services
+    - MRTK/Tools
     > [!IMPORTANT]
     > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
+    > [!IMPORTANT]
+    > Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.
 1. Re-open the project in Unity
 1. Import the new unity packages
     - Foundation - _Import this package first_
@@ -45,14 +49,21 @@ For the smoothest upgrade path, please use the following steps.
     - (Optional) Examples
 1. Close Unity and delete the **Library** folder (read the note below first!). This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
-    > [!IMPORTANT]
-    > Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
 1. Run the [migration tool](Tools/MigrationWindow.md) and run the tool on the *Full Project* to ensure that all of your code is updated to the latest.
+   The migration window contains a number of different migration handlers, which must each be run on their own. This step involves:
+   - Select the first migration handler from the **Migration Handler Selection** dropdown.
+   - Click the "Full Project" button.
+   - Click the "Add full project for migration" button (this will scan the entire project for objects to migrate).
+   - Click the "Migrate" button which should be enabled if any migrateable objects were found.
+   - Repeat the previous three steps for each of the migration handlers within the dropdown.
+     (See [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8552) which covers work that can be done
+     to simplify this migration process in a future release)
+
 
 ## Updating 2.3.0 to 2.4.0
 

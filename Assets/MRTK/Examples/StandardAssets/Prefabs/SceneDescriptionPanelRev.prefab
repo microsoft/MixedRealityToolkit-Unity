@@ -1026,7 +1026,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
