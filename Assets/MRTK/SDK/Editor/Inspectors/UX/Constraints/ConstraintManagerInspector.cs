@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 serializedObject.Update();
 
                 // Help url
-                //TODO InspectorUIUtility.RenderHelpURL(target.GetType());
+                InspectorUIUtility.RenderHelpURL(target.GetType());
 
                 // Data section
                 {
