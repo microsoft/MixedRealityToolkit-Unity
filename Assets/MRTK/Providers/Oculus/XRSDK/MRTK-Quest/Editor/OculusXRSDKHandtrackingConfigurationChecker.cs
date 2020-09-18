@@ -205,6 +205,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 "649"
             };
 
+            if(!File.Exists(cscFilePath))
+            {
+                Debug.LogFormat("csc.rsp not found at the top level directory: {0}, no modifications were made", cscFilePath);
+                return;
+            }
+
             using (StreamReader streamReader = new StreamReader(cscFilePath))
             {
                 while (streamReader.Peek() > -1)
