@@ -328,12 +328,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
                     if (manager.AutoConstraintSelection == true)
                     {
-                        options[i] = manager.GetType().Name + " auto selection";
+                        options[i] = manager.GetType().Name + " (auto)";
                     }
                     else
                     {
                         manualSelectionCount++;
-                        options[i] = manager.GetType().Name + " manual selection " + manualSelectionCount;
+                        options[i] = manager.GetType().Name + " (manual " + manualSelectionCount + ")";
                     }
                 }
 
