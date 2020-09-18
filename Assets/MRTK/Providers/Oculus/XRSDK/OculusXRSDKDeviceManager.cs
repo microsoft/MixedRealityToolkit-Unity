@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
             base.Initialize();
 #if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
-            Debug.Log(@"Detected a potential deployment to the Oculus Quest. Be sure to download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+            Debug.Log(@"Detected a potential deployment to the Oculus Quest. In order to use handtracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
 #endif
         }
