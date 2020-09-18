@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
         {
 #if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
-            Debug.LogWarning(@"Be sure to download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+            Debug.Log(@"Detected a potential deployment to the Oculus Quest. Be sure to download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
 #endif
 

@@ -92,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                     Debug.Log("Oculus Integration package detected, adding references to asmdefs");
                     if (oculusAsmDefFile == oculusXRSDKAsmDefFile)
                     {
-                        oculusAsmDef.AddReference("Unity.XR.Oculus");
                         oculusAsmDef.AddReference("Oculus.VR");
                     }
                     if (oculusAsmDefFile == oculusXRSDKHandtrackingEditorAsmDefFile)
@@ -102,12 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 }
                 else
                 {
-                    Debug.Log("Oculus Integration package not detected, removing references from asmdefs");
-                    Debug.Log("In order to deploy to Oculus Quest, the Oculus Integration package must be installed from the Unity Asset Store!");
-                    if (references.Contains("Unity.XR.Oculus"))
-                    {
-                        references.Remove("Unity.XR.Oculus");
-                    }
+                    Debug.Log("Oculus Integration package not detected, removing references from asmdefs. In order to deploy to Oculus Quest, the Oculus Integration package must be installed from the Unity Asset Store!");
                     if (references.Contains("Oculus.VR"))
                     {
                         references.Remove("Oculus.VR");
