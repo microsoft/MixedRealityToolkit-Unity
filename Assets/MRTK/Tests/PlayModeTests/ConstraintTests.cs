@@ -308,6 +308,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ConstraintManagerFilter()
         {
+            yield return ConstraintManagerFilterTest(true);
+        }
+
+        /// <summary>
+        /// Test that verifies multiple constraint managers with different setup can
+        /// be used on the same game object.
+        /// First default constraint manager creation with auto mode is confirmed by attaching 
+        /// a rotation and scale constraint.
+        /// Then manual constraint filtering is activated on a second constraint manager
+        /// and only the scale constraint is added.
+        /// In the later test case the object should not apply the rotation constraint.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator MultipleConstraintManagers()
+        {
+            yield return ConstraintManagerFilterTest(false);
+        }
+
+        private IEnumerator ConstraintManagerFilterTest(bool reuseDefaultManager)
+        { 
             float initialScale = 0.2f;
             float minScale = 0.5f;
             float maxScale = 2f;
@@ -334,6 +354,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return new WaitForFixedUpdate();
             yield return null;
+
+            // ensure default constraint manager was created
+            ConstraintManager manager = manipHandler.GetComponent<ConstraintManager>();
+            Assert.IsNotNull(manager, "Constraint manager is missing from gameobject using object manipulator");
 
             // Hand pointing at middle of cube
             Vector3 initialHandPositionRotation = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.044f, -0.1f, 0.45f));
@@ -393,17 +417,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // must have original scale
             Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
 
-            // change filter on constraint manager
-            ConstraintManager manager = manipHandler.GetComponent<ConstraintManager>();
-            Assert.IsNotNull(manager, "Constraint manager is missing from gameobject using object manipulator");
+            ConstraintManager manualManager = manager;
+            if (reuseDefaultManager == false)
+            {
+                // create a second constraint manager to check if we can use several ones in parallel
+                manualManager = manipHandler.gameObject.AddComponent<ConstraintManager>();
+                manipHandler.ConstraintsManager = manualManager;
+            }
 
             // switch auto constraint selection off
-            manager.AutoConstraintSelection = false;
+            manualManager.AutoConstraintSelection = false;
 
             // make sure no constraints are actually part of the filter list
-            Assert.IsTrue(manager.SelectedConstraints.Count == 0, "applied constraints weren't empty on manual selection");
+            Assert.IsTrue(manualManager.SelectedConstraints.Count == 0, "applied constraints weren't empty on manual selection");
             // add only min max scale constraint
-            manager.SelectedConstraints.Add(scaleConstraint);
+            manualManager.SelectedConstraints.Add(scaleConstraint);
 
             // now try rotation again - rotation constraint should not be applied
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
@@ -433,186 +461,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Assert scale at max
             Assert.AreEqual(Vector3.one * scaleConstraint.ScaleMaximum, testObject.transform.localScale);
-
-            yield return null;
-        }
-
-        /// <summary>
-        /// Test that verifies that multiple constraint managers can be attached to an object
-        /// and supporting components (object manipulator and bounds control) can selectively choose 
-        /// which constraint manager they're going to apply to their transforms.
-        /// Object manipulator in this scenario will use a constraint manager with auto behavior whereas
-        /// bounds control will use a constraint manager with manual selection of constraints.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator MultipleConstraintManagers()
-        {
-            float initialScale = 0.2f;
-            float minScale = 0.5f;
-            float maxScale = 2f;
-
-            // set up cube with manipulation handler
-            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testObject.transform.localScale = Vector3.one * initialScale;
-            testObject.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0f, 0f, 1f));
-
-            testObject.AddComponent<NearInteractionGrabbable>();
-            var manipHandler = testObject.AddComponent<ObjectManipulator>();
-            manipHandler.HostTransform = testObject.transform;
-            manipHandler.SmoothingFar = false;
-            manipHandler.SmoothingNear = false;
-            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
-
-            var rotationConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
-            rotationConstraint.UseLocalSpaceForConstraint = true;
-            var scaleConstraint = testObject.EnsureComponent<MinMaxScaleConstraint>();
-            scaleConstraint.RelativeToInitialState = true;
-            scaleConstraint.ScaleMinimum = minScale;
-            scaleConstraint.ScaleMaximum = maxScale;
-
-            // add bounds control
-            var boundsControl = testObject.AddComponent<BoundsControl>();
-            boundsControl.Active = true;
-            boundsControl.ScaleHandlesConfig.ShowScaleHandles = false; // disable so they won't interfer with object manipulator for now
-
-            // first constraint manager must be present
-            ConstraintManager manager = manipHandler.GetComponent<ConstraintManager>();
-            Assert.IsNotNull(manager, "Constraint manager is missing from gameobject using object manipulator");
-
-            yield return new WaitForFixedUpdate();
-            yield return null;
-            
-            // create second constraint manager and add to bounds control
-            ConstraintManager manager2 = testObject.AddComponent<ConstraintManager>();
-            boundsControl.ConstraintsManager = manager2;
-            // switch auto constraint selection off
-            manager2.AutoConstraintSelection = false;
-
-            // make sure no constraints are actually part of the filter list
-            Assert.IsTrue(manager2.SelectedConstraints.Count == 0, "applied constraints weren't empty on manual selection");
-            // add only rotation constraint
-            manager2.SelectedConstraints.Add(rotationConstraint);
-
-            //------- check object manipulator behavior with auto constraint behavior
-
-            // Hand pointing at middle of cube
-            Vector3 initialHandPositionRotation = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.044f, -0.1f, 0.45f));
-            Vector3 initialScaleHandPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0, 0, 0.5f));
-            Vector3 leftGrabScalePosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(-0.09f, -0.1f, 1f)); // grab the bottom left corner of the cube 
-            Vector3 rightGrabScalePosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.09f, -0.1f, 1f)); // grab the bottom right corner of the cube 
-
-            TestHand leftHand = new TestHand(Handedness.Left);
-            TestHand rightHand = new TestHand(Handedness.Right);
-            yield return rightHand.Show(initialHandPositionRotation);
-            var rotateTo = Quaternion.Euler(45, 45, 45);
-
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
-            // Rotation constrain x axis
-            rotationConstraint.ConstraintOnRotation = AxisFlags.YAxis;
-
-            yield return rightHand.SetRotation(rotateTo);
-            yield return null;
-
-            Assert.AreEqual(45, testObject.transform.rotation.eulerAngles.x, 0.01f);
-            Assert.AreEqual(0, testObject.transform.rotation.eulerAngles.y, 0.01f);
-            Assert.AreEqual(45, testObject.transform.rotation.eulerAngles.z, 0.01f);
-
-            yield return rightHand.SetRotation(Quaternion.identity);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return null;
-
-            // check min max scale constraint
-            // Hands grab object at initial positions  
-            yield return leftHand.MoveTo(initialScaleHandPosition);
-            yield return leftHand.MoveTo(leftGrabScalePosition);
-
-            yield return rightHand.Show(initialScaleHandPosition);
-            yield return rightHand.MoveTo(rightGrabScalePosition);
-            
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
-            // No change to scale yet
-            Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
-
-            // Move hands beyond max scale limit
-            yield return leftHand.MoveTo(TestUtilities.DirectionRelativeToPlayspace(new Vector3(-scaleConstraint.ScaleMaximum, 0, 0)) + leftGrabScalePosition);
-            yield return rightHand.MoveTo(TestUtilities.DirectionRelativeToPlayspace(new Vector3(scaleConstraint.ScaleMaximum, 0, 0)) + rightGrabScalePosition);
-
-            // Assert scale at max
-            Assert.AreEqual(Vector3.one * scaleConstraint.ScaleMaximum, testObject.transform.localScale);
-
-            // move back to original scale
-            yield return leftHand.MoveTo(leftGrabScalePosition);
-            yield return rightHand.MoveTo(rightGrabScalePosition);
-
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-
-            // must have original scale
-            Assert.AreEqual(Vector3.one * initialScale, testObject.transform.localScale);
-            manipHandler.enabled = false;
-
-
-            //---- check bounds control behavior with manual constraint selection (only rotation should be constraint
-            // re-enable scale handles and change camera so we can grab the handles easier
-            TestUtilities.PlayspaceToOriginLookingForward();
-            boundsControl.gameObject.transform.position = Vector3.forward * 1.5f;
-            boundsControl.ScaleHandlesConfig.ShowScaleHandles = true;
-            yield return new WaitForEndOfFrame();
-            // reset scale from previous test
-            //testObject.transform.localScale = Vector3.one * initialScale;
-
-            Vector3 initialBoundsControlHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = boundsControl.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
-
-            // Hands grab object at initial position
-            yield return rightHand.MoveTo(initialBoundsControlHandPosition);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            yield return rightHand.MoveTo(frontRightCornerPos);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
-            // No change to scale yet
-            Assert.AreEqual(Vector3.one * initialScale, boundsControl.transform.localScale);
-
-            // Move hands beyond max scale limit
-            yield return rightHand.MoveTo(new Vector3(scaleConstraint.ScaleMaximum * 2, scaleConstraint.ScaleMaximum * 2, 0) + frontRightCornerPos);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
-            // Assert scale should not be capped - TODO this comparison is wrong
-            var diff = boundsControl.transform.localScale - (Vector3.one * scaleConstraint.ScaleMaximum);
-            Assert.True(diff.magnitude > 0, "Scale constraint should not be applied");
-
-            // move back to original scaling
-            yield return rightHand.MoveTo(frontRightCornerPos);
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
-            // check rotation constraint is applied
-            Transform handleAxisY = boundsControl.gameObject.transform.Find("rigRoot/midpoint_1");
-            Vector3 rightFrontRotationHandlePoint = handleAxisY.position;
-            //Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
-            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); 
-            yield return leftHand.MoveTo(rightFrontRotationHandlePoint);
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
-            // move to left side of cube
-            yield return leftHand.MoveTo(endRotation);
-            Assert.AreEqual(testObject.transform.rotation.eulerAngles.y, 0.0f);
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
-            // now remove the rotation constraint 
-            manager2.SelectedConstraints.Remove(rotationConstraint);
-            yield return leftHand.MoveTo(rightFrontRotationHandlePoint);
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-            // move to left side of cube
-            yield return leftHand.MoveTo(endRotation);
-            Assert.AreNotEqual(testObject.transform.rotation.eulerAngles.y, 0.0f);
 
             yield return null;
         }
