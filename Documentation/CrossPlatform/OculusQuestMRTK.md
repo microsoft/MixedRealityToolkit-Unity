@@ -30,7 +30,7 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 
 ## Setting up the Oculus Integration Unity package
 1. Download and import [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) from the Unity Asset Store. The latest version tested to
-work is 19.1. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
+work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules. Doing this will update the asmdefs with definitions and references needed for the
 relevant Oculus Quest code to function. It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
