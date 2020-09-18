@@ -28,7 +28,7 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 
     ![OculusPluginProvider](../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png)
 
-## Setting up the Oculus Integration Unity package
+## Setting up the Oculus Integration Unity package to enable handtracking
 1. Download and import [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) from the Unity Asset Store. The latest version tested to
 work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
