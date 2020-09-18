@@ -17,6 +17,15 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// Custom inspector for constraint manager.
+    /// Offers two modes depending on if auto constraint selection is active or not.
+    /// In auto constraint selection mode, all constraints attached to the current game object
+    /// will be displayed with respective goto buttons as well as an add button that allows adding 
+    /// new constraint components to the game object.
+    /// In manual constraint selection mode, a list of user configured constraints is shown with options
+    /// to modify the list, goto buttons as well as adding new constraints to the game object.
+    /// </summary>
     [CustomEditor(typeof(ConstraintManager), true)]
     [CanEditMultipleObjects]
     public class ConstraintManagerInspector : UnityEditor.Editor
@@ -25,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty selectedConstraints;
        
         private ConstraintManager constraintManager;
-
-        //private static bool constraintsFoldout = true;
 
         private const string autoMsg = "Constraint manager is currently set to auto mode. In auto mode all" +
             " constraints attached to this gameobject will automatically be processed by this manager.";
@@ -47,21 +54,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Attach,
             Detach,
             AddAndAttach,
-            //DetachAndRemove,
             Highlight
         }
 
         private static EntryAction RenderManualConstraintItem(SerializedProperty constraintEntry, bool canRemove = true)
         {
+            var constraint = constraintEntry.objectReferenceValue;
+            if (constraint == null)
+            {
+                // clean up deleted constraints
+                return EntryAction.Detach;
+            }
+
             using (new EditorGUILayout.HorizontalScope())
             {
-                var constraint = constraintEntry.objectReferenceValue;
-                if (constraint == null)
-                {
-                    // clean up deleted constraints
-                    return EntryAction.Detach;
-                }
-
                 EditorGUILayout.LabelField(constraint.GetType().Name, GUILayout.ExpandWidth(true));
 
                 if (canRemove)
@@ -75,11 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         return EntryAction.Detach;
                     }
-
-                    //if (InspectorUIUtility.FlexButton(new GUIContent("Remove Constraint", "Remove constraint from constraint manager and delete from game object.")))
-                    //{
-                    //    return EntryAction.DetachAndRemove;
-                    //}
                 }
                 return EntryAction.None;
             }
@@ -146,19 +147,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             for (int i = 0; i < selectedConstraints.arraySize; i++)
             {
                 SerializedProperty constraintProperty = selectedConstraints.GetArrayElementAtIndex(i);
-                var removeAction = RenderManualConstraintItem(constraintProperty, true);
-                if (removeAction == EntryAction.Detach)
+                var buttonAction = RenderManualConstraintItem(constraintProperty, true);
+                if (buttonAction == EntryAction.Detach)
                 {
                     selectedConstraints.DeleteArrayElementAtIndex(i);
                     serializedObject.ApplyModifiedProperties();
                 }
-                //else if (removeAction == EntryAction.DetachAndRemove)
-                //{
-                //    GameObject.Destroy(constraintProperty.objectReferenceValue);
-                //    selectedConstraints.DeleteArrayElementAtIndex(i);
-                //    serializedObject.ApplyModifiedProperties();
-                //}
-                else if (removeAction == EntryAction.Highlight)
+                else if (buttonAction == EntryAction.Highlight)
                 {
                     string constraintName = constraintProperty.objectReferenceValue.GetType().Name;
                     Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
@@ -191,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                         }
 
+                        // if all constraint components are already part of the list display disabled "no constraint available" entry
                         if (hasEntries == false)
                         {
                             var guiEnabledRestore = GUI.enabled;
@@ -200,9 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 "are already part of the list."), false, null);
                             GUI.enabled = guiEnabledRestore;
                         }
-                        // add an empty slot to manually drag in components
-                        // REMOVE THIS? menu.AddItem(new GUIContent("Empty", "Add an empty slot to the list."), false, AttachEmpty);
-
+                        
                         menu.ShowAsContext();
                     }
 
@@ -249,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     int tab = autoConstraintSelection.boolValue == true ? 0 : 1;
                     tab = GUILayout.Toolbar(tab, new string[] { "Auto Constraint Selection", "Manual Constraint Selection" });
                     EditorGUILayout.Space();
-                    //EditorGUILayout.PropertyField(autoConstraintSelection);
                     switch (tab)
                     {
                         case 0:
@@ -296,6 +289,73 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Util method for drawing a consistent constraints section.
+        /// Use this method in a component inspector for linking to a constraint manager. 
+        /// </summary>
+        /// <param name="gameObject">Game object the constraint manager is attached to.</param>
+        /// <param name="managerEnabled">Serialized property for enabling the manager - needs to be of type bool.</param>
+        /// <param name="managerRef">Serialized property of the constraint manager component link - needs to be type of ConstraintManager.</param>
+        /// <param name="isExpanded">Flag for indicating if the constraint foldout was previously collapsed or expanded.</param>
+        /// <returns>Current state of expanded or collapsed constraint foldout. Returns true if expanded / contents visible.</returns>
+        static public bool DrawConstraintManagerFoldout(GameObject gameObject, SerializedProperty managerEnabled, SerializedProperty managerRef, bool isExpanded)
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, "Constraints", true);
+
+            if (isExpanded)
+            {
+                EditorGUILayout.PropertyField(managerEnabled);
+                GUI.enabled = managerEnabled.boolValue;
+                var constraintManagers = gameObject.GetComponents<ConstraintManager>();
+
+                int selected = 0;
+
+                string[] options = new string[constraintManagers.Length];
+
+                int manualSelectionCount = 0;
+                for (int i = 0; i < constraintManagers.Length; ++i)
+                {
+                    var manager = constraintManagers[i];
+                    if (managerRef.objectReferenceValue == manager)
+                    {
+                        selected = i;
+                    }
+
+                    // popups will only show unqiue elements
+                    // in case of auto selection we don't care which one we're selecting as the behavior will be the same.
+                    // in case of manual selection users might want to differentiate which constraintmanager they are referring to.
+                    if (manager.AutoConstraintSelection == true)
+                    {
+                        options[i] = manager.GetType().Name + " auto selection";
+                    }
+                    else
+                    {
+                        manualSelectionCount++;
+                        options[i] = manager.GetType().Name + " manual selection " + manualSelectionCount;
+                    }
+                }
+
+
+                EditorGUILayout.BeginHorizontal();
+
+                selected = EditorGUILayout.Popup("Constraint Manager", selected, options, GUILayout.ExpandWidth(true));
+                ConstraintManager selectedConstraintManager = constraintManagers[selected];
+                managerRef.objectReferenceValue = selectedConstraintManager;
+                if (GUILayout.Button("Go to component"))
+                {
+                    EditorGUIUtility.PingObject(selectedConstraintManager);
+                    Highlighter.Highlight("Inspector", $"ComponentId: {selectedConstraintManager.GetInstanceID()}");
+                    EditorGUIUtility.ExitGUI();
+                }
+                EditorGUILayout.EndHorizontal();
+
+
+                GUI.enabled = true;
+            }
+
+            return isExpanded;
         }
     }
 }
