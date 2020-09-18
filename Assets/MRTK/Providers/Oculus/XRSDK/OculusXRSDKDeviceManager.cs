@@ -19,9 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.Android,
         "XRSDK Oculus Device Manager")]
-#if UNITY_EDITOR
-    [InitializeOnLoad]
-#endif
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
@@ -35,13 +32,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
+
+        public override void Initialize()
         {
+            base.Initialize();
 #if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
             Debug.Log(@"Detected a potential deployment to the Oculus Quest. Be sure to download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
 The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
 #endif
-
         }
 
         private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
