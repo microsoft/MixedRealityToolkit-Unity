@@ -21,6 +21,15 @@
     
     <meta property="docfx:rel" content="../">
     
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -556,7 +565,7 @@ public bool SmoothingActive { get; set; }</code></pre>
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_ObjectManipulator_SmoothingNear_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.</p>
+  <div class="markdown level1 remarks"><p>Note that enabling near smoothing may be perceived as being 'disconnected' from the hand.</p>
 </div>
   
   

@@ -19,6 +19,15 @@
     
     <meta property="docfx:rel" content="../">
     
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -94,40 +103,42 @@
 <p><em>It is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a> after getting the MRTK update</em>
 to auto-fix and upgrade from deprecated components and adjust to breaking changes. The migration tool is part of
 the <strong>Tools</strong> package.</p>
+<p>The instructions below describe the 2.4.0 to 2.5.0 upgrade path. If your project is on 2.3.0 or earlier, read on
+to the changes <a href="#updating-230-to-240">between versions</a> to understand the upgrade path, or read the previous
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/version/releases/2.4.0/Documentation/Updating.html">release's instructions</a>
+to do a version-by-version upgrade.</p>
 <h3 id="unity-asset-unitypackage-files">Unity asset (.unitypackage) files</h3>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.</li>
 <li>Close Unity</li>
-<li>Inside the <em>Assets</em> folder, delete the following <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete the following <strong>MRTK</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
-<li>MixedRealityToolkit</li>
-<li>MixedRealityToolkit.Examples</li>
-<li>MixedRealityToolkit.Extensions</li>
+<li>MRTK/Core</li>
+<li>MRTK/Examples</li>
+<li>MRTK/Extensions</li>
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
 <p>If additional extensions have been installed, please make a backup prior to deleting these folders.</p>
 </div>
 <ul>
-<li>MixedRealityToolkit.Providers</li>
-<li>MixedRealityToolkit.SDK</li>
-<li>MixedRealityToolkit.Services</li>
-<li>MixedRealityToolkit.Staging</li>
-</ul>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.</p>
-</div>
-<ul>
-<li>MixedRealityToolkit.Tools</li>
+<li>MRTK/Providers</li>
+<li>MRTK/SDK</li>
+<li>MRTK/Services</li>
+<li>MRTK/Tools</li>
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
 </div>
 </li>
-<li>Delete the <strong>Library</strong> folder</li>
+<li>Delete the <strong>Library</strong> folder
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.</p>
+</div>
+</li>
 <li>Re-open the project in Unity</li>
 <li>Import the new unity packages
 <ul>
@@ -144,12 +155,7 @@ the <strong>Tools</strong> package.</p>
 </ul>
 </li>
 <li>Close Unity and delete the <strong>Library</strong> folder (read the note below first!). This step is necessary to force Unity to refresh its
-asset database and reconcile existing custom profiles.
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.</p>
-</div>
-</li>
+asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
 <li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
@@ -158,7 +164,18 @@ asset database and reconcile existing custom profiles.
 - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
 </ul>
 </li>
-<li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.</li>
+<li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.
+The migration window contains a number of different migration handlers, which must each be run on their own. This step involves:
+<ul>
+<li>Select the first migration handler from the <strong>Migration Handler Selection</strong> dropdown.</li>
+<li>Click the &quot;Full Project&quot; button.</li>
+<li>Click the &quot;Add full project for migration&quot; button (this will scan the entire project for objects to migrate).</li>
+<li>Click the &quot;Migrate&quot; button which should be enabled if any migrateable objects were found.</li>
+<li>Repeat the previous three steps for each of the migration handlers within the dropdown.
+(See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8552">this issue</a> which covers work that can be done
+to simplify this migration process in a future release)</li>
+</ul>
+</li>
 </ol>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
 <p><a href="#folder-renames-in-240">Folder renames</a>
