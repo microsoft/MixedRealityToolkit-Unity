@@ -56,6 +56,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 #if WINDOWS_UWP
+        private const string SpatialNamespace = "Windows.UI.Input.Spatial";
+        private const string SpatialInteractionController = "SpatialInteractionController";
+        private const string TryGetRenderableModelAsyncName = "TryGetRenderableModelAsync";
+
+        private static readonly bool IsTryGetRenderableModelAvailable = WindowsApiChecker.IsMethodAvailable(SpatialNamespace, SpatialInteractionController, TryGetRenderableModelAsyncName);
+
         /// <summary>
         /// Attempts to call the Windows API for loading the controller renderable model at runtime.
         /// </summary>
@@ -64,19 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <remarks>Doesn't work in-editor.</remarks>
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
-            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
-
-            // GetForCurrentView and GetDetectedSourcesAtTimestamp were both introduced in the same Windows version.
-            // We need only check for one of them.
-            if (WindowsApiChecker.IsMethodAvailable(
-                "Windows.UI.Input.Spatial",
-                "SpatialInteractionManager",
-                "GetForCurrentView"))
+            if (IsTryGetRenderableModelAvailable)
             {
-                returnValue = interactionSource.GetSpatialInteractionSource()?.Controller.TryGetRenderableModelAsync();
+                return interactionSource.GetSpatialInteractionSource()?.Controller.TryGetRenderableModelAsync();
             }
 
-            return returnValue;
+            return null;
         }
 #endif // WINDOWS_UWP
     }
