@@ -131,6 +131,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         #endregion Controller Utilities
 
+
 #if OCULUSINTEGRATION_PRESENT
         /// <inheritdoc/>
         public override void Enable()
