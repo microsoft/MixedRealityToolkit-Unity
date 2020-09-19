@@ -95,38 +95,41 @@
 <p>For a material to be influenced by a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLight</code></a> the <em>Mixed Reality Toolkit/Standard</em> shader must be used and the <em>Hover Light</em> property must be enabled.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Up to two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> are supported by default.</p>
+<p>The MRTK/Standard shader supports up to two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> by default, but will scale to support four and then ten as more lights are added to the scene.</p>
 </div>
 <h2 id="examples">Examples</h2>
 <p>Most scenes within the MRTK utilize a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLight</code></a>. The most common use case can be found on the MRTK/SDK/Features/UX/Prefabs/Cursors/DefaultCursor.prefab</p>
+<p>The <strong>HoverLightExamples</strong> scene also demonstrates usage of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLight</code></a> behaviors, and can be found at: MRTK/Examples/Demos/StandardShader/Scenes/</p>
 <h2 id="advanced-usage">Advanced Usage</h2>
-<p>By default only two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> can illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> at a time. If your project requires more than two <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> the sample code below demonstrates how to achieve this.</p>
+<p>Only ten <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> can illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> at a time. If your project requires more than ten <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> to influence a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> the sample code below demonstrates how to achieve this.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Having many <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> will increase pixel shader instructions and will impact performance. Please profile these changes within your project.</p>
+<p>Having many <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a> illuminate a <a href="https://docs.unity3d.com/ScriptReference/Material.html">material</a> will increase pixel shader instructions and will impact performance. <strong>Please profile these changes within your project.</strong></p>
 </div>
 <p><em>How to increase the number of available <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLights</code></a>
-from two to four.</em></p>
+from ten to twelve.</em></p>
 <pre><code class="lang-C#">// 1) Within MRTK/Core/StandardAssets/Shaders/MixedRealityStandard.shader change:
 
-#define HOVER_LIGHT_COUNT 2
+#if defined(_HOVER_LIGHT_HIGH)
+#define HOVER_LIGHT_COUNT 10
 
 // to:
 
-#define HOVER_LIGHT_COUNT 4
+#if defined(_HOVER_LIGHT_HIGH)
+#define HOVER_LIGHT_COUNT 12
 
 // 2) Within MRTK/Core/Utilities/StandardShader/HoverLight.cs change:
 
-private const int hoverLightCount = 2;
+private const int hoverLightCountHigh = 10;
 
 // to:
 
-private const int hoverLightCount = 4;
+private const int hoverLightCountHigh = 12;
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
 <p>If Unity logs a warning similar to below then you must restart Unity before your changes will take effect.</p>
-<p><code>Property (_HoverLightData) exceeds previous array size (8 vs 4). Cap to previous &gt;size.</code></p>
+<p><code>Property (_HoverLightData) exceeds previous array size (24 vs 20). Cap to previous &gt;size.</code></p>
 </div>
 <h2 id="see-also">See also</h2>
 <ul>
