@@ -80,6 +80,10 @@ to "Controllers and Hands".
     ![OculusRunDevice](../Images/CrossPlatform/OculusQuest/OculusRunDevice.png)
 
 1. Select Build and Run 
+    - You will likely encounter the following set of build errors when you select *Build and Run* the first time. You should be able to successfully deploy upon selecting *Build and Run* again.
+
+    ![OculusExpectedBuildErrors](../Images/CrossPlatform/OculusQuest/OculusExpectedBuildErrors.png)
+
 1. Accept the _Allow USB Debugging_ prompt from inside the quest
 1. See your scene inside the Oculus Quest
 
