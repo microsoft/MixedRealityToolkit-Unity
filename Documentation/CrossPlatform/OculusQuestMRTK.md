@@ -87,11 +87,11 @@ to "Controllers and Hands".
 1. Accept the _Allow USB Debugging_ prompt from inside the quest
 1. See your scene inside the Oculus Quest
 
-##Removing Oculus from the Project
+## Removing Oculus Integration from the Project
 
-1. Navigate to the Mixed Reality Toolkit > Leap Motion > Separate Leap Motion Unity Modules
+1. Navigate to the Mixed Reality Toolkit > Oculus > Separate Oculus Integration Unity Modules
     ![OculusSeparationAsmdef](../Images/CrossPlatform/OculusQuest/OculusSeparationAsmdef.png)
-1. Let Unity refresh as references in the Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef file are modified in this step
+1. Let Unity refresh as references in the Microsoft.MixedReality.Toolkit.Providers.Oculus.asmdef and other files are modified in this step
 1. Close Unity
 1. Close Visual Studio, if it's open
 1. Open File Explorer and navigate to the root of the MRTK Unity project
