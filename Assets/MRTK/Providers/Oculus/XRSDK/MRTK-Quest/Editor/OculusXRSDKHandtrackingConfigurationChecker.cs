@@ -56,13 +56,67 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         private static readonly string[] Definitions = { "OCULUSINTEGRATION_PRESENT" };
 
         /// <summary>
-        /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
+        /// Integrate MRTK and the Oculus Integration Unity Modules if the Oculus Integration Unity Modules is in the project. If is are not in the project, display a pop up window.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
-        internal static void ConfigureOculusIntegration()
+        internal static void IntegrateOculusWithMRTK()
         {
-            bool OculusIntegrationPresent = ReconcileOculusIntegrationDefine();
+            // Check if Oculus Integration package is present
+            bool OculusIntegrationPresent = DetectOculusIntegrationDefine();
 
+            if (!OculusIntegrationPresent)
+            {
+                EditorUtility.DisplayDialog(
+                    "Oculus Integration Package Not Detected",
+                    "The Oculus Integration Package could not be found in this project, please import the assets into this project. The assets can be found here: " +
+                        "https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022",
+                    "OK");
+            }
+
+            // Update the ScriptingDefinitions depending on the presence of the Oculus Integration Unity Modules
+            ReconcileOculusIntegrationDefine();
+
+            // Configure the rest of the asmdefs
+            ConfigureOculusIntegration(OculusIntegrationPresent);
+        }
+
+        /// <summary>
+        /// Separate MRTK and the Oculus Integration Unity Modules and display a prompt for the user to close unity and delete the assets.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Separate Oculus Integration Unity Modules")]
+        internal static void SeparateOculusFromMRTK()
+        {
+            bool OculusIntegrationPresent = DetectOculusIntegrationDefine();
+
+            // If the user tries to separate the Leap Assets without assets in the project display a message
+            if (!OculusIntegrationPresent)
+            {EditorUtility.DisplayDialog(
+                    "MRTK Leap Motion Removal",
+                    "There are no Leap Motion Unity Modules in the project to separate from MRTK",
+                    "OK");
+
+                return;
+            }
+
+            // Force removal of the ScriptingDefinitions while the Oculus Integration is still in the project
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+
+            // Remove the references to the Oculus Integration assembly definitions
+            ConfigureOculusIntegration(false);
+
+            // Prompt the user to close unity and delete the assets to completely remove.  Closing unity and deleting the assets is optional.
+            EditorUtility.DisplayDialog(
+                "MRTK Oculus Integration Removal",
+                "To complete the removal of the Oculus Integration Unity Modules, close Unity, delete the assets and Library folders, and reopen Unity",
+                "OK");
+        }
+
+        /// <summary>
+        /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
+        /// </summary>
+        internal static void ConfigureOculusIntegration(bool OculusIntegrationPresent)
+        {
             // Update the CSC to filter out warnings emitted by the Oculus Integration Package
             if(OculusIntegrationPresent)
             {
@@ -155,24 +209,40 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         }
 
         /// <summary>
-        /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
+        /// Checks if the Oculus Integration Asset as present or not present
         /// </summary>
         /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        internal static bool ReconcileOculusIntegrationDefine()
+        internal static bool DetectOculusIntegrationDefine()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
             if (files.Length > 0)
             {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
+        /// </summary>
+        /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
+        internal static void ReconcileOculusIntegrationDefine()
+        {
+            bool isOculusPresent = DetectOculusIntegrationDefine();
+
+            if (isOculusPresent)
+            {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                return true;
             }
             else
             {
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
                 ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
-                return false;
             }
         }
 
