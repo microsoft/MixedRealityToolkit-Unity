@@ -12,12 +12,12 @@ using Windows.UI.Input.Spatial;
 using Microsoft.Windows.Graphics.Holographic;
 #else
 using Windows.Graphics.Holographic;
-#endif
+#endif // DOTNETWINRT_PRESENT
 #else
 using Microsoft.Windows.Graphics.Holographic;
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.UI.Input.Spatial;
-#endif
+#endif // WINDOWS_UWP
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
