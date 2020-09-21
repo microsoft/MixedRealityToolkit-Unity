@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             var constraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
@@ -143,6 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             var constraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
@@ -230,6 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
@@ -316,6 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
@@ -406,6 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.TwoHanded;
             var scaleHandler = testObject.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
@@ -467,6 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
@@ -517,6 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
@@ -574,6 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
@@ -641,6 +649,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             // add an xyz rotate constraint for one handed so we can only move
@@ -709,6 +718,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
@@ -784,6 +794,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
@@ -844,6 +855,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
+            manipHandler.SmoothingNear = false;
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 

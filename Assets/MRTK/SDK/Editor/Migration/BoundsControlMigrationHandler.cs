@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public void Migrate(GameObject gameObject)
         {
             var boundingBox = gameObject.GetComponent<BoundingBox>();
-            var boundsControl = gameObject.AddComponent<BoundsControl>();
+            var boundsControl = gameObject.EnsureComponent<BoundsControl>();
 
             boundsControl.enabled = boundingBox.enabled;
 
@@ -79,11 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 // destroy obsolete component
                 Object.DestroyImmediate(boundingBox);
             }
-        }
-
-        private string GenerateUniqueConfigName(string directory, GameObject migratingFrom, string configName)
-        {
-            return directory + "/" + migratingFrom.name + migratingFrom.GetInstanceID() + configName + ".asset";
         }
 
         #region Flags Migration
@@ -178,14 +174,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region Visuals Configuration Migration
 
-        private T EnsureConfiguration<T>(T config) where T : ScriptableObject
+        private T EnsureConfiguration<T>(GameObject owner, T config, bool enforceScriptableCreation) where T : ScriptableObject
         {
-            return config == null ? ScriptableObject.CreateInstance<T>() : config;
+            var instance = config;
+            if (instance == null || enforceScriptableCreation)
+            {
+                instance = ScriptableObject.CreateInstance<T>();
+                // scriptables in prefabs need to be added into their asset file as serializedobject, else they won't get stored
+                string objectPath = owner.scene.path;
+                if (objectPath.EndsWith(".prefab"))
+                {
+                    instance.name = instance.GetType().Name;
+                    AssetDatabase.AddObjectToAsset(instance, objectPath);
+                }
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// This method checks if the given object has a property override for any of the given property names.
+        /// It's used to figure out if scriptable objects have to be created for the current prefab / gameobject instance level.
+        /// </summary>
+        /// <param name="target">The target object (can be prefab component or component instance).</param>
+        /// <param name="propertyNames">Property names to be checked.</param>
+        /// <returns>Returns true if any of the passed property names have an override.</returns>
+        bool HasPropertyOverrides(Object target, List<string> propertyNames)
+        {
+            var propertyModifications = PrefabUtility.GetPropertyModifications(target);
+            if (propertyModifications != null)
+            {
+                foreach (var propertyMod in propertyModifications)
+                {
+                    if (propertyNames.Contains(propertyMod.propertyPath))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void MigrateBoxDisplay(BoundsControl control, BoundingBox box)
         {
-            BoxDisplayConfiguration config = EnsureConfiguration(control.BoxDisplayConfig);
+            List<string> propertyPaths = new List<string>{ "boxMaterial", "boxGrabbedMaterial", "flattenAxisDisplayScale" };
+            BoxDisplayConfiguration config = EnsureConfiguration(control.gameObject, control.BoxDisplayConfig, HasPropertyOverrides(box, propertyPaths));
             config.BoxMaterial = box.BoxMaterial;
             config.BoxGrabbedMaterial = box.BoxGrabbedMaterial;
             config.FlattenAxisDisplayScale = box.FlattenAxisDisplayScale;
@@ -194,7 +228,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateLinks(BoundsControl control, BoundingBox box)
         {
-            LinksConfiguration config = EnsureConfiguration(control.LinksConfig);
+            List<string> propertyPaths = new List<string> { "wireframeMaterial", "wireframeEdgeRadius", "wireframeShape", "showWireFrame" };
+            LinksConfiguration config = EnsureConfiguration(control.gameObject, control.LinksConfig, HasPropertyOverrides(box, propertyPaths));
             config.WireframeMaterial = box.WireframeMaterial;
             config.WireframeEdgeRadius = box.WireframeEdgeRadius;
             config.WireframeShape = MigrateWireframeShape(box.WireframeShape);
@@ -204,7 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateScaleHandles(BoundsControl control, BoundingBox box)
         {
-            ScaleHandlesConfiguration config = EnsureConfiguration(control.ScaleHandlesConfig);
+            List<string> propertyPaths = new List<string> { "scaleHandleSlatePrefab", "showScaleHandles", "handleMaterial", "handleGrabbedMaterial", 
+            "scaleHandlePrefab", "scaleHandleSize", "scaleHandleColliderPadding", "drawTetherWhenManipulating", "handlesIgnoreCollider"};
+            ScaleHandlesConfiguration config = EnsureConfiguration(control.gameObject, control.ScaleHandlesConfig, HasPropertyOverrides(box, propertyPaths));
             config.HandleSlatePrefab = box.ScaleHandleSlatePrefab;
             config.ShowScaleHandles = box.ShowScaleHandles;
             config.HandleMaterial = box.HandleMaterial;
@@ -219,7 +256,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box)
         {
-            RotationHandlesConfiguration config = EnsureConfiguration(control.RotationHandlesConfig);
+            List<string> propertyPaths = new List<string> { "rotationHandlePrefabColliderType", "showRotationHandleForX", "showRotationHandleForY",
+            "showRotationHandleForZ", "handleMaterial", "handleGrabbedMaterial", "rotationHandlePrefab", "rotationHandleSize", "rotateHandleColliderPadding", 
+            "drawTetherWhenManipulating", "handlesIgnoreCollider"};
+            RotationHandlesConfiguration config = EnsureConfiguration(control.gameObject, control.RotationHandlesConfig, HasPropertyOverrides(box, propertyPaths));
             config.HandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
             config.ShowHandleForX = box.ShowRotationHandleForX;
             config.ShowHandleForY = box.ShowRotationHandleForY;
@@ -236,7 +276,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void MigrateProximityEffect(BoundsControl control, BoundingBox box)
         {
-            ProximityEffectConfiguration config = EnsureConfiguration(control.HandleProximityEffectConfig);
+            List<string> propertyPaths = new List<string> { "proximityEffectActive", "handleMediumProximity", "handleCloseProximity", "farScale", 
+            "mediumScale", "closeScale", "farGrowRate", "mediumGrowRate", "closeGrowRate"};
+            ProximityEffectConfiguration config = EnsureConfiguration(control.gameObject, control.HandleProximityEffectConfig, HasPropertyOverrides(box, propertyPaths));
             config.ProximityEffectActive = box.ProximityEffectActive;
             config.ObjectMediumProximity = box.HandleMediumProximity;
             config.ObjectCloseProximity = box.HandleCloseProximity;

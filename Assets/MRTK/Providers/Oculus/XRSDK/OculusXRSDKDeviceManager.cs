@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     /// <summary>
     /// Manages XR SDK devices on the Oculus platform.
@@ -32,6 +32,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
+
+#if !OCULUSINTEGRATION_PRESENT && UNITY_EDITOR && UNITY_ANDROID
+        public override void Initialize()
+        {
+            base.Initialize();
+            Debug.Log(@"Detected a potential deployment issue for the Oculus Quest. In order to use handtracking with the Oculus Quest, download the Oculus Integration Package from the Unity Asset Store and run the Integration tool before deploying.
+The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules</i>");
+        }
+#endif
 
         private Dictionary<Handedness, OculusHand> trackedHands = new Dictionary<Handedness, OculusHand>();
 

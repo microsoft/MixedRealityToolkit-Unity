@@ -713,22 +713,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 718
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 124
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 118
+      value: 121
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 21
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -738,21 +738,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: "This scene demonstrates use of the experimental solver, Direction Indicator.
-        This solver can be applied to UX that direct users to turn around or orient
-        to some desired point in the scene.\n\n<size=\"32\"><b>How to use</b></size>\nUse
-        the directional chevron indicator to find the coffee cup in the scene. When
-        the coffee cup is in view, the chevron will disappear.\n\n\nGenerally, the
-        frame of reference will be the camera for indicators but they can also be
-        attached to your hands or other transforms in the scene. \n\nModify the SolverHandler
-        Tracked Target Type to determine what should be used as a frame of reference.\n\nThe
-        Directional Indicator component's \"DirectionalTarget\" property determines
-        the point in the scene that should be discovered.\n"
+      value: "<size=42><b>Directional Indicator Example</b></size>\r\n\nThis scene
+        demonstrates use of the experimental solver, Direction Indicator. This solver
+        can be applied to UX that direct users to turn around or orient to some desired
+        point in the scene.\n\n<size=\"32\"><b>How to use</b></size>\nUse the directional
+        chevron indicator to find the coffee cup in the scene. When the coffee cup
+        is in view, the chevron will disappear.\n\n\nGenerally, the frame of reference
+        will be the camera for indicators but they can also be attached to your hands
+        or other transforms in the scene. \n\nModify the SolverHandler Tracked Target
+        Type to determine what should be used as a frame of reference.\n\nThe Directional
+        Indicator component's \"DirectionalTarget\" property determines the point
+        in the scene that should be discovered.\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 190
+      value: 147
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
