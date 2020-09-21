@@ -846,7 +846,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.html",
-          "hash": "mciiJT246O7WOQGKCKE/3A=="
+          "hash": "SR4DaIVrzL8UXMqIxnNWrQ=="
         }
       },
       "is_incremental": false,
@@ -954,19 +954,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
-          "hash": "tFZ6Vi+mO5W6b58KxHuoMA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "../../Documentation/GettingStartedWithTheMRTK.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "X2IB4yHby6zGAG57EDadPg=="
+          "hash": "mjVeRFiClmoNw72EGipExA=="
         }
       },
       "is_incremental": false,
@@ -4312,6 +4300,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK-ControllerDiagram.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/MRTK-Doc-Versions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK-Doc-Versions.png"
         }
       },
       "is_incremental": false,
@@ -7911,6 +7910,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/Installation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Installation.html",
+          "hash": "zK98lL2Lgyd4QHNlLwlmHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/LargeProjects.md",
       "output": {
         ".html": {
@@ -8551,7 +8562,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "U5J8csvdVp8yR/mJYFZU5A=="
+          "hash": "WLFoPr8rdqRCc5C+Fr8afA=="
         }
       },
       "is_incremental": false,
@@ -8631,6 +8642,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/WelcomeToMRTK.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/WelcomeToMRTK.html",
+          "hash": "/bJhSYI/JvweCt5QW4j72Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/hologram-stabilization.md",
       "output": {
         ".html": {
@@ -8647,7 +8670,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "e9Wy3u3AyFlaCQJpa4xOpg=="
+          "hash": "a9hp+FEBAJY4LmN8B1CySg=="
         }
       },
       "is_incremental": false,
@@ -8683,7 +8706,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "gAesLvmyfc/b8ZIhdRIojQ=="
+          "hash": "MsbRCRfjf4JHtZi0sdylHg=="
         }
       },
       "is_incremental": false,
@@ -24823,7 +24846,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.AxisFlags.html",
-          "hash": "mrTu1reToH6Fi0lXYKK1LQ=="
+          "hash": "PKwaZB5o6uNSKNQVLoQHLA=="
         }
       },
       "is_incremental": false,
@@ -28963,7 +28986,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "weSQ/cOy6JsTQTIsnY4ADw=="
+          "hash": "jKlv0SpEAxdWlMwjKpjkxA=="
         }
       },
       "is_incremental": false,
@@ -29014,11 +29037,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 160,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -29027,15 +29049,16 @@
           "total_file_count": 1688,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 159,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
