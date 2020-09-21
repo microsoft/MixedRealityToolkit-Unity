@@ -138,6 +138,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ _HOVER_LIGHT_MEDIUM _HOVER_LIGHT_HIGH
             #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
@@ -167,7 +168,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
-			#pragma shader_feature _INDEPENDENT_CORNERS
+            #pragma shader_feature _INDEPENDENT_CORNERS
             #pragma shader_feature _BORDER_LIGHT
             #pragma shader_feature _BORDER_LIGHT_USES_HOVER_COLOR
             #pragma shader_feature _BORDER_LIGHT_REPLACES_ALBEDO
@@ -405,7 +406,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
+#if defined(_HOVER_LIGHT_HIGH)
+#define HOVER_LIGHT_COUNT 10
+#elif defined(_HOVER_LIGHT_MEDIUM)
+#define HOVER_LIGHT_COUNT 4
+#else
 #define HOVER_LIGHT_COUNT 2
+#endif
 #define HOVER_LIGHT_DATA_SIZE 2
             float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)

@@ -28,17 +28,12 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 
     ![OculusPluginProvider](../Images/CrossPlatform/OculusQuest/OculusPluginProvider.png)
 
-## Setting up the Oculus Integration Unity package
+## Setting up the Oculus Integration Unity package to enable handtracking
 1. Download and import [Oculus Integration](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022) from the Unity Asset Store. The latest version tested to
-work is 19.1. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
-
-1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Configure CSC File for Oculus. Updating the csc file filters out the obsolete warnings produced by the Oculus Integration Assets. 
-The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-quest configuration process.
-
-    ![OculusIntegrationCsc](../Images/CrossPlatform/OculusQuest/OculusIntegrationCsc.png)
+work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules. Doing this will update the asmdefs with definitions and references needed for the
-relevant Oculus Quest code to function.
+relevant Oculus Quest code to function. It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
 
@@ -85,6 +80,10 @@ to "Controllers and Hands".
     ![OculusRunDevice](../Images/CrossPlatform/OculusQuest/OculusRunDevice.png)
 
 1. Select Build and Run 
+    - You will likely encounter the following set of build errors when you select *Build and Run* the first time. You should be able to successfully deploy upon selecting *Build and Run* again.
+
+    ![OculusExpectedBuildErrors](../Images/CrossPlatform/OculusQuest/OculusExpectedBuildErrors.png)
+
 1. Accept the _Allow USB Debugging_ prompt from inside the quest
 1. See your scene inside the Oculus Quest
 
