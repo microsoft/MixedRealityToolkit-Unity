@@ -95,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [HideInInspector]
         private bool maskEnabled = true;
 
         /// <summary>
