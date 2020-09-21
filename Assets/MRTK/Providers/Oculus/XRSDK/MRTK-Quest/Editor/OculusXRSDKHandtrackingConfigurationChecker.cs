@@ -216,14 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
-            if (files.Length > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return files.Length > 0;
         }
 
         /// <summary>
