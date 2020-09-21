@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case RotationConstraintType.ZAxisOnly:
                     return AxisFlags.XAxis | AxisFlags.YAxis;
                 default:
-                    return AxisFlags.None;
+                    return 0;
             }
         }
     }
