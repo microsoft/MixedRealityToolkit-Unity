@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// For the SpherePointer it's the axis from the palm to the index tip
         /// For any other IMixedRealityController, return just the pointer's forward orientation
         /// </summary>
-        public bool TryGetNearGraspAxis(out Vector3 axis)
+        private bool TryGetNearGraspAxis(out Vector3 axis)
         {
             using (TryGetNearGraspAxisPerfMarker.Auto())
             {

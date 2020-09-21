@@ -435,13 +435,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        bool IMixedRealityNearPointer.TryGetNearGraspAxis(out Vector3 axis)
-        {
-            axis = transform.forward;
-            return true;
-        }
-
-        /// <inheritdoc />
         bool IMixedRealityNearPointer.TryGetDistanceToNearestSurface(out float distance)
         {
             distance = closestDistance;
