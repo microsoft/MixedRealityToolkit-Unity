@@ -162,7 +162,7 @@ true, this error may manifest in the Unity console:</p>
 <pre><code class="lang-cmd">Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
 </code></pre>
 <p>The solution to this is to ensure that the <a href="https://docs.microsoft.com/dotnet/core/tools/?tabs=netcore2x">.NET Core CLI tools are installed</a> and reboot the system to force all apps to get a refreshed system path.</p>
-<p>If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please <a href="../GettingStartedWithTheMRTK.html#getting-help">reach out on one of our help resources</a>.</p>
+<p>If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please <a href="../WelcomeToMRTK.html#getting-help">reach out on one of our help resources</a>.</p>
 <h4 id="manual-dotnetadapter-installation">Manual DotNetAdapter installation</h4>
 <p>In the event that the installation of the DotNetAdapter cannot be performed via MSBuild for Unity, the following steps can be performed.</p>
 <div class="IMPORTANT">
@@ -186,7 +186,7 @@ true, this error may manifest in the Unity console:</p>
 </li>
 </ol>
 <h3 id="removing-hololens-2-specific-remoting-support">Removing HoloLens 2-specific remoting support</h3>
-<p>If you're running into conflicts or other issues due to the presence of the DotNetWinRT adapter, please <a href="../GettingStartedWithTheMRTK.html#getting-help">reach out on one of our help resources</a>.</p>
+<p>If you're running into conflicts or other issues due to the presence of the DotNetWinRT adapter, please <a href="../WelcomeToMRTK.html#getting-help">reach out on one of our help resources</a>.</p>
 <p>You can also temporarily remove the adapter to workaround your issue via the following steps:</p>
 <ol>
 <li>In Unity, go to Window -&gt; Package Manager and uninstall MSBuild for Unity.</li>
