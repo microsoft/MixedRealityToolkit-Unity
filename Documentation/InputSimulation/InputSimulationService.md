@@ -127,7 +127,7 @@ All hand placement can also changed in the [input simulation tools window](#inpu
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
-1. Enable hand control using the **Left/Right Controller Control Key** (*Left Shift* or *Space*)
+1. Enable hand control using the **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*)
 
 2. While manipulating, press and hold a mouse button to perform a hand gesture.
 
@@ -138,7 +138,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 ### One-hand manipulation
 
-1. Press and hold **Left/Right Controller Control Key** (*Left Shift* or *Space*)
+1. Press and hold **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*)
 2. Point at object
 3. Hold mouse button to pinch
 4. Use your mouse to move the object
