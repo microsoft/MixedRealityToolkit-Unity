@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <summary>
         /// Gets the current native SpatialInteractionSource for this InteractionSource.
         /// </summary>
-        /// <param name="interactionSource">This InteractionSource to search for via the native Windows APIs.</param>
+        /// <param name="interactionSource">The InteractionSource to search for via the native Windows APIs.</param>
         /// <returns>The current native SpatialInteractionSource.</returns>
         public static SpatialInteractionSource GetSpatialInteractionSource(this InteractionSource interactionSource) => interactionSource.GetSpatialInteractionSourceState()?.Source;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -73,18 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         private static readonly bool IsHapticsAvailable = WindowsApiChecker.IsMethodAvailable(HapticsNamespace, SimpleHapticsController, SendHapticFeedback);
 
         /// <summary>
-        /// 
+        /// Start haptic feedback on the interaction source with the specified intensity.
         /// </summary>
-        /// <param name="interactionSource"></param>
-        /// <param name="intensity"></param>
+        /// <param name="interactionSource">The source to start haptics on.</param>
+        /// <param name="intensity">The strength of the haptic feedback from 0.0 (no haptics) to 1.0 (maximum strength).</param>
         public static void StartHaptics(this InteractionSource interactionSource, float intensity) => interactionSource.StartHaptics(intensity, float.MaxValue);
 
         /// <summary>
-        /// 
+        /// Start haptic feedback on the interaction source with the specified intensity and continue for the specified amount of time.
         /// </summary>
-        /// <param name="interactionSource"></param>
-        /// <param name="intensity"></param>
-        /// <param name="durationInSeconds"></param>
+        /// <param name="interactionSource">The source to start haptics on.</param>
+        /// <param name="intensity">The strength of the haptic feedback from 0.0 (no haptics) to 1.0 (maximum strength).</param>
+        /// <param name="durationInSeconds">The time period expressed in seconds.</param>
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
             if (!IsHapticsAvailable)
@@ -113,9 +113,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         }
 
         /// <summary>
-        /// 
+        /// Stops haptics feedback on the specified interaction source.
         /// </summary>
-        /// <param name="interactionSource"></param>
+        /// <param name="interactionSource">The source to stop haptics for.</param>
         public static void StopHaptics(this InteractionSource interactionSource)
         {
             if (!IsHapticsAvailable)
