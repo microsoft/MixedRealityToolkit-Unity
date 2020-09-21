@@ -195,7 +195,7 @@ The bug is signified with this set of 3 errors:
 
 **UnityUI and TextMeshPro**
 
-There's a known issue for newer version of TextMeshPro (2.1.1+) and Unity 2019.4.x, where the default font size for dropdowns has been increased
+There's a known issue for newer versions of TextMeshPro (1.5.0+ or 2.1.1+), where the default font size for dropdowns and bold font character spacing has been altered.
 
 ![TMP image](https://user-images.githubusercontent.com/68253937/93158069-4d582f00-f6c0-11ea-87ad-94d0ba3ba6e5.png)
 
