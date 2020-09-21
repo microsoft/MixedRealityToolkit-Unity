@@ -2918,7 +2918,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
@@ -8991,7 +8991,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 0
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.0001
   rotateLerpTime: 0.0001
   scaleLerpTime: 0.0001
@@ -9543,7 +9543,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.0001
   rotateLerpTime: 0.0001
   scaleLerpTime: 0.0001
@@ -11809,7 +11809,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
@@ -13824,7 +13824,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.0001
   rotateLerpTime: 0.0001
   scaleLerpTime: 0.0001
@@ -14291,7 +14291,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -18907,7 +18907,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -20372,7 +20372,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 0
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -21061,7 +21061,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 0
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -22401,7 +22401,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.0001
   rotateLerpTime: 0.0001
   scaleLerpTime: 0.0001
@@ -23316,7 +23316,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
@@ -23483,7 +23483,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 0
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
@@ -27943,7 +27943,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
@@ -28884,7 +28884,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: -1
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.0001
   rotateLerpTime: 0.0001
   scaleLerpTime: 0.0001
