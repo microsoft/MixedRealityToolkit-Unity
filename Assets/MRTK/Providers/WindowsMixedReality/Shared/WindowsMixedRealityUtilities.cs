@@ -13,7 +13,7 @@ using Microsoft.Windows.Graphics.Holographic;
 #else
 using Windows.Graphics.Holographic;
 #endif
-#elif DOTNETWINRT_PRESENT
+#else
 using Microsoft.Windows.Graphics.Holographic;
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.UI.Input.Spatial;
