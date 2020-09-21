@@ -3,17 +3,12 @@
 // Licensed under the MIT License.
 //
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.Editor;
-using Vuforia.EditorClasses;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -308,6 +303,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.PropertyField(managerEnabled);
                 GUI.enabled = managerEnabled.boolValue;
+                // Make sure we're having at least one constraint manager available.
+                // Usually this should be ensured by the component requirement. However 
+                // for components that had this requirement added after they were serialized
+                // this won't work out of the box.
+                gameObject.EnsureComponent<ConstraintManager>(); 
                 var constraintManagers = gameObject.GetComponents<ConstraintManager>();
 
                 int selected = 0;
