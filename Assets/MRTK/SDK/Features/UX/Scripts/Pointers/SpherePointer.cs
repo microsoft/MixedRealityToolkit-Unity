@@ -266,10 +266,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNearGraspAxis");
 
         /// <summary>
-        /// Gets the axis that the grasp happens
-        /// For the SpherePointer it's the axis from the palm to the index tip
-        /// For any other IMixedRealityController, return just the pointer's forward orientation
+        /// Because pointers shouldn't be able to interact with objects that are "behind" it, it is necessary to determine the forward axis of the pointer when making interaction checks.
+        /// 
+        /// For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).
+        ///
+        /// This method provides a mechanism to get this normalized forward axis.
         /// </summary>
+        /// <param name="axis">Out parameter filled with the grasp's forward axis if available, otherwise returns the forward axis of the transform.</param>
+        /// <returns>True if a grasp's forward axis was retrieved, false if not.</returns>
         private bool TryGetNearGraspAxis(out Vector3 axis)
         {
             using (TryGetNearGraspAxisPerfMarker.Auto())
