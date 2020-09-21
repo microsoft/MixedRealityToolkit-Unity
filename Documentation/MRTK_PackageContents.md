@@ -87,5 +87,5 @@ The optional Microsoft.MixedRealityToolkit.Unity.Examples package includes demon
 
 ## See also
 
-- [Getting Started with the MRTK](GettingStartedWithTheMRTK.md)
+- [Welcome to MRTK](WelcomeToMRTK.md)
 - [NuGet Packaging](MRTKNuGetPackage.md)
