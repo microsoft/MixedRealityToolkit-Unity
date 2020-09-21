@@ -1,28 +1,40 @@
-- name: Getting Started with MRTK
-  href: GettingStartedWithTheMRTK.md
+- name: Welcome to MRTK
+  href: WelcomeToMRTK.md
   items:
-  - name: Release Notes
-    href: ReleaseNotes.md
-  - name: MRTK Package Contents
-    href: MRTK_PackageContents.md
-  - name: Updating from earlier versions
-    href: Updating.md
-  - name: Upgrading from HTK
-    href: HTKToMRTKPortingGuide.md
-  - name: Building and Deploying MRTK
-    href: BuildAndDeploy.md
-  - name: NuGet Packages
-    href: MRTKNuGetPackage.md
-  - name: MRTK configuration dialog
-    href: MRTK_Configuration_Dialog.md
-  - name: Getting started with MRTK and XR SDK
-    href: GettingStartedWithMRTKAndXRSDK.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: Hologram Stabilization
-    href: Hologram-Stabilization.md
-  - name: Using MRTK in large projects
-    href: LargeProjects.md
+  - name: Installation Guide
+    href: Installation.md
+  - name: Configuration 
+    items: 
+    - name: NuGet Packages
+      href: MRTKNuGetPackage.md
+    - name: MRTK configuration dialog
+      href: MRTK_Configuration_Dialog.md
+    - name: Getting started with MRTK and XR SDK
+      href: GettingStartedWithMRTKAndXRSDK.md
+  - name: Updates and Deployment
+    items: 
+    - name: Updating from earlier versions
+      href: Updating.md
+    - name: Upgrading from HTK
+      href: HTKToMRTKPortingGuide.md
+    - name: Building and Deploying MRTK
+      href: BuildAndDeploy.md
+  - name: Packages and Release Notes
+    items: 
+    - name: Release Notes
+      href: ReleaseNotes.md
+    - name: MRTK Package Contents
+      href: MRTK_PackageContents.md
+  - name: Performance and Best Practices
+    items: 
+    - name: Performance
+      href: Performance/PerfGettingStarted.md
+    - name: Hologram Stabilization
+      href: hologram-stabilization.md
+    - name: Using MRTK in large projects
+      href: LargeProjects.md
+  - name: MRTK and Managed Code Stripping
+    href: MRTK_and_managed_code_stripping.md
 - name: Architecture
   items:
   - name: Overview
