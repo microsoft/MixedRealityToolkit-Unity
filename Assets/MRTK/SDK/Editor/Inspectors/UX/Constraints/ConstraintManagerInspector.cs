@@ -9,6 +9,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -34,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             " constraints attached to this gameobject will automatically be processed by this manager.";
         private const string manualMsg = "Constraint manager is currently set to manual mode. In manual mode" +
             " only constraints that are linked in the below component list will be processed by this manager.";
+
+        private List<int> indicesToRemove = new List<int>(); // list for deferred deletion in our selected constraint list to not break unity GUI layout
 
         private void OnEnable()
         {
@@ -94,10 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             selectedConstraints.GetArrayElementAtIndex(newElementIndex).objectReferenceValue = constraint;
             serializedObject.ApplyModifiedProperties();
         }
-        private void AttachEmpty()
-        {
-            AttachConstraint(null);
-        }
 
         private void RenderAutoConstraintMenu()
         {
@@ -130,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 foreach (var derivedType in types)
                 {
                     menu.AddItem(new GUIContent(derivedType.Name), false, t =>
-                     AddNewConstraint((Type)t), derivedType);
+                     constraintManager.gameObject.AddComponent((Type)t), derivedType);
                 }
 
                 menu.ShowAsContext();
@@ -145,8 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 var buttonAction = RenderManualConstraintItem(constraintProperty, true);
                 if (buttonAction == EntryAction.Detach)
                 {
-                    selectedConstraints.DeleteArrayElementAtIndex(i);
-                    serializedObject.ApplyModifiedProperties();
+                    indicesToRemove.Add(i);
                 }
                 else if (buttonAction == EntryAction.Highlight)
                 {
@@ -277,6 +275,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // attached to the same gameobject.
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField("ComponentId: " + constraintManager.GetInstanceID(), EditorStyles.miniLabel);
+
+                    // deferred delete elements from array to not break unity layout
+                    foreach (int i in indicesToRemove)
+                    {
+                        selectedConstraints.DeleteArrayElementAtIndex(i);
+                    }
+					
+                    indicesToRemove.Clear();
 
                     if (EditorGUI.EndChangeCheck())
                     {
