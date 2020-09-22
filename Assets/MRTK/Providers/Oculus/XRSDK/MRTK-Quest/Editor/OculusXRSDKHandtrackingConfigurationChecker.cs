@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         private static readonly string[] Definitions = { "OCULUSINTEGRATION_PRESENT" };
 
         /// <summary>
-        /// Integrate MRTK and the Oculus Integration Unity Modules if the Oculus Integration Unity Modules is in the project. If is are not in the project, display a pop up window.
+        /// Integrate MRTK and the Oculus Integration Unity Modules if the Oculus Integration Unity Modules is in the project. If it is not in the project, display a pop up window.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
         internal static void IntegrateOculusWithMRTK()
