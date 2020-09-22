@@ -103,7 +103,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the **Def
 
    The trigger, grab and menu keys are simulated via keyboard and mouse input.
 
-### Controlling controller movement
+### Simulating controller movement
 
 Press and hold the **Left/Right Controller Manipulation Key** (default: *Left Shift* for left controller and *Space* for right controller) to gain control of either controller. While the manipulation key is pressed, the controller will appear in the viewport. Once the manipulation key is released, the controllers will disappear after a short **Controller Hide Timeout**.
 
