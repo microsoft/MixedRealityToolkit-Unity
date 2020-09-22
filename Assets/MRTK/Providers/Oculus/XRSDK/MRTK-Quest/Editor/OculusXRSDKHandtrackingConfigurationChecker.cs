@@ -62,9 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         internal static void IntegrateOculusWithMRTK()
         {
             // Check if Oculus Integration package is present
-            bool OculusIntegrationPresent = DetectOculusIntegrationDefine();
+            bool oculusIntegrationPresent = DetectOculusIntegrationDefine();
 
-            if (!OculusIntegrationPresent)
+            if (!oculusIntegrationPresent)
             {
                 EditorUtility.DisplayDialog(
                     "Oculus Integration Package Not Detected",
@@ -74,10 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             }
 
             // Update the ScriptingDefinitions depending on the presence of the Oculus Integration Unity Modules
-            ReconcileOculusIntegrationDefine();
+            ReconcileOculusIntegrationDefine(oculusIntegrationPresent);
 
             // Configure the rest of the asmdefs
-            ConfigureOculusIntegration(OculusIntegrationPresent);
+            ConfigureOculusIntegration(oculusIntegrationPresent);
         }
 
         /// <summary>
@@ -86,10 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Separate Oculus Integration Unity Modules")]
         internal static void SeparateOculusFromMRTK()
         {
-            bool OculusIntegrationPresent = DetectOculusIntegrationDefine();
+            bool oculusIntegrationPresent = DetectOculusIntegrationDefine();
 
             // If the user tries to separate the Leap Assets without assets in the project display a message
-            if (!OculusIntegrationPresent)
+            if (!oculusIntegrationPresent)
             {EditorUtility.DisplayDialog(
                     "MRTK Leap Motion Removal",
                     "There are no Leap Motion Unity Modules in the project to separate from MRTK",
@@ -99,8 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             }
 
             // Force removal of the ScriptingDefinitions while the Oculus Integration is still in the project
-            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
-            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
+            ReconcileOculusIntegrationDefine(false);
 
             // Remove the references to the Oculus Integration assembly definitions
             ConfigureOculusIntegration(false);
@@ -115,10 +114,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// <summary>
         /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
         /// </summary>
-        internal static void ConfigureOculusIntegration(bool OculusIntegrationPresent)
+        internal static void ConfigureOculusIntegration(bool oculusIntegrationPresent)
         {
             // Update the CSC to filter out warnings emitted by the Oculus Integration Package
-            if(OculusIntegrationPresent)
+            if(oculusIntegrationPresent)
             {
                 UpdateCSC();
             }
@@ -141,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 
                 List<string> references = oculusAsmDef.References.ToList();
 
-                if (OculusIntegrationPresent)
+                if (oculusIntegrationPresent)
                 {
                     Debug.Log("Oculus Integration package detected, adding references to asmdefs");
                     if (oculusAsmDefFile == oculusXRSDKAsmDefFile)
@@ -192,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             {
                 string deviceManagerProfilePath = AssetDatabase.GUIDToAssetPath(deviceManagerProfileGuids[0]);
                 OculusXRSDKDeviceManagerProfile deviceManagerProfile = AssetDatabase.LoadAssetAtPath<OculusXRSDKDeviceManagerProfile>(deviceManagerProfilePath);
-                if (OculusIntegrationPresent)
+                if (oculusIntegrationPresent)
                 {
                     deviceManagerProfile.OVRCameraRigPrefab = ovrCameraRigPrefab;
                     deviceManagerProfile.LocalAvatarPrefab = localAvatarPrefab;
@@ -222,12 +221,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// <summary>
         /// Updates the assembly definitions to mark the Oculus Integration Asset as present or not present
         /// </summary>
-        /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        internal static void ReconcileOculusIntegrationDefine()
+        internal static void ReconcileOculusIntegrationDefine(bool oculusIntegrationPresent)
         {
-            bool isOculusPresent = DetectOculusIntegrationDefine();
-
-            if (isOculusPresent)
+            if (oculusIntegrationPresent)
             {
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
                 ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
