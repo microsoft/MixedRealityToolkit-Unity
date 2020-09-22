@@ -950,6 +950,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/GetingStartedWithTheMRTK.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/GetingStartedWithTheMRTK.html",
+          "hash": "MYxsX7fkkSVosip3ofO+rQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/GettingStartedWithMRTKAndXRSDK.md",
       "output": {
         ".html": {
@@ -4912,6 +4924,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/MRTK_Icon_ReleaseNotes.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_ReleaseNotes.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/MRTK_Icon_SceneSystem.png",
       "output": {
         "resource": {
@@ -7914,7 +7937,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Installation.html",
-          "hash": "DS+EeTDcn8OyzXUYUXu+UQ=="
+          "hash": "V12ezXLVw814i/NYMgFwBg=="
         }
       },
       "is_incremental": false,
@@ -8706,7 +8729,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "MsbRCRfjf4JHtZi0sdylHg=="
+          "hash": "4DyYCZK82k1VjTORlfoMCg=="
         }
       },
       "is_incremental": false,
@@ -29044,16 +29067,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 160,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1688,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 161,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
