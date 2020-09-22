@@ -33,8 +33,6 @@
       href: hologram-stabilization.md
     - name: Using MRTK in large projects
       href: LargeProjects.md
-  - name: MRTK and Managed Code Stripping
-    href: MRTK_and_managed_code_stripping.md
 - name: Architecture
   items:
   - name: Overview
