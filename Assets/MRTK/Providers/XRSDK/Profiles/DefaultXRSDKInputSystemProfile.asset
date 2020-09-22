@@ -22,7 +22,7 @@ MonoBehaviour:
     runtimePlatform: 9
     deviceManagerProfile: {fileID: 0}
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKDeviceManager,
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKDeviceManager,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     componentName: XRSDK Oculus Device Manager
     priority: 0

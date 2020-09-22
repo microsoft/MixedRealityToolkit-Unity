@@ -1,8 +1,17 @@
-# Getting started with MRTK
+---
+title: Installation Guide
+description: Guide for installing MRTK-Unity in a new project.
+author: hferrone
+ms.author: v-hferrone
+ms.date: 09/9/2020
+ms.localizationpriority: high
+keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
+---
 
-![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
+# Installation guide
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).
+> [!CAUTION]
+> If you're new to MRTK or Mixed Reality development in Unity, we recommend you start at the beginning of our [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2). The Unity development journey is the **recommended starting point for MRTK**, specifically created to walk you through the installation, core concepts, and usage of MRTK in Unity.
 
 ## Prerequisites
 
@@ -11,7 +20,8 @@ To get started with the Mixed Reality Toolkit, you will need:
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 * [Unity 2018.4 or Unity 2019.4](https://unity3d.com/get-unity/download/archive)
 
-  MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
+  MRTK supports both IL2CPP and .NET scripting backends on Unity 2018.  
+  Starting from MRTK 2.5 **Unity 2018.4.13f1 or later is strongly recommended** for customers using Unity 2018. Earlier versions of Unity 2018.4 are still supported but now require extra steps to set up and to upgrade to Unity 2019.
 
 * [Windows SDK 18362+](https://developer.microsoft.com/windows/downloads/windows-10-sdk).
 
@@ -56,6 +66,9 @@ For details on the packages and their contents, please see [MRTK Packages](Packa
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features. **Note that the Examples package requires the Extensions package.**
 1. (**_Required for version-to-version upgrades, Optional otherwise_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
+
+> [!Note]
+> If you are using Unity 2018.4.12f1 or earlier, note you will experience compilation errors shown in the console. Go to `Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef` in the project window and remove the missing reference in the inspector. Repeat those steps with `Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef` and `Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef`. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.  
 
 > [!Note]
 > Android and iOS development require additional package installations. For more information, see [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md).
@@ -163,7 +176,7 @@ To try the hand interaction scene, do the following steps.
 
 ## Using the in-editor hand input simulation to test a scene
 
-The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
+The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [controllers (i.e. hands, motion controllers)](InputSimulation/InputSimulationService.md#controller-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
 
 How to move around in the scene:
 

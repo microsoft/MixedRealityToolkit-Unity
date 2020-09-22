@@ -1,11 +1,12 @@
 # Input simulation service
 
-The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:
+The Input Simulation Service emulates the behavior of devices and platforms that may not be available in the Unity editor. Examples include:
 
 * HoloLens or VR device head tracking
 * HoloLens hand gestures
 * HoloLens 2 articulated hand tracking
 * HoloLens 2 eye tracking
+* VR device controllers
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This approach allows testing of interactions in the Unity editor without first deploying to a device.
 
@@ -76,13 +77,13 @@ Camera position and rotation angles can be set explicitly in the tools window, a
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## Hand simulation
+## Controller simulation
 
-The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
+The input simulation supports emulated controller devices (i.e. motion controllers and hands). These virtual controllers can interact with any object that supports regular controllers, such as buttons or grabbable objects.
 
-### Hand simulation mode
+### Controller simulation mode
 
-In the [input simulation tools window](#input-simulation-tools-window) the **Hand Simulation Mode** setting switches between two distinct input models. The default mode can also be set in the input simulation profile.
+In the [input simulation tools window](#input-simulation-tools-window) the **Default Controller Simulation Mode** setting switches between three distinct input models. This default mode can also be set in the input simulation profile.
 
 * *Articulated Hands*: Simulates a fully articulated hand device with joint position data.
 
@@ -90,29 +91,35 @@ In the [input simulation tools window](#input-simulation-tools-window) the **Han
 
    Interactions that are based on the precise positioning of the hand or use touching can be simulated in this mode.
 
-* *Gestures*: Simulates a simplified hand model with air tap and basic gestures.
+* *Hand Gestures*: Simulates a simplified hand model with air tap and basic gestures.
 
    Emulates [HoloLens interaction model](https://docs.microsoft.com/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The *Air Tap* gesture is used to interact with buttons.
 
-### Controlling hand movement
+* *Motion Controller*: Simulates a motion controller used with VR headsets that works similarly to far interactions with Articulated Hands.
 
-Press and hold the **Left/Right Hand Control Key** (default: *Left Shift* for left hand and *Space* for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released, the hands will disappear after a short **Hand Hide Timeout**.
+   Emulates VR headset with controllers interaction model.
 
-Hands can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Hand Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again. To manipulate the hands, the **Left/Right Hand Control Key** needs to be held. Double tapping the **Left/Right Hand Control Key** can also toggle the hands on/off.
+   The trigger, grab and menu keys are simulated via keyboard and mouse input.
 
-Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the **mouse wheel**.
+### Simulating controller movement
 
-To rotate hands using the mouse, hold both the **Left/Right Hand Control Key** (*Left Shift* or *Space*) *and* the **Hand Rotate Button** (default: *ctrl* button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the **Mouse Hand Rotation Speed** setting in the input simulation profile.
+Press and hold the **Left/Right Controller Manipulation Key** (default: *Left Shift* for left controller and *Space* for right controller) to gain control of either controller. While the manipulation key is pressed, the controller will appear in the viewport. Once the manipulation key is released, the controllers will disappear after a short **Controller Hide Timeout**.
+
+Controllers can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Controller Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the controllers again. To manipulate the controllers, the **Left/Right Controller Manipulation Key** needs to be held. Double tapping the **Left/Right Controller Manipulation Key** can also toggle the controllers on/off.
+
+Mouse movement will move the controller in the view plane. Controllers can be moved further or closer to the camera using the **mouse wheel**.
+
+To rotate controllers using the mouse, hold both the **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*) *and* the **Controller Rotate Button** (default: *Left Ctrl* button) and then move the mouse to rotate the controller. Controller rotation speed can be configured by changing the **Mouse Controller Rotation Speed** setting in the input simulation profile.
 
 All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 
 ### Additional profile settings
 
-* **Hand Depth Multiplier** controls the sensitivity of the mouse scroll wheel depth movement. A larger number will speed up hand zoom.
-* **Default Hand Distance** is the initial distance of hands from the camera. Clicking the **Reset** button hands will also place hands at this distance.
-* **Hand Jitter Amount** adds random motion to hands. This feature can be used to simulate inaccurate hand tracking on the device, and ensure that interactions work well with noisy input.
+* **Controller Depth Multiplier** controls the sensitivity of the mouse scroll wheel depth movement. A larger number will speed up controller zoom.
+* **Default Controller Distance** is the initial distance of controllers from the camera. Clicking the **Reset** button controllers will also place controllers at this distance.
+* **Controller Jitter Amount** adds random motion to controllers. This feature can be used to simulate inaccurate controller tracking on the device, and ensure that interactions work well with noisy input.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
@@ -120,7 +127,7 @@ All hand placement can also changed in the [input simulation tools window](#inpu
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
-1. Enable hand control using the **Left/Right Hand Control Key** (*Left Shift* or *Space*)
+1. Enable hand control using the **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*)
 
 2. While manipulating, press and hold a mouse button to perform a hand gesture.
 
@@ -131,7 +138,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 ### One-hand manipulation
 
-1. Press and hold **Left/Right Hand Control Key** (*Left Shift* or *Space*)
+1. Press and hold **Left/Right Controller Manipulation Key** (*Left Shift* or *Space*)
 2. Point at object
 3. Hold mouse button to pinch
 4. Use your mouse to move the object
@@ -175,11 +182,15 @@ In addition, you can use simulated hands for GGV interaction
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
+### Motion controller interaction
+
+The simulated motion controllers can be manipulated the same way articulated hands are. The interaction model is similar to far interaction of articulated hand while the trigger, grab and menu keys are mapped to *left mouse button*, *G* and *M* key respectively.
+
 ### Eye tracking
 
 [Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the **Simulate Eye Position** option in the
-[Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
-style interactions (so ensure that **Hand Simulation Mode** is set to *Articulated*).
+[Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV or motion controller
+style interactions (so ensure that **Default Controller Simulation Mode** is set to *Articulated Hand*).
 
 ## See also
 
