@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             "If this flag is enabled only the selected constraint list will be applied.")]
         private bool autoConstraintSelection = true;
         /// <summary>
-        /// Per default constraint manager will apply all to this gameobject attached constraint components automatically.
+        /// Per default, constraint manager will apply all to this gameobject attached constraint components automatically.
         /// If this flag is enabled only the selected constraint list will be applied.
         /// </summary>
         public bool AutoConstraintSelection
