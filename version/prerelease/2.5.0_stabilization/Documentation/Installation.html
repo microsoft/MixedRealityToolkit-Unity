@@ -97,7 +97,8 @@
 <li><p><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
 </li>
 <li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4 or Unity 2019.4</a></p>
-<p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018</p>
+<p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018.<br>
+Starting from MRTK 2.5 <strong>Unity 2018.4.13f1 or later is strongly recommended</strong> for customers using Unity 2018. Earlier versions of Unity 2018.4 are still supported but now require extra steps to set up and to upgrade to Unity 2019.</p>
 </li>
 <li><p><a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
 <p>This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
@@ -145,6 +146,10 @@ when building for OpenVR.</p>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features. <strong>Note that the Examples package requires the Extensions package.</strong></li>
 <li>(<strong><em>Required for version-to-version upgrades, Optional otherwise</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
 </ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If you are using Unity 2018.4.12f1 or earlier, note you will experience compilation errors shown in the console. Go to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and remove the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
+</div>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Android and iOS development require additional package installations. For more information, see <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a>.
