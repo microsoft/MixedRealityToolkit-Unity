@@ -168,6 +168,8 @@ See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARF
 <li>For those who will be using <a href="Tools/HolographicRemoting.html#hololens-2">Holographic Remoting</a> on HoloLens 2, there is now a manual step to perform.</li>
 </ul>
 <h3 id="breaking-changes">Breaking changes</h3>
+<p><strong>Assembly Definition Files Changes</strong></p>
+<p>Some asmdef files are changed and are now only supporting Unity 2018.4.13f1 or later. Compilation erros will show up when upating to MRTK 2.5 in earlier versions of Unity. This can be fixed by going to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and removing the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
 <p><strong>IMixedRealityPointerMediator</strong></p>
 <p>This interface has been updated to have a new function:</p>
 <pre><code class="lang-csharp">void SetPointerPreferences(IPointerPreferences pointerPreferences);
