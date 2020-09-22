@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ConstraintManager : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("Per default constraint manager will apply all to this gameobject attached constraint components." +
+        [Tooltip("Per default, constraint manager will apply all to this gameobject attached constraint components." +
             "If this flag is enabled only the selected constraint list will be applied.")]
         private bool autoConstraintSelection = true;
         /// <summary>
