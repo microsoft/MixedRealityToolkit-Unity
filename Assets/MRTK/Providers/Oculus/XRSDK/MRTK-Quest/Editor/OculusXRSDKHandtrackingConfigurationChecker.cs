@@ -88,11 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         {
             bool oculusIntegrationPresent = DetectOculusIntegrationDefine();
 
-            // If the user tries to separate the Leap Assets without assets in the project display a message
+            // If the user tries to separate the Oculus Integration assets without assets in the project display a message
             if (!oculusIntegrationPresent)
             {EditorUtility.DisplayDialog(
-                    "MRTK Leap Motion Removal",
-                    "There are no Leap Motion Unity Modules in the project to separate from MRTK",
+                    "MRTK Oculus Removal",
+                    "There are no Oculus Integration assets in the project to separate from MRTK",
                     "OK");
 
                 return;
