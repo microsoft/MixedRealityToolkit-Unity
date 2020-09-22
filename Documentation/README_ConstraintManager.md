@@ -115,7 +115,7 @@ This constraint can be used to fix along which axes a manipulated object can be 
 
 #### Constraint on movement
 
-Specifies which axes to prevent movement on. By default these axes will be global rather than local, but this can be changed below. Because this property is a flag, any number of options can be selected.
+Specifies which axes to prevent movement on. By default, these axes will be global rather than local, but this can be changed below. Because this property is a flag, any number of options can be selected.
 
 * *X Axis*: Movement along the x-axis is constrained if selected.
 * *Y Axis*: Movement along the y-axis is constrained if selected.
