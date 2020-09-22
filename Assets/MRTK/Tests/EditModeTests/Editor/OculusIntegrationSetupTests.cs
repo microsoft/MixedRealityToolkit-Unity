@@ -41,18 +41,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
         public IEnumerator TestOculusIntegrationSetup()
         {
             // Configure the oculus settings successfully
-            OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration();
+            OculusXRSDKHandtrackingConfigurationChecker.IntegrateOculusWithMRTK();
 
             // Check that the definitions and amdefs are set up correctly when Oculus Integration is present
-            Assert.IsTrue(OculusXRSDKHandtrackingConfigurationChecker.ReconcileOculusIntegrationDefine());
+            Assert.IsTrue(OculusXRSDKHandtrackingConfigurationChecker.DetectOculusIntegrationDefine());
             ValidateAsmdefs(true);
 
             // Remove the dummy asset and clean up the project to prevent errors
             TearDown();
-            OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration();
+            OculusXRSDKHandtrackingConfigurationChecker.ReconcileOculusIntegrationDefine(false);
+            OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration(false);
 
             // Check that the definitions and amdefs are set up correctly when Oculus Integration is not present
-            Assert.IsFalse(OculusXRSDKHandtrackingConfigurationChecker.ReconcileOculusIntegrationDefine());
+            Assert.IsFalse(OculusXRSDKHandtrackingConfigurationChecker.DetectOculusIntegrationDefine());
             ValidateAsmdefs(false);
 
             yield return null;
