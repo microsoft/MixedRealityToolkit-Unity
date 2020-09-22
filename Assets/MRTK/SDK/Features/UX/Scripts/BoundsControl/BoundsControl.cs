@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
         /// <summary>
-        /// nable or disable constraint support of this component. When enabled transform
+        /// nable or disable constraint support of this component. When enabled, transform
         /// changes will be post processed by the linked constraint manager.
         /// </summary>
         public bool EnableConstraints
