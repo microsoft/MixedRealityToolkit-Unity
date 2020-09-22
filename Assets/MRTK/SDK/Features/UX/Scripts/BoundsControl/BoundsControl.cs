@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         [SerializeField]
-        [Tooltip("Enable or disable constraint support of this component. When enabled transform " +
+        [Tooltip("Enable or disable constraint support of this component. When enabled, transform " +
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
         /// <summary>
