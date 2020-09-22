@@ -10,6 +10,9 @@ keywords: Unity,HoloLens, HoloLens 2, Mixed Reality, development, MRTK,
 
 # Installation guide
 
+> [!CAUTION]
+> If you're new to MRTK or Mixed Reality development in Unity, we recommend you start at the beginning of our [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2). The Unity development journey is the **recommended starting point for MRTK**, specifically created to walk you through the installation, core concepts, and usage of MRTK in Unity.
+
 ## Prerequisites
 
 To get started with the Mixed Reality Toolkit, you will need:
