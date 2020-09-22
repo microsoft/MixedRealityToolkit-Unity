@@ -105,7 +105,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the **Def
 
 ### Controlling controller movement
 
-Press and hold the **Left/Right Controller Control Key** (default: *Left Shift* for left controller and *Space* for right controller) to gain control of either controller. While the manipulation key is pressed, the controller will appear in the viewport. Once the manipulation key is released, the controllers will disappear after a short **Controller Hide Timeout**.
+Press and hold the **Left/Right Controller Manipulation Key** (default: *Left Shift* for left controller and *Space* for right controller) to gain control of either controller. While the manipulation key is pressed, the controller will appear in the viewport. Once the manipulation key is released, the controllers will disappear after a short **Controller Hide Timeout**.
 
 Controllers can be toggled on and frozen relative to the camera in the [input simulation tools window](#input-simulation-tools-window) or by pressing the **Toggle Left/Right Controller Key** (default: *T* for left and *Y* for right). Press the toggle key again to hide the controllers again. To manipulate the controllers, the **Left/Right Controller Manipulation Key** needs to be held. Double tapping the **Left/Right Controller Manipulation Key** can also toggle the controllers on/off.
 
