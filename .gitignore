@@ -17,6 +17,8 @@ UnityPackageManager/
 project.json
 project.lock.json
 *.package
+**/.DS_Store
+
 
 # ============ #
 # Certificates #
