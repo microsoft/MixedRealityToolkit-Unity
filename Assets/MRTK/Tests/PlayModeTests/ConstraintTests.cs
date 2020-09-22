@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that verifies manual filtering of constraint in constraint manager.
         /// First auto mode is confirmed by attaching a rotation and scale constraint.
-        /// Then manual constraint filtering is activated and only the scale constraint is added.
+        /// Then, manual constraint filtering is activated and only the scale constraint is added.
         /// In the later test case the object should not apply the rotation constraint.
         /// </summary>
         [UnityTest]
