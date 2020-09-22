@@ -3,9 +3,9 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
-        "Microsoft.MixedReality.Toolkit.Providers.XRSDK"
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.WindowsMixedReality"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "WSA",
@@ -19,5 +19,13 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ]
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.windowsmr",
+            "expression": "",
+            "define": "WMR_ENABLED"
+        }
+    ],
+    "noEngineReferences": false
 }
