@@ -2,7 +2,7 @@
 
 ![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
-The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) component is an all-in-one container to make any object easily *interactable* and responsive to input. Interactable acts as a catch-all for all types of input including touch, hand rays, speech etc and funnel these interactions into [events](#events) and [visual theme](visualthemes.md) responses. This component provides an easy way to make buttons, change color on objects with focus, and more.
+The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) component is an all-in-one container to make any object easily *interactable* and responsive to input. Interactable acts as a catch-all for all types of input including touch, hand rays, speech etc and funnel these interactions into [events](#events) and [visual theme](VisualThemes.md) responses. This component provides an easy way to make buttons, change color on objects with focus, and more.
 
 ## How to configure Interactable
 
@@ -274,7 +274,7 @@ myInteractable.IncreaseDimension();
 
 ### Create Interactable at runtime
 
-*Interactable* can be easily added to any GameObject at runtime. The following example demonstrates how to assign a profile with a [visual theme](visualthemes.md).
+*Interactable* can be easily added to any GameObject at runtime. The following example demonstrates how to assign a profile with a [visual theme](VisualThemes.md).
 
 ```c#
 var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);

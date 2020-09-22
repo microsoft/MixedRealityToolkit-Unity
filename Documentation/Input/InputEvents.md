@@ -1,6 +1,6 @@
 # Input events
 
-The list below outlines all available input event interfaces to be implemented by a custom MonoBehaviour component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
+The list below outlines all available input event interfaces to be implemented by a custom MonoBehaviour component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](Pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
 
 > [!IMPORTANT]
 > By default, a script will receive input events only if it is the GameObject in focus by a pointer or parent of a GameObject in focus.
@@ -34,7 +34,7 @@ At the script level, input events can be consumed by implementing one of the eve
 1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handler
 
 > [!NOTE]
-> [Pointer input events](pointers.md#pointer-event-interfaces) are handled in a slightly different manner than the input event interfaces listed above. In particular, pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
+> [Pointer input events](Pointers.md#pointer-event-interfaces) are handled in a slightly different manner than the input event interfaces listed above. In particular, pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
 
 ### Input event interface example
 
