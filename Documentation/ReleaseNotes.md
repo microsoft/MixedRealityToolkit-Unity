@@ -189,9 +189,21 @@ Motion Controller simulation is now offered in editor play mode along side the e
 
 ### Known issues
 
+**NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)**
+
+In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
+This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:
+
+- Navigate to the `MixedRealityToolkit` object in the Hierarchy
+- In the Inspector window, select `Extensions`
+- If not expanded, expand `Scene Transition Service`
+- Set the value of `Configuration Profile` to **MRTKExamplesHubSceneTransitionServiceProfile**
+
+  ![Setting the scene transition profile](Images/ReleaseNotes/FixSceneTransitionProfile.png)
+
 **Oculus Quest**
 
-There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
+There is currently a known issue for using the [Oculus XR plugin with when targeting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
 
 The bug is signified with this set of 3 errors:
 
