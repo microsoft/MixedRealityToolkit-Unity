@@ -316,11 +316,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
         [SerializeField]
         [Range(0, 1)]
-        [Tooltip("Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the translation. " +
+            "Smoothing of 0 means no smoothing. Max value means no change to value.")]
         private float translateLerpTime = 0.001f;
 
         /// <summary>
-        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// Enter amount representing amount of smoothing to apply to the translation. Smoothing of 0 
+        /// means no smoothing. Max value means no change to value.
         /// </summary>
         public float TranslateLerpTime
         {
@@ -328,7 +330,32 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             set => translateLerpTime = value;
         }
 
-        [Header("Events")]
+        [SerializeField]
+        [Tooltip("Enable or disable constraint support of this component. When enabled, transform " +
+            "changes will be post processed by the linked constraint manager.")]
+        private bool enableConstraints = true;
+        /// <summary>
+        /// nable or disable constraint support of this component. When enabled, transform
+        /// changes will be post processed by the linked constraint manager.
+        /// </summary>
+        public bool EnableConstraints
+        {
+            get => enableConstraints;
+            set => enableConstraints = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Constraint manager slot to enable constraints when manipulating the object.")]
+        private ConstraintManager constraintsManager;
+        /// <summary>
+        /// Constraint manager slot to enable constraints when manipulating the object.
+        /// </summary>
+        public ConstraintManager ConstraintsManager
+        {
+            get => constraintsManager;
+            set => constraintsManager = value;
+        }
+
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
         private UnityEvent rotateStarted = new UnityEvent();
@@ -494,7 +521,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
-        private ConstraintManager constraints;
         #endregion
 
         #region public Properties
@@ -620,7 +646,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
 
-            constraints = gameObject.EnsureComponent<ConstraintManager>();
+            if (constraintsManager == null && EnableConstraints)
+            {
+                constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
+            }
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject
@@ -1110,8 +1139,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - Target.transform.position, currentRotationAxis).normalized;
                     Quaternion goal = Quaternion.FromToRotation(initDir, currentDir) * initialRotationOnGrabStart;
                     MixedRealityTransform constraintRotation = MixedRealityTransform.NewRotate(goal);
-                    constraints.ApplyRotationConstraints(ref constraintRotation, true, isNear);
-                    
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyRotationConstraints(ref constraintRotation, true, isNear);
+                    }
                     if (elasticsManager != null)
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintRotation, TransformFlags.Rotate);
@@ -1144,7 +1175,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
                     Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
                     MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
-                    constraints.ApplyScaleConstraints(ref clampedTransform, true, isNear);
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyScaleConstraints(ref clampedTransform, true, isNear);
+                    }
 
                     if (elasticsManager != null)
                     {
@@ -1167,8 +1201,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
 
                     var goal = initialPositionOnGrabStart + translateVectorAlongAxis;
                     MixedRealityTransform constraintTranslate = MixedRealityTransform.NewTranslate(goal);
-                    constraints.ApplyTranslationConstraints(ref constraintTranslate, true, isNear);
-
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.ApplyTranslationConstraints(ref constraintTranslate, true, isNear);
+                    }
                     if (elasticsManager != null)
                     {
                         transformUpdated = elasticsManager.ApplyTargetTransform(constraintTranslate, TransformFlags.Move);
@@ -1303,7 +1339,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                         elasticsManager.EnableElasticsUpdate = false;
                     }
 
-                    constraints.Initialize(new MixedRealityTransform(Target.transform));
+                    if (EnableConstraints && constraintsManager != null)
+                    {
+                        constraintsManager.Initialize(new MixedRealityTransform(Target.transform));
+                    }
 
                     eventData.Use();
                 }

@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var managers = gameObject.GetComponents<ConstraintManager>();
             foreach (var manager in managers)
             {
-                manager.RegisterConstraint(this);
+                manager.AutoRegisterConstraint(this);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var managers = gameObject.GetComponents<ConstraintManager>();
             foreach (var manager in managers)
             {
-                manager.UnregisterConstraint(this);
+                manager.AutoUnregisterConstraint(this);
             }
         }
 
