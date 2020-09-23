@@ -104,15 +104,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var constraints = constraintManager.gameObject.GetComponents<TransformConstraint>();
             foreach (var constraint in constraints)
             {
-                EditorGUILayout.BeginHorizontal();
-                string constraintName = constraint.GetType().Name;
-                EditorGUILayout.LabelField(constraintName);
-                if (GUILayout.Button("Go to component"))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
-                    EditorGUIUtility.ExitGUI();
+                    string constraintName = constraint.GetType().Name;
+                    EditorGUILayout.LabelField(constraintName);
+                    if (GUILayout.Button("Go to component"))
+                    {
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        EditorGUIUtility.ExitGUI();
+                    }
                 }
-                EditorGUILayout.EndHorizontal();
             }
 
             // add button
@@ -225,10 +226,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 InspectorUIUtility.RenderHelpURL(target.GetType());
 
                 // Data section
+                using (var check = new EditorGUI.ChangeCheckScope())
                 {
-                    EditorGUI.BeginChangeCheck();
                     EditorGUILayout.Space();
-                    
+
                     EditorGUILayout.HelpBox(autoConstraintSelection.boolValue == true ? autoMsg : manualMsg
                         , UnityEditor.MessageType.Info);
                     EditorGUILayout.Space();
@@ -281,10 +282,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         selectedConstraints.DeleteArrayElementAtIndex(i);
                     }
-					
+
                     indicesToRemove.Clear();
 
-                    if (EditorGUI.EndChangeCheck())
+                    if (check.changed)
                     {
                         serializedObject.ApplyModifiedProperties();
                     }
@@ -343,20 +344,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
 
-
-                EditorGUILayout.BeginHorizontal();
-
-                selected = EditorGUILayout.Popup("Constraint Manager", selected, options, GUILayout.ExpandWidth(true));
-                ConstraintManager selectedConstraintManager = constraintManagers[selected];
-                managerRef.objectReferenceValue = selectedConstraintManager;
-                if (GUILayout.Button("Go to component"))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUIUtility.PingObject(selectedConstraintManager);
-                    Highlighter.Highlight("Inspector", $"ComponentId: {selectedConstraintManager.GetInstanceID()}");
-                    EditorGUIUtility.ExitGUI();
+                    selected = EditorGUILayout.Popup("Constraint Manager", selected, options, GUILayout.ExpandWidth(true));
+                    ConstraintManager selectedConstraintManager = constraintManagers[selected];
+                    managerRef.objectReferenceValue = selectedConstraintManager;
+                    if (GUILayout.Button("Go to component"))
+                    {
+                        EditorGUIUtility.PingObject(selectedConstraintManager);
+                        Highlighter.Highlight("Inspector", $"ComponentId: {selectedConstraintManager.GetInstanceID()}");
+                        EditorGUIUtility.ExitGUI();
+                    }
                 }
-                EditorGUILayout.EndHorizontal();
-
 
                 GUI.enabled = true;
             }

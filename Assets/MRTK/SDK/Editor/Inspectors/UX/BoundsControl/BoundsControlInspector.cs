@@ -8,9 +8,7 @@ using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.Editor;
-using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {

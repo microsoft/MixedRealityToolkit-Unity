@@ -464,8 +464,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Assert scale at max
             Assert.AreEqual(Vector3.one * scaleConstraint.ScaleMaximum, testObject.transform.localScale);
-
-            yield return null;
         }
 
         /// <summary>
