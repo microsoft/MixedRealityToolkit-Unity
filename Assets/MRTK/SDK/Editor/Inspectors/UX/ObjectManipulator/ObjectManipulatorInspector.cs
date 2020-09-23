@@ -40,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty onHoverEntered;
         private SerializedProperty onHoverExited;
 
+        private SerializedProperty enableConstraints;
+        private SerializedProperty constraintManager;
+
         private SerializedProperty elasticsManager;
 
         bool oneHandedFoldout = true;
@@ -73,6 +76,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             moveLerpTime = serializedObject.FindProperty("moveLerpTime");
             rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
             scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
+
+            // Constraints
+            enableConstraints = serializedObject.FindProperty("enableConstraints");
+            constraintManager = serializedObject.FindProperty("constraintsManager");
 
             // Elastics
             elasticsManager = serializedObject.FindProperty("elasticsManager");
@@ -130,7 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var rb = mh.HostTransform.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
-            constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(mh.gameObject, constraintsFoldout, "Constraint");
+
+            constraintsFoldout = ConstraintManagerInspector.DrawConstraintManagerFoldout(mh.gameObject,
+                                                                                        enableConstraints,
+                                                                                        constraintManager,
+                                                                                        constraintsFoldout);
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);

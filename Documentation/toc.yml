@@ -232,6 +232,8 @@
       href: README_BoundingBox.md
     - name: Object Manipulator
       href: README_ObjectManipulator.md
+    - name: Constraint Manager
+      href: README_ConstraintManager.md
     - name: Manipulation Handler [Obsolete]
       href: README_ManipulationHandler.md
     - name: Slate
