@@ -39,6 +39,5 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish UPM packages'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\upm\output'
+    PathtoPublish: ${{ parameters.outputDirectory }}
     ArtifactName: 'mrtk-upm'
-
