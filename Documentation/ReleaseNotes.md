@@ -93,17 +93,11 @@ With the introduction of Unity Package Manger MRTK, MRTK now writes a `link.xml`
 
 More information on the MRTK link.xml file can be found in the [MRTK and managed code stripping](MRTK_and_managed_code_stripping.md) article.
 
-**Enable MSBuild for Unity removed from the configuration dialog**
+**Unity 2019.3+: MRTK configuration dialog no longer attempts to enable legacy XR support**
 
-To prevent the MRTK configuration dialog from repeatedly displaying when `Enable MSBuild for Unity` is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.
-
-![MSBuild for Unity menu items](Images/ConfigurationDialog/MSB4UMenuItems.png)
-
-This change also adds the ability to remove MSBulid for Unity.
-
-There is a confirmation dialog that will be displayed when selecting `Use MSBuild for Unity dependency resolution`.
-
-![MSBuild for Unity confirmation](Images/ConfigurationDialog/EnableMSB4UPrompt.png)
+To avoid potential conflicts when using Unity's XR Platform, the option to enable legacy XR support has been removed
+from the MRTK configuration dialog. If desired, legacy XR support can be enabled, in Unity 2019, using **Edit** > **Project Settings** >
+**Player** > **XR Settings** > **Virtual Reality Supported**.
 
 **Reduction in InitializeOnLoad overhead**
 We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to

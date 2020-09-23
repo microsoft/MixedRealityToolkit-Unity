@@ -172,11 +172,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RenderToggle(MRConfig.VisibleMetaFiles, "Enable visible meta files");
                 if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && XRSettingsUtilities.IsLegacyXRActive)
                 {
-#if UNITY_2019_3_OR_NEWER
-                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable legacy XR");
-#else
+#if !UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR supported");
-#endif // UNITY_2019_3_OR_NEWER
+#endif // !UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
