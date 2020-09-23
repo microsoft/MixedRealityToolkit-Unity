@@ -460,6 +460,67 @@ maximum and minimum scales are not exceeded.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_ConstraintManagerFilter_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.ConstraintManagerFilter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_ConstraintManagerFilter" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.ConstraintManagerFilter">ConstraintManagerFilter()</h4>
+  <div class="markdown level1 summary"><p>Test that verifies manual filtering of constraint in constraint manager.
+First, auto mode is confirmed by attaching a rotation and scale constraint.
+Then, manual constraint filtering is activated and only the scale constraint is added.
+In the later test case the object should not apply the rotation constraint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator ConstraintManagerFilter()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_MultipleConstraintManagers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.MultipleConstraintManagers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_MultipleConstraintManagers" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.MultipleConstraintManagers">MultipleConstraintManagers()</h4>
+  <div class="markdown level1 summary"><p>Test that verifies multiple constraint managers with different setup can
+be used on the same game object.
+First default constraint manager creation with auto mode is confirmed by attaching
+a rotation and scale constraint.
+Then manual constraint filtering is activated on a second constraint manager
+and only the scale constraint is added.
+In the later test case the object should not apply the rotation constraint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator MultipleConstraintManagers()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_SetUp_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.SetUp*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_ConstraintTests_SetUp" data-uid="Microsoft.MixedReality.Toolkit.Tests.ConstraintTests.SetUp">SetUp()</h4>
   <div class="markdown level1 summary"></div>

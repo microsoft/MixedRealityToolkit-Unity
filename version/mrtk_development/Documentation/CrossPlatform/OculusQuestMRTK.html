@@ -188,6 +188,19 @@ to &quot;Controllers and Hands&quot;.</p>
 <li><p>See your scene inside the Oculus Quest</p>
 </li>
 </ol>
+<h2 id="removing-oculus-integration-from-the-project">Removing Oculus Integration from the Project</h2>
+<ol>
+<li>Navigate to the Mixed Reality Toolkit &gt; Oculus &gt; Separate Oculus Integration Unity Modules
+<img src="../Images/CrossPlatform/OculusQuest/OculusSeparationAsmdef.png" alt="OculusSeparationAsmdef"></li>
+<li>Let Unity refresh as references in the Microsoft.MixedReality.Toolkit.Providers.Oculus.asmdef and other files are modified in this step</li>
+<li>Close Unity</li>
+<li>Close Visual Studio, if it's open</li>
+<li>Open File Explorer and navigate to the root of the MRTK Unity project</li>
+<li>Delete the UnityProjectName/Library directory</li>
+<li>Delete the UnityProjectName/Assets/Oculus directory</li>
+<li>Delete the UnityProjectName/Assets/Oculus.meta file</li>
+<li>Reopen Unity</li>
+</ol>
 <h2 id="common-errors">Common errors</h2>
 <h3 id="quest-not-recognized-by-unity">Quest not recognized by Unity</h3>
 <p>Make sure your Android paths are properly configured. If you continue to encounter problems, follow this <a href="https://developer.oculus.com/documentation/unity/book-unity-gsg/#install-android-tools">guide</a></p>

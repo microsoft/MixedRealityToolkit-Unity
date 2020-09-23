@@ -207,9 +207,15 @@ scenes opened up in 2.5 get automatically fixed.</p>
 <p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
 <p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
 <h3 id="known-issues">Known issues</h3>
+<p><strong>Oculus Quest</strong></p>
 <p>There is currently a known issue for using the <a href="https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/">Oculus XR plugin with when targetting Standalone platforms</a>.  Check the Oculus bug tracker/forums/release notes for updates.</p>
 <p>The bug is signified with this set of 3 errors:</p>
 <p><img src="https://forum.unity.com/attachments/erori-unity-png.644204/" alt="Oculus XR Plugin Error"></p>
+<p><strong>UnityUI and TextMeshPro</strong></p>
+<p>There's a known issue for newer versions of TextMeshPro (1.5.0+ or 2.1.1+), where the default font size for dropdowns and bold font character spacing has been altered.</p>
+<p><img src="https://user-images.githubusercontent.com/68253937/93158069-4d582f00-f6c0-11ea-87ad-94d0ba3ba6e5.png" alt="TMP image"></p>
+<p>This can be worked around by downgrading to an earlier version of TextMeshPro. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8556">issue #8556</a>
+for more details.</p>
 </article>
           </div>
           
