@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         private static readonly string[] Definitions = { "OCULUSINTEGRATION_PRESENT" };
 
         /// <summary>
-        /// Detects if the Oculus Integration package is present and updates the AsmDefs with the appropriate definitions and references.
+        /// Detects if the Oculus Integration package is present and update project definitions and prefab references.
         /// </summary>
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Integrate Oculus Integration Unity Modules")]
         internal static void ConfigureOculusIntegration()
@@ -67,52 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             if(OculusIntegrationPresent)
             {
                 UpdateCSC();
-            }
-
-            // Updating asmdefs
-            FileInfo[] oculusXRSDKAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef");
-            FileInfo[] oculusXRSDKHandtrackingEditorAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor.asmdef");
-
-            List<FileInfo[]> oculusAsmDefFiles = new List<FileInfo[]>() { oculusXRSDKAsmDefFile, oculusXRSDKHandtrackingEditorAsmDefFile };
-
-            foreach (FileInfo[] oculusAsmDefFile in oculusAsmDefFiles)
-            {
-                // When MRTK is used through NuGet compiled assemblies, there will not be an asmdef file in the assets directory to configure.
-                if (oculusAsmDefFile.Length == 0)
-                {
-                    continue;
-                }
-
-                AssemblyDefinition oculusAsmDef = AssemblyDefinition.Load(oculusAsmDefFile[0].FullName);
-
-                List<string> references = oculusAsmDef.References.ToList();
-
-                if (OculusIntegrationPresent)
-                {
-                    Debug.Log("Oculus Integration package detected, adding references to asmdefs");
-                    if (oculusAsmDefFile == oculusXRSDKAsmDefFile)
-                    {
-                        oculusAsmDef.AddReference("Oculus.VR");
-                    }
-                    if (oculusAsmDefFile == oculusXRSDKHandtrackingEditorAsmDefFile)
-                    {
-                        oculusAsmDef.AddReference("Oculus.VR.Editor");
-                    }
-                }
-                else
-                {
-                    Debug.Log("Oculus Integration package not detected, removing references from asmdefs. In order to use handtracking with the Oculus Quest, the Oculus Integration package must be installed from the Unity Asset Store!");
-                    if (references.Contains("Oculus.VR"))
-                    {
-                        references.Remove("Oculus.VR");
-                    }
-                    if (references.Contains("Oculus.VR.Editor"))
-                    {
-                        references.Remove("Oculus.VR.Editor");
-                    }
-                    oculusAsmDef.References = references.ToArray();
-                }
-                oculusAsmDef.Save(oculusAsmDefFile[0].FullName);
             }
 
             // Updating the device manager profile to point to the right gameobjects
