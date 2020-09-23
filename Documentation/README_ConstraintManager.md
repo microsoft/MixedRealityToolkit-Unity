@@ -35,7 +35,7 @@ All constraints found on the object wil be listed here with a *Go to component* 
 
 <img src="../Documentation/Images/ConstraintManager/ManualSelection.png" width="600">
 
-If constraint manager is set to manual mode only constraints that are linked in the constraint list are processed and applied to the transform. The list displayed will only show the user selected constraints as well as [go to buttons](#go-to-component) or options to remove or add entries.
+If constraint manager is set to manual mode, only constraints that are linked in the constraint list are processed and applied to the transform. The list displayed will only show the user selected constraints as well as [go to buttons](#go-to-component) or options to remove or add entries.
 When enabling manual mode for the first time, constraint manager will populate the list will all available components as a starting point for selecting attached constraint components.
 
 ### Remove entry
