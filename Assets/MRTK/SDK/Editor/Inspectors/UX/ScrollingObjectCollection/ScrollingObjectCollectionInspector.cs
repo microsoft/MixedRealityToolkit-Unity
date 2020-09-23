@@ -276,6 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         if (check.changed)
                         {
                             scrollView.MaskEnabled = maskEnabled.boolValue;
+                            EditorUtility.SetDirty(target);
                         }
                     }              
 
