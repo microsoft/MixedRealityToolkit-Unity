@@ -149,12 +149,10 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p><strong>Link.xml created in the MixedRealityToolkit.Generated folder</strong></p>
 <p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
 <p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
-<p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
-<p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
-<p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
-<p>This change also adds the ability to remove MSBulid for Unity.</p>
-<p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
-<p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
+<p><strong>Unity 2019.3+: MRTK configuration dialog no longer attempts to enable legacy XR support</strong></p>
+<p>To avoid potential conflicts when using Unity's XR Platform, the option to enable legacy XR support has been removed
+from the MRTK configuration dialog. If desired, legacy XR support can be enabled, in Unity 2019, using <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt;
+<strong>Player</strong> &gt; <strong>XR Settings</strong> &gt; <strong>Virtual Reality Supported</strong>.</p>
 <p><strong>Reduction in InitializeOnLoad overhead</strong>
 We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
 improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
