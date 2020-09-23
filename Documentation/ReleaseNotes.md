@@ -120,6 +120,10 @@ See [ARFoundation](CrossPlatform/UsingARFoundation.md#install-required-packages)
 
 ### Breaking changes
 
+**Assembly Definition Files Changes**
+
+Some asmdef files are changed and are now only supporting Unity 2018.4.13f1 or later. Compilation erros will show up when upating to MRTK 2.5 in earlier versions of Unity. This can be fixed by going to `Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef` in the project window and removing the missing reference in the inspector. Repeat those steps with `Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef` and `Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef`. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.
+
 **IMixedRealityPointerMediator**
 
 This interface has been updated to have a new function:
@@ -185,8 +189,19 @@ Motion Controller simulation is now offered in editor play mode along side the e
 
 ### Known issues
 
+**Oculus Quest**
+
 There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
 
 The bug is signified with this set of 3 errors:
 
 ![Oculus XR Plugin Error](https://forum.unity.com/attachments/erori-unity-png.644204/)
+
+**UnityUI and TextMeshPro**
+
+There's a known issue for newer versions of TextMeshPro (1.5.0+ or 2.1.1+), where the default font size for dropdowns and bold font character spacing has been altered.
+
+![TMP image](https://user-images.githubusercontent.com/68253937/93158069-4d582f00-f6c0-11ea-87ad-94d0ba3ba6e5.png)
+
+This can be worked around by downgrading to an earlier version of TextMeshPro. See [issue #8556](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8556)
+for more details.

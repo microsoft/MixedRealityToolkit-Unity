@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
@@ -46,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty scaleStoppedEvent;
         private SerializedProperty translateStartedEvent;
         private SerializedProperty translateStoppedEvent;
+
+        private SerializedProperty enableConstraints;
+        private SerializedProperty constraintManager;
 
         private SerializedProperty elasticsManager;
 
@@ -89,6 +91,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scaleStoppedEvent = serializedObject.FindProperty("scaleStopped");
             translateStartedEvent = serializedObject.FindProperty("translateStarted");
             translateStoppedEvent = serializedObject.FindProperty("translateStopped");
+
+            // constraints
+            enableConstraints = serializedObject.FindProperty("enableConstraints");
+            constraintManager = serializedObject.FindProperty("constraintsManager");
 
             // Elastics
             elasticsManager = serializedObject.FindProperty("elasticsManager");
@@ -154,7 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
                     EditorGUILayout.Space();
-                    constraintsFoldout = InspectorUIUtility.DrawComponentTypeFoldout<TransformConstraint>(boundsControl.gameObject, constraintsFoldout, "Constraint");
+
+                    constraintsFoldout = ConstraintManagerInspector.DrawConstraintManagerFoldout(boundsControl.gameObject,
+                                                                                                enableConstraints,
+                                                                                                constraintManager,
+                                                                                                constraintsFoldout);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Events", "Bounds Control Events"), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
