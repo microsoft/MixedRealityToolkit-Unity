@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         if (IsProfileRequired(serviceType) &&
                             (configurationProfile.objectReferenceValue == null))
                         {
-                            EditorGUILayout.HelpBox($"{componentName} requires a Profile", MessageType.Warning);
+                            EditorGUILayout.HelpBox("This service requires a profile to be selected.", MessageType.Warning);
                         }
                     }
                     EditorGUILayout.Space();
