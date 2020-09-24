@@ -128,8 +128,8 @@ Show and hide the handles with animation based on the distance to the hands. It 
 - **Proximity Effect Active**: Enable proximity-based handle activation
 - **Object Medium Proximity**: Distance for the 1st step scaling
 - **Object Close Proximity**: Distance for the 2nd step scaling
-- **Far Scale**: Default scale value of the handle asset when the hands are out of range of the bounding box interaction (distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)
-- **Medium Scale**: Scale value of the handle asset when the hands are within range of the bounding box interaction (distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)
+- **Far Scale**: Default scale value of the handle asset when the hands are out of range of the bounds control interaction (distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)
+- **Medium Scale**: Scale value of the handle asset when the hands are within range of the bounds control interaction (distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)
 - **Close Scale**: Scale value of the handle asset when the hands are within range of the grab interaction (distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)
 - **Far Grow Rate**: Rate a proximity scaled object scales when the hand moves from medium to far proximity.
 - **Medium Grow Rate**: Rate a proximity scaled object scales when the hand moves from medium to close proximity.
@@ -188,9 +188,9 @@ Below are the prefabs, materials, and the scaling values for the HoloLens 2 styl
 
 A bounds control can be used in combination with [`ObjectManipulator.cs`](README_ObjectManipulator.md) to allow for certain types of manipulation (eg. moving the object) without using handles. The manipulation handler supports both one and two-handed interactions. [Hand tracking](Input/HandTracking.md) can be used to interact with an object up close.
 
-<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
+<img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_ObjectManipulator.png" width="450">
 
-In order for the bounding box edges to behave the same way when moving it using [`ObjectManipulator`](README_ObjectManipulator.md)'s far interaction, it is advised to connect its events for *On Manipulation Started* / *On Manipulation Ended* to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
+In order for the bounds control edges to behave the same way when moving it using [`ObjectManipulator`](README_ObjectManipulator.md)'s far interaction, it is advised to connect its events for *On Manipulation Started* / *On Manipulation Ended* to `BoundsControl.HighlightWires` / `BoundsControl.UnhighlightWires` respectively, as shown in the screenshot above.
 
 
 ## How to add and configure a bounds control using Unity Inspector
@@ -198,7 +198,7 @@ In order for the bounding box edges to behave the same way when moving it using 
 1. Add Box Collider to an object
 2. Assign `BoundsControl` script to an object
 3. Configure options, such as 'Activation' methods (see [Inspector properties](#inspector-properties) section below)
-4. (Optional) Assign prefabs and materials for a HoloLens 2 style bounding box (see [Handle styles](#handle-styles) section below)
+4. (Optional) Assign prefabs and materials for a HoloLens 2 style bounds control (see [Handle styles](#handle-styles) section below)
 
 > [!NOTE]
 > Use *Target Object* and *Bounds Override* field in the inspector to assign specific object and collider in the object with multiple child components.
@@ -255,16 +255,18 @@ rotationHandleConfiguration.HandleSize = 0.016f;
 rotationHandleConfiguration.ColliderPadding = 0.016f;
 ```
 
-### TODO CONSTRAINT MANAGER Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint
+### Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint
 
-To set the minimum and maximum scale, use the [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint). You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator).
+To set the minimum and maximum scale, attach a [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) to your constrol. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured. 
+
+You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator).
 
 ```c#
 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 bcontrol = cube.AddComponent<BoundsControl>();
-// Important: BoundsControl creates a scale handler on start if one does not exist
-// do not use AddComponent, as that will create a  duplicate handler that will not be used
-MinMaxScaleConstraint scaleConstraint = bcontrol.gameObject.EnsureComponent<MinMaxScaleConstraint>();
+// Important: BoundsControl creates a constraint manager on start if one does not exist.
+// There's no need to manually attach a constraint manager.
+MinMaxScaleConstraint scaleConstraint = bcontrol.gameObject.AddComponent<MinMaxScaleConstraint>();
 scaleConstraint.ScaleMinimum = 1f;
 scaleConstraint.ScaleMaximum = 2f;
 ```
