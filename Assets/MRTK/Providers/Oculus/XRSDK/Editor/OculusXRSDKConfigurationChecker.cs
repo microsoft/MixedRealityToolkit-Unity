@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
     [InitializeOnLoad]
     static class OculusXRSDKConfigurationChecker
     {
-        private const string AsmDefFileName = "Oculus.asmdef";
+        private const string AsmDefFileName = "MRTK.Oculus.asmdef";
         private const string OculusReference = "Unity.XR.Oculus";
         private const string SessionStateKey = "OculusXRSDKConfigurationCheckerSessionStateKey";
 
