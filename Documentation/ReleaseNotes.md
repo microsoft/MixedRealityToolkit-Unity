@@ -93,17 +93,11 @@ With the introduction of Unity Package Manger MRTK, MRTK now writes a `link.xml`
 
 More information on the MRTK link.xml file can be found in the [MRTK and managed code stripping](MRTK_and_managed_code_stripping.md) article.
 
-**Enable MSBuild for Unity removed from the configuration dialog**
+**Unity 2019.3+: MRTK configuration dialog no longer attempts to enable legacy XR support**
 
-To prevent the MRTK configuration dialog from repeatedly displaying when `Enable MSBuild for Unity` is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.
-
-![MSBuild for Unity menu items](Images/ConfigurationDialog/MSB4UMenuItems.png)
-
-This change also adds the ability to remove MSBulid for Unity.
-
-There is a confirmation dialog that will be displayed when selecting `Use MSBuild for Unity dependency resolution`.
-
-![MSBuild for Unity confirmation](Images/ConfigurationDialog/EnableMSB4UPrompt.png)
+To avoid potential conflicts when using Unity's XR Platform, the option to enable legacy XR support has been removed
+from the MRTK configuration dialog. If desired, legacy XR support can be enabled, in Unity 2019, using **Edit** > **Project Settings** >
+**Player** > **XR Settings** > **Virtual Reality Supported**.
 
 **Reduction in InitializeOnLoad overhead**
 We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
@@ -189,9 +183,26 @@ Motion Controller simulation is now offered in editor play mode along side the e
 
 ### Known issues
 
+**FileNotFoundException when examples are imported via Unity Package Manager**
+
+Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
+cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
+
+**NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)**
+
+In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
+This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:
+
+- Navigate to the `MixedRealityToolkit` object in the Hierarchy
+- In the Inspector window, select `Extensions`
+- If not expanded, expand `Scene Transition Service`
+- Set the value of `Configuration Profile` to **MRTKExamplesHubSceneTransitionServiceProfile**
+
+  ![Setting the scene transition profile](Images/ReleaseNotes/FixSceneTransitionProfile.png)
+
 **Oculus Quest**
 
-There is currently a known issue for using the [Oculus XR plugin with when targetting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
+There is currently a known issue for using the [Oculus XR plugin with when targeting Standalone platforms](https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/).  Check the Oculus bug tracker/forums/release notes for updates.
 
 The bug is signified with this set of 3 errors:
 
