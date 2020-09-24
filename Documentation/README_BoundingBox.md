@@ -3,7 +3,7 @@
 ![Bounding box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)
 
 > [!NOTE]
-> Bounding box is deprecated and replaced by it's successor [bounds control](README_BoundsControl.md). Use [one of the migration options](#migrating-to-bounds-control) to upgrade existing game objects.
+> Bounding box is deprecated and replaced by its successor [bounds control](README_BoundsControl.md). Use [one of the migration options](#migrating-to-bounds-control) to upgrade existing game objects.
 
 The [`BoundingBox.cs`](xref:Microsoft.MixedReality.Toolkit.UI.BoundingBox) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2, for example, the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.
 
