@@ -6420,6 +6420,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ReleaseNotes/FixSceneTransitionProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/FixSceneTransitionProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/ReleaseNotes/HandTrackingVisualizationModes.png",
       "output": {
         "resource": {
@@ -8402,7 +8413,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "dYFugidLnn1ro/IB2YjTRw=="
+          "hash": "HfRBzXSJGxTdsw+ouzwJMw=="
         }
       },
       "is_incremental": false,

@@ -149,12 +149,10 @@ yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 <p><strong>Link.xml created in the MixedRealityToolkit.Generated folder</strong></p>
 <p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
 <p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
-<p><strong>Enable MSBuild for Unity removed from the configuration dialog</strong></p>
-<p>To prevent the MRTK configuration dialog from repeatedly displaying when <code>Enable MSBuild for Unity</code> is unchecked, it has been moved to the `Mixed Reality Toolkit' menu as shown in the following image.</p>
-<p><img src="Images/ConfigurationDialog/MSB4UMenuItems.png" alt="MSBuild for Unity menu items"></p>
-<p>This change also adds the ability to remove MSBulid for Unity.</p>
-<p>There is a confirmation dialog that will be displayed when selecting <code>Use MSBuild for Unity dependency resolution</code>.</p>
-<p><img src="Images/ConfigurationDialog/EnableMSB4UPrompt.png" alt="MSBuild for Unity confirmation"></p>
+<p><strong>Unity 2019.3+: MRTK configuration dialog no longer attempts to enable legacy XR support</strong></p>
+<p>To avoid potential conflicts when using Unity's XR Platform, the option to enable legacy XR support has been removed
+from the MRTK configuration dialog. If desired, legacy XR support can be enabled, in Unity 2019, using <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt;
+<strong>Player</strong> &gt; <strong>XR Settings</strong> &gt; <strong>Virtual Reality Supported</strong>.</p>
 <p><strong>Reduction in InitializeOnLoad overhead</strong>
 We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
 improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
@@ -207,8 +205,25 @@ scenes opened up in 2.5 get automatically fixed.</p>
 <p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
 <p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
 <h3 id="known-issues">Known issues</h3>
+<p><strong>FileNotFoundException when examples are imported via Unity Package Manager</strong></p>
+<p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
+cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
+<p><strong>NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)</strong></p>
+<p>In some situations, opening <code>EyeTrackingDemo-00-RootScene</code> may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
+This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:</p>
+<ul>
+<li><p>Navigate to the <code>MixedRealityToolkit</code> object in the Hierarchy</p>
+</li>
+<li><p>In the Inspector window, select <code>Extensions</code></p>
+</li>
+<li><p>If not expanded, expand <code>Scene Transition Service</code></p>
+</li>
+<li><p>Set the value of <code>Configuration Profile</code> to <strong>MRTKExamplesHubSceneTransitionServiceProfile</strong></p>
+<p><img src="Images/ReleaseNotes/FixSceneTransitionProfile.png" alt="Setting the scene transition profile"></p>
+</li>
+</ul>
 <p><strong>Oculus Quest</strong></p>
-<p>There is currently a known issue for using the <a href="https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/">Oculus XR plugin with when targetting Standalone platforms</a>.  Check the Oculus bug tracker/forums/release notes for updates.</p>
+<p>There is currently a known issue for using the <a href="https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/">Oculus XR plugin with when targeting Standalone platforms</a>.  Check the Oculus bug tracker/forums/release notes for updates.</p>
 <p>The bug is signified with this set of 3 errors:</p>
 <p><img src="https://forum.unity.com/attachments/erori-unity-png.644204/" alt="Oculus XR Plugin Error"></p>
 <p><strong>UnityUI and TextMeshPro</strong></p>
