@@ -5,7 +5,8 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.SDK",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
-        "Unity.XR.Oculus"
+        "Unity.XR.Oculus",
+        "Oculus.VR"
     ],
     "includePlatforms": [
         "Android",

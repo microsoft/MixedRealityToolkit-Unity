@@ -3,7 +3,8 @@
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus"
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus",
+        "Oculus.VR.Editor"
     ],
     "includePlatforms": [
         "Editor"
