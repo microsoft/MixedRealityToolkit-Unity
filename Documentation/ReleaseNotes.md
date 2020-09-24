@@ -189,6 +189,11 @@ Motion Controller simulation is now offered in editor play mode along side the e
 
 ### Known issues
 
+**FileNotFoundException when examples are imported via Unity Package Manager**
+
+Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
+cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
+
 **NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)**
 
 In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
