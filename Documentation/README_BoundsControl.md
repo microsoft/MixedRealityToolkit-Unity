@@ -57,7 +57,7 @@ Currently bounds control offers configuration objects options for the following 
   - [Scale handles](#scale-handles-configuration)
   - [Rotation handles](#rotation-handles-configuration)
   - [Translation handles](#translation-handles-configuration)
-- [Links / Wireframe](#links-configuration-(wireframe))
+- [Links / Wireframe](#links-configuration)
 - [Box display](#box-configuration)
 - [Proximity effect](#proximity-effect-configuration)
 
@@ -112,7 +112,7 @@ Allows enabling and configuring translation handles for bounds control. Note tha
 - **Show handle for Y**: controls visibility of the handle for Y axis.
 - **Show handle for Z**: controls visibility of the handle for Z axis.
 
-### Links configuration (wireframe)
+### <a name="links-configuration">Links configuration (wireframe)</a>
 The links configuration enables the wireframe feature of bounds control. The following properties can be configured:
 
 - **Wireframe material**: the material applied to the wireframe mesh.
@@ -220,7 +220,7 @@ In order for the bounds control edges to behave the same way when moving it usin
     boundsControl = cube.AddComponent<BoundsControl>();
     ```
 
-1. Configure options either directly on the control or via one of the scriptable configurations (see [Inspector properties](#inspector-properties) and [Configurations](#configurations) section below)
+1. Configure options either directly on the control or via one of the scriptable configurations (see [Inspector properties](#inspector-properties) and [Configurations](#configuration-objects) section below)
 
     ```c#
 	// Change activation method
@@ -281,3 +281,16 @@ private void PutABoundsControlAroundIt(GameObject target)
    target.AddComponent<BoundsControl>();
 }
 ```
+
+## Migrating from Bounding Box
+Existing prefabs and instances using [bounding box](README_BoundingBox.md) can be upgraded to the new bounds control via the [migration window](Tools/MigrationWindow.md) which is part of the MRTK tools package.
+
+For upgrading individual instances of bounding box there's also an a migration option inside the property inspector of the component.
+
+<img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Migrate.png" width="450">
+
+## See also
+
+- [Object manipulator](README_ObjectManipulator.md)
+- [Constraint manager](README_ConstraintManager.md)
+- [Migration window](Tools/MigrationWindow.md)
