@@ -185,7 +185,7 @@ Motion Controller simulation is now offered in editor play mode along side the e
 
 **CameraCache may create a new camera on shutdown**
 
-In some situations (ex: when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459) for more information.
+In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459) for more information.
 
 **FileNotFoundException when examples are imported via Unity Package Manager**
 
