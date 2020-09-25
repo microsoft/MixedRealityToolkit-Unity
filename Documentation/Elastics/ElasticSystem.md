@@ -50,14 +50,20 @@ Elastics extents settings vary depending on the type of manipulation. Translatio
 #### Volume elastic extent
 Volume extents define a three dimensional space in which the damped harmonic oscillator is free to move.
 
+![Elastic Volume Stretch Bounds](../Images/Elastics/Elastics_Volume_Bounds.gif)
+
 - **StretchBounds**: represents the lower bounds of the elastic space.
 - **UseBounds**: whether the stretch bounds should be respected by the system. If set to true if the current iteration of the target position is outside the stretch bounds, the end force will be applied.
 - **SnapPoints**: points inside the space to which the system will snap.
 - **RepeatSnapPoints**: repeats the snap points to infinity. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.
 - **SnapRadius**: distance at which snap points begin forcing the spring.
 
+![Elastic Volume Snap Grid](../Images/Elastics/Elastics_Volume_Snap.gif)
+
 #### Quaternion elastic extent
 Quaternion extents define a four dimensional rotation space in which the damped harmonic oscillator is free to rotate.
+
+![Elastic Rotation Example](../Images/Elastics/Elastics_Rotation.gif)
 
 - **SnapPoints**: euler angles to which the system will snap.
 - **RepeatSnapPoints**: repeats the snap points to infinity. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.
