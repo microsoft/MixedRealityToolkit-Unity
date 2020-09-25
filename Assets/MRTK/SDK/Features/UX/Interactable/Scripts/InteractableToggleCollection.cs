@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (fireOnClick)
                 {
-                    ToggleList[index].TriggerOnClick();
+                    ToggleList[index].TriggerOnClick(true);
                 }
             }
         }
