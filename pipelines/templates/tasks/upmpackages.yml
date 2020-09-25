@@ -41,7 +41,7 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber $(parameters.previewVersion)
+        -BuildNumber $(previewVersion)
         -ExcludeBuildNumber
 
 - task: PublishBuildArtifacts@1
