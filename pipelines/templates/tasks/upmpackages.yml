@@ -16,7 +16,8 @@ steps:
     versionSpec: '12.18.0'
 
 - powershell: |
-  $previewVersion = ${{ parameters.buildNumber }}.Substring(4)
+    $previewVersion = ${{ parameters.buildNumber }}.Substring(4)
+    echo "##vso[task.setvariable variable=previewVersion"]$previewVersion
 
 - ${{ if eq(parameters.excludeBuildNumber, 0) }}:
   - task: PowerShell@2
