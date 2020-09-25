@@ -53,7 +53,7 @@ Volume extents define a three dimensional space in which the damped harmonic osc
 ![Elastic Volume Stretch Bounds](../Images/Elastics/Elastics_Volume_Bounds.gif)
 
 - **StretchBounds**: represents the lower bounds of the elastic space.
-- **UseBounds**: whether the stretch bounds should be respected by the system. If set to true if the current iteration of the target position is outside the stretch bounds, the end force will be applied.
+- **UseBounds**: whether the stretch bounds should be respected by the system. If true, when the current iteration of the target position is outside the stretch bounds, the end force will be applied.
 - **SnapPoints**: points inside the space to which the system will snap.
 - **RepeatSnapPoints**: repeats the snap points to infinity. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.
 - **SnapRadius**: distance at which snap points begin forcing the spring.
