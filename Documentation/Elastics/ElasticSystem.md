@@ -12,7 +12,7 @@ Currently the following MRTK components supporting the [elastics manager](xref:M
 ## Elastics manager
 ![Elastic System2](../Images/Elastics/Elastics_Main.gif)
 
-The elastics manager takes over processing passed transforms and feeding them into the elastics system. 
+The elastics manager processes passed transforms and feeds them into the elastics system. 
 
 Enabling elastics for custom components can be achieved by two steps:
 1. Calling the Initialize method on manipulation start, updating the system with the current host transform.
