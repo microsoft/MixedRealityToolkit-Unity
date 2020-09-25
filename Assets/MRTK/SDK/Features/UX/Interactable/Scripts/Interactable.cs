@@ -1232,7 +1232,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
-            if (!IsEnabled)
+            if (!CanInteract())
             {
                 return;
             }
