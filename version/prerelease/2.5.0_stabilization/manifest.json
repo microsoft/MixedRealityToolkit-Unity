@@ -1217,6 +1217,138 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Assign.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Assign.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Constraints.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Constraints.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Elastics.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Elastics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Events.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Events.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles1_NoHighlight.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles1_NoHighlight.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_HandleStyles2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Main.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Migrate.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Migrate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_ObjectManipulator.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_ObjectManipulator.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BoundsControl/MRTK_BoundsControl_Proximity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BoundsControl/MRTK_BoundsControl_Proximity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png",
       "output": {
         "resource": {
@@ -8113,7 +8245,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "kB/9IB71JfcDR4V7CjY8rg=="
+          "hash": "fzL9j7BH1FekVjhHYcEYSw=="
         }
       },
       "is_incremental": false,
@@ -8125,7 +8257,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundsControl.html",
-          "hash": "e8N6M5CHfyvXlyKw3/3lZw=="
+          "hash": "ustK3Cv3rvV1PBAOQ7IJ8w=="
         }
       },
       "is_incremental": false,
@@ -8293,7 +8425,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectManipulator.html",
-          "hash": "OtjlwDR1cRVKgV40Mnj+yQ=="
+          "hash": "3rPvYa7kkQM84JmJYKtA5A=="
         }
       },
       "is_incremental": false,
@@ -8761,7 +8893,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "bpNTDiKD+wRu/DQ7mLEFRw=="
+          "hash": "Vv5j+K2ImhgLaJGpHvAEPQ=="
         }
       },
       "is_incremental": false,
@@ -22705,7 +22837,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundsControl.BoundsControl.html",
-          "hash": "jKq3C2c2vj3wjC1n3wy6tQ=="
+          "hash": "c5bWsS7PQZ9iR1lWz9KoHQ=="
         }
       },
       "is_incremental": false,
@@ -22933,7 +23065,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundsControl.html",
-          "hash": "T2xcG6C4SeLrAYIrwwBjTQ=="
+          "hash": "CAOZbAUIKLy8dq1iuDigAA=="
         }
       },
       "is_incremental": false,
@@ -29152,13 +29284,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -29174,6 +29299,13 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
