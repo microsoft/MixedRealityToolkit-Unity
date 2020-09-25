@@ -1,6 +1,6 @@
 # Elastic system (experimental)
 
-![Elastic System](../Images/Elastics/Elastics_Main1.gif) ![Elastic System2](../Images/Elastics/Elastics_Main.gif)
+![Elastic System](../Images/Elastics/Elastics_Main1.gif)
 
 MRTK comes with an elastic simulation system that includes a wide variety of extensible and flexible subclasses, offering bindings for 4-dimensional quaternion springs, 3-dimensional volume springs and simple linear spring systems.
 
@@ -10,7 +10,7 @@ Currently the following MRTK components supporting the [elastics manager](xref:M
 - [Object manipulator](../README_ObjectManipulator.md)
 
 ## Elastics manager
-
+![Elastic System2](../Images/Elastics/Elastics_Main.gif)
 The elastics manager takes over processing passed transforms and feeding them into the elastics system. 
 
 Enabling elastics for custom components can be achieved by two steps:
