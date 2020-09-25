@@ -14,10 +14,6 @@
 .PARAMETER ExcludeBuildNumber
     Indicates that the build number should be excluded from the generated artifacts. If this parameter is specified, the version
     of the artifacts will be formatted as "<$Version>", if omitted, the artifact version will be "<$Version>-preview.<BuildNumber>".
-.PARAMETER TrimPreview
-    Indicates that the build number should be trimmed to remove the leading year (ex: 20200925.1 -> 0925.1). This parameter is ignored
-    if ExcludeBuildNumber is also used.
-    NOTE: TrimPreview does not attempt to evaluate the format of BuildNumber. It simply removes the first four characters.
 #>
 param(
     [string]$ProjectRoot,
@@ -27,9 +23,7 @@ param(
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$BuildNumber,
     [Parameter(Mandatory=$false)]
-    [Switch]$ExcludeBuildNumber,
-    [Parameter(Mandatory=$false)]
-    [Switch]$TrimPreview
+    [Switch]$ExcludeBuildNumber
 )
 
 [string]$startPath = $(Get-Location)
@@ -47,14 +41,7 @@ if ((-not $BuildNumber) -and (-not $ExcludeBuildNumber)) {
     throw "Missing required parameter: -BuildNumber. This parameter is required when -ExcludeBuildNumber is not specified."
 }
 if (-not $ExcludeBuildNumber) {
-    $previewNumber = $BuildNumber
-
-    if ($TrimPreview -and ($previewNumber.Length -gt 8)) {
-        # Trim off the first four characters, the build system uses YYYYMMDD.# for the build number.
-        $previewNumber = $previewNumber.Substring(4)
-    }
-
-    $Version = "$Version-preview.$previewNumber"
+    $Version = "$Version-preview.$BuildNumber"
 }
 Write-Output "Package version: $Version"
 
