@@ -45,7 +45,7 @@ The following properties can be adjusted but already come with a set of defaults
 - **Drag**: drag/damper factor, proportional to velocity.
 
 ### Elastics extents
-Elastics extents settings vary depending on the type of manipulation. Translation and scale are represented by [volume elastic extents](#volume-elastic-extent) where rotation is represented by a [quaternion elastic extent](#quaternion-elastic-extent).
+Elastics extents settings vary depending on the type of manipulation. Translation and scale are represented by [volume elastic extents](#volume-elastic-extent) and rotation is represented by a [quaternion elastic extent](#quaternion-elastic-extent).
 
 #### Volume elastic extent
 Volume extents define a three dimensional space in which the damped harmonic oscillator is free to move.
