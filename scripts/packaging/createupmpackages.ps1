@@ -57,7 +57,6 @@ if (-not $ExcludeBuildNumber) {
     $Version = "$Version-preview.$previewNumber"
 }
 Write-Output "Package version: $Version"
-throw
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
