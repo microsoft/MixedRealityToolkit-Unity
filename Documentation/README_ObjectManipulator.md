@@ -156,7 +156,14 @@ When a rigidbody is added, collisions should work correctly.
 <img src="../Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_Rigidbody.gif" width="500">
 
 
-## Elastics (Experimental)
-Elastics can be used when manipulating objects via object manipulator. Note that the elastics system is still in experimental state. To enable elastics either link an existing elastics manager component or create and link a new elastics manager via the `Add Elastics Manager` button.
+## Elastics - Experimental
+Elastics can be used when manipulating objects via object manipulator. Note that the [elastics system](Elastics/ElasticSystem.md) is still in experimental state. To enable elastics either link an existing elastics manager component or create and link a new elastics manager via the `Add Elastics Manager` button.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Elastics.png" width="450">
+
+## See also
+
+- [Bounds control](README_BoundsControl.md)
+- [Constraint manager](README_ConstraintManager.md)
+- [Migration window](Tools/MigrationWindow.md)
+- [Elastics system (Experimental)](Elastics/ElasticSystem.md)

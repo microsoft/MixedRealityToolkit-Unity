@@ -230,12 +230,14 @@
       href: README_Button.md
     - name: Bounds Control
       href: README_BoundsControl.md
-    - name: Bounding Box [Obsolete]
-      href: README_BoundingBox.md
     - name: Object Manipulator
       href: README_ObjectManipulator.md
     - name: Constraint Manager
       href: README_ConstraintManager.md
+    - name: Elastic System [Experimental]
+      href: Elastics/ElasticSystem.md
+    - name: Bounding Box [Obsolete]
+      href: README_BoundingBox.md
     - name: Manipulation Handler [Obsolete]
       href: README_ManipulationHandler.md
     - name: Slate
