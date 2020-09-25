@@ -30,7 +30,7 @@ Similar to [bounds control configurations](../README_BoundsControl.md#configurat
 
 The elastics manager inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition, shared instances won't be editable directly in the elastics manager property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.
 
-Currently elastics manager offers configuration objects options for the following transform types, each of them represented by a [elastic configuration object](#elastic-configuration-object):
+Elastics manager offers configuration objects options for the following transform types, each of them represented by a [elastic configuration object](#elastic-configuration-object):
 - Translation Elastic
 - Rotation Elastic
 - Scale Elastic
