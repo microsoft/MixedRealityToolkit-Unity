@@ -28,7 +28,7 @@ The field `Manipulation types using elastic feedback` needs to be enabled for sp
 
 Similar to [bounds control configurations](../README_BoundsControl.md#configuration-objects), elastic manager comes with a set of configuration objects that can be stored as scriptable objects and shared between different instances or prefabs. Configurations can be shared and linked either as individual scriptable asset files or nested scriptable assets inside of prefabs. Further configurations can also be defined directly on the instance without linking to an external or nested scriptable asset.
 
-The elastics manager inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition shared instances won't be editable directly in the elastics manager property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.
+The elastics manager inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition, shared instances won't be editable directly in the elastics manager property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.
 
 Currently elastics manager offers configuration objects options for the following transform types, each of them represented by a [elastic configuration object](#elastic-configuration-object):
 - Translation Elastic
