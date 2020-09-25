@@ -565,7 +565,7 @@ function CheckUnityScene {
 # added a roadblock to force discussion of new asmdef creation to ensure that we're
 # not creating a lot of tiny ones.
 # There's non-trivial overhead to the addition of each asmdef (i.e. each asmdef will
-# create build overhead associated with all of the stuff that happens before the actual code    
+# create build overhead associated with all of the stuff that happens before the actual code
 # inside gets compiled.)
 # In certain cases (especially lighting up a new platform/provider) this will be a necessary
 # addition, but in others it may make more sense to put group the code with another existing
