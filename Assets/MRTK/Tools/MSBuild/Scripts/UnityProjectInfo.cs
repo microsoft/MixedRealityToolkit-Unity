@@ -164,8 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!asmDefInfoMap.TryGetValue(projectKey, out AssemblyDefinitionInfo assemblyDefinitionInfo))
             {
-                Debug.LogWarning($"Can't find an asmdef for project: {projectKey}.");
-                return null;
+                throw new InvalidOperationException($"Can't find an asmdef for project: {projectKey}");
             }
 
             CSProjectInfo toReturn = new CSProjectInfo(this, assemblyDefinitionInfo, projectOutputPath);
@@ -205,11 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     continue;
                 }
 
-                CSProjectInfo projectInfo = GetProjectInfo(projectsMap, asmDefInfoMap, builtInPackagesWithoutSource, reference, projectOutputPath);
-                if (projectInfo != null)
-                {
-                    toReturn.AddDependency(projectInfo);
-                }
+                toReturn.AddDependency(GetProjectInfo(projectsMap, asmDefInfoMap, builtInPackagesWithoutSource, reference, projectOutputPath));
             }
 
             return toReturn;
