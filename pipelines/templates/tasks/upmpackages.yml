@@ -6,11 +6,18 @@ parameters:
   buildNumber: $(Build.BuildNumber)
   excludeBuildNumber: 0
 
+variables:
+- name: previewVersion
+  value: ""
+
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '12.18.0'
-    
+
+- powershell: |
+  $previewVersion = ${{ parameters.buildNumber }}.Substring(4)
+
 - ${{ if eq(parameters.excludeBuildNumber, 0) }}:
   - task: PowerShell@2
     displayName: 'Build PREVIEW UPM packages'
@@ -21,7 +28,7 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
+        -BuildNumber $(parameters.previewVersion)
 
 - ${{ if eq(parameters.excludeBuildNumber, 1) }}:
   - task: PowerShell@2
@@ -33,7 +40,7 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber ${{ parameters.buildNumber }}
+        -BuildNumber $(parameters.previewVersion)
         -ExcludeBuildNumber
 
 - task: PublishBuildArtifacts@1
