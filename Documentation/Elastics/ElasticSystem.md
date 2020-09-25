@@ -21,7 +21,7 @@ Enabling elastics for custom components can be achieved by two steps:
 Note that elastics will continue simulating once manipulation ends (through the elastics manager update loop). To block the behavior, elastics auto update [EnableElasticsUpdate](xref:Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.EnableElasticsUpdate) can be set to false.
 
 
-The elastics manager component when added to a game object won't have elastics enabled for any transforms type per default.
+By default, the elastics manager component, when added to a game object, won't have elastics enabled for any transforms type.
 The field `Manipulation types using elastic feedback` needs to be enabled for specific transform types to create elastics configuration and extents for the selected type.
 
 ### Elastics configurations
