@@ -165,6 +165,27 @@ Unity responsiveness improvements.</p>
 See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARFoundation</a> for the new steps.</li>
 <li>For those who will be using <a href="Tools/HolographicRemoting.html#hololens-2">Holographic Remoting</a> on HoloLens 2, there is now a manual step to perform.</li>
 </ul>
+<h2 id="bounds-control-graduated">Bounds control graduated</h2>
+<p><img src="Images/BoundsControl/MRTK_BoundsControl_Main.png" alt="Bounds control">
+<a href="README_BoundsControl.html">Bounds control</a> graduated out of experimental and comes with a bunch of new features and tons of bug fixes.
+Here a list of the highlights of this update:</p>
+<ul>
+<li>properties are split into configurations which makes it easier to set up bounds control</li>
+<li>configurations can be shared through scriptable objects</li>
+<li>every property / scriptable property is runtime configurable</li>
+<li>bounds control rig isn't recreated on property changes anymore</li>
+<li>translation handles support</li>
+<li>full constraint support through constraint manager</li>
+<li>elastics system integration (experimental)</li>
+</ul>
+<p>The old bounding box is now deprecated and existing game objects using bounding box can be <a href="Tools/MigrationWindow.html">upgraded using the migration tool</a> or the <a href="README_BoundingBox.html#migrating-to-bounds-control">bounding box inspector</a>.</p>
+<h2 id="constraint-manager-component">Constraint manager component</h2>
+<p>Constraints can now be used by both, bounds control and object manipulator via the new <a href="README_ConstraintManager.html">constraint manager component</a>. Both components will create a constraint manager per default and process any attached constraints automatically.</p>
+<p>Additionally to the automatic behavior constraint manager also comes with a manual mode that lets users decide which constraint should be processed.
+For this reason the way we display constraints in the property inspector changed a bit.</p>
+<img src="Images/ConstraintManager/ManualSelection.png" width="600">
+<p>The constraints that are applied to the component are now shown as a list in the constraint manager component whereas the component using the constraint manager (either <a href="README_BoundsControl.html#constraint-system">bounds control</a> or <a href="README_ObjectManipulator.html#constraint-manager">object manipulator</a>) will now show the selected constraint manager and mode (auto or manual).
+For more information read the <a href="README_ConstraintManager.html">constraint manager</a> section in our docs.</p>
 <h3 id="breaking-changes">Breaking changes</h3>
 <p><strong>Assembly Definition Files Changes</strong></p>
 <p>Some asmdef files are changed and are now only supporting Unity 2018.4.13f1 or later. Compilation erros will show up when upating to MRTK 2.5 in earlier versions of Unity. This can be fixed by going to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and removing the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
@@ -205,6 +226,8 @@ scenes opened up in 2.5 get automatically fixed.</p>
 <p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
 <p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
 <h3 id="known-issues">Known issues</h3>
+<p><strong>CameraCache may create a new camera on shutdown</strong></p>
+<p>In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459">this issue</a> for more information.</p>
 <p><strong>FileNotFoundException when examples are imported via Unity Package Manager</strong></p>
 <p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
