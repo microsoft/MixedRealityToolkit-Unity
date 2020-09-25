@@ -14,6 +14,10 @@
 .PARAMETER ExcludeBuildNumber
     Indicates that the build number should be excluded from the generated artifacts. If this parameter is specified, the version
     of the artifacts will be formatted as "<$Version>", if omitted, the artifact version will be "<$Version>-preview.<BuildNumber>".
+.PARAMETER TrimPreview
+    Indicates that the build number should be trimmed to remove the leading year (ex: 20200925.1 -> 0925.1). This parameter is ignored
+    if ExcludeBuildNumber is also used.
+    NOTE: TrimPreview does not attempt to evaluate the format of BuildNumber. It simply removes the first four characters.
 #>
 param(
     [string]$ProjectRoot,
