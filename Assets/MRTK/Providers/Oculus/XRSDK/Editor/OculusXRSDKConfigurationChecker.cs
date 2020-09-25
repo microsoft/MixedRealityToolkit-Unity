@@ -15,13 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
     [InitializeOnLoad]
     static class OculusXRSDKConfigurationChecker
     {
-        private const string AsmDefFileName = "MRTK.Oculus.asmdef";
-        private const string OculusReference = "Unity.XR.Oculus";
         private const string SessionStateKey = "OculusXRSDKConfigurationCheckerSessionStateKey";
-
-#if UNITY_2019_3_OR_NEWER
-        private static readonly VersionDefine OculusDefine = new VersionDefine("com.unity.xr.oculus", "", "OCULUS_ENABLED");
-#endif // UNITY_2019_3_OR_NEWER
+        private static readonly string[] Definitions = { "OCULUS_ENABLED" };
 
         static OculusXRSDKConfigurationChecker()
         {
@@ -32,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
             if (!SessionState.GetBool(SessionStateKey, false))
             {
                 SessionState.SetBool(SessionStateKey, true);
-                UpdateAsmDef();
+                UpdateScriptingDefinitions();
             }
         }
 
@@ -49,72 +44,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus
         /// - Save the Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef file
         /// This will result in Unity reloading the assembly with the appropriate dependencies.
         /// </remarks>
-        private static void UpdateAsmDef()
+        private static void UpdateScriptingDefinitions()
         {
-            FileInfo[] asmDefFiles = FileUtilities.FindFilesInAssets(AsmDefFileName);
-
-            if (asmDefFiles.Length == 0)
-            {
-                Debug.LogWarning($"Unable to locate file: {AsmDefFileName}");
-                return;
-            }
-            if (asmDefFiles.Length > 1)
-            {
-                Debug.LogWarning($"Multiple ({asmDefFiles.Length}) {AsmDefFileName} instances found. Modifying only the first.");
-            }
-
-            AssemblyDefinition asmDef = AssemblyDefinition.Load(asmDefFiles[0].FullName);
-            if (asmDef == null)
-            {
-                Debug.LogWarning($"Unable to load file: {AsmDefFileName}");
-                return;
-            }
-
-            List<string> references = new List<string>();
-            if (asmDef.References != null)
-            {
-                references.AddRange(asmDef.References);
-            }
-
-            bool changed = false;
-
 #if UNITY_2019_3_OR_NEWER
-            List<VersionDefine> versionDefines = new List<VersionDefine>();
-            if (asmDef.VersionDefines != null)
-            {
-                versionDefines.AddRange(asmDef.VersionDefines);
-            }
 
-            if (!references.Contains(OculusReference))
-            {
-                // Add a reference to the XR SDK Oculus assembly
-                references.Add(OculusReference);
-                changed = true; 
-            }
-
-            if (!versionDefines.Contains(OculusDefine))
-            {
-                // Add the Oculus #define
-                versionDefines.Add(OculusDefine);
-                changed = true;
-            }
+            ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, Definitions);
+            ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
 #else
-            if (references.Contains(OculusReference))
-            {
-                // Remove the reference to the XR SDK Oculus assembly
-                references.Remove(OculusReference);
-                changed = true;
-            }
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, Definitions);
+            ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
 #endif
-
-            if (changed)
-            {
-                asmDef.References = references.ToArray();
-#if UNITY_2019_3_OR_NEWER
-                asmDef.VersionDefines = versionDefines.ToArray();
-#endif // UNITY_2019_3_OR_NEWER
-                asmDef.Save(asmDefFiles[0].FullName);
-            }
         }
     }
 }

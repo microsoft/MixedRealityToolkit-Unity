@@ -228,7 +228,9 @@
       href: README_Toolbox.md
     - name: Button
       href: README_Button.md
-    - name: Bounding Box
+    - name: Bounds Control
+      href: README_BoundsControl.md
+    - name: Bounding Box [Obsolete]
       href: README_BoundingBox.md
     - name: Object Manipulator
       href: README_ObjectManipulator.md

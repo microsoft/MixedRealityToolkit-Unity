@@ -17,9 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// the possibility of user triggered transform manipulation. 
     /// Bounds Control provides scale and rotation handles that can be used for far and near interaction manipulation
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
-    /// Todo: replace doc link - point to BoundsControl docs
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundsControl.html")]
     [RequireComponent(typeof(ConstraintManager))]
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
