@@ -29,7 +29,7 @@ steps:
         -ProjectRoot ${{ parameters.projectRoot }}
         -OutputDirectory ${{ parameters.outputDirectory }}
         -Version ${{ parameters.version }}
-        -BuildNumber $(parameters.previewVersion)
+        -BuildNumber $(previewVersion)
 
 - ${{ if eq(parameters.excludeBuildNumber, 1) }}:
   - task: PowerShell@2
