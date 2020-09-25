@@ -23,7 +23,9 @@ param(
     [ValidatePattern("^\d+?[\.\d+]*$")]
     [string]$BuildNumber,
     [Parameter(Mandatory=$false)]
-    [Switch]$ExcludeBuildNumber
+    [Switch]$ExcludeBuildNumber,
+    [Parameter(Mandatory=$false)]
+    [Switch]$TrimPreview
 )
 
 [string]$startPath = $(Get-Location)
@@ -41,9 +43,17 @@ if ((-not $BuildNumber) -and (-not $ExcludeBuildNumber)) {
     throw "Missing required parameter: -BuildNumber. This parameter is required when -ExcludeBuildNumber is not specified."
 }
 if (-not $ExcludeBuildNumber) {
-    $Version = "$Version-preview.$BuildNumber"
+    $previewNumber = $BuildNumber
+
+    if ($TrimPreview -and ($previewNumber.Length -gt 8)) {
+        # Trim off the first four characters, the build system uses YYYYMMDD.# for the build number.
+        $previewNumber = $previewNumber.Substring(4)
+    }
+
+    $Version = "$Version-preview.$previewNumber"
 }
 Write-Output "Package version: $Version"
+throw
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
