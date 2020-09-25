@@ -112,6 +112,31 @@ In some cases there was a tradeoff that had to be made:
 See [ARFoundation](CrossPlatform/UsingARFoundation.md#install-required-packages) for the new steps.
 - For those who will be using [Holographic Remoting](Tools/HolographicRemoting.md#hololens-2) on HoloLens 2, there is now a manual step to perform.
 
+## Bounds control graduated
+![Bounds control](../Documentation/Images/BoundsControl/MRTK_BoundsControl_Main.png)
+[Bounds control](README_BoundsControl.md) graduated out of experimental and comes with a bunch of new features and tons of bug fixes.
+Here a list of the highlights of this update:
+- properties are split into configurations which makes it easier to set up bounds control
+- configurations can be shared through scriptable objects
+- every property / scriptable property is runtime configurable
+- bounds control rig isn't recreated on property changes anymore
+- translation handles support
+- full constraint support through constraint manager
+- elastics system integration (experimental)
+
+The old bounding box is now deprecated and existing game objects using bounding box can be [upgraded using the migration tool](Tools/MigrationWindow.md) or the [bounding box inspector](README_BoundingBox.md#migrating-to-bounds-control).
+
+## Constraint manager component
+Constraints can now be used by both, bounds control and object manipulator via the new [constraint manager component](README_ConstraintManager.md). Both components will create a constraint manager per default and process any attached constraints automatically.
+
+Additionally to the automatic behavior constraint manager also comes with a manual mode that lets users decide which constraint should be processed.
+For this reason the way we display constraints in the property inspector changed a bit. 
+
+<img src="../Documentation/Images/ConstraintManager/ManualSelection.png" width="600">
+
+The constraints that are applied to the component are now shown as a list in the constraint manager component whereas the component using the constraint manager (either [bounds control](README_BoundsControl.md#constraint-system) or [object manipulator](README_ObjectManipulator.md#constraint-manager)) will now show the selected constraint manager and mode (auto or manual). 
+For more information read the [constraint manager](README_ConstraintManager.md) section in our docs.
+
 ### Breaking changes
 
 **Assembly Definition Files Changes**
@@ -182,6 +207,10 @@ Motion Controller simulation is now offered in editor play mode along side the e
 `IInputSimulationService` now has new properties `MotionControllerDataLeft` and `MotionControllerDataRight`. `MixedRealityInputSimulationProfile` now includes new fields for the keyboard mapping of certain motion controller buttons.
 
 ### Known issues
+
+**CameraCache may create a new camera on shutdown**
+
+In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459) for more information.
 
 **FileNotFoundException when examples are imported via Unity Package Manager**
 
