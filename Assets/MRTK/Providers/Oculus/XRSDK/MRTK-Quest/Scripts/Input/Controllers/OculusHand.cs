@@ -421,25 +421,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
             // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
             // To counter this, we perform a distance check between thumb and index to determine if we should force the pinch to a false state.
-            float pinchStrength;
-            if (AreIndexAndThumbFarApart())
+            float pinchStrength = HandPoseUtils.CalculateIndexPinch(ControllerHandedness);
+            if (pinchStrength == 0.0f)
             {
-                pinchStrength = 0f;
                 IsPinching = false;
             }
             else
             {
-                pinchStrength = ovrHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
                 if (IsPinching)
                 {
                     // If we are already pinching, we make the pinch a bit sticky
-                    IsPinching = ovrHand.GetFingerPinchStrength(OVRHand.HandFinger.Index) > 0.85f;
+                    IsPinching = pinchStrength > 0.85f;
                 }
                 else
                 {
                     // If not yet pinching, only consider pinching if finger confidence is high
-                    IsPinching = ovrHand.GetFingerIsPinching(OVRHand.HandFinger.Index)
-                                 && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
+                    IsPinching = pinchStrength > 0.5f && ovrHand.GetFingerConfidence(OVRHand.HandFinger.Index) == OVRHand.TrackingConfidence.High;
                 }
             }
 
@@ -447,11 +444,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(ControllerHandedness);
             isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(ControllerHandedness);
 
-            // Hand Curl Properties: 
-            float indexFingerCurl = HandPoseUtils.IndexFingerCurl(ControllerHandedness);
-            float middleFingerCurl = HandPoseUtils.MiddleFingerCurl(ControllerHandedness);
-            float ringFingerCurl = HandPoseUtils.RingFingerCurl(ControllerHandedness);
-            float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(ControllerHandedness);
 
             // Pinch was also used as grab, we want to allow hand-curl grab not just pinch.
             // Determine pinch and grab separately
@@ -460,15 +452,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 IsGrabbing = isIndexGrabbing && isMiddleGrabbing;
             }
 
-            if (settingsProfile.UpdateMaterialPinchStrengthValue && handMaterial != null)
-            {
-                float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
-                gripStrength /= 4.0f;
-                gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
-
-                pinchStrength = Mathf.Max(pinchStrength, gripStrength);
-                handMaterial.SetFloat(pinchStrengthProp, pinchStrength);
-            }
             return isTracked;
         }
 
@@ -476,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         // 0.0016 is the square magnitude equivalent
         // Square magnitude is less expensive to perform than a distance check
         private const float IndexThumbSqrMagnitudeThreshold = 0.0016f;
-        private bool AreIndexAndThumbFarApart()
+        private float IndexThumbSqrMagnitude()
         {
             MixedRealityPose indexPose = MixedRealityPose.ZeroIdentity;
             TryGetJoint(TrackedHandJoint.IndexTip, out indexPose);
@@ -485,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             TryGetJoint(TrackedHandJoint.ThumbTip, out thumbPose);
 
             Vector3 distanceVector = indexPose.Position - thumbPose.Position;
-            return distanceVector.sqrMagnitude > IndexThumbSqrMagnitudeThreshold;
+            return distanceVector.sqrMagnitude;
         }
 
         protected void UpdateBone(OVRBone bone)
