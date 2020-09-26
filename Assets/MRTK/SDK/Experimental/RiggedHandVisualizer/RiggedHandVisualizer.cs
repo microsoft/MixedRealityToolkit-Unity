@@ -95,6 +95,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
           "bones.")]
         public Vector3 ModelPalmFacing = new Vector3(0, 0, 0);
 
+        [SerializeField]
+        [Tooltip("Hand material to use for hand tracking hand mesh.")]
+        private Material handMaterial = null;
+
+        //[SerializeField]
+        [Tooltip("Property in custom material used to visualize pinch strength.")]
+        private string pinchStrengthMaterialProperty = "_PressIntensity";
+
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
         /// </summary>
@@ -333,6 +341,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                         }
                     }
                 }
+            }
+
+            // Update the hand material
+            float pinchStrength = HandPoseUtils.CalculateIndexPinch(Controller.ControllerHandedness);
+
+            // Hand Curl Properties: 
+            float indexFingerCurl = HandPoseUtils.IndexFingerCurl(Controller.ControllerHandedness);
+            float middleFingerCurl = HandPoseUtils.MiddleFingerCurl(Controller.ControllerHandedness);
+            float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
+            float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
+
+            if (handMaterial != null)
+            {
+                float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
+                gripStrength /= 4.0f;
+                gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
+
+                pinchStrength = Mathf.Max(pinchStrength, gripStrength);
+                handMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
             }
         }
 
