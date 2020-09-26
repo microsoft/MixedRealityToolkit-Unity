@@ -234,24 +234,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(0, -0.5f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(Vector3.up);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-
             Assert.AreEqual(maxPan, uvs[1].y, 0.05, "mesh uv is not correct");
-
-            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -263,24 +250,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(0, 0.5f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(Vector3.down);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-
             Assert.AreEqual(-maxPan, uvs[0].y, 0.05, "mesh uv is not correct");
-
-            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -292,23 +266,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(0.5f, 0f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(Vector3.left);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
             Assert.AreEqual(-maxPan, uvs[0].x, 0.05, "mesh uv is not correct");
-
-            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -320,23 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(-0.5f, 0f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(Vector3.right);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
             Assert.AreEqual(maxPan, uvs[1].x, 0.05, "mesh uv is not correct");
-
-            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -348,19 +298,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(-0.5f, -0.5f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(new Vector3(1, 1, 0));
 
             // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
             yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
@@ -391,19 +332,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPan = 1.2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-
-            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
-            for (var i = 0; i < 3; i++)
-            {
-                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return handRight.Move(new Vector3(0.5f, 0.5f, 0), 10);
-                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
-            }
+            yield return ScrollToLimit(new Vector3(-1, -1, 0));
 
             // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
             yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
@@ -453,6 +385,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             iss.ControllerSimulationMode = oldSimMode;
             yield return null;
+        }
+
+        /// <summary>
+        /// Scroll contents to the limit in the specified direction
+        /// </summary>
+        /// <param name="direction">Scroll direction</param>
+        private IEnumerator ScrollToLimit(Vector3 direction)
+        {
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.Show(Vector3.zero);
+
+            Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.0f, 0.5f));
+            var moveDelta = -0.5f * direction;
+            for (var i = 0; i < 3; i++)
+            {
+                yield return handRight.MoveTo(CameraCache.Main.ScreenToWorldPoint(screenPoint));
+                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+                yield return handRight.Move(moveDelta, 10);
+                yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
+            }
+
+            yield return handRight.Hide();
         }
 
         private void InstantiateFromCode(Vector3? position = null, Quaternion? rotation = null)
