@@ -36,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.Handtracking.Editor",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
             "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+            "LeapMotion",
+            "LeapMotion.LeapCSharp",
             "UnityEngine.SpatialTracking"
         };
 
