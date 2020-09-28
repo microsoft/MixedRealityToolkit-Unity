@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -96,12 +97,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
         public Vector3 ModelPalmFacing = new Vector3(0, 0, 0);
 
         [SerializeField]
+        [Tooltip("Renderer of the hand mesh")]
+        private SkinnedMeshRenderer handRenderer = null;
+
+        [SerializeField]
         [Tooltip("Hand material to use for hand tracking hand mesh.")]
         private Material handMaterial = null;
 
-        //[SerializeField]
-        [Tooltip("Property in custom material used to visualize pinch strength.")]
-        private string pinchStrengthMaterialProperty = "_PressIntensity";
+        /// <summary>
+        /// Hand material to use for hand tracking hand mesh.
+        /// <summary>
+        public Material HandMaterial => handMaterial;
+
+        /// <summary>
+        /// Property name for modifying the mesh's appearance based on pinch strength
+        /// <summary>
+        private const string pinchStrengthMaterialProperty = "_PressIntensity";
+
+        /// <summary>
+        /// Property name for modifying the mesh's appearance based on pinch strength
+        /// <summary>
+        public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
 
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
@@ -236,6 +252,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                 joints[TrackedHandJoint.PinkyDistalJoint] = RetrieveChild(TrackedHandJoint.PinkyMiddleJoint);
                 joints[TrackedHandJoint.PinkyTip] = RetrieveChild(TrackedHandJoint.PinkyDistalJoint);
             }
+
+            // Give the hand mesh it's on material to avoid modifying both hand materials when making property changes
+            var handMaterialInstance = new Material(handMaterial);
+            handRenderer.sharedMaterial = handMaterialInstance;
         }
 
         private Transform RetrieveChild(TrackedHandJoint parentJoint)
@@ -358,8 +378,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                 gripStrength /= 4.0f;
                 gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
 
-                pinchStrength = Mathf.Max(pinchStrength, gripStrength);
-                handMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+                pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
+
+                if (handMaterial.HasProperty(pinchStrengthMaterialProperty))
+                {
+                    handMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+                }
+                else
+                {
+                    throw new Exception(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                }
             }
         }
 
