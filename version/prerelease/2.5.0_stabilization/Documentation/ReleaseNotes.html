@@ -239,6 +239,16 @@ scenes opened up in 2.5 get automatically fixed.</p>
 <p><strong>FileNotFoundException when examples are imported via Unity Package Manager</strong></p>
 <p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
+<p><strong>No spatializer was specified. The application will not support Spatial Sound.</strong></p>
+<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.</p>
+<p>To resolve, please ensure that:</p>
+<ul>
+<li><p><strong>Window</strong> &gt; <strong>Package Manager</strong> has one or more XR packages installed</p>
+</li>
+<li><p><strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Configure Unity Project</strong> and make a selection for <strong>Audio Spatializer</strong></p>
+<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="Select Audio Apatializer"></p>
+</li>
+</ul>
 <p><strong>NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)</strong></p>
 <p>In some situations, opening <code>EyeTrackingDemo-00-RootScene</code> may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
 This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:</p>
