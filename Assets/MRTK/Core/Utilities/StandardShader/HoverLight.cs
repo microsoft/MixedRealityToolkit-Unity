@@ -108,15 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (activeHoverLights.Count == hoverLightCountLow)
             {
                 Shader.EnableKeyword(hoverLightCountMediumName);
-
-                Debug.LogFormat("Max hover light count increased to {0}.", hoverLightCountMedium);
             }
             else if (activeHoverLights.Count == hoverLightCountMedium)
             {
                 Shader.DisableKeyword(hoverLightCountMediumName);
                 Shader.EnableKeyword(hoverLightCountHighName);
-
-                Debug.LogFormat("Max hover light count increased to {0}.", hoverLightCountHigh);
             }
             else if (activeHoverLights.Count >= hoverLightCountHigh)
             {
@@ -133,15 +129,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (activeHoverLights.Count == hoverLightCountLow)
             {
                 Shader.DisableKeyword(hoverLightCountMediumName);
-
-                Debug.LogFormat("Max hover light count decreased to {0}.", hoverLightCountLow);
             }
             else if (activeHoverLights.Count == hoverLightCountMedium)
             {
                 Shader.EnableKeyword(hoverLightCountMediumName);
                 Shader.DisableKeyword(hoverLightCountHighName);
-
-                Debug.LogFormat("Max hover light count decreased to {0}.", hoverLightCountMedium);
             }
         }
 
