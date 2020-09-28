@@ -186,6 +186,14 @@ For this reason the way we display constraints in the property inspector changed
 <img src="Images/ConstraintManager/ManualSelection.png" width="600">
 <p>The constraints that are applied to the component are now shown as a list in the constraint manager component whereas the component using the constraint manager (either <a href="README_BoundsControl.html#constraint-system">bounds control</a> or <a href="README_ObjectManipulator.html#constraint-manager">object manipulator</a>) will now show the selected constraint manager and mode (auto or manual).
 For more information read the <a href="README_ConstraintManager.html">constraint manager</a> section in our docs.</p>
+<h2 id="elastic-system---experimental">Elastic system - Experimental</h2>
+<p><img src="Images/Elastics/Elastics_Main.gif" alt="Elastic System2"></p>
+<p>MRTK now comes with an <a href="Elastics/ElasticSystem.html">elastic simulation system</a> that includes a wide variety of extensible and flexible subclasses, offering bindings for 4-dimensional quaternion springs, 3-dimensional volume springs and simple linear spring systems.</p>
+<p>Currently the following MRTK components supporting the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.html">elastics manager</a> can leverage elastics functionality:</p>
+<ul>
+<li><a href="README_BoundsControl.html#elastics-experimental">Bounds control</a></li>
+<li><a href="README_ObjectManipulator.html#elastics-experimental">Object manipulator</a></li>
+</ul>
 <h3 id="breaking-changes">Breaking changes</h3>
 <p><strong>Assembly Definition Files Changes</strong></p>
 <p>Some asmdef files are changed and are now only supporting Unity 2018.4.13f1 or later. Compilation erros will show up when upating to MRTK 2.5 in earlier versions of Unity. This can be fixed by going to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and removing the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
