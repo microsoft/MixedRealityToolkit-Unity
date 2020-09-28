@@ -370,6 +370,7 @@ MonoBehaviour:
   ScaleLastFingerBone: 0
   ModelFingerPointing: {x: 0, y: -1, z: 0}
   ModelPalmFacing: {x: -1, y: 0, z: 0}
+  handRenderer: {fileID: 3512491064613037838}
   handMaterial: {fileID: 2100000, guid: 46180a965b426614f97a7239d1248a1a, type: 2}
 --- !u!1 &3512491064599439888
 GameObject:
