@@ -166,6 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!asmDefInfoMap.TryGetValue(projectKey, out AssemblyDefinitionInfo assemblyDefinitionInfo))
             {
+                Debug.LogError($"Can't find an asmdef for project: {projectKey}, this project may need to be to added to the PackageReferencesUnity2019 or ExcludedPackageReferences exclusion list");
                 throw new InvalidOperationException($"Can't find an asmdef for project: {projectKey}");
             }
 
