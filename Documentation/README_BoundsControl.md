@@ -156,7 +156,7 @@ Bounds control provides the following events. This example uses these events to 
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Events.png" width="450">
 
-## Elastics - Experimental
+## Elastics (Experimental)
 Elastics can be used when manipulating objects via bounds control. Note that the [elastics system](Elastics/ElasticSystem.md) is still in experimental state. To enable elastics either link an existing elastics manager component or create and link a new elastics manager via the `Add Elastics Manager` button.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Elastics.png" width="450">

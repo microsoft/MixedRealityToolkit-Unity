@@ -66,11 +66,11 @@ Quaternion extents define a four dimensional rotation space in which the damped 
 ![Elastic Rotation Example](../Images/Elastics/Elastics_Rotation.gif)
 
 - **SnapPoints**: euler angles to which the system will snap.
-- **RepeatSnapPoints**: repeats the snap points to infinity. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.
+- **RepeatSnapPoints**: repeats the snap points. Existing snap points will serve as a modulo where the actual snap points are mapped to the closest integer multiples of every snap point.
 - **SnapRadius**: arc-angle at which snap points begin forcing the spring in euler degrees.
 
 ## Elastics example scene
 
 You can find examples of elastics configurations in the `ElasticSystemExample` scene.
 
-<img src="../Images/Elastics/Elastics_Example_Scene.png">
+![Elastics Example Scene](../Images/Elastics/Elastics_Example_Scene.png)

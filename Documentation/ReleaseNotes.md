@@ -144,8 +144,8 @@ MRTK now comes with an [elastic simulation system](Elastics/ElasticSystem.md) th
 
 Currently the following MRTK components supporting the [elastics manager](xref:Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager) can leverage elastics functionality:
 
-- [Bounds control](README_BoundsControl.md#elastics---experimental)
-- [Object manipulator](README_ObjectManipulator.md#elastics---experimental)  
+- [Bounds control](README_BoundsControl.md#elastics-experimental)
+- [Object manipulator](README_ObjectManipulator.md#elastics-experimental)  
 
 ### Breaking changes
 
