@@ -137,6 +137,16 @@ For this reason the way we display constraints in the property inspector changed
 The constraints that are applied to the component are now shown as a list in the constraint manager component whereas the component using the constraint manager (either [bounds control](README_BoundsControl.md#constraint-system) or [object manipulator](README_ObjectManipulator.md#constraint-manager)) will now show the selected constraint manager and mode (auto or manual). 
 For more information read the [constraint manager](README_ConstraintManager.md) section in our docs.
 
+## Elastic system - Experimental
+![Elastic System2](Images/Elastics/Elastics_Main.gif)
+
+MRTK now comes with an [elastic simulation system](Elastics/ElasticSystem.md) that includes a wide variety of extensible and flexible subclasses, offering bindings for 4-dimensional quaternion springs, 3-dimensional volume springs and simple linear spring systems.
+
+Currently the following MRTK components supporting the [elastics manager](xref:Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager) can leverage elastics functionality:
+
+- [Bounds control](README_BoundsControl.md#elastics-experimental)
+- [Object manipulator](README_ObjectManipulator.md#elastics-experimental)  
+
 ### Breaking changes
 
 **Assembly Definition Files Changes**
