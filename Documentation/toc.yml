@@ -248,7 +248,7 @@
     - name: Object Collection
       href: README_ObjectCollection.md
     - name: Scrolling Object Collection
-      href: ../Assets/MRTK/SDK/Features/UX/Scripts/ScrollingObjectCollection/README.md
+      href: README_ScrollingObjectCollection.md
     - name: Tooltips
       href: README_Tooltip.md
     - name: Slider

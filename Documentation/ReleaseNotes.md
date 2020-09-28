@@ -22,6 +22,14 @@ MRTK now supports running Oculus Quest Headsets and Controllers using the native
 
 For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the [Oculus Quest Setup Guide](CrossPlatform/OculusQuestMRTK.md)
 
+**Scrolling Object Collection**
+
+The MRTK UX component has been upgraded from an experimental feature and offers more freedom for layouting 3D content of different sizes with added support for objects that have no colliders attached. A new option for disabling content masking was also added, making prototyping easier. 
+
+See [Scrolling Object Collection](README_ScrollingObjectCollection.md) for more information.
+
+![Scrolling Object Collection](https://user-images.githubusercontent.com/16922045/94465118-51537900-01b7-11eb-8f8b-bf864a8fee03.gif)
+
 **Teleport pointer enabled for articulated hands on Oculus Quest**
 
 We now support using the teleport pointer with articulated hands on Oculus Quest!
