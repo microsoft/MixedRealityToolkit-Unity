@@ -23,7 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         private static readonly HashSet<string> ExcludedPackageReferences = new HashSet<string>()
         {
-            "Windows.UI.Input.Spatial"
+            "Windows.UI.Input.Spatial",
+            "LeapMotion",
+            "LeapMotion.LeapCSharp"
         };
 
         /// <summary>
