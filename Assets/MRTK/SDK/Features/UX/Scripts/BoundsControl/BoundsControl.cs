@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundsControl.html")]
     [RequireComponent(typeof(ConstraintManager))]
+    [AddComponentMenu("Scripts/MRTK/SDK/BoundsControl")]
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,

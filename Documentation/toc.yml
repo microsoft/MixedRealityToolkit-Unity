@@ -230,14 +230,10 @@
       href: README_Button.md
     - name: Bounds Control
       href: README_BoundsControl.md
-    - name: Bounding Box [Obsolete]
-      href: README_BoundingBox.md
     - name: Object Manipulator
       href: README_ObjectManipulator.md
     - name: Constraint Manager
       href: README_ConstraintManager.md
-    - name: Manipulation Handler [Obsolete]
-      href: README_ManipulationHandler.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
@@ -278,7 +274,13 @@
     - name: HoloLens Keyboard Helpers [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
     - name: Rigged Hand Visualizer [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md      
+      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md     
+    - name: Elastic System [Experimental]
+      href: Elastics/ElasticSystem.md 
+    - name: Bounding Box [Obsolete]
+      href: README_BoundingBox.md
+    - name: Manipulation Handler [Obsolete]
+      href: README_ManipulationHandler.md
   - name: Example Scenes
     items:
     - name: Examples Hub

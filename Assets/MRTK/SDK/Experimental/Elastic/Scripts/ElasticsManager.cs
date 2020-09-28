@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
     /// Elastics will continue simulating once manipulation ends through it's update function - 
     /// to block the elastics auto update set EnableElasticsUpdate to false. 
     /// </summary>
-    // [HelpURL("TODO add docs link as soon as it's available.")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Elastics/ElasticSystem.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/Experimental/Elastics Manager")]
     public class ElasticsManager : MonoBehaviour
     {
         [SerializeField]
