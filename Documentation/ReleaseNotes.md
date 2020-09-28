@@ -227,6 +227,18 @@ In some situations (e.g. when using the LeapMotion provider in the Unity Editor)
 Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
 
+**No spatializer was specified. The application will not support Spatial Sound.**
+
+A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.
+
+To resolve, please ensure that:
+
+- **Window** > **Package Manager** has one or more XR packages installed
+- **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** and make a selection for **Audio Spatializer**
+
+  ![Select Audio Apatializer](Images/ReleaseNotes/SpatializerSelection.png)
+
+
 **NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)**
 
 In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
