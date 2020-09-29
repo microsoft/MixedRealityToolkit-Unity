@@ -314,18 +314,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Assets/MRTK/SDK/Features/UX/Scripts/ScrollingObjectCollection/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/Features/UX/Scripts/ScrollingObjectCollection/README.html",
-          "hash": "cDQTfmE+oE9eVYY9bL033g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "../../Assets/MRTK/SDK/Features/UX/Scripts/Tooltips/README.md",
       "output": {
         ".html": {
@@ -642,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "nNbQkFwKqfyNhCAMCEV2iQ=="
+          "hash": "tTaatvLql2iHIIZ/GqsDow=="
         }
       },
       "is_incremental": false,
@@ -962,11 +950,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Documentation/GetingStartedWithTheMRTK.md",
+      "source_relative_path": "../../Documentation/GettingStartedWithMRTKAndXRSDK.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/GetingStartedWithTheMRTK.html",
-          "hash": "MYxsX7fkkSVosip3ofO+rQ=="
+          "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
+          "hash": "mjVeRFiClmoNw72EGipExA=="
         }
       },
       "is_incremental": false,
@@ -974,11 +962,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Documentation/GettingStartedWithMRTKAndXRSDK.md",
+      "source_relative_path": "../../Documentation/GettingStartedWithTheMRTK.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
-          "hash": "mjVeRFiClmoNw72EGipExA=="
+          "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
+          "hash": "Ymv7kLcpfGABP+gqyHnS/Q=="
         }
       },
       "is_incremental": false,
@@ -6861,10 +6849,65 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/ScrollingCollection/MRTK_UX_ScrollingCollection_Main.jpg",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingCollection_Main.jpg",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/ScrollingCollection/MRTK_UX_ScrollingCollection_Main.jpg"
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingCollection_Main.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingObjectCollection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingObjectCollection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingObjectCollection_ExampleScene.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingObjectCollection_ExampleScene.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingObjectCollection_GridLayout.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingObjectCollection_GridLayout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingObjectCollection_Prefabs.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingObjectCollection_Prefabs.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ScrollingCollection/ScrollingObjectCollection_ViewableArea.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ScrollingCollection/ScrollingObjectCollection_ViewableArea.png"
         }
       },
       "is_incremental": false,
@@ -8311,7 +8354,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_AppBar.html",
-          "hash": "4gAMHvesXXlx02PA9r04JA=="
+          "hash": "9jsUXiW4zgunvLlnGXisjQ=="
         }
       },
       "is_incremental": false,
@@ -8395,7 +8438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandInteractionExamples.html",
-          "hash": "vW2haFZs7RQEc83FhqZ+Eg=="
+          "hash": "rWQ6mFJHvEHgS8SfovQ2LA=="
         }
       },
       "is_incremental": false,
@@ -8467,7 +8510,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ManipulationHandler.html",
-          "hash": "3cOqWujkLGrOnuolngWa6g=="
+          "hash": "Tcrg56355jJWCQZvy2SCGQ=="
         }
       },
       "is_incremental": false,
@@ -8479,7 +8522,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_NearMenu.html",
-          "hash": "YFgRd4WFdUJvhskbbjA95w=="
+          "hash": "LL2ajUhU2Ku+VyG4zYCI+A=="
         }
       },
       "is_incremental": false,
@@ -8523,11 +8566,23 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/README_ScrollingObjectCollection.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_ScrollingObjectCollection.html",
+          "hash": "iuS/nt2k5QVCtVHj5INbsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/README_Slate.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Slate.html",
-          "hash": "L70nATl0JjMk0cOj2mdeow=="
+          "hash": "hyv+zIdKCaqN3y6GmFv7DA=="
         }
       },
       "is_incremental": false,
@@ -8599,7 +8654,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Toolbox.html",
-          "hash": "BSmRHWTmzGxu92MSFQtVmw=="
+          "hash": "YNMsuTooGgahyM9Vc3H+QQ=="
         }
       },
       "is_incremental": false,
@@ -8623,7 +8678,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "VLLKMAFikK6Yv6ZPEWzNDw=="
+          "hash": "ke6VKXZhOdqXr64gttoBag=="
         }
       },
       "is_incremental": false,
@@ -8971,7 +9026,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "T1gu9U6PiBicAC4oz88kkg=="
+          "hash": "iH1amZGHZiioC2ozeB0emA=="
         }
       },
       "is_incremental": false,
@@ -9007,7 +9062,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "eDSu4cQtSwstK8vlCSEU2w=="
+          "hash": "qgwp+W3c3z1hYjIAvM4QPw=="
         }
       },
       "is_incremental": false,
