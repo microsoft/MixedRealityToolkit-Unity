@@ -30,11 +30,6 @@ See [Scrolling Object Collection](README_ScrollingObjectCollection.md) for more 
 
 ![Scrolling Object Collection](https://user-images.githubusercontent.com/16922045/94465118-51537900-01b7-11eb-8f8b-bf864a8fee03.gif)
 
-### Teleport pointer enabled for articulated hands on Oculus Quest
-
-
-We now support using the teleport pointer with articulated hands on Oculus Quest!
-
 ### Teleport pointer animation, handling, and sound improvements
 
 The teleport pointer now has improved animations and audio feedback. We also improved the handling of the teleport pointer so it handles smoother when transitioning from pointing at nearby surfaces to farther away surfaces.
