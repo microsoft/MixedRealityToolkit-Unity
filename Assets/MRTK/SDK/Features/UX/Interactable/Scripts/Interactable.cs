@@ -1229,11 +1229,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// A public way to trigger or route an onClick event from an external source, like PressableButton
-        /// <param name="force">Force the click without checking CanInteract()</param>
         /// </summary>
+        /// <param name="force">Force the click without checking CanInteract(). Does not override enabled and only applies to toggle.</param>
         public void TriggerOnClick(bool force = false)
         {
-            if (!force && !CanInteract())
+            if (!enabled || (!force && !CanInteract()))
             {
                 return;
             }
