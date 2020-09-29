@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
         /// </summary>
-        private const float thumbFingerTipLength = 0.02167f;
+        private const float thumbFingerTipLength = 0.12167f;
         private const float indexingerTipLength = 0.01582f;
         private const float middleFingerTipLength = 0.0174f;
         private const float ringFingerTipLength = 0.0173f;
