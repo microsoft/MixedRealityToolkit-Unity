@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 #if !WINDOWS_UWP
@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject panObject;
         private HandInteractionPanZoom panZoom;
         private MeshFilter meshFilter;
+        private Material material;
 
         [UnitySetUp]
         public IEnumerator Setup()
@@ -231,14 +232,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollUpLimited()
         {
-            var maxPan = 1.2f;
+            var maxPan = 4f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
             yield return ScrollToLimit(Vector3.up);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-            Assert.AreEqual(maxPan, uvs[1].y, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPan * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
         }
 
         /// <summary>
@@ -247,14 +248,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollDownLimited()
         {
-            var maxPan = 1.2f;
+            var maxPan = 4f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
             yield return ScrollToLimit(Vector3.down);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-            Assert.AreEqual(-maxPan, uvs[0].y, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(-maxPan * material.mainTextureScale.y, uvs[0].y, 0.05, "mesh uv is not correct");
         }
 
         /// <summary>
@@ -263,14 +264,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollLeftLimited()
         {
-            var maxPan = 1.2f;
+            var maxPan = 2f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
             yield return ScrollToLimit(Vector3.left);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-            Assert.AreEqual(-maxPan, uvs[0].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(-maxPan * material.mainTextureScale.x, uvs[0].x, 0.05, "mesh uv is not correct");
         }
 
         /// <summary>
@@ -279,14 +280,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollRightLimited()
         {
-            var maxPan = 1.2f;
+            var maxPan = 4f;
             InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
 
             yield return ScrollToLimit(Vector3.right);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
-            Assert.AreEqual(maxPan, uvs[1].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPan * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
         }
 
         /// <summary>
@@ -295,8 +296,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollUpZoomOutLimited()
         {
-            var maxPan = 1.2f;
-            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+            var maxPanHorizontal = 4f;
+            var maxPanVertical = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPanHorizontal, maxPanVertical: maxPanVertical);
 
             yield return ScrollToLimit(new Vector3(1, 1, 0));
 
@@ -316,8 +318,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
 
-            Assert.AreEqual(maxPan, uvs[1].x, 0.05, "mesh uv is not correct");
-            Assert.AreEqual(maxPan, uvs[1].y, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPanHorizontal * material.mainTextureScale.x, uvs[1].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(maxPanVertical * material.mainTextureScale.y, uvs[1].y, 0.05, "mesh uv is not correct");
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
@@ -329,8 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator PrefabScrollDownZoomOutLimited()
         {
-            var maxPan = 1.2f;
-            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+            var maxPanHorizontal = 2f;
+            var maxPanVertical = 4f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPanHorizontal, maxPanVertical: maxPanVertical);
 
             yield return ScrollToLimit(new Vector3(-1, -1, 0));
 
@@ -345,13 +348,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             // Use both hands to zoom out
-            yield return handRight.Move(new Vector3(-0.2f, 0f, 0f), 10);
+            yield return handLeft.Move(new Vector3(0.2f, 0f, 0f), 10);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
 
-            Assert.AreEqual(-maxPan, uvs[0].x, 0.05, "mesh uv is not correct");
-            Assert.AreEqual(-maxPan, uvs[0].y, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(-maxPanHorizontal * material.mainTextureScale.x, uvs[0].x, 0.05, "mesh uv is not correct");
+            Assert.AreEqual(-maxPanVertical * material.mainTextureScale.y, uvs[0].y, 0.05, "mesh uv is not correct");
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
@@ -418,6 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             panZoom = panObject.AddComponent<HandInteractionPanZoom>();
             panObject.AddComponent<NearInteractionTouchable>();
             meshFilter = panZoom.GetComponent<MeshFilter>();
+            material = panZoom.GetComponent<Renderer>().material;
         }
 
         /// <summary>
@@ -433,6 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             panZoom = panObject.GetComponentInChildren<HandInteractionPanZoom>();
             Assert.IsNotNull(panZoom);
             meshFilter = panZoom.GetComponent<MeshFilter>();
+            material = panZoom.GetComponent<Renderer>().material;
         }
 
         /// <summary>
@@ -462,8 +467,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var maxPanHorizontalField = typeof(HandInteractionPanZoom).GetField("maxPanHorizontal", BindingFlags.NonPublic | BindingFlags.Instance);
             Assert.IsNotNull(maxPanHorizontalField);
             maxPanHorizontalField.SetValue(panZoom, maxPanHorizontal);
-
-            panZoom.GetComponent<Renderer>().material.mainTextureScale = Vector2.one;
         }
     }
 }
