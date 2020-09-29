@@ -139,7 +139,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             base.Enable();
             SetupInput();
             ConfigurePerformancePreferences();
-            SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
+            //SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
         }
 
 
@@ -210,7 +210,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
                 // Manage Hand skeleton data
                 var skeletonDataProvider = ovrHand as OVRSkeleton.IOVRSkeletonDataProvider;
                 var skeletonType = skeletonDataProvider.GetSkeletonType();
-                var meshRenderer = ovrHand.GetComponent<OVRMeshRenderer>();
 
                 var ovrSkeleton = ovrHand.GetComponent<OVRSkeleton>();
                 if (ovrSkeleton == null)
@@ -223,12 +222,10 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
                     case OVRSkeleton.SkeletonType.HandLeft:
                         leftHand = ovrHand;
                         leftSkeleton = ovrSkeleton;
-                        leftMeshRenderer = meshRenderer;
                         break;
                     case OVRSkeleton.SkeletonType.HandRight:
                         rightHand = ovrHand;
                         rightSkeleton = ovrSkeleton;
-                        righMeshRenderer = meshRenderer;
                         break;
                 }
             }
@@ -243,22 +240,18 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         {
             base.Disable();
 
-            SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
+            //SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
         }
 
         #region Hand Utilities
         protected void UpdateHands()
         {
-            UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
-            UpdateHand(leftHand, leftSkeleton, righMeshRenderer, Handedness.Left);
+            UpdateHand(rightHand, rightSkeleton, Handedness.Right);
+            UpdateHand(leftHand, leftSkeleton, Handedness.Left);
         }
 
-        protected void UpdateHand(OVRHand ovrHand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer, Handedness handedness)
+        protected void UpdateHand(OVRHand ovrHand, OVRSkeleton ovrSkeleton, Handedness handedness)
         {
-            // Until the ovrMeshRenderer is initialized we do nothing with the hand
-            // This is a bit of a hack because the Oculus Integration fails if we touch the renderer before it has initialized itself
-            if (ovrMeshRenderer == null || !ovrMeshRenderer.IsInitialized) return;
-
             if (ovrHand.IsTracked)
             {
                 var hand = GetOrAddHand(handedness, ovrHand);
@@ -270,13 +263,13 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             }
         }
 
-        private void UpdateHandMaterial()
-        {
-            foreach (var hand in trackedHands.Values)
-            {
-                hand.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
-            }
-        }
+        //private void UpdateHandMaterial()
+        //{
+        //    foreach (var hand in trackedHands.Values)
+        //    {
+        //        hand.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
+        //    }
+        //}
 
         private OculusHand GetOrAddHand(Handedness handedness, OVRHand ovrHand)
         {
@@ -299,7 +292,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {
                 handDevice.InputSource.Pointers[i].Controller = handDevice;
-                handDevice.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
+                //handDevice.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
             }
 
             inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
@@ -333,7 +326,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         {
             if (handDevice == null) return;
 
-            handDevice.CleanupHand();
+            //handDevice.CleanupHand();
 
             CoreServices.InputSystem?.RaiseSourceLost(handDevice.InputSource, handDevice);
             trackedHands.Remove(handDevice.ControllerHandedness);

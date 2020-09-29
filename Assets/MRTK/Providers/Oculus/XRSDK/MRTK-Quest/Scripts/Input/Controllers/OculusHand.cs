@@ -60,8 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
 #if OCULUSINTEGRATION_PRESENT
-        private Material handMaterial = null;
-        private Renderer handRenderer = null;
+        //private Material handMaterial = null;
+        //private Renderer handRenderer = null;
 
         private bool isIndexGrabbing = false;
         private bool isMiddleGrabbing = false;
@@ -111,30 +111,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
             settingsProfile = deviceManagerSettings;
 
-            handRenderer = ovrHand.GetComponent<Renderer>();
-            UpdateHandMaterial(settingsProfile.CustomHandMaterial);
-            pinchStrengthProp = Shader.PropertyToID(settingsProfile.PinchStrengthMaterialProperty);
+            //handRenderer = ovrHand.GetComponent<Renderer>();
+            //UpdateHandMaterial(settingsProfile.CustomHandMaterial);
+            //pinchStrengthProp = Shader.PropertyToID(settingsProfile.PinchStrengthMaterialProperty);
         }
 
-        public void UpdateHandMaterial(Material newHandMaterial)
-        {
-            if (newHandMaterial == null || !settingsProfile.UseCustomHandMaterial) return;
+        //public void UpdateHandMaterial(Material newHandMaterial)
+        //{
+        //    if (newHandMaterial == null || !settingsProfile.UseCustomHandMaterial) return;
 
-            if (handMaterial != null)
-            {
-                Object.Destroy(handMaterial);
-            }
-            handMaterial = new Material(newHandMaterial);
-            handRenderer.sharedMaterial = handMaterial;
-        }
+        //    if (handMaterial != null)
+        //    {
+        //        Object.Destroy(handMaterial);
+        //    }
+        //    handMaterial = new Material(newHandMaterial);
+        //    handRenderer.sharedMaterial = handMaterial;
+        //}
 
-        public void CleanupHand()
-        {
-            if (handRenderer != null)
-            {
-                handRenderer.enabled = false;
-            }
-        }
+        //public void CleanupHand()
+        //{
+        //    if (handRenderer != null)
+        //    {
+        //        handRenderer.enabled = false;
+        //    }
+        //}
 
 
         public override bool IsInPointingPose
@@ -401,10 +401,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             }
 
             // Disable hand if not tracked
-            if (handRenderer != null)
-            {
-                handRenderer.enabled = isTracked;
-            }
+            //if (handRenderer != null)
+            //{
+            //    handRenderer.enabled = isTracked;
+            //}
 
             if (ovrSkeleton != null)
             {
