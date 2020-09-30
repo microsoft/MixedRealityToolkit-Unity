@@ -93,16 +93,8 @@
 
 <p>Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi or USB cable connection. This feature can significantly increase developer productivity when developing mixed reality applications.</p>
 <h2 id="initial-setup">Initial setup</h2>
-<p>To enable remoting to a HoloLens, it is important to ensure that the project is using the latest remoting components.</p>
-<ol>
-<li>Open <strong>Window &gt; Package Manager</strong>
-<ul>
-<li>Verify that latest version of the <strong>Windows Mixed Reality</strong> package is installed.</li>
-</ul>
-</li>
-<li>Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.</li>
-</ol>
-<h3 id="hololens-2">HoloLens 2</h3>
+<p>To enable remoting to a HoloLens, it is important to ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.</p>
+<h3 id="hololens-2-legacy-xr-setup-instructions">HoloLens 2 Legacy XR setup instructions</h3>
 <p>When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select <strong>Mixed Reality Toolkit</strong> &gt; <strong>MSBuild</strong> &gt; <strong>Use MSBuild for Unity dependency resolution</strong>. This will install the required dependencies for Holographic Remoting.</p>
 <p>Once MSBuild completes the import process, the next step is to select <strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Windows Mixed Reality</strong> &gt; <strong>Check Configuration</strong>. This step adds a scripting define that enables the DotNetWinRT dependency that is installed by MSBuild for Unity.</p>
 <p>Some versions of Unity 2019 have encountered issues when using MSBuild for Unity. If the <strong>Use MSBuild for Unity dependency resolution</strong> option fails, please use the following steps to enable holographic remoting.</p>
@@ -187,6 +179,17 @@ true, this error may manifest in the Unity console:</p>
 <li>(Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the <code>.bin</code> and <code>.obj</code> folders. This removes the local cache of NuGet restored packages for DotNetWinRT.</li>
 <li>If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.</li>
 </ol>
+<h3 id="xr-sdk-setup-instructions">XR SDK setup instructions</h3>
+<ol>
+<li>Open <strong>Window &gt; Package Manager</strong>
+<ul>
+<li>Verify that latest version of the <strong>Windows Mixed Reality</strong> package is installed.</li>
+</ul>
+</li>
+<li>Go to the Standalone settings and ensure Windows Mixed Reality is checked under Plug-in Providers. Also ensure that Initialize XR on Startup is checked.</li>
+<li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.</li>
+<li>Select <strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Windows Mixed Reality</strong> &gt; <strong>Check Configuration</strong> to make sure the correct scripting define is set.</li>
+</ol>
 <h2 id="connecting-to-the-hololens-with-wi-fi">Connecting to the HoloLens with Wi-Fi</h2>
 <p>Once the project has been configured, a connection can be established to the HoloLens.</p>
 <ol>
@@ -194,13 +197,13 @@ true, this error may manifest in the Unity console:</p>
 </li>
 <li><p>On the HoloLens, launch the <strong>Holographic Remoting</strong> application.</p>
 </li>
-<li><p>In Unity, select <strong>Window &gt; XR &gt; Holographic Emulation</strong>.</p>
+<li><p>In Unity, select <strong>Window &gt; XR &gt; Holographic Emulation (if using legacy XR) / Windows XR Plugin Remoting (if using XR SDK)</strong>.</p>
 <p><img src="../Images/Tools/Remoting/StartHolographicEmulation.png" alt="Start Holographic Emulation"></p>
 </li>
 <li><p>Set <strong>Emulation Mode</strong> to <strong>Remote to Device</strong>.</p>
 <p><img src="../Images/Tools/Remoting/SelectEmulationMode.png" alt="Set Emulation Mode"></p>
 </li>
-<li><p>Select the <strong>Device Version</strong>.</p>
+<li><p>(<strong><em>Only applies to legacy XR</em></strong>) Select the <strong>Device Version</strong>.</p>
 <p><img src="../Images/Tools/Remoting/SelectDeviceVersion.png" alt="Select Device Version"></p>
 </li>
 <li><p>Using the IP Address displayed by the Holographic Remoting Player application, set the <strong>Remote Machine</strong> field.</p>
