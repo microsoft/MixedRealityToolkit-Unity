@@ -4,13 +4,9 @@ Holographic remoting streams holographic content from a PC to your Microsoft Hol
 
 ## Initial setup
 
-To enable remoting to a HoloLens, it is important to ensure that the project is using the latest remoting components.
+To enable remoting to a HoloLens, it is important to ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
 
-1. Open **Window > Package Manager**
-    - Verify that latest version of the **Windows Mixed Reality** package is installed.
-1. Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
-
-### HoloLens 2
+### HoloLens 2 Legacy XR setup instructions
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
@@ -115,13 +111,21 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 1. (Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
+### XR SDK setup instructions
+
+1. Open **Window > Package Manager**
+    - Verify that latest version of the **Windows Mixed Reality** package is installed.
+1. Go to the Standalone settings and ensure Windows Mixed Reality is checked under Plug-in Providers. Also ensure that Initialize XR on Startup is checked.
+1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.
+1. Select **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** to make sure the correct scripting define is set.
+
 ## Connecting to the HoloLens with Wi-Fi
 
 Once the project has been configured, a connection can be established to the HoloLens.
 
 1. In **File > Build Settings**, ensure that the project build type is set to **Universal Windows Platform**
 1. On the HoloLens, launch the **Holographic Remoting** application.
-1. In Unity, select **Window > XR > Holographic Emulation**.
+1. In Unity, select **Window > XR > Holographic Emulation (if using legacy XR) / Windows XR Plugin Remoting (if using XR SDK)**.
 
     ![Start Holographic Emulation](../Images/Tools/Remoting/StartHolographicEmulation.png)
 
@@ -129,7 +133,7 @@ Once the project has been configured, a connection can be established to the Hol
 
     ![Set Emulation Mode](../Images/Tools/Remoting/SelectEmulationMode.png)
 
-1. Select the **Device Version**.
+1. (**_Only applies to legacy XR_**) Select the **Device Version**.
 
     ![Select Device Version](../Images/Tools/Remoting/SelectDeviceVersion.png)
 
