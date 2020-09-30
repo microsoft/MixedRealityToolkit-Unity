@@ -13,11 +13,11 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
     - If using XR SDK: Verify that latest version of the **Windows XR Plugin** package is installed.
 1. Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
 
-Please continue to [Legacy XR setup instructions](#Legacy-XR-setup-instructions) or [XR SDK setup instructions](#XR-SDK-setup-instructions) depending on which pipeline is used in the project.
+Please continue to [Legacy XR setup instructions](#legacy-xr-setup-instructions) or [XR SDK setup instructions](#xr-sdk-setup-instructions) depending on which pipeline is used in the project.
 
 ## Legacy XR setup instructions
 
-The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#Connecting-to-the-HoloLens-with-Wi-Fi).
+The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#connecting-to-the-holoLens-with-wi-fi).
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
