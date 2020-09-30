@@ -13,11 +13,11 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
     - If using XR SDK: Verify that latest version of the **Windows XR Plugin** package is installed.
 1. Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
 
-Please continue to [Legacy XR setup instructions](#Legacy XR setup instructions) or [XR SDK setup instructions](#XR SDK setup instructions) depending on which pipeline is used in the project.
+Please continue to [Legacy XR setup instructions](#Legacy-XR-setup-instructions) or [XR SDK setup instructions](#XR-SDK-setup-instructions) depending on which pipeline is used in the project.
 
 ## Legacy XR setup instructions
 
-The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#Connecting to the HoloLens with Wi-Fi).
+The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#Connecting-to-the-HoloLens-with-Wi-Fi).
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
@@ -65,7 +65,7 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under **MRTK** / **Providers** / **WindowsMixedReality** / **Shared** / **DotNetAdapter** and confirm that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
-#### `DOTNETWINRT_PRESENT` #define written into player settings
+#### DOTNETWINRT_PRESENT #define written into player settings
 
 Beginning with MRTK version 2.5.0, for performance reasons, this define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
 
