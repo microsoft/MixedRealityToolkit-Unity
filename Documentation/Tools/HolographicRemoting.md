@@ -17,7 +17,7 @@ Please continue to [Legacy XR setup instructions](#legacy-xr-setup-instructions)
 
 ## Legacy XR setup instructions
 
-The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#connecting-to-the-holoLens-with-wi-fi).
+The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#connecting-to-the-hololens-with-wi-fi).
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
