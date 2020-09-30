@@ -7,7 +7,7 @@ Holographic remoting streams holographic content from a PC to your Microsoft Hol
 To enable remoting to a HoloLens, it is important to ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
 
 
-### Legacy XR setup instructions (for HoloLens 2)
+### Legacy XR setup instructions (only needed by HoloLens 2)
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
