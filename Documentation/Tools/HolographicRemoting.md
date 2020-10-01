@@ -2,11 +2,22 @@
 
 Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi or USB cable connection. This feature can significantly increase developer productivity when developing mixed reality applications.
 
+XR SDK as mentioned below refers to Unity's [new XR pipeline in Unity 2019.3 and beyond](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/). See [here](../GettingStartedWithMRTKAndXRSDK.md) for more information on using XR SDK with MRTK. Legacy XR refers to the existing XR pipeline that is included in Unity 2018, deprecated in Unity 2019.3 and removed in Unity 2020.
+
 ## Initial setup
 
-To enable remoting to a HoloLens, it is important to ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
+To enable remoting to a HoloLens, it is important to ensure that the project is using the latest remoting components.
 
-### HoloLens 2 Legacy XR setup instructions
+1. Open **Window > Package Manager**
+    - If using legacy XR: Verify that latest version of the **Windows Mixed Reality** package is installed.
+    - If using XR SDK: Verify that latest version of the **Windows XR Plugin** package is installed.
+1. Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
+
+Please continue to [Legacy XR setup instructions](#legacy-xr-setup-instructions) or [XR SDK setup instructions](#xr-sdk-setup-instructions) depending on which pipeline is used in the project.
+
+## Legacy XR setup instructions
+
+The instructions below only apply to remoting with HoloLens 2. If you only perform remoting with HoloLens (1st Gen), skip to [Connecting to the HoloLens with Wi-Fi](#connecting-to-the-hololens-with-wi-fi).
 
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features, please select **Mixed Reality Toolkit** > **MSBuild** > **Use MSBuild for Unity dependency resolution**. This will install the required dependencies for Holographic Remoting.
 
@@ -18,7 +29,7 @@ Some versions of Unity 2019 have encountered issues when using MSBuild for Unity
 1. If it does not automatically display, run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
 1. Click **Apply**
 1. Open **Window > Package Manager**
-    - Ensure that the **Windows XR Plugin** is not installed if the project isn't using [XR SDK](../GettingStartedWithMRTKAndXRSDK.md), as the legacy **Windows Mixed Reality** package will not function alongside it
+    - Ensure that the **Windows XR Plugin** is not installed
 1. Open **Edit > Project Settings > Player**
 
     ![Windows Mixed Reality SDK](../Images/Tools/Remoting/WindowsMixedRealitySDK.png)
@@ -54,9 +65,9 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under **MRTK** / **Providers** / **WindowsMixedReality** / **Shared** / **DotNetAdapter** and confirm that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
-#### `DOTNETWINRT_PRESENT` #define written into player settings
+#### DOTNETWINRT_PRESENT define written into player settings
 
-Beginning with MRTK version 2.5.0, for performance reasons, this define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
+Beginning with MRTK version 2.5.0, for performance reasons, this #define is no longer automatically set. To enable this flag, please use the **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** menu item.
 
 > [!Note]
 > The Check Configuration item does not display a confirmation. To confirm that the define has been set, please navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
@@ -111,13 +122,9 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 1. (Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
-### XR SDK setup instructions
+## XR SDK setup instructions
 
-1. Open **Window > Package Manager**
-    - Verify that latest version of the **Windows Mixed Reality** package is installed.
-1. Go to the Standalone settings and ensure Windows Mixed Reality is checked under Plug-in Providers. Also ensure that Initialize XR on Startup is checked.
-1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.
-1. Select **Mixed Reality Toolkit** > **Utilities** > **Windows Mixed Reality** > **Check Configuration** to make sure the correct scripting define is set.
+Follow the [Windows Mixed Reality setup instructions on the Getting started with MRTK and XR SDK page](../GettingStartedWithMRTKAndXRSDK.md#windows-mixed-reality) and make sure to perform the step required for in-editor HoloLens Remoting.
 
 ## Connecting to the HoloLens with Wi-Fi
 
