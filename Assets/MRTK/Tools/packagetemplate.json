@@ -1,0 +1,31 @@
+{
+    "name": "com.microsoft.mixedreality.toolkit.tools",
+    "displayName": "Mixed Reality Toolkit Tools",
+    "version": "%version%",
+    "unity": "2019.4",
+
+    "description": "Tools for the Microsoft Mixed Reality Toolkit",
+    "keywords": [
+        "mrtk",
+        "microsoft",
+        "mixed",
+        "reality",
+        "augmented",
+        "virtual",
+        "xr",
+        "hololens",
+        "tools"
+    ],
+    "author": "Microsoft",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+      },
+    "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "%version%"
+    }
+}

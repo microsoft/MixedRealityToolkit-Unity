@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -9,9 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
     /// Configuration profile for <see cref="HandPhysicsService"/> extension service.
     /// </summary>
 	[MixedRealityServiceProfile(typeof(IHandPhysicsService))]
-	[CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "Mixed Reality Toolkit/Extensions/Hand Physics Service/Hand Physics Service Configuration Profile")]
-	public class HandPhysicsServiceProfile : BaseMixedRealityProfile
-	{
+    [CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "Mixed Reality Toolkit/Extensions/Hand Physics Service/Hand Physics Service Configuration Profile")]
+    public class HandPhysicsServiceProfile : BaseMixedRealityProfile
+    {
         /// <summary>
         /// Whether make the Palm a physics joint
         /// </summary>
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         [SerializeField]
         [Tooltip("Whether make the Palm a physics joint")]
         private bool usePalmKinematicBody = false;
-       
+
         [SerializeField]
         [Tooltip("The prefab to represent the palm physics joint")]
         private GameObject palmKinematicBodyPrefab = null;

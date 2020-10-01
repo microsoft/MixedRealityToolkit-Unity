@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.UI;
 using System.Threading.Tasks;
@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private KeyCode toggleOrbsKey = KeyCode.Alpha3;
 
         [SerializeField, Header("Settings")]
-        private string[] loadingMessages = new string[] { 
+        private string[] loadingMessages = new string[] {
             "First Loading Message",
-            "Loading Message 1", 
-            "Loading Message 2", 
-            "Loading Message 3", 
+            "Loading Message 1",
+            "Loading Message 2",
+            "Loading Message 3",
             "Final Loading Message" };
 
         [SerializeField, Range(1f, 10f)]

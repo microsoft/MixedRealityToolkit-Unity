@@ -1,180 +1,319 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 {
-	[AddComponentMenu("Scripts/MRTK/SDK/SurfacePulse")]
-	public class SurfacePulse : MonoBehaviour
-	{
-		[Tooltip("Shader parameter name to drive the pulse radius")]
-		public string ParamName = "_Pulse_";
+    /// <summary>
+    /// Script for generating pulse shader effect on the surface.
+    /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/SurfacePulse")]
+    public class SurfacePulse : MonoBehaviour, IMixedRealityPointerHandler
+    {
+        [SerializeField]
+        [Tooltip("Shader parameter name to drive the pulse radius")]
+        [FormerlySerializedAs("ParamName")]
+        private string paramName = "_Pulse_";
+        /// <summary>
+        /// Shader parameter name to drive the pulse radius
+        /// </summary>
+        public string ParamName
+        {
+            get { return paramName; }
+            set
+            {
+                if (paramName != value)
+                {
+                    paramName = value;
+                }
+            }
+        }
 
-		[Tooltip("Shader parameter name to set the pulse origin, in local space")]
-		public string OriginParamName = "_Pulse_Origin_";
+        [SerializeField]
+        [Tooltip("Shader parameter name to set the pulse origin, in local space")]
+        [FormerlySerializedAs("OriginParamName")]
+        private string originParamName = "_Pulse_Origin_";
+        public string OriginParamName
+        {
+            get { return originParamName; }
+            set
+            {
+                if (originParamName != value)
+                {
+                    originParamName = value;
+                }
+            }
+        }
 
-		[Tooltip("How long in seconds the pulse should animate")]
-		public float PulseDuration = 5f;
+        [SerializeField]
+        [Tooltip("How long in seconds the pulse should animate")]
+        [FormerlySerializedAs("PulseDuration")]
+        private float pulseDuration = 5f;
+        public float PulseDuration
+        {
+            get { return pulseDuration; }
+            set
+            {
+                if (pulseDuration != value)
+                {
+                    pulseDuration = value;
+                }
+            }
+        }
 
-		[Tooltip("How long to wait in seconds between pulses, when pulsing is active")]
-		public float PulseRepeatDelay = 5f;
+        [SerializeField]
+        [Tooltip("Minimum time to wait between each pulse")]
+        [FormerlySerializedAs("PulseRepeatMinDelay")]
+        private float pulseRepeatMinDelay = 1f;
+        public float PulseRepeatMinDelay
+        {
+            get { return pulseRepeatMinDelay; }
+            set
+            {
+                if (pulseRepeatMinDelay != value)
+                {
+                    pulseRepeatMinDelay = value;
+                }
+            }
+        }
 
-		[Tooltip("Minimum time to wait between each pulse")]
-		public float PulseRepeatMinDelay = 1f;
+        [SerializeField]
+        [Tooltip("Automatically begin repeated pulsing")]
+        [FormerlySerializedAs("AutoStart")]
+        private bool autoStart = false;
+        public bool AutoStart
+        {
+            get { return autoStart; }
+            set
+            {
+                if (autoStart != value)
+                {
+                    autoStart = value;
+                }
+            }
+        }
 
-		[Tooltip("Automatically begin repeated pulsing")]
-		public bool bAutoStart = false;
+        [SerializeField]
+        [Tooltip("Automatically set pulse origin to the main camera location")]
+        [FormerlySerializedAs("OriginFollowCamera")]
+        private bool originFollowCamera = false;
+        public bool OriginFollowCamera
+        {
+            get { return originFollowCamera; }
+            set
+            {
+                if (originFollowCamera != value)
+                {
+                    originFollowCamera = value;
+                }
+            }
+        }
 
-		[Tooltip("Automatically set pulse origin to the main camera location")]
-		public bool bOriginFollowCamera = false;
+        [SerializeField]
+        [Tooltip("The material to animate")]
+        [FormerlySerializedAs("SurfaceMat")]
+        private Material surfaceMat;
+        public Material SurfaceMat
+        {
+            get { return surfaceMat; }
+            set
+            {
+                if (surfaceMat != value)
+                {
+                    surfaceMat = value;
+                }
+            }
+        }
 
-		[Tooltip("The material to animate")]
-		public Material SurfaceMat;
+        [SerializeField]
+        [Tooltip("Pulse on select(air-tap)")]
+        private bool pulseOnSelect = true;
+        public bool PulseOnSelect
+        {
+            get { return pulseOnSelect; }
+            set
+            {
+                if (pulseOnSelect != value)
+                {
+                    pulseOnSelect = value;
+                }
+            }
+        }
 
-		// Internal state
-		Coroutine RepeatPulseCoroutine;
+        // Internal state
+        Coroutine RepeatPulseCoroutine;
 
-		float pulseStartedTime;
-		bool repeatingPulse;
-		bool cancelPulse;
+        float pulseStartedTime;
+        bool repeatingPulse;
+        bool cancelPulse;
 
 
-		// Reset the material property when exiting play mode so it won't be changed on disk
+        // Reset the material property when exiting play mode so it won't be changed on disk
 #if UNITY_EDITOR
 
-		SurfacePulse()
-		{
-			EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
-		}
+        SurfacePulse()
+        {
+            EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
+        }
 
-		void HandleOnPlayModeChanged(PlayModeStateChange change)
-		{
-			// This method is run whenever the playmode state is changed.
-			if (!EditorApplication.isPlaying)
-			{
-				// do stuff when the editor is paused.
-				ResetPulseMaterial();
-			}
-		}
+        void HandleOnPlayModeChanged(PlayModeStateChange change)
+        {
+            // This method is run whenever the playmode state is changed.
+            if (!EditorApplication.isPlaying)
+            {
+                // do stuff when the editor is paused.
+                ResetPulseMaterial();
+            }
+        }
 
 #endif // UNITY_EDITOR
 
-		private void OnDestroy()
-		{
-			ResetPulseMaterial();
-		}
+        private void OnDestroy()
+        {
+            ResetPulseMaterial();
+        }
 
-		private void Start()
-		{
-			if (bAutoStart)
-			{
-				StartPulsing();
-			}
-		}
+        private void Start()
+        {
+            if(pulseOnSelect)
+            {
+                // Add PointerHandler script to the parent of dynamically generated spatial mesh on the device
+                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.AddComponent<PointerHandler>();
+                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.GetComponent<PointerHandler>().OnPointerClicked.AddListener(this.OnPointerClicked);
+            }
 
-		private void Update()
-		{
-			if (bOriginFollowCamera)
-			{
-				SetLocalOrigin(CameraCache.Main.transform.position);
-			}
-		}
+            if (autoStart)
+            {
+                StartPulsing();
+            }
+        }
 
-		/////////////////////////////////////////////////////////////////////////////////////////
-		// Material control
-		/////////////////////////////////////////////////////////////////////////////////////////
-		public void SetLocalOrigin(Vector3 origin)
-		{
-			SurfaceMat.SetVector(OriginParamName, origin);
-		}
+        private void Update()
+        {
+            if (originFollowCamera)
+            {
+                SetLocalOrigin(CameraCache.Main.transform.position);
+            }
+        }
 
-		public void ResetPulseMaterial()
-		{
-			ApplyPulseRadiusToMaterial(0);
-		}
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Material control
+        /////////////////////////////////////////////////////////////////////////////////////////
+        public void SetLocalOrigin(Vector3 origin)
+        {
+            SurfaceMat.SetVector(OriginParamName, origin);
+        }
 
-		/////////////////////////////////////////////////////////////////////////////////////////
-		// Pulse control
-		/////////////////////////////////////////////////////////////////////////////////////////
-		public void PulseOnce()
-		{
-			cancelPulse = false;
-			StartCoroutine(CoSinglePulse());
-		}
+        public void ResetPulseMaterial()
+        {
+            ApplyPulseRadiusToMaterial(0);
+        }
 
-		public void StartPulsing()
-		{
-			repeatingPulse = true;
-			cancelPulse = false;
-			if (RepeatPulseCoroutine == null)
-			{
-				RepeatPulseCoroutine = StartCoroutine(CoRepeatPulse());
-			}
-		}
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Pulse control
+        /////////////////////////////////////////////////////////////////////////////////////////
+        public void PulseOnce()
+        {
+            cancelPulse = false;
+            StartCoroutine(CoSinglePulse());
+        }
 
-		public void StopPulsing(bool bFinishCurrentPulse = true)
-		{
-			repeatingPulse = false;
-			if (!bFinishCurrentPulse)
-			{
-				cancelPulse = true;
-				ApplyPulseRadiusToMaterial(0);
-			}
-		}
+        public void StartPulsing()
+        {
+            repeatingPulse = true;
+            cancelPulse = false;
+            if (RepeatPulseCoroutine == null)
+            {
+                RepeatPulseCoroutine = StartCoroutine(CoRepeatPulse());
+            }
+        }
 
-		/////////////////////////////////////////////////////////////////////////////////////////
-		// Implementation
-		/////////////////////////////////////////////////////////////////////////////////////////
-		IEnumerator CoSinglePulse()
-		{
-			yield return CoWaitForRepeatDelay();
-			if (!cancelPulse)
-			{
-				yield return CoAnimatePulse();
-			}
-		}
+        public void StopPulsing(bool bFinishCurrentPulse = true)
+        {
+            repeatingPulse = false;
+            if (!bFinishCurrentPulse)
+            {
+                cancelPulse = true;
+                ApplyPulseRadiusToMaterial(0);
+            }
+        }
 
-		IEnumerator CoRepeatPulse()
-		{
-			while (repeatingPulse && !cancelPulse)
-			{
-				yield return CoSinglePulse();
-			}
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Implementation
+        /////////////////////////////////////////////////////////////////////////////////////////
+        IEnumerator CoSinglePulse()
+        {
+            yield return CoWaitForRepeatDelay();
+            if (!cancelPulse)
+            {
+                yield return CoAnimatePulse();
+            }
+        }
 
-			RepeatPulseCoroutine = null;
-		}
+        IEnumerator CoRepeatPulse()
+        {
+            while (repeatingPulse && !cancelPulse)
+            {
+                yield return CoSinglePulse();
+            }
 
-		private IEnumerator CoAnimatePulse()
-		{
-			pulseStartedTime = Time.time;
-			float t = 0;
-			while (t < PulseDuration && !cancelPulse)
-			{
-				t += Time.deltaTime;
-				ApplyPulseRadiusToMaterial(t / PulseDuration);
-				yield return null;
-			}
-		}
+            RepeatPulseCoroutine = null;
+        }
 
-		IEnumerator CoWaitForRepeatDelay()
-		{
-			// Wait for minimum time between pulses starting
-			if (pulseStartedTime > 0)
-			{
-				float timeSincePulseStarted = Time.time - pulseStartedTime;
-				float delayTime = PulseRepeatMinDelay - timeSincePulseStarted;
-				if (delayTime > 0)
-				{
-					yield return new WaitForSeconds(delayTime);
-				}
-			}
-		}
+        private IEnumerator CoAnimatePulse()
+        {
+            pulseStartedTime = Time.time;
+            float t = 0;
+            while (t < PulseDuration && !cancelPulse)
+            {
+                t += Time.deltaTime;
+                ApplyPulseRadiusToMaterial(t / PulseDuration);
+                yield return null;
+            }
+        }
 
-		void ApplyPulseRadiusToMaterial(float radius)
-		{
-			SurfaceMat.SetFloat(ParamName, radius);
-		}
-	}
+        IEnumerator CoWaitForRepeatDelay()
+        {
+            // Wait for minimum time between pulses starting
+            if (pulseStartedTime > 0)
+            {
+                float timeSincePulseStarted = Time.time - pulseStartedTime;
+                float delayTime = PulseRepeatMinDelay - timeSincePulseStarted;
+                if (delayTime > 0)
+                {
+                    yield return new WaitForSeconds(delayTime);
+                }
+            }
+        }
+
+        void ApplyPulseRadiusToMaterial(float radius)
+        {
+            surfaceMat.SetFloat(paramName, radius);
+        }
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            cancelPulse = true;
+            SetLocalOrigin(eventData.Pointer.Result.Details.Point);
+            PulseOnce();
+        }
+    }
 }

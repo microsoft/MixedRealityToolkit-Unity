@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public List<State> StateList
         {
-            get {return stateList;}
+            get { return stateList; }
             set { stateList = value; }
         }
 
@@ -106,8 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns>true if internal list of state values and class configuration matches other, false otherwise</returns>
         public bool Equals(States other)
         {
-            if (this.StateList.Count != other.StateList.Count 
-                || this.StateModelType != other.StateModelType 
+            if (this.StateList.Count != other.StateList.Count
+                || this.StateModelType != other.StateModelType
                 || this.DefaultIndex != other.DefaultIndex)
             {
                 return false;

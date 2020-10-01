@@ -2,8 +2,10 @@
 
 The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have, and continue to contribute.
 
+- a-iafrate
 - achaperon
 - AdamMitchell-ms
+- againstlightning
 - alandergrouse
 - Alex Cooper
 - Alexees
@@ -20,9 +22,11 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - cre8ivepark
 - danielhofmann-ms
 - davidkline-ms
+- deibu
 - derekfreed
 - dfields-msft
 - Ecnassianer
+- elbuhofantasma
 - ericob
 - fast-slow-still
 - ForrestTrepte
@@ -37,7 +41,9 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - jganser
 - johnppella
 - JonathanPalmerGD
+- JoeyBytes
 - julenka
+- julesra
  -julianloehr-kg
 - jwittner
 - Kent1LG
@@ -50,9 +56,12 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - lukastonneMS
 - macborow
 - marek-stoj
+- matthejo
+- MaxWang-MS
 - MenelvagorMilsom
 - michael-house
 - mpkoz
+- MRW-Eric
 - ms738
 - mvaloriani
 - myrandaGoesToSpace
@@ -62,6 +71,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - paco-ms
 - phosphoer
 - pinkwerks
+- polar-kev
 - provencher
 - Quentin LG
 - radicalad
@@ -70,6 +80,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - RogPodge
 - Rosthouse
 - ryzngard
+- safacero
 - sgwin
 - SimonDarksideJ
 - sloh-ms
@@ -80,11 +91,13 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - TakahiroMiyaura
 - tarukosu
 - thalbern
+- tonyambrus
 - Troy-Ferrell
 - vaoliva
 - wassx
 - Weasy666
 - witian
 - wiwei
+- xwipeoutx
 - Yoyozilla
 - Zee2

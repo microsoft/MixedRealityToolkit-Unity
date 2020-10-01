@@ -1,11 +1,13 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using UnityEditor;
 using UnityEngine;
 using Version = System.Version;
 
@@ -23,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         internal const string MSBuildPackageName = "com.microsoft.msbuildforunity";
         internal const string MSBuildPackageVersion = "0.9.1-20200131.14";
+
+        private static readonly string ManifestFilePath = GetPackageManifestFilePath();
 
         /// <summary>
         /// Finds and returns the fully qualified path to the Unity Package Manager manifest
@@ -119,19 +123,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // * (currentVersion == minVersion && minPrerelease != 0 && currentPrerelease >= minPrerelease)   return true;
             // * all other combinations                                                                       return false;
             if (currentVersion > minVersion)
-            { 
-                return true; 
+            {
+                return true;
             }
             else if (currentVersion == minVersion)
             {
                 // The current and minimum versions are the same, check the prerelease portion
-                if (currentPrerelease == minPrerelease) 
-                { 
-                    return true; 
+                if (currentPrerelease == minPrerelease)
+                {
+                    return true;
                 }
-                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease)) 
-                { 
-                    return true; 
+                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease))
+                {
+                    return true;
                 };
             }
 
@@ -182,44 +186,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return false;
         }
 
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Use MSBuild for Unity dependency resolution", true)]
+        private static bool ShowEnableMenuItem()
+        {
+            return !IsMSBuildForUnityEnabled();
+        }
+
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Remove MSBuild for Unity", true)]
+        private static bool ShowDisableMenuItem()
+        {
+            return IsMSBuildForUnityEnabled();
+        }
+
         /// <summary>
         /// Ensures the required settings exist in the package manager to allow for using MSBuild for Unity.
         /// </summary>
-        internal static void EnsureMSBuildForUnity()
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Use MSBuild for Unity dependency resolution", priority = 99)]
+        internal static void EnableMSBuildForUnity()
         {
-            PackageManifest manifest = null;
-
-            string manifestPath = GetPackageManifestFilePath();
-            if (string.IsNullOrWhiteSpace(manifestPath))
+            if (!EditorUtility.DisplayDialog(
+                "Use MSBuild for Unity for dependency resolution",
+                "Some versions of Unity have experienced issues with MSBuild for Unity. Do you wish to continue?",
+                "Yes", "No"))
             {
                 return;
             }
 
-            // Read the package manifest into a list of strings (for easy finding of entries)
-            // and then deserialize.
-            List<string> manifestFileLines = new List<string>();
-            using (FileStream manifestStream = new FileStream(manifestPath, FileMode.Open, FileAccess.Read))
-            {
-                using (StreamReader reader = new StreamReader(manifestStream))
-                {
-                    // Read the manifest file a line at a time.
-                    while (!reader.EndOfStream)
-                    {
-                        string line = reader.ReadLine();
-                        manifestFileLines.Add(line);
-                    }
-
-                    // Go back to the start of the file.
-                    manifestStream.Seek(0, 0);
-
-                    // Deserialize the scoped registries portion of the package manifest.
-                    manifest = JsonUtility.FromJson<PackageManifest>(reader.ReadToEnd());
-                }
-            }
+            List<string> manifestFileLines;
+            PackageManifest manifest = LoadManifest(out manifestFileLines);
 
             if (manifest == null)
             {
-                Debug.LogError($"Failed to read the package manifest file ({manifestPath})");
+                Debug.LogError($"Failed to read the package manifest file ({ManifestFilePath})");
                 return;
             }
 
@@ -237,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (registry.url == MSBuildRegistryUrl)
                 {
                     needToAddRegistry = false;
+                    break;
                 }
             }
 
@@ -254,28 +253,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Update the manifest's scoped registries, as the collection may have been modified.
             manifest.scopedRegistries = scopedRegistries.ToArray();
 
-            int dependenciesStartIndex = -1;
-            int scopedRegistriesStartIndex = -1;
-            int scopedRegistriesEndIndex = -1;
-            int packageLine = -1;
-
             // Presume that we need to add the MSBuild for Unity package. If this value is false,
             // we will check to see if the currently configured version meets or exceeds the
             // minimum requirements.
             bool needToAddPackage = true;
 
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
-            // This loop also identifies the dependencies collection line and the start / end of a
-            // pre-existing scoped registries collections
+            // This loop also identifies the line that starts the dependencies and encloses the
+            // scoped registries collection.
+            int dependenciesStartIndex = -1;
+            int registriesStartIndex = -1;
+            int packageLine = -1;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
                 {
-                    scopedRegistriesStartIndex = i;
-                }
-                if (manifestFileLines[i].Contains("],") && (scopedRegistriesStartIndex != -1) && (scopedRegistriesEndIndex == -1))
-                {
-                    scopedRegistriesEndIndex = i;
+                    registriesStartIndex = i;
                 }
                 if (manifestFileLines[i].Contains("\"dependencies\": {"))
                 {
@@ -300,12 +293,162 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 manifestFileLines[packageLine] = $"    \"{MSBuildPackageName}\": \"{MSBuildPackageVersion}\",";
             }
 
-            // Update the manifest file.
+            // Update the manifest
+            if (!needToAddRegistry && !needToAddPackage)
+            {
+                // No changes required.
+                return;
+            }
+            WriteManifest(
+                manifest, 
+                manifestFileLines, 
+                registriesStartIndex,
+                dependenciesStartIndex);
+        }
+
+        /// <summary>
+        /// Removes the package manager settings that allow for using MSBuild for Unity.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Remove MSBuild for Unity", priority = 100)]
+        internal static void DisableMSBuildForUnity()
+        {
+            List<string> manifestFileLines;
+            PackageManifest manifest = LoadManifest(out manifestFileLines);
+
+            if (manifest == null)
+            {
+                Debug.LogError($"Failed to read the package manifest file ({ManifestFilePath})");
+                return;
+            }
+
+            // Ensure that pre-existing scoped registries are retained.
+            List<ScopedRegistry> scopedRegistries = new List<ScopedRegistry>();
+            if ((manifest.scopedRegistries != null) && (manifest.scopedRegistries.Length > 0))
+            {
+                scopedRegistries.AddRange(manifest.scopedRegistries);
+            }
+
+            // Attempt to find an entry in the scoped registries collection for the MSBuild for Unity URL
+            int registryToRemove = -1;
+            for (int i = 0; i < scopedRegistries.Count; i++)
+            {
+                if (scopedRegistries[i].url == MSBuildRegistryUrl)
+                {
+                    registryToRemove = i;
+                    break;
+                }
+            }
+            if (registryToRemove != -1)
+            {
+                scopedRegistries.RemoveAt(registryToRemove);
+                // Update the manifest's scoped registries.
+                manifest.scopedRegistries = scopedRegistries.ToArray();
+            }
+
+            // Attempt to find the msbuild for unity package
+            // This loop also identifies the lines that enclose the scoped registry collection.
+            int registriesStartIndex = -1;
+            int dependenciesStartIndex = -1;
+            int packageToRemove = -1;
+            for (int i = 0; i < manifestFileLines.Count; i++)
+            {
+                if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
+                {
+                    registriesStartIndex = i;
+                }
+                if (manifestFileLines[i].Contains("\"dependencies\":"))
+                {
+                    dependenciesStartIndex = i;
+                }
+                if (manifestFileLines[i].Contains(MSBuildPackageName))
+                {
+                    packageToRemove = i;
+                    break;
+                }
+            }
+            if (packageToRemove != -1)
+            {
+                manifestFileLines.RemoveAt(packageToRemove);
+            }
+
+            // Update the manifest file
+            if ((registryToRemove == -1) &&
+                (packageToRemove == -1))
+            {
+                // No changes needed.
+                return;
+            }
+
+            WriteManifest(
+                manifest,
+                manifestFileLines,
+                registriesStartIndex,
+                dependenciesStartIndex);
+        }
+
+        private static PackageManifest LoadManifest(out List<string> manifestFileLines)
+        {
+            PackageManifest manifest = null;
+            manifestFileLines = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(ManifestFilePath))
+            {
+                return null;
+            }
+
+            // Read the package manifest into a list of strings (for easy finding of entries)
+            // and then deserialize.
+            using (FileStream manifestStream = new FileStream(ManifestFilePath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(manifestStream))
+                {
+                    // Read the manifest file a line at a time.
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        manifestFileLines.Add(line);
+                    }
+
+                    // Go back to the start of the file.
+                    manifestStream.Seek(0, 0);
+
+                    // Deserialize the scoped registries portion of the package manifest.
+                    manifest = JsonUtility.FromJson<PackageManifest>(reader.ReadToEnd());
+                }
+            }
+
+            return manifest;
+        }
+
+        /// <summary>
+        /// Writes the Unity Package Manager manifest file.
+        /// </summary>
+        /// <param name="manifest">The manifest to be written.</param>
+        /// <param name="manifestFileLines">Contents of the manifest file as a collection of lines.</param>
+        /// <param name="registriesStartIndex">The line number on which the scopedRegistries section begins.</param>
+        /// <param name="dependenciesStartIndex">The line number on which the dependencies section begins.</param>
+        /// <remarks>
+        /// The Unity JSON parser / writer appear to not have full support for dictionaries. As a result, the 
+        /// provided manifest contains only the scoped registry collection, while the manifestFileLines contains
+        /// a potentially modified collection of packages to install, along with the previous collection of scoped
+        /// registries. The registries collection in manifestFileLines will be replaced by those contained in 
+        /// the provided manifest.
+        /// </remarks>
+        private static void WriteManifest(
+            PackageManifest manifest, 
+            List<string> manifestFileLines,
+            int registriesStartIndex,
+            int dependenciesStartIndex)
+        {
             // First, serialize the scoped registry collection.
-            string serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
+            string serializedRegistriesJson = string.Empty;
+            if (manifest.scopedRegistries.Length > 0)
+            {
+                serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
+            }
 
             // Ensure that the file is truncated to ensure it is always valid after writing.
-            using (FileStream outFile = new FileStream(manifestPath, FileMode.Truncate, FileAccess.Write))
+            using (FileStream outFile = new FileStream(ManifestFilePath, FileMode.Truncate, FileAccess.Write))
             {
                 using (StreamWriter writer = new StreamWriter(outFile))
                 {
@@ -314,13 +457,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // Write each line of the manifest back to the file.
                     for (int i = 0; i < manifestFileLines.Count; i++)
                     {
-                        if ((i >= scopedRegistriesStartIndex) && (i <= scopedRegistriesEndIndex))
+                        if ((registriesStartIndex > 0 ) &&
+                            (i >= registriesStartIndex) && 
+                            (i < dependenciesStartIndex))
                         {
                             // Skip these lines, they will be replaced.
                             continue;
                         }
 
-                        if (!scopedRegistriesWritten && (i > 0))
+                        if (!string.IsNullOrWhiteSpace(serializedRegistriesJson) &&
+                            !scopedRegistriesWritten && 
+                            (i > 0))
                         {
                             // Trim the leading '{' and '\n' from the serialized scoped registries
                             serializedRegistriesJson = serializedRegistriesJson.Remove(0, 2);

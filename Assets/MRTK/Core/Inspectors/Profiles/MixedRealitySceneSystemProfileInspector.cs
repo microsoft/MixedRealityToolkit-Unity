@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information. 
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. 
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const float DragAreaOffset = 10;
         const float LightingSceneTypesLabelWidth = 45;
 
-        private static string managerSceneContent = 
+        private static string managerSceneContent =
             "The Manager scene is loaded first and remains loaded for the duration of the app. Only one Manager scene is ever loaded, and no scene operation will ever unload it.";
 
         private static string lightingSceneContent =
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return;
             }
-            
+
             if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
             {
                 return;
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     arrayElement = arrayProperty.GetArrayElementAtIndex(i);
                                     assetProperty = arrayElement.FindPropertyRelative("Asset");
                                     if (assetProperty.objectReferenceValue != null && assetProperty.objectReferenceValue == draggedObject)
-                                    {   
+                                    {
                                         isDuplicate = true;
                                         break;
                                     }
@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     Debug.LogWarning("Skipping " + draggedObject.name + " - it's already in the " + arrayProperty.displayName + " list.");
                                     continue;
                                 }
-                                
+
                                 // Create the new element at 0
                                 arrayProperty.InsertArrayElementAtIndex(0);
                                 arrayProperty.serializedObject.ApplyModifiedProperties();

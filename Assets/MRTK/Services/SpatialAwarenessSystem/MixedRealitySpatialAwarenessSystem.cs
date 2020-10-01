@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using Unity.Profiling;
@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class MixedRealitySpatialAwarenessSystem :
-        BaseDataProviderAccessCoreSystem, 
-        IMixedRealitySpatialAwarenessSystem, 
+        BaseDataProviderAccessCoreSystem,
+        IMixedRealitySpatialAwarenessSystem,
         IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            foreach(var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
                 IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
 
@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
                     RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,
+                        configuration.ComponentName,
                         configuration.RuntimePlatform,
                         args);
                 }
@@ -179,7 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             get
             {
                 GameObject newParent = new GameObject("Spatial Awareness System");
-                MixedRealityPlayspace.AddChild(newParent.transform);
+                /// Preserve local transform when attaching to playspace.
+                newParent.transform.SetParent(MixedRealityPlayspace.Transform, false);
 
                 return newParent;
             }
@@ -190,7 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             GameObject objectParent = new GameObject(name);
 
-            objectParent.transform.parent = SpatialAwarenessObjectParent.transform;
+            /// Preserve local transform when attaching to SA object parent.
+            objectParent.transform.SetParent(SpatialAwarenessObjectParent.transform, false);
 
             return objectParent;
         }

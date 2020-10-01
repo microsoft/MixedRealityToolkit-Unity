@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Collections.Generic;
@@ -74,20 +74,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public virtual void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
             // A new mesh has been added.
-            if (!meshUpdateData.ContainsKey(eventData.Id))
-            {
-                Debug.Log($"Tracking mesh {eventData.Id}");
-                meshUpdateData.Add(eventData.Id, 0);
-            }
+            Debug.Log($"Tracking mesh {eventData.Id}");
+            meshUpdateData.Add(eventData.Id, 0);
         }
 
         /// <inheritdoc />
         public virtual void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            uint updateCount = 0;
-
             // A mesh has been updated. Find it and increment the update count.
-            if (meshUpdateData.TryGetValue(eventData.Id, out updateCount))
+            if (meshUpdateData.TryGetValue(eventData.Id, out uint updateCount))
             {
                 // Set the new update count.
                 meshUpdateData[eventData.Id] = ++updateCount;

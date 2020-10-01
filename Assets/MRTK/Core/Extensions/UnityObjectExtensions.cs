@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
                 // Must use DestroyImmediate in edit mode but it is not allowed when called from 
                 // trigger/contact, animation event callbacks or OnValidate. Must use Destroy instead.
                 // Delay call to counter this issue in editor
@@ -44,19 +44,23 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     Object.DestroyImmediate(obj);
                 };
-            #else
+#else
                 Object.DestroyImmediate(obj);
-            #endif
+#endif
             }
         }
 
         /// <summary>
-        /// Tests if the Unity object is null. Checks both the managed object and the underly Unity-managed native object
+        /// Tests if an interface is null, taking potential UnityEngine.Object derived class implementers into account
+        /// which require their overridden operators to be called
         /// </summary>
         /// <returns>True if either the managed or native object is null, false otherwise</returns>
-        public static bool IsNull(Object obj)
-        {
-            return obj == null || obj.Equals(null);
-        }
+        public static bool IsNull<T>(this T @interface) where T : class => @interface == null || @interface.Equals(null);
+
+        /// <summary>
+        /// Properly checks an interface for null and returns the MonoBehaviour implementing it
+        /// </summary>
+        /// <returns> True if the implementer of the interface is not a MonoBehaviour or the MonoBehaviour is null</returns>
+        public static bool TryGetMonoBehaviour<T>(this T @interface, out MonoBehaviour monoBehaviour) where T : class => (monoBehaviour = @interface as MonoBehaviour) != null;
     }
 }

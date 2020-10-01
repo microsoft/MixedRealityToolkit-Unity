@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System;
@@ -87,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             if (autoDestroy && materialOwners.Count == 0)
             {
                 DestorySafe(this);
+
+                // OnDestroy not called on inactive objects
+                if (!gameObject.activeInHierarchy)
+                {
+                    RestoreRenderer();
+                }
             }
         }
 
@@ -178,6 +184,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void OnDestroy()
         {
+            RestoreRenderer();
+        }
+
+        private void RestoreRenderer()
+        {
             if (CachedRenderer != null && defaultMaterials != null)
             {
                 CachedRenderer.sharedMaterials = defaultMaterials;
@@ -198,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 {
                     defaultMaterials = CachedRenderer.sharedMaterials;
                 }
-                else if (!materialsInstanced) // Restore the clone to it's initial state.
+                else if (!materialsInstanced) // Restore the clone to its initial state.
                 {
                     CachedRenderer.sharedMaterials = defaultMaterials;
                 }
@@ -321,14 +332,18 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 else
                 {
 #if UNITY_EDITOR
-                    // Defer the destructing in case the object is in the act of being destroyed.
-                    EditorApplication.delayCall += () =>
+                    // Let Unity handle unload of unused assets if lifecycle is transitioning from editor to play mode
+                    // Defering the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
+                    if (!EditorApplication.isPlayingOrWillChangePlaymode)
                     {
-                        if (toDestroy != null)
+                        EditorApplication.delayCall += () =>
                         {
-                            DestroyImmediate(toDestroy);
-                        }
-                    };
+                            if (toDestroy != null)
+                            {
+                                DestroyImmediate(toDestroy);
+                            }
+                        };
+                    }
 #endif
                 }
             }

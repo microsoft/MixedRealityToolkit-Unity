@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         }
 
         /// <summary>
-        /// Called before the GameObject's position and rotation are set (as well as it's active state) by the GameObjectPool
+        /// Called before the GameObject's position and rotation are set (as well as its active state) by the GameObjectPool
         /// when GetGameObject is called. If the GameObject has a component that implements
         /// the IGameObjectCreatorHandler interface, it will call its PrepareForUse function.
         /// </summary>

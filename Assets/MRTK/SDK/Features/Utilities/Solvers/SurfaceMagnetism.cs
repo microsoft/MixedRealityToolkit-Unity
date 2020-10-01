@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using System;
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// Blend between tracked transform and the surface normal orientation
             /// </summary>
             Blended = 3,
-            
+
             /// <summary>
             /// Face toward this object's position
             /// </summary>
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         #endregion
 
         #region SurfaceMagnetism Parameters
-        
+
         [SerializeField]
         [Tooltip("Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component")]
         private LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };

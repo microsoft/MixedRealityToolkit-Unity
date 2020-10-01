@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
@@ -22,20 +22,15 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
         public MixedRealityBoundarySystem(
             MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : base(profile, scale) { }        
+            ExperienceScale scale) : base(profile, scale) { }
+
+        /// <inheritdoc/>
+        protected override bool IsXRDevicePresent => XRDevice.isPresent;
 
         #region IMixedRealityService Implementation
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
-
-        /// <inheritdoc/>
-        public override void Initialize()
-        {
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-
-            base.Initialize();
-        }
 
         #endregion IMixedRealityService Implementation
 

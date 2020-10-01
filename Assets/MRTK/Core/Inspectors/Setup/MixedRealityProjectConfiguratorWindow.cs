@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using System.Collections.Generic;
@@ -19,10 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.VirtualRealitySupported, true },
             { MRConfig.OptimalRenderingPath, true },
             { MRConfig.SpatialAwarenessLayer, true },
-            // Issue #7239: Disable MSBuild for Unity on Unity 2019.3 and newer while the cause of the loop is investigated
-#if !UNITY_2019_3_OR_NEWER
-            { MRConfig.EnableMSBuildForUnity, true },
-#endif // !UNITY_2019_3_OR_NEWER
             { MRConfig.AudioSpatializer, true },
 
             // UWP Capabilities
@@ -41,6 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.IOSMinOSVersion, true },
             { MRConfig.IOSArchitecture, true },
             { MRConfig.IOSCameraUsageDescription, true },
+
+#if UNITY_2019_3_OR_NEWER
+            // A workaround for the Unity bug described in https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8326.
+            { MRConfig.GraphicsJobWorkaround, true },
+#endif // UNITY_2019_3_OR_NEWER
         };
 
         private const float Default_Window_Height = 640.0f;
@@ -171,11 +172,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RenderToggle(MRConfig.VisibleMetaFiles, "Enable visible meta files");
                 if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && XRSettingsUtilities.IsLegacyXRActive)
                 {
-#if UNITY_2019_3_OR_NEWER
-                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable legacy XR");
-#else
+#if !UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR supported");
-#endif // UNITY_2019_3_OR_NEWER
+#endif // !UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
@@ -192,20 +191,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
                 {
-#if !UNITY_2019_3_OR_NEWER
-                    EditorGUILayout.LabelField("MSBuild for Unity Support", EditorStyles.boldLabel);
-                    EditorGUILayout.HelpBox("Enable this for additional HoloLens 2 features, like hand joint remoting and depth LSR mode.", MessageType.Info);
-                    RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
-                    EditorGUILayout.Space();
-#endif // !UNITY_2019_3_OR_NEWER
-
-
                     EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
                     RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
                     RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
                     RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
+                    RenderToggle(MRConfig.GraphicsJobWorkaround, "Avoid Unity 'PlayerSettings.graphicsJob' crash");
 #endif // UNITY_2019_3_OR_NEWER
                 }
                 else
@@ -215,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     trackToggles[MRConfig.SpatialPerceptionCapability] = false;
 #if UNITY_2019_3_OR_NEWER
                     trackToggles[MRConfig.EyeTrackingCapability] = false;
+                    trackToggles[MRConfig.GraphicsJobWorkaround] = false;
 #endif // UNITY_2019_3_OR_NEWER
                 }
 

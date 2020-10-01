@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// The default time in seconds for fade in to complete.
         /// </summary>
         float FadeInTime { get; set; }
-        
+
         /// <summary>
         /// The default time in seconds for fade out to complete.
         /// </summary>
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling DoSceneTransition.
         /// </summary>
         void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
-        
+
         /// <summary>
         /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place. Uses default FadeOutTime.
         /// </summary>

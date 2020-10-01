@@ -1,17 +1,17 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [AddComponentMenu("Scripts/MRTK/SDK/HandInteractionPanZoom")]
-    public class HandInteractionPanZoom : 
+    public class HandInteractionPanZoom :
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         /// <summary>
@@ -38,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region Serialized Fields
+
         [SerializeField]
         [FormerlySerializedAs("enabled")]
         private bool isEnabled = true;
@@ -45,36 +46,47 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// This Property sets and gets whether a the pan/zoom behavior is active.
         /// </summary>
         public bool Enabled { get => isEnabled; set => isEnabled = value; }
+
         [Header("Behavior")]
         [SerializeField]
         private bool enableZoom = false;
+
         [SerializeField]
         private bool lockHorizontal = false;
+
         [SerializeField]
         private bool lockVertical = false;
+
         [SerializeField]
         [Tooltip("If this is checked, Max Pan Horizontal and Max Pan Vertical are ignored.")]
         private bool unlimitedPan = true;
+
         [SerializeField]
         [Range(1.0f, 20.0f)]
         private float maxPanHorizontal = 2;
+
         [SerializeField]
         [Range(1.0f, 20.0f)]
         private float maxPanVertical = 2;
+
         [SerializeField]
         [Range(0.1f, 1.0f)]
         private float minScale = 0.2f;
+
         [SerializeField]
         [Range(1.0f, 10.0f)]
         private float maxScale = 1.5f;
+
         [SerializeField]
         [Range(0.0f, 0.99f)]
         [Tooltip("a value of 0 results in panning coming to a complete stop when released.")]
         private float momentumHorizontal = 0.9f;
+
         [SerializeField]
         [Tooltip("a value of 0 results in panning coming to a complete stop when released.")]
         [Range(0.0f, 0.99f)]
         private float momentumVertical = 0.9f;
+
         [SerializeField]
         [Range(0.0f, 99.0f)]
         private float panZoomSmoothing = 80.0f;
@@ -84,10 +96,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("If affordance geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
         [FormerlySerializedAs("reticle")]
         private GameObject centerPoint = null;
+
         [SerializeField]
         private GameObject leftPoint = null;
+
         [SerializeField]
         private GameObject rightPoint = null;
+
         [Tooltip("When the slate is touched, what color to change on the ProximityLight center color override to. (Assumes the target material uses a proximity light and proximity light color override)")]
         [SerializeField]
         private Color proximityLightCenterColor = new Color(0.25f, 0.25f, 0.25f, 0.0f);
@@ -95,6 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Current scale value. 1 is the original 100%.")]
         private float currentScale;
+        /// <summary>
+        /// Current scale value. 1 is the original 100%.
+        /// </summary>
         public float CurrentScale
         {
             get { return currentScale; }
@@ -104,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Returns the current pan delta (pan value - previous pan value)
         /// in UV coordinates (0 being no pan, 1, being pan of the entire ) 
         /// </summary>
-        public Vector2  CurrentPanDelta
+        public Vector2 CurrentPanDelta
         {
             get { return totalUVOffset; }
         }
@@ -116,8 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Serialized Fields
 
-
         #region Private Properties
+
         private Mesh mesh;
         private MeshFilter meshFilter;
         private BoxCollider boxCollider;
@@ -148,9 +166,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Color defaultProximityLightCenterColor;
         private List<Vector2> unTransformedUVs = new List<Vector2>();
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
-        List<Vector2> uvs = new List<Vector2>();
-        List<Vector2> uvsOrig = new List<Vector2>();
+        private List<Vector2> uvs = new List<Vector2>();
+        private List<Vector2> uvsOrig = new List<Vector2>();
         private bool oldIsTargetPositionLockedOnFocusLock;
+
+#if UNITY_2019_3_OR_NEWER
+        // Quad meshes by default (in 2019 and higher) appear to follow the vertex order
+        // specified here: https://docs.unity3d.com/Manual/Example-CreatingaBillboardPlane.html
+        // That is, LowerLeft->LowerRight->UpperLeft->UpperRight
+        // Note that even though the example on that page is one that creates a quad manually
+        // using a specific order of vertices, this order seems to be what a quad mesh defaults to.
+        // This was discovered when looking into an issue on the SlateTests, which depend on the
+        // projection math within this to be using the correct right and up vectors.
+        private const int UpperLeftQuadIndex = 2;
+        private const int UpperRightQuadIndex = 3;
+        private const int LowerLeftQuadIndex = 0;
+#else // !UNITY_2019_3_OR_NEWER
+        // Quad meshes in 2018 and lower appear to follow a vertex order that looks like this:
+        // [0] "(-0.5, -0.5, 0.0)"
+        // [1] "(0.5, 0.5, 0.0)"
+        // [2] "(0.5, -0.5, 0.0)"
+        // [3] "(-0.5, 0.5, 0.0)"
+        // That is, LowerLeft->UpperRight->LowerRight->UpperLeft
+        // Note that the ifdefs only cover +/- 2019.3 because that was the min tested version
+        // for Unity 2019 - this could very well be needed for 2019.2 and 2019.1, but with 2019.4
+        // out at this point, support is mainly on the LTS release.
+        private const int UpperLeftQuadIndex = 3;
+        private const int UpperRightQuadIndex = 1;
+        private const int LowerLeftQuadIndex = 0;
+#endif
+
         #endregion Private Properties
 
         /// <summary>
@@ -164,21 +209,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             initialTouchDistance = 0.0f;
         }
 
-
         #region MonoBehaviour Handlers
+
         private void Awake()
         {
             Initialize();
         }
+
         private void Update()
         {
-            if (isEnabled == true)
+            if (isEnabled)
             {
                 if (touchActive)
                 {
                     foreach (uint key in handDataMap.Keys)
                     {
-                        if (true == UpdateHandTouchingPoint(key))
+                        if (UpdateHandTouchingPoint(key))
                         {
                             MoveTouch(key);
                         }
@@ -190,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateIdle();
                 UpdateUVMapping();
 
-                if (touchActive == false && affordancesVisible == true)
+                if (!touchActive && affordancesVisible)
                 {
                     SetAffordancesActive(false);
                 }
@@ -212,19 +258,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
         #endregion MonoBehaviour Handlers
 
-
         #region Private Methods
+
         private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
         {
-           
+
             if (data.currentPointer != null && data.currentController != null && data.currentController.IsPositionAvailable)
             {
                 rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentPointer.Position) - data.initialProjectedOffset);
                 return true;
             }
-          
+
             rayPoint = Vector3.zero;
             return false;
         }
@@ -233,13 +280,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 tryHandPoint = Vector3.zero;
             bool tryGetSucceeded = false;
-            if (handDataMap.ContainsKey(sourceId) == true)
+            if (handDataMap.ContainsKey(sourceId))
             {
                 HandPanData data = handDataMap[sourceId];
 
-                if (data.IsActive == true)
+                if (data.IsActive)
                 {
-                    if (data.IsSourceNear == true)
+                    if (data.IsSourceNear)
                     {
                         tryGetSucceeded = TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out tryHandPoint);
                     }
@@ -252,10 +299,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         tryGetSucceeded = TryGetMRControllerRayPoint(data, out tryHandPoint);
                     }
 
-                    if (tryGetSucceeded == true)
+                    if (tryGetSucceeded)
                     {
                         tryHandPoint = SnapFingerToQuad(tryHandPoint);
-                        Vector3 unfilteredTouchPt = (data.IsSourceNear == true) ? tryHandPoint : tryHandPoint + data.touchingRayOffset;
+                        Vector3 unfilteredTouchPt = data.IsSourceNear ? tryHandPoint : tryHandPoint + data.touchingRayOffset;
                         runningAverageSmoothing = panZoomSmoothing * percentToDecimal;
                         unfilteredTouchPt *= (1.0f - runningAverageSmoothing);
                         data.touchingPointSmoothed = (data.touchingPointSmoothed * runningAverageSmoothing) + unfilteredTouchPt;
@@ -266,13 +313,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return true;
         }
+
         private bool TryGetHandRayPoint(IMixedRealityController controller, out Vector3 handRayPoint)
         {
-           if (controller != null &&
-                controller.InputSource != null &&
-                controller.InputSource.Pointers != null &&
-                controller.InputSource.Pointers.Length > 0 &&
-                controller.InputSource.Pointers[0].Result != null)
+            if (controller != null &&
+                 controller.InputSource != null &&
+                 controller.InputSource.Pointers != null &&
+                 controller.InputSource.Pointers.Length > 0 &&
+                 controller.InputSource.Pointers[0].Result != null)
             {
                 handRayPoint = controller.InputSource.Pointers[0].Result.Details.Point;
                 return true;
@@ -281,6 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             handRayPoint = Vector3.zero;
             return false;
         }
+
         private void Initialize()
         {
             SetAffordancesActive(false);
@@ -305,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             currentMaterial = this.gameObject.GetComponent<Renderer>().material;
             proximityLightCenterColorID = Shader.PropertyToID("_ProximityLightCenterColorOverride");
             bool materialValid = currentMaterial != null && currentMaterial.HasProperty(proximityLightCenterColorID);
-            defaultProximityLightCenterColor = materialValid ? 
+            defaultProximityLightCenterColor = materialValid ?
                 currentMaterial.GetColor(proximityLightCenterColorID) :
                 new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -322,9 +371,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             mesh.GetUVs(0, unTransformedUVs);
         }
+
         private void UpdateIdle()
         {
-            if (touchActive == false)
+            if (!touchActive)
             {
                 if (Mathf.Abs(totalUVOffset.x) < 0.01f && Mathf.Abs(totalUVOffset.y) < 0.01f)
                 {
@@ -337,6 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
         private void UpdateUVMapping()
         {
             Vector2 tiling = currentMaterial != null ? currentMaterial.mainTextureScale : new Vector2(1.0f, 1.0f);
@@ -404,9 +455,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             mesh.SetUVs(0, uvs);
         }
+
         private float GetUVScaleFromTouches()
         {
-            if (scaleActive == false || initialTouchDistance == 0)
+            if (!scaleActive || initialTouchDistance == 0)
             {
                 return 0.0f;
             }
@@ -414,6 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             float uvScaleFromTouches = GetContactDistance() / initialTouchDistance;
             return uvScaleFromTouches;
         }
+
         private void UpdateTouchUVOffset(uint sourceId)
         {
             HandPanData data = handDataMap[sourceId];
@@ -421,9 +474,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             data.uvOffset = currentQuadCoord - data.touchingQuadCoord;
             data.touchingQuadCoord = currentQuadCoord;
         }
+
         private Vector2 GetUvOffset()
         {
-            if (touchActive && AreSourcesCompatible() == true)
+            if (touchActive && AreSourcesCompatible())
             {
                 Vector2 offset = Vector2.zero;
                 foreach (uint key in handDataMap.Keys)
@@ -435,6 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return totalUVOffset;
         }
+
         private Vector3 GetContactCenter()
         {
             Vector3 center = Vector3.zero;
@@ -451,6 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return center;
         }
+
         private void SetAffordancesActive(bool active)
         {
             affordancesVisible = active;
@@ -489,6 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return handPoint;
         }
+
         private bool AreSourcesCompatible()
         {
             int score = 0;
@@ -498,6 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return (score == 0 || score == handDataMap.Keys.Count);
         }
+
         private bool AreSourcesNear()
         {
             foreach (uint key in handDataMap.Keys)
@@ -509,6 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return true;
         }
+
         private Vector3 GetTouchPoint()
         {
             if (touchActive)
@@ -523,10 +582,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return Vector3.zero;
         }
+
         private Vector2 GetScaleUVCentroid()
         {
             return GetUVFromPoint(GetTouchPoint());
         }
+
         private Vector2 GetDisplayedUVCentroid(List<Vector2> uvs)
         {
             Vector2 centroid = Vector2.zero;
@@ -537,16 +598,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return centroid /= (float)uvs.Count;
         }
+
         private float GetContactDistance()
         {
-            if (scaleActive == false || handDataMap.Keys.Count < 2)
+            if (!scaleActive || handDataMap.Keys.Count < 2)
             {
                 return 0.0f;
             }
 
             int index = 0;
-            Vector2 a = Vector2.zero;
-            Vector2 b = Vector2.zero;
+            Vector3 a = Vector3.zero;
+            Vector3 b = Vector3.zero;
             foreach (uint key in handDataMap.Keys)
             {
                 if (index == 0)
@@ -563,54 +625,62 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return (b - a).magnitude;
         }
+
         private Vector2 GetQuadCoordFromPoint(Vector3 point)
         {
             Vector2 quadCoord = GetQuadCoord(point);
             quadCoord = new Vector2(lockHorizontal ? 0.0f : quadCoord.x, lockVertical ? 0.0f : quadCoord.y);
             return quadCoord;
         }
+
         private Vector2 GetUVFromQuadCoord(Vector2 coord)
         {
+            Vector2 uvCoord = Vector2.zero;
             Vector2[] uvs = mesh.uv;
-            Vector2 upperLeft = uvs[3];
-            Vector2 upperRight = uvs[1];
-            Vector2 lowerLeft = uvs[0];
+            Vector2 upperLeft = uvs[UpperLeftQuadIndex];
+            Vector2 upperRight = uvs[UpperRightQuadIndex];
+            Vector2 lowerLeft = uvs[LowerLeftQuadIndex];
 
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;
 
-            float v = Vector2.Dot(coord - upperLeft, (lowerLeft - upperLeft) / (magVertical * magVertical));
-            float h = Vector2.Dot(coord - upperLeft, (upperRight - upperLeft) / (magHorizontal * magHorizontal));
+            if (!Mathf.Approximately(0, magVertical) && !Mathf.Approximately(0, magHorizontal))
+            {
+                // Get coord projection on uv coordinates then divide by length to get quad coord 0 to 1
+                uvCoord.x = Vector2.Dot(coord - upperLeft, upperRight - upperLeft) / (magHorizontal * magHorizontal);
+                uvCoord.y = Vector2.Dot(coord - upperLeft, lowerLeft - upperLeft) / (magVertical * magVertical);
+            }
 
-            return new Vector2(h, v);
+            return uvCoord;
         }
+
         private Vector2 GetUVFromPoint(Vector3 point)
         {
             Vector2 quadCoord = GetQuadCoordFromPoint(point);
             return GetUVFromQuadCoord(quadCoord);
         }
+
         private Vector2 GetQuadCoord(Vector3 point)
         {
             Vector2 quadCoord = Vector2.zero;
             Vector3[] vertices = mesh.vertices;
-            Vector3 upperLeft = transform.TransformPoint(vertices[3]);
-            Vector3 upperRight = transform.TransformPoint(vertices[1]);
-            Vector3 lowerLeft = transform.TransformPoint(vertices[0]);
+            Vector3 upperLeft = transform.TransformPoint(vertices[UpperLeftQuadIndex]);
+            Vector3 upperRight = transform.TransformPoint(vertices[UpperRightQuadIndex]);
+            Vector3 lowerLeft = transform.TransformPoint(vertices[LowerLeftQuadIndex]);
 
             float magVertical = (lowerLeft - upperLeft).magnitude;
             float magHorizontal = (upperRight - upperLeft).magnitude;
-            if (magVertical != 0.0f && magHorizontal != 0.0f)
+
+            if (!Mathf.Approximately(0, magVertical) && !Mathf.Approximately(0, magHorizontal))
             {
-                Vector3 verticalEdgeNorm = (lowerLeft - upperLeft) / magVertical;
-                Vector3 horizontalEdgeNorm = (upperRight - upperLeft) / magHorizontal;
-                // Get dotproduct to determine distance ->then divide by length to get quad coord 0 to 1
-                float v = Vector3.Dot(point - upperLeft, verticalEdgeNorm) / magVertical;
-                float h = Vector3.Dot(point - upperLeft, horizontalEdgeNorm) / magHorizontal;
-                quadCoord = new Vector2(h, v);
+                // Get point projection on vertices coordinates then divide by length to get quad coord 0 to 1
+                quadCoord.x = Vector3.Dot(point - upperLeft, upperRight - upperLeft) / (magHorizontal * magHorizontal);
+                quadCoord.y = Vector3.Dot(point - upperLeft, lowerLeft - upperLeft) / (magVertical * magVertical);
             }
 
             return quadCoord;
         }
+
         private Vector3 SnapFingerToQuad(Vector3 pointToSnap)
         {
             Vector3 planePoint = this.transform.TransformPoint(mesh.vertices[0]);
@@ -618,7 +688,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return Vector3.ProjectOnPlane(pointToSnap - planePoint, planeNormal) + planePoint;
         }
-
 
         private void SetHandDataFromController(IMixedRealityController controller, IMixedRealityPointer pointer, bool isNear)
         {
@@ -629,9 +698,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             data.currentController = controller;
             data.currentPointer = pointer;
 
-            if (isNear == true)
+            if (isNear)
             {
-                if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition) == true)
+                if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition))
                 {
                     data.touchingInitialPt = SnapFingerToQuad(touchPosition);
                     data.touchingPointSmoothed = data.touchingInitialPt;
@@ -646,16 +715,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     data.touchingPoint = data.touchingInitialPt;
                     data.touchingPointSmoothed = data.touchingInitialPt;
                 }
-                else if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
+                else if (TryGetHandRayPoint(controller, out Vector3 handRayPt))
                 {
                     data.touchingInitialPt = SnapFingerToQuad(handRayPt);
                     data.touchingPoint = data.touchingInitialPt;
                     data.touchingPointSmoothed = data.touchingInitialPt;
-                    if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.Palm, out Vector3 touchPosition) == true)
+                    if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.Palm, out Vector3 touchPosition))
                     {
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
-                }              
+                }
             }
 
             // Store value in case of MRController
@@ -697,7 +766,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var hand = controller as IMixedRealityHand;
             if (hand != null)
-            { 
+            {
                 if (hand.TryGetJoint(joint, out MixedRealityPose pose))
                 {
                     position = pose.Position;
@@ -708,60 +777,67 @@ namespace Microsoft.MixedReality.Toolkit.UI
             position = Vector3.zero;
             return false;
         }
+
         #endregion Private Methods
 
-
         #region Internal State Handlers
+
         private void StartTouch(uint sourceId)
         {
             UpdateTouchUVOffset(sourceId);
             RaisePanStarted(sourceId);
         }
+
         private void EndTouch(uint sourceId)
         {
-            if (handDataMap.ContainsKey(sourceId) == true)
+            if (handDataMap.ContainsKey(sourceId))
             {
                 handDataMap.Remove(sourceId);
                 RaisePanEnded(0);
             }
         }
+
         private void EndAllTouches()
         {
             handDataMap.Clear();
             RaisePanEnded(0);
         }
+
         private void MoveTouch(uint sourceId)
         {
             UpdateTouchUVOffset(sourceId);
             RaisePanning(sourceId);
         }
+
         #endregion Internal State Handlers
 
-
         #region Fire Events to Listening Objects
+
         private void RaisePanStarted(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData();
             eventData.PanDelta = GetUvOffset();
             PanStarted?.Invoke(eventData);
         }
+
         private void RaisePanEnded(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData();
             eventData.PanDelta = Vector2.zero;
             PanStopped?.Invoke(eventData);
         }
+
         private void RaisePanning(uint sourceId)
         {
             HandPanEventData eventData = new HandPanEventData();
             eventData.PanDelta = GetUvOffset();
             PanUpdated?.Invoke(eventData);
         }
+
         #endregion Fire Events to Listening Objects
 
-
         #region BaseFocusHandler Methods
-        
+
         /// <inheritdoc />
         public override void OnFocusEnter(FocusEventData eventData) { }
 
@@ -770,8 +846,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             EndAllTouches();
         }
-        #endregion
 
+        #endregion
 
         #region IMixedRealityTouchHandler
         /// <summary>
@@ -784,37 +860,42 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetHandDataFromController(eventData.Controller, null, true);
             eventData.Use();
         }
+
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             EndTouch(eventData.SourceId);
             eventData.Use();
         }
+
         public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
+
         #endregion IMixedRealityTouchHandler
 
-
         #region IMixedRealityInputHandler Methods
+
         /// <summary>
         /// The Input Event handlers receive Hand Ray events.
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
-            if (! (eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
             {
                 eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
             }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer,  false);
+            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, false);
             eventData.Use();
         }
+
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
-        }    
+        }
+
         #endregion IMixedRealityInputHandler Methods
 
         #region IMixedRealitySourceStateHandler Methods
@@ -823,12 +904,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             EndTouch(eventData.SourceId);
             eventData.Use();
         }
+
         #endregion IMixedRealitySourceStateHandler Methods
 
         #region Unused Methods
-        public void OnSourceDetected(SourceStateEventData eventData) { }   
+
+        public void OnSourceDetected(SourceStateEventData eventData) { }
+
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+
         #endregion Unused Methods
     }
 }

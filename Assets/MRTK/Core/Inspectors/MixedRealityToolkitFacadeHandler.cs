@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,13 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     /// <summary>
     /// Links service facade objects to active services.
     /// </summary>
+    /// <remarks>
+    /// This feature is is being deprecated in 2.5 and will be removed in a future release.
+    /// The code that remains will actively seek to remove existing facades in scenes to ensure that
+    /// developers that update to 2.5 will get their scenes cleaned up appropriately.
+    /// </remarks>
     [InitializeOnLoad]
     public static class MixedRealityToolkitFacadeHandler
     {
         private static readonly List<Transform> childrenToDelete = new List<Transform>();
-        private static MixedRealityToolkit previousActiveInstance;
-        private static short editorUpdateTicks;
-        private const short EditorUpdateTickInterval = 15;
 
         // While a scene save is occurring, facade creation is disabled
         // and currently present facades get deleted.
@@ -31,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 #else
             SceneView.onSceneGUIDelegate += OnSceneGUI;
 #endif
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-            EditorApplication.update += OnUpdate;
             EditorSceneManager.sceneSaving += OnSceneSaving;
             EditorSceneManager.sceneSaved += OnSceneSaved;
         }
@@ -42,28 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static void OnSceneGUI(SceneView sceneView)
         {
             UpdateServiceFacades();
-        }
-
-        private static void OnUpdate()
-        {
-            editorUpdateTicks++;
-            if (editorUpdateTicks > EditorUpdateTickInterval)
-            {
-                editorUpdateTicks = 0;
-                UpdateServiceFacades();
-            }
-        }
-
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnScriptsReloaded()
-        {
-            // If scripts were reloaded, clear everything and start over
-            CleanupCurrentFacades();
-        }
-
-        private static void OnPlayModeStateChanged(PlayModeStateChange state)
-        {
-            CleanupCurrentFacades();
         }
 
         private static void OnSceneSaving(Scene scene, string path)
@@ -85,29 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             {
                 DestroyAllChildren(toolkitInstance);
             }
-            previousActiveInstance = null;
-        }
-
-        private static HashSet<IMixedRealityService> GetAllServices()
-        {
-            HashSet<IMixedRealityService> serviceList = new HashSet<IMixedRealityService>(MixedRealityServiceRegistry.GetAllServices());
-
-            // These are core systems that are likely out-of-box services and known to have register DataProviders
-            // Search for any dataproviders that service facades can be created for
-            var dataProviderManagers = new IMixedRealityService[]{CoreServices.InputSystem, CoreServices.SpatialAwarenessSystem};
-            foreach (var system in dataProviderManagers)
-            {
-                var dataProviderAccess = system as IMixedRealityDataProviderAccess;
-                if (dataProviderAccess != null)
-                {
-                    foreach (var dataProvider in dataProviderAccess.GetDataProviders())
-                    {
-                        serviceList.Add(dataProvider);
-                    }
-                }
-            }
-
-            return serviceList;
         }
 
         private static void UpdateServiceFacades()
@@ -124,64 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             // Return early and clean up any facade instances
             if (!MixedRealityToolkit.IsInitialized ||
                 !MixedRealityToolkit.Instance.HasActiveProfile ||
+#pragma warning disable 0618
                 !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
+#pragma warning restore 0618
             {
                 DestroyFacades();
                 return;
             }
-
-            var mrtkTransform = MixedRealityToolkit.Instance.transform;
-            bool newMRTKActiveInstance = previousActiveInstance != null && MixedRealityToolkit.Instance != previousActiveInstance;
-
-            var serviceSet = GetAllServices();
-
-            // Update existing service facade GameObjects
-            for (int i = ServiceFacade.ActiveFacadeObjects.Count - 1; i >= 0; i--)
-            {
-                var facade = ServiceFacade.ActiveFacadeObjects[i];
-
-                // if this facade is no longer valid, remove item
-                if (facade == null)
-                {
-                    ServiceFacade.ActiveFacadeObjects.Remove(facade);
-                }
-                // If service facade is not part of the current service list,
-                // Remove from the list so that the facade is not-duply-created in the following serviceSet enumeration loop
-                else if (!serviceSet.Contains(facade.Service))
-                {
-                    ServiceFacade.ActiveFacadeObjects.Remove(facade);
-                    GameObjectExtensions.DestroyGameObject(facade.gameObject);
-                }
-                else
-                {
-                    // Else item is valid and exists in our list. Remove from list
-                    serviceSet.Remove(facade.Service);
-
-                    // Ensure valid facades are parented under the current MRTK active instance
-                    if (facade.transform.parent != mrtkTransform)
-                    {
-                        facade.transform.parent = mrtkTransform;
-                    }
-                }
-            }
-
-            // Remaining services need to be created and added into scene
-            foreach (var service in serviceSet)
-            {
-                // Find where we need to place service based on name ordering
-                int idx = 0;
-                for (; idx < mrtkTransform.childCount; idx++)
-                {
-                    if (mrtkTransform.GetChild(idx).name.CompareTo(service.GetType().Name) >= 0)
-                    {
-                        break;
-                    }
-                }
-
-                CreateFacade(mrtkTransform, service, idx);
-            }
-
-            previousActiveInstance = MixedRealityToolkit.Instance;
         }
 
         private static void DestroyFacades()
@@ -196,16 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             ServiceFacade.ActiveFacadeObjects.Clear();
-        }
-
-        private static void CreateFacade(Transform parent, IMixedRealityService service, int facadeIndex)
-        {
-            GameObject facadeObject = new GameObject();
-            facadeObject.transform.parent = parent;
-            facadeObject.transform.SetSiblingIndex(facadeIndex);
-
-            ServiceFacade facade = facadeObject.AddComponent<ServiceFacade>();
-            facade.SetService(service);
         }
 
         private static void DestroyAllChildren(MixedRealityToolkit instance)

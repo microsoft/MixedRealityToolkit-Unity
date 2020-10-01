@@ -28,14 +28,14 @@ MonoBehaviour:
     type: 3}
   gazeProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.GazeProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
-  useHeadGazeOverride: 1
+  useHeadGazeOverride: 0
   isEyeTrackingEnabled: 0
   pointerOptions:
   - controllerType: 1071
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: d5b94136462644c9873bb3347169ae7e,
       type: 3}
-  - controllerType: 47
+  - controllerType: 1071
     handedness: 7
     pointerPrefab: {fileID: 1196247974088106, guid: c4fd3c6fc7ff484eb434775066e7f327,
       type: 3}
@@ -53,7 +53,7 @@ MonoBehaviour:
       type: 3}
   - controllerType: 1024
     handedness: 7
-    pointerPrefab: {fileID: 1507865967819406, guid: 526b854247016cf47bc5c58e01d82407,
+    pointerPrefab: {fileID: 1507865967819406, guid: c2fde7a8938065b459cff79b8ed89393,
       type: 3}
   - controllerType: 2048
     handedness: 7

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Creates receiver that raises OnHold events
         /// </summary>
-        public InteractableOnHoldReceiver(UnityEvent ev): base(ev, "OnHold") { }
+        public InteractableOnHoldReceiver(UnityEvent ev) : base(ev, "OnHold") { }
 
         /// <summary>
         /// Creates receiver that raises OnHold events
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 hasDown = true;
                 clickTimer = 0;
             }
-            else if(state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value < 1)
+            else if (state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value < 1)
             {
                 hasDown = false;
             }

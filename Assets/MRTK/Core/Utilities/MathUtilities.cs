@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public static float ScaleFromAngularSizeAndDistance(float angle, float distance)
         {
-            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
+            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);
             return scale;
         }
 
@@ -474,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return pos;
         }
-        
+
         /// <summary>
         /// Calculates the direction vector from a rotation.
         /// </summary>
@@ -493,8 +493,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>
         /// Field of view parameters are in degrees and plane distances are in meters 
         /// </remarks>
-        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, 
-            float verticalFOV, float horizontalFOV, 
+        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference,
+            float verticalFOV, float horizontalFOV,
             float minPlaneDistance, float maxPlaneDistance)
         {
             Vector3 deltaPos = testPosition - frameOfReference.position;
@@ -528,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>
         /// Field of view parameter is in degrees and distances are in meters.
         /// </remarks>
-        public static bool IsInFOVCone(Transform cone, 
+        public static bool IsInFOVCone(Transform cone,
             Vector3 point,
             float fieldOfView,
             float minDist = 0.05f,

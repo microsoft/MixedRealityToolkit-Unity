@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// True will release all managed resources, unmanaged resources are always released.
         /// </param>
         protected virtual void Dispose(bool disposing) { }
-    
+
         #endregion IDisposable Implementation
     }
 }

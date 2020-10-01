@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using UnityEngine;
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                 }
 
-                // Multiply the initial border width by the amount need to maintain it's value at the new scale.
+                // Multiply the initial border width by the amount need to maintain its value at the new scale.
                 var scalePercentage = minScale / initialScale[minAxis];
 
                 if (scalePercentage.Equals(0.0f))

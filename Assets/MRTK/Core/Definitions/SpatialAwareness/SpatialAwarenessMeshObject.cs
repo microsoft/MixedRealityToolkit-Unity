@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -54,7 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 }
             };
 
-            newMesh.GameObject.transform.parent = (meshParent != null) ? meshParent.transform : null;
+            /// Preserve local transform when attaching to parent.
+            newMesh.GameObject.transform.SetParent(meshParent != null ? meshParent.transform : null, false);
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;

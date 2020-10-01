@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using TMPro;
 using UnityEngine;
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField, Tooltip("Optional texture used for texture icon. This will be set by configuration actions.")]
         private Texture iconQuadTexture = null;
         // Disable 'assigned but never used' errors to avoid errors related to editor-only fields.
-        #pragma warning disable CS0414
+#pragma warning disable CS0414
         [SerializeField, Tooltip("The default material used by quad button icons. Used to detect legacy custom buttons.")]
         private Material defaultButtonQuadMaterial = null;
 
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ButtonIconSet iconSet = null;
         [SerializeField, Tooltip("The default icon set.")]
         private ButtonIconSet defaultIconSet = null;
-        #pragma warning restore CS0414
+#pragma warning restore CS0414
 
         private MaterialPropertyBlock iconTexturePropertyBlock;
 
@@ -433,7 +433,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static readonly string generatedIconSetName = "CustomIconSet";
         private static readonly string customIconSetsFolderName = "CustomIconSets";
         private static readonly string customIconSetCreatedMessage = "A new icon set has been created to hold your button's custom icons. This icon set will be used by your button's ButtonConfigHelper component. It has been saved to:\n\n{0}";
-        
+
         /// <summary>
         /// Returns true if the button is using a custom icon material.
         /// </summary>

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 return FilenameToUse;
             }
-            
+
             return String.Format("{0}-{1}", sessionDescr, UserName);
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 return str.Substring(0, maxLength);
             }
         }
-        
+
         public static string GetStringFormat(object[] data)
         {
             string strFormat = "";
@@ -102,9 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             strFormat += ("{" + (data.Length - 1) + "}");
             return strFormat;
         }
-        
+
         public void UpdateLog(string inputType, string inputStatus, EyeTrackingTarget intendedTarget)
-        {            
+        {
             if ((Instance != null) && (isLogging))
             {
                 if (logStructure != null)

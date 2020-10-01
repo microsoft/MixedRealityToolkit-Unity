@@ -1,8 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -26,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Reference to child text element.
         /// </summary>
-        private Text m_Text;
+        private TextMeshProUGUI m_Text;
 
         /// <summary>
         /// Reference to the GameObject's button component.
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void Start()
         {
-            m_Text = gameObject.GetComponentInChildren<Text>();
+            m_Text = gameObject.GetComponentInChildren<TextMeshProUGUI>();
             m_Text.text = Value;
 
             m_Button.onClick.RemoveAllListeners();

@@ -1,0 +1,14 @@
+# Create UPM packages for public OFFICIAL release
+
+variables:
+- template: config/settings.yml
+
+jobs:
+- job: UPMPublicRelease
+  timeoutInMinutes: 30
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: templates/tasks/upmpackages.yml
+    parameters:
+      excludeBuildNumber: 1

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using UnityEngine;
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected override void OnEnable()
         {
-            if(ParentTransform == null)
+            if (ParentTransform == null)
             {
                 ParentTransform = transform;
             }
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (state != CursorStateEnum.Contextual)
             {
                 // Hide all children first
-                for(int i = 0; i < ParentTransform.childCount; i++)
+                for (int i = 0; i < ParentTransform.childCount; i++)
                 {
                     ParentTransform.GetChild(i).gameObject.SetActive(false);
                 }

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
@@ -118,9 +118,32 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+
+        #region Audio Management
+        [Header("Audio management")]
+        [SerializeField]
+        private AudioSource pointerAudioSource = null;
+
+        [SerializeField]
+        private AudioClip teleportRequestedClip = null;
+
+        [SerializeField]
+        private AudioClip teleportCompletedClip = null;
+        #endregion
+
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            // Disable renderers so that they don't display before having been processed (which manifests as a flash at the origin).
+            var renderers = GetComponents<Renderer>();
+            if (renderers != null)
+            {
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = false;
+                }
+            }
 
             if (gravityDistorter == null)
             {
@@ -257,6 +280,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
                 }
 
+                if (currentInputPosition != Vector2.zero && Controller != null)
+                {
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+                }
+
                 // Use the results from the last update to set our NavigationResult
                 float clearWorldLength = 0f;
                 TeleportSurfaceResult = TeleportSurfaceResult.None;
@@ -323,6 +351,18 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+            if (gameObject == null) return;
+
+            if (TeleportHotSpot != null)
+            {
+                CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                TeleportHotSpot = null;
+            }
+        }
+
         #endregion IMixedRealityPointer Implementation
 
         #region IMixedRealityInputHandler Implementation
@@ -365,6 +405,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                             TeleportRequestRaised = true;
 
                             CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                            if (pointerAudioSource != null && teleportRequestedClip != null)
+                            {
+                                pointerAudioSource.PlayOneShot(teleportRequestedClip);
+                            }
                         }
                         else if (canMove)
                         {
@@ -415,6 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 }
                 else
                 {
+                    canTeleport = TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot;
                     if (!canTeleport && !TeleportRequestRaised)
                     {
                         // Reset the move flag when the user stops moving the joystick
@@ -424,29 +469,24 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                     if (canTeleport)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
 
                         if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                             TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                         {
                             CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                            if (pointerAudioSource != null && teleportCompletedClip != null)
+                            {
+                                pointerAudioSource.PlayOneShot(teleportCompletedClip);
+                            }
                         }
                     }
 
                     if (TeleportRequestRaised)
                     {
-                        canTeleport = false;
                         TeleportRequestRaised = false;
                         CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                     }
-                }
-
-                if (TeleportRequestRaised &&
-                    TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                    TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-                {
-                    canTeleport = true;
                 }
             }
         }
@@ -508,6 +548,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             using (OnTeleportCanceledPerfMarker.Auto())
             {
+                TeleportRequestRaised = false;
                 isTeleportRequestActive = false;
                 BaseCursor?.SetVisibility(false);
             }

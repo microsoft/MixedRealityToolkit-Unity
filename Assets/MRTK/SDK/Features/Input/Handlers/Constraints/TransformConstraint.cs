@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -12,19 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public abstract class TransformConstraint : MonoBehaviour
     {
         #region Properties
-
-        [SerializeField]
-        [Tooltip("Transform being constrained. Defaults to the object of the component.")]
-        private Transform targetTransform = null;
-
-        /// <summary>
-        /// Transform that we intend to apply constraints to
-        /// </summary>
-        public Transform TargetTransform
-        {
-            get => targetTransform;
-            set => targetTransform = value;
-        }
 
         [SerializeField]
         [EnumFlags]
@@ -54,30 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => proximityType = value;
         }
 
-        protected MixedRealityPose worldPoseOnManipulationStart;
+        protected MixedRealityTransform worldPoseOnManipulationStart;
 
         public abstract TransformFlags ConstraintType { get; }
 
         #endregion Properties
-
-        #region MonoBehaviour Methods
-
-        public virtual void Start()
-        {
-            if (TargetTransform == null)
-            {
-                TargetTransform = transform;
-            }
-        }
-
-        #endregion MonoBehaviour Methods
 
         #region Public Methods
 
         /// <summary>
         /// Intended to be called on manipulation started
         /// </summary>
-        public virtual void Initialize(MixedRealityPose worldPose)
+        public virtual void Initialize(MixedRealityTransform worldPose)
         {
             worldPoseOnManipulationStart = worldPose;
         }
@@ -87,6 +62,47 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public abstract void ApplyConstraint(ref MixedRealityTransform transform);
 
+
         #endregion Public Methods
+
+        #region MonoBeaviour
+        protected void OnEnable()
+        {
+            var managers = gameObject.GetComponents<ConstraintManager>();
+            foreach (var manager in managers)
+            {
+                manager.AutoRegisterConstraint(this);
+            }
+        }
+
+        protected void OnDisable()
+        {
+            var managers = gameObject.GetComponents<ConstraintManager>();
+            foreach (var manager in managers)
+            {
+                manager.AutoUnregisterConstraint(this);
+            }
+        }
+
+        #endregion
+
+        #region Deprecated
+
+        /// <summary>
+        /// Intended to be called on manipulation started
+        /// </summary>
+        [System.Obsolete("Deprecated: Pass MixedRealityTransform instead of MixedRealityPose.")]
+        public virtual void Initialize(MixedRealityPose worldPose)
+        {
+            Initialize(new MixedRealityTransform(worldPose.Position, worldPose.Rotation, Vector3.one));
+        }
+
+        /// <summary>	
+        /// Transform that we intend to apply constraints to	
+        /// </summary>	
+        [System.Obsolete("Deprecated: Get component transform instead.")]
+        public Transform TargetTransform { get; set; } = null;
+
+        #endregion
     }
 }

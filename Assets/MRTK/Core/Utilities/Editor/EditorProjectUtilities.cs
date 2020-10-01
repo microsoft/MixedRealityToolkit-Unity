@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using System.IO;
@@ -12,13 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public static class EditorProjectUtilities
     {
+        private const string SessionStateKey = "EditorProjectUtilitiesSessionStateKey";
+
         /// <summary>
         /// Static constructor that allows for executing code on project load.
         /// </summary>
         static EditorProjectUtilities()
         {
-            CheckMinimumEditorVersion();
-            ApplyARFoundationUWPCompileFix();
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (UpdateAsmDef) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                CheckMinimumEditorVersion();
+                ApplyARFoundationUWPCompileFix();
+                MixedRealityToolkitPreserveSettings.EnsureLinkXml();
+            }
         }
 
         /// <summary>
@@ -229,19 +240,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string fileName)
         {
             DirectoryInfo[] folders = root.GetDirectories(folderName);
-            if (folders.Length == 0) 
+            if (folders.Length == 0)
             {
-                return null; 
+                return null;
             }
-            if (folders.Length > 1) 
+            if (folders.Length > 1)
             {
                 Debug.LogWarning($"Too many instances of the {folderName} pattern, using the first one found.");
             }
 
             folders = folders[0].GetDirectories("Runtime");
-            if (folders.Length == 0) 
+            if (folders.Length == 0)
             {
-                return null; 
+                return null;
             }
 
             FileInfo[] files = folders[0].GetFiles(fileName);

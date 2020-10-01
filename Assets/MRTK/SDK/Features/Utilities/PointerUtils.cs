@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="inputType">Input type of pointer</param>
         /// <param name="endPoint">Output point position</param>
         /// <returns>True if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
-        public static bool TryGetPointerEndpoint<T>(Handedness handedness, InputSourceType inputType, out Vector3 endPoint) where T: IMixedRealityPointer
+        public static bool TryGetPointerEndpoint<T>(Handedness handedness, InputSourceType inputType, out Vector3 endPoint) where T : IMixedRealityPointer
         {
             foreach (var pointer in GetPointers<IMixedRealityPointer>(handedness, inputType))
             {

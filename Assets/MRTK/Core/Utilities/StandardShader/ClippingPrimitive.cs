@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Rendering;
@@ -79,6 +79,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private int clippingSideID;
         private CameraEventRouter cameraMethods;
 
+        private bool isDirty;
+        /// <summary>
+        /// Keeping track of any field, property or transformation changes to optimize material property block setting.
+        /// </summary>
+        public bool IsDirty
+        {
+            get => isDirty;
+            set => isDirty = value;
+        }
+
         /// <summary>
         /// Adds a renderer to the list of objects this clipping primitive clips.
         /// </summary>
@@ -93,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), gameObject.activeInHierarchy);
+                IsDirty = true;
             }
         }
 
@@ -234,20 +245,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (var i = 0; i < renderers.Count; ++i)
+            CheckTransformChange();
+
+            for (var i = renderers.Count - 1; i >= 0; --i)
             {
                 var _renderer = renderers[i];
 
                 if (_renderer == null)
                 {
+                    renderers.RemoveAt(i);
                     continue;
                 }
 
-                _renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
-                UpdateShaderProperties(materialPropertyBlock);
-                _renderer.SetPropertyBlock(materialPropertyBlock);
+                if (IsDirty)
+                {
+                    _renderer.GetPropertyBlock(materialPropertyBlock);
+                    materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
+                    UpdateShaderProperties(materialPropertyBlock);
+                    _renderer.SetPropertyBlock(materialPropertyBlock);
+                }              
             }
+            
+            IsDirty = false;
         }
 
         protected abstract void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock);
@@ -292,6 +311,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     material.DisableKeyword(Keyword);
                 }
             }
+        }
+
+        private void CheckTransformChange()
+        {
+            if (transform.hasChanged)
+            {
+                IsDirty = true;
+                transform.hasChanged = false;
+            }          
         }
     }
 }

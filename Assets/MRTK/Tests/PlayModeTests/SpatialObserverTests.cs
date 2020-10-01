@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Test class that validates observers start and stop based on right configuration in editor. 
     /// </summary>
-    public class SpatialObserverTests
+    public class SpatialObserverTests : BasePlayModeTests
     {
         // Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset
         private const string TestSpatialAwarenessSystemProfileGuid = "c992bdb3ac45cd44d856b0198a3ee85d";

@@ -4,13 +4,15 @@ XR SDK is Unity's [new XR pipeline in Unity 2019.3 and beyond](https://blogs.uni
 
 ## Prerequisites
 
-To get started with the Mixed Reality Toolkit, follow [the provided steps](GettingStartedWithTheMRTK.md) to add MRTK to a project.
+To get started with the Mixed Reality Toolkit, follow [the provided steps](WelcomeToMRTK.md) to add MRTK to a project.
 
 ## Add XR SDK to a Unity project
 
-For MRTK 2.3, Windows Mixed Reality is supported on XR SDK.
+Windows Mixed Reality and Oculus are supported on XR SDK.
 
 ### Required in Unity
+
+#### Windows Mixed Reality
 
 1. Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following all successfully installed:
    1. XR Plugin Management
@@ -20,6 +22,7 @@ For MRTK 2.3, Windows Mixed Reality is supported on XR SDK.
 1. Click on the XR Plug-in Management tab in the Project Settings window.
 1. Go to the Universal Windows Platform settings and ensure Windows Mixed Reality is checked under Plug-in Providers.
 1. Ensure that Initialize XR on Startup is checked.
+1. (**_Required for in-editor HoloLens Remoting, otherwise optional_**) Go to the Standalone settings and ensure Windows Mixed Reality is checked under Plug-in Providers. Also ensure that Initialize XR on Startup is checked.
 1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.
 
 ![Plugin management](Images/XRSDK/PluginManagement.png)

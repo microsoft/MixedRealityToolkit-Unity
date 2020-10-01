@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -35,10 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private GameObject overlapRect;
 
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
-        [SetUp]
-        public override void Setup()
+        [UnitySetUp]
+        public override IEnumerator Setup()
         {
-            base.Setup();
+            yield return base.Setup();
 
             float centerZ = 2.0f;
             float scale = 0.2f;
@@ -52,11 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var grabbable = cube.AddComponent<NearInteractionGrabbable>();
             Assert.IsNotNull(grabbable);
-            
+
             float overlapCenterZ = centerZ;
             overlapRect = GameObject.CreatePrimitive(PrimitiveType.Cube);
             overlapRect.transform.localPosition = new Vector3(0, 0, overlapCenterZ);
-            overlapRect.transform.localScale = new Vector3(1.5f,1.5f,1f) * scale;
+            overlapRect.transform.localScale = new Vector3(1.5f, 1.5f, 1f) * scale;
             overlapRect.SetActive(false);
 
             var overlapCollider = overlapRect.GetComponentInChildren<Collider>();
@@ -64,13 +64,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var overlapGrabbable = overlapRect.AddComponent<NearInteractionGrabbable>();
             Assert.IsNotNull(overlapGrabbable);
+            yield return null;
         }
 
-        [TearDown]
-        public override void TearDown()
+        [UnityTearDown]
+        public override IEnumerator TearDown()
         {
             GameObject.Destroy(cube);
-            base.TearDown();
+            return base.TearDown();
         }
 
         /// <summary>
@@ -178,8 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator SpherePointerDistances()
         {
-            Vector3 margin = new Vector3(0, 0, 0.001f);
-
             var rightHand = new TestHand(Handedness.Right);
 
             // Show hand far enough from the test collider
@@ -188,6 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             var pointer = rightHand.GetPointer<SpherePointer>();
+            pointer.NearObjectSectorAngle = 360.0f;
+            pointer.PullbackDistance = 0.0f;
+
+            Vector3 margin = new Vector3(0, 0, 0.001f);
+            Vector3 nearObjectMargin = new Vector3(0, 0, 0.001f + (pointer.NearObjectSmoothingFactor + 1) * pointer.NearObjectRadius);
             Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
             Vector3 nearObjectPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.NearObjectRadius);
             Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
@@ -196,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(pointer.IsInteractionEnabled);
 
             // Move hand closer to the collider to enable IsNearObject
-            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
@@ -219,7 +223,151 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
             Assert.True(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
+            yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Testing that we have more leeway when the pointer's nearObject smoothing factor is set
+            // Move hand back out to disable IsNearObject
+            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
             yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            yield return rightHand.MoveTo(idlePos, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+        }
+
+        /// <summary>
+        /// Verifies that the IsNearObject and IsInteractionEnabled get set 
+        /// at the correct times as a hand approaches a grabbable object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SpherePointerPullbackDistance()
+        {
+            // Approximate distance covered by the pullback distance;
+            Vector3 pullbackDelta = new Vector3(0, 0, 0.08f);
+
+            var rightHand = new TestHand(Handedness.Right);
+
+            // Show hand far enough from the test collider
+            Vector3 idlePos = new Vector3(0.05f, 0, 1.0f);
+            yield return rightHand.Show(idlePos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
+            var pointer = rightHand.GetPointer<SpherePointer>();
+            pointer.NearObjectSectorAngle = 360.0f;
+            pointer.PullbackDistance = 0.08f;
+            pointer.TryGetNearGraspPoint(out Vector3 graspPoint);
+            // Orient the right hand so the grab axis is approximately aligned with the z axis
+
+            Vector3 margin = new Vector3(0, 0, 0.001f);
+            Vector3 nearObjectMargin = new Vector3(0, 0, 0.001f + (pointer.NearObjectSmoothingFactor + 1) * pointer.NearObjectRadius);
+
+            Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
+            Vector3 nearObjectPos = new Vector3(0.05f, 0, colliderSurfaceZ - (pointer.NearObjectRadius));
+            Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
+
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand closer to the collider to enable IsNearObject
+            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            yield return rightHand.MoveTo(nearObjectPos + margin + pullbackDelta, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+            
+            // Move hand back out to disable IsNearObject
+            yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            yield return rightHand.MoveTo(idlePos, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+        }
+
+        /// <summary>
+        /// Verifies that the IsNearObject and IsInteractionEnabled get set 
+        /// at the correct times as a hand approaches a grabbable object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SpherePointerSectorAngle()
+        {
+            var rightHand = new TestHand(Handedness.Right);
+
+            // Show hand far enough from the test collider
+            Vector3 idlePos = new Vector3(0.05f, 0, 1.0f);
+            yield return rightHand.Show(idlePos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
+            var pointer = rightHand.GetPointer<SpherePointer>();
+            pointer.NearObjectSectorAngle = 180.0f;
+            pointer.PullbackDistance = 0.0f;
+            // Orient the right hand so the grab axis is approximately aligned with the z axis
+
+            Vector3 margin = new Vector3(0, 0, 0.001f);
+            Vector3 nearObjectMargin = new Vector3(0, 0, 0.001f + (pointer.NearObjectSmoothingFactor + 1) * pointer.NearObjectRadius);
+
+            Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
+            Vector3 nearObjectPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.NearObjectRadius);
+            Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
+
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand closer to the collider to enable IsNearObject
+            yield return rightHand.MoveTo(nearObjectPos - margin, numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+            
+            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Rotate hand but maintain IsNearObject
+            yield return rightHand.SetRotation(Quaternion.Euler(0, 90, 0), numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Rotate hand 200 degrees and lose IsNearObject
+            yield return rightHand.SetRotation(Quaternion.Euler(0, 200, 0), numFramesPerMove);
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Rotate hand back to original orientation
+            yield return rightHand.SetRotation(Quaternion.Euler(0, 0, 0), numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand closer to the collider to enable IsInteractionEnabled
+            yield return rightHand.MoveTo(interactionEnabledPos - margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+            yield return rightHand.MoveTo(interactionEnabledPos + margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+
+            // Move hand back out to disable IsInteractionEnabled
+            yield return rightHand.MoveTo(interactionEnabledPos - margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand back out to disable IsNearObject
+            yield return rightHand.MoveTo(nearObjectPos + margin, numFramesPerMove);
+            Assert.True(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+            yield return rightHand.MoveTo(nearObjectPos - nearObjectMargin, numFramesPerMove);
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 

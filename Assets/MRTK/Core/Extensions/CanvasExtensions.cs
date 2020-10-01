@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="hitChildObject">The child object that was hit or the canvas itself if it has no active children that were within the hit range.</param>
         public static bool Raycast(this Canvas canvas, Vector3 rayOrigin, Vector3 rayDirection, out float distance, out Vector3 hitPoint, out GameObject hitChildObject)
         {
-            hitChildObject =null;
+            hitChildObject = null;
             Plane plane = canvas.GetPlane();
             Ray ray = new Ray(rayOrigin, rayDirection);
 
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit
                     {
                         hitChildObject = canvas.gameObject;
                     }
-                    
+
                     return true;
                 }
             }
@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="worldPoint">The world point</param>
         /// <param name="recursive">Indicates if the check should be done recursively</param>
         /// <param name="shouldReturnActive">If true, will only check children that are active, otherwise it will check all children.</param>
-        /// <param name="shouldReturnRaycastable">If true, will only check children that if they have a graphic and have it's member raycastTarget set to true, otherwise will ignore the raycastTarget value. Will still allow children to be checked that do not have a graphic component.</param>
+        /// <param name="shouldReturnRaycastable">If true, will only check children that if they have a graphic and have its member raycastTarget set to true, otherwise will ignore the raycastTarget value. Will still allow children to be checked that do not have a graphic component.</param>
         public static RectTransform GetChildRectTransformAtPoint(this RectTransform rectTransformParent, Vector3 worldPoint, bool recursive, bool shouldReturnActive, bool shouldReturnRaycastable)
         {
             Vector3[] localCorners = new Vector3[4];
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit
             RectTransform rectTransform;
             bool shouldRaycast = false;
 
-            for (int i=rectTransformParent.childCount-1; i >= 0; i--)
+            for (int i = rectTransformParent.childCount - 1; i >= 0; i--)
             {
                 rectTransform = rectTransformParent.GetChild(i).GetComponent<RectTransform>();
                 Graphic graphic = rectTransform.GetComponent<Graphic>();
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     rectTransform.GetLocalCorners(localCorners);
                     childLocalPoint = rectTransform.InverseTransformPoint(worldPoint);
-                    
+
                     if (recursive)
                     {
                         RectTransform childRect = GetChildRectTransformAtPoint(rectTransform, worldPoint, recursive, shouldReturnActive, shouldReturnRaycastable);

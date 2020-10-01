@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             {
                 Debug.LogFormat("New draw point at ( {0}; {1} )", posUV.x, posUV.y);
                 MyDrawTexture.SetPixel(
-                    (int)(posUV.x * MyDrawTexture.width), 
+                    (int)(posUV.x * MyDrawTexture.width),
                     (int)(posUV.y * MyDrawTexture.height),
                     col);
 
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     {
                         for (int iy = 0; iy < MyDrawTexture.height; iy++)
                         {
-                            MyDrawTexture.SetPixel((int)(ix), (int)(iy), new Color(0, 0, 0, 0));   
+                            MyDrawTexture.SetPixel((int)(ix), (int)(iy), new Color(0, 0, 0, 0));
                         }
                     }
                     neverDrawnOn = false;
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                         Vector2 currPnt = new Vector2(tx, ty);
 
                         float distCenterToCurrPnt = Vector2.Distance(center, currPnt);
-                        
+
                         if (distCenterToCurrPnt <= dynamicRadius / 2)
                         {
                             float normalizedDist = (distCenterToCurrPnt / dynamicRadius / 2); // [0.0, 1.0]
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                             Color baseColor = MyDrawTexture.GetPixel((int)tx, (int)ty);
                             float delta = intensity * (1 - Mathf.Abs(localNormalizedInterest));
-           
+
                             float normalizedInterest = baseColor.a + delta;
                             Color col = Color.red;
                             // Get color from  given heatmap ramp
@@ -230,24 +230,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             col = null;
 
-            
+
             float spread = drawBrushSize;
             float amplitude = drawIntensity;
             float distCenterToCurrPnt = Vector2.Distance(origPivot, currPnt) / spread;
 
             float B = 2f;
             float scaledInterest = 1 / (1 + Mathf.Pow(Mathf.Epsilon, -(B * distCenterToCurrPnt)));
-            float delta = scaledInterest / amplitude ;
+            float delta = scaledInterest / amplitude;
             if (delta < minThreshDeltaHeatMap)
                 return false;
 
             Color baseColor = MyDrawTexture.GetPixel((int)currPnt.x, (int)currPnt.y);
             float normalizedInterest = Mathf.Clamp(baseColor.a + delta, 0, 1);
-            
+
             // Get color from given heatmap ramp
             if (HeatmapLookUpTable != null)
             {
-                col = HeatmapLookUpTable.GetPixel((int)(normalizedInterest * (HeatmapLookUpTable.width-1)), 0);
+                col = HeatmapLookUpTable.GetPixel((int)(normalizedInterest * (HeatmapLookUpTable.width - 1)), 0);
                 col = new Color(col.Value.r, col.Value.g, col.Value.b, normalizedInterest);
             }
             else

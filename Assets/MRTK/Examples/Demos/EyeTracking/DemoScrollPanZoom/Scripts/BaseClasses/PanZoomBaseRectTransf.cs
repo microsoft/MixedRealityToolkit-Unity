@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Vector2 transfCursorPos = cursorPos - new Vector2(0.5f, 0.5f);
             pivot = transfCursorPos * navRectTransf.rect.size;
             offsetRate_Zoom = (oldScale - newScale) * pivot;
-            
+
             // Update the texture's scale to the computed value.
             scale = newScale;
         }
@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     // Rotate around the x axis
                     transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.right) * transfHitPnt;
-                    
+
                     // Normalize the transformed hit point to as UV coordinates are in [0,1].
                     float uvx = 1 - (Mathf.Clamp(transfHitPnt.x, -halfsize.x, halfsize.x) + halfsize.x) / (2 * halfsize.x);
                     float uvy = (Mathf.Clamp(transfHitPnt.y, -halfsize.y, halfsize.y) + halfsize.y) / (2 * halfsize.y);

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class NearInteractionTouchableTests
     {
-        [SetUp]
-        public void Setup()
+        [UnitySetUp]
+        public IEnumerator Setup()
         {
             PlayModeTestUtilities.Setup();
             PlayModeTestUtilities.EnsureInputModule();
@@ -44,12 +44,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             pokeMaterial = new Material(shader);
             pokeMaterial.color = Color.green;
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         /// <summary>
@@ -190,14 +192,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return testHand.MoveTo(backPosition);              
+                yield return testHand.MoveTo(backPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 1);
                 int dragEventCount = catcher.DragEventCount;
 
                 // No touch when moving at behind the plane
-                yield return testHand.MoveTo(rightPosition);              
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving behind plane");
@@ -247,12 +249,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return testHand.MoveTo(backPosition);              
+                yield return testHand.MoveTo(backPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
                 // No touch when moving at behind the plane
-                yield return testHand.MoveTo(rightPosition);              
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
@@ -276,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
-            
+
             yield return new WaitForFixedUpdate();
             yield return null;
 
@@ -452,9 +454,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
             yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim, 1);
 
-            for (int i = 0; i < PlayModeTestUtilities.HandMoveSteps; ++i)
+            for (int i = 0; i < PlayModeTestUtilities.ControllerMoveSteps; ++i)
             {
-                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.HandMoveSteps;
+                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.ControllerMoveSteps;
                 for (int j = 0; j < numTouchables; ++j)
                 {
                     Vector3 r = GetRandomPoint(j + 10);

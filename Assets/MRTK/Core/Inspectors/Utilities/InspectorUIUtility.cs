@@ -1,10 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -506,15 +508,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return show;
         }
 
-    /// <summary>
-    /// Draws a popup UI with PropertyField type features.
-    /// Displays prefab pending updates
-    /// </summary>
-    /// <param name="prop">serialized property corresponding to Enum</param>
-    /// <param name="label">label for property</param>
-    /// <param name="propValue">Current enum value for property</param>
-    /// <returns>New enum value after draw</returns>
-    public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
             return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
         }
@@ -590,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Get the index of a serialized array item based on it's name, pop-up field helper
+        /// Get the index of a serialized array item based on its name, pop-up field helper
         /// </summary>
         public static int GetOptionsIndex(SerializedProperty options, string selection)
         {
@@ -603,6 +605,162 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Draws the contents of a scriptable inline inside a foldout. Depending on if there's an actual scriptable
+        /// linked, the values will be greyed out or editable in case the scriptable is created inside the serialized object.
+        /// </summary>
+        static public bool DrawScriptableFoldout<T>(SerializedProperty scriptable, string description, bool isExpanded) where T : ScriptableObject
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, description, true, MixedRealityStylesUtility.BoldFoldoutStyle);
+            if (isExpanded)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    if (scriptable.objectReferenceValue == null)
+                    {
+                        // If there's no scriptable linked we're creating a local instance that allows to store a 
+                        // local version of the scriptable in the serialized object owning the scriptable property.
+                        scriptable.objectReferenceValue = ScriptableObject.CreateInstance<T>();
+                    }
+
+                    // We have currently 5 different states to display to the user:
+                    // 1. the scriptable is local to the object instance
+                    // 2. the scriptable is a linked nested scriptable inside of the currently displayed prefab
+                    // 3. the scriptable is a linked nested scriptable inside of another prefab
+                    // 4. the scriptable is a shared standalone asset
+                    // 5. the scriptable slot is empty but inside of a prefab asset which needs special handling as 
+                    // prefabs can only display linked or nested scriptables.
+
+                    // Depending on the type of link we show the user the scriptable configuration either:
+                    // case 1 &2: editable inlined 
+                    // case 3 & 4: greyed out readonly
+                    // case 5: only show the link
+
+                    // case 5 -> can't create and/or store the local scriptable above - show link
+                    bool isStoredAsset = (scriptable.objectReferenceValue == null) ? false : AssetDatabase.Contains(scriptable.objectReferenceValue);
+                    bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
+                    if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
+                    {
+                        EditorGUILayout.HelpBox("No scriptable " + scriptable.displayName + " linked to this prefab. Prefabs can't store " +
+                            "local versions of scriptables and need to be linked to a scriptable asset.", MessageType.Warning);
+                        EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Empty): "));
+                    }
+                    else
+                    {
+                        bool isNestedInCurrentPrefab = false;
+                        var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                        if (prefabStage != null)
+                        {
+                            var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                            isNestedInCurrentPrefab = (instancePath != "" && instancePath == prefabStage.prefabAssetPath);
+                        }
+                        
+                        
+                        if (isStoredAsset && !isNestedInCurrentPrefab)
+                        {
+                            // case 3 & 4 - greyed out drawer
+                            bool isMainAsset = AssetDatabase.IsMainAsset(scriptable.objectReferenceValue);
+                            var sharedAssetPath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
+                            if (isMainAsset)
+                            {
+                                EditorGUILayout.HelpBox("Editing a shared " + scriptable.displayName + ", located at " + sharedAssetPath, MessageType.Warning);
+                            }
+                            else
+                            {
+                                EditorGUILayout.HelpBox("Editing a nested " + scriptable.displayName + ", located inside of " + sharedAssetPath, MessageType.Warning);
+                            }
+                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (Shared asset): "));
+
+                            // In case there's a shared scriptable linked we're disabling the inlined scriptable properties 
+                            // (this will render them grayed out) so users won't accidentally modify the shared scriptable.
+                            GUI.enabled = false;
+                            DrawScriptableSubEditor(scriptable);
+                            GUI.enabled = true;
+                        }
+                        else
+                        {
+                            // case 1 & 2 - inline editable drawer
+                            if (isNestedInCurrentPrefab)
+                            {
+                                EditorGUILayout.HelpBox("Editing a nested version of " + scriptable.displayName + ".", MessageType.Info);
+                            }
+                            else
+                            {
+                                EditorGUILayout.HelpBox("Editing a local version of " + scriptable.displayName + ".", MessageType.Info);
+                            }
+                            EditorGUILayout.PropertyField(scriptable, new GUIContent(scriptable.displayName + " (local): "));
+                            DrawScriptableSubEditor(scriptable);
+                        }
+
+                        
+                    }
+                }
+            }
+
+            return isExpanded;
+        }
+
+        /// <summary>
+        /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed gameobject.
+        /// Adds a button for adding any of the component (or dervied types) and a follow button to highlight existing attached components.
+        /// </summary>
+        static public bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
+        {
+            isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
+
+            if (isExpanded)
+            { 
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add " + typeDescription), FocusType.Keyboard))
+                {
+                    // create the menu and add items to it
+                    GenericMenu menu = new GenericMenu();
+
+                    var type = typeof(T);
+                    var types = AppDomain.CurrentDomain.GetAssemblies()
+                                .SelectMany(s => s.GetLoadableTypes())
+                                .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract);
+
+                    foreach (var derivedType in types)
+                    {
+                        menu.AddItem(new GUIContent(derivedType.Name), false, t => gameObject.AddComponent((Type)t), derivedType);
+                    }
+
+                    menu.ShowAsContext();
+                }
+
+                var constraints = gameObject.GetComponents<T>();
+
+                foreach (var constraint in constraints)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    string constraintName = constraint.GetType().Name;
+                    EditorGUILayout.LabelField(constraintName);
+                    if (GUILayout.Button("Go to component"))
+                    {
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        EditorGUIUtility.ExitGUI();
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+
+            return isExpanded;
+        }
+
+
+        static private void DrawScriptableSubEditor(SerializedProperty scriptable)
+        {
+            if (scriptable.objectReferenceValue != null)
+            {
+                UnityEditor.Editor configEditor = UnityEditor.Editor.CreateEditor(scriptable.objectReferenceValue);
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                EditorGUILayout.Space();
+                configEditor.OnInspectorGUI();
+                EditorGUILayout.Space();
+                EditorGUILayout.EndVertical();
+            }
         }
     }
 }

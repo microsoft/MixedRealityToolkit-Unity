@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
@@ -10,7 +10,6 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -26,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         GameObject cube;
         Interactable interactable;
 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
             PlayModeTestUtilities.Setup();
 
@@ -41,17 +40,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
 
             interactable = cube.AddComponent<Interactable>();
-            
+
             KeyInputSystem.StartKeyInputStimulation();
+            yield return null;
         }
 
-        [TearDown]
-        public void TearDown()
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             KeyInputSystem.StopKeyInputSimulation();
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
-        
+
         [UnityTest]
         public IEnumerator InputSimulationHandsFreeInteraction()
         {
@@ -67,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // release the click on the cube
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
@@ -90,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Head gaze cursor should be visible");
 
             // Begin right hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightHandKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.ToggleRightControllerKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return null;
@@ -109,7 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             // Create grabbable cube
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = new Vector3(0, 0, 1.2f);
+            cube.transform.localScale = Vector3.one * 0.3f;
+            cube.transform.position = new Vector3(-0.2f, 0.2f, 0.6f);
             yield return null;
 
             // Grab pointer is near grabbable
@@ -136,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
 
             // Begin right hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return null;
@@ -169,11 +171,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             Assert.True(!iss.HandDataLeft.IsPinching);
 
             // End right hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
             // Make sure right hand is not tracked
             Assert.True(!iss.HandDataRight.IsTracked);
@@ -184,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Repeat with left hand
             // Begin left hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -218,11 +220,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
 
             // End left hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
             // Make sure left hand is not tracked
             Assert.True(!iss.HandDataRight.IsTracked);
@@ -233,8 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Lastly with 2 hands
             // Begin hand manipulation
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightHandManipulationKey);
-            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -268,12 +270,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
 
             // End hand manipulation
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightHandManipulationKey);
-            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftHandManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
             // Wait for the hand hide timeout to hide the hands
-            yield return new WaitForSeconds(iss.InputSimulationProfile.HandHideTimeout + 0.1f);
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
 
 
             // Make sure hands are not tracked
@@ -282,6 +284,416 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Check that gaze cursor is visible
             Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+        }
+
+        [UnityTest]
+        public IEnumerator InputSimulationRightMotionControllerButtonState()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            // Switch to motion controller
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+            TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
+
+            // Check that gaze cursor is initially visible
+            Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // Begin right motion controller manipulation
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure right motion controller is tracked
+            Assert.True(iss.MotionControllerDataRight.IsTracked);
+            Assert.True(!iss.MotionControllerDataLeft.IsTracked);
+
+            // Make sure gaze cursor is not visible
+            Assert.True(!CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // press trigger
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is selecting
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not selecting anymore
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+
+            // press grab
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is grabbing
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not grabbing anymore
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+
+            // press menu
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is pressing menu
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing menu anymore
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+
+            // press all three buttons
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is pressing three buttons
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing three buttons anymore
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            
+
+            // End right motion controller manipulation
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            // Wait for the motion controller hide timeout to hide the motion controllers
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
+
+            // Make sure right motion controller is not tracked
+            Assert.True(!iss.MotionControllerDataRight.IsTracked);
+            Assert.True(!iss.MotionControllerDataLeft.IsTracked);
+
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldHandSimMode;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator InputSimulationLeftMotionControllerButtonState()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            // Switch to motion controller
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+            TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
+
+            // Check that gaze cursor is initially visible
+            Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // Begin left motion controller manipulation
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure left motion controller is tracked
+            Assert.True(iss.MotionControllerDataLeft.IsTracked);
+            Assert.True(!iss.MotionControllerDataRight.IsTracked);
+
+            // Make sure gaze cursor is not visible
+            Assert.True(!CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // press trigger
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is selecting
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not selecting anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+
+            // press grab
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is grabbing
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not grabbing anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+
+            // press menu
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is pressing menu
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing menu anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // press all three buttons
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure correct motion controller is pressing three buttons
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing three buttons anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+
+            // End left motion controller manipulation
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            // Wait for the motion controller hide timeout to hide the motion controllers
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
+
+            // Make sure left motion controller is not tracked
+            Assert.True(!iss.MotionControllerDataLeft.IsTracked);
+            Assert.True(!iss.MotionControllerDataRight.IsTracked);
+
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldHandSimMode;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator InputSimulationBothMotionControllerButtonState()
+        {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            // Switch to motion controller
+            var oldHandSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+            TestUtilities.PlayspaceToOriginLookingForward();
+            yield return null;
+
+            // Check that gaze cursor is initially visible
+            Assert.True(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // Begin both motion controller manipulation
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure both motion controllers are tracked
+            Assert.True(iss.MotionControllerDataLeft.IsTracked);
+            Assert.True(iss.MotionControllerDataRight.IsTracked);
+
+            // Make sure gaze cursor is not visible
+            Assert.True(!CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
+
+            // press trigger
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure both motion controllers are selecting
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsSelecting);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not selecting anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+
+            // press grab
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure both motion controllers are grabbing
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not grabbing anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+
+            // press menu
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure both motion controllers are pressing menu
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing menu anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // press all three buttons
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.PressKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure both motion controllers are pressing three buttons
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+            // release the button
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerTriggerKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerGrabKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.MotionControllerMenuKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            yield return null;
+
+            // Make sure motion controllers are not pressing three buttons anymore
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsSelecting);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsGrabbing);
+            Assert.True(!iss.MotionControllerDataLeft.ButtonState.IsPressingMenu);
+            Assert.True(!iss.MotionControllerDataRight.ButtonState.IsPressingMenu);
+
+
+            // End both motion controller manipulation
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
+            KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.RightControllerManipulationKey);
+            yield return null;
+            KeyInputSystem.AdvanceSimulation();
+            // Wait for the motion controller hide timeout to hide the motion controllers
+            yield return new WaitForSeconds(iss.InputSimulationProfile.ControllerHideTimeout + 0.1f);
+
+            // Make sure both motion controllers are not tracked
+            Assert.True(!iss.MotionControllerDataLeft.IsTracked);
+            Assert.True(!iss.MotionControllerDataRight.IsTracked);
+
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldHandSimMode;
+            yield return null;
         }
     }
 }

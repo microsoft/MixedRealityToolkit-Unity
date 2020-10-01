@@ -1,0 +1,22 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Tracking",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Unity.XR.ARSubsystems"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.arsubsystems",
+            "expression": "",
+            "define": "ARSUBSYSTEMS_ENABLED"
+        }
+    ],
+    "noEngineReferences": false
+}

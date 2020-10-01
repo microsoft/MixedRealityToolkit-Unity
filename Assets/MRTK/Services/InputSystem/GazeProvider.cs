@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -245,9 +245,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Update gaze info from stabilizer
                         if (stabilizer != null)
                         {
-                            stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
-                            newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
-                            newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
+                            stabilizer.UpdateStability(MixedRealityPlayspace.InverseTransformPoint(newGazeOrigin), MixedRealityPlayspace.InverseTransformDirection(newGazeNormal));
+                            newGazeOrigin = MixedRealityPlayspace.TransformPoint(stabilizer.StablePosition);
+                            newGazeNormal = MixedRealityPlayspace.TransformDirection(stabilizer.StableRay.direction);
                         }
                     }
 
@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <inheritdoc />
             public override Quaternion Rotation => gazeTransform.rotation;
-            
+
             /// <inheritdoc />
             public override void Reset()
             {
@@ -440,6 +440,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        private void OnDestroy()
+        {
+            // Because GazeCursor is not derived from UnityEngine.Object, we need to manually perform null check against Unity's null
+            if (GazeCursor != null && !GazeCursor.Equals(null))
+            {
+                Destroy(GazeCursor.GameObjectReference);
+            }
+        }
+
         #endregion MonoBehaviour Implementation
 
         #region InputSystemGlobalHandlerListener Implementation
@@ -518,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetectec");
+        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetected");
 
         private async void RaiseSourceDetected()
         {

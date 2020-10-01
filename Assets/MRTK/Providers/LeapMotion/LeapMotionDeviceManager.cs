@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
 
-#region IMixedRealityCapabilityCheck Implementation
+        #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         }
 
 
-#endregion IMixedRealityCapabilityCheck Implementation
+        #endregion IMixedRealityCapabilityCheck Implementation
 #if LEAPMOTIONCORE_PRESENT
 
         /// <summary>
@@ -105,6 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// </summary>
         private Vector3 leapHandsOffset => SettingsProfile.LeapControllerOffset;
 
+        // If the Leap Controller Orientation is the Headset, controller offset settings will be exposed in the inspector while using the LeapXRServiceProvider
+        private LeapVRDeviceOffsetMode leapVRDeviceOffsetMode => SettingsProfile.LeapVRDeviceOffsetMode;
+
         /// <summary>
         /// Dictionary to capture all active leap motion hands detected.
         /// </summary>
@@ -125,6 +128,34 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
                 // The LeapXRServiceProvider can only be attached to a camera 
                 LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
+
+                LeapXRServiceProvider leapXRServiceProvider = LeapMotionServiceProvider as LeapXRServiceProvider;
+
+                // Allow modification of VR specific offset modes if the leapControllerOrientation is Headset
+                // These settings mirror the modification of the properties exposed in the inspector within the LeapXRServiceProvider attached
+                // to the main camera
+                if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.ManualHeadOffset)
+                {
+                    // Change the offset mode before setting the properties 
+                    leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.ManualHeadOffset;
+
+                    leapXRServiceProvider.deviceOffsetYAxis = SettingsProfile.LeapVRDeviceOffsetY;
+                    leapXRServiceProvider.deviceOffsetZAxis = SettingsProfile.LeapVRDeviceOffsetZ;
+                    leapXRServiceProvider.deviceTiltXAxis = SettingsProfile.LeapVRDeviceOffsetTiltX;
+                }
+                else if (leapVRDeviceOffsetMode == LeapVRDeviceOffsetMode.Transform)
+                {
+                    if (SettingsProfile.LeapVRDeviceOrigin != null)
+                    {
+                        leapXRServiceProvider.deviceOffsetMode = LeapXRServiceProvider.DeviceOffsetMode.Transform;
+
+                        leapXRServiceProvider.deviceOrigin = SettingsProfile.LeapVRDeviceOrigin;
+                    }
+                    else
+                    {
+                        Debug.LogError("The Leap VR Device Origin Transform was not set in the LeapMotionDeviceManagerProfile and is null.");
+                    }
+                }
             }
 
             if (leapControllerOrientation == LeapControllerOrientation.Desk)
@@ -236,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         {
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource);
+                CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource, trackedHands[handedness]);
             }
 
             // Disable the pointers if the hand is not tracking

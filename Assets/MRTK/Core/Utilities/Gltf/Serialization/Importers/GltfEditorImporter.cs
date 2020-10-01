@@ -1,11 +1,16 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
+
+#if UNITY_2020_2_OR_NEWER
+using UnityEditor.AssetImporters;
+#else
+using UnityEditor.Experimental.AssetImporters;
+#endif // UNITY_2020_2_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
 {
@@ -90,17 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
             {
                 foreach (GltfMaterial gltfMaterial in gltfAsset.GltfObject.materials)
                 {
-                    if (context.assetPath.EndsWith(".glb"))
-                    {
-                        context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
-                    }
-                    else
-                    {
-                        var relativePath = Path.GetFullPath(Path.GetDirectoryName(context.assetPath)).Replace(Path.GetFullPath(Application.dataPath), "Assets");
-                        relativePath = Path.Combine(relativePath, $"{gltfMaterial.name}.mat");
-                        AssetDatabase.CreateAsset(gltfMaterial.Material, relativePath);
-                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(relativePath);
-                    }
+                    context.AddObjectToAsset(gltfMaterial.name, gltfMaterial.Material);
                 }
             }
         }

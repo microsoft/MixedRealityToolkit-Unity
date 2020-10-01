@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -432,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     AssetDatabase.CreateFolder("Assets", DefaultGeneratedFolderName);
                 }
-                
+
                 AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
 
@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 errors.Add("Name must end with 'Service' suffix.");
             }
-            
+
             if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
             {
                 errors.Add("Name must not contain illegal characters.");

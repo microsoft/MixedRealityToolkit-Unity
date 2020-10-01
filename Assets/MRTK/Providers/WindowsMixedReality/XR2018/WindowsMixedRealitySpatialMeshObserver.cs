@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -409,6 +409,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 {
                     Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
                     Pose anchorPose = new Pose(transform.position, transform.rotation);
+                    /// Propagate any global scale on the playspace into the position.
+                    Vector3 playspaceScale = MixedRealityPlayspace.Transform.lossyScale;
+                    anchorPose.position *= playspaceScale.x; 
                     Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
                     transform.parent.position = parentPose.position;
                     transform.parent.rotation = parentPose.rotation;
@@ -653,19 +656,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 meshObject.Id = cookedData.id.handle;
                 outstandingMeshObject = null;
 
-                // Apply the appropriate material to the mesh.
-                SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
-                if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
-                {
-                    meshObject.Renderer.enabled = true;
-                    meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
-                        VisibleMaterial :
-                        OcclusionMaterial;
-                }
-                else
-                {
-                    meshObject.Renderer.enabled = false;
-                }
+                // Check to see if this is a new or updated mesh.
+                bool isMeshUpdate = meshes.ContainsKey(meshObject.Id);
+
+                // We presume that if the display option is not occlusion, that we should 
+                // default to the visible material. 
+                // Note: We check explicitly for a display option of none later in this method.
+                Material material = (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion) ?
+                    OcclusionMaterial : VisibleMaterial;
+
+                // If this is a mesh update, we want to preserve the mesh's previous material.
+                material = isMeshUpdate ? meshes[meshObject.Id].Renderer.sharedMaterial : material;
+
+                // Apply the appropriate material.
+                meshObject.Renderer.sharedMaterial = material;
 
                 // Recalculate the mesh normals if requested.
                 if (RecalculateNormals)
@@ -673,22 +677,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     meshObject.Filter.sharedMesh.RecalculateNormals();
                 }
 
+                // Check to see if the display option is set to none. If so, we disable
+                // the renderer.
+                meshObject.Renderer.enabled = (DisplayOption != SpatialAwarenessMeshDisplayOptions.None);
+                
+                // Set the physics material
+                if (meshObject.Renderer.enabled)
+                {
+                    meshObject.Collider.material = PhysicsMaterial;
+                }
+
                 // Add / update the mesh to our collection
-                bool sendUpdatedEvent = false;
-                if (meshes.ContainsKey(cookedData.id.handle))
+                if (isMeshUpdate)
                 {
                     // Reclaim the old mesh object for future use.
-                    ReclaimMeshObject(meshes[cookedData.id.handle]);
-                    meshes.Remove(cookedData.id.handle);
-
-                    sendUpdatedEvent = true;
+                    ReclaimMeshObject(meshes[meshObject.Id]);
+                    meshes.Remove(meshObject.Id);
                 }
-                meshes.Add(cookedData.id.handle, meshObject);
+                meshes.Add(meshObject.Id, meshObject);
 
-                meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+                // Preserve local transform relative to parent.
+                meshObject.GameObject.transform.SetParent(ObservedObjectParent != null ?
+                    ObservedObjectParent.transform: null, false);
 
-                meshEventData.Initialize(this, cookedData.id.handle, meshObject);
-                if (sendUpdatedEvent)
+                meshEventData.Initialize(this, meshObject.Id, meshObject);
+                if (isMeshUpdate)
                 {
                     SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
                 }

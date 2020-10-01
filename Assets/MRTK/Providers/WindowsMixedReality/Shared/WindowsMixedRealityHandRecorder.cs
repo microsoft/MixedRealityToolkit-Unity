@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -71,21 +71,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             StoreRecordedHandPose(pose.ToJson(), filename);
         }
 
-#if WINDOWS_UWP
         private static void StoreRecordedHandPose(string data, string filename)
         {
+#if WINDOWS_UWP
             string path = Path.Combine(Application.persistentDataPath, filename);
             using (TextWriter writer = File.CreateText(path))
             {
                 writer.Write(data);
             }
-        }
 #else
-        private static void StoreRecordedHandPose(string data, string filename)
-        {
-            Debug.Log(data);
-        }
+            Debug.Log($"{filename}: {data}");
 #endif
+        }
     }
-
 }

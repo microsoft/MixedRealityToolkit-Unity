@@ -1,15 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections.Generic;
 using Unity.Profiling;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -24,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Reset();
 
-            foreach(var provider in dataProviders)
+            foreach (var provider in dataProviders)
             {
                 provider.Reset();
             }
@@ -156,12 +152,31 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         protected bool RegisterDataProvider<T>(
             Type concreteType,
+            string providerName,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
             return RegisterDataProviderInternal<T>(
                 true, // Retry with an added IMixedRealityService parameter
                 concreteType,
+                providerName,
+                supportedPlatforms,
+                args);
+        }
+
+        /// <summary>
+        /// Registers a data provider of the specified type.
+        /// </summary>
+        [Obsolete("RegisterDataProvider<T>(Type, SupportedPlatforms, param object[]) is obsolete and will be removed from a future version of MRTK\n" +
+            "Please use RegisterDataProvider<T>(Type, string, SupportedPlatforms, params object[])")]
+        protected bool RegisterDataProvider<T>(
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            params object[] args) where T : IMixedRealityDataProvider
+        {
+            return RegisterDataProvider<T>(
+                concreteType,
+                string.Empty,
                 supportedPlatforms,
                 args);
         }
@@ -172,21 +187,25 @@ namespace Microsoft.MixedReality.Toolkit
         private bool RegisterDataProviderInternal<T>(
             bool retryWithRegistrar,
             Type concreteType,
+            string providerName,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms))
             {
+                DebugUtilities.LogVerboseFormat(
+                    "Not registering data provider of type {0} with name {1} because the current platform is not in supported platforms {2}",
+                    concreteType,
+                    providerName,
+                    supportedPlatforms);
                 return false;
             }
 
             if (concreteType == null)
             {
-                Debug.LogError($"Unable to register {typeof(T).Name} service with a null concrete type.");
+                Debug.LogError($"Unable to register {typeof(T).Name} data provider ({(!string.IsNullOrWhiteSpace(providerName) ? providerName : "unknown")}) because the value of concreteType is null.\n" +
+                    "This may be caused by code being stripped during linking. The link.xml file in the MixedRealityToolkit.Generated folder is used to control code preservation.\n" +
+                    "More information can be found at https://docs.unity3d.com/Manual/ManagedCodeStripping.html.");
                 return false;
             }
 
@@ -217,6 +236,7 @@ namespace Microsoft.MixedReality.Toolkit
                     return RegisterDataProviderInternal<T>(
                         false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
                         concreteType,
+                        providerName,
                         supportedPlatforms,
                         updatedArgs.ToArray());
 #pragma warning restore 0618

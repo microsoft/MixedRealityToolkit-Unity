@@ -21,6 +21,27 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: 9
     deviceManagerProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKDeviceManager,
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    componentName: XRSDK Oculus Device Manager
+    priority: 0
+    runtimePlatform: 33
+    deviceManagerProfile: {fileID: 11400000, guid: 8f48cb9c26fb518499c65c9f9e8bb4ed,
+      type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    componentName: Input Simulation Service
+    priority: 0
+    runtimePlatform: 208
+    deviceManagerProfile: {fileID: 11400000, guid: 41478039094d47641bf4e09c20e61a5a,
+      type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.HandJointService, Microsoft.MixedReality.Toolkit
+    componentName: Hand Joint Service
+    priority: 0
+    runtimePlatform: -1
+    deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:

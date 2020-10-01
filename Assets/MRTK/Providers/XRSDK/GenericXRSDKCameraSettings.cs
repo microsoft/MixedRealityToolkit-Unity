@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public override bool IsOpaque => XRSDKSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
+        public override bool IsOpaque => XRSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
 
 #if SPATIALTRACKING_ENABLED
         /// <inheritdoc/>

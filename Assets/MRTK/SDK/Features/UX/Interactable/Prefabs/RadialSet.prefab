@@ -986,8 +986,8 @@ MonoBehaviour:
   distanceSpaceMode: 1
   startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: -0.004
-  releaseDistanceDelta: 0.0008
+  pressDistance: -0.002
+  releaseDistanceDelta: 0.006
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
@@ -1225,8 +1225,8 @@ MonoBehaviour:
   distanceSpaceMode: 1
   startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: -0.004
-  releaseDistanceDelta: 0.008
+  pressDistance: -0.002
+  releaseDistanceDelta: 0.006
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
@@ -1646,8 +1646,8 @@ MonoBehaviour:
   distanceSpaceMode: 1
   startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: -0.004
-  releaseDistanceDelta: 0.008
+  pressDistance: -0.002
+  releaseDistanceDelta: 0.006
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1

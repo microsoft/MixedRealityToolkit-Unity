@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -315,12 +315,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             updatingSettingsOnEditorChanged = false;
         }
-        
+
         /// <summary>
         /// Checks whether any of the save dates on our lighting scenes are later than the save date of our cached lighting data.
         /// </summary>
         private void EditorCheckIfCachedLightingOutOfDate()
-        {            
+        {
             DateTime cachedLightingTimestamp = profile.GetEarliestLightingCacheTimestamp();
             bool outOfDate = false;
 
@@ -654,7 +654,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     }
 
                     EditorGUIUtility.PingObject(rootObjectsToMove.FirstOrDefault());
-                } 
+                }
                 catch (Exception)
                 {
                     // This can happen if the move object operation fails. No big deal, we'll try again next time.
@@ -688,7 +688,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 if (EditorSceneUtils.AddSceneToBuildSettings(
                     contentScene,
-                    cachedBuildScenes, 
+                    cachedBuildScenes,
                     EditorSceneUtils.BuildIndexTarget.None))
                 {
                     cachedBuildScenes = EditorBuildSettings.scenes;
@@ -700,7 +700,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 foreach (SceneInfo lightingScene in profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
                     if (EditorSceneUtils.AddSceneToBuildSettings(
-                        lightingScene, 
+                        lightingScene,
                         cachedBuildScenes,
                         EditorSceneUtils.BuildIndexTarget.Last))
                     {
@@ -742,7 +742,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 allScenes.Add(profile.ManagerScene);
             }
 
-            if(EditorSceneUtils.CheckBuildSettingsForDuplicates(allScenes, duplicates))
+            if (EditorSceneUtils.CheckBuildSettingsForDuplicates(allScenes, duplicates))
             {
                 // If it's already open, don't display
                 if (!ResolveDuplicateScenesWindow.IsOpen)

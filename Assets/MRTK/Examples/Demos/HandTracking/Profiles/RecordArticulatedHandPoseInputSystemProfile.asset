@@ -76,6 +76,12 @@ MonoBehaviour:
     runtimePlatform: -1
     deviceManagerProfile: {fileID: 11400000, guid: d0f5a7f6d1f9f0b4cb6eb35c797a0f04,
       type: 2}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    componentName: Input Playback Service
+    priority: 0
+    runtimePlatform: -1
+    deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:

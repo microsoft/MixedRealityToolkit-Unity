@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
         private SerializedProperty enableDiagnosticsSystem;
+        private SerializedProperty enableVerboseLogging;
         private SerializedProperty diagnosticsSystemType;
         private SerializedProperty diagnosticsSystemProfile;
         // Scene system properties
@@ -57,9 +58,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty useServiceInspectors;
         private SerializedProperty renderDepthBuffer;
 
-        private Func<bool>[] RenderProfileFuncs;
+        private Func<bool>[] renderProfileFuncs;
 
-        private static readonly string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
+        private static readonly string[] ProfileTabTitles = {
+            "Camera",
+            "Input",
+            "Boundary",
+            "Teleport",
+            "Spatial Awareness",
+            "Diagnostics",
+            "Scene System",
+            "Extensions",
+            "Editor",
+        };
+
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
@@ -98,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             spatialAwarenessSystemProfile = serializedObject.FindProperty("spatialAwarenessSystemProfile");
             // Diagnostics system configuration
             enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
+            enableVerboseLogging = serializedObject.FindProperty("enableVerboseLogging");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
             // Scene system configuration
@@ -114,9 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
-            if (RenderProfileFuncs == null)
+            if (renderProfileFuncs == null)
             {
-                RenderProfileFuncs = new Func<bool>[]
+                renderProfileFuncs = new Func<bool>[]
                 {
                     () => {
                         bool changed = false;
@@ -251,6 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            EditorGUILayout.PropertyField(enableVerboseLogging);
                             EditorGUILayout.PropertyField(enableDiagnosticsSystem);
 
                             const string service = "Diagnostics System";
@@ -403,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = true; // Force enable so we can view profile defaults
 
             int prefsSelectedTab = SessionState.GetInt(SelectedTabPreferenceKey, 0);
-            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
+            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, GUILayout.MaxWidth(125));
             if (SelectedProfileTab != prefsSelectedTab)
             {
                 SessionState.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);
@@ -415,7 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             using (new EditorGUI.IndentLevelScope())
             {
-                changed |= RenderProfileFuncs[SelectedProfileTab]();
+                changed |= renderProfileFuncs[SelectedProfileTab]();
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
@@ -451,12 +465,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Render helpbox that provided service string is disabled and none of it's functionality will be loaded at runtime
+        /// Render helpbox that provided service string is disabled and none of its functionality will be loaded at runtime
         /// </summary>
         protected static void RenderSystemDisabled(string service)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
+            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of its features will be available at runtime.", MessageType.Info);
             EditorGUILayout.Space();
         }
 

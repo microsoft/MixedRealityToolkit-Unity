@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -320,13 +321,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.
         /// </summary>
+        [Obsolete("Service inspectors will be removed in an upcoming release")]
         public bool UseServiceInspectors
         {
             get { return useServiceInspectors; }
         }
 
+        [Obsolete("Service inspectors will be removed in an upcoming release")]
         [SerializeField]
-        [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
+        [Tooltip("Deprecated: If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
         private bool useServiceInspectors = false;
 
         /// <summary>
@@ -340,6 +343,19 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         [Tooltip("If true, MRTK will render the depth buffer as color. Only valid in editor.")]
         private bool renderDepthBuffer = false;
+
+        /// <summary>
+        /// If true, verbose logging will be enabled for MRTK components.
+        /// </summary>
+        public bool EnableVerboseLogging
+        {
+            get { return enableVerboseLogging; }
+            set { enableVerboseLogging = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("If true, verbose logging will be enabled for MRTK components.")]
+        private bool enableVerboseLogging = false;
 
         #endregion Mixed Reality Toolkit configurable properties
     }

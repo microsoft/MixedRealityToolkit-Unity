@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [InspectorField(Label = "Enabled", Tooltip = "Is the component enabled?", Type = InspectorField.FieldTypes.Bool)]
         public bool Enabled;
 
-        [InspectorField(Label = "Component Option", Tooltip = "Select an option", Type = InspectorField.FieldTypes.DropdownString, Options = new string[]{"Option 1", "Option 2", "Option 3", "Option 4" })]
+        [InspectorField(Label = "Component Option", Tooltip = "Select an option", Type = InspectorField.FieldTypes.DropdownString, Options = new string[] { "Option 1", "Option 2", "Option 3", "Option 4" })]
         public string ComponentOption = "Option 3";
 
         [InspectorField(Label = "Component Index", Tooltip = "A index value of the component", Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Index 0", "Index 1", "Index 2", "Index 3", "Index 4" })]

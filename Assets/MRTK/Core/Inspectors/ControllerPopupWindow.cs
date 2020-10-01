@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Vector2 horizontalScrollPosition;
 
         private SerializedProperty currentInteractionList;
+        private List<string> mappedControllerList = new List<string>();
 
         private ControllerPopupWindow thisWindow;
 
@@ -186,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(MixedRealityControllerMapping controllerMapping, SerializedProperty interactionsList, Handedness handedness = Handedness.None, List<string> mappedControllers = null)
         {
             if (window != null)
             {
@@ -198,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             window = CreateInstance<ControllerPopupWindow>();
             window.thisWindow = window;
             window.titleContent = new GUIContent($"{controllerMapping.Description} - Input Action Assignment");
+            window.mappedControllerList = mappedControllers;
             window.currentControllerMapping = controllerMapping;
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
@@ -276,10 +278,56 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             try
             {
                 RenderInteractionList(currentInteractionList, currentControllerMapping.HasCustomInteractionMappings);
+                RenderMappingList(mappedControllerList);
             }
             catch (Exception)
             {
                 thisWindow.Close();
+            }
+        }
+
+        private void RenderMappingList(List<string> controllerList)
+        {
+            if (controllerList == null)
+            {
+                return;
+            }
+
+            GUIStyle headerStyle = new GUIStyle();
+            headerStyle.richText = true;
+
+            if (currentControllerOption == null || currentControllerTexture == null)
+            {
+                GUILayout.BeginVertical();
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.LabelField("<b>Controllers affected by this mapping</b>", headerStyle);
+                    for (int i = 0; i < controllerList.Count; i++)
+                    {
+                        EditorGUILayout.LabelField(controllerList[i]);
+                    }
+                }
+                GUILayout.EndVertical();
+            }
+            else
+            {
+                float max_y = currentControllerOption.InputLabelPositions.Max(x => x.y);
+
+                var titleRectPosition = Vector2.up * (max_y + 4 * EditorGUIUtility.singleLineHeight);
+                var titleRectSize = new Vector2(500, EditorGUIUtility.singleLineHeight);
+
+                var titleRect = new Rect(titleRectPosition, titleRectSize);
+                EditorGUI.LabelField(titleRect, "<b>Controllers affected by this mapping</b>", headerStyle);
+
+                for (int i = 0; i < controllerList.Count; i++)
+                {
+                    var rectPosition = Vector2.up * (max_y + (i+5) * EditorGUIUtility.singleLineHeight);
+                    var rectSize = new Vector2(1000, EditorGUIUtility.singleLineHeight);
+
+                    var labelRect = new Rect(rectPosition, rectSize);
+                    EditorGUI.LabelField(labelRect, controllerList[i]);
+                }
             }
         }
 

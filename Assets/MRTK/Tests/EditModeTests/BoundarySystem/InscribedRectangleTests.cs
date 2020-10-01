@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
 using NUnit.Framework;
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary
         /// </remarks>
         private static void AssertWithinTolerance(double expected, double actual)
         {
-            Assert.IsTrue(Math.Abs((expected - actual)/expected) < TolerancePercent);
+            Assert.IsTrue(Math.Abs((expected - actual) / expected) < TolerancePercent);
         }
     }
 }

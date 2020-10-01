@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
                 }
             }
         }
-            
+
         private static void TestVector2Internal(bool invertXAxis, bool invertYAxis, Vector2 vectorValue)
         {
             string msg = string.Format("invertXAxis: {0}, invertYAxis: {1}, vectorValue: {2}", invertXAxis, invertYAxis, vectorValue);

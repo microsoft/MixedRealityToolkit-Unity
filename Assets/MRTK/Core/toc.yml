@@ -2,8 +2,6 @@
   href: EventDatum/README.md
 - name: Hands
   href: Providers/Hands/README.md
-- name: Standard Assets
-  href: StandardAssets/README.md
 - name: Utilities
   href: Utilities/README.md
   items:

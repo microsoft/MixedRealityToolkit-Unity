@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using System.Collections;
 using UnityEngine;
@@ -116,7 +116,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 // Compress the button visuals by the push amount.
                 Vector3 scale = compressableButtonVisuals.transform.localScale;
-                float pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (CurrentPushDistance - startPushDistance) / MaxPushDistance));
+                float pressPercentage;
+
+                // Prevent divide by zero when calculating pressPercentage.
+                if (MaxPushDistance <= float.Epsilon)
+                {
+                    pressPercentage = 0.0f;
+                }
+                else
+                {
+                    pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (CurrentPushDistance - startPushDistance) / MaxPushDistance));
+                }
+
                 scale.z = initialCompressableButtonVisualsLocalScale.z * pressPercentage;
                 compressableButtonVisuals.transform.localScale = scale;
             }
@@ -124,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (movingButtonIconText != null)
             {
                 // Always move relative to startPushDistance
-                movingButtonIconText.transform.position = GetWorldPositionAlongPushDirection((CurrentPushDistance - startPushDistance) / 2);
+                movingButtonIconText.transform.localPosition = GetLocalPositionAlongPushDirection((CurrentPushDistance - startPushDistance)/2.0f);
             }
         }
 
@@ -170,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             while (blendTime > 0.0f)
             {
-                float t =  1.0f - (blendTime / time);
+                float t = 1.0f - (blendTime / time);
                 UpdateHightlightPlateVisuals(fadeIn ? t : 1.0f - t);
                 blendTime -= Time.deltaTime;
 

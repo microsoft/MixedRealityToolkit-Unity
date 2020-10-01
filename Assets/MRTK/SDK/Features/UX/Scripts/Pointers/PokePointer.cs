@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             "touchable but cannot see it. Visual FOV is defined by cone centered about display center, " +
             "radius equal to half display height.")]
         private bool ignoreCollidersNotInFOV = true;
-       
+
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
         /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near 

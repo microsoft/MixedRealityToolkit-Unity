@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 name = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name
             };
 
-            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture?.index >= 0)
             {
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
@@ -273,13 +273,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0 && material.HasProperty("_EmissionMap"))
+            if (gltfMaterial.emissiveTexture?.index >= 0 && material.HasProperty("_EmissionMap"))
             {
                 material.EnableKeyword("_EMISSION");
                 material.SetColor(EmissiveColorId, gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture?.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
 
 
-            if (gltfMaterial.normalTexture.index >= 0)
+            if (gltfMaterial.normalTexture?.index >= 0)
             {
                 material.SetTexture(NormalMapId, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.SetFloat(NormalMapScaleId, (float)gltfMaterial.normalTexture.scale);
@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 name = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name
             };
 
-            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.baseColorTexture?.index >= 0)
             {
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
@@ -387,7 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.renderQueue = 3000;
             }
 
-            if (gltfMaterial.emissiveTexture.index >= 0)
+            if (gltfMaterial.emissiveTexture?.index >= 0)
             {
                 material.EnableKeyword("_EmissionMap");
                 material.EnableKeyword("_EMISSION");
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.SetColor(EmissionColorId, gltfMaterial.emissiveFactor.GetColorValue());
             }
 
-            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index >= 0)
+            if (gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture?.index >= 0)
             {
                 var texture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index].Texture;
 
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.EnableKeyword("_METALLICGLOSSMAP");
             }
 
-            if (gltfMaterial.normalTexture.index >= 0)
+            if (gltfMaterial.normalTexture?.index >= 0)
             {
                 material.SetTexture(BumpMapId, gltfObject.images[gltfMaterial.normalTexture.index].Texture);
                 material.EnableKeyword("_BumpMap");
@@ -558,83 +558,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             GltfAccessor joint0Accessor = null;
             int vertexCount = 0;
 
-            if (meshPrimitive.Attributes.POSITION >= 0)
+            positionAccessor = gltfObject.GetAccessor(meshPrimitive.Attributes.POSITION);
+            if (positionAccessor != null)
             {
-                positionAccessor = gltfObject.accessors[meshPrimitive.Attributes.POSITION];
-                positionAccessor.BufferView = gltfObject.bufferViews[positionAccessor.bufferView];
-                positionAccessor.BufferView.Buffer = gltfObject.buffers[positionAccessor.BufferView.buffer];
                 vertexCount = positionAccessor.count;
             }
 
-            if (meshPrimitive.Attributes.NORMAL >= 0)
-            {
-                normalsAccessor = gltfObject.accessors[meshPrimitive.Attributes.NORMAL];
-                normalsAccessor.BufferView = gltfObject.bufferViews[normalsAccessor.bufferView];
-                normalsAccessor.BufferView.Buffer = gltfObject.buffers[normalsAccessor.BufferView.buffer];
-            }
+            normalsAccessor = gltfObject.GetAccessor(meshPrimitive.Attributes.NORMAL);
 
-            if (meshPrimitive.Attributes.TEXCOORD_0 >= 0)
-            {
-                textCoord0Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_0];
-                textCoord0Accessor.BufferView = gltfObject.bufferViews[textCoord0Accessor.bufferView];
-                textCoord0Accessor.BufferView.Buffer = gltfObject.buffers[textCoord0Accessor.BufferView.buffer];
-            }
+            textCoord0Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.TEXCOORD_0);
 
-            if (meshPrimitive.Attributes.TEXCOORD_1 >= 0)
-            {
-                textCoord1Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_1];
-                textCoord1Accessor.BufferView = gltfObject.bufferViews[textCoord1Accessor.bufferView];
-                textCoord1Accessor.BufferView.Buffer = gltfObject.buffers[textCoord1Accessor.BufferView.buffer];
-            }
+            textCoord1Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.TEXCOORD_1);
 
-            if (meshPrimitive.Attributes.TEXCOORD_2 >= 0)
-            {
-                textCoord2Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_2];
-                textCoord2Accessor.BufferView = gltfObject.bufferViews[textCoord2Accessor.bufferView];
-                textCoord2Accessor.BufferView.Buffer = gltfObject.buffers[textCoord2Accessor.BufferView.buffer];
-            }
+            textCoord2Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.TEXCOORD_2);
 
-            if (meshPrimitive.Attributes.TEXCOORD_3 >= 0)
-            {
-                textCoord3Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_3];
-                textCoord3Accessor.BufferView = gltfObject.bufferViews[textCoord3Accessor.bufferView];
-                textCoord3Accessor.BufferView.Buffer = gltfObject.buffers[textCoord3Accessor.BufferView.buffer];
-            }
+            textCoord3Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.TEXCOORD_3);
 
-            if (meshPrimitive.Attributes.COLOR_0 >= 0)
-            {
-                colorAccessor = gltfObject.accessors[meshPrimitive.Attributes.COLOR_0];
-                colorAccessor.BufferView = gltfObject.bufferViews[colorAccessor.bufferView];
-                colorAccessor.BufferView.Buffer = gltfObject.buffers[colorAccessor.BufferView.buffer];
-            }
+            colorAccessor = gltfObject.GetAccessor(meshPrimitive.Attributes.COLOR_0);
 
-            if (meshPrimitive.indices >= 0)
-            {
-                indicesAccessor = gltfObject.accessors[meshPrimitive.indices];
-                indicesAccessor.BufferView = gltfObject.bufferViews[indicesAccessor.bufferView];
-                indicesAccessor.BufferView.Buffer = gltfObject.buffers[indicesAccessor.BufferView.buffer];
-            }
+            indicesAccessor = gltfObject.GetAccessor(meshPrimitive.indices);
 
-            if (meshPrimitive.Attributes.TANGENT >= 0)
-            {
-                tangentAccessor = gltfObject.accessors[meshPrimitive.Attributes.TANGENT];
-                tangentAccessor.BufferView = gltfObject.bufferViews[tangentAccessor.bufferView];
-                tangentAccessor.BufferView.Buffer = gltfObject.buffers[tangentAccessor.BufferView.buffer];
-            }
+            tangentAccessor = gltfObject.GetAccessor(meshPrimitive.Attributes.TANGENT);
 
-            if (meshPrimitive.Attributes.WEIGHTS_0 >= 0)
-            {
-                weight0Accessor = gltfObject.accessors[meshPrimitive.Attributes.WEIGHTS_0];
-                weight0Accessor.BufferView = gltfObject.bufferViews[weight0Accessor.bufferView];
-                weight0Accessor.BufferView.Buffer = gltfObject.buffers[weight0Accessor.BufferView.buffer];
-            }
+            weight0Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.WEIGHTS_0);
 
-            if (meshPrimitive.Attributes.JOINTS_0 >= 0)
-            {
-                joint0Accessor = gltfObject.accessors[meshPrimitive.Attributes.JOINTS_0];
-                joint0Accessor.BufferView = gltfObject.bufferViews[joint0Accessor.bufferView];
-                joint0Accessor.BufferView.Buffer = gltfObject.buffers[joint0Accessor.BufferView.buffer];
-            }
+            joint0Accessor = gltfObject.GetAccessor(meshPrimitive.Attributes.JOINTS_0);
 
             if (gltfObject.UseBackgroundThread) await Update;
 

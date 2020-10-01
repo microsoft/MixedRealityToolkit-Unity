@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
 {
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         void PrepareForRecycle();
 
         /// <summary>
-        /// Called before the GameObject's position and rotation are set (as well as it's active state) by the GameObjectPool
+        /// Called before the GameObject's position and rotation are set (as well as its active state) by the GameObjectPool
         /// when GetGameObject is called.
         /// </summary>
         void PrepareForUse();

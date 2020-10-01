@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.﻿
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -21,9 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color originColor = new Color(0.75f, 0.1f, 0.75f, 0.75f);
         private static readonly Color enabledColor = GUI.backgroundColor;
         private static readonly Color disabledColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
-        
+
         public override bool AlwaysDrawSceneGUI { get { return false; } }
-        
+
         public override void DrawInspectorGUI(object target)
         {
             IMixedRealitySpatialAwarenessSystem spatial = (IMixedRealitySpatialAwarenessSystem)target;
