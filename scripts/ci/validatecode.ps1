@@ -596,7 +596,6 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/LeapMotion/MRTK.LeapMotion.asmdef",
     "Assets/MRTK/Providers/LeapMotion/Editor/MRTK.LeapMotion.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/MRTK.Oculus.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
