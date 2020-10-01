@@ -365,11 +365,7 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
-    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
+    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs"
 )
 
 <#
