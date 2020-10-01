@@ -424,7 +424,9 @@ Note: if focus on pointer is locked, will always return true.</p>
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_IsNearObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.IsNearObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_IsNearObject" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.IsNearObject">IsNearObject</h4>
   <div class="markdown level1 summary"><p>Test if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
-Uses SphereCastRadius + NearObjectMargin to determine if near an object.</p>
+Uses SphereCastRadius + NearObjectMargin to determine if near an object within the sector angle
+Also returns true of any grabbable objects are within SphereCastRadius even if they aren't within the sector angle
+Ignores bounds handlers for the IsNearObject check.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -449,6 +451,32 @@ Uses SphereCastRadius + NearObjectMargin to determine if near an object.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectAxisLerp_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectAxisLerp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectAxisLerp" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectAxisLerp">NearObjectAxisLerp</h4>
+  <div class="markdown level1 summary"><p>Lerp factor between the palm direction and the index finger direction used to build the cone direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearObjectAxisLerp { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectMargin*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectMargin">NearObjectMargin</h4>
   <div class="markdown level1 summary"><p>Additional distance on top of<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">SphereCastRadius</a> when pointer is considered 'near' an object and far interaction will turn off.</p>
@@ -456,7 +484,7 @@ Uses SphereCastRadius + NearObjectMargin to determine if near an object.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float NearObjectMargin { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float NearObjectMargin { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,6 +533,84 @@ Uses SphereCastRadius + NearObjectMargin to determine if near an object.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Sum of <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">SphereCastRadius</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpherePointer.html#Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin">NearObjectMargin</a>. Entering the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpherePointer.html#Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius">NearObjectRadius</a> disables far interaction.</p>
 </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectSectorAngle_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectSectorAngle*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectSectorAngle" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectSectorAngle">NearObjectSectorAngle</h4>
+  <div class="markdown level1 summary"><p>Angle range of the forward axis to query in degrees. Angle &gt;= 360 means the entire sphere is queried.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearObjectSectorAngle { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectSmoothingFactor_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectSmoothingFactor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectSmoothingFactor" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectSmoothingFactor">NearObjectSmoothingFactor</h4>
+  <div class="markdown level1 summary"><p>Smoothing factor for query detection. If an object is detected in the NearObjectRadius, the queried radius then becomes NearObjectRadius * (1 + nearObjectSmoothingFactor) to reduce the sensitivity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearObjectSmoothingFactor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_PullbackDistance_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.PullbackDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_PullbackDistance" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.PullbackDistance">PullbackDistance</h4>
+  <div class="markdown level1 summary"><p>Amount to pull back the center of the sphere behind the hand for detecting when to turn off far interaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float PullbackDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_SceneQueryBufferSize_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.SceneQueryBufferSize*"></a>

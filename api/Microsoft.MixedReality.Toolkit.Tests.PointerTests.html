@@ -139,12 +139,40 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.Setup*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.Setup">Setup()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Set initial state before each test.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Setup()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator Setup()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td><p>enumerator</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_Setup_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that, in order to catch incorrect reliances on identity camera transforms early on,
+this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+appropriate for an individual test by starting off with, e.g., <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToOriginLookingForward">PlayspaceToOriginLookingForward()</a>.
+However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+to align test objects with the camera.
+For example, to place an object 8 meters in front of the camera, set its global position to:
+TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+See usage of these helpers throughout the tests within this file, e.g. <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.PointerTests.html#Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestSpherePointerInsideGrabbable">TestSpherePointerInsideGrabbable()</a>.
+See also comments at <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToArbitraryPose">PlayspaceToArbitraryPose()</a>.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TearDown*"></a>
@@ -153,8 +181,23 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void TearDown()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator TearDown()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestDestroyOnSourceLostPointer_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestDestroyOnSourceLostPointer*"></a>
@@ -211,6 +254,33 @@ Pointers that do not auto-destroy themselves on source lost should be destroyed 
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestHandPointerDirectionToCameraDirection_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestHandPointerDirectionToCameraDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestHandPointerDirectionToCameraDirection" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestHandPointerDirectionToCameraDirection">TestHandPointerDirectionToCameraDirection()</h4>
+  <div class="markdown level1 summary"><p>Tests that right after hand being instantiated, the pointer's direction
+is in the same general direction as the forward direction of the camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TestHandPointerDirectionToCameraDirection()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestLinePointers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestLinePointers*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestLinePointers" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestLinePointers">TestLinePointers()</h4>
   <div class="markdown level1 summary"><p>Tests that line pointers and curve pointer work as expected by using default prefab implementations
@@ -220,6 +290,33 @@ LinePointer should be a straight line ray while curve pointers should collide al
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator TestLinePointers()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestMotionControllerPointerDirectionToCameraDirection_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestMotionControllerPointerDirectionToCameraDirection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestMotionControllerPointerDirectionToCameraDirection" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestMotionControllerPointerDirectionToCameraDirection">TestMotionControllerPointerDirectionToCameraDirection()</h4>
+  <div class="markdown level1 summary"><p>Tests that right after motion controller being instantiated, the pointer's direction
+is in the same general direction as the forward direction of the camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TestMotionControllerPointerDirectionToCameraDirection()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -251,33 +348,6 @@ LinePointer should be a straight line ray while curve pointers should collide al
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator TestPointerCaching()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestPointerDirectionToCameraDirection_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestPointerDirectionToCameraDirection*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PointerTests_TestPointerDirectionToCameraDirection" data-uid="Microsoft.MixedReality.Toolkit.Tests.PointerTests.TestPointerDirectionToCameraDirection">TestPointerDirectionToCameraDirection()</h4>
-  <div class="markdown level1 summary"><p>Tests that right after being instantiated, the pointer's direction
-is in the same general direction as the forward direction of the camera</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestPointerDirectionToCameraDirection()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -107,7 +107,8 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityEyeTrackingProfile_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MixedRealityEyeTrackingProfile : BaseMixedRealityProfile</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityServiceProfile(new Type[]{typeof(IMixedRealityEyeGazeDataProvider), typeof(IMixedRealityEyeSaccadeProvider)}, null)]
+public class MixedRealityEyeTrackingProfile : BaseMixedRealityProfile</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>

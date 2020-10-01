@@ -109,7 +109,8 @@ added to the MRTK input configuration profile.</p>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LeapMotionDeviceManagerProfile : BaseMixedRealityProfile</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityServiceProfile(typeof(LeapMotionDeviceManager), null)]
+public class LeapMotionDeviceManagerProfile : BaseMixedRealityProfile</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -219,6 +220,144 @@ LeapControllerOrientation.Desk indicates the controller is placed flat on desk. 
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapControllerOrientation.html">LeapControllerOrientation</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetMode_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetMode" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetMode">LeapVRDeviceOffsetMode</h4>
+  <div class="markdown level1 summary"><p>The VR offset mode determines the calculation method for Leap Motion Controller placement while in VR.
+LeapVRDeviceOffsetModes:
+Default - No offset is applied to the controller.
+Manual Head Offset - Three new properties with a range constraint control the offset, LeapVRDeviceOffsetY, LeapVRDeviceOffsetZ and LeapVRDeviceOffsetTiltX.
+Transform - The new Leap Controller origin is set to a different transform.
+The LeapVRDeviceOffsetMode property is only taken into account if the LeapControllerOrientation is Headset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LeapVRDeviceOffsetMode LeapVRDeviceOffsetMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapVRDeviceOffsetMode.html">LeapVRDeviceOffsetMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetTiltX_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetTiltX*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetTiltX" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetTiltX">LeapVRDeviceOffsetTiltX</h4>
+  <div class="markdown level1 summary"><p>The X-axis tilt offset of the Leap Motion Controller if the LeapVRDeviceOffsetMode is Manual Head Offset and the
+LeapControllerOrientation is Headset. This property and the range constraints mirror the range specified in the LeapXRServiceProvider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LeapVRDeviceOffsetTiltX { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetY_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetY*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetY" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetY">LeapVRDeviceOffsetY</h4>
+  <div class="markdown level1 summary"><p>The Y-axis offset of the Leap Motion controller if the LeapVRDeviceOffsetMode is Manual Head Offset and the LeapControllerOrientation is Headset.  This property and the range
+constraints mirror the range specified in the LeapXRServiceProvider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LeapVRDeviceOffsetY { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetZ_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetZ*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOffsetZ" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOffsetZ">LeapVRDeviceOffsetZ</h4>
+  <div class="markdown level1 summary"><p>The Z-axis offset of the Leap Motion controller if the LeapVRDeviceOffsetMode is Manual Head Offset and the LeapControllerOrientation is Headset.  This property and the range
+constraints mirror the range specified in the LeapXRServiceProvider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LeapVRDeviceOffsetZ { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOrigin_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOrigin*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapVRDeviceOrigin" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapVRDeviceOrigin">LeapVRDeviceOrigin</h4>
+  <div class="markdown level1 summary"><p>The origin the Leap Motion Controller if the LeapVRDeviceOffsetMode is Transform and the LeapControllerOrientation is Headset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform LeapVRDeviceOrigin { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
         <td></td>
       </tr>
     </tbody>

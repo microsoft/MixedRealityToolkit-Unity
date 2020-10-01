@@ -144,14 +144,42 @@ Validates various forms of input (i.e speech etc) against various configurations
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.Setup*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.Setup">Setup()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Set initial state before each test.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Setup()</code></pre>
+    <pre><code class="lang-csharp hljs">public override IEnumerator Setup()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td><p>enumerator</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html#Microsoft_MixedReality_Toolkit_Tests_BasePlayModeTests_Setup">BasePlayModeTests.Setup()</a></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_Setup_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that, in order to catch incorrect reliances on identity camera transforms early on,
+this Setup() sets the playspace transform to an arbitrary pose. This can be overridden where
+appropriate for an individual test by starting off with, e.g., <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToOriginLookingForward">PlayspaceToOriginLookingForward()</a>.
+However, it is preferable to retain the arbitrary pose, and use the helpers within TestUtilities
+to align test objects with the camera.
+For example, to place an object 8 meters in front of the camera, set its global position to:
+TestUtilities.PositionRelativeToPlayspace(0.0f, 0.0f, 8.0f);
+See usage of these helpers throughout the tests within this file, e.g. <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.html#Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestHandInputOnRuntimeAssembled">TestHandInputOnRuntimeAssembled()</a>.
+See also comments at <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html#Microsoft_MixedReality_Toolkit_Tests_TestUtilities_PlayspaceToArbitraryPose">PlayspaceToArbitraryPose()</a>.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestButtonStateResetWhenFocusLostAfterPinch_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestButtonStateResetWhenFocusLostAfterPinch*"></a>
@@ -301,7 +329,7 @@ in issue 4967.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestForceInitialize_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestForceInitialize*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestForceInitialize" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestForceInitialize">TestForceInitialize()</h4>
-  <div class="markdown level1 summary"><p>Ensure a disabled Interactable initializes when accessing one of it's properties even though it's Awake() has not been called</p>
+  <div class="markdown level1 summary"><p>Ensure a disabled Interactable initializes when accessing one of its properties even though its Awake() has not been called</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -438,6 +466,33 @@ after subsequent clicks (front plate does not move back after every click).</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator TestPressableToggleHoloLens2()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestPressableToggleMotionController_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestPressableToggleMotionController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestPressableToggleMotionController" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestPressableToggleMotionController">TestPressableToggleMotionController()</h4>
+  <div class="markdown level1 summary"><p>Tests that the toggle button states consistently return to original state
+after subsequent motion controller clicks (front plate does not move back after every click).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TestPressableToggleMotionController()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

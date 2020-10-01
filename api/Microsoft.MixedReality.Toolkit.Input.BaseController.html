@@ -103,6 +103,7 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BaseController</span></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseHand.html">BaseHand</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController.html">SimulatedMotionController</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html">GenericJoystickController</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html">MouseController</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html">UnityTouchController</a></div>
@@ -693,13 +694,14 @@ be sure to check this value before using rotation data.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_Type_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(Type)">SetupConfiguration(Type)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(System.Type)">SetupConfiguration(Type)</h4>
   <div class="markdown level1 summary"><p>Sets up the configuration based on the Mixed Reality Controller Mapping Profile.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SetupConfiguration(Type controllerType)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method is no longer used. Configuration now happens in the constructor. You can check this controller's Enabled property for configuration state.&quot;)]
+public bool SetupConfiguration(Type controllerType)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -712,7 +714,7 @@ be sure to check this value before using rotation data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">controllerType</span></td>
         <td><p>The type this controller represents.</p>
 </td>
@@ -737,13 +739,14 @@ be sure to check this value before using rotation data.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">SetupConfiguration(Type, InputSourceType)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_SetupConfiguration_System_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.SetupConfiguration(System.Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">SetupConfiguration(Type, InputSourceType)</h4>
   <div class="markdown level1 summary"><p>Sets up the configuration based on the Mixed Reality Controller Mapping Profile.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This method is no longer used. Configuration now happens in the constructor. You can check this controller's Enabled property for configuration state.&quot;)]
+public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -756,7 +759,7 @@ be sure to check this value before using rotation data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">controllerType</span></td>
         <td></td>
       </tr>
@@ -802,7 +805,8 @@ be sure to check this value before using rotation data.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetupDefaultInteractions(Handedness controllerHandedness)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;The handedness parameter is no longer used. This method now reads from the controller's handedness.&quot;)]
+public virtual void SetupDefaultInteractions(Handedness controllerHandedness)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -866,7 +870,7 @@ be sure to check this value before using rotation data.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel(Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">TryRenderControllerModel(Type, InputSourceType)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_TryRenderControllerModel_System_Type_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.TryRenderControllerModel(System.Type,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">TryRenderControllerModel(Type, InputSourceType)</h4>
   <div class="markdown level1 summary"><p>Try to render a controller model for this controller from the visualization profile.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -885,7 +889,7 @@ be sure to check this value before using rotation data.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">controllerType</span></td>
         <td><p>The type of controller to load the model for.</p>
 </td>

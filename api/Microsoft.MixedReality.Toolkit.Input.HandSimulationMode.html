@@ -95,13 +95,15 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode" data-uid="Microsoft.MixedReality.Toolkit.Input.HandSimulationMode" class="text-break">Enum HandSimulationMode
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Defines for how input simulation handles controllers</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum HandSimulationMode</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ControllerSimulationMode instead.&quot;)]
+public enum HandSimulationMode</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -115,15 +117,23 @@
     <tbody>
       <tr>
         <td id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Articulated">Articulated</td>
-        <td></td>
+        <td><p>Provide a fully articulated hand controller</p>
+</td>
       </tr>
       <tr>
         <td id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Disabled">Disabled</td>
-        <td></td>
+        <td><p>Disable controller simulation</p>
+</td>
       </tr>
       <tr>
         <td id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Gestures">Gestures</td>
-        <td></td>
+        <td><p>Raises hand gesture events only</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_MotionController">MotionController</td>
+        <td><p>Provide a 6DoF motion controller</p>
+</td>
       </tr>
     </tbody>
   </thead></thead></table>

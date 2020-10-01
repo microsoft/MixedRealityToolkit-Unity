@@ -173,7 +173,7 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ApplyToHierarchy_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ApplyToHierarchy*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ApplyToHierarchy_GameObject_Action_GameObject__" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ApplyToHierarchy(GameObject,Action{GameObject})">ApplyToHierarchy(GameObject, Action&lt;GameObject&gt;)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ApplyToHierarchy_GameObject_System_Action_GameObject__" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ApplyToHierarchy(GameObject,System.Action{GameObject})">ApplyToHierarchy(GameObject, Action&lt;GameObject&gt;)</h4>
   <div class="markdown level1 summary"><p>Apply the specified delegate to all objects in the hierarchy under a specified game object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -198,7 +198,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Action</span>&lt;<span class="xref">GameObject</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<span class="xref">GameObject</span>&gt;</td>
         <td><span class="parametername">action</span></td>
         <td><p>Delegate to apply.</p>
 </td>
@@ -364,7 +364,7 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ForEachComponent_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ForEachComponent*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ForEachComponent__1_GameObject_Action___0__" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ForEachComponent``1(GameObject,Action{``0})">ForEachComponent&lt;T&gt;(GameObject, Action&lt;T&gt;)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ForEachComponent__1_GameObject_System_Action___0__" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ForEachComponent``1(GameObject,System.Action{``0})">ForEachComponent&lt;T&gt;(GameObject, Action&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Perform an action on every component of type T that is on this GameObject</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -389,7 +389,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Action</span>&lt;T&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T&gt;</td>
         <td><span class="parametername">action</span></td>
         <td><p>Action to perform.</p>
 </td>
@@ -415,7 +415,7 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_IsComponentRequired_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.IsComponentRequired*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_IsComponentRequired__1_GameObject_List_Type___" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.IsComponentRequired``1(GameObject,List{Type}@)">IsComponentRequired&lt;T&gt;(GameObject, out List&lt;Type&gt;)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_IsComponentRequired__1_GameObject_List_System_Type___" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.IsComponentRequired``1(GameObject,List{System.Type}@)">IsComponentRequired&lt;T&gt;(GameObject, out List&lt;Type&gt;)</h4>
   <div class="markdown level1 summary"><p>Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -441,7 +441,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">Type</span>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&gt;</td>
         <td><span class="parametername">requiringTypes</span></td>
         <td><p>A list of types that do require the component in question</p>
 </td>
@@ -480,7 +480,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_IsComponentRequired__1_GameObject_List_Type____remarks">Remarks</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_IsComponentRequired__1_GameObject_List_System_Type____remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Only functions when called within a UNITY_EDITOR context. Outside of UNITY_EDITOR, always returns false</p>
 </div>
   

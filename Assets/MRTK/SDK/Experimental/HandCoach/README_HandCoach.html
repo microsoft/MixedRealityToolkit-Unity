@@ -178,9 +178,9 @@ Otherwise, you'll need to place the script on a gameObject one parent level up f
 <li><strong>AnimationCurve</strong> This is defaulted to a linear curve, but you can alter the curve to provide easing in/out when starting and stopping the motion path.</li>
 <li><strong>RotationVector</strong> How many degrees to rotate along each axis.</li>
 </ul>
-<h4 id="controlling-movetotarget-via-script-1">Controlling MoveToTarget via script</h4>
+<h4 id="controlling-rotatearoundpoint-via-script">Controlling RotateAroundPoint via script</h4>
 <p>In your custom script, make a call to RotateToTarget() when you want the hand rig to begin its rotation around the CenteredParent. When you want the position to reset to the original PivotPosition, make a call to ResetAndDeterminePivot().</p>
-<h4 id="controlling-movetotarget-via-animations-1">Controlling MoveToTarget via animations</h4>
+<h4 id="controlling-rotatearoundpoint-via-animations">Controlling RotateAroundPoint via animations</h4>
 <p>In the animation that needs to move, set two events: one with a call to ResetAndDeterminePivot() and one with a call to RotateToTarget(). ResetAndDeterminePivot should be set on the first keyframe, since it causes the hand rig to reset to the PivotPosition. RotateToTarget should be set on the keyframe where you want the rig to begin rotating around the CenteredParent. This is how the script functionality is used in the provided prefabs.</p>
 </article>
           </div>

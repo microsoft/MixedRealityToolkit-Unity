@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Microsoft Mixed Reality Toolkit release notes | Mixed Reality Toolkit Documentation </title>
+    <title>Microsoft Mixed Reality Toolkit 2.5.0 draft release notes | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Microsoft Mixed Reality Toolkit release notes | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.0 draft release notes | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
@@ -89,221 +89,207 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="microsoft-mixed-reality-toolkit-release-notes">Microsoft Mixed Reality Toolkit release notes</h1>
+<h1 id="microsoft-mixed-reality-toolkit-250-draft-release-notes">Microsoft Mixed Reality Toolkit 2.5.0 draft release notes</h1>
 
 <ul>
-<li><a href="#whats-new-in-240">What's new</a></li>
-<li><a href="#breaking-changes-in-240">Breaking changes</a></li>
+<li><a href="#whats-new">What's new</a></li>
+<li><a href="#breaking-changes">Breaking changes</a></li>
 <li><a href="Updating.html#upgrading-to-a-new-version-of-mrtk">Updating guidance</a></li>
-<li><a href="#known-issues-in-240">Known issues</a></li>
+<li><a href="#known-issues">Known issues</a></li>
 </ul>
-<p>This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.</p>
-<ul>
-<li>Microsoft HoloLens 2</li>
-<li>Microsoft HoloLens (1st gen)</li>
-<li>Windows Mixed Reality Immersive headsets</li>
-<li>OpenVR</li>
-<li>(Experimental) Unity 2019.3 XR platform</li>
-<li>Mobile AR via Unity AR Foundation
-<ul>
-<li>Android</li>
-<li>iOS</li>
-</ul>
-</li>
-<li>Ultraleap Hand Tracking</li>
-</ul>
-<p>The following software is required.</p>
-<ul>
-<li><a href="https://visualstudio.microsoft.com">Microsoft Visual Studio</a> (2017 or 2019) Community Edition or higher</li>
-<li><a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">Windows 10 SDK</a> 18362 or later (installed by the Visual Studio Installer)</li>
-<li><a href="https://unity3d.com/get-unity/download">Unity</a> 2018.4 LTS or 2019 (2019.3 recommended)</li>
-</ul>
-<p><strong>Download</strong></p>
-<p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.0.unitypackage">Microsoft.MixedReality.Toolkit.Unity.Foundation.2.4.0.unitypackage</a>
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.0.unitypackage">Microsoft.MixedReality.Toolkit.Unity.Extensions.2.4.0.unitypackage</a>
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.0.unitypackage">Microsoft.MixedReality.Toolkit.Unity.Examples.2.4.0.unitypackage</a>
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/download/v2.4.0/Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.0.unitypackage">Microsoft.MixedReality.Toolkit.Unity.Tools.2.4.0.unitypackage</a></p>
-<p>Other files can be found on the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.4.0">GitHub release page</a></p>
-<p><strong>NuGet requirements</strong></p>
-<p>If importing the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, the following software is recommended.</p>
-<ul>
-<li><a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity 2.0.0 or newer</a></li>
-</ul>
-<h3 id="whats-new-in-240">What's new in 2.4.0</h3>
-<p><strong>Ultraleap Hand Tracking Support</strong></p>
-<p>The <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Data Provider</a> enables articulated hand tracking for VR applications and is also useful for rapid prototyping in the editor.  The data provider can be configured to use the Leap Motion Controller mounted on a headset or placed on a desk face up.</p>
-<p>A <a href="https://www.ultraleap.com/product/leap-motion-controller/">Leap Motion Controller</a> is required to use this data provider.</p>
-<p><img src="Images/CrossPlatform/LeapMotion/LeapMotionSideBySide2.gif" alt="LeapMotionIntroGif"></p>
-<p><strong>Migration window</strong></p>
-<p><img src="Images/MigrationWindow/MRTK_Migration_Window.png" alt="Migration window"></p>
-<p>MRTK now comes with a migration tool that will help you upgrade deprecated components to their newer
-versions and to keep existing code working even as MRTK makes breaking changes.</p>
-<p><strong>It is generally recommended to run the migration tool after pulling a new version of MRTK</strong> to
-ensure that as much of your project will be auto-adjusted to the latest MRTK code.</p>
-<p>The <a href="Tools/MigrationWindow.html">migration window</a> can be found in 'Mixed Reality Toolkit &gt; Utilities &gt;
-Migration Window'. It it part of the <strong>Tools</strong> package.</p>
-<p>It currently supports:</p>
-<ul>
-<li>Upgrading ManipulationHandler and BoundingBox to their newer versions ObjectManipulator and BoundsControl.</li>
-<li>Updating custom button icons to work correctly with the new Button Config Helper.</li>
-</ul>
-<p>Note that BoundsControl is still in experimental phase and therefore API or properties might still change in the next version.</p>
-<p><strong>MRTK folder layout changes</strong></p>
-<p>This version of MRTK modifies the layout of the MRTK folder structure. This change encapsulates all MRTK code into a single folder hierarchy and reduces the total path length of all MRTK files.</p>
-<table>
-<thead>
-<tr>
-<th>Previous Folder</th>
-<th>New Folder</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MixedRealityToolkit</td>
-<td>MRTK\Core</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Examples</td>
-<td>MRTK\Examples</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Extensions</td>
-<td>MRTK\Extensions</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Providers</td>
-<td>MRTK\Providers</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.SDK</td>
-<td>MRTK\SDK</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Services</td>
-<td>MRTK\Services</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Tests</td>
-<td>MRTK\Tests</td>
-</tr>
-<tr>
-<td>MixedRealityToolkit.Tools</td>
-<td>MRTK\Tools</td>
-</tr>
-</tbody>
-</table>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>The <code>MixedRealityToolkit.Generated</code> contains customer generated files and remains unchanged.</p>
+<h2 id="whats-new">What's new</h2>
+<h3 id="unity-package-manager-upm-support">Unity Package Manager (UPM) support</h3>
+<p>The Mixed Reality Toolkit can now be managed using the Unity Package Manager.</p>
+<p><img src="Images/Packaging/MRTK_FoundationUPM.png" alt="MRTK Foundation UPM Package"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>There are some manual steps required to import the MRTK UPM packages. Please review <a href="usingupm.html">Mixed Reality Toolkit and Unity Package Manager</a> for more information.</p>
 </div>
-<p><strong>MRTK Toolbox</strong></p>
-<p><img src="Images/Tools/MRTKToolboxWindow.png" alt="MRTK Toolbox"></p>
-<p>The <a href="README_Toolbox.html">MRTK Toolbox</a> is a Unity editor window utility that makes it easy to discover and spawn MRTK UX prefab components into the current scene. Items can be filtered in view by using the search bar at the top of the window. The toolbox window is designed to spawn MRTK out-of-box prefabs into the current scene.</p>
-<p><strong>Tap to Place</strong></p>
-<p><a href="README_TapToPlace.html">Tap to Place</a> is a far interaction component used to easily place a game object on surface. Tap to Place uses a combination of two clicks and head movement to place an object.</p>
-<p><img src="Images/Solver/TapToPlace/TapToPlaceIntroGif.gif" alt="TapToPlace"></p>
-<p><strong>Button Config Helper added to Pressable Buttons</strong>
-<img src="https://user-images.githubusercontent.com/9789716/70167111-e3175600-167a-11ea-9c52-444509c06105.gif" alt="Button Config Helper">
-This new feature makes it easy to change the icon and text of the buttons. Icon supports quad, sprite, and TextMesh Pro's SDF font texture. See MRTK's <a href="README_Button.html#how-to-change-the-icon-and-text">Button documentation</a> for the details.</p>
-<p><strong>New HoloLens 2-style Toggle Buttons - Checkbox, Switch, Radio</strong>
-<br><img src="https://user-images.githubusercontent.com/13754172/75299797-df631d80-57ea-11ea-8857-8ef647df0aca.gif" width="450">
-<br><img src="https://user-images.githubusercontent.com/13754172/75299783-d6724c00-57ea-11ea-88b1-85e4a585212f.gif" width="450"></p>
-<p><strong>Hand Menu Improvements</strong></p>
-<p>Hand menu has been adapted in many applications. One of the biggest issue we found is the accidental false activation while manipulating objects or interacting with other content, etc. New 'Gaze Activation' option added to HandConstraintPalmUp.cs to prevent false activations. With this option, the menu does not accidentally show up, until the user look at the hand.<br>
-<img src="https://user-images.githubusercontent.com/13754172/79507261-4aabbd80-7fec-11ea-95c4-6e3f4bd18c11.gif" alt="0416_HandMenu_02"></p>
-<p><strong>Hand Menu Examples update</strong></p>
-<p>[New] Large menu interaction example 1: Grab &amp; Pull menu to world-lock<br>
-<img src="https://user-images.githubusercontent.com/13754172/79507983-90b55100-7fed-11ea-9062-630c892950cb.gif" alt="0416_HandMenu_03"></p>
-<p>[New] Large menu interaction example 2 - Auto world-lock on hand drop<br>
-<img src="https://user-images.githubusercontent.com/13754172/79508227-f9043280-7fed-11ea-995f-ac3cfe42fe65.gif" alt="0416_HandMenu_04"></p>
-<p><strong>Dialog (Experimental)</strong>
-<br><img src="Images/Dialog/MRTK_UX_Dialog_Main.png" width="450"></p>
-<p>Dialog UI has been ported over from HoloToolkit with new HoloLens 2 shell-style design updates.</p>
-<p><strong>Dock (Experimental)</strong>
-<br><img src="https://user-images.githubusercontent.com/621574/76669327-65e86080-6548-11ea-85a3-f84f6b367f97.gif" width="450"></p>
-<p>This control enables moving objects in and out of predetermined positions, to create palettes, shelves and navigation bars.</p>
-<p><strong>Unity Profiler markers</strong></p>
-<p>This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
-the MRTK input system that can be used to help optimize applications.</p>
-<p>Markers take the format of &quot;[MRTK] ClassWithoutNamespace.Method&quot;.</p>
-<p><img src="Images/ReleaseNotes/ProfilerMarkers.png" alt="Profiler Markers"></p>
-<p><strong>WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()</strong></p>
-<p>This version of MRTK adds three new methods to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html"><code>WindowsApiChecker</code></a> class: <code>IsMethodAvailable</code>, <code>IsPropertyAvailable</code> and <code>IsTypeAvailable</code>. These methods allow for checking for feature support on Windows 10 and are preferred over using the <code>UniversalApiContractV#_IsAvailable</code> properties.</p>
-<p><strong>Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)</strong></p>
-<img src="https://user-images.githubusercontent.com/168492/77582981-86e07800-6e9d-11ea-86e5-bf2c0840296c.png" width="300">
-<p>We have introduced two helper components, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.html"><code>UI_KeyboardInputField</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField.html"><code>TMP_KeyboardInputField</code></a> that can be added to text input fields in Unity UI to enable the HoloLens 2 and Windows Mixed Reality Keyboard to show up when the fields are clicked.</p>
-<p>For more information, see - <a href="../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.html">Mixed Reality Keyboard Helpers</a>.</p>
-<p><strong>Grid Object Collection Alignment Options</strong></p>
-<img src="https://user-images.githubusercontent.com/39840334/79289136-5c228780-7e7d-11ea-82b4-07959e42c3ed.gif" width="300">
-<p>We have added the ability to choose how the elements in the grid are aligned, whether they are aligned in the center or along the left/right axis (top/bottom axis when doing row then column layout)</p>
-<p><strong>Grid Object Collection Anchor Changes</strong></p>
-<img src="https://user-images.githubusercontent.com/39840334/79516745-17bff480-8001-11ea-8492-cfa953c451da.gif" width="300">
-<p>We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the <code>AnchorAlongAxis</code> field.</p>
-<p><strong>Adjusted input simulation camera control</strong></p>
-<p>Camera control speed using in-editor input simulation is slower for a smoother experience and is now untied from framerate. Fast camera control now activated with Right Shift instead of Right Ctrl</p>
-<p><strong>Hands-free GGV input simulation</strong></p>
-<img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300">
-<p>We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.</p>
-<p><strong>Button Config Helper</strong></p>
-<img src="https://user-images.githubusercontent.com/168492/81211778-bb5d4e80-8f88-11ea-94c7-33cf265586df.png" width="300">
-<p>The Button Config Helper is an editor feature that makes it easier to customize MRTK buttons. It's now much easier to:</p>
+<h3 id="oculus-quest-xrsdk-support">Oculus Quest XRSDK support</h3>
+<p>MRTK now supports running Oculus Quest Headsets and Controllers using the native XR SDK pipeline. Hand tracking is also supported with the <a href="https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022">Oculus Integration Unity package</a> thanks to <a href="https://twitter.com/prvncher">Eric Provencher's</a> work on MRTK-Quest!</p>
+<p>For instructions on how to deploy your device on the Oculus Quest using the new pipeline, see the <a href="CrossPlatform/OculusQuestMRTK.html">Oculus Quest Setup Guide</a></p>
+<h3 id="scrolling-object-collection">Scrolling Object Collection</h3>
+<p>The MRTK UX component has been upgraded from an experimental feature and offers more freedom for layouting 3D content of different sizes with added support for objects that have no colliders attached. A new option for disabling content masking was also added, making prototyping easier.</p>
+<p>See <a href="README_ScrollingObjectCollection.html">Scrolling Object Collection</a> for more information.</p>
+<p><img src="https://user-images.githubusercontent.com/16922045/94465118-51537900-01b7-11eb-8f8b-bf864a8fee03.gif" alt="Scrolling Object Collection"></p>
+<h3 id="teleport-pointer-animation-handling-and-sound-improvements">Teleport pointer animation, handling, and sound improvements</h3>
+<p>The teleport pointer now has improved animations and audio feedback. We also improved the handling of the teleport pointer so it handles smoother when transitioning from pointing at nearby surfaces to farther away surfaces.</p>
+<p><a href="https://streamable.com/3f222q">https://streamable.com/3f222q</a></p>
+<h3 id="input-simulation-cheat-sheet">Input Simulation Cheat Sheet</h3>
+<p>The HandInteractionExamples scene now has a configurable shortcut to show a help page for input simulation</p>
+<p><img src="https://user-images.githubusercontent.com/13754172/93232433-dea8cd80-f7b4-11ea-8500-eaee202f606f.png" alt="Input Simulation Cheat Sheet"></p>
+<h3 id="input-simulation-eye-gaze-with-mouse">Input Simulation Eye Gaze with mouse</h3>
+<p>Users can now use the Mouse for simulating eye tracking. See the <code>Eye Simulation Mode</code> field in the input simulation profile and set it to Mouse. This replaces the previous <code>Simulate Eye Position</code> field</p>
+<p><img src="https://user-images.githubusercontent.com/39840334/87720928-892b5280-c76a-11ea-9411-73ab69fc756c.gif" alt="Eye Gaze Mouse"></p>
+<h3 id="input-simulation-motion-controller-in-editor-play-mode">Input Simulation Motion Controller in Editor Play Mode</h3>
+<p>Users can now simulate motion controller just like hands in editor play mode. The trigger, grab and menu buttons are currently supported.</p>
+<h3 id="conical-grab-pointer">Conical Grab Pointer</h3>
+<p>Grab pointers can now be configured to query for nearby objects using a cone from the grab point rather than a sphere. This more closely resembles the behavior from the default Hololens 2
+interface, which queries for nearby objects using a cone. The DefaultHoloLens2InputSystemProfile has also been adjusted to use the new <code>ConicalGrabPointer</code>.</p>
+<p><img src="https://user-images.githubusercontent.com/39840334/82500569-72d58300-9aa8-11ea-8102-ec9a62832d4e.png" alt="Conical Grab Pointer"></p>
+<h3 id="testutilities-package">TestUtilities package</h3>
+<p>There is now a package (Microsoft.MixedReality.Toolkit.Unity.TestUtilities.2.5.0.unitypackage) that contains the
+PlayMode and TestMode test infrastructure that the MRTK uses to create end-to-end tests. This infrastructure has
+been extremely handy for the MRTK team itself, and we're excited to have consumers use this to add test coverage
+to their own projects.</p>
+<p>The following code shows how to create a test hand, show it at a certain location, move it around, and then
+pinch and open.</p>
+<pre><code class="lang-csharp">TestHand leftHand = new TestHand(Handedness.Left);
+yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+yield return leftHand.Move(new Vector3(0.2f, 0.2f, 0));
+yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+</code></pre>
+<p>For instructions on how to write a test using these TestUtilities, see this section on
+<a href="Contributing/UnitTests.html#writing-tests">writing tests</a></p>
+<p>For examples of existing tests that use this infrastructure, see MRTK's <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/Tests/PlayModeTests">PlayModeTests</a></p>
+<h3 id="support-for-the-leap-motion-451-unity-modules">Support for the Leap Motion 4.5.1 Unity Modules</h3>
+<p>Support for the Leap Motion Unity Modules version 4.5.1 has been added and support for the 4.4.0 assets has been removed. The current supported versions of the Leap Motion Unity Modules are 4.5.0 and 4.5.1.</p>
+<p>There is also an additional step for initial Leap Motion integration, see <a href="CrossPlatform/LeapMotionMRTK.html">How to Configure the Leap Motion Hand Tracking in MRTK</a> for more information.</p>
+<h3 id="spatial-awareness-mesh-observer-better-handles-customization-of-materials">Spatial Awareness Mesh Observer better handles customization of materials</h3>
+<p>With this release, the <code>Windows Mixed Reality Spatial Mesh Observer</code> and the <code>Generic XR SDK Spatial Mesh Observer</code> components have improved visual material handling. Materials are now preserved when a mesh has been updated by the observer where, previously, they were reset to the default VisibleMaterial as configured in the profile.</p>
+<p>This enables developers to alter the mesh material and not have the changes overwritten unexpectedly.</p>
+<h3 id="linkxml-created-in-the-mixedrealitytoolkitgenerated-folder">Link.xml created in the MixedRealityToolkit.Generated folder</h3>
+<p>With the introduction of Unity Package Manger MRTK, MRTK now writes a <code>link.xml</code> file to the <code>Assets/MixedRealityToolkit.Generated</code> folder, if none is present. It is recommended to add this file (and <code>link.xml.meta</code>) be added to source control. Link.xml is used to influence the <a href="https://docs.unity3d.com/Manual/ManagedCodeStripping.html#LinkXML">managed code stripping</a> functionality of the Unity linker.</p>
+<p>More information on the MRTK link.xml file can be found in the <a href="MRTK_and_managed_code_stripping.html">MRTK and managed code stripping</a> article.</p>
+<h3 id="unity-20193-mrtk-configuration-dialog-no-longer-attempts-to-enable-legacy-xr-support">Unity 2019.3+: MRTK configuration dialog no longer attempts to enable legacy XR support</h3>
+<p>To avoid potential conflicts when using Unity's XR Platform, the option to enable legacy XR support has been removed
+from the MRTK configuration dialog. If desired, legacy XR support can be enabled, in Unity 2019, using <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt;
+<strong>Player</strong> &gt; <strong>XR Settings</strong> &gt; <strong>Virtual Reality Supported</strong>.</p>
+<h3 id="reduction-in-initializeonload-overhead">Reduction in InitializeOnLoad overhead</h3>
+<p>We've been doing work to reduce the amount of work that runs in InitializeOnLoad handlers, which should lead to
+improvements in inner loop development speed. InitializeOnLoad handlers run every time a script is compiled, prior
+to entering play mode, and also at editor launch. These handlers now run in far fewer cases, resulting in general
+Unity responsiveness improvements.</p>
+<p>In some cases there was a tradeoff that had to be made:</p>
 <ul>
-<li>Update the button label text</li>
-<li>Add a button click event listener</li>
-<li>Change the button icon</li>
+<li>See <a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Hand Tracking Configuration</a> for the extra integration step.</li>
+<li>For those who are using ARFoundation, there's now an additional manual step in its getting started steps.
+See <a href="CrossPlatform/UsingARFoundation.html#install-required-packages">ARFoundation</a> for the new steps.</li>
+<li>For those who will be using <a href="Tools/HolographicRemoting.html#legacy-xr-setup-instructions">Holographic Remoting with legacy XR pipeline</a> on HoloLens 2, there is now a <a href="Tools/HolographicRemoting.html#dotnetwinrt_present-define-written-into-player-settings">manual step</a> to perform.</li>
 </ul>
-<p><strong>Audio Spatializer Selection in MRTK configuration dialog</strong></p>
-<p>The audio spatializer can now be specified in the MRTK configuration dialog. Installing new spatializers, such as the <a href="https://www.nuget.org/packages/Microsoft.SpatialAudio.Spatializer.Unity/">Microsoft Spatializer</a>, will re-prompt to allow for easy selection.</p>
-<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="MRTK Configuration Select Spatializer"></p>
-<p><strong>Object manipulator graduated to SDK</strong></p>
-<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Object manipulator"></p>
-<p>ObjectManipulator now graduated to SDK and is no longer an experimental feature. This control is replacing the existing ManipulationHandler class which is now deprecated. ObjectManipulator comes with a new more flexible constraint system and correctly responds to physics. A full feature list and guide how to set up can be found in <a href="README_ObjectManipulator.html">object manipulator documentation</a>.
-Users can take advantage of the new <a href="Tools/MigrationWindow.html">migration window</a> to upgrade their existing gameobject using ManipulationHandler to ObjectManipulator</p>
-<p><strong>Bounds control improvements</strong></p>
-<p>We extensively increased test coverage for bounds control this version and addressed one of the biggest pain points of users of bounding box: bounds control will now no longer recreate its visuals on configuration changes. Also it now supports reconfiguring any property during runtime. Also the properties DrawTetherWhenManipulating and HandlesIgnoreCollider are now configurable per handle type.</p>
-<h3 id="breaking-changes-in-240">Breaking changes in 2.4.0</h3>
-<p><strong>Eye Gaze API</strong></p>
-<p>The <code>UseEyeTracking</code> property from <code>GazeProvider</code> implementation of <code>IMixedRealityEyeGazeProvider</code> was renamed to <code>IsEyeTrackingEnabled</code>.</p>
+<h3 id="bounds-control-graduated">Bounds control graduated</h3>
+<p><img src="Images/BoundsControl/MRTK_BoundsControl_Main.png" alt="Bounds control">
+<a href="README_BoundsControl.html">Bounds control</a> graduated out of experimental and comes with a bunch of new features and tons of bug fixes.
+Here a list of the highlights of this update:</p>
+<ul>
+<li>properties are split into configurations which makes it easier to set up bounds control</li>
+<li>configurations can be shared through scriptable objects</li>
+<li>every property / scriptable property is runtime configurable</li>
+<li>bounds control rig isn't recreated on property changes anymore</li>
+<li>translation handles support</li>
+<li>full constraint support through constraint manager</li>
+<li>elastics system integration (experimental)</li>
+</ul>
+<p>The old bounding box is now deprecated and existing game objects using bounding box can be <a href="Tools/MigrationWindow.html">upgraded using the migration tool</a> or the <a href="README_BoundingBox.html#migrating-to-bounds-control">bounding box inspector</a>.</p>
+<h3 id="constraint-manager-component">Constraint manager component</h3>
+<p>Constraints can now be used by both, bounds control and object manipulator via the new <a href="README_ConstraintManager.html">constraint manager component</a>. Both components will create a constraint manager per default and process any attached constraints automatically.</p>
+<p>Additionally to the automatic behavior constraint manager also comes with a manual mode that lets users decide which constraint should be processed.
+For this reason the way we display constraints in the property inspector changed a bit.</p>
+<img src="Images/ConstraintManager/ManualSelection.png" width="600">
+<p>The constraints that are applied to the component are now shown as a list in the constraint manager component whereas the component using the constraint manager (either <a href="README_BoundsControl.html#constraint-system">bounds control</a> or <a href="README_ObjectManipulator.html#constraint-manager">object manipulator</a>) will now show the selected constraint manager and mode (auto or manual).
+For more information read the <a href="README_ConstraintManager.html">constraint manager</a> section in our docs.</p>
+<h3 id="hololens-2-button-material-update">HoloLens 2 Button material update</h3>
+<p>Updated HoloLens 2 Button's front cage material to remove black color in MRC.</p>
+<p><img src="https://user-images.githubusercontent.com/13754172/94341269-dcf7c900-0042-11eb-9028-e55abd2ead67.png" alt="HoloLens 2 button material update"></p>
+<h3 id="description-panel-update-movable-example-scene">Description panel update, movable example scene</h3>
+<p>Updated description panel. (SceneDescriptionPanelRev.prefab) New design provides a grabbable top bar which allows the user to adjust/move the entire scene.</p>
+<p><img src="https://user-images.githubusercontent.com/13754172/91176366-28a21480-e71d-11ea-9e80-7e219595de9c.png" alt="Description panel update"></p>
+<h3 id="spatial-mesh-visualization---pulse-on-air-tap">Spatial mesh visualization - Pulse on air-tap</h3>
+<p>Updated pulse shader example for the spatial mesh to match HoloLens 2's shell behavior.</p>
+<p><img src="https://user-images.githubusercontent.com/13754172/90310153-d0536180-df29-11ea-939a-e9572d4f5670.gif" alt="Pulse on air-tap"></p>
+<h3 id="elastic-system---experimental">Elastic system - Experimental</h3>
+<p><img src="Images/Elastics/Elastics_Main.gif" alt="Elastic System2"></p>
+<p>MRTK now comes with an <a href="Elastics/ElasticSystem.html">elastic simulation system</a> that includes a wide variety of extensible and flexible subclasses, offering bindings for 4-dimensional quaternion springs, 3-dimensional volume springs and simple linear spring systems.</p>
+<p>Currently the following MRTK components supporting the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.html">elastics manager</a> can leverage elastics functionality:</p>
+<ul>
+<li><a href="README_BoundsControl.html#elastics-experimental">Bounds control</a></li>
+<li><a href="README_ObjectManipulator.html#elastics-experimental">Object manipulator</a></li>
+</ul>
+<img src="https://user-images.githubusercontent.com/5544935/88151572-568cba00-cbaf-11ea-91c2-d6b51829b638.gif" width="38%">
+<img src="https://user-images.githubusercontent.com/5544935/88151578-58567d80-cbaf-11ea-8f96-d24f2cf0d6e9.gif" width="45.7%">
+<h3 id="joystick-experimental">Joystick (Experimental)</h3>
+<p>An example of joystick interface that can control a large target object.</p>
+<p><img src="https://user-images.githubusercontent.com/43013191/86156887-769ef100-babb-11ea-85be-ed6a6aed89d2.png" alt="Joystick"></p>
+<h3 id="color-picker-experimental">Color picker (Experimental)</h3>
+<p>An experimental control that makes it easy to change material colors on any object at runtime.
+<img src="https://user-images.githubusercontent.com/43013191/85468370-3b536e00-b561-11ea-812c-b3f7d43dd999.png" alt="Color picker"></p>
+<p><img src="https://user-images.githubusercontent.com/43013191/85468994-fa0f8e00-b561-11ea-89f2-0810d1998518.png" alt="Color picker"></p>
+<p><br><br></p>
+<h2 id="breaking-changes">Breaking changes</h2>
+<h3 id="assembly-definition-files-changes">Assembly Definition Files Changes</h3>
+<p>Some asmdef files are changed and are now only supporting Unity 2018.4.13f1 or later. Compilation errors will show up when upating to MRTK 2.5 in earlier versions of Unity. This can be fixed by going to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and removing the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
+<h3 id="imixedrealitypointermediator">IMixedRealityPointerMediator</h3>
+<p>This interface has been updated to have a new function:</p>
+<pre><code class="lang-csharp">void SetPointerPreferences(IPointerPreferences pointerPreferences);
+</code></pre>
+<p>If you have a custom pointer mediator that doesn't subclass DefaultPointerMediator, you will need to implement this
+new function. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8243">this issue</a> for more background
+on why this was added. This was added to ensure that pointer preferences would be explicitly passed to the mediator,
+rather than having it be implicitly done based on the presence of a constructor that took a IPointerPreferences.</p>
+<h3 id="rest--device-portal-api">Rest / Device Portal API</h3>
+<p>The <code>UseSSL</code> static property has been moved from <code>Rest</code> to <code>DevicePortal</code>.</p>
 <p>If you did this previously...</p>
-<pre><code class="lang-csharp">if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
-{
-    gazeProvider.UseEyeTracking = true;
-}
+<pre><code class="lang-csharp">Rest.UseSSL = true
 </code></pre>
 <p>Do this now...</p>
-<pre><code class="lang-csharp">if (CoreServices.InputSystem.GazeProvider is GazeProvider gazeProvider)
-{
-    gazeProvider.IsEyeTrackingEnabled = true;
-}
+<pre><code class="lang-csharp">DevicePortal.UseSSL = true
 </code></pre>
-<p><strong>Eye gaze setup</strong></p>
-<p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>
-<p>For more information on these changes and complete instructions for eye tracking setup, please see the <a href="EyeTracking/EyeTracking_BasicSetup.html">eye tracking</a> article.</p>
-<h3 id="known-issues-in-240">Known issues in 2.4.0</h3>
-<p><strong>MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3</strong></p>
-<p>An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239">#7239</a>).</p>
-<p>As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity</a>.</p>
-<p><strong>Duplicate Assembly Version and Multiple Precompiled Assemblies Unity 2018.4</strong></p>
-<p>If the platform is switched from Standalone to UWP and then back to Standalone in Unity 2018.4, the following errors might be in the console:</p>
-<pre><code>PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Microsoft.Windows.MixedReality.DotNetWinRT.dll included for the current platform. Only one assembly with the same name is allowed per platform. Assembly paths
-</code></pre>
-<pre><code>Assets\MRTK\Examples\Demos\HandTracking\Scenes\Utilities\InspectorFields\AssemblyInfo.cs(6,12): error CS0579: Duplicate 'AssemblyVersion' attribute
-</code></pre>
-<p>These errors are due to issues in the deletion process with MSBuildForUnity.  To resolve the issue, while in Standalone, delete the Dependencies folder at the root of Assets and restart unity.</p>
-<p>For a more details see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7948">Issue 7948</a>.</p>
-<p><strong>Applications appearing as a 2D slate on Unity 2019.3</strong></p>
-<p>When using Unity 2019.3, enabling XR support does not configure a default SDK (legacy) or plugin (XR Mangement). This results in applications being constrained to a 2D slate. Details on resolving this can be found in the <a href="BuildAndDeploy.html#unity-20193-and-hololens">Building and Deploying MRTK article</a>.</p>
-<p><strong>Unity 2019.3: ARM build architecture</strong></p>
-<p>There is a <a href="https://issuetracker.unity3d.com/issues/enabling-graphics-jobs-in-2019-dot-3-x-results-in-a-crash-or-nothing-rendering-on-hololens-2">known issue</a> in Unity 2019.3 that causes errors when selecting ARM as the build architecture in Visual Studio. The recommended work around is to build for ARM64. If that is not an option, please disable <strong>Graphics Jobs</strong> in <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong> &gt; <strong>Other Settings</strong>. For more information see <a href="BuildAndDeploy.html#unity-20193-and-hololens">Building and Deploying</a>.</p>
-<p><strong>Runtime profile swapping</strong></p>
-<p>MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>, <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465">5465</a> and <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466">5466</a> for more information.</p>
-<p><strong>Unity 2018: .NET Backend and AR Foundation</strong></p>
-<p>There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.</p>
-<p>To work around this issue, please perform one of the following steps:</p>
+<h3 id="linkxml">Link.xml</h3>
+<p>If an application was previously using the NuGet distribution of the MRTK, the <code>link.xml</code> file has been removed from the Foundation package. To restore code preservation rules, opening the project in Unity once will create a default <code>link.xml</code> file in <code>Assets/MixedRealityToolkit.Generated</code>. It is recommended that this file (and <code>link.xml.meta</code>) be added to source control.</p>
+<h3 id="transform-constraint-changes">Transform Constraint Changes</h3>
+<p>TargetTransform property has been marked as obsolete as it wasn't used by constraint system. Constraint logic is based on the transform passed into Initialize and Apply methods. Derived user constraints that rely on this property can cache the TargetTransform in their implementation by storing the transform of the constraint component to achieve the same behavior.</p>
+<p>The stored initial world pose <code>worldPoseOnManipulationStart</code> data type has been changed from MixedRealityPose to MixedRealityTransform, which includes the local scale value of the manipulated object. With this change it's not necessary to separately cache any initial scale values anymore.</p>
+<h3 id="new-property-in-imixedrealitydictationsystem">New Property in IMixedRealityDictationSystem</h3>
+<p>A new property <code>AudioClip</code> has been added to the IMixedRealityDictationSystem interface. The <code>AudioClip</code> property enables access to the audio clip associated with the current dictation session. Users must implement the property in their scripts implementing the interface.</p>
+<h3 id="service-facades-turn-down">Service Facades turn down</h3>
+<p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/06a06778e38da622b37cc299a93f16e143b7bdeb/Assets/MRTK/Core/Inspectors/MixedRealityToolkitFacadeHandler.cs">Services facades</a>
+are being turned down in 2.5. This feature was originally added to make configuration
+of the MRTK profiles easier (by creating fake in-scene GameObjects that represented each of MRTK's
+services). In the long run, we want to avoid creating fake in-game objects and trying to keep them
+in sync (as data sync and &quot;source of truth&quot; issues are notoriously difficult to scale and get right).</p>
+<p>In 2.5, the service facade handlers are kept around to ensure that project upgrade goes smoothly -
+any facades that exist in the project will be deleted by the service facade handler to ensure that
+scenes opened up in 2.5 get automatically fixed.</p>
+<p>The remaining code associated with the service facade feature will be removed in a future release.</p>
+<h3 id="addition-of-motion-controller-to-input-simulation-service">Addition of Motion Controller to Input Simulation Service</h3>
+<p>Motion Controller simulation is now offered in editor play mode along side the existing hand simulation. To enable this change, many current functions/fields/properties are now marked obsolete, with <code>InputSimulationService.cs</code> and <code>MixedRealityInputSimulationProfile.cs</code> getting the most significant changes. The logic and behavior of relevant code largely remain the same, and the majority of obsoleted functions etc. are related to replacing reference to &quot;hand&quot; to the more generic term &quot;controller&quot; (e.g. from <code>DefaultHandSimulationMode</code> to <code>DefaultControllerSimulationMode</code>). Besides getting new names, the return type of certain new functions are updated to match the name/behavior change (e.g. <code>GetControllerDevice</code> based on the original <code>GetHandDevice</code> now returns <code>BaseController</code> instead of <code>SimulatedHand</code>).</p>
+<p><code>IInputSimulationService</code> now has new properties <code>MotionControllerDataLeft</code> and <code>MotionControllerDataRight</code>. <code>MixedRealityInputSimulationProfile</code> now includes new fields for the keyboard mapping of certain motion controller buttons.</p>
+<h2 id="known-issues">Known issues</h2>
+<h3 id="cameracache-may-create-a-new-camera-on-shutdown">CameraCache may create a new camera on shutdown</h3>
+<p>In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459">this issue</a> for more information.</p>
+<h3 id="filenotfoundexception-when-examples-are-imported-via-unity-package-manager">FileNotFoundException when examples are imported via Unity Package Manager</h3>
+<p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
+cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
+<h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound.</h3>
+<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.</p>
+<p>To resolve, please ensure that:</p>
 <ul>
-<li>Switch the scripting backend to IL2CPP</li>
-<li>In the Build Settings window, uncheck **Unity C# Projects&quot;</li>
+<li><p><strong>Window</strong> &gt; <strong>Package Manager</strong> has one or more XR packages installed</p>
+</li>
+<li><p><strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Configure Unity Project</strong> and make a selection for <strong>Audio Spatializer</strong></p>
+<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="Select Audio Apatializer"></p>
+</li>
 </ul>
+<h3 id="nullreferenceexception-object-reference-not-set-to-an-instance-of-an-object-scenetransitionserviceinitialize">NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)</h3>
+<p>In some situations, opening <code>EyeTrackingDemo-00-RootScene</code> may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
+This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:</p>
+<ul>
+<li>Navigate to the <code>MixedRealityToolkit</code> object in the Hierarchy</li>
+<li>In the Inspector window, select <code>Extensions</code></li>
+<li>If not expanded, expand <code>Scene Transition Service</code></li>
+<li>Set the value of <code>Configuration Profile</code> to <strong>MRTKExamplesHubSceneTransitionServiceProfile</strong></li>
+</ul>
+<img src="Images/ReleaseNotes/FixSceneTransitionProfile.png" width="500px">
+<h3 id="oculus-quest">Oculus Quest</h3>
+<p>There is currently a known issue for using the <a href="https://forum.unity.com/threads/unable-to-start-oculus-xr-plugin.913883/">Oculus XR plugin with when targeting Standalone platforms</a>.  Check the Oculus bug tracker/forums/release notes for updates.</p>
+<p>The bug is signified with this set of 3 errors:</p>
+<p><img src="https://forum.unity.com/attachments/erori-unity-png.644204/" alt="Oculus XR Plugin Error"></p>
+<h3 id="unityui-and-textmeshpro">UnityUI and TextMeshPro</h3>
+<p>There's a known issue for newer versions of TextMeshPro (1.5.0+ or 2.1.1+), where the default font size for dropdowns and bold font character spacing has been altered.</p>
+<p><img src="https://user-images.githubusercontent.com/68253937/93158069-4d582f00-f6c0-11ea-87ad-94d0ba3ba6e5.png" alt="TMP image"></p>
+<p>This can be worked around by downgrading to an earlier version of TextMeshPro. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8556">issue #8556</a>
+for more details.</p>
 </article>
           </div>
           

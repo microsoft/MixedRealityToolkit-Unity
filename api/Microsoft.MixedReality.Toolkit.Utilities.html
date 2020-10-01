@@ -128,6 +128,9 @@ that make the most sense for the specific instruction type.</p>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BezierInertia.html">BezierInertia</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BoundsControlMigrationHandler.html">BoundsControlMigrationHandler</a></h4>
+      <section><p>Migration handler for migrating bounding box gameobjects to bounds control gameobjects.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ButtonConfigHelperMigrationHandler.html">ButtonConfigHelperMigrationHandler</a></h4>
       <section><p>Migration handler for migrating buttons with custom icons to the button config helper.</p>
 </section>
@@ -156,6 +159,9 @@ per pixel based clipping.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.html">DebugUtilities</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.DeviceUtility.html">DeviceUtility</a></h4>
+      <section><p>Helps with getting data from or about the current HMD or other XR device.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Easing.html">Easing</a></h4>
       <section><p>Ease settings and functionality for animation with curves</p>
 </section>
@@ -172,6 +178,10 @@ per pixel based clipping.</p>
       <section><p>A Grid Object Collection is simply a set of child objects organized with some
 layout parameters.  The collection can be used to quickly create
 control panels or sets of prefab/objects.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.HandPoseUtils.html">HandPoseUtils</a></h4>
+      <section><p>Utilities for detecting hand poses. useful for systems without native gesture support and for raising
+your own events based on specific hand pose values.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.HeadPositionOffset.html">HeadPositionOffset</a></h4>
       <section><p>Set the content around the camera height</p>
@@ -212,6 +222,13 @@ the <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshOutline.h
 those normals into a UV set. Smoothed normals can be used for a variety of effects including
 extruding disjoint meshes along a vertex normal. This behavior is designed to be used in conjunction
 with the MRTK/Standard shader which assumes smoothed normals are packed into the 3rd UV set.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MigrationTool.html">MigrationTool</a></h4>
+      <section><p>This tool allows the migration of obsolete components into up-to-date versions.
+In order to be processed by the migration tool, deprecated components require specific implementation of the IMigrationHandler</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MigrationTool.MigrationStatus.html">MigrationTool.MigrationStatus</a></h4>
+      <section><p>Utility class to keep migration status of each object</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MigrationWindow.html">MigrationWindow</a></h4>
       <section><p><a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html">https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html</a>This is an utility window for the MigrationTool.</p>
@@ -317,6 +334,9 @@ Reloads between play mode/edit mode and after re-compile of scripts</p>
       <section><p>This can be used as a way to return to the main unity thread
 when using multiple threads with async methods.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.XRSubsystemHelpers.html">XRSubsystemHelpers</a></h4>
+      <section><p>A helper class to provide easier access to active Unity XR SDK subsystems.</p>
+</section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.AnimatorParameter.html">AnimatorParameter</a></h4>
@@ -347,7 +367,7 @@ upgrade to new versions of MRTK.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.AutoStartBehavior.html">AutoStartBehavior</a></h4>
       <section><p>This enumeration identifies two different ways to handle the startup behavior for a feature.
-Both will warm up the component, ready for it's use (e.g. connecting backend services or registering for events.
+Both will warm up the component, ready for its use (e.g. connecting backend services or registering for events.
 The first causes the feature to start immediately. The second allows the feature to be manually started at a later time.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.AxisFlags.html">AxisFlags</a></h4>
@@ -364,6 +384,10 @@ This is mainly information only or for advanced users to understand the input co
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.CreateProfileMenuItemIndices.html">CreateProfileMenuItemIndices</a></h4>
       <section><p>Defines the display order of the Assets &gt; Create &gt; Mixed Reality Toolkit &gt; Profiles menu items.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.DebugUtilities.LoggingLevel.html">DebugUtilities.LoggingLevel</a></h4>
+      <section><p>An enum describing the level of logs that DebugUtilities will emit to the
+Unity player log.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Easing.BasicEaseCurves.html">Easing.BasicEaseCurves</a></h4>
       <section><p>basic ease curves for quick settings</p>
@@ -394,6 +418,9 @@ relative to child layout elements.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ManipulationProximityFlags.html">ManipulationProximityFlags</a></h4>
       <section><p>Flags used to represent whether manipulation can be far, near or both</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MigrationTool.MigrationToolState.html">MigrationTool.MigrationToolState</a></h4>
+      <section><p>Possible states for the migration tool</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MovementConstraintType.html">MovementConstraintType</a></h4>
       <section></section>

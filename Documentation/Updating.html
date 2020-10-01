@@ -100,48 +100,45 @@
 <li><a href="#updating-rc2-to-200">RC2 to 2.0.0</a></li>
 </ul>
 <h2 id="upgrading-to-a-new-version-of-mrtk">Upgrading to a new version of MRTK</h2>
-<p>The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-230-to-240"><strong>Updating 2.3.0 to 2.4.0</strong></a> article.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>At this time, it is not supported to switch between using .unitypackage files and NuGet.</p>
-</div>
-<p><em>Starting with 2.4.0, it is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a>
-after getting the MRTK update</em>* to auto-fix and upgrade from deprecated components and adjust to
-breaking changes. The migration tool is part of the <strong>Tools</strong> package.</p>
+<p><em>It is strongly recommended to run the <a href="Tools/MigrationWindow.html">migration tool</a> after getting the MRTK update</em>
+to auto-fix and upgrade from deprecated components and adjust to breaking changes. The migration tool is part of
+the <strong>Tools</strong> package.</p>
+<p>The instructions below describe the 2.4.0 to 2.5.0 upgrade path. If your project is on 2.3.0 or earlier, read on
+to the changes <a href="#updating-230-to-240">between versions</a> to understand the upgrade path, or read the previous
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/version/releases/2.4.0/Documentation/Updating.html">release's instructions</a>
+to do a version-by-version upgrade.</p>
 <h3 id="unity-asset-unitypackage-files">Unity asset (.unitypackage) files</h3>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Save a copy of your current project, in case you hit any snags at any point in the upgrade steps.</li>
 <li>Close Unity</li>
-<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete the following <strong>MRTK</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
-<li>MixedRealityToolkit</li>
-<li>MixedRealityToolkit.Examples</li>
-<li>MixedRealityToolkit.Extensions</li>
+<li>MRTK/Core</li>
+<li>MRTK/Examples</li>
+<li>MRTK/Extensions</li>
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
 <p>If additional extensions have been installed, please make a backup prior to deleting these folders.</p>
 </div>
 <ul>
-<li>MixedRealityToolkit.Providers</li>
-<li>MixedRealityToolkit.SDK</li>
-<li>MixedRealityToolkit.Services</li>
-<li>MixedRealityToolkit.Staging</li>
-</ul>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.</p>
-</div>
-<ul>
-<li>MixedRealityToolkit.Tools</li>
+<li>MRTK/Providers</li>
+<li>MRTK/SDK</li>
+<li>MRTK/Services</li>
+<li>MRTK/Tools</li>
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
 </div>
 </li>
-<li>Delete the <strong>Library</strong> folder</li>
+<li>Delete the <strong>Library</strong> folder
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Some Unity tools, like Unity Collab, save configuration info to the Library folder. If using a tool that does this, first copy the tool's data folder from Library before deleting, then restore it after Library is regenerated.</p>
+</div>
+</li>
 <li>Re-open the project in Unity</li>
 <li>Import the new unity packages
 <ul>
@@ -157,7 +154,7 @@ breaking changes. The migration tool is part of the <strong>Tools</strong> packa
 <li>(Optional) Examples</li>
 </ul>
 </li>
-<li>Close Unity and delete the <strong>Library</strong> folder. This step is necessary to force Unity to refresh its
+<li>Close Unity and delete the <strong>Library</strong> folder (read the note below first!). This step is necessary to force Unity to refresh its
 asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
@@ -167,23 +164,18 @@ asset database and reconcile existing custom profiles.</li>
 - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
 </ul>
 </li>
-<li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.</li>
-</ol>
-<h3 id="nuget-packages">NuGet packages</h3>
-<p>If your project was created using the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, please use the following steps.</p>
-<ol>
-<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
-<li>Select the <strong>Online</strong> tab and click <strong>Refresh</strong></li>
-<li>Select the <strong>Installed</strong> tab</li>
-<li>Click the <strong>Update</strong> button for each installed package
+<li>Run the <a href="Tools/MigrationWindow.html">migration tool</a> and run the tool on the <em>Full Project</em> to ensure that all of your code is updated to the latest.
+The migration window contains a number of different migration handlers, which must each be run on their own. This step involves:
 <ul>
-<li>Microsoft.MixedReality.Toolkit.Foundation</li>
-<li>Microsoft.MixedReality.Toolkit.Tools</li>
-<li>Microsoft.MixedReality.Toolkit.Extensions</li>
-<li>Microsoft.MixedReality.Toolkit.Examples</li>
+<li>Select the first migration handler from the <strong>Migration Handler Selection</strong> dropdown.</li>
+<li>Click the &quot;Full Project&quot; button.</li>
+<li>Click the &quot;Add full project for migration&quot; button (this will scan the entire project for objects to migrate).</li>
+<li>Click the &quot;Migrate&quot; button which should be enabled if any migrateable objects were found.</li>
+<li>Repeat the previous three steps for each of the migration handlers within the dropdown.
+(See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8552">this issue</a> which covers work that can be done
+to simplify this migration process in a future release)</li>
 </ul>
 </li>
-<li>Close and re-open the project in Unity</li>
 </ol>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
 <p><a href="#folder-renames-in-240">Folder renames</a>
@@ -240,6 +232,9 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 <h3 id="eye-gaze-setup-in-240">Eye gaze setup in 2.4.0</h3>
 <p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>
 <p>For more information on these changes and complete instructions for eye tracking setup, please see the <a href="EyeTracking/EyeTracking_BasicSetup.html">eye tracking</a> article.</p>
+<h3 id="eye-gaze-pointer-behavior-in-240">Eye gaze pointer behavior in 2.4.0</h3>
+<p>The eye gaze default pointer behavior have been modified to match the head gaze default pointer behavior. An eye gaze pointer will automatically be suppressed once a hand is detected. The eye gaze pointer will become visible again after saying &quot;Select&quot;.</p>
+<p>Details about gaze and hand setups can be found in the <a href="EyeTracking/EyeTracking_EyesAndHands.html#how-to-keep-gaze-pointer-always-on">eyes and hands</a> article.</p>
 <h3 id="api-changes-in-240">API changes in 2.4.0</h3>
 <p><strong>Custom controller classes</strong></p>
 <p>Custom controller classes previously had to define <code>SetupDefaultInteractions(Handedness)</code>. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (<code>AssignControllerMappings(DefaultInteractions);</code>), so the full call has been refactored down into <code>BaseController</code> and made an optional override instead of required.</p>

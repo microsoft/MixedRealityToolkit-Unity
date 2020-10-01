@@ -133,46 +133,18 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class Rest</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_UseSSL_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.UseSSL*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_UseSSL" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.UseSSL">UseSSL</h4>
-  <div class="markdown level1 summary"><p>Use SSL Connections when making rest calls.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool UseSSL { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_DeleteAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.DeleteAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_DeleteAsync_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.DeleteAsync(System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean)">DeleteAsync(String, Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_DeleteAsync_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.DeleteAsync(System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">DeleteAsync(String, Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest DELETE.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; DeleteAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; DeleteAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,6 +180,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -229,13 +213,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_System_String_Dictionary_System_String_System_String__System_Int32_DownloadHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync(System.String,Dictionary{System.String,System.String},System.Int32,DownloadHandler,System.Boolean)">GetAsync(String, Dictionary&lt;String, String&gt;, Int32, DownloadHandler, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_System_String_Dictionary_System_String_System_String__System_Int32_DownloadHandler_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync(System.String,Dictionary{System.String,System.String},System.Int32,DownloadHandler,System.Boolean,CertificateHandler,System.Boolean)">GetAsync(String, Dictionary&lt;String, String&gt;, Int32, DownloadHandler, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest GET.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; GetAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, DownloadHandler downloadHandler = null, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; GetAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, DownloadHandler downloadHandler = null, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,6 +259,18 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">readResponseData</span></td>
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
 </td>
       </tr>
     </tbody>
@@ -394,13 +390,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean)">PostAsync(String, Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PostAsync(String, Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest POST.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,6 +432,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -457,13 +465,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_System_Byte___Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,System.Byte[],Dictionary{System.String,System.String},System.Int32,System.Boolean)">PostAsync(String, Byte[], Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_System_Byte___Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,System.Byte[],Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PostAsync(String, Byte[], Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest POST.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, byte[] bodyData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, byte[] bodyData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,6 +513,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -526,13 +546,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean)">PostAsync(String, String, Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PostAsync(String, String, Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest POST.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, string jsonData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, string jsonData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -574,6 +594,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -595,13 +627,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_WWWForm_Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,WWWForm,Dictionary{System.String,System.String},System.Int32,System.Boolean)">PostAsync(String, WWWForm, Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PostAsync_System_String_WWWForm_Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PostAsync(System.String,WWWForm,Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PostAsync(String, WWWForm, Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest POST.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, WWWForm formData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PostAsync(string query, WWWForm formData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -643,6 +675,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -664,13 +708,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_System_String_System_Byte___Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync(System.String,System.Byte[],Dictionary{System.String,System.String},System.Int32,System.Boolean)">PutAsync(String, Byte[], Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_System_String_System_Byte___Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync(System.String,System.Byte[],Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PutAsync(String, Byte[], Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest PUT.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PutAsync(string query, byte[] bodyData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PutAsync(string query, byte[] bodyData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -712,6 +756,18 @@
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -733,13 +789,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_System_String_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync(System.String,System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean)">PutAsync(String, String, Dictionary&lt;String, String&gt;, Int32, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_PutAsync_System_String_System_String_Dictionary_System_String_System_String__System_Int32_System_Boolean_CertificateHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.PutAsync(System.String,System.String,Dictionary{System.String,System.String},System.Int32,System.Boolean,CertificateHandler,System.Boolean)">PutAsync(String, String, Dictionary&lt;String, String&gt;, Int32, Boolean, CertificateHandler, Boolean)</h4>
   <div class="markdown level1 summary"><p>Rest PUT.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PutAsync(string query, string jsonData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; PutAsync(string query, string jsonData, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, bool readResponseData = false, CertificateHandler certificateHandler = null, bool disposeCertificateHandlerOnDispose = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -779,6 +835,18 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">readResponseData</span></td>
         <td><p>Optional bool. If its true, response data will be read from web request download handler.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CertificateHandler</span></td>
+        <td><span class="parametername">certificateHandler</span></td>
+        <td><p>Optional certificate handler for custom certificate verification</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposeCertificateHandlerOnDispose</span></td>
+        <td><p>Optional bool. If true and <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> is not null, <code data-dev-comment-type="paramref" class="paramref">certificateHandler</code> will be disposed, when the underlying UnityWebRequest is disposed.</p>
 </td>
       </tr>
     </tbody>

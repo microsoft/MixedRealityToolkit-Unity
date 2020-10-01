@@ -113,7 +113,7 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
-    <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -121,13 +121,28 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetActiveControllers">BaseInputSimulationService.GetActiveControllers()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Handedness_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_">BaseInputSimulationService.UpdateHandDevice(HandSimulationMode, Handedness, SimulatedHandData)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateControllerDevice_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_Handedness_System_Object_">BaseInputSimulationService.UpdateControllerDevice(ControllerSimulationMode, Handedness, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetControllerDevice_Handedness_">BaseInputSimulationService.GetControllerDevice(Handedness)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddControllerDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_">BaseInputSimulationService.GetOrAddControllerDevice(Handedness, ControllerSimulationMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveControllerDevice_Handedness_">BaseInputSimulationService.RemoveControllerDevice(Handedness)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveAllControllerDevices">BaseInputSimulationService.RemoveAllControllerDevices()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_Handedness_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_">BaseInputSimulationService.UpdateHandDevice(ControllerSimulationMode, Handedness, SimulatedHandData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetHandDevice_Handedness_">BaseInputSimulationService.GetHandDevice(Handedness)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_">BaseInputSimulationService.GetOrAddHandDevice(Handedness, HandSimulationMode)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_ControllerSimulationMode_">BaseInputSimulationService.GetOrAddHandDevice(Handedness, ControllerSimulationMode)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveHandDevice_Handedness_">BaseInputSimulationService.RemoveHandDevice(Handedness)</a>
@@ -218,7 +233,8 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InputPlaybackService : BaseInputSimulationService, IMixedRealityInputPlaybackService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Input Playback Service&quot;)]
+public class InputPlaybackService : BaseInputSimulationService, IMixedRealityInputPlaybackService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -629,7 +645,7 @@ public InputPlaybackService(IMixedRealityServiceRegistrar registrar, IMixedReali
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
 </article>
           </div>

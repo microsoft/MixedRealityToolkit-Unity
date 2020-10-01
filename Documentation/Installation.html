@@ -89,7 +89,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="installation-guide">Installation Guide</h1>
+<h1 id="installation-guide">Installation guide</h1>
 
 <div class="CAUTION">
 <h5>Caution</h5>
@@ -100,8 +100,9 @@
 <ul>
 <li><p><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
 </li>
-<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x, Unity 2019</a></p>
-<p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018</p>
+<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4 or Unity 2019.4</a></p>
+<p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018.<br>
+Starting from MRTK 2.5 <strong>Unity 2018.4.13f1 or later is strongly recommended</strong> for customers using Unity 2018. Earlier versions of Unity 2018.4 are still supported but now require extra steps to set up and to upgrade to Unity 2019.</p>
 </li>
 <li><p><a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
 <p>This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
@@ -109,6 +110,10 @@ when building for OpenVR.</p>
 </li>
 </ul>
 <h2 id="add-mrtk-to-your-unity-project">Add MRTK to your Unity project</h2>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Users of Unity 2019.4 and newer, can use the Unity Package Manager to import MRTK. Please see <a href="usingupm.html">Using the Unity Package Manager</a> for more information.</p>
+</div>
 <h3 id="required">Required</h3>
 <ol>
 <li><a href="#get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</a></li>
@@ -131,12 +136,12 @@ when building for OpenVR.</p>
 <li><strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong></li>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</li>
+<li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.TestUtilities.unitypackage</li>
 <li>(<strong><em>Required for version-to-version upgrades, Optional otherwise</em></strong>) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</li>
 </ul>
 </li>
 </ol>
-<p>For information on package contents, see <a href="MRTK_PackageContents.html">MRTK Package Contents</a>.</p>
-<p>The Mixed Reality Toolkit is also available for download on NuGet.org; for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
+<p>For details on the packages and their contents, please see <a href="Packaging/MRTK_Packages.html">MRTK Packages</a>.</p>
 <h3 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h3>
 <ol>
 <li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
@@ -145,6 +150,10 @@ when building for OpenVR.</p>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features. <strong>Note that the Examples package requires the Extensions package.</strong></li>
 <li>(<strong><em>Required for version-to-version upgrades, Optional otherwise</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
 </ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If you are using Unity 2018.4.12f1 or earlier, note you will experience compilation errors shown in the console. Go to <code>Assets\MRTK\Providers\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef</code> in the project window and remove the missing reference in the inspector. Repeat those steps with <code>Assets\MRTK\Providers\Oculus\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus.asmdef</code> and <code>Assets\MRTK\Providers\WindowsMixedReality\XRSDK\Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef</code>. Note you must revert the changes by replacing those three asmdef files with original (i.e. unmodified) ones when upgrading to Unity 2019.</p>
+</div>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Android and iOS development require additional package installations. For more information, see <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a>.
@@ -195,11 +204,14 @@ Profiles configure the behavior of MRTK core components and are described in mor
 <ul>
 <li><strong>Mixed Reality Toolkit</strong> - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
 <li><strong>MixedRealityPlayspace</strong> - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.</li>
-<li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs</li>
+<li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs.</li>
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
-<p>While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the <strong>MixedRealityPlayspace</strong>) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
+<p>While working in your scene, <strong>DO NOT move the Main Camera</strong> or the <strong>MixedRealityPlayspace</strong>. These are controlled by the active SDK and the MRTK respectively. Any settings you make to the Main Camera or MixedRealityPlayspace transforms will at best be overwritten, and at worst result in undefined behavior.</p>
+<p>The entire rig, Camera and Playspace, can be moved by adding another GameObject to the scene, and making it the parent of the MixedRealityPlayspace. When that object is moved, the Playspace and Camera will follow loosely behind, subject to the additional local transform changes made by the active SDK and the MRTK.</p>
+<p>Another option is to move the scene contents relative to the camera, although this can become problematic in advanced scenarios incorporating content such as Nav Meshes, terrains, or particle systems.</p>
+<p>Further discussion of AR/VR camera rigs can be found in <a href="https://docs.unity3d.com/Packages/com.unity.xr.legacyinputhelpers@2.1/manual/index.html#xr-rig-explanation">Unity's documentation</a> and elsewhere.</p>
 </div>
 </li>
 <li><p>Press Play and test out hand simulation by pressing the <strong>spacebar</strong>.</p>
@@ -230,7 +242,7 @@ Profiles configure the behavior of MRTK core components and are described in mor
 </li>
 </ol>
 <h2 id="using-the-in-editor-hand-input-simulation-to-test-a-scene">Using the in-editor hand input simulation to test a scene</h2>
-<p>The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as <a href="InputSimulation/InputSimulationService.html#hand-simulation">hands</a> or <a href="EyeTracking/EyeTracking_BasicSetup.html#simulating-eye-tracking-in-the-unity-editor">eyes</a>.</p>
+<p>The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as <a href="InputSimulation/InputSimulationService.html#controller-simulation">controllers (i.e. hands, motion controllers)</a> or <a href="EyeTracking/EyeTracking_BasicSetup.html#simulating-eye-tracking-in-the-unity-editor">eyes</a>.</p>
 <p>How to move around in the scene:</p>
 <ul>
 <li>Use <strong>W/A/S/D</strong> keys to move the camera forward/left/back/right.</li>

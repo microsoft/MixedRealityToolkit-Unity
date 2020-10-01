@@ -168,6 +168,10 @@ Good for responsive buttons that can stretch and object realign</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonSizeOffset.html">ButtonSizeOffset</a></h4>
       <section><p>Scales an object relative the scale of the AnchorTransform</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ConstraintManager.html">ConstraintManager</a></h4>
+      <section><p>Manages constraints for a given object and ensures that Scale/Rotation/Translation
+constraints are executed separately.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CursorContextManipulationHandler.html">CursorContextManipulationHandler</a></h4>
       <section><p>This script provides cursor context for the manipulation handler</p>
 </section>
@@ -383,6 +387,9 @@ both HoloLens' gesture input and immersive headset's motion controller input.</p
       <section><p>Utility class to control <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PointerBehavior.html">PointerBehavior</a> of pointers.
 Hook up buttons to the public functions to turn rays on and off.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.html">PrefabSpawner</a></h4>
+      <section><p>Add to any Object to spawn a prefab to it, according to preference</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.html">PressableButton</a></h4>
       <section><p>A button that can be pushed via direct touch.
 You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter.html">PhysicalPressEventRouter</a> to route these events to <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a>.</p>
@@ -417,6 +424,15 @@ or BoundsControl</p>
       <section><p>Theme Engine to control initialized GameObject's scale, local position offset, and color based on state changes
 For color, will try to set on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
 If none found, then Theme will target first Renderer component available and target the associated shader property found in ThemeDefinition</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.ScrollEvent.html">ScrollingObjectCollection.ScrollEvent</a></h4>
+      <section><p>The UnityEvent type the ScrollingObjectCollection sends.
+GameObject is the object the fired the scroll.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollectionNode.html">ScrollingObjectCollectionNode</a></h4>
+      <section><p>A <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ObjectCollectionNode.html">ObjectCollectionNode</a> specific for <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a>.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.SliderEvent.html">SliderEvent</a></h4>
       <section><p>A UnityEvent callback containing a SliderEventData payload.</p>
@@ -597,6 +613,8 @@ around.
 An example of a value that should not be found here is MaintainRotationToUser
 as this restricts rotation of the object when we rotate the hand.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PrefabSpawner.RemainType.html">PrefabSpawner.RemainType</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.html">PressableButton.SpaceMode</a></h4>
       <section><p>Enum for defining space of plane distances.</p>
 </section>
@@ -604,6 +622,18 @@ as this restricts rotation of the object when we rotate the hand.</p>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior.SearchScopes.html">ReceiverBaseMonoBehavior.SearchScopes</a></h4>
       <section><p>Types of directions to search for Interactable component in transform hierarchy</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.EditMode.html">ScrollingObjectCollection.EditMode</a></h4>
+      <section><p>Edit modes for defining scroll viewable area and scroll interaction boundaries.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.PaginationMode.html">ScrollingObjectCollection.PaginationMode</a></h4>
+      <section><p>Scroll pagination modes.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.ScrollDirectionType.html">ScrollingObjectCollection.ScrollDirectionType</a></h4>
+      <section><p>The direction in which a <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> can scroll.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.VelocityType.html">ScrollingObjectCollection.VelocityType</a></h4>
+      <section><p>How velocity is applied to a <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> when a scroll is released.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.SelectionModes.html">SelectionModes</a></h4>
       <section><p>Values for user-friendly dimensions settings</p>
@@ -623,8 +653,6 @@ as this restricts rotation of the object when we rotate the hand.</p>
 anchor. This ensures a natural-looking attachment where the connector line
 meets the label.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.RemainType.html">ToolTipSpawner.RemainType</a></h4>
-      <section></section>
 </article>
           </div>
           

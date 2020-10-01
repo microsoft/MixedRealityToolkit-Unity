@@ -112,9 +112,10 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
-    <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a></div>
     <div><span class="xref">IEqualityComparer</span></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.ISpatialAwarenessPhysicsProperties.html">ISpatialAwarenessPhysicsProperties</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -246,7 +247,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class BaseSpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealitySpatialAwarenessObserver, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BaseSpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealitySpatialAwarenessObserver, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer, ISpatialAwarenessPhysicsProperties</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -619,6 +620,31 @@ Setting this value to Custom, implies that the developer is specifying a custom 
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_PhysicsMaterial_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.PhysicsMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_PhysicsMaterial" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.PhysicsMaterial">PhysicsMaterial</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PhysicMaterial PhysicsMaterial { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PhysicMaterial</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_RecalculateNormals_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.RecalculateNormals*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_RecalculateNormals" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.RecalculateNormals">RecalculateNormals</h4>
   <div class="markdown level1 summary"><p>Indicates whether or not mesh normals should be recalculated by the observer.</p>
@@ -731,6 +757,17 @@ Setting this value to Custom, implies that the developer is specifying a custom 
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_ApplyUpdatedMeshPhysics_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.ApplyUpdatedMeshPhysics*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_ApplyUpdatedMeshPhysics" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.ApplyUpdatedMeshPhysics">ApplyUpdatedMeshPhysics()</h4>
+  <div class="markdown level1 summary"><p>Applies the physical material to existing meshes when modified at runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ApplyUpdatedMeshPhysics()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_ApplyUpdatedPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.ApplyUpdatedPhysicsLayer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialMeshObserver_ApplyUpdatedPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.ApplyUpdatedPhysicsLayer">ApplyUpdatedPhysicsLayer()</h4>
   <div class="markdown level1 summary"><p>Updates the mesh physics layer for current mesh observations.</p>
@@ -822,13 +859,16 @@ Setting this value to Custom, implies that the developer is specifying a custom 
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html">IMixedRealityEventSource</a>
   </div>
   <div>
       <span class="xref">IEqualityComparer</span>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.ISpatialAwarenessPhysicsProperties.html">ISpatialAwarenessPhysicsProperties</a>
   </div>
 </article>
           </div>

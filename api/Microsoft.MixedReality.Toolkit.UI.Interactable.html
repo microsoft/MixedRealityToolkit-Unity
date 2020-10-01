@@ -526,30 +526,6 @@ This allows for visual feedbacks and other typical UX responsiveness and behavio
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_rollOffTime" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.rollOffTime">rollOffTime</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float rollOffTime</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_rollOffTimer" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.rollOffTimer">rollOffTimer</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -1223,7 +1199,7 @@ When false, Interactable will continue to run in Unity but not respond to Input.
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal">IsGlobal</h4>
   <div class="markdown level1 summary"><p>If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks.
-If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.</p>
+If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of its children's, collider.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1509,6 +1485,32 @@ public bool RequiresFocus { get; set; }</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_RollOffTime_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.RollOffTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_RollOffTime" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.RollOffTime">RollOffTime</h4>
+  <div class="markdown level1 summary"><p>Allows for switching colliders without firing a lose focus immediately for advanced controls like drop-downs</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RollOffTime { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>

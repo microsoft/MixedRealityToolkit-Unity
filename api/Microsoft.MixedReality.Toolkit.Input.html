@@ -422,6 +422,8 @@ in order to get PointerDown and PointerUp events whenever a PokePointer touches 
       <section><p>Add a NearInteractionTouchableVolume to your scene and configure a touchable volume
 in order to get PointerDown and PointerUp events whenever a PokePointer collides with this volume.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolumeInspector.html">NearInteractionTouchableVolumeInspector</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ObjectCursor.html">ObjectCursor</a></h4>
       <section><p>The object cursor can switch between different game objects based on its state.
 It simply links the game object to set to active with its associated cursor state.</p>
@@ -443,7 +445,7 @@ i.e. a primary mouse button click, motion controller selection press, or hand ta
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ScreenSpaceMousePointer.html">ScreenSpaceMousePointer</a></h4>
       <section><p>Uses the desktop mouse cursor instead of any mouse representation within the scene.
-It's movement is bound to screenspace.</p>
+Its movement is bound to screenspace.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html">ShellHandRayPointer</a></h4>
       <section><p>Implementation for default hand ray pointers shipped with MRTK. Primarily used with hands and motion controllers</p>
@@ -453,6 +455,9 @@ It's movement is bound to screenspace.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHandPoses.html">SimulatedArticulatedHandPoses</a></h4>
       <section><p>This stores the joint pose JSON data that defines various articulated hand gestures for input simulation.
 The JSON data that defines each joint position and orientation is stored in strings to avoid file loading/targeting during runtime</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedControllerDataProvider.html">SimulatedControllerDataProvider</a></h4>
+      <section><p>Produces simulated data every frame that defines the position and rotation of the simulated controller.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html">SimulatedGestureHand</a></h4>
       <section></section>
@@ -466,6 +471,14 @@ The JSON data that defines each joint position and orientation is stored in stri
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandUtils.html">SimulatedHandUtils</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionController.html">SimulatedMotionController</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerData.html">SimulatedMotionControllerData</a></h4>
+      <section><p>Snapshot of simulated motion controller data.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerDataProvider.html">SimulatedMotionControllerDataProvider</a></h4>
+      <section><p>Produces simulated data every frame that defines the position and rotation of the simulated controller.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData&lt;T&gt;</a></h4>
       <section><p>Describes a source change event.</p>
 </section>
@@ -555,6 +568,9 @@ The JSON data that defines each joint position and orientation is stored in stri
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PointerOption.html">PointerOption</a></h4>
       <section><p>Defines a pointer option to assign to a controller.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerButtonState.html">SimulatedMotionControllerButtonState</a></h4>
+      <section><p>Struct storing the states of buttons on the motion controller</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpeechCommands.html">SpeechCommands</a></h4>
       <section><p>Data structure for mapping Voice and Keyboard input to <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputAction.html">MixedRealityInputAction</a>s that can be raised by the Input System.</p>
 </section>
@@ -602,7 +618,7 @@ to send an event to all input handling interfaces.</p>
       <section><p>Implements the Gaze Provider for an Input Source.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeSaccadeProvider.html">IMixedRealityEyeSaccadeProvider</a></h4>
-      <section><p>Provides eye tracking information.</p>
+      <section><p>Provides eye tracking saccade events.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html">IMixedRealityFocusChangedHandler</a></h4>
       <section><p>Interface to implement to react to focus changed events.</p>
@@ -724,6 +740,9 @@ maintain consistent behavior.</p>
 </section>
     <h3 id="enums">Enums
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerSimulationMode.html">ControllerSimulationMode</a></h4>
+      <section><p>Defines for how input simulation handles controllers</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.CursorContextEnum.html">CursorContextEnum</a></h4>
       <section><p>Enum for current cursor context</p>
 </section>
@@ -736,13 +755,18 @@ maintain consistent behavior.</p>
       <section><p>The InputType defines the types of input exposed by a controller.
 Denoting the available buttons / interactions that a controller supports.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.EyeGazeSimulationMode.html">EyeGazeSimulationMode</a></h4>
+      <section><p>Defines for how input simulation handles eye gaze</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.GestureInputType.html">GestureInputType</a></h4>
       <section><p>The GestureInputType defines the types of gestures exposed by a controller.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.html">HandSimulationMode</a></h4>
-      <section></section>
+      <section><p>Defines for how input simulation handles controllers</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationControlMode.html">InputSimulationControlMode</a></h4>
-      <section></section>
+      <section><p>Defines for how input simulation handles movement</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.ToolMode.html">InputSimulationWindow.ToolMode</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></h4>
@@ -776,7 +800,11 @@ Initially, this lists proposed SDKs, not all may be implemented at this time (pl
 Old and new pointer values can be null to indicate transition from or to no primary pointer, but they won't both be null simultaneously.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.HandJointDataGenerator.html">SimulatedHandData.HandJointDataGenerator</a></h4>
-      <section></section>
+      <section><p>Generator function producing joint positions and rotations</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedMotionControllerData.MotionControllerPoseUpdater.html">SimulatedMotionControllerData.MotionControllerPoseUpdater</a></h4>
+      <section><p>Delegate to function updating the position and rotation of the motion controller</p>
+</section>
 </article>
           </div>
           

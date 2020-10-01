@@ -465,7 +465,8 @@ This could be the headPosition or camera position if the face that was facing th
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void GetRawBBCorners(BoundingBox boundingBox)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetRawBBCorners and pass in TargetBounds&quot;)]
+public void GetRawBBCorners(BoundingBox boundingBox)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -530,7 +531,8 @@ to get current bound points;</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateNonAABoundingBoxCornerPositions(BoundingBox boundingBox, List&lt;Vector3&gt; boundsPoints)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use UpdateNonAABoundsCornerPositions and pass in TargetBounds&quot;)]
+public void UpdateNonAABoundingBoxCornerPositions(BoundingBox boundingBox, List&lt;Vector3&gt; boundsPoints)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -136,8 +136,8 @@
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UseSlowTestHand">UseSlowTestHand</h4>
-  <div class="markdown level1 summary"><p>If true, the hand movement test steps will take a longer number of frames. This is especially
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestController" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UseSlowTestController">UseSlowTestController</h4>
+  <div class="markdown level1 summary"><p>If true, the controller movement test steps will take a longer number of frames. This is especially
 useful for seeing motion in play mode tests (where the default smaller number of frames tends
 to make tests too fast to be understandable to the human eye). This is false by default
 to ensure that tests will run quickly in general, and can be set to true manually in specific
@@ -146,9 +146,111 @@ test cases using the example below.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool UseSlowTestHand</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool UseSlowTestController</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestController_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that this value is reset to false after each play mode test that uses
+PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+UseSlowTestController = true ends up slowing all subsequent tests.</p>
+</div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestController_examples">Examples</h5>
+  <pre><code>[UnityTest]
+public IEnumerator YourTestCase()
+{
+    PlayModeTestUtilities.UseSlowTestController = true;
+    ...
+    PlayModeTestUtilities.UseSlowTestController = false;
+}</code></pre>
+
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ControllerMoveSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ControllerMoveSteps*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ControllerMoveSteps" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ControllerMoveSteps">ControllerMoveSteps</h4>
+  <div class="markdown level1 summary"><p>The number of frames that elapse for each test controller movement, taking into account if
+slow test controller mode has been engaged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ControllerMoveSteps { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps">HandMoveSteps</h4>
+  <div class="markdown level1 summary"><p>The number of frames that elapse for each test controller movement, taking into account if
+slow test controller mode has been engaged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ControllerMoveSteps instead.&quot;)]
+public static int HandMoveSteps { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UseSlowTestHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UseSlowTestHand">UseSlowTestHand</h4>
+  <div class="markdown level1 summary"><p>If true, the controller movement test steps will take a longer number of frames. This is especially
+useful for seeing motion in play mode tests (where the default smaller number of frames tends
+to make tests too fast to be understandable to the human eye). This is false by default
+to ensure that tests will run quickly in general, and can be set to true manually in specific
+test cases using the example below.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use UseSlowTestController instead.&quot;)]
+public static bool UseSlowTestHand { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -166,46 +268,17 @@ test cases using the example below.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Note that this value is reset to false after each play mode test that uses
 PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-UseSlowTestHand = true ends up slowing all subsequent tests.</p>
+UseSlowTestController = true ends up slowing all subsequent tests.</p>
 </div>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand_examples">Examples</h5>
   <pre><code>[UnityTest]
 public IEnumerator YourTestCase()
 {
-    PlayModeTestUtilities.UseSlowTestHand = true;
+    PlayModeTestUtilities.UseSlowTestController = true;
     ...
-    PlayModeTestUtilities.UseSlowTestHand = false;
+    PlayModeTestUtilities.UseSlowTestController = false;
 }</code></pre>
 
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps">HandMoveSteps</h4>
-  <div class="markdown level1 summary"><p>The number of frames that elapse for each test hand movement, taking into account if
-slow test hand mode has been engaged.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int HandMoveSteps { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -213,8 +286,8 @@ slow test hand mode has been engaged.</p>
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_CalculateNumSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.CalculateNumSteps*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_CalculateNumSteps_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.CalculateNumSteps(System.Int32)">CalculateNumSteps(Int32)</h4>
   <div class="markdown level1 summary"><p>Given a numSteps value, determines if the value is a 'sentinel' value of
-HandMoveStepsSentinelValue, which should be converted to the current
-default value of HandMoveSteps. If it's not the sentinel value,
+ControllerMoveStepsSentinelValue, which should be converted to the current
+default value of ControllerMoveSteps. If it's not the sentinel value,
 this returns numSteps unchanged.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -437,6 +510,53 @@ this returns numSteps unchanged.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideController_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideController_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideController(Handedness,InputSimulationService)">HideController(Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator HideController(Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideHand*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideHand_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideHand(Handedness,InputSimulationService)">HideHand(Handedness, InputSimulationService)</h4>
   <div class="markdown level1 summary"></div>
@@ -562,9 +682,92 @@ this returns numSteps unchanged.</p>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveHand_Vector3_Vector3_ArticulatedHandPose_GestureId_Handedness_InputSimulationService_System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-default number of steps should be used (i.e. HandMoveSteps). HandMoveSteps is not a compile
+default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
 time constant, which is a requirement for default parameter values.</p>
 </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveMotionController_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.MoveMotionController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveMotionController_Vector3_Vector3_SimulatedMotionControllerButtonState_Handedness_InputSimulationService_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.MoveMotionController(Vector3,Vector3,SimulatedMotionControllerButtonState,Handedness,InputSimulationService,System.Int32)">MoveMotionController(Vector3, Vector3, SimulatedMotionControllerButtonState, Handedness, InputSimulationService, Int32)</h4>
+  <div class="markdown level1 summary"><p>Moves the motion controller from startPos to endPos.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator MoveMotionController(Vector3 startPos, Vector3 endPos, SimulatedMotionControllerButtonState buttonState, Handedness handedness, InputSimulationService inputSimulationService, int numSteps = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">startPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">endPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SimulatedMotionControllerButtonState</span></td>
+        <td><span class="parametername">buttonState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numSteps</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveMotionController_Vector3_Vector3_SimulatedMotionControllerButtonState_Handedness_InputSimulationService_System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
+time constant, which is a requirement for default parameter values.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopControllerSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopControllerSimulationProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopControllerSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopControllerSimulationProfile">PopControllerSimulationProfile()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PopControllerSimulationProfile()</code></pre>
+  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopHandSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopHandSimulationProfile*"></a>
@@ -573,7 +776,18 @@ time constant, which is a requirement for default parameter values.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void PopHandSimulationProfile()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use PopControllerSimulationProfile instead.&quot;)]
+public static void PopHandSimulationProfile()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PushControllerSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PushControllerSimulationProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PushControllerSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PushControllerSimulationProfile">PushControllerSimulationProfile()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PushControllerSimulationProfile()</code></pre>
   </div>
   
   
@@ -583,8 +797,36 @@ time constant, which is a requirement for default parameter values.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void PushHandSimulationProfile()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use PushControllerSimulationProfile instead.&quot;)]
+public static void PushHandSimulationProfile()</code></pre>
   </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetControllerSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetControllerSimulationMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetControllerSimulationMode_ControllerSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode)">SetControllerSimulationMode(ControllerSimulationMode)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetControllerSimulationMode(ControllerSimulationMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ControllerSimulationMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandRotation_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandRotation*"></a>
@@ -660,12 +902,13 @@ time constant, which is a requirement for default parameter values.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandSimulationMode*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandSimulationMode_HandSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode)">SetHandSimulationMode(HandSimulationMode)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandSimulationMode_ControllerSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandSimulationMode(ControllerSimulationMode)">SetHandSimulationMode(ControllerSimulationMode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetHandSimulationMode(HandSimulationMode mode)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use SetControllerSimulationMode instead.&quot;)]
+public static void SetHandSimulationMode(ControllerSimulationMode mode)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -678,7 +921,7 @@ time constant, which is a requirement for default parameter values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">HandSimulationMode</span></td>
+        <td><span class="xref">ControllerSimulationMode</span></td>
         <td><span class="parametername">mode</span></td>
         <td></td>
       </tr>
@@ -743,15 +986,164 @@ time constant, which is a requirement for default parameter values.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetMotionControllerRotation_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetMotionControllerRotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetMotionControllerRotation_Quaternion_Quaternion_Vector3_SimulatedMotionControllerButtonState_Handedness_System_Int32_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetMotionControllerRotation(Quaternion,Quaternion,Vector3,SimulatedMotionControllerButtonState,Handedness,System.Int32,InputSimulationService)">SetMotionControllerRotation(Quaternion, Quaternion, Vector3, SimulatedMotionControllerButtonState, Handedness, Int32, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator SetMotionControllerRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState, Handedness handedness, int numSteps, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">fromRotation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">toRotation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">motionControllerPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SimulatedMotionControllerButtonState</span></td>
+        <td><span class="parametername">buttonState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numSteps</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetMotionControllerState_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetMotionControllerState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetMotionControllerState_Vector3_SimulatedMotionControllerButtonState_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetMotionControllerState(Vector3,SimulatedMotionControllerButtonState,Handedness,InputSimulationService)">SetMotionControllerState(Vector3, SimulatedMotionControllerButtonState, Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator SetMotionControllerState(Vector3 motionControllerPos, SimulatedMotionControllerButtonState buttonState, Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">motionControllerPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SimulatedMotionControllerButtonState</span></td>
+        <td><span class="parametername">buttonState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup">Setup()</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup(Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile)">Setup(MixedRealityToolkitConfigurationProfile)</h4>
   <div class="markdown level1 summary"><p>Creates a play mode test scene, creates an MRTK instance, initializes playspace.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Setup()</code></pre>
+    <pre><code class="lang-csharp hljs">public static void Setup(MixedRealityToolkitConfigurationProfile profile = null)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html">MixedRealityToolkitConfigurationProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Takes an optional MixedRealityToolkitConfigurationProfile used to initialize the MRTK.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetupMrtkWithoutGlobalInputHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers*"></a>
@@ -886,6 +1278,111 @@ time constant, which is a requirement for default parameter values.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowMontionController_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowMontionController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowMontionController_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowMontionController(Handedness,InputSimulationService)">ShowMontionController(Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"><p>Shows the motion controller in the default state, at the origin</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowMontionController_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowMontionController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowMontionController_Handedness_InputSimulationService_SimulatedMotionControllerButtonState_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowMontionController(Handedness,InputSimulationService,SimulatedMotionControllerButtonState,Vector3)">ShowMontionController(Handedness, InputSimulationService, SimulatedMotionControllerButtonState, Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator ShowMontionController(Handedness handedness, InputSimulationService inputSimulationService, SimulatedMotionControllerButtonState buttonState, Vector3 motionControllerLocation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SimulatedMotionControllerButtonState</span></td>
+        <td><span class="parametername">buttonState</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">motionControllerLocation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TearDown*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TearDown" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TearDown">TearDown()</h4>
   <div class="markdown level1 summary"><p>Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.</p>
@@ -909,6 +1406,58 @@ time constant, which is a requirement for default parameter values.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Workaround for #5116</p>
 </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UpdateMotionControllerPose_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UpdateMotionControllerPose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UpdateMotionControllerPose_Handedness_Vector3_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UpdateMotionControllerPose(Handedness,Vector3,Quaternion)">UpdateMotionControllerPose(Handedness, Vector3, Quaternion)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SimulatedMotionControllerData.MotionControllerPoseUpdater UpdateMotionControllerPose(Handedness handedness, Vector3 worldPosition, Quaternion rotation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">worldPosition</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SimulatedMotionControllerData.MotionControllerPoseUpdater</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_WaitForEnterKey_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.WaitForEnterKey*"></a>

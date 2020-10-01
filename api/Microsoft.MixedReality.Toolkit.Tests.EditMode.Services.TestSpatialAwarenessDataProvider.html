@@ -110,7 +110,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
-    <div><span class="xref">IDisposable</span></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
     <div><span class="xref">IMixedRealitySpatialAwarenessObserver</span></div>
     <div><span class="xref">IMixedRealitySpatialAwarenessMeshObserver</span></div>
   </div>
@@ -193,7 +193,8 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestSpatialAwarenessDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TestSpatialAwarenessDataProvider : TestBaseDataProvider, ITestSpatialAwarenessDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealitySpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver</code></pre>
+    <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealitySpatialAwarenessSystem), null, &quot;Test Spatial Awareness Data Provider&quot;, &quot;Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset&quot;, &quot;MixedRealityToolkit.SDK&quot;)]
+public class TestSpatialAwarenessDataProvider : TestBaseDataProvider, ITestSpatialAwarenessDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealitySpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -870,7 +871,7 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>
   </div>
   <div>
-      <span class="xref">IDisposable</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
   <div>
       <span class="xref">IMixedRealitySpatialAwarenessObserver</span>
