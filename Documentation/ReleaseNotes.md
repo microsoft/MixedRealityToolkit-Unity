@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.0 draft release notes
+# Microsoft Mixed Reality Toolkit 2.5.0 release notes
 
 - [What's new](#whats-new)
 - [Breaking changes](#breaking-changes)
