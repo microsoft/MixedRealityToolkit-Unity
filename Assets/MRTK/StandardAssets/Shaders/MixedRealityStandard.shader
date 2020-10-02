@@ -21,7 +21,9 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
         [HDR]_EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
         [Toggle(_TRIPLANAR_MAPPING)] _EnableTriplanarMapping("Triplanar Mapping", Float) = 0.0
-        [Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
+		[Toggle(_USE_MSAA)] _EnableMSAA("Multi Sample Anti Aliasing", Float) = 0.0
+		_MipmapBias("Mipmap Bias", Range(-1.0, 0.0)) = 0.0
+		[Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
         _TriplanarMappingBlendSharpness("Blend Sharpness", Range(1.0, 16.0)) = 4.0
 
         // Rendering options.
@@ -344,6 +346,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_EMISSION)
             fixed4 _EmissiveColor;
+#endif
+
+#if defined(_USE_MSAA)
+			float _MipmapBias;
 #endif
 
 #if defined(_TRIPLANAR_MAPPING)
@@ -777,13 +783,27 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
 #if defined(_TRIPLANAR_MAPPING)
-                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
-                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
-                                tex2D(_MainTex, uvZ) * triplanarBlend.z;
+                //fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
+                //                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                //                tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
-                fixed4 albedo = tex2D(_MainTex, i.uv);
+#if defined(_USE_MSAA)
+				// per pixel screen space partial derivatives
+				float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
+				float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset
+				// supersampled 2x2 ordered grid
+				fixed4 albedo = 0;
+				albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx + dy, 0.0, _MipmapBias));
+				albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx + dy, 0.0, _MipmapBias));
+				albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx - dy, 0.0, _MipmapBias));
+				albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx - dy, 0.0, _MipmapBias));
+				albedo *= 0.25;
+#else
+				fixed4 albedo = tex2D(_MainTex, i.uv);
 #endif
 #endif
+#endif
+
 
 #ifdef LIGHTMAP_ON
                 albedo.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.lightMapUV));

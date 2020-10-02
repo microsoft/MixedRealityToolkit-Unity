@@ -52,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent enableEmission = new GUIContent("Emission", "Enable Emission");
             public static GUIContent emissiveColor = new GUIContent("Color");
             public static GUIContent enableTriplanarMapping = new GUIContent("Triplanar Mapping", "Enable Triplanar Mapping, a technique which programmatically generates UV coordinates");
+            public static GUIContent enableMSAA = new GUIContent("Multi Sample Anti-Aliasing", "Enable Multi Sample Anti-Aliasing, a technique improves texture clarity at long distances");
+            public static GUIContent mipmapBias = new GUIContent("Mipmap Bias", "Degree to bias the mip map. A more negative value increases aliasing but gives a clearer image");
             public static GUIContent enableLocalSpaceTriplanarMapping = new GUIContent("Local Space", "If True Triplanar Mapping is Calculated in Local Space");
             public static GUIContent triplanarMappingBlendSharpness = new GUIContent("Blend Sharpness", "The Power of the Blend with the Normal");
             public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
@@ -135,6 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty enableEmission;
         protected MaterialProperty emissiveColor;
         protected MaterialProperty enableTriplanarMapping;
+        protected MaterialProperty enableMSAA;
+        protected MaterialProperty mipmapBias;
         protected MaterialProperty enableLocalSpaceTriplanarMapping;
         protected MaterialProperty triplanarMappingBlendSharpness;
         protected MaterialProperty metallic;
@@ -225,6 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             enableEmission = FindProperty("_EnableEmission", props);
             emissiveColor = FindProperty("_EmissiveColor", props);
             enableTriplanarMapping = FindProperty("_EnableTriplanarMapping", props);
+            enableMSAA = FindProperty("_EnableMSAA", props);
+            mipmapBias = FindProperty("_MipmapBias", props);
             enableLocalSpaceTriplanarMapping = FindProperty("_EnableLocalSpaceTriplanarMapping", props);
             triplanarMappingBlendSharpness = FindProperty("_TriplanarMappingBlendSharpness", props);
             directionalLight = FindProperty("_DirectionalLight", props);
@@ -468,6 +474,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 materialEditor.ShaderProperty(enableLocalSpaceTriplanarMapping, Styles.enableLocalSpaceTriplanarMapping, 2);
                 materialEditor.ShaderProperty(triplanarMappingBlendSharpness, Styles.triplanarMappingBlendSharpness, 2);
+            }
+
+
+            materialEditor.ShaderProperty(enableMSAA, Styles.enableMSAA);
+            if (PropertyEnabled(enableMSAA))
+            {
+                materialEditor.ShaderProperty(mipmapBias, Styles.mipmapBias, 2);
             }
 
             EditorGUILayout.Space();
