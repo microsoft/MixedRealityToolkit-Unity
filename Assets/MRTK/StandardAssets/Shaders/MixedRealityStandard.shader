@@ -21,7 +21,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
         [HDR]_EmissiveColor("Emissive Color", Color) = (0.0, 0.0, 0.0, 1.0)
         [Toggle(_TRIPLANAR_MAPPING)] _EnableTriplanarMapping("Triplanar Mapping", Float) = 0.0
-		[Toggle(_USE_MSAA)] _EnableMSAA("Multi Sample Anti Aliasing", Float) = 0.0
+		[Toggle(_USE_SSAA)] _EnableSSAA("Super Sample Anti Aliasing", Float) = 0.0
 		_MipmapBias("Mipmap Bias", Range(-1.0, 0.0)) = 0.0
 		[Toggle(_LOCAL_SPACE_TRIPLANAR_MAPPING)] _EnableLocalSpaceTriplanarMapping("Local Space", Float) = 0.0
         _TriplanarMappingBlendSharpness("Blend Sharpness", Range(1.0, 16.0)) = 4.0
@@ -151,6 +151,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _EMISSION
             #pragma shader_feature _TRIPLANAR_MAPPING
             #pragma shader_feature _LOCAL_SPACE_TRIPLANAR_MAPPING
+			#pragma shader_feature _USE_SSAA
             #pragma shader_feature _DIRECTIONAL_LIGHT
             #pragma shader_feature _SPECULAR_HIGHLIGHTS
             #pragma shader_feature _SPHERICAL_HARMONICS
@@ -348,7 +349,7 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed4 _EmissiveColor;
 #endif
 
-#if defined(_USE_MSAA)
+#if defined(_USE_SSAA)
 			float _MipmapBias;
 #endif
 
@@ -783,11 +784,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
 #else
 #if defined(_TRIPLANAR_MAPPING)
-                //fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
-                //                tex2D(_MainTex, uvY) * triplanarBlend.y + 
-                //                tex2D(_MainTex, uvZ) * triplanarBlend.z;
+                fixed4 albedo = tex2D(_MainTex, uvX) * triplanarBlend.x + 
+                                tex2D(_MainTex, uvY) * triplanarBlend.y + 
+                                tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
-#if defined(_USE_MSAA)
+#if defined(_USE_SSAA)
 				// per pixel screen space partial derivatives
 				float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
 				float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset
