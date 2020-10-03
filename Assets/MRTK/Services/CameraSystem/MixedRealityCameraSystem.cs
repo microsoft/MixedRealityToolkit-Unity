@@ -79,14 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         }
 
         /// <inheritdoc />
-        public bool ProjectionOverrideEnabled
+        public bool ReadingModeEnabled
         {
             get
             {
                 ProjectionOverride projectionOverride;
-                if(TryGetProjectionOverrideComponent(out projectionOverride, false))
+                if (TryGetProjectionOverrideComponent(out projectionOverride, false))
                 {
-                    return projectionOverride.EnableOverride;
+                    return projectionOverride.ReadingModeEnabled;
                 }
                 return false;
             }
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 ProjectionOverride projectionOverride;
                 if (TryGetProjectionOverrideComponent(out projectionOverride, true))
                 {
-                    projectionOverride.EnableOverride = value;
+                    projectionOverride.ReadingModeEnabled = value;
                 }
             }
         }
@@ -105,15 +105,18 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         /// <param name="projectionOverride">The <see cref="ProjectionOverride"> component if there is one</param>
         /// <param name="createIfAbsent">Create the <see cref="ProjectionOverride"> if it's not there</param>
-        /// <returns></returns>
+        /// <returns>
+        /// false if there was no ProjectionOverride component and we didn't create one
+        /// true if the out param projectionOverride is set to the ProjectionOverride attached to the main camera
+        /// </returns>
         private bool TryGetProjectionOverrideComponent(out ProjectionOverride projectionOverride, bool createIfAbsent)
         {
-            if(CameraCache.Main.TryGetComponent<ProjectionOverride>(out projectionOverride))
+            if (CameraCache.Main.TryGetComponent<ProjectionOverride>(out projectionOverride))
             {
                 return true;
             }
 
-            if(!createIfAbsent)
+            if (!createIfAbsent)
             {
                 return false;
             }

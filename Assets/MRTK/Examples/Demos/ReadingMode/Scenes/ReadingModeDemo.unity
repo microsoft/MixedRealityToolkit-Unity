@@ -1077,7 +1077,7 @@ PrefabInstance:
     - target: {fileID: 114107642412081004, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: Projection Options
+      value: Reading Mode Demo
       objectReference: {fileID: 0}
     - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -1087,7 +1087,7 @@ PrefabInstance:
     - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: Projection Override
+      value: Reading Mode
       objectReference: {fileID: 0}
     - target: {fileID: 114186135864427680, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -1103,14 +1103,14 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: "    This scene demonstrates options for altering the view.\r\n\n\n\n   
-        Projection Override alters the system field-of-view.  Enabling it results
-        in a smaller FOV but with potentially sharper details.  If you lose hologram
-        stability after enabling it, set the Stereo Rendering Mode to Multi Pass. 
-        This works around a bug.  While Projection Override works on immersive headsets,
-        it's mostly useful on HoloLens 2 hardware.\n\t\t\r\n\n\t\t\r\n    Changing
-        the position of this slider will reduce the number of pixels rendered by
-        the application.  This may allow an application to maintain 60FPS during
-        moments when it would otherwise drop below 60FPS due to complicated rendering.\r\n"
+        Reading Mode alters the system field-of-view.  Enabling it results in a smaller
+        FOV but with potentially sharper details.  If you lose hologram stability
+        after enabling it, set the Stereo Rendering Mode to Multi Pass.  This works
+        around a bug.  While Reading Mode works on immersive headsets, it's mostly
+        useful on HoloLens 2 hardware.\n\t\t\r\n\n\t\t\r\n    Changing the position
+        of this slider will reduce the number of pixels rendered by the application. 
+        This may allow an application to maintain 60FPS during moments when it would
+        otherwise drop below 60FPS due to complicated rendering.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -1560,12 +1560,12 @@ PrefabInstance:
     - target: {fileID: 102355601117475586, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
       propertyPath: m_Text
-      value: Normal Projection
+      value: Disable Reading Mode
       objectReference: {fileID: 0}
     - target: {fileID: 102888677059595956, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
       propertyPath: m_Text
-      value: Projection Override
+      value: Enable Reading Mode
       objectReference: {fileID: 0}
     - target: {fileID: 114200093395354822, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
@@ -1590,7 +1590,7 @@ PrefabInstance:
     - target: {fileID: 114200093395354822, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EnableProjectionOverride
+      value: EnableReadingMode
       objectReference: {fileID: 0}
     - target: {fileID: 114200093395354822, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
@@ -1620,7 +1620,7 @@ PrefabInstance:
     - target: {fileID: 114214013505314002, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DisableProjectionOverride
+      value: DisableReadingMode
       objectReference: {fileID: 0}
     - target: {fileID: 114214013505314002, guid: 8b83134143223104c9bc3865a565cab3,
         type: 3}
@@ -1912,6 +1912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1282769095}
   - component: {fileID: 1282769096}
+  - component: {fileID: 1282769097}
   m_Layer: 0
   m_Name: SceneContent
   m_TagString: Untagged
@@ -1948,8 +1949,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68d3491f4b7cc8478681195687e3c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProjectionOverrideIndicator: {fileID: 0}
-  ProjectionNormalIndicator: {fileID: 0}
+  RenderViewportScaleSlider: {fileID: 136758751}
+--- !u!114 &1282769097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282769094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68d3491f4b7cc8478681195687e3c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   RenderViewportScaleSlider: {fileID: 136758751}
 --- !u!1 &1322787929
 GameObject:

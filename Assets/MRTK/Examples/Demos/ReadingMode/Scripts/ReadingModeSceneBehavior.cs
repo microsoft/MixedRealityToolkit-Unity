@@ -6,25 +6,28 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class ProjectionOptionsSceneBehavior : MonoBehaviour
+/// <summary>
+/// Logic for the ReadingModeScene
+/// </summary>
+public class ReadingModeSceneBehavior : MonoBehaviour
 {
     public PinchSlider RenderViewportScaleSlider;
 
     private void Update()
     {
-        if(this.RenderViewportScaleSlider != null)
+        if (this.RenderViewportScaleSlider != null)
         {
             XRSettings.renderViewportScale = this.RenderViewportScaleSlider.SliderValue;
         }
     }
 
-    public void EnableProjectionOverride()
+    public void EnableReadingMode()
     {
-        CoreServices.CameraSystem.ProjectionOverrideEnabled = true;
+        CoreServices.CameraSystem.ReadingModeEnabled = true;
     }
 
-    public void DisableProjectionOverride()
+    public void DisableReadingMode()
     {
-        CoreServices.CameraSystem.ProjectionOverrideEnabled = false;
+        CoreServices.CameraSystem.ReadingModeEnabled = false;
     }
 }
