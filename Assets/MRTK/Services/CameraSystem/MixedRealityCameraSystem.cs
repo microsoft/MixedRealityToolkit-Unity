@@ -111,7 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </returns>
         private bool TryGetProjectionOverrideComponent(out ProjectionOverride projectionOverride, bool createIfAbsent)
         {
-            if (CameraCache.Main.TryGetComponent<ProjectionOverride>(out projectionOverride))
+            projectionOverride = CameraCache.Main.GetComponent<ProjectionOverride>();
+            if(projectionOverride != null)
             {
                 return true;
             }
