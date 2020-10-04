@@ -28,7 +28,7 @@ steps:
     
     # Invoke docfx.exe to build the docs, and output both to console and to a variable $output
     $output = ""
-    Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe docfx.json" | Tee-Object -Variable output | Write-Host
+    Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe scripts\docs\docfx.json" | Tee-Object -Variable output | Write-Host
 
     # # Check the console output stored in $output for any error or warning message,
     # # and force the task to fail if there is any.
@@ -54,7 +54,7 @@ steps:
     Remove-Item -Recurse -Force fonts
     Remove-Item -Recurse -Force styles
     Remove-Item -Recurse -Force web
-    Move-Item doc\* -Force
+    Move-Item scripts\docs\doc\* -Force
     Remove-Item -Recurse -Force obj
     
     git add .
