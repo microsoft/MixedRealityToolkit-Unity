@@ -15,7 +15,9 @@ _Hand Tracking profile_ は _Input System profile_ 配下にあります。こ�
 > [!WARNING]
 > ジョイント プレハブに複雑なスクリプトやレンダリングコストの高いものを使うことは避けてください。なぜなら、ジョイント オブジェクトは毎フレーム移動し、かなりのパフォーマンス コストがかかるためです！
 
-<img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px"  style="display:block;">
+デフォルトのハンド ジョイントの表示 |  ジョイントのラベル 
+:-------------------------:|:-------------------------:
+<img src="../../Documentation/Images/InputSimulation/ArticulatedHandJoints.png" height="300px"  style="display:inline;">  |  <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointNames.png" height="300px"  style="display:inline;">
 
 ## Hand Mesh Prefab (ハンド メッシュ プレハブ)
 

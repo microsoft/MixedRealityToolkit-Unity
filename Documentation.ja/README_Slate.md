@@ -15,8 +15,8 @@
 
 <img src="../Documentation/Images/Slate/MRTK_SlateStructure.jpg" width="650">
 
-## Bounding Box (バウンディング ボックス)
-スレート コントロールには、スケーリングと回転用のバウンディング ボックス スクリプトが含まれています。バウンディング ボックスの詳細については、[バウンディング ボックス](README_BoundingBox.md) ページを参照してください。
+## Bounds control (バウンズ コントロール)
+スレート コントロールには、スケーリングと回転用の Bounds control (バウンズ コントロール) スクリプトが含まれています。Bounds control (バウンズ コントロール) の詳細については、[Bounds control (バウンズ コントロール)](README_BoundsControl.md) ページを参照してください。
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_BB.jpg" width="650">
 

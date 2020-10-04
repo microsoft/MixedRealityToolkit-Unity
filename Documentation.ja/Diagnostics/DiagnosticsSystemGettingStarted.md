@@ -25,9 +25,6 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
     ![シーン ヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
 1. \[Inspector](インスペクター) ウィンドウで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
-
-    ![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
-
 1. 診断システムの実行を選択する
 
     ![診断システムの実装を選択する](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
@@ -38,8 +35,6 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 ### 診断のオプションを設定する
 
 診断システムは、設定プロファイルを使用して、表示するコンポーネントを指定し、それらの設定を行います。使用可能なコンポーネント設定の詳細については、[診断システムの設定](../../Documentation/Diagnostics/ConfiguringDiagnostics.md)を参照してください。
-
-![診断の設定オプション](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png)
 
 > [!IMPORTANT]
 > アプリケーションを開発する際、ビルドとデプロイの手順が不要な Unity の Play モードを利用することも可能ですが、ターゲット ハードウェアとプラットフォーム上で実行されているコンパイル済みアプリケーションを使用して診断システムの結果を評価することが重要です。

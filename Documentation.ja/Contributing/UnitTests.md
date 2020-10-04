@@ -27,16 +27,16 @@ The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunne
 
 Tests can also be run by a [powershell](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
-Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4 (for example Unity 2018.4.1f1)
+Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4 (for example Unity 2018.4.26f1)
 
 ```ps
-.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.26f1\Editor\Unity.exe"
 ```
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4, output results to C:\playmode_test_out
 
 ```ps
-.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.26f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
 
 It's also possible to run the playmode tests multiple times via the `run_repeat_tests.ps1` script. All parameters used in `run_playmode_tests.ps1` may be used.
@@ -141,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class ExamplePlayModeTests
     {
-
         // This method is called once before we enter play mode and execute any of the tests
         // do any kind of setup here that can't be done in playmode
         public void Setup()
@@ -152,18 +151,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         // Do common setup for each of your tests here - this will be called for each individual test after entering playmode
-        [Setup]
-        public void Init()
+        // Note that this uses UnitySetUp instead of [SetUp] because the init function needs to await a frame passing
+        // to ensure that the MRTK system has had the chance to fully set up before the test runs.
+        [UnitySetUp]
+        public IEnumerator Init()
         {
             // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
             TestUtilities.InitializeMixedRealityToolkit(true);
+            yield return null;
         }
 
         // Destroy the scene - this method is called after each test listed below has completed
-        [TearDown]
-        public void TearDown()
+        // Note that this uses UnityTearDown instead of [TearDown] because the init function needs to await a frame passing
+        // to ensure that the MRTK system has fully torn down before the next test setup->run cycle starts.
+        [UnityTearDown]
+        public IEnumerator TearDown()
         {
             PlayModeTestUtilities.TearDown();
+            yield return null;
         }
 
         #region Tests

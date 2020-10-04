@@ -8,6 +8,6 @@
     homepage: Documentation/WelcomeToMRTK.md
   - name: 日本語
     href: Documentation.ja/
-    homepage: Documentation/WelcomeToMRTK.md
+    homepage: Documentation.ja/WelcomeToMRTK.md
 - name: API Documentation
   href: obj/api/

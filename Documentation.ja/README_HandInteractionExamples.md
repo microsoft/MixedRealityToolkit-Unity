@@ -19,9 +19,9 @@ TextMesh Pro のインポート後に大きなテキストが表示される場�
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## バウンディング ボックス (Bounding box)
+## バウンズ コントロール (Bounds Control)
 
-詳細は、 [バウンディング ボックス (bounding box)](README_BoundingBox.md) のページを参照してください。
+詳細は、 [バウンズ コントロール (bounds control)](README_BoundsControl.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 

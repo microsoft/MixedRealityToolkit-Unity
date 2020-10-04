@@ -51,7 +51,7 @@
 
 * *Maintain original rotation*: 移動中にオブジェクトを回転させません
 * *Maintain rotation to user*: X/Y 軸のオブジェクトの元の回転を、ユーザに維持する
-* *Gravity aligned maintain rotation to user*: オブジェクトの元の回転をユーザに維持しますが、オブジェクトを垂直にします。バウンディングボックスに便利です。
+* *Gravity aligned maintain rotation to user*: オブジェクトの元の回転をユーザに維持しますが、オブジェクトを垂直にします。バウンズ コントロールを持つオブジェクトに便利です。
 * *Face user*: オブジェクトが常にユーザーに直面していることを確認します。スレート (slates)/ パネルに便利です。
 * *Face away from user*: オブジェクトが常にユーザーの顔に向かないようにする。後ろ向きに設定されたスレート (slates)/ パネルに便利です。
 * *Rotate about object center*: 多関節ハンド/コントローラでのみ動作します。ハンド/コントローラの回転を使用してオブジェクトを回転しますが、オブジェクトの中心点を中心に回転します。遠くから観察する場合に便利です。

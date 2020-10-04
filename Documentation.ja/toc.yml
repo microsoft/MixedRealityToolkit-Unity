@@ -1,28 +1,38 @@
-- name: MRTK を始める
-  href: GettingStartedWithTheMRTK.md
+- name: MRTK へようこそ
+  href: WelcomeToMRTK.md
   items:
-  - name: Release Notes
-    href: ReleaseNotes.md
-  - name: MRTK Package Contents
-    href: MRTK_PackageContents.md
-  - name: Updating from earlier versions
-    href: Updating.md
-  - name: HTK からの移植ガイド
-    href: HTKToMRTKPortingGuide.md
-  - name: MRTK のビルドとデプロイ
-    href: BuildAndDeploy.md
-  - name: NuGet Packages
-    href: MRTKNuGetPackage.md
-  - name: MRTK configuration dialog
-    href: MRTK_Configuration_Dialog.md
-  - name: Getting started with MRTK and XR SDK
-    href: GettingStartedWithMRTKAndXRSDK.md
-  - name: Performance
-    href: Performance/PerfGettingStarted.md
-  - name: Hologram Stabilization (ホログラムの安定化)
-    href: Hologram-Stabilization.md
-  - name: Using MRTK in large projects
-    href: LargeProjects.md
+  - name: インストール ガイド
+    href: Installation.md
+  - name: Configuration 
+    items: 
+    - name: Using the Unity Package Manager
+      href: usingupm.md
+    - name: MRTK configuration dialog
+      href: MRTK_Configuration_Dialog.md
+    - name: Getting started with MRTK and XR SDK
+      href: GettingStartedWithMRTKAndXRSDK.md
+  - name: アップデートとデプロイ
+    items: 
+    - name: Updating from earlier versions
+      href: Updating.md
+    - name: HTK からのアップグレード
+      href: HTKToMRTKPortingGuide.md
+    - name: MRTK のビルドとデプロイ
+      href: BuildAndDeploy.md
+  - name: Packages and Release Notes
+    items: 
+    - name: Release Notes
+      href: ReleaseNotes.md
+    - name: MRTK パッケージ
+      href: Packaging/MRTK_Packages.md
+  - name: パフォーマンスとベスト プラクティス
+    items: 
+    - name: Performance
+      href: Performance/PerfGettingStarted.md
+    - name: ホログラムの安定化
+      href: hologram-stabilization.md
+    - name: Using MRTK in large projects
+      href: LargeProjects.md
 - name: アーキテクチャ
   items:
   - name: 全体像
@@ -65,6 +75,8 @@
       href: CrossPlatform/UsingARFoundation.md
     - name: Configure MRTK for Leap Motion Hand Tracking
       href: CrossPlatform/LeapMotionMRTK.md
+    - name: Configure MRTK for Oculus Quest
+      href: CrossPlatform/OculusQuestMRTK.md
   - name: プラットフォームの Capabilities (機能) を検出する
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System (診断システム)
@@ -200,24 +212,28 @@
       items:
       - name: Input Animation File Format Specification
         href: InputSimulation/InputAnimationFileFormat.md
+    - name: Migration Window
+      href: Tools/MigrationWindow.md
     - name: Optimize Window
       href: Tools/OptimizeWindow.md
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
+        href: Tools/ControllerMappingTool.md
+      - name: InputFeatureUsage tool
+        href: Tools/InputFeatureUsageTool.md 
   - name: UX ビルディング ブロック
     items:
     - name: Toolbox Window
       href: README_Toolbox.md
     - name: Button (ボタン)
       href: README_Button.md
-    - name: Bounding Box
-      href: README_BoundingBox.md
+    - name: Bounds Control
+      href: README_BoundsControl.md
     - name: Object Manipulator
       href: README_ObjectManipulator.md
-    - name: Manipulation Handler [Obsolete]
-      href: README_ManipulationHandler.md
+    - name: Constraint Manager
+      href: README_ConstraintManager.md
     - name: Slate (スレート)
       href: README_Slate.md
     - name: System Keyboard (システム キーボード)
@@ -231,6 +247,8 @@
         href: README_TapToPlace.md
     - name: Object Collection (オブジェクト コレクション)
       href: README_ObjectCollection.md
+    - name: Scrolling Object Collection
+      href: README_ScrollingObjectCollection.md
     - name: Tooltips (ツールチップ)
       href: README_Tooltip.md
     - name: Sliders (スライダー)
@@ -249,14 +267,20 @@
       href: ../Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md
     - name: Hand Coach [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
-    - name: Scrolling Object Collection [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.md
     - name: Pulse Shader [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
     - name: Dock Control [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
     - name: HoloLens Keyboard Helpers [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
+    - name: Rigged Hand Visualizer [Experimental]
+      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md     
+    - name: Elastic System [Experimental]
+      href: Elastics/ElasticSystem.md 
+    - name: Bounding Box [Obsolete]
+      href: README_BoundingBox.md
+    - name: Manipulation Handler [Obsolete]
+      href: README_ManipulationHandler.md
   - name: Example Scenes
     items:
     - name: Examples Hub
