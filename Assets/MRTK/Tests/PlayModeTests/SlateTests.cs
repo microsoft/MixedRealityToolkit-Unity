@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 #if !WINDOWS_UWP
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             // Use both hands to zoom out
-            yield return handRight.Move(new Vector3(-0.2f, 0f, 0f), 10);
+            yield return handLeft.Move(new Vector3(0.1f, 0.1f, 0f), 10);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
             // Use both hands to zoom out
-            yield return handLeft.Move(new Vector3(0.2f, 0f, 0f), 10);
+            yield return handRight.Move(new Vector3(-0.1f, -0.1f, 0f), 10);
 
             var uvs = new List<Vector2>();
             meshFilter.mesh.GetUVs(0, uvs);
@@ -358,6 +358,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return handRight.Hide();
             yield return handLeft.Hide();
+        }
+
+        /// <summary>
+        /// Test scroll right pan limit instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PrefabZoomOutWithoutJitter()
+        {
+            var maxPan = 1.2f;
+            InstantiatePanLimitedSlateFromPrefab(maxPanHorizontal: maxPan, maxPanVertical: maxPan);
+
+            yield return ScrollToLimit(new Vector3(-1, -1, 0));
+
+            // Right hand pinches slate
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.MoveTo(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * 0.2f);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Left hand pinches slate
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(panZoom.transform.position + Vector3.forward * -0.5f + Vector3.right * -0.2f);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Use both hands to zoom out
+            var previousUvs = new List<Vector2>();
+            meshFilter.mesh.GetUVs(0, previousUvs);
+            for (var i = 0; i < 10; i++)
+            {
+                yield return handLeft.Move(new Vector3(0f, 0.02f, 0f), 1);
+                var uvs = new List<Vector2>();
+                meshFilter.mesh.GetUVs(0, uvs);
+                for (int j = 0; j < uvs.Count; j++)
+                {
+                    Assert.AreEqual(previousUvs[j].x, uvs[j].x, 0.05, "mesh is jittering");
+                    Assert.AreEqual(previousUvs[j].y, uvs[j].y, 0.05, "mesh is jittering");
+                }
+                previousUvs = uvs;
+            }
         }
 
         /// <summary>
