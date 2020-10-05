@@ -331,8 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool findSucceeded = true;
             foreach (string s in defaultResourceGuids)
             {
-                string asset = AssetDatabase.GUIDToAssetPath(s) as string;
-                if (string.IsNullOrWhiteSpace(asset))
+                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(s)) == null)
                 {
                     findSucceeded = false;
                     break;
