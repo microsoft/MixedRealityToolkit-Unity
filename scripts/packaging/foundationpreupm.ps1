@@ -26,7 +26,7 @@ Copy-Item -Path "$PackageRoot/Services/SceneSystem/Scenes" -Destination "$sample
 # Create the samples data for the package.json file
 $samples = "`"samples`": ["
 $samples = $samples + "`n      {`n"
-$samples = $samples + "        `"displayName`": `"$Scene System Default Scenes`",`n"
+$samples = $samples + "        `"displayName`": `"Scene System Scenes`",`n"
 $samples = $samples + "        `"description`": `"Default scenes used by the MRTK Scene System`",`n"
 $samples = $samples + "        `"path`": `"Samples~/SceneSystemScenes`"`n"
 $samples = $samples + "      }"
