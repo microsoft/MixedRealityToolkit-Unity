@@ -742,22 +742,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 626
+      value: 429
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 101
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 97
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 16
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -782,12 +782,6 @@ PrefabInstance:
         work from different angles. Each of these objects has a visualization of
         the touchable volume attached.
 
-        
-
-        There is also an unbounded
-        plane touchable below the rest of the scene content. Because the unbounded
-        plane is infinite in size, the cursor will react beyond the visual bounds
-        of the plane mesh.
 
 
 '
@@ -817,6 +811,11 @@ PrefabInstance:
       propertyPath: hostTransform
       value: 
       objectReference: {fileID: 154259685}
+    - target: {fileID: 3739545933202976518, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: constraintsManager
+      value: 
+      objectReference: {fileID: 536398587}
     - target: {fileID: 5245681700994389642, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_Mesh
@@ -1035,6 +1034,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 518544506}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &536398578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7614231225784487120, guid: 18470d71939382448be2ecd06efa9662,
+    type: 3}
+  m_PrefabInstance: {fileID: 518544506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &536398587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536398578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
 --- !u!1 &801219008
 GameObject:
   m_ObjectHideFlags: 0
