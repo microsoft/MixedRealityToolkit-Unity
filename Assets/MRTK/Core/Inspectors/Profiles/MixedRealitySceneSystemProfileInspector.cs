@@ -19,11 +19,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const float DragAreaOffset = 10;
         const float LightingSceneTypesLabelWidth = 45;
 
+        private static string defaultSceneContent =
+            "Default scene system resources were not found.\nIf using custom manager and lighting scenes, this message can be ignored.\nIf not, please see the documentation for more information";
+
         private static string managerSceneContent =
-            "The Manager scene is loaded first and remains loaded for the duration of the app. Only one Manager scene is ever loaded, and no scene operation will ever unload it.";
+            "The manager scene is loaded first and remains loaded for the duration of the app. Only one manager scene is ever loaded, and no scene operation will ever unload it.";
 
         private static string lightingSceneContent =
-            "The Lighting scene controls lighting settings such as ambient light, skybox and sun direction. A Lighting scene's content is restricted based on the types defined in your editor settings. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
+            "The lighting scene controls lighting settings such as ambient light, skybox and sun direction. A lighting scene's content is restricted based on the types defined in your editor settings. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
 
         private static string contentSceneContent =
             "Content scenes are everything else. You can load and unload any number of content scenes in any combination, and their content is unrestricted.";
@@ -97,6 +100,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.Update();
 
             MixedRealitySceneSystemProfile profile = (MixedRealitySceneSystemProfile)target;
+
+            if (!FindDefaultResources())
+            {
+                EditorGUILayout.HelpBox(defaultSceneContent, MessageType.Info);
+            }
 
             RenderFoldout(ref showEditorProperties, "Editor Settings", () =>
             {
@@ -310,6 +318,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void DrawContentSceneElement(Rect rect, int index, bool isActive, bool isFocused)
         {
             SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
+        }
+
+        private bool FindDefaultResources()
+        {
+            string[] defaultResourceGuids =
+            {
+                "ae7bb08d297fb69408695d8de0962524", // DefaultManagerScene
+                "7e54e36c44f826c438c95da79f8de638"  // DefaultLightingScene
+            };
+
+            bool findSucceeded = true;
+            foreach (string s in defaultResourceGuids)
+            {
+                string asset = AssetDatabase.GUIDToAssetPath(s) as string;
+                if (string.IsNullOrWhiteSpace(asset))
+                {
+                    findSucceeded = false;
+                    break;
+                }
+            }
+
+            return findSucceeded;
         }
     }
 }
