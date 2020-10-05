@@ -116,7 +116,7 @@ foreach ($entry in $packages.GetEnumerator()) {
         # The foundation package contains files that are requried to be copied into the Assets folder to be used.
         # In order to perform the necessary preparaton, without overly complicating this script, we will use a
         # helper script to prepare the folder.
-        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/extensionsfolderpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/foundationpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
     elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
