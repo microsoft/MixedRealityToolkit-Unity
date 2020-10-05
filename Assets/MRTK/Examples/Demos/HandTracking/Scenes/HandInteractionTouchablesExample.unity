@@ -770,17 +770,17 @@ PrefabInstance:
       value: '<size=42><b>Hand Interaction Touchables</b></size>
 
 
-        This
-        scene demonstrates the various touchable components in MRTK and how they
-        interact with different colliders.
+        This scene
+        demonstrates the various touchable components in MRTK and how they interact
+        with different colliders.
 
-        
 
-        There are three objects
-        with different touchable setups in the foreground. These objects will rotate
-        on touch, allowing you to see how the finger cursor and touch interactions
-        work from different angles. Each of these objects has a visualization of
-        the touchable volume attached.
+
+        There are three objects with different
+        touchable setups in the foreground. These objects will rotate on touch, allowing
+        you to see how the finger cursor and touch interactions work from different
+        angles. Each of these objects has a visualization of the touchable volume
+        attached.
 
 
 
@@ -794,12 +794,12 @@ PrefabInstance:
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2597
+      value: -0.1922
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6491248
+      value: 0.5140771
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -840,6 +840,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617231577077518003, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_CellSize.y
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 6636591464266677543, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -929,7 +934,7 @@ PrefabInstance:
     - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.753
+      value: 0.608
       objectReference: {fileID: 0}
     - target: {fileID: 7614231225992287547, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1025,6 +1030,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239495094510916357, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18470d71939382448be2ecd06efa9662, type: 3}
