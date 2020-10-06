@@ -25,7 +25,8 @@
       },
     "dependencies": {
         "com.microsoft.mixedreality.toolkit.foundation": "%version%",
-        "com.microsoft.mixedreality.toolkit.extensions": "%version%"
+        "com.microsoft.mixedreality.toolkit.extensions": "%version%",
+        "com.unity.textmeshpro": "2.1.1"
     },
     "files": [
         "Common*",
