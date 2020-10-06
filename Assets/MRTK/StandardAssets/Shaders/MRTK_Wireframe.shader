@@ -52,9 +52,13 @@ Shader "Mixed Reality Toolkit/Wireframe"
 
             #include "UnityCG.cginc"
 
-            float4 _BaseColor;
+			CBUFFER_START(UnityPerMaterial)
+    
+			float4 _BaseColor;
             float4 _WireColor;
             float _WireThickness;
+
+			CBUFFER_END
 
             // Based on approach described in Shader-Based Wireframe Drawing (2008)
             // http://orbit.dtu.dk/en/publications/id(13e2122d-bec7-48de-beca-03ce6ea1c3f1).html

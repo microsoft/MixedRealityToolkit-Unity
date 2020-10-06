@@ -352,6 +352,11 @@ Shader "Mixed Reality Toolkit/Standard"
             float _TriplanarMappingBlendSharpness;
 #endif
 
+#if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
+			fixed _FluentLightIntensity;
+#endif
+			CBUFFER_END
+
 #if defined(_DIRECTIONAL_LIGHT)
 #if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
@@ -433,10 +438,6 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #endif
 
-#if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
-            fixed _FluentLightIntensity;
-#endif
-
 #if defined(_ROUND_CORNERS)
 #if defined(_INDEPENDENT_CORNERS)
             float4 _RoundCornersRadius; 
@@ -478,8 +479,6 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed3 _EnvironmentColorY;
             fixed3 _EnvironmentColorZ;
 #endif
-
-            CBUFFER_END
 
 #if defined(_DIRECTIONAL_LIGHT)
             static const fixed _MinMetallicLightContribution = 0.7;

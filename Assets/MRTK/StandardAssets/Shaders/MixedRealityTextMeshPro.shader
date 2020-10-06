@@ -112,19 +112,21 @@ SubShader {
         // Direct include for portability.
         //#include "TMPro_Properties.cginc"
         // UI Editable properties
-        uniform sampler2D    _FaceTex;                    // Alpha : Signed Distance
+		CBUFFER_START(UnityPerMaterial)
+		uniform sampler2D    _FaceTex;                    // Alpha : Signed Distance
         uniform float        _FaceUVSpeedX;
         uniform float        _FaceUVSpeedY;
         uniform fixed4        _FaceColor;                    // RGBA : Color + Opacity
+
         uniform float        _FaceDilate;                // v[ 0, 1]
         uniform float        _OutlineSoftness;            // v[ 0, 1]
-        
+
         uniform sampler2D    _OutlineTex;                // RGBA : Color + Opacity
         uniform float        _OutlineUVSpeedX;
         uniform float        _OutlineUVSpeedY;
         uniform fixed4        _OutlineColor;                // RGBA : Color + Opacity
         uniform float        _OutlineWidth;                // v[ 0, 1]
-        
+
         uniform float        _Bevel;                        // v[ 0, 1]
         uniform float        _BevelOffset;                // v[-1, 1]
         uniform float        _BevelWidth;                // v[-1, 1]
@@ -231,6 +233,8 @@ SubShader {
 #if defined(_CLIPPING_PRIMITIVE)
             float3 worldPosition    : TEXCOORD5;
 #endif
+
+			CBUFFER_END
         };
 
 
