@@ -1,22 +1,22 @@
-# Mixed Reality Toolkit and Unity Package Manager
+# Mixed Reality Toolkit と Unity Package Manager
 
-Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM), on Unity 2019.4 and newer.
+バージョン 2.5.0 から、Unity 2019.4 以降において Microsoft Mixed Reality Toolkit は Unity Package Manager (UPM) を使って利用可能です。
 
-## Installing Mixed Reality features using the Unity Package Manager
+## Unity Package Manager を使った Mixed Reality 機能のインストール
 
-The Unity Package Manager uses a [manifest file](https://docs.unity3d.com/Manual/upm-manifestPkg.html) (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.
+Unity Package Manager は [マニフェスト ファイル](https://docs.unity3d.com/Manual/upm-manifestPkg.html) (manifest.json) を利用して、どのパッケージをインストールしてどのレジストリ（サーバー）からインストールされうるかを決定します。
 
 > [!Note]
-> As of version 2.5.0 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
+> MRTK バージョン 2.5.0 現在、サーバーとパッケージの初期登録はプロジェクトごとの手動手順です。詳細な手順は以下のセクションをご覧ください。
 > 
-> This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.
+> UPM が Azure DevOps でサポートされていないレガシーの npm 検索機能 (/-/all) を使用しているため、このプロセスが必要です。
 
-### Registering the Mixed Reality component server
+### Mixed Reality コンポーネント サーバーの登録
 
-For each project that will be using the Microsoft Mixed Reality Toolkit, the `manifest.json` file (in the Packages folder) will need to have the Mixed Reality scoped registry added. The following illustrate how to properly modify `manifest.json` to support Mixed Reality.
+Microsoft Mixed Reality Toolkit を使用する各プロジェクトでは、(Packages フォルダ内の) `manifest.json` ファイルに Mixed Reality の Scoped Registry を追加する必要があります。以下は、Mixed Reality をサポートするために `manifest.json` を適切に変更する方法を説明しています。
 
-1. Open `<projectRoot>/Packages/manifest.json` in a text editor, such as [Visual Studio Code](https://code.visualstudio.com/).
-1. At the top of the manifest file, add the Mixed Reality server to the scoped registry section and save the file.
+1. `<projectRoot>/Packages/manifest.json` を [Visual Studio Code](https://code.visualstudio.com/) のようなテキスト エディターで開きます。
+1. マニフェスト ファイルの先頭で Scoped Registry のセクションに Mixed Reality サーバーを追加し、ファイルを保存します。
 
 ```
 {
@@ -32,13 +32,15 @@ For each project that will be using the Microsoft Mixed Reality Toolkit, the `ma
   ],
 ```
 
-### Adding MRTK packages
+<a name="adding-mrtk-packages"></a>
 
-Once the Microsoft Mixed Reality scoped registry has been added to the manifest, the MRTK packages can be specified.
+### MRTK パッケージの追加
 
-The [Unity Package Manager](Packaging/MRTK_Packages.md#unity-package-manager) section of the [Mixed Reality Toolkit package](Packaging/MRTK_Packages.md) article describes the available MRTK packages, their contents and the scenarios for their use.
+Microsoft Mixed Reality の scoped registry がマニフェストに追加されると、MRTK のパッケージを指定できるようになります。
 
-To add an MRTK package, modify the dependencies section of the `Packages/manifest.json` file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation.
+[Mixed Reality Toolkit package](Packaging/MRTK_Packages.md) ページの [Unity Package Manager](Packaging/MRTK_Packages.md#unity-package-manager) セクションには、利用可能な MRTK パッケージ、内容、利用シナリオが書かれています。
+
+MRTK パッケージを追加するには、`Packages/manifest.json` ファイルの dependencies セクションを変更します。以下の例は Foundation, Tools, Examples パッケージの追加方法を示しています。Standard Assets パッケージは Foundation の依存先として自動的に追加されます。
 
 ```
   "dependencies": {
@@ -47,33 +49,33 @@ To add an MRTK package, modify the dependencies section of the `Packages/manifes
     "com.microsoft.mixedreality.toolkit.examples": "2.5.0",
 ```
 
-## Managing Mixed Reality features with the Unity Package Manager
+## Mixed Reality 機能を Unity Package Manager で管理する
 
-Once a Mixed Reality Toolkit package has been added to the package manifest, it can be managed using the Unity Package Manager user interface.
+Mixed Reality Toolkit パッケージがパッケージ マニフェストに追加されると、Unity Package Manager のユーザー インターフェイスを使って管理することができます。
 
 ![MRTK Foundation UPM Package](../Documentation/Images/Packaging/MRTK_FoundationUPM.png)
 
 > [!Note]
-> If a Mixed Reality Toolkit package is removed using the Unity Package Manager, it will have to be re-added using the [previously described steps](#adding-mrtk-packages).
+> もし Unity Package Manager を使用して Mixed Reality Toolkit パッケージを削除した場合、[前述の手順](#adding-mrtk-packages) を使用して再度追加する必要があります。
 
-### Using Mixed Reality Toolkit examples
+### Mixed Reality Toolkit のサンプルを使う
 
-Unlike when using asset package (.unitypackage) files, `com.microsoft.mixedreality.toolkit.examples` and `com.microsoft.mixedreality.toolkit.handphysicsservice` do not automatically import the example scenes and assets.
+アセット パッケージ (.unitypackage) ファイルを使用する場合とは異なり、`com.microsoft.mixedreality.toolkit.examples` や `com.microsoft.mixedreality.toolkit.handphysicsservice` はサンプル シーンやアセットを自動的にインポートしません。
 
-To utilize one or more of the examples, please use the following steps:
+1つ以上のサンプルを利用するには、以下の手順を行ってください。
 
-1. In the Unity Editor, navigate to `Window` > `Package Manager`
-1. In the list of packages, select `Mixed Reality Toolkit Examples`
-1. Locate the desired sample(s) in the `Samples` list
-1. Click `Import into Project`
+1. Unity Editor で `Window` > `Package Manager` を開く
+1. パッケージのリストで `Mixed Reality Toolkit Examples` を選択する
+1. `Samples` リストから目的のサンプルを探す
+1. `Import into Project` をクリックする
 
 ![Importing samples](../Documentation/Images/Packaging/MRTK_ExamplesUpm.png)
 
-When an example package is updated, Unity provides the option to update imported samples.
+サンプル パッケージが更新されると、Unity はインポートされたサンプルを更新するオプションを提供します。
 
 > [!Note]
-> Updating an imported sample will overwrite any changes that have been made to that sample and the associated assets.
+> インポートしたサンプルを更新すると、そのサンプルと関連するアセットに加えられた変更はすべて上書きされます。
 
-## See Also
+## 関連項目
 
-- [Mixed Reality Toolkit packages](Packaging/MRTK_Packages.md)
+- [Mixed Reality Toolkit パッケージ](Packaging/MRTK_Packages.md)

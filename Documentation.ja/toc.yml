@@ -3,9 +3,9 @@
   items:
   - name: インストール ガイド
     href: Installation.md
-  - name: Configuration 
+  - name: 設定
     items: 
-    - name: Using the Unity Package Manager
+    - name: Unity Package Manager の使用
       href: usingupm.md
     - name: MRTK configuration dialog
       href: MRTK_Configuration_Dialog.md
