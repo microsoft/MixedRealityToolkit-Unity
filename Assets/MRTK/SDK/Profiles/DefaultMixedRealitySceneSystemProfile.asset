@@ -17,7 +17,7 @@ MonoBehaviour:
   managerScene:
     Name: DefaultManagerScene
     Path: Assets/MRTK/SceneSystemResources/DefaultManagerScene.unity
-    Included: 1
+    Included: 0
     BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
@@ -26,7 +26,7 @@ MonoBehaviour:
   lightingScenes:
   - Name: DefaultLightingScene
     Path: Assets/MRTK/SceneSystemResources/DefaultLightingScene.unity
-    Included: 1
+    Included: 0
     BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
