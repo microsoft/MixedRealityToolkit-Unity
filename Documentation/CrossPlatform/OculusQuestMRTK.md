@@ -33,7 +33,7 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. Doing this will update the asmdefs with definitions and references needed for the
-relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile** at */Assets/MRTK/Providers/Oculus/XRSDK/Profiles*.
+relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.
 It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
@@ -118,4 +118,4 @@ If you encounter an error that looks like this
 **UnassignedReferenceException: The variable ovrCameraRigPrefab of OculusXRSDKDeviceManagerProfile has not been assigned. You probably need to assign the ovrCameraRigPrefab variable of the OculusXRSDKDeviceManagerProfile script in the inspector.**
 
 Then the project is not fully integrated with the Oculus Unity Modules. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. 
-Doing so populate the **Prefab reference** fields of the **OculusXRSDKDevicemanagerProfile** at */Assets/MRTK/Providers/Oculus/XRSDK/Profiles*.
+Doing so populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.
