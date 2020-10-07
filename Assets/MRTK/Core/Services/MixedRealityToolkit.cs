@@ -109,6 +109,12 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        public static void SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile profile)
+        {
+            MixedRealityToolkit toolkit = FindObjectOfType<MixedRealityToolkit>();
+            toolkit.activeProfile = profile;
+        }
+
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>

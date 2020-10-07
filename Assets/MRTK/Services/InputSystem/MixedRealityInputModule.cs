@@ -45,6 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Camera RaycastCamera { get; private set; }
 
+        public bool ManualActivationRequired { get; set; } = false;
+
         public IEnumerable<IMixedRealityPointer> ActiveMixedRealityPointers
         {
             get
@@ -63,16 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (CoreServices.InputSystem != null)
             {
-                RaycastCamera = CoreServices.InputSystem.FocusProvider.UIRaycastCamera;
-
-                foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
-                {
-                    OnSourceDetected(inputSource);
-                }
-
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+                Initialize();
             }
+        }
+
+        public void Initialize()
+        {
+            RaycastCamera = CoreServices.InputSystem.FocusProvider.UIRaycastCamera;
+            foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
+            {
+                OnSourceDetected(inputSource);
+            }
+            CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         /// <inheritdoc />

@@ -118,6 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private MixedRealityInputActionRulesProfile CurrentInputActionRulesProfile { get; set; }
 
+        private bool inputModuleChecked = false;
+        private MixedRealityInputModule inputModule;
+
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -171,11 +174,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 DebugUtilities.LogVerbose("MixedRealityInputModule added to main camera");
                 // There is no input module attached to the camera, add one.
-                CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                inputModule = CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
                 isInputModuleAdded = true;
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
-            { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
+            {
+                inputModule = inputModules[0] as MixedRealityInputModule;
+            }
             else
             {
                 Debug.LogError($"For Mixed Reality Toolkit input to work properly, please remove your other input module(s) and add a {typeof(MixedRealityInputModule).Name} to your main camera.", inputModules[0]);
@@ -245,6 +250,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Enable();
 
             InputEnabled?.Invoke();
+        }
+
+        public override void LateUpdate()
+        {
+            if (!isInputModuleAdded && !inputModuleChecked)
+            {
+                if (inputModule.ManualActivationRequired)
+                {
+                    inputModule.Initialize();
+                }
+                inputModuleChecked = true;
+            }
+            base.LateUpdate();
         }
 
         private void CreateDataProviders()
@@ -356,7 +374,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (isInputModuleAdded)
             {
-                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
                 if (inputModule)
                 {
                     if (Application.isPlaying)
@@ -367,7 +384,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityObjectExtensions.DestroyObject(inputModule);
                 }
             }
+            else if (Application.isPlaying && inputModule != null)
+            {
+                inputModule.ManualActivationRequired = true;
+            }
 
+            inputModule = null;
             base.Destroy();
         }
         #endregion IMixedRealityService Implementation
