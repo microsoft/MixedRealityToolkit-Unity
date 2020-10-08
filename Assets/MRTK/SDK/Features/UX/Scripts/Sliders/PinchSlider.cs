@@ -213,6 +213,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public SliderEvent OnHoverExited = new SliderEvent();
         #endregion
 
+        #region Private Fields
+
+        /// <summary>
+        /// Position offset for slider handle in world space.
+        /// </summary>
+        private Vector3 sliderThumbOffset = Vector3.zero;
+
+        #endregion
+
         #region Protected Properties
 
         /// <summary>
@@ -227,20 +236,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Vector3 StartPointerPosition { get; private set; }
 
         /// <summary>
-        /// Starting position of slider in world space
-        /// Used to track slider movement
-        /// </summary>
-        protected Vector3 StartSliderPosition { get; private set; }
-
-        /// <summary>
         /// Interface for handling pointer being used in UX interaction.
         /// </summary>
         protected IMixedRealityPointer ActivePointer { get; private set; }
-
-        /// <summary>
-        /// Position offset for slider handle in world space.
-        /// </summary>
-        protected Vector3 SliderThumbOffset { get; private set; } = Vector3.zero;
 
         #endregion
 
@@ -282,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var startToThumb = thumbRoot.transform.position - SliderStartPosition;
             var thumbProjectedOnTrack = SliderStartPosition + Vector3.Project(startToThumb, SliderTrackDirection);
-            SliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
+            sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
         }
@@ -401,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateUI()
         {
-            var newSliderPos = SliderStartPosition + SliderThumbOffset + SliderTrackDirection * sliderValue;
+            var newSliderPos = SliderStartPosition + sliderThumbOffset + SliderTrackDirection * sliderValue;
             thumbRoot.transform.position = newSliderPos;
         }
 
@@ -448,7 +446,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ActivePointer = eventData.Pointer;
                 StartSliderValue = sliderValue;
                 StartPointerPosition = ActivePointer.Position;
-                StartSliderPosition = gameObject.transform.position;
                 if (OnInteractionStarted != null)
                 {
                     OnInteractionStarted.Invoke(new SliderEventData(sliderValue, sliderValue, ActivePointer, this));
