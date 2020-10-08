@@ -1230,9 +1230,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A public way to trigger or route an onClick event from an external source, like PressableButton
         /// </summary>
-        public void TriggerOnClick()
+        /// <param name="force">Force the click without checking CanInteract(). Does not override IsEnabled and only applies to toggle.</param>
+        public void TriggerOnClick(bool force = false)
         {
-            if (!IsEnabled)
+            if (!IsEnabled || (!force && !CanInteract()))
             {
                 return;
             }
@@ -1509,7 +1510,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus))
+            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus) && CanInteract())
             {
                 StartGlobalVisual(true);
                 HasVoiceCommand = true;
