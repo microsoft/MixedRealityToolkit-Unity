@@ -3429,14 +3429,32 @@ Simulate pressed and start timer to reset states after some click time</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TriggerOnClick_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TriggerOnClick*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TriggerOnClick" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TriggerOnClick">TriggerOnClick()</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TriggerOnClick_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TriggerOnClick(System.Boolean)">TriggerOnClick(Boolean)</h4>
   <div class="markdown level1 summary"><p>A public way to trigger or route an onClick event from an external source, like PressableButton</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void TriggerOnClick()</code></pre>
+    <pre><code class="lang-csharp hljs">public void TriggerOnClick(bool force = false)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">force</span></td>
+        <td><p>Force the click without checking CanInteract(). Does not override IsEnabled and only applies to toggle.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_Update_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Update*"></a>
