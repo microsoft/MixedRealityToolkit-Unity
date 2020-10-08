@@ -240,6 +240,32 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_ActivePointer_" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.ActivePointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_ActivePointer" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.ActivePointer">ActivePointer</h4>
+  <div class="markdown level1 summary"><p>Interface for handling pointer being used in UX interaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IMixedRealityPointer ActivePointer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityPointer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_CurrentSliderAxis_" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.CurrentSliderAxis*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_CurrentSliderAxis" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.CurrentSliderAxis">CurrentSliderAxis</h4>
   <div class="markdown level1 summary"><p>Property accessor of sliderAxis. The axis the slider moves along.</p>
@@ -403,6 +429,59 @@ Sets the start position of the slider, in world space, projected to the slider's
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public float SliderValue { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_StartPointerPosition_" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.StartPointerPosition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_StartPointerPosition" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.StartPointerPosition">StartPointerPosition</h4>
+  <div class="markdown level1 summary"><p>Starting position of mixed reality pointer in world space
+Used to track pointer movement</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector3 StartPointerPosition { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_StartSliderValue_" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.StartSliderValue*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PinchSlider_StartSliderValue" data-uid="Microsoft.MixedReality.Toolkit.UI.PinchSlider.StartSliderValue">StartSliderValue</h4>
+  <div class="markdown level1 summary"><p>Float value that holds the starting value of the slider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float StartSliderValue { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -640,7 +719,7 @@ Sets the start position of the slider, in world space, projected to the slider's
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -694,7 +773,7 @@ Sets the start position of the slider, in world space, projected to the slider's
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Start()</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
   <div>

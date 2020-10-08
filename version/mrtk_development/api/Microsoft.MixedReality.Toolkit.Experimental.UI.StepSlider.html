@@ -96,7 +96,7 @@
   <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider" class="text-break">Class StepSlider
   </h1>
   <div class="markdown level0 summary"><p>A slider with a fixed number of step values that can be moved by grabbing / pinching a slider thumb
-Number of steps defaults to 0, if number isnt set then slider behaves just like a regular PinchSlider</p>
+Number of steps defaults to 0, if number isn't set then slider behaves just like a regular PinchSlider</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -114,40 +114,13 @@ Number of steps defaults to 0, if number isnt set then slider behaves just like 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class StepSlider : PinchSlider, IMixedRealityPointerHandler</code></pre>
   </div>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider_sliderStepVal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider.sliderStepVal">sliderStepVal</h4>
-  <div class="markdown level1 summary"><p>Private member used to adjust slider values</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float sliderStepVal</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider_SliderStepDivisions_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider.SliderStepDivisions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider_SliderStepDivisions" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider.SliderStepDivisions">SliderStepDivisions</h4>
-  <div class="markdown level1 summary"><p>Property accessor of sliderStepDivisions, it holds the number of subdvisions the slider is split into.</p>
+  <div class="markdown level1 summary"><p>Property accessor of sliderStepDivisions, it holds the number of subdivisions the slider is split into.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -181,7 +154,7 @@ Uses member sliderStepVal to move up and down the steps on the slider.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,6 +173,16 @@ Uses member sliderStepVal to move up and down the steps on the slider.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider_Start_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_StepSlider_Start" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.StepSlider.Start">Start()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Start()</code></pre>
+  </div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">IMixedRealityPointerHandler</span>
