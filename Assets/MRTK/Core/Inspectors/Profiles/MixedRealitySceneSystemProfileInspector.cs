@@ -19,16 +19,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         const float DragAreaOffset = 10;
         const float LightingSceneTypesLabelWidth = 45;
 
-        private static string defaultSceneContent =
+        private const string defaultSceneContent =
             "Default scene system resources were not found.\nIf using custom manager and lighting scenes, this message can be ignored.\nIf not, please see the documentation for more information";
 
-        private static string managerSceneContent =
+        private const string managerSceneContent =
             "The manager scene is loaded first and remains loaded for the duration of the app. Only one manager scene is ever loaded, and no scene operation will ever unload it.";
 
-        private static string lightingSceneContent =
+        private const string lightingSceneContent =
             "The lighting scene controls lighting settings such as ambient light, skybox and sun direction. A lighting scene's content is restricted based on the types defined in your editor settings. A default lighting scene is loaded on initialization. Only one lighting scene will ever be loaded at a time.";
 
-        private static string contentSceneContent =
+        private const string contentSceneContent =
             "Content scenes are everything else. You can load and unload any number of content scenes in any combination, and their content is unrestricted.";
 
         private static bool showEditorProperties = true;
