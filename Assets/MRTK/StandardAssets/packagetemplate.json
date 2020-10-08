@@ -25,5 +25,8 @@
     },
     "bugs": {
         "url": "https://github.com/microsoft/MixedRealityToolkit-Unity/issues"
+    },
+    "dependencies": {
+        "com.unity.textmeshpro": "2.1.1"
     }
 }
