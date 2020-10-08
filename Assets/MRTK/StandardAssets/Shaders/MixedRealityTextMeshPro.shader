@@ -112,8 +112,8 @@ SubShader {
         // Direct include for portability.
         //#include "TMPro_Properties.cginc"
         // UI Editable properties
-		CBUFFER_START(UnityPerMaterial)
-		uniform sampler2D    _FaceTex;                    // Alpha : Signed Distance
+        CBUFFER_START(UnityPerMaterial)
+        uniform sampler2D    _FaceTex;                    // Alpha : Signed Distance
         uniform float        _FaceUVSpeedX;
         uniform float        _FaceUVSpeedY;
         uniform fixed4        _FaceColor;                    // RGBA : Color + Opacity
@@ -234,7 +234,7 @@ SubShader {
             float3 worldPosition    : TEXCOORD5;
 #endif
 
-			CBUFFER_END
+            CBUFFER_END
         };
 
 
