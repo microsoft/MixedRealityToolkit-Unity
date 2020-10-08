@@ -114,7 +114,7 @@ Shader "Mixed Reality Toolkit/Standard"
         Pass
         {
             Name "Main"
-            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
+			Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
             BlendOp[_BlendOp]
@@ -355,6 +355,24 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
 			fixed _FluentLightIntensity;
 #endif
+
+#if defined(_ROUND_CORNERS)
+			fixed _RoundCornerMargin;
+#if defined(_INDEPENDENT_CORNERS)
+			float4 _RoundCornersRadius;
+#else
+			fixed _RoundCornerRadius;
+#endif			
+#endif
+
+			fixed _BorderWidth;
+			fixed _BorderMinValue;
+
+#if defined(_BORDER_LIGHT_OPAQUE)
+			fixed _BorderLightOpaqueAlpha;
+#endif
+
+			fixed _EdgeSmoothingValue;
 			CBUFFER_END
 
 #if defined(_DIRECTIONAL_LIGHT)
@@ -436,28 +454,6 @@ Shader "Mixed Reality Toolkit/Standard"
             float4 _ProximityLightMiddleColorOverride;
             float4 _ProximityLightOuterColorOverride;
 #endif
-#endif
-
-#if defined(_ROUND_CORNERS)
-#if defined(_INDEPENDENT_CORNERS)
-            float4 _RoundCornersRadius; 
-#else
-            fixed _RoundCornerRadius;
-#endif
-            fixed _RoundCornerMargin;
-#endif
-
-#if defined(_BORDER_LIGHT)
-            fixed _BorderWidth;
-            fixed _BorderMinValue;
-#endif
-
-#if defined(_BORDER_LIGHT_OPAQUE)
-            fixed _BorderLightOpaqueAlpha;
-#endif
-
-#if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
-            fixed _EdgeSmoothingValue;
 #endif
 
 #if defined(_INNER_GLOW)
