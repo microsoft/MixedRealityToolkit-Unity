@@ -39,7 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #endregion
 
         #region Unity methods
-        new void Start()
+
+        protected override void Start()
         {
             UpdateStepVal();
             CheckSliderInit();
@@ -82,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Called every frame a pointer is down. Can be used to implement drag-like behaviors.
         /// Uses member sliderStepVal to move up and down the steps on the slider.
         /// </summary>
-        public new void OnPointerDragged(MixedRealityPointerEventData eventData)
+        public override void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             if (eventData.Pointer == ActivePointer && !eventData.used)
             {

@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion  
 
         #region Unity methods
-        public void Start()
+        protected virtual void Start()
         {
             if (thumbRoot == null)
             {
@@ -459,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        public virtual void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             if (eventData.Pointer == ActivePointer && !eventData.used)
             {
