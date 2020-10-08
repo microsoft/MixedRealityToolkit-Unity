@@ -29,12 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #endregion
 
-        #region Protected Members
+        #region Private Fields
 
         /// <summary>
         /// Private member used to adjust slider values
         /// </summary>
-        protected float sliderStepVal = 0.01f;
+        private float sliderStepVal = 0.01f;
+
         #endregion
 
         #region Unity methods
@@ -83,9 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public new void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
-            if (eventData.Pointer == activePointer && !eventData.used)
+            if (eventData.Pointer == ActivePointer && !eventData.used)
             {
-                var delta = activePointer.Position - startPointerPosition;
+                var delta = ActivePointer.Position - StartPointerPosition;
                 var handDelta = Vector3.Dot(SliderTrackDirection.normalized, delta);
                 var stepVal = (handDelta / SliderTrackDirection.magnitude > 0) ? sliderStepVal : (sliderStepVal * -1);
                 var stepMag = Mathf.Floor(Mathf.Abs((handDelta / SliderTrackDirection.magnitude)) / sliderStepVal);
