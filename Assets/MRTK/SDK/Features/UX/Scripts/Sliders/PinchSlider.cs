@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-//
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
@@ -16,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [AddComponentMenu("Scripts/MRTK/SDK/PinchSlider")]
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
-        #region Serialized Fields and Properties
+        #region Serialized Fields and Public Properties
         [Tooltip("The gameObject that contains the slider thumb.")]
         [SerializeField]
         private GameObject thumbRoot = null;
@@ -468,7 +466,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eventData.Use();
             }
         }
+
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
+
         #endregion
     }
 }
