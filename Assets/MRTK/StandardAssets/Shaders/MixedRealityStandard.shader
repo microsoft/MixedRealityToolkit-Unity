@@ -114,7 +114,7 @@ Shader "Mixed Reality Toolkit/Standard"
         Pass
         {
             Name "Main"
-			Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
+            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
             BlendOp[_BlendOp]
@@ -353,27 +353,27 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
-			fixed _FluentLightIntensity;
+            fixed _FluentLightIntensity;
 #endif
 
 #if defined(_ROUND_CORNERS)
-			fixed _RoundCornerMargin;
+            fixed _RoundCornerMargin;
 #if defined(_INDEPENDENT_CORNERS)
-			float4 _RoundCornersRadius;
+            float4 _RoundCornersRadius;
 #else
-			fixed _RoundCornerRadius;
+            fixed _RoundCornerRadius;
 #endif			
 #endif
 
-			fixed _BorderWidth;
-			fixed _BorderMinValue;
+            fixed _BorderWidth;
+            fixed _BorderMinValue;
 
 #if defined(_BORDER_LIGHT_OPAQUE)
-			fixed _BorderLightOpaqueAlpha;
+            fixed _BorderLightOpaqueAlpha;
 #endif
 
-			fixed _EdgeSmoothingValue;
-			CBUFFER_END
+            fixed _EdgeSmoothingValue;
+            CBUFFER_END
 
 #if defined(_DIRECTIONAL_LIGHT)
 #if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
