@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else if (Application.isPlaying && inputModule != null)
             {
-                inputModule.ManualActivationRequired = true;
+                inputModule.Suspend();
             }
 
             inputModule = null;

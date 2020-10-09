@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Camera RaycastCamera { get; private set; }
 
-        public bool ManualActivationRequired { get; set; } = false;
+        public bool ManualActivationRequired { get; private set; } = false;
 
         public IEnumerable<IMixedRealityPointer> ActiveMixedRealityPointers
         {
@@ -78,6 +78,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
             CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            ManualActivationRequired = false;
+        }
+
+        public void Suspend()
+        {
+            Process();
+            ManualActivationRequired = true;
         }
 
         /// <inheritdoc />
@@ -112,6 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (ProcessPerfMarker.Auto())
             {
+                if (ManualActivationRequired)
+                {
+                    return;
+                }
                 CursorLockMode cursorLockStateBackup = Cursor.lockState;
 
                 try

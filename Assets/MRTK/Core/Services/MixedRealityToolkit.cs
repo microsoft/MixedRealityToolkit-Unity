@@ -38,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool internalShutdown = false;
         private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
 
+        private bool isProfileSwitching = false;
+
         #region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
@@ -690,10 +692,11 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 // Before any Update() of a service is performed check to see if we need to switch profile
                 // If so we instantiate and initialize the services associated with the new profile.
-                if (newProfile != null)
+                if (newProfile != null && isProfileSwitching)
                 {
                     InitializeNewProfile(newProfile);
                     newProfile = null;
+                    isProfileSwitching = false;
                 }
                 UpdateAllServices();
             }
@@ -709,6 +712,7 @@ namespace Microsoft.MixedReality.Toolkit
                 if (newProfile != null)
                 {
                     RemoveCurrentProfile(newProfile);
+                    isProfileSwitching = true;
                 }
             }
         }

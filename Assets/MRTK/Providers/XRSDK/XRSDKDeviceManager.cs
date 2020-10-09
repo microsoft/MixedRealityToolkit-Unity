@@ -125,6 +125,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            var controllersCopy = ActiveControllers.ToReadOnlyCollection();
+            foreach (var controller in controllersCopy)
+            {
+                CoreServices.InputSystem?.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                RemoveController(controller.Key);
+            }
+        }
+
         #region Controller Utilities
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] XRSDKDeviceManager.GetOrAddController");
