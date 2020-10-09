@@ -320,25 +320,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SceneInfoDrawer.DrawProperty(rect, contentScenes.GetArrayElementAtIndex(index), GUIContent.none, isActive, isFocused);
         }
 
+        private const string defaultManagerAssetGuid = "ae7bb08d297fb69408695d8de0962524";
+        private Object defaultManagerAsset = null;
+        private const string defaultLightingAssetGuid = "7e54e36c44f826c438c95da79f8de638";
+        private Object defaultLightingAsset = null;
+
         private bool FindDefaultResources()
         {
-            string[] defaultResourceGuids =
+            if ((defaultManagerAsset != null) &&
+                (defaultLightingAsset != null))
             {
-                "ae7bb08d297fb69408695d8de0962524", // DefaultManagerScene
-                "7e54e36c44f826c438c95da79f8de638"  // DefaultLightingScene
-            };
-
-            bool findSucceeded = true;
-            foreach (string s in defaultResourceGuids)
-            {
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(s)) == null)
-                {
-                    findSucceeded = false;
-                    break;
-                }
+                return true;
             }
 
-            return findSucceeded;
+            defaultManagerAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(defaultManagerAssetGuid));
+            defaultLightingAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(defaultLightingAssetGuid));
+
+            return ((defaultManagerAsset != null) && (defaultLightingAsset != null));
         }
     }
 }
