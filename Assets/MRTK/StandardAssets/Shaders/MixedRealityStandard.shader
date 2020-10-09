@@ -356,25 +356,6 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed _FluentLightIntensity;
 #endif
 
-#if defined(_ROUND_CORNERS)
-            fixed _RoundCornerMargin;
-#if defined(_INDEPENDENT_CORNERS)
-            float4 _RoundCornersRadius;
-#else
-            fixed _RoundCornerRadius;
-#endif			
-#endif
-
-            fixed _BorderWidth;
-            fixed _BorderMinValue;
-
-#if defined(_BORDER_LIGHT_OPAQUE)
-            fixed _BorderLightOpaqueAlpha;
-#endif
-
-            fixed _EdgeSmoothingValue;
-            CBUFFER_END
-
 #if defined(_DIRECTIONAL_LIGHT)
 #if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
@@ -430,21 +411,6 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed _FadeMinValue;
 #endif
 
-#if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
-#if defined(_HOVER_LIGHT_HIGH)
-#define HOVER_LIGHT_COUNT 10
-#elif defined(_HOVER_LIGHT_MEDIUM)
-#define HOVER_LIGHT_COUNT 4
-#else
-#define HOVER_LIGHT_COUNT 2
-#endif
-#define HOVER_LIGHT_DATA_SIZE 2
-            float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
-#if defined(_HOVER_COLOR_OVERRIDE)
-            fixed3 _HoverColorOverride;
-#endif
-#endif
-
 #if defined(_PROXIMITY_LIGHT) || defined(_NEAR_LIGHT_FADE)
 #define PROXIMITY_LIGHT_COUNT 2
 #define PROXIMITY_LIGHT_DATA_SIZE 6
@@ -452,9 +418,26 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
             float4 _ProximityLightCenterColorOverride;
             float4 _ProximityLightMiddleColorOverride;
-            float4 _ProximityLightOuterColorOverride;
+            float4 _ProximityLightOuterColorOverride;  
 #endif
 #endif
+#if defined(_ROUND_CORNERS)
+            fixed _RoundCornerMargin;
+#if defined(_INDEPENDENT_CORNERS)
+            float4 _RoundCornersRadius;
+#else
+            fixed _RoundCornerRadius;
+#endif			
+#endif
+
+            fixed _BorderWidth;
+            fixed _BorderMinValue;
+
+#if defined(_BORDER_LIGHT_OPAQUE)
+            fixed _BorderLightOpaqueAlpha;
+#endif
+
+            fixed _EdgeSmoothingValue;
 
 #if defined(_INNER_GLOW)
             fixed4 _InnerGlowColor;
@@ -474,6 +457,22 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed3 _EnvironmentColorX;
             fixed3 _EnvironmentColorY;
             fixed3 _EnvironmentColorZ;
+#endif
+            CBUFFER_END
+
+#if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
+#if defined(_HOVER_LIGHT_HIGH)
+#define HOVER_LIGHT_COUNT 10
+#elif defined(_HOVER_LIGHT_MEDIUM)
+#define HOVER_LIGHT_COUNT 4
+#else
+#define HOVER_LIGHT_COUNT 2
+#endif
+#define HOVER_LIGHT_DATA_SIZE 2
+            float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
+#if defined(_HOVER_COLOR_OVERRIDE)
+            fixed3 _HoverColorOverride;
+#endif
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
