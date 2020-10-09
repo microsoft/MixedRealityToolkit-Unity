@@ -163,6 +163,11 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
+    if ($packageName -eq "foundation") {
+        # The foundation package MOVES some content around. This restores the moved files.
+        Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+    }
+
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"
     Remove-Item -Path "$packagePath/package.json.meta"
