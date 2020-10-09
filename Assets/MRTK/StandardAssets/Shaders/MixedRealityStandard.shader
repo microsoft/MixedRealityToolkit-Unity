@@ -114,7 +114,7 @@ Shader "Mixed Reality Toolkit/Standard"
         Pass
         {
             Name "Main"
-            Tags{ "RenderType" = "Opaque" "LightMode" = "ForwardBase" }
+            Tags{ "RenderType" = "Opaque" "LightMode" = "LightweightForward" }
             LOD 100
             Blend[_SrcBlend][_DstBlend]
             BlendOp[_BlendOp]
@@ -187,7 +187,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "MixedRealityShaderUtils.cginc"
 
             // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            #define _LIGHTWEIGHT_RENDER_PIPELINE
 
 #if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
@@ -328,137 +328,132 @@ Shader "Mixed Reality Toolkit/Standard"
             sampler2D _MainTex;
             fixed4 _MainTex_ST;
 
-#if defined(_ALPHA_CLIP)
+//#if defined(_ALPHA_CLIP)
             fixed _Cutoff;
-#endif
+//#endif
 
             fixed _Metallic;
             fixed _Smoothness;
 
-#if defined(_CHANNEL_MAP)
+//#if defined(_CHANNEL_MAP)
             sampler2D _ChannelMap;
-#endif
+//#endif
 
-#if defined(_NORMAL_MAP)
+//#if defined(_NORMAL_MAP)
             sampler2D _NormalMap;
             float _NormalMapScale;
-#endif
+//#endif
 
-#if defined(_EMISSION)
+//#if defined(_EMISSION)
             fixed4 _EmissiveColor;
-#endif
+//#endif
 
-#if defined(_TRIPLANAR_MAPPING)
+//#if defined(_TRIPLANAR_MAPPING)
             float _TriplanarMappingBlendSharpness;
-#endif
+//#endif
 
-#if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
+//#if defined(_HOVER_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_BORDER_LIGHT)
             fixed _FluentLightIntensity;
-#endif
-
-#if defined(_DIRECTIONAL_LIGHT)
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
-            CBUFFER_START(_LightBuffer)
-            float4 _MainLightPosition;
-            half4 _MainLightColor;
-            CBUFFER_END
-#else
-            fixed4 _LightColor0;
-#endif
-#endif
-
-#if defined(_REFRACTION)
-            fixed _RefractiveIndex;
-#endif
-
-#if defined(_RIM_LIGHT)
-            fixed3 _RimColor;
-            fixed _RimPower;
-#endif
-
-#if defined(_VERTEX_EXTRUSION)
-            float _VertexExtrusionValue;
-#endif
-
-#if defined(_CLIPPING_PLANE)
-            fixed _ClipPlaneSide;
-            float4 _ClipPlane;
-#endif
-
-#if defined(_CLIPPING_SPHERE)
-            fixed _ClipSphereSide;
-            float4 _ClipSphere;
-#endif
-
-#if defined(_CLIPPING_BOX)
-            fixed _ClipBoxSide;
-            float4 _ClipBoxSize;
-            float4x4 _ClipBoxInverseTransform;
-#endif
-
-#if defined(_CLIPPING_PRIMITIVE)
-            float _BlendedClippingWidth;
-#endif
-
-#if defined(_CLIPPING_BORDER)
-            fixed _ClippingBorderWidth;
-            fixed3 _ClippingBorderColor;
-#endif
-
-#if defined(_NEAR_PLANE_FADE)
-            float _FadeBeginDistance;
-            float _FadeCompleteDistance;
-            fixed _FadeMinValue;
-#endif
-
-#if defined(_PROXIMITY_LIGHT) || defined(_NEAR_LIGHT_FADE)
-#define PROXIMITY_LIGHT_COUNT 2
-#define PROXIMITY_LIGHT_DATA_SIZE 6
-            float4 _ProximityLightData[PROXIMITY_LIGHT_COUNT * PROXIMITY_LIGHT_DATA_SIZE];
-#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
-            float4 _ProximityLightCenterColorOverride;
-            float4 _ProximityLightMiddleColorOverride;
-            float4 _ProximityLightOuterColorOverride;  
-#endif
-#endif
-#if defined(_ROUND_CORNERS)
+//#endif
+			fixed4 _InnerGlowColor;
+			fixed _InnerGlowPower;
+//#if defined(_ROUND_CORNERS)
             fixed _RoundCornerMargin;
-#if defined(_INDEPENDENT_CORNERS)
+//#if defined(_INDEPENDENT_CORNERS)
             float4 _RoundCornersRadius;
-#else
+//#else
             fixed _RoundCornerRadius;
-#endif			
-#endif
+//#endif			
+//#endif
 
             fixed _BorderWidth;
             fixed _BorderMinValue;
 
-#if defined(_BORDER_LIGHT_OPAQUE)
+//#if defined(_BORDER_LIGHT_OPAQUE)
             fixed _BorderLightOpaqueAlpha;
-#endif
+//#endif
 
             fixed _EdgeSmoothingValue;
 
-#if defined(_INNER_GLOW)
-            fixed4 _InnerGlowColor;
-            fixed _InnerGlowPower;
-#endif
+//#if defined(_DIRECTIONAL_LIGHT)
+//#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+            CBUFFER_START(_LightBuffer)
+            float4 _MainLightPosition;
+            half4 _MainLightColor;
+            CBUFFER_END
+//#else
+//            fixed4 _LightColor0;
+//#endif
+//#endif
 
-#if defined(_IRIDESCENCE)
+//#if defined(_REFRACTION)
+            fixed _RefractiveIndex;
+//#endif
+
+//#if defined(_RIM_LIGHT)
+            fixed3 _RimColor;
+            fixed _RimPower;
+//#endif
+
+//#if defined(_VERTEX_EXTRUSION)
+            float _VertexExtrusionValue;
+//#endif
+
+//#if defined(_CLIPPING_PLANE)
+            fixed _ClipPlaneSide;
+            float4 _ClipPlane;
+//#endif
+
+//#if defined(_CLIPPING_SPHERE)
+            fixed _ClipSphereSide;
+            float4 _ClipSphere;
+//#endif
+
+//#if defined(_CLIPPING_BOX)
+            fixed _ClipBoxSide;
+            float4 _ClipBoxSize;
+            float4x4 _ClipBoxInverseTransform;
+//#endif
+
+//#if defined(_CLIPPING_PRIMITIVE)
+            float _BlendedClippingWidth;
+//#endif
+
+//#if defined(_CLIPPING_BORDER)
+            fixed _ClippingBorderWidth;
+            fixed3 _ClippingBorderColor;
+//#endif
+
+//#if defined(_NEAR_PLANE_FADE)
+            float _FadeBeginDistance;
+            float _FadeCompleteDistance;
+            fixed _FadeMinValue;
+//#endif
+
+//#if defined(_INNER_GLOW)
+//#endif
+
+//#if defined(_IRIDESCENCE)
             sampler2D _IridescentSpectrumMap;
             fixed _IridescenceIntensity;
             fixed _IridescenceThreshold;
             fixed _IridescenceAngle;
-#endif
+//#endif
 
-#if defined(_ENVIRONMENT_COLORING)
+//#if defined(_ENVIRONMENT_COLORING)
             fixed _EnvironmentColorThreshold;
             fixed _EnvironmentColorIntensity;
             fixed3 _EnvironmentColorX;
             fixed3 _EnvironmentColorY;
             fixed3 _EnvironmentColorZ;
+//#endif
+			CBUFFER_END
+
+			CBUFFER_START(UnityPerDraw)
+#if defined(_REFLECTIONS) || defined(_REFRACTION)
+//			half4 unity_SpecCube0_HDR;
 #endif
-            CBUFFER_END
+			CBUFFER_END
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
 #if defined(_HOVER_LIGHT_HIGH)
@@ -472,6 +467,17 @@ Shader "Mixed Reality Toolkit/Standard"
             float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)
             fixed3 _HoverColorOverride;
+#endif
+#endif
+
+#if defined(_PROXIMITY_LIGHT) || defined(_NEAR_LIGHT_FADE)
+#define PROXIMITY_LIGHT_COUNT 2
+#define PROXIMITY_LIGHT_DATA_SIZE 6
+			float4 _ProximityLightData[PROXIMITY_LIGHT_COUNT * PROXIMITY_LIGHT_DATA_SIZE];
+#if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
+			float4 _ProximityLightCenterColorOverride;
+			float4 _ProximityLightMiddleColorOverride;
+			float4 _ProximityLightOuterColorOverride;
 #endif
 #endif
 
@@ -1153,7 +1159,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityMetaPass.cginc"
 
             // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            #define _LIGHTWEIGHT_RENDER_PIPELINE
 
             struct v2f
             {
