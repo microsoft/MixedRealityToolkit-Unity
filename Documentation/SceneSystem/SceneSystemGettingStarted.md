@@ -44,7 +44,7 @@ If the SceneSystemResources folder has been deleted, or was deselected during im
 
 - Select **Assets** > **Import Package** > **Custom Package**
 - Open the **Microsoft.MixedReality.Toolkit.Foundation** package
-- Ensure that **SceneSystemResources** and all child options are selected
+- Ensure that **Services/SceneSystem/SceneSystemResources** and all child options are selected
 
   ![Reimport scene system resources](../Images/SceneSystem/ReimportSceneSystemResources.png)
 

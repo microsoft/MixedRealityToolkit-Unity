@@ -21,19 +21,5 @@ if (-not (Test-Path -Path $samplesFolder)) {
 }
 
 # Copy the scene system's default scenes to Samples~
-Copy-Item -Path "$PackageRoot/SceneSystemResources" -Destination "$samplesFolder/SceneSystemResources" -Recurse -Force
-
-# Create the samples data for the package.json file
-$samples = "`"samples`": ["
-$samples = $samples + "`n      {`n"
-$samples = $samples + "        `"displayName`": `"Scene System Resources`",`n"
-$samples = $samples + "        `"description`": `"Resources used by the MRTK Scene System`",`n"
-$samples = $samples + "        `"path`": `"Samples~/SceneSystemResources`"`n"
-$samples = $samples + "      }"
-$samples = $samples + "`n   ]"
-
-# Update the project.json file to specify the samples contanined in the package
-$packageJsonPath = "$PackageRoot/package.json"
-$packageJson = [System.IO.File]::ReadAllText($packageJsonPath)
-$packageJson = ($packageJson -replace "%samples%", $samples)
-[System.IO.File]::WriteAllText($packageJsonPath, $packageJson)
+Move-Item -Path "$PackageRoot/Services/SceneSystem/SceneSystemResources" -Destination "$samplesFolder/SceneSystemResources" -Force
+Move-Item -Path "$PackageRoot/Services/SceneSystem/SceneSystemResources.meta" -Destination "$samplesFolder/SceneSystemResources.meta" -Force

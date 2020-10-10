@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Change the color of the material on a UnityUI Graphic (ex. Image).  Useful for visualizing button presses.
