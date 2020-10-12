@@ -75,7 +75,7 @@ $packages = [ordered]@{
     # tools
     "tools" = "Assets/MRTK/Tools";
     # tests
-    "testutilties" = "Assets/MRTK/Tests/TestUtilities";
+    "testutilities" = "Assets/MRTK/Tests/TestUtilities";
     # examples
     "examples" = "Assets/MRTK/Examples";
 }
@@ -94,11 +94,6 @@ foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
-    # Ensure the changelog, etc. files are the same in all packages.
-    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
-
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
@@ -115,6 +110,12 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     # Create and publish the package
     $packageName = $entry.Name
+
+    # Copy files used by UPM to display license, change log, etc.
+    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/packaging/UnityMetaFiles/$packageName/*.meta" "$packagePath"
 
     $samplesFolder = "$packagePath/Samples~"
 
@@ -173,12 +174,18 @@ foreach ($entry in $packages.GetEnumerator()) {
         # The foundation package MOVES some content around. This restores the moved files.
         Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
     }
+
+    # Delete the files copied in previously
+    Remove-Item -Path "$packagePath/LICENSE.md*"
+    Remove-Item -Path "$packagePath/NOTICE.md*"
+    Remove-Item -Path "$packagePath/CHANGELOG.md*"
+
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"
     Remove-Item -Path "$packagePath/package.json.meta"
 
     # Restore original files
-    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.* LICENSE.md NOTICE.md CHANGELOG.md" -NoNewWindow -Wait
+    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
 }
 
 # Return to the starting path
