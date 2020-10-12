@@ -45,7 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Camera RaycastCamera { get; private set; }
 
-        public bool ManualActivationRequired { get; private set; } = false;
+        /// <summary>
+        /// Whether the input module is auto initialized by event system or requires a manual call to Initialize()
+        /// </summary>
+        public bool ManualInitializationRequired { get; private set; } = false;
 
         public IEnumerable<IMixedRealityPointer> ActiveMixedRealityPointers
         {
@@ -69,6 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Initialize the input module.
+        /// </summary>
         public void Initialize()
         {
             RaycastCamera = CoreServices.InputSystem.FocusProvider.UIRaycastCamera;
@@ -78,13 +84,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
             CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-            ManualActivationRequired = false;
+            ManualInitializationRequired = false;
         }
 
+        /// <summary>
+        /// Suspend the input module when a runtime profile change is about to happen.
+        /// </summary>
         public void Suspend()
         {
+            // Process once more to handle pointer removals.
             Process();
-            ManualActivationRequired = true;
+            // Set the flag so that we manually initialize the input module after the profile switch.
+            ManualInitializationRequired = true;
         }
 
         /// <inheritdoc />
@@ -119,7 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (ProcessPerfMarker.Auto())
             {
-                if (ManualActivationRequired)
+                // Do not process when we are waiting for initialization
+                if (ManualInitializationRequired)
                 {
                     return;
                 }

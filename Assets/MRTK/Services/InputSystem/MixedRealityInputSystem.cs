@@ -254,9 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void LateUpdate()
         {
+            // Check whether manual initialization of input module is needed.
+            // The check is only required once after input system is created.
             if (!isInputModuleAdded && !inputModuleChecked)
             {
-                if (inputModule.ManualActivationRequired)
+                if (inputModule.ManualInitializationRequired)
                 {
                     inputModule.Initialize();
                 }
@@ -384,6 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityObjectExtensions.DestroyObject(inputModule);
                 }
             }
+            // If the MRTK profile is being switched and there is an input module in the scene in the beginning
             else if (Application.isPlaying && inputModule != null)
             {
                 inputModule.Suspend();
