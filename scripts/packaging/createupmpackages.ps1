@@ -94,10 +94,10 @@ foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
-    # Copy license, changelog, etc. files to the package folder
-    Copy-Item -Path "$projectRoot/LICENSE.md*" "$packagePath"
-    Copy-Item -Path "$projectRoot/NOTICE.md*" "$packagePath"
-    Copy-Item -Path "$projectRoot/CHANGELOG.md*" "$packagePath"
+    # Ensure the changelog, etc. files are the same in all packages.
+    Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
 
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
@@ -173,18 +173,12 @@ foreach ($entry in $packages.GetEnumerator()) {
         # The foundation package MOVES some content around. This restores the moved files.
         Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
     }
-
-    # Delete the license, changelog, etc. files
-    Remove-Item -Path "$packagePath/LICENSE.md*"
-    Remove-Item -Path "$packagePath/NOTICE.md*"
-    Remove-Item -Path "$packagePath/CHANGELOG.md*"
-
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"
     Remove-Item -Path "$packagePath/package.json.meta"
 
-    # Restore the original template files
-    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.*" -NoNewWindow -Wait
+    # Restore original files
+    Start-Process -FilePath "git" -ArgumentList "checkout packagetemplate.* LICENSE.md NOTICE.md CHANGELOG.md" -NoNewWindow -Wait
 }
 
 # Return to the starting path
