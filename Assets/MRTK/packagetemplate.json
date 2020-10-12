@@ -32,9 +32,9 @@
         "SDK*",
         "Services*",
         "package.json.meta",
-        "LICENSE.md*",
-        "NOTICE.md*",
-        "CHANGELOG.md*",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*",
         "Samples~"
     ],
     "samples": [
