@@ -83,6 +83,7 @@ $packages = [ordered]@{
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
+# 0) Ensure necessary documentation files (license, changelog, etc.) are copied to the appropriate location
 # 1) Replace the %version% token in the package.json file with the value of Version
 # 2) Overwrite the package.json file
 # 3) Create and the packages and copy to the OutputFolder
@@ -93,6 +94,11 @@ foreach ($entry in $packages.GetEnumerator()) {
     $packageFolder = $entry.Value
     $packagePath = Resolve-Path -Path "$ProjectRoot/$packageFolder"
   
+    # Copy license, changelog, etc. files to the package folder
+    Copy-Item -Path "$projectRoot/LICENSE.md*" "$packagePath"
+    Copy-Item -Path "$projectRoot/NOTICE.md*" "$packagePath"
+    Copy-Item -Path "$projectRoot/CHANGELOG.md*" "$packagePath"
+
     # Switch to the folder containing the package.json file
     Set-Location $packagePath
 
@@ -167,6 +173,11 @@ foreach ($entry in $packages.GetEnumerator()) {
         # The foundation package MOVES some content around. This restores the moved files.
         Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
     }
+
+    # Delete the license, changelog, etc. files
+    Remove-Item -Path "$packagePath/LICENSE.md*"
+    Remove-Item -Path "$packagePath/NOTICE.md*"
+    Remove-Item -Path "$packagePath/CHANGELOG.md*"
 
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"

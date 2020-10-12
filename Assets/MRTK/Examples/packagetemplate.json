@@ -31,10 +31,12 @@
         "Common*",
         "Samples~*",
         "StandardAssets*",
-        "License*",
         "Microsoft.MixedReality.Toolkit.Examples*",
         "MRTK.Examples*",
-        "package.json.meta"
+        "package.json.meta",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*"
     ],
     %samples%
 }
