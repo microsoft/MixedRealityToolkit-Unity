@@ -31,6 +31,14 @@
         "Providers*",
         "SDK*",
         "Services*",
-        "package.json.meta"
+        "package.json.meta",
+        "Samples~"
+    ],
+    "samples": [
+        {
+          "displayName": "Scene System Resources",
+          "description": "Resources used by the MRTK Scene System",
+          "path": "Samples~/SceneSystemResources"
+        }
     ]
 }

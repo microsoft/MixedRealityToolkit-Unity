@@ -106,7 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (fireOnClick)
                 {
-                    ToggleList[index].TriggerOnClick();
+                    // Trigger the OnClick event without checking CanInteract as we did not check when setting the index earlier
+                    ToggleList[index].TriggerOnClick(true);
                 }
             }
         }

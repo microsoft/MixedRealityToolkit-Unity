@@ -127,7 +127,7 @@ public class ScrollablePagination : MonoBehaviour
 
 ## Scrolling example scene
 
-**ScrollingObjectCollection.unity** example scene consists of 3 scrollable examples, each one with a different velocity falloff configuration. The example scene contains walls to show the surface placement behavior that are disabled by default in the hierarchy. The example scene can be found under the ``MRTK/Examples/Demos/ScrollingObjectCollection/Scenes`` folder.
+**ScrollingObjectCollection.unity** example scene consists of 3 scrollable examples, each one with a different velocity falloff configuration. The example scene can be found under the ``MRTK/Examples/Demos/ScrollingObjectCollection/Scenes`` folder.
 
 ![Scrolling object collection example scene](Images/ScrollingCollection/ScrollingObjectCollection_ExampleScene.png)
 

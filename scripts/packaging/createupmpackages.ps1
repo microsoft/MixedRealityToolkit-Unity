@@ -112,7 +112,13 @@ foreach ($entry in $packages.GetEnumerator()) {
 
     $samplesFolder = "$packagePath/Samples~"
 
-    if ($packageName -eq "examples") {
+    if ($packageName -eq "foundation") {
+        # The foundation package contains files that are requried to be copied into the Assets folder to be used.
+        # In order to perform the necessary preparaton, without overly complicating this script, we will use a
+        # helper script to prepare the folder.
+        Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/foundationpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
         # the folder.
@@ -127,7 +133,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     else {
         # Some other folders have localized examples that need to be prepared. Intentionally skip the foundation as those samples
         $exampleFolder = "$packagePath/Examples"
-        if (($PackageName -ne "foundation") -and ($PackageName -ne "foundation.xr2018") -and (Test-Path -Path $exampleFolder)) {
+        if (($PackageName -ne "foundation") -and (Test-Path -Path $exampleFolder)) {
             # Ensure the required samples exists
             if (-not (Test-Path -Path $samplesFolder)) {
                 New-Item $samplesFolder -ItemType Directory | Out-Null
@@ -157,6 +163,11 @@ foreach ($entry in $packages.GetEnumerator()) {
         Remove-Item -Path $samplesFolder -Recurse -Force
     }
     
+    if ($packageName -eq "foundation") {
+        # The foundation package MOVES some content around. This restores the moved files.
+        Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+    }
+
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"
     Remove-Item -Path "$packagePath/package.json.meta"
