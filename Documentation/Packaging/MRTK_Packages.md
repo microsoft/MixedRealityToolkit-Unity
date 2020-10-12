@@ -69,6 +69,7 @@ The MRTK Foundation package contains the following.
 | | Features | Functionality that builds upon the Foundation package. |
 | | Profiles | Default profiles for the Microsoft Mixed Reality Toolkit systems and services. |
 | | StandardAssets | Common assets; models, textures, materials, etc. |
+| MRTK/SceneSystemResources | | Assets and resources used by the Scene System |
 | MRTK/Services | | |
 | | [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
 | | [CameraSystem](../CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |

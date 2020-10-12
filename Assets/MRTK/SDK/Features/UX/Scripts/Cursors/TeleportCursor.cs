@@ -114,6 +114,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             arrowTransform.eulerAngles = cursorOrientation;
         }
 
+        public override void SetVisibility(bool visible)
+        {
+            this.PrimaryCursorVisual.gameObject.SetChildrenActive(visible);
+        }
+
         #endregion IMixedRealityCursor Implementation
 
         #region IMixedRealityTeleportHandler Implementation
