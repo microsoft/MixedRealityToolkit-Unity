@@ -83,11 +83,11 @@ $packages = [ordered]@{
 # Beginning of the upm packaging script main section
 # The overall structure of this script is:
 #
-# 0) Ensure necessary documentation files (license, changelog, etc.) are copied to the appropriate location
-# 1) Replace the %version% token in the package.json file with the value of Version
-# 2) Overwrite the package.json file
-# 3) Create and the packages and copy to the OutputFolder
-# 4) Cleanup files created and/or modified
+# * Ensure necessary documentation files (license, changelog, etc.) are copied to the appropriate location
+# * Replace the %version% token in the package.json file with the value of Version
+# * Overwrite the package.json file
+# * Create and the packages and copy to the OutputFolder
+# * Cleanup files created and/or modified
 
 # Create and publish the packages
 foreach ($entry in $packages.GetEnumerator()) {
