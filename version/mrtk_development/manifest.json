@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "ahTRnqg3purEv1LtRYhGPg=="
+          "hash": "qSg9hvCZT89GqEvXRGI0Cg=="
         }
       },
       "is_incremental": false,
@@ -6762,6 +6762,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/DefaultResourcesMessage.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/DefaultResourcesMessage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
       "output": {
         "resource": {
@@ -6832,6 +6843,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/ReimportSceneSystemResources.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/ReimportSceneSystemResources.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/UpmImportSceneSystemResources.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/UpmImportSceneSystemResources.png"
         }
       },
       "is_incremental": false,
@@ -8330,7 +8363,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "+0YHZLvx2LsQz29zdOsmaA=="
+          "hash": "BCGkxmKFDiewCpXuXSDsyw=="
         }
       },
       "is_incremental": false,
@@ -8762,7 +8795,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemGettingStarted.html",
-          "hash": "ZabMoh0vkzVMLy5w4vXy9g=="
+          "hash": "7fqCiJfRE4PbqDCnUwUB3w=="
         }
       },
       "is_incremental": false,
@@ -11014,18 +11047,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.html",
-          "hash": "/NgL5CA7NC3aVLLJXii2IA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DebugTextOutput.yml",
       "output": {
         ".html": {
@@ -12266,7 +12287,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "oQ6sIpARHUMuymMwWVovWw=="
+          "hash": "A0ASwll9QMQ/WW6AOh06BQ=="
         }
       },
       "is_incremental": false,
@@ -21554,7 +21575,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportCursor.html",
-          "hash": "1pZLYWbmK8jby9ZRDdVQzg=="
+          "hash": "kYcHUGJjBOR77uUW+1QgOg=="
         }
       },
       "is_incremental": false,
@@ -23482,6 +23503,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.ColorChangerUnityUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ColorChangerUnityUI.html",
+          "hash": "Bs7tznrf8FtO49kdEXsweQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.ConnectorFollowType.yml",
       "output": {
         ".html": {
@@ -25154,7 +25187,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "R2/mCn8PFdqySomcYYtrfA=="
+          "hash": "i7WK2T/dpWkBjHxgU0npAw=="
         }
       },
       "is_incremental": false,
@@ -29402,7 +29435,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Zvst5T+WuoXBWOhc1njSYw=="
+          "hash": "rXsd9AkpaIRDLPm8NWH5wg=="
         }
       },
       "is_incremental": false,
