@@ -111,12 +111,17 @@ foreach ($entry in $packages.GetEnumerator()) {
     # Create and publish the package
     $packageName = $entry.Name
 
+    $docFolder = "$packagePath/Documentation~"
+
     # Copy files used by UPM to display license, change log, etc.
     Copy-Item -Path "$projectRoot/LICENSE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/LICENSE.md.meta.$packageName" "$packagePath/LICENSE.md.meta"
     Copy-Item -Path "$projectRoot/NOTICE.md" "$packagePath"
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/NOTICE.md.meta.$packageName" "$packagePath/NOTICE.md.meta"
     Copy-Item -Path "$projectRoot/CHANGELOG.md" "$packagePath"
-    Copy-Item -Path "$projectRoot/packaging/UnityMetaFiles/$packageName/*.meta" "$packagePath"
-
+    Copy-Item -Path "$projectRoot/UPM/UnityMetaFiles/CHANGELOG.md.meta.$packageName" "$packagePath/CHANGELOG.md.meta"
+    Copy-Item -Path "$projectRoot/UPM/Documentation~" $docFolder -Recurse
+ 
     $samplesFolder = "$packagePath/Samples~"
 
     if ($packageName -eq "foundation") {
@@ -179,6 +184,10 @@ foreach ($entry in $packages.GetEnumerator()) {
     Remove-Item -Path "$packagePath/LICENSE.md*"
     Remove-Item -Path "$packagePath/NOTICE.md*"
     Remove-Item -Path "$packagePath/CHANGELOG.md*"
+    if (Test-Path -Path $docFolder) {
+        # A samples folder was created. Remove it.
+        Remove-Item -Path $docFolder -Recurse -Force
+    }
 
     # Delete the renamed package.json.* files
     Remove-Item -Path "$packagePath/package.json"

@@ -29,14 +29,15 @@
     },
     "files": [
         "Common*",
-        "Samples~*",
         "StandardAssets*",
         "Microsoft.MixedReality.Toolkit.Examples*",
         "MRTK.Examples*",
         "package.json.meta",
         "LICENSE*",
         "NOTICE*",
-        "CHANGELOG*"
+        "CHANGELOG*",
+        "Documentation~*",
+        "Samples~*"
     ],
     %samples%
 }

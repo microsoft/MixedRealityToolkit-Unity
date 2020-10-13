@@ -35,6 +35,7 @@
         "LICENSE*",
         "NOTICE*",
         "CHANGELOG*",
+        "Documentation~*",
         "Samples~"
     ],
     "samples": [
