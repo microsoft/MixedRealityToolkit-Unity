@@ -185,7 +185,7 @@ foreach ($entry in $packages.GetEnumerator()) {
     Remove-Item -Path "$packagePath/NOTICE.md*"
     Remove-Item -Path "$packagePath/CHANGELOG.md*"
     if (Test-Path -Path $docFolder) {
-        # A samples folder was created. Remove it.
+        # A documentation folder was created. Remove it.
         Remove-Item -Path $docFolder -Recurse -Force
     }
 
