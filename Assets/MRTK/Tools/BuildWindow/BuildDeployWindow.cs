@@ -243,6 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private string[] targetIps;
         private readonly List<Version> windowsSdkVersions = new List<Version>();
 
+        private Vector2 buildSceneListScrollPosition;
         private Vector2 deployBuildListScrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
@@ -425,12 +426,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 EditorGUILayout.LabelField("Scenes in Build", EditorStyles.boldLabel);
 
-                using (new EditorGUI.DisabledGroupScope(true))
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(buildSceneListScrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
                 {
-                    var scenes = EditorBuildSettings.scenes;
-                    for (int i = 0; i < scenes.Length; i++)
+                    buildSceneListScrollPosition = scrollView.scrollPosition;
+
+                    using (new EditorGUI.DisabledGroupScope(true))
                     {
-                        EditorGUILayout.ToggleLeft($"{i} {scenes[i].path}", scenes[i].enabled);
+                        var scenes = EditorBuildSettings.scenes;
+                        for (int i = 0; i < scenes.Length; i++)
+                        {
+                            EditorGUILayout.ToggleLeft($"{i} {scenes[i].path}", scenes[i].enabled);
+                        }
                     }
                 }
             }

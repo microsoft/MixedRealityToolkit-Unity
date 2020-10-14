@@ -359,15 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
 
-            if (buttonComponent != null)
-            {
-                // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
-                // So just ignore this until that bug is resolved.
-                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
-                Assert.Ignore();
-                yield break;
-            }
-
             var objectToMoveAndScale = testButton.transform;
 
             if (buttonComponent != null)
@@ -414,15 +405,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Button buttonComponent = testButton.GetComponent<Button>();
 
             Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
-
-            if (buttonComponent != null)
-            {
-                // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
-                // So just ignore this until that bug is resolved.
-                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
-                Assert.Ignore();
-                yield break;
-            }
 
             var objectToMoveAndScale = testButton.transform;
 
