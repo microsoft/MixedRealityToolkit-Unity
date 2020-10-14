@@ -35,6 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 
         private void Start()
         {
+            VerifyCanvasConfiguration();
+        }
+
+        /// <summary>
+        /// Verifies and updates MRTK related canvas configuration.
+        /// </summary>
+        public void VerifyCanvasConfiguration()
+        {
             Canvas canvas = GetComponent<Canvas>();
             Debug.Assert(canvas != null);
 

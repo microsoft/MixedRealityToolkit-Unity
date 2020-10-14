@@ -11,20 +11,29 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that changing the active profile at runtime results in
     // the MRTK being correctly reconfigured.
-    public class ChangeActiveProfileTests : BasePlayModeTests
+    public class ChangeActiveProfileTests : BasePlayModeTests, IPrebuildSetup
     {
-        
+
+        void IPrebuildSetup.Setup()
+        {
+            PlayModeTestUtilities.InstallTextMeshProEssentials();
+        }
+
         #region Utility methods
 
         private void InitializeTest(MixedRealityToolkitConfigurationProfile profile)
@@ -172,6 +181,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
             }
             Assert.AreEqual(1, defaultCursorCount);
+        }
+
+        /// <summary>
+        /// This test verifies that UGUI buttons continue to work after changing the profile at runtime
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestUGUIAfterProfileChange()
+        {
+            GameObject testButton = PressableButtonTests.InstantiateDefaultPressableButton(PressableButtonTests.PressableButtonHoloLens2UnityUIPath);
+            TestUtilities.PlayspaceToOriginLookingForward();
+            Button buttonComponent = testButton.GetComponent<Button>();
+
+            var objectToMoveAndScale = testButton.transform.parent;
+            objectToMoveAndScale.position += new Vector3(0f, 0.3f, 0.8f);
+            objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            bool buttonTriggered = false;
+
+            var onClickEvent = buttonComponent.onClick;
+
+            onClickEvent.AddListener(() =>
+            {
+                buttonTriggered = true;
+            });
+
+            TestHand hand = new TestHand(Handedness.Right);
+            Vector3 initialHandPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.Hide();
+            Assert.IsTrue(buttonTriggered, "Button did not get triggered.");
+
+            // Switch the profile
+            MixedRealityToolkitConfigurationProfile profile = LoadTestProfile(DefaultHoloLens2ProfilePath);
+            ChangeProfile(profile);
+            yield return null;
+            yield return null;
+            // Need to manually set UserInputEnabled to false after changing the profile as we still need input simulation
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            inputSimulationService.UserInputEnabled = false;
+            // Need to update the camera associated with the canvas
+            testButton.transform.parent.GetComponent<CanvasUtility>().VerifyCanvasConfiguration();
+
+            buttonTriggered = false;
+            hand = new TestHand(Handedness.Left);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.IsTrue(buttonTriggered, "Button did not get triggered.");
+            Object.Destroy(testButton);
+            yield return null;
         }
 
         #endregion // Test cases
