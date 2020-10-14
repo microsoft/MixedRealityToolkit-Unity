@@ -48,25 +48,25 @@ $Directory = Resolve-Path -Path $Directory
 # The folders are relevant to the RepoRoot.
 $packages = [ordered]@{
     "StandardAssets" =  @(
-        "Assets/MRTK/StandardAssets"
+        "MRTK/StandardAssets"
     );
     "Foundation" =      @(
-        "Assets/MRTK/Core",
-        "Assets/MRTK/Providers",
-        "Assets/MRTK/SDK",
-        "Assets/MRTK/Services"
+        "MRTK/Core",
+        "MRTK/Providers",
+        "MRTK/SDK",
+        "MRTK/Services"
     );
     "Extensions" =      @(
-        "Assets/MRTK/Extensions"
+        "MRTK/Extensions"
     );       
     "Tools" =           @(
-        "Assets/MRTK/Tools"
+        "MRTK/Tools"
     );     
     "TestUtilities" =   @(
-        "Assets/MRTK/Tests/TestUtilities"
+        "MRTK/Tests/TestUtilities"
     );     
     "Examples" =      @(
-        "Assets/MRTK/Examples"
+        "MRTK/Examples"
     );     
 }
 
@@ -113,6 +113,86 @@ $assetExtensions = @(
     "playable"    
 )
 
+<#
+.SYNOPSIS
+    Given the type of an object, return wether or not it is an array.
+.DESCRIPTION
+    Powershell functions, such as Get-ChildItem can return either an array
+    of items or a single item (not an array of size 1). In order to properly
+    enumerate the results, use this function to determine if the object type is
+    an array.
+#>
+function IsArray { 
+    [CmdletBinding()]
+    param(
+        $objectType
+    )
+    process {
+        $objectType -eq [Object[]]
+    }
+}
+
+<#
+.SYNOPSIS
+    Reads a single GUID contained within a file.
+.DESCRIPTION
+    This function returns the first GUID, when formatted as "guid: <32-digits>", found in the file.
+#>
+function ReadSingleGuid { 
+    [CmdletBinding()]
+    param(
+        [System.IO.FileInfo]$file
+    )
+    process {
+        [string]$tag = "guid: "
+        [int] $tagLength = $tag.Length
+        [int] $guidStringLength = 32
+        
+        $guid = ""
+        $fileContents = [System.IO.File]::ReadAllLines($file.FullName)
+        foreach ($line in $fileContents.GetEnumerator()) {          
+            [int]$idx = $line.IndexOf($tag)
+            $guid = ""
+            if ($idx -ge 0) {
+                $guid = $line.Substring($idx + $tagLength, $guidStringLength)
+                break
+            }
+        }
+        $guid
+    }
+}
+
+<#
+.SYNOPSIS
+    Reads all GUIDs contained within a file.
+.DESCRIPTION
+    This method returns all of the GUIDs, when formatted as "guid: <32-digits>", contained within the file.
+#>
+function ReadGuids { 
+    [CmdletBinding()]
+    param(
+        [System.IO.FileInfo]$file
+    )
+    process {
+        [string]$tag = "guid: "
+        [int] $tagLength = $tag.Length
+        [int] $guidStringLength = 32
+        
+        $guids = New-Object System.Collections.ArrayList
+        $fileContents = [System.IO.File]::ReadAllLines($file.FullName)
+        foreach ($line in $fileContents.GetEnumerator()) {
+           
+            [int]$idx = $line.IndexOf($tag)
+            if ($idx -ge 0) {
+                $guid = $line.Substring($idx + $tagLength, $guidStringLength)
+                $guids.Add($guid)
+            }
+
+        }
+        $guids
+    }
+}
+
 # Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
 # data to validate the dependencies.
 # todo
@@ -121,63 +201,57 @@ foreach ($package in $packages.GetEnumerator()) {
     Write-Output $packageName
 
     foreach ($folder in $package.value.GetEnumerator()) {
-        Write-Output $folder
+        $packageFolder = Join-Path $Directory $folder
         
-        $assetFiles = Get-ChildItem -Path $folder -Filter "*.meta" -File -Recurse
+        $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.meta" -File -Recurse
         if (-not $assetFiles) {
             continue
         }
 
-        $objectType = $assetFiles.GetType()
-        if ($objectType -eq [System.IO.FileInfo]) {
-            $assetName = $assetFiles.FullName
-            Write-Output $assetName
+        if (IsArray($assetFiles.GetType())){
+            Write-Output "Array"
 
-            # todo
-        }
-        elseif ($objectType -eq [Object[]]) {
             foreach ($asset in $assetFiles.GetEnumerator()) {
-                $assetName = $asset.FullName
-                Write-Output $assetName
-
-                # todo
+                $assetName = $asset.Name
+                $guid = ReadSingleGuid($asset)
+                Write-Output "$assetName : $guid"
             }
-        }        
+        }
+        else {
+            $guid = ReadSingleGuid($assetFiles)
+            $assetName = $asset.Name
+            Write-Output "$assetName : $guid"
+        }     
     }
 }
 
-# Open each of the target assets and check each GUID to  ensure the dependencies are in an approved package.
+# Open each of the target assets and check each GUID to ensure the dependencies are in an approved package.
 # todo: the following walks the packages and enumerates each of the target asset types
 foreach ($package in $packages.GetEnumerator()) {
     $packageName = $package.name
     Write-Output $packageName
 
     foreach ($folder in $package.value.GetEnumerator()) {
-        Write-Output $folder
+        $packageFolder = Join-Path $Directory $folder
 
         foreach ($ext in $assetExtensions.GetEnumerator()) {
             Write-Output $ext
 
-            $assetFiles = Get-ChildItem -Path $folder -Filter "*.$ext" -File -Recurse
+            $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.$ext" -File -Recurse
             if (-not $assetFiles) {
                 continue
             }
 
-            $objectType = $assetFiles.GetType()
-            if ($objectType -eq [System.IO.FileInfo]) {
-                $assetName = $assetFiles.FullName
-                Write-Output $assetName
-
-                # todo
+            if (IsArray($assetFiles.GetType())){
+                #$assetName = $asset.Name
+                $guids = ReadGuids($asset)
+                #Write-Output $guids
             }
-            elseif ($objectType -eq [Object[]]) {
-                foreach ($asset in $assetFiles.GetEnumerator()) {
-                    $assetName = $asset.FullName
-                    Write-Output $assetName
-
-                    # todo
-                }
-            }
+            else {
+                #$assetName = $assetFiles.Name
+                $guids = ReadGuids($assetFiles)
+                #Write-Output $guids
+            }    
         }
     }
 }
