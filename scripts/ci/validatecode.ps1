@@ -628,7 +628,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
     "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
-    "Assets/MRTK/Core/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef"
+    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef"
 )
 
 function CheckAsmDef {
