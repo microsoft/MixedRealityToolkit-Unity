@@ -622,13 +622,13 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Services/SceneSystem/MRTK.SceneSystem.asmdef",
     "Assets/MRTK/Services/SpatialAwarenessSystem/MRTK.SpatialAwarenessSystem.asmdef",
     "Assets/MRTK/Services/TeleportSystem/MRTK.TeleportSystem.asmdef",
+    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef",
     "Assets/MRTK/Tests/EditModeTests/MRTK.EditModeTests.asmdef",
     "Assets/MRTK/Tests/PlayModeTests/MRTK.PlayModeTests.asmdef",
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
-    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef"
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef"
 )
 
 function CheckAsmDef {
