@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Boo.Lang;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -29,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Ensures that MRTK shader files are present in the Assets folder tree as they
-        /// need to be modifiable to support the Universal Render Pipeline
+        /// Ensures that MRTK shader files are present in a writable location. To support the 
+        /// Universal Render Pipeline, shader modifications must be persisted.
         /// </summary>
         private static void EnsureShaders()
         {
@@ -41,14 +42,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Checks to see if the Assets folder tree contains the MRTK shaders.
+        /// Checks to see if the Assets or Pacakges (if embedded) folder trees contains the MRTK shaders.
         /// </summary>
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
         private static bool AssetsContainsShaders()
         {
-            string assetRoot = Application.dataPath;
-            DirectoryInfo di = new DirectoryInfo(assetRoot);
-            return (di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories).Length > 0);
+            List<string> searchFolders = new List<string>
+            {
+                Application.dataPath,
+                Path.GetFullPath("Packages")
+            };
+
+            foreach (string folder in searchFolders)
+            {
+                DirectoryInfo di = new DirectoryInfo(folder);
+                if (di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories).Length > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
