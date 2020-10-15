@@ -10,13 +10,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public static class OnLoadUtilities
     {
+        private const string SessionStateKey = "StandardAssetsOnLoadUtilitiesSessionStateKey";
+        
         private const string ShaderSentinelFile = "MRTK.Shaders.Sentinel";
         private const string ShaderImportDestination = "MRTK/Shaders";
 
         static OnLoadUtilities()
         {
-            ImportShaderFiles();
-            EnsureShaders();
+            // This InitializeOnLoad handler only runs once at editor launch in order to adjust for Unity version
+            // differences. These don't need to (and should not be) run on an ongoing basis. This uses the
+            // volatile SessionState which is clear when Unity launches to ensure that this only runs the
+            // expensive work (file system i/o) once.
+            if (!SessionState.GetBool(SessionStateKey, false))
+            {
+                SessionState.SetBool(SessionStateKey, true);
+                EnsureShaders();
+            }
         }
 
         /// <summary>
@@ -51,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static DirectoryInfo FindShaderFolderInPackage()
         {
             DirectoryInfo di = new DirectoryInfo(Path.GetFullPath(Path.Combine("Library", "PackageCache")));
+            if (!di.Exists) { return null; }
+
             FileInfo[] files = di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories);
             if (files.Length > 0)
             {
@@ -66,8 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void ImportShaderFiles()
         {
             DirectoryInfo source = FindShaderFolderInPackage();
-            DirectoryInfo destination = new DirectoryInfo(Path.Combine(Application.dataPath, ShaderImportDestination));
+            if (source == null)
+            {
+                Debug.LogError("Unable to locate the shader source folder in the package");
+                return;
+            }
 
+            DirectoryInfo destination = new DirectoryInfo(Path.Combine(Application.dataPath, ShaderImportDestination));
             if (!destination.Exists)
             {
                 destination.Create();
