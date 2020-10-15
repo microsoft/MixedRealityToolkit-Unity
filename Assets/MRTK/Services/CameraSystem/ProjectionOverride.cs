@@ -95,8 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                             float ResolutionScale = 45.0f / 33.0f;
 
 
-                            Matrix4x4 leftProj = Camera.main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
-                            Matrix4x4 rightProj = Camera.main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right);
+                            Matrix4x4 leftProj =  CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
+                            Matrix4x4 rightProj =  CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right);
                             leftProj.m00 *= ResolutionScale;
                             leftProj.m11 *= ResolutionScale;
                             rightProj.m00 *= ResolutionScale;
