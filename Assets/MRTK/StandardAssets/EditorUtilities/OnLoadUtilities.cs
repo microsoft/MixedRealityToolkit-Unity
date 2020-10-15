@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Boo.Lang;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
