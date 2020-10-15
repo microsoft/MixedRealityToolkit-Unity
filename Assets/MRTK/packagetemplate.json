@@ -32,6 +32,10 @@
         "SDK*",
         "Services*",
         "package.json.meta",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*",
+        "Documentation~*",
         "Samples~"
     ],
     "samples": [
