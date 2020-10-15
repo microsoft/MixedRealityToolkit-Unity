@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         // SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2UnityUI.prefab
         private const string PressableButtonHoloLens2UnityUIGuid = "2f626628bde0879488068de0e9f25f8d";
-        internal static readonly string PressableButtonHoloLens2UnityUIPath = AssetDatabase.GUIDToAssetPath(PressableButtonHoloLens2UnityUIGuid);
+        private static readonly string PressableButtonHoloLens2UnityUIPath = AssetDatabase.GUIDToAssetPath(PressableButtonHoloLens2UnityUIGuid);
 
         private static readonly Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        internal static GameObject InstantiateDefaultPressableButton(string prefabPath)
+        private GameObject InstantiateDefaultPressableButton(string prefabPath)
         {
             Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
