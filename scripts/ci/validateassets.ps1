@@ -193,68 +193,151 @@ function ReadGuids {
     }
 }
 
-# Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
-# data to validate the dependencies.
-# todo
-foreach ($package in $packages.GetEnumerator()) {
-    $packageName = $package.name
-    Write-Output $packageName
+<#
+.SYNOPSIS
+    Obtain all MRTK file GUIDs.
+.DESCRIPTION
+    Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
+    data to validate the dependencies.
+#>
+function GatherGuids { 
+    [CmdletBinding()]
+    param()
+    process {
+        [int]$assetCount = 0
 
-    foreach ($folder in $package.value.GetEnumerator()) {
-        $packageFolder = Join-Path $Directory $folder
-        
-        $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.meta" -File -Recurse
-        if (-not $assetFiles) {
-            continue
-        }
+        foreach ($package in $packages.GetEnumerator()) {
+            $packageName = $package.name
+            Write-Output $packageName
 
-        if (IsArray($assetFiles.GetType())){
-            Write-Output "Array"
+            foreach ($folder in $package.value.GetEnumerator()) {
+                $packageFolder = Join-Path $Directory $folder
+                
+                $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.meta" -File -Recurse
+                if (-not $assetFiles) {
+                    continue
+                }
 
-            foreach ($asset in $assetFiles.GetEnumerator()) {
-                $assetName = $asset.Name
-                $guid = ReadSingleGuid($asset)
-                Write-Output "$assetName : $guid"
+                if (IsArray($assetFiles.GetType())){
+                    Write-Output "Array"
+
+                    foreach ($asset in $assetFiles.GetEnumerator()) {
+                        $assetName = $asset.Name
+                        $guid = ReadSingleGuid($asset)
+                        Write-Output "$assetName : $guid"
+                        $assetCount++
+                    }
+                }
+                else {
+                    $guid = ReadSingleGuid($assetFiles)
+                    $assetName = $asset.Name
+                    Write-Output "$assetName : $guid"
+                    $assetCount++
+                }     
             }
         }
-        else {
-            $guid = ReadSingleGuid($assetFiles)
-            $assetName = $asset.Name
-            Write-Output "$assetName : $guid"
-        }     
+
+        Write-Output "$assetCount"
+    }
+}
+
+<#
+.SYNOPSIS
+    Obtain all MRTK asset depdendency GUIDs.
+.DESCRIPTION
+    Reads the target assets and collects the dependency GUIDs.
+#>
+function GatherDependencyGuids { 
+    [CmdletBinding()]
+    param()
+    process {
+        [int]$assetCount = 0
+        
+        foreach ($package in $packages.GetEnumerator()) {
+            $packageName = $package.name
+            Write-Output $packageName
+
+            foreach ($folder in $package.value.GetEnumerator()) {
+                $packageFolder = Join-Path $Directory $folder
+                Write-Output $packageFolder
+
+                foreach ($ext in $assetExtensions.GetEnumerator()) {
+                    Write-Output $ext
+
+                    $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.mat" -File -Recurse
+                    if (-not $assetFiles) {
+                        continue
+                    }
+
+                    if (IsArray($assetFiles.GetType())){        
+                        foreach ($asset in $assetFiles.GetEnumerator()) {
+                            $assetName = $asset.FullName
+                            $guids = ReadGuids($asset)
+                            $count = $guids.Count
+                            Write-Output "$assetName : $count"
+
+                            $assetCount++
+                        }
+                    }
+                    else {
+                        $assetName = $assetFiles.FullName
+                        $guids = ReadGuids($assetFiles)
+                        $count = $guids.Count
+                        Write-Output "$assetName : $count"
+
+                        $assetCount++
+                    }
+
+                }
+
+            }
+
+        }
+
+        Write-Output "$assetCount"
     }
 }
 
 # Open each of the target assets and check each GUID to ensure the dependencies are in an approved package.
 # todo: the following walks the packages and enumerates each of the target asset types
-foreach ($package in $packages.GetEnumerator()) {
-    $packageName = $package.name
-    Write-Output $packageName
+# foreach ($package in $packages.GetEnumerator()) {
+#     $packageName = $package.name
+#     Write-Output $packageName
 
-    foreach ($folder in $package.value.GetEnumerator()) {
-        $packageFolder = Join-Path $Directory $folder
+#     foreach ($folder in $package.value.GetEnumerator()) {
+#         $packageFolder = Join-Path $Directory $folder
+#         Write-Output $packageFolder
 
-        foreach ($ext in $assetExtensions.GetEnumerator()) {
-            Write-Output $ext
+#         # foreach ($ext in $assetExtensions.GetEnumerator()) {
+#         #     Write-Output $ext
 
-            $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.$ext" -File -Recurse
-            if (-not $assetFiles) {
-                continue
-            }
+#             $assetFiles = Get-ChildItem -Path $packageFolder -Filter "*.mat" -File -Recurse
+#             if (-not $assetFiles) {
+#                 continue
+#             }
 
-            if (IsArray($assetFiles.GetType())){
-                #$assetName = $asset.Name
-                $guids = ReadGuids($asset)
-                #Write-Output $guids
-            }
-            else {
-                #$assetName = $assetFiles.Name
-                $guids = ReadGuids($assetFiles)
-                #Write-Output $guids
-            }    
-        }
-    }
-}
+#             if (IsArray($assetFiles.GetType())){
+#                 $assetName = $asset.Name
+#                 Write-Output $assetName
+#                 # $guids = ReadGuids($asset)
+#                 # $count = $guids.Count
+#                 # Write-Output "$assetName : $count"
+#             }
+#             else {
+#                 $assetName = $assetFiles.Name
+#                 Write-Output $assetName
+#                 # $guids = ReadGuids($assetFiles)
+#                 # $count = $guids.Count
+#                 # Write-Output "$assetName : $count"
+#             }    
+#         # }
+#     }
+# }
+
+#GatherGuids
+#Write-Output "---"
+GatherDependencyGuids
+Write-Output "---"
 
 [int]$errorCount = 0
 
