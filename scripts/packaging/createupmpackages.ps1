@@ -130,6 +130,13 @@ foreach ($entry in $packages.GetEnumerator()) {
         # helper script to prepare the folder.
         Start-Process -FilePath "$PSHOME/powershell.exe" -ArgumentList "$scriptPath/foundationpreupm.ps1 -PackageRoot $packagePath" -NoNewWindow -Wait
     }
+    elseif ($packageName -eq "standardassets") {
+        # The standard assets package contains shaders that need to be imported into the Assets folder so that they
+        # can be modified if the render pipeline is changed. To avoid duplicate resources (in library and assets)
+        # we rename the Shaders folder to Shaders~, which makes it hidden to the Unity Editor.
+        Rename-Item -Path "$packagePath/Shaders" -NewName "$packagePath/Shaders~"
+        Rename-Item -Path "$packagePath/Shaders.meta" -NewName "$packagePath/Shaders~.meta"
+    }
     elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
         # preparaton, without overly complicating this script, we will use a helper script to prepare
@@ -178,6 +185,11 @@ foreach ($entry in $packages.GetEnumerator()) {
     if ($packageName -eq "foundation") {
         # The foundation package MOVES some content around. This restores the moved files.
         Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
+    }
+    elseif ($packageName -eq "standardassets") {
+        # The standard assets package RENAMES some content. This restores the original names.
+        Rename-Item -Path "$packagePath/Shaders~" -NewName "$packagePath/Shaders"
+        Rename-Item -Path "$packagePath/Shaders~.meta" -NewName "$packagePath/Shaders.meta"
     }
 
     # Delete the files copied in previously
