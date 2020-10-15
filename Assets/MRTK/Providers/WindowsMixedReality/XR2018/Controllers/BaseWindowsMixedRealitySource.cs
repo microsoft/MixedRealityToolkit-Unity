@@ -62,8 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 if (!Enabled) { return; }
 
-                UpdateSourceData(interactionSourceState);
-                UpdateVelocity(interactionSourceState);
+                UpdateSixDofData(interactionSourceState);
 
                 if (Interactions == null)
                 {
@@ -94,6 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 LastSourceStateReading = interactionSourceState;
             }
+        }
+
+        public void UpdateSixDofData(InteractionSourceState interactionSourceState)
+        {
+            UpdateSourceData(interactionSourceState);
+            UpdateVelocity(interactionSourceState);
         }
 
         private static readonly ProfilerMarker UpdateVelocityPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");
