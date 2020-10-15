@@ -135,7 +135,7 @@ foreach ($entry in $packages.GetEnumerator()) {
         # can be modified if the render pipeline is changed. To avoid duplicate resources (in library and assets)
         # we rename the Shaders folder to Shaders~, which makes it hidden to the Unity Editor.
         Rename-Item -Path "$packagePath/Shaders" -NewName "$packagePath/Shaders~"
-        Rename-Item -Path "$packagePath/Shaders.meta" -NewName "$packagePath/Shaders~.meta"
+        Remove-Item -Path "$packagePath/Shaders.meta"
     }
     elseif ($packageName -eq "examples") {
         # The examples folder is a collection of sample projects. In order to perform the necessary
@@ -187,9 +187,9 @@ foreach ($entry in $packages.GetEnumerator()) {
         Start-Process -FilePath "git" -ArgumentList "checkout Services/SceneSystem/SceneSystemResources*" -NoNewWindow -Wait
     }
     elseif ($packageName -eq "standardassets") {
-        # The standard assets package RENAMES some content. This restores the original names.
+        # The standard assets package RENAMES and DELETES some content. This restores the original files.
         Rename-Item -Path "$packagePath/Shaders~" -NewName "$packagePath/Shaders"
-        Rename-Item -Path "$packagePath/Shaders~.meta" -NewName "$packagePath/Shaders.meta"
+        Start-Process -FilePath "git" -ArgumentList "checkout Shaders.meta" -NoNewWindow -Wait
     }
 
     # Delete the files copied in previously
