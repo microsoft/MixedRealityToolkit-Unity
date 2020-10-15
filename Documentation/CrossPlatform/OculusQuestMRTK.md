@@ -66,7 +66,7 @@ to "Controllers and Hands".
 
         ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
-        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
+        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**. Set the **Device Manager Profile** to **OculusXRSDKDeviceManagerProfile** or a custom cloned profile.
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
