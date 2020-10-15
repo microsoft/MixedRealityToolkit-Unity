@@ -8,6 +8,13 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using UnityEngine;
 
+
+//#if HP_CONTROLLER_ENABLED
+using Microsoft.MixedReality.Input;
+using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
+using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
+//#endif
+
 #if UNITY_WSA
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +113,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
+
+//#if HP_CONTROLLER_ENABLED
+        private MotionControllerWatcher motionControllerWatcher;
+
+        /// <summary>
+        /// Dictionary to capture all active HP controllers detected
+        /// </summary>
+        private readonly Dictionary<uint, MotionControllerState> trackedMotionControllerStates = new Dictionary<uint, MotionControllerState>();
+        //#endif
 
 #if UNITY_WSA
         /// <summary>
@@ -340,7 +356,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+#endif 
+
+//#if HP_CONTROLLER_ENABLED
+            motionControllerWatcher = new MotionControllerWatcher();
+            motionControllerWatcher.MotionControllerAdded += AddController;
+            motionControllerWatcher.MotionControllerRemoved += RemoveController;
+            var nowait = motionControllerWatcher.StartAsync();
+//#endif
 
             if (InputSystemProfile.GesturesProfile != null)
             {
@@ -385,6 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < numInteractionManagerStates; i++)
             {
+                GetOrAddController(interactionManagerStates[i]);
                 GetOrAddController(interactionManagerStates[i]);
             }
 
@@ -468,6 +492,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         controller.UpdateController(interactionManagerStates[i]);
                     }
                 }
+
+                //#if HP_CONTROLLER_ENABLED
+                foreach (MotionControllerState controllerState in trackedMotionControllerStates.Values)
+                {
+                    uint controllerId = GetControllerId(controllerState.MotionController);
+
+                    if (activeControllers.ContainsKey(controllerId))
+                    {
+                        var controller = activeControllers[controllerId] as HPMotionController;
+
+                        controllerState.Update(DateTime.Now);
+                        controller.UpdateController(controllerState);
+                    }
+                }
+                //#endif
 
                 LastInteractionManagerStateReading = interactionManagerStates;
             }
@@ -599,9 +638,30 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        #endregion IMixedRealityDeviceManager Interface
+#endregion IMixedRealityDeviceManager Interface
 
-        #region Controller Utilities
+                #region Controller Utilities
+        // Creates a unique key for the controller based on it's vendor ID, product ID, version number, and handedness
+        private uint GetControllerId(uint vid, uint pid, uint version, uint handedness)
+        {
+            return (vid << 48) + (pid << 32) + (version << 16) + handedness;
+        }
+
+        //#if HP_CONTROLLER_ENABLED
+        private uint GetControllerId(MotionController mc)
+        {
+            var handedness = ((uint)(mc.Handedness == MotionControllerHandedness.Right ? 2 : (mc.Handedness == MotionControllerHandedness.Left ? 1 : 0)));
+            return GetControllerId(mc.VendorId, mc.ProductId, mc.Version, handedness);
+        }
+//#endif
+
+        private uint GetControllerId(InteractionSource interactionSource)
+        {
+            var handedness = ((uint)(interactionSource.handedness == InteractionSourceHandedness.Right ? 2 : (interactionSource.handedness == InteractionSourceHandedness.Left ? 1 : 0)));
+            return GetControllerId(interactionSource.vendorId, interactionSource.productId, interactionSource.productVersion, handedness);
+        }
+
+
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
@@ -611,10 +671,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <returns>New or Existing Controller Input Source</returns>
         private BaseWindowsMixedRealitySource GetOrAddController(InteractionSource interactionSource, bool addController = true)
         {
+            uint controllerId = GetControllerId(interactionSource);
             // If a device is already registered with the ID provided, just return it.
-            if (activeControllers.ContainsKey(interactionSource.id))
+            if (activeControllers.ContainsKey(GetControllerId(interactionSource)))
             {
-                var controller = activeControllers[interactionSource.id] as BaseWindowsMixedRealitySource;
+                var controller = activeControllers[controllerId] as BaseWindowsMixedRealitySource;
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -718,7 +779,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            activeControllers.Add(interactionSource.id, detectedController);
+            activeControllers.Add(controllerId, detectedController);
             return detectedController;
         }
 
@@ -729,7 +790,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private void RemoveController(InteractionSource interactionSource)
         {
             var controller = GetOrAddController(interactionSource, false);
+            var controllerId = GetControllerId(interactionSource);
 
+            RemoveControllerFromScene(controller);
+
+            activeControllers.Remove(controllerId);
+        }
+
+        private void RemoveControllerFromScene(BaseWindowsMixedRealitySource controller)
+        {
             if (controller != null)
             {
                 Service?.RaiseSourceLost(controller.InputSource, controller);
@@ -745,7 +814,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
             }
 
-            activeControllers.Remove(interactionSource.id);
         }
 
         [Obsolete("This function exists to workaround a bug in Unity and will be removed in an upcoming release. For more details, see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8101")]
@@ -754,9 +822,90 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             RemoveController(interactionSource);
         }
 
-        #endregion Controller Utilities
 
-        #region Unity InteractionManager Events
+//#if HP_CONTROLLER_ENABLED
+        private void AddController(object sender, MotionController e)
+        {
+            lock (trackedMotionControllerStates)
+            {
+                Handedness controllingHand;
+                switch (e.Handedness)
+                {
+                    default:
+                        controllingHand = Handedness.None;
+                        break;
+                    case MotionControllerHandedness.Left:
+                        controllingHand = Handedness.Left;
+                        break;
+                    case MotionControllerHandedness.Right:
+                        controllingHand = Handedness.Right;
+                        break;
+                }
+
+                IMixedRealityPointer[] pointers = RequestPointers(SupportedControllerType.HPMotionController, controllingHand);
+                InputSourceType inputSourceType = InputSourceType.Controller;
+
+                string nameModifier = controllingHand == Handedness.None ? inputSourceType.ToString() : controllingHand.ToString();
+                var inputSource = Service?.RequestNewGenericInputSource($"HP Motion Controller {nameModifier}", pointers, inputSourceType);
+
+                HPMotionController detectedController;
+                detectedController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
+                if (!detectedController.Enabled)
+                {
+                    // Controller failed to be setup correctly.
+                    // Exit early so we don't start tracking the controller in our data structures
+                    return;
+                }
+
+                for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+                {
+                    detectedController.InputSource.Pointers[i].Controller = detectedController;
+                }
+
+                uint controllerId = GetControllerId(e);
+
+                // Remove the controller with this ID from the existing active controllers if it exists so we ensure we instantiate one of type HPMotionController
+                if (activeControllers.ContainsKey(controllerId))
+                {
+                    var controller = activeControllers[controllerId] as BaseWindowsMixedRealitySource;
+                    Debug.Assert(controller != null);
+                    RemoveControllerFromScene(controller);
+                    activeControllers.Remove(controllerId);
+                }
+
+                // Add the controller as a HP Motion Controller
+                activeControllers.Add(controllerId, detectedController);
+                trackedMotionControllerStates[controllerId] = new MotionControllerState(e);
+            }
+        }
+
+        private void RemoveController(object sender, MotionController e)
+        {
+            lock (trackedMotionControllerStates)
+            {
+                uint controllerId = GetControllerId(e);
+
+                if (!(activeControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
+                {
+                    // for some reason this controller was never tracked in the first place, ignore it
+                    return;
+                }
+
+                if (activeControllers.ContainsKey(controllerId))
+                {
+                    var controller = activeControllers[controllerId] as BaseWindowsMixedRealitySource;
+                    Debug.Assert(controller != null);
+                    RemoveControllerFromScene(controller);
+
+                    trackedMotionControllerStates.Remove(controllerId);
+                    activeControllers.Remove(controllerId);
+                }
+            }
+        }
+//#endif
+                #endregion Controller Utilities
+
+                #region Unity InteractionManager Events
 
         /// <summary>
         /// SDK Interaction Source Detected Event handler
@@ -806,9 +955,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             RemoveController(args.state.source);
         }
 
-        #endregion Unity InteractionManager Events
+                #endregion Unity InteractionManager Events
 
-        #region Gesture Recognizer Events
+                #region Gesture Recognizer Events
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
@@ -882,9 +1031,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        #endregion Gesture Recognizer Events
+                #endregion Gesture Recognizer Events
 
-        #region Navigation Recognizer Events
+                #region Navigation Recognizer Events
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
@@ -922,9 +1071,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        #endregion Navigation Recognizer Events
+                #endregion Navigation Recognizer Events
 
-        #region Private Methods
+                #region Private Methods
 
         private static readonly ProfilerMarker UpdateInteractionManagerReadingPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.UpdateInteractionManagerReading");
 
@@ -969,9 +1118,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        #endregion Private Methods
+                #endregion Private Methods
 
 #endif // UNITY_WSA
 
-    }
+            }
 }

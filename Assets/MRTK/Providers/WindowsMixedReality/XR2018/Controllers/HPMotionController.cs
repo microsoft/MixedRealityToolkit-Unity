@@ -7,46 +7,35 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 using Microsoft.MixedReality.Input;
-using UnityEngine.XR.WSA.Input;
+using System;
 
-namespace Microsoft.MixedReality.Toolkit.HP.Input
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
+    public class MotionControllerState
+    {
+        public MotionControllerState(MotionController mc)
+        {
+            this.MotionController = mc;
+        }
+        public void Update(DateTime currentTime)
+        {
+            this.CurrentReading = MotionController.TryGetReadingAtTime(currentTime);
+        }
+        public MotionController MotionController { get; private set; }
+        public MotionControllerReading CurrentReading { get; private set; }
+
+    }
+
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Utilities.Handedness.Left, Utilities.Handedness.Right },
+        new[] { Toolkit.Utilities.Handedness.Left, Toolkit.Utilities.Handedness.Right },
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
-    public class HPMotionController : BaseController
+    public class HPMotionController : WindowsMixedRealityController
     {
-        public HPMotionController(TrackingState trackingState, Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public HPMotionController(TrackingState trackingState, Toolkit.Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
-
-        /// <summary>
-        /// The current pose of this controller.
-        /// </summary>
-        protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
-
-        /// <summary>
-        /// The previous pose of this controller.
-        /// </summary>
-        protected MixedRealityPose LastControllerPose = MixedRealityPose.ZeroIdentity;
-
-        /// <summary>
-        /// The current position of this controller.
-        /// </summary>
-        protected Vector3 CurrentControllerPosition = Vector3.zero;
-
-        /// <summary>
-        /// The current rotation of this controller.
-        /// </summary>
-        protected Quaternion CurrentControllerRotation = Quaternion.identity;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
 
@@ -59,73 +48,27 @@ namespace Microsoft.MixedReality.Toolkit.HP.Input
             {
                 if (!Enabled) { return; }
 
-                if (Interactions == null)
+                using (UpdateControllerPerfMarker.Auto())
                 {
-                    Debug.LogError($"No interaction configuration for {GetType().Name}");
-                    Enabled = false;
-                }
-
-                /*********Position stuff is TODO for now since we aren't sure how to get it from motioncontroller*****/
-                /*
-                var lastState = TrackingState;
-                LastControllerPose = CurrentControllerPose;
-
-                // Check for position and rotation.
-                IsPositionAvailable = controllerState.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-                IsPositionApproximate = false;
-
-                IsRotationAvailable = controllerState.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-                CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-                // Raise input system events if it is enabled.
-                if (lastState != TrackingState)
-                {
-                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-                }
-
-                if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-                {
-                    if (IsPositionAvailable && IsRotationAvailable)
+                    //base.UpdateController(interactionSourceState);
+                    for (int i = 0; i < Interactions?.Length; i++)
                     {
-                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
-                    }
-                    else if (IsPositionAvailable && !IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
-                    }
-                    else if (!IsPositionAvailable && IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
-                    }
-                }
-                */
-
-                for (int i = 0; i < Interactions?.Length; i++)
-                {
-                    switch (Interactions[i].AxisType)
-                    {
-                        case AxisType.None:
-                            break;
-                        case AxisType.Digital:
-                            UpdateButtonData(Interactions[i], controllerState);
-                            break;
-                        case AxisType.SingleAxis:
-                            UpdateSingleAxisData(Interactions[i], controllerState);
-                            break;
-                        case AxisType.DualAxis:
-                            UpdateDualAxisData(Interactions[i], controllerState);
-                            break;
-                        case AxisType.SixDof:
-                            UpdatePoseData(Interactions[i], controllerState);
-                            break;
+                        switch (Interactions[i].AxisType)
+                        {
+                            case AxisType.None:
+                                break;
+                            case AxisType.Digital:
+                                UpdateButtonData(Interactions[i], controllerState);
+                                break;
+                            case AxisType.SingleAxis:
+                                UpdateSingleAxisData(Interactions[i], controllerState);
+                                break;
+                            case AxisType.DualAxis:
+                                UpdateDualAxisData(Interactions[i], controllerState);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -321,35 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.HP.Input
                 {
                     // Raise input system event if it's enabled
                     CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
-                }
-            }
-        }
-
-        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdatePoseData");
-
-        /// <summary>
-        /// Update spatial grip data.
-        /// </summary>
-        protected virtual void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
-        {
-            using (UpdatePoseDataPerfMarker.Auto())
-            {
-                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
-
-                // Update the interaction data source
-                switch (interactionMapping.InputType)
-                {
-                    case DeviceInputType.SpatialPointer:
-                    case DeviceInputType.SpatialGrip:
-                        interactionMapping.PoseData = CurrentControllerPose;
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            // Raise input system event if it's enabled
-                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
-                        }
-                        break;
                 }
             }
         }
