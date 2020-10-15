@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Checks to see if the Assets or Pacakges (if embedded) folder trees contains the MRTK shaders.
+        /// Checks to see if the Assets or Packages (if embedded) folder trees contains the MRTK shaders.
         /// </summary>
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
         private static bool AssetsContainsShaders()
