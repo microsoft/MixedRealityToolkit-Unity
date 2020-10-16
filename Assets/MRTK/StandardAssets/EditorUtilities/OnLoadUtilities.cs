@@ -12,8 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     static class OnLoadUtilities
     {
         private const string SessionStateKey = "StandardAssetsOnLoadUtilitiesSessionStateKey";
-        
+
+        private const string ShaderSentinelGuid = "05852dd420bb9ec4cb7318bfa529d37c";
         private const string ShaderSentinelFile = "MRTK.Shaders.Sentinel";
+
         private const string ShaderImportDestination = "MRTK/Shaders";
 
         static OnLoadUtilities()
@@ -47,22 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
         private static bool AssetsContainsShaders()
         {
-            List<string> searchFolders = new List<string>
-            {
-                Application.dataPath,
-                Path.GetFullPath("Packages")
-            };
-
-            foreach (string folder in searchFolders)
-            {
-                DirectoryInfo di = new DirectoryInfo(folder);
-                if (di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories).Length > 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return string.IsNullOrWhiteSpace(AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid));
         }
 
         /// <summary>
