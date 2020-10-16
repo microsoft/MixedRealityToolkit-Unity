@@ -6,28 +6,31 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.XR;
 
-/// <summary>
-/// Logic for the ReadingModeScene
-/// </summary>
-public class ReadingModeSceneBehavior : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
 {
-    public PinchSlider RenderViewportScaleSlider;
-
-    private void Update()
+    /// <summary>
+    /// Logic for the ReadingModeScene
+    /// </summary>
+    public class ReadingModeSceneBehavior : MonoBehaviour
     {
-        if (this.RenderViewportScaleSlider != null)
+        public PinchSlider RenderViewportScaleSlider;
+
+        private void Update()
         {
-            XRSettings.renderViewportScale = this.RenderViewportScaleSlider.SliderValue;
+            if (this.RenderViewportScaleSlider != null)
+            {
+                XRSettings.renderViewportScale = this.RenderViewportScaleSlider.SliderValue;
+            }
         }
-    }
 
-    public void EnableReadingMode()
-    {
-        CoreServices.CameraSystem.ReadingModeEnabled = true;
-    }
+        public void EnableReadingMode()
+        {
+            CoreServices.CameraSystem.ReadingModeEnabled = true;
+        }
 
-    public void DisableReadingMode()
-    {
-        CoreServices.CameraSystem.ReadingModeEnabled = false;
+        public void DisableReadingMode()
+        {
+            CoreServices.CameraSystem.ReadingModeEnabled = false;
+        }
     }
 }
