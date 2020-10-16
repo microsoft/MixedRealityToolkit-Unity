@@ -6,12 +6,17 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
-using Microsoft.MixedReality.Input;
 using System;
+
+#if HP_CONTROLLER_ENABLED
+using Microsoft.MixedReality.Input;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
-    public class MotionControllerState
+
+#if HP_CONTROLLER_ENABLED
+    internal class MotionControllerState
     {
         public MotionControllerState(MotionController mc)
         {
@@ -23,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
         public MotionController MotionController { get; private set; }
         public MotionControllerReading CurrentReading { get; private set; }
-
     }
 
     [MixedRealityController(
@@ -37,12 +41,39 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
         }
 
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(3, "Button.X Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInteractionMapping(4, "Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInteractionMapping(5, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
+        };
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(3, "Button.A Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInteractionMapping(4, "Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInteractionMapping(5, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
+        };
+
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
 
         /// <summary>
         /// Update the controller data from .
         /// </summary>
-        public virtual void UpdateController(MotionControllerState controllerState)
+        internal virtual void UpdateController(MotionControllerState controllerState)
         {
             using (UpdateControllerPerfMarker.Auto())
             {
@@ -82,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <remarks>
         /// Raises an Input System "Input Down" event when the key is down, and raises an "Input Up" when it is released (e.g. a Button)
         /// </remarks>
-        protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
+        internal virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
         {
             using (UpdateButtonDataPerfMarker.Auto())
             {
@@ -170,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <remarks>
         /// Raises a FloatInputChanged event when the float data changes
         /// </remarks>
-        protected virtual void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
+        internal virtual void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
         {
             using (UpdateSingleAxisDataPerfMarker.Auto())
             {
@@ -232,26 +263,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Update the touchpad / thumbstick input from the device
         /// </summary>
-        protected virtual void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
+        internal virtual void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping, MotionControllerState controllerState)
         {
             using (UpdateDualAxisDataPerfMarker.Auto())
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-                InputFeatureUsage<Vector2> axisUsage;
-
-                // Update the interaction data source
-                switch (interactionMapping.InputType)
-                {
-                    case DeviceInputType.ThumbStick:
-                        axisUsage = CommonUsages.primary2DAxis;
-                        break;
-                    case DeviceInputType.Touchpad:
-                        axisUsage = CommonUsages.secondary2DAxis;
-                        break;
-                    default:
-                        return;
-                }
+                // Only process the reading if the input mapping is for the thumbstick
+                if (interactionMapping.InputType != DeviceInputType.ThumbStick)
+                    return;
 
                 System.Numerics.Vector2 controllerAxisData = controllerState.CurrentReading.GetXYValue(ControllerInput.Thumbstick);
                 Vector2 axisData = new Vector2(controllerAxisData.X, controllerAxisData.Y);
@@ -268,4 +288,5 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
     }
+#endif
 }
