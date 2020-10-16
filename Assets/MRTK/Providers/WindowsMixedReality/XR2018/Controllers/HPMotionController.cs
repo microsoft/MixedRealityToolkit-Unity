@@ -7,6 +7,7 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 using System;
+using UnityEngine.XR.WSA.Input;
 
 #if HP_CONTROLLER_ENABLED
 using Microsoft.MixedReality.Input;
@@ -36,11 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class HPMotionController : WindowsMixedRealityController
     {
+        internal MotionControllerState MotionControllerState;
+
         public HPMotionController(TrackingState trackingState, Toolkit.Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
-
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
@@ -69,6 +71,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         };
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
+
+        public override void UpdateController(InteractionSourceState interactionSourceState)
+        {
+            if (MotionControllerState != null)
+            {
+                // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
+                UpdateController(MotionControllerState);
+                UpdateSixDofData(interactionSourceState);
+            }
+            else
+            {
+                // Otherwise, update normally
+                base.UpdateController(interactionSourceState);
+            }
+        }
 
         /// <summary>
         /// Update the controller data from .
@@ -289,4 +306,4 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
     }
 #endif
-}
+        }

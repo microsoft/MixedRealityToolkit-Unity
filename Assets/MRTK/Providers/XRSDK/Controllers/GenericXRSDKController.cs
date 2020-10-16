@@ -63,45 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     Enabled = false;
                 }
 
-                var lastState = TrackingState;
-                LastControllerPose = CurrentControllerPose;
-
-                // Check for position and rotation.
-                IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-                IsPositionApproximate = false;
-
-                IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-                CurrentControllerPose.Position = CurrentControllerPosition;
-                CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-                // Raise input system events if it is enabled.
-                if (lastState != TrackingState)
-                {
-                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-                }
-
-                if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-                {
-                    if (IsPositionAvailable && IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
-                    }
-                    else if (IsPositionAvailable && !IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
-                    }
-                    else if (!IsPositionAvailable && IsRotationAvailable)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
-                    }
-                }
+                UpdateSixDofData(inputDevice);
 
                 for (int i = 0; i < Interactions?.Length; i++)
                 {
@@ -122,6 +84,49 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                             UpdatePoseData(Interactions[i], inputDevice);
                             break;
                     }
+                }
+            }
+        }
+
+        internal virtual void UpdateSixDofData(InputDevice inputDevice)
+        {
+            var lastState = TrackingState;
+            LastControllerPose = CurrentControllerPose;
+
+            // Check for position and rotation.
+            IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
+            IsPositionApproximate = false;
+
+            IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
+
+            // Devices are considered tracked if we receive position OR rotation data from the sensors.
+            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+            CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
+            CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
+
+            CurrentControllerPose.Position = CurrentControllerPosition;
+            CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+            // Raise input system events if it is enabled.
+            if (lastState != TrackingState)
+            {
+                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+            }
+
+            if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
+            {
+                if (IsPositionAvailable && IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                }
+                else if (IsPositionAvailable && !IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                }
+                else if (!IsPositionAvailable && IsRotationAvailable)
+                {
+                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
                 }
             }
         }
