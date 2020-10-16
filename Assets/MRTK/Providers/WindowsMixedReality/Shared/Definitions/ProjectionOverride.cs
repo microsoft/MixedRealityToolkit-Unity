@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using System.Collections;
 using UnityEngine;
-using System.Runtime.InteropServices;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if WINDOWS_UWP
-using Windows.Perception.Spatial;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+using System.Collections;
 using Windows.Graphics.Holographic;
 #endif
 
@@ -17,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// <summary>
     /// Helper class to override the projection parameters of the HoloLens frame being presented
     /// so that smaller details may appear more sharp.  The FOV of the HoloLens will be smaller
-    /// as a tradeoff.
+    /// as a trade-off.
     /// </summary>
     /// <remarks>
     /// Instances of this class are created dynamically by <see cref="MixedRealityCameraSystem"/>.
@@ -32,86 +30,56 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
 #if WINDOWS_UWP
         /// <summary>
-        /// Internal HoloLens Frame Structure.  Documented <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/unity-xrdevice-advanced">here</see>.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        private struct HolographicFrameNativeData
-        {
-#pragma warning disable 0649
-            public uint VersionNumber;
-            public uint MaxNumberOfCameras;
-            public IntPtr ISpatialCoordinateSystemPtr;
-            public IntPtr IHolographicFramePtr;
-            public IntPtr IHolographicCameraPtr;
-#pragma warning restore 0649
-        }
-
-        /// <summary>
         /// Coroutine function to set the camera matrices back to their defaults
         /// </summary>
         /// <returns>Coroutine enumerator</returns>
-        IEnumerator ResetViewMatricesOnFrameEnd()
+        private IEnumerator ResetViewMatricesOnFrameEnd()
         {
             yield return new WaitForEndOfFrame();
-            Camera cam = GetComponent<Camera>();
-            cam.ResetStereoViewMatrices();
-            cam.ResetStereoProjectionMatrices();
+            CameraCache.Main.ResetStereoViewMatrices();
+            CameraCache.Main.ResetStereoProjectionMatrices();
         }
 
         /// <inheritdoc />
-        void OnPreCull()
+        private void OnPreCull()
         {
             if (!ReadingModeEnabled)
             {
                 return;
             }
 
+            const float ResolutionScale = 45.0f / 33.0f;
+
             StartCoroutine(ResetViewMatricesOnFrameEnd());
 
-            IntPtr nativeStruct = UnityEngine.XR.XRDevice.GetNativePtr();
-            if (nativeStruct != IntPtr.Zero)
+            Matrix4x4 leftProj = CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
+            Matrix4x4 rightProj = CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right);
+            leftProj.m00 *= ResolutionScale;
+            leftProj.m11 *= ResolutionScale;
+            rightProj.m00 *= ResolutionScale;
+            rightProj.m11 *= ResolutionScale;
+            CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftProj);
+            CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightProj);
+
+            HolographicFrame holographicFrame = WindowsMixedRealityUtilities.CurrentHolographicFrame;
+            if (holographicFrame != null)
             {
-                HolographicFrameNativeData s = System.Runtime.InteropServices.Marshal.PtrToStructure<HolographicFrameNativeData>(nativeStruct);
+                HolographicFramePrediction prediction = holographicFrame.CurrentPrediction;
 
-                if (s.IHolographicFramePtr != IntPtr.Zero)
+                for (int i = 0; i < prediction.CameraPoses.Count; ++i)
                 {
-                    var holographicCamera = (HolographicCamera)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(s.IHolographicCameraPtr);
-                    var holographicFrame = (HolographicFrame)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(s.IHolographicFramePtr);
-                    HolographicFramePrediction prediction = holographicFrame.CurrentPrediction;
+                    HolographicCameraPose cameraPose = prediction.CameraPoses[i];
 
-                    if (holographicCamera.CanOverrideViewport)
+                    if (cameraPose.HolographicCamera.CanOverrideViewport)
                     {
-                        for (int i = 0; i < prediction.CameraPoses.Count; ++i)
-                        {
-                            HolographicCameraPose cameraPose = prediction.CameraPoses[i];
+                        HolographicStereoTransform stereoProjection = cameraPose.ProjectionTransform;
 
-                            // Default spatial locator is the HMD
-                            SpatialLocator defaultSpatialLocator = SpatialLocator.GetDefault();
+                        stereoProjection.Left.M11 *= ResolutionScale;
+                        stereoProjection.Left.M22 *= ResolutionScale;
+                        stereoProjection.Right.M11 *= ResolutionScale;
+                        stereoProjection.Right.M22 *= ResolutionScale;
 
-                            SpatialLocatorAttachedFrameOfReference attachedFrameOfReference = defaultSpatialLocator.CreateAttachedFrameOfReferenceAtCurrentHeading();
-                            SpatialCoordinateSystem attachedCoordinateFrame = attachedFrameOfReference.GetStationaryCoordinateSystemAtTimestamp(prediction.Timestamp);
-
-                            HolographicStereoTransform stereoProjection = cameraPose.ProjectionTransform;
-                            float ResolutionScale = 45.0f / 33.0f;
-
-
-                            Matrix4x4 leftProj =  CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
-                            Matrix4x4 rightProj =  CameraCache.Main.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right);
-                            leftProj.m00 *= ResolutionScale;
-                            leftProj.m11 *= ResolutionScale;
-                            rightProj.m00 *= ResolutionScale;
-                            rightProj.m11 *= ResolutionScale;
-                            CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftProj);
-                            CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightProj);
-
-
-                            stereoProjection.Left.M11 *= ResolutionScale;
-                            stereoProjection.Left.M22 *= ResolutionScale;
-                            stereoProjection.Right.M11 *= ResolutionScale;
-                            stereoProjection.Right.M22 *= ResolutionScale;
-
-                            cameraPose.OverrideProjectionTransform(stereoProjection);
-                        }
+                        cameraPose.OverrideProjectionTransform(stereoProjection);
                     }
                 }
             }
