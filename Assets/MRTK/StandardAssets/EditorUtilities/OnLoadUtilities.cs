@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
-    public static class OnLoadUtilities
+    static class OnLoadUtilities
     {
         private const string SessionStateKey = "StandardAssetsOnLoadUtilitiesSessionStateKey";
         
