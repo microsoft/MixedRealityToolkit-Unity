@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 using UnityEngine.XR;
@@ -25,12 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
 
         public void EnableReadingMode()
         {
-            CoreServices.CameraSystem.ReadingModeEnabled = true;
+            var projectionOverrideProvider = CoreServices.GetCameraSystemDataProvider<IMixedRealityCameraProjectionOverrideProvider>();
+            if (projectionOverrideProvider != null)
+            {
+                projectionOverrideProvider.IsProjectionOverrideEnabled = true;
+            }
         }
 
         public void DisableReadingMode()
         {
-            CoreServices.CameraSystem.ReadingModeEnabled = false;
+            var projectionOverrideProvider = CoreServices.GetCameraSystemDataProvider<IMixedRealityCameraProjectionOverrideProvider>();
+            if (projectionOverrideProvider != null)
+            {
+                projectionOverrideProvider.IsProjectionOverrideEnabled = false;
+            }
         }
     }
 }
