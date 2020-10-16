@@ -20,7 +20,7 @@
     ],
     "versionDefines": [
         {
-            "name": "Microsoft.MixedReality.Input.DotNet",
+            "name": "com.microsoft.mixedreality.input",
             "expression": "",
             "define": "HP_CONTROLLER_ENABLED"
         }

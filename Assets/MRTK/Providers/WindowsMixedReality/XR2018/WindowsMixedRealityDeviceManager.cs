@@ -854,6 +854,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             lock (trackedMotionControllerStates)
             {
+                uint controllerId = GetControllerId(motionController);
                 trackedMotionControllerStates[controllerId] = new MotionControllerState(motionController);
             }
         }
