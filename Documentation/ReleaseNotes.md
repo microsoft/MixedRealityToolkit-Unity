@@ -7,7 +7,7 @@
 
 ## What's new
 
->[NOTE]
+> [!NOTE]
 > The Mixed Reality Toolkit 2.5.1 release is available exclusively via the [Unity Package Manager](usingupm.md).
 
 ### Package dependency errors fixed
