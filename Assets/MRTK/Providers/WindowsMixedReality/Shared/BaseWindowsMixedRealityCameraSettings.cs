@@ -101,6 +101,55 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
+
+        /// <inheritdoc />
+        public bool ReadingModeEnabled
+        {
+            get
+            {
+                ProjectionOverride projectionOverride;
+                if (TryGetProjectionOverrideComponent(out projectionOverride, false))
+                {
+                    return projectionOverride.ReadingModeEnabled;
+                }
+                return false;
+            }
+            set
+            {
+                ProjectionOverride projectionOverride;
+                if (TryGetProjectionOverrideComponent(out projectionOverride, true))
+                {
+                    projectionOverride.ReadingModeEnabled = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper to get the <see cref="ProjectionOverride"> component that's attached to the main camera
+        /// </summary>
+        /// <param name="projectionOverride">The <see cref="ProjectionOverride"> component if there is one</param>
+        /// <param name="createIfAbsent">Create the <see cref="ProjectionOverride"> if it's not there</param>
+        /// <returns>
+        /// false if there was no ProjectionOverride component and we didn't create one
+        /// true if the out param projectionOverride is set to the ProjectionOverride attached to the main camera
+        /// </returns>
+        private bool TryGetProjectionOverrideComponent(out ProjectionOverride projectionOverride, bool createIfAbsent)
+        {
+            projectionOverride = CameraCache.Main.GetComponent<ProjectionOverride>();
+            if (projectionOverride != null)
+            {
+                return true;
+            }
+
+            if (!createIfAbsent)
+            {
+                return false;
+            }
+
+            projectionOverride = CameraCache.Main.EnsureComponent<ProjectionOverride>();
+            return true;
+        }
+
         #endregion IMixedRealityCameraSettings
     }
 }
