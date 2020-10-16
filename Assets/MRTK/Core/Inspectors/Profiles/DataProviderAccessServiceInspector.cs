@@ -167,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    if (index < 0 || index >= providerFoldouts.Count) index = 0;
                     providerFoldouts[index] = EditorGUILayout.Foldout(providerFoldouts[index], providerProperties.componentName.stringValue, true);
 
                     if (GUILayout.Button(removeContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
