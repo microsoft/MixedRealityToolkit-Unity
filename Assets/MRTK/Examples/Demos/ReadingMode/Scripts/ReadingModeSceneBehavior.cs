@@ -1,8 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using Microsoft.MixedReality.Toolkit.UI;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -13,13 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.ReadingMode
     /// </summary>
     public class ReadingModeSceneBehavior : MonoBehaviour
     {
-        public PinchSlider RenderViewportScaleSlider;
+        [SerializeField]
+        private PinchSlider renderViewportScaleSlider = null;
 
         private void Update()
         {
-            if (this.RenderViewportScaleSlider != null)
+            if (renderViewportScaleSlider != null)
             {
-                XRSettings.renderViewportScale = this.RenderViewportScaleSlider.SliderValue;
+                XRSettings.renderViewportScale = renderViewportScaleSlider.SliderValue;
             }
         }
 
