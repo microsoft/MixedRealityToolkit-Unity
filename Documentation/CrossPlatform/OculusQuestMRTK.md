@@ -66,7 +66,7 @@ to "Controllers and Hands".
 
         ![CloneInputSystemProfile](../Images/CrossPlatform/CloneInputSystemProfile.png)
 
-        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**
+        - Open the **Input Data Providers** section, select **Add Data Provider** at the top, and new data provider will be added at the end of the list.  Open the new data provider and set the **Type** to **Microsoft.MixedReality.Toolkit.XRSDK.Oculus > OculusXRSDKDeviceManager**. Set the **Device Manager Profile** to **DefaultOculusXRSDKDeviceManagerProfile** or a custom cloned profile.
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
@@ -117,5 +117,5 @@ If you encounter an error that looks like this
 
 **UnassignedReferenceException: The variable ovrCameraRigPrefab of OculusXRSDKDeviceManagerProfile has not been assigned. You probably need to assign the ovrCameraRigPrefab variable of the OculusXRSDKDeviceManagerProfile script in the inspector.**
 
-Then the project is not fully integrated with the Oculus Unity Modules. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. 
+Then the project is not fully integrated with the Oculus Unity Modules. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it.
 Doing so populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.
