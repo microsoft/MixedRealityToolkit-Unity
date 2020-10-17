@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the shader sentinel file is found, otherwise false.</returns>
         private static bool AssetsContainsShaders()
         {
-            return string.IsNullOrWhiteSpace(AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid));
+            return !string.IsNullOrWhiteSpace(AssetDatabase.GUIDToAssetPath(ShaderSentinelGuid));
         }
 
         /// <summary>
