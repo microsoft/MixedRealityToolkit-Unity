@@ -186,8 +186,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityStandardUtils.cginc"
             #include "MixedRealityShaderUtils.cginc"
 
-            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            // This define will get commented in by the UpgradeShaderForUniversalRenderPipeline method.
+            //#define _UNIVERSAL_RENDER_PIPELINE
 
 #if defined(_TRIPLANAR_MAPPING) || defined(_DIRECTIONAL_LIGHT) || defined(_SPHERICAL_HARMONICS) || defined(_REFLECTIONS) || defined(_RIM_LIGHT) || defined(_PROXIMITY_LIGHT) || defined(_ENVIRONMENT_COLORING)
             #define _NORMAL
@@ -351,7 +351,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_UNIVERSAL_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
             float4 _MainLightPosition;
             half4 _MainLightColor;
@@ -1023,7 +1023,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Blinn phong lighting.
 #if defined(_DIRECTIONAL_LIGHT)
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_UNIVERSAL_RENDER_PIPELINE)
                 float4 directionalLightDirection = _MainLightPosition;
 #else
                 float4 directionalLightDirection = _WorldSpaceLightPos0;
@@ -1070,7 +1070,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_DIRECTIONAL_LIGHT)
                 fixed oneMinusMetallic = (1.0 - _Metallic);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_UNIVERSAL_RENDER_PIPELINE)
                 fixed3 directionalLightColor = _MainLightColor.rgb;
 #else
                 fixed3 directionalLightColor = _LightColor0.rgb;
@@ -1154,8 +1154,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityMetaPass.cginc"
 
-            // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
-            //#define _LIGHTWEIGHT_RENDER_PIPELINE
+            // This define will get commented in by the UpgradeShaderForUniversalRenderPipeline method.
+            //#define _UNIVERSAL_RENDER_PIPELINE
 
             struct v2f
             {
@@ -1180,7 +1180,7 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed4 _Color;
             fixed4 _EmissiveColor;
 
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_UNIVERSAL_RENDER_PIPELINE)
             CBUFFER_START(_LightBuffer)
             float4 _MainLightPosition;
             half4 _MainLightColor;
@@ -1202,7 +1202,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 output.Emission += _EmissiveColor;
 #endif
 #endif
-#if defined(_LIGHTWEIGHT_RENDER_PIPELINE)
+#if defined(_UNIVERSAL_RENDER_PIPELINE)
                 output.SpecularColor = _MainLightColor.rgb;
 #else
                 output.SpecularColor = _LightColor0.rgb;
