@@ -53,20 +53,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Finds the shader folder within the package cache.
+        /// Finds the shader folder within a in installed or embedded package.
         /// </summary>
         /// <returns>
         /// DirectoryInfo object representing the shader folder in the package cache.
         /// If not found, returns null.</returns>
         private static DirectoryInfo FindShaderFolderInPackage()
         {
-            DirectoryInfo di = new DirectoryInfo(Path.GetFullPath(Path.Combine("Library", "PackageCache")));
-            if (!di.Exists) { return null; }
-
-            FileInfo[] files = di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories);
-            if (files.Length > 0)
+            List<string> searchPaths = new List<string>
             {
-                return new DirectoryInfo(files[0].DirectoryName);
+                Path.GetFullPath(Path.Combine("Library", "PackageCache")),
+                Path.GetFullPath("Packages")
+            };
+
+            foreach (string path in searchPaths)
+            {
+                DirectoryInfo di = new DirectoryInfo(path);
+                if (!di.Exists) { continue; }
+
+                FileInfo[] files = di.GetFiles(ShaderSentinelFile, SearchOption.AllDirectories);
+                if (files.Length > 0)
+                {
+                    return new DirectoryInfo(files[0].DirectoryName);
+                }
             }
 
             return null;
