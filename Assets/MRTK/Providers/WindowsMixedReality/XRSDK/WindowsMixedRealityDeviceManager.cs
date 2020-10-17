@@ -6,7 +6,16 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using System.Collections.Generic;
 using UnityEngine.XR;
+using Unity.Profiling;
+using System.Diagnostics;
+
+#if HP_CONTROLLER_ENABLED
+using Microsoft.MixedReality.Input;
+using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
+using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
+#endif
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
@@ -62,6 +71,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
 
             mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
+
+#if HP_CONTROLLER_ENABLED
+            // Listens to events to track the HP Motion Controller
+            motionControllerWatcher = new MotionControllerWatcher();
+            motionControllerWatcher.MotionControllerAdded += AddTrackedMotionController;
+            motionControllerWatcher.MotionControllerRemoved += RemoveTrackedMotionController;
+            var nowait = motionControllerWatcher.StartAsync();
+#endif
         }
 
         /// <inheritdoc />
@@ -126,9 +143,143 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return false;
         }
 
+#if HP_CONTROLLER_ENABLED
+        private MotionControllerWatcher motionControllerWatcher;
+
+        /// <summary>
+        /// Dictionary to capture all active HP controllers detected
+        /// </summary>
+        private readonly Dictionary<uint, MotionControllerState> trackedMotionControllerStates = new Dictionary<uint, MotionControllerState>();
+
+        private readonly Dictionary<uint, GenericXRSDKController> activeMotionControllers = new Dictionary<uint, GenericXRSDKController>();
+#endif
+
         #endregion IMixedRealityCapabilityCheck Implementation
 
+
         #region Controller Utilities
+#if HP_CONTROLLER_ENABLED
+        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindwosMixedRealityXRSDKDeviceManager.GetOrAddController");
+
+        protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
+        {
+            using (GetOrAddControllerPerfMarker.Auto())
+            {
+                // If a device is already registered with the ID provided, just return it.
+                if (ActiveControllers.ContainsKey(inputDevice))
+                {
+                    var controller = ActiveControllers[inputDevice];
+                    Debug.Assert(controller != null);
+                    return controller;
+                }
+
+                Handedness controllingHand;
+
+                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
+                {
+                    controllingHand = Handedness.Left;
+                }
+                else if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                {
+                    controllingHand = Handedness.Right;
+                }
+                else
+                {
+                    controllingHand = Handedness.None;
+                }
+
+                SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
+                Type controllerType = GetControllerType(currentControllerType);
+                InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
+
+                IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
+                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+                GenericXRSDKController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
+
+                if (detectedController == null || !detectedController.Enabled)
+                {
+                    // Controller failed to be set up correctly.
+                    Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                    // Return null so we don't raise the source detected.
+                    return null;
+                }
+
+                for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+                {
+                    detectedController.InputSource.Pointers[i].Controller = detectedController;
+                }
+
+
+                // Add the Motion Controller state if it's an HPMotionController
+                uint controllerId = GetControllerId(inputDevice);
+                if (currentControllerType == SupportedControllerType.HPMotionController)
+                {
+                    ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
+                }
+
+                ActiveControllers.Add(inputDevice, detectedController);
+
+                return detectedController;
+            }
+        }
+
+        private void AddTrackedMotionController(object sender, MotionController motionController)
+        {
+            lock (trackedMotionControllerStates)
+            {
+                uint controllerId = GetControllerId(motionController);
+                trackedMotionControllerStates[controllerId] = new MotionControllerState(motionController);
+
+                if (activeMotionControllers.ContainsKey(controllerId))
+                    ((HPMotionController)activeMotionControllers[controllerId]).MotionControllerState = trackedMotionControllerStates[controllerId];
+            }
+        }
+
+        private void RemoveTrackedMotionController(object sender, MotionController motionController)
+        {
+            lock (trackedMotionControllerStates)
+            {
+                uint controllerId = GetControllerId(motionController);
+
+                if (!(activeMotionControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
+                {
+                    // for some reason this controller was never tracked in the first place, ignore it
+                    return;
+                }
+
+                if (activeMotionControllers.ContainsKey(controllerId))
+                {
+                    var controller = activeMotionControllers[controllerId] as GenericXRSDKController;
+                    Debug.Assert(controller != null);
+                    RemoveControllerFromScene(controller);
+
+                    trackedMotionControllerStates.Remove(controllerId);
+                    activeMotionControllers.Remove(controllerId);
+                }
+            }
+        }
+#endif
+
+        // Creates a unique key for the controller based on it's vendor ID, product ID, version number, and handedness
+        private uint GetControllerId(uint handedness)
+        {
+            return handedness;
+        }
+
+#if HP_CONTROLLER_ENABLED
+        private uint GetControllerId(MotionController mc)
+        {
+            var handedness = ((uint)(mc.Handedness == MotionControllerHandedness.Right ? 2 : (mc.Handedness == MotionControllerHandedness.Left ? 1 : 0)));
+            return GetControllerId(handedness);
+        }
+#endif
+
+        private uint GetControllerId(InputDevice inputDevice)
+        {
+            var handedness = ((uint)(inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right) ? 2 : inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ? 1 : 0));
+            return GetControllerId(handedness);
+        }
 
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
@@ -137,6 +288,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 case SupportedControllerType.WindowsMixedReality:
                     return typeof(WindowsMixedRealityXRSDKMotionController);
+                case SupportedControllerType.HPMotionController:
+                    return typeof(HPMotionController);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(WindowsMixedRealityXRSDKArticulatedHand);
                 case SupportedControllerType.GGVHand:
@@ -151,6 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             switch (supportedControllerType)
             {
+                case SupportedControllerType.HPMotionController:
                 case SupportedControllerType.WindowsMixedReality:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
@@ -181,13 +335,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
+#if HP_CONTROLLER_ENABLED
+                List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
+                bool hasTouchpad = inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out var reading);
+
+                uint controllerId = GetControllerId(inputDevice);
+                bool isHPController = trackedMotionControllerStates.ContainsKey(controllerId) || !hasTouchpad;
+
+                if (isHPController)
+                {
+                    return SupportedControllerType.HPMotionController;
+                }
+                else
+                {
+                    return SupportedControllerType.WindowsMixedReality;
+                }
+#else                
                 return SupportedControllerType.WindowsMixedReality;
+#endif
             }
 
             return base.GetCurrentControllerType(inputDevice);
         }
 
-        #endregion Controller Utilities
+#endregion Controller Utilities
     }
 }
 

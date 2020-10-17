@@ -807,15 +807,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             var controller = GetOrAddController(interactionSource, false);
             var controllerId = GetControllerId(interactionSource);
 
-            RemoveControllerFromScene(controller);
-
-            activeControllers.Remove(controllerId);
-        }
-
-        private void RemoveControllerFromScene(BaseWindowsMixedRealitySource controller)
-        {
             if (controller != null)
             {
+                RemoveControllerFromScene(controller);
+                activeControllers.Remove(controllerId);
+            }
+        }
+
+        /// <summary>
+        /// Removes the controller from the scene and handles any additional cleanup
+        /// </summary>
+        private void RemoveControllerFromScene(BaseWindowsMixedRealitySource controller)
+        {
                 Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 RecyclePointers(controller.InputSource);
@@ -827,8 +830,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     visualizer.GameObjectProxy.SetActive(false);
                 }
-            }
-
         }
 
         [Obsolete("This function exists to workaround a bug in Unity and will be removed in an upcoming release. For more details, see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8101")]

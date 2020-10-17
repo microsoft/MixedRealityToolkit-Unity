@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
         }
 
-        internal virtual void UpdateSixDofData(InputDevice inputDevice)
+        protected virtual void UpdateSixDofData(InputDevice inputDevice)
         {
             var lastState = TrackingState;
             LastControllerPose = CurrentControllerPose;
