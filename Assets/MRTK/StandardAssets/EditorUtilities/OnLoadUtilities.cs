@@ -57,7 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <returns>
         /// DirectoryInfo object representing the shader folder in the package cache.
-        /// If not found, returns null.</returns>
+        /// If not found, returns null.
+        /// </returns>
         private static DirectoryInfo FindShaderFolderInPackage()
         {
             List<string> searchPaths = new List<string>
