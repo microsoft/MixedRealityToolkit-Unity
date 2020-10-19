@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Finds the shader folder within a in installed or embedded package.
+        /// Finds the shader folder within an installed or embedded package.
         /// </summary>
         /// <returns>
         /// DirectoryInfo object representing the shader folder in the package cache.
