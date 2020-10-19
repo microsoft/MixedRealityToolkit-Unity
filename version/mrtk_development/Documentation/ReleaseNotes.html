@@ -100,6 +100,8 @@
 <h2 id="whats-new">What's new</h2>
 <h2 id="breaking-changes">Breaking changes</h2>
 <h2 id="known-issues">Known issues</h2>
+<h3 id="some-mixed-reality-toolkit-standard-shader-features-require-the-foundation-package">Some Mixed Reality Toolkit Standard Shader features require the Foundation package</h3>
+<p>When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.</p>
 <h3 id="cameracache-may-create-a-new-camera-on-shutdown">CameraCache may create a new camera on shutdown</h3>
 <p>In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459">this issue</a> for more information.</p>
 <h3 id="filenotfoundexception-when-examples-are-imported-via-unity-package-manager">FileNotFoundException when examples are imported via Unity Package Manager</h3>

@@ -96,7 +96,7 @@
 <p>The Unity Package Manager uses a <a href="https://docs.unity3d.com/Manual/upm-manifestPkg.html">manifest file</a> (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>As of version 2.5.0 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.</p>
+<p>As of version 2.5.1 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.</p>
 <p>This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.</p>
 </div>
 <h3 id="registering-the-mixed-reality-component-server">Registering the Mixed Reality component server</h3>
@@ -122,9 +122,9 @@
 <p>The <a href="Packaging/MRTK_Packages.html#unity-package-manager">Unity Package Manager</a> section of the <a href="Packaging/MRTK_Packages.html">Mixed Reality Toolkit package</a> article describes the available MRTK packages, their contents and the scenarios for their use.</p>
 <p>To add an MRTK package, modify the dependencies section of the <code>Packages/manifest.json</code> file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation.</p>
 <pre><code>  &quot;dependencies&quot;: {
-    &quot;com.microsoft.mixedreality.toolkit.foundation&quot;: &quot;2.5.0&quot;,
-    &quot;com.microsoft.mixedreality.toolkit.tools&quot;: &quot;2.5.0&quot;,
-    &quot;com.microsoft.mixedreality.toolkit.examples&quot;: &quot;2.5.0&quot;,
+    &quot;com.microsoft.mixedreality.toolkit.foundation&quot;: &quot;2.5.1,
+    &quot;com.microsoft.mixedreality.toolkit.tools&quot;: &quot;2.5.1&quot;,
+    &quot;com.microsoft.mixedreality.toolkit.examples&quot;: &quot;2.5.1&quot;,
 </code></pre>
 <h2 id="managing-mixed-reality-features-with-the-unity-package-manager">Managing Mixed Reality features with the Unity Package Manager</h2>
 <p>Once a Mixed Reality Toolkit package has been added to the package manifest, it can be managed using the Unity Package Manager user interface.</p>
