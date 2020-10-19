@@ -7,7 +7,7 @@ Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available us
 The Unity Package Manager uses a [manifest file](https://docs.unity3d.com/Manual/upm-manifestPkg.html) (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.
 
 > [!Note]
-> As of version 2.5.0 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
+> As of version 2.5.1 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
 > 
 > This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.
 
@@ -42,9 +42,9 @@ To add an MRTK package, modify the dependencies section of the `Packages/manifes
 
 ```
   "dependencies": {
-    "com.microsoft.mixedreality.toolkit.foundation": "2.5.0",
-    "com.microsoft.mixedreality.toolkit.tools": "2.5.0",
-    "com.microsoft.mixedreality.toolkit.examples": "2.5.0",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.5.1,
+    "com.microsoft.mixedreality.toolkit.tools": "2.5.1",
+    "com.microsoft.mixedreality.toolkit.examples": "2.5.1",
 ```
 
 ## Managing Mixed Reality features with the Unity Package Manager
