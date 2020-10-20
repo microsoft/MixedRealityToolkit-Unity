@@ -69,11 +69,12 @@ The MRTK Foundation package contains the following.
 | | Features | Functionality that builds upon the Foundation package. |
 | | Profiles | Default profiles for the Microsoft Mixed Reality Toolkit systems and services. |
 | | StandardAssets | Common assets; models, textures, materials, etc. |
+| MRTK/SceneSystemResources | | Assets and resources used by the Scene System |
 | MRTK/Services | | |
 | | [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
 | | [CameraSystem](../CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |
 | | [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md) | System implementing in application diagnostics, for example a visual profiler. |
-? | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
+| | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
 | | [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md) | System providing multi-scene application support. |
 | | [SpatialAwarenessSystem](../SpatialAwareness/SpatialAwarenessGettingStarted.md) | System providing support for awareness of the user's environment. |
 | | [TeleportSystem](../TeleportSystem/Overview.md) | System providing support for teleporting (moving about the experience in jumps). |
@@ -198,7 +199,7 @@ The foundation package (`com.microsoft.mixedreality.toolkit.foundation`) forms t
 | | [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
 | | [CameraSystem](../CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |
 | | [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md) | System implementing in application diagnostics, for example a visual profiler. |
-? | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
+| | [InputSystem](../Input/Overview.md) | System providing support for accessing and handling user input. |
 | | [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md) | System providing multi-scene application support. |
 | | [SpatialAwarenessSystem](../SpatialAwareness/SpatialAwarenessGettingStarted.md) | System providing support for awareness of the user's environment. |
 | | [TeleportSystem](../TeleportSystem/Overview.md) | System providing support for teleporting (moving about the experience in jumps). |
@@ -271,7 +272,9 @@ The optional test utilities package (`com.microsoft.mixedreality.toolkit.testuti
 | --- | --- | --- |
 | MRTK/Tests | |
 | | TestUtilities | Methods to simplify creation of play mode tests, including hand simulation utilities. |
+
 Dependencies:
+
 - Foundation (`com.microsoft.mixedreality.toolkit.foundation`)
 
 ### Examples package

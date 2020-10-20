@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             var filter = string.Join(" ", types
                                           .Select(x => string.Format("t:{0}", x.Name))
                                           .ToArray());
-            return AssetDatabase.FindAssets(filter).Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
+            return AssetDatabase.FindAssets(filter, new[] {"Assets"}).Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
         }
 
         private static bool IsSceneGameObject(Object selectedObject)
