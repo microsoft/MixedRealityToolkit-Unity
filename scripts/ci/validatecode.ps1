@@ -365,7 +365,8 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/WindowsApiChecker.cs",
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
-    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs"
+    "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
+    "Assets/MRTK/StandardAssets/EditorUtilities/OnLoadUtilities.cs"
 )
 
 <#
@@ -617,6 +618,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Services/SceneSystem/MRTK.SceneSystem.asmdef",
     "Assets/MRTK/Services/SpatialAwarenessSystem/MRTK.SpatialAwarenessSystem.asmdef",
     "Assets/MRTK/Services/TeleportSystem/MRTK.TeleportSystem.asmdef",
+    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef",
     "Assets/MRTK/Tests/EditModeTests/MRTK.EditModeTests.asmdef",
     "Assets/MRTK/Tests/PlayModeTests/MRTK.PlayModeTests.asmdef",
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",

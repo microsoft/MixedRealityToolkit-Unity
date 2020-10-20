@@ -11,6 +11,10 @@
 
 ## Known issues
 
+### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
+
+When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.
+
 ### CameraCache may create a new camera on shutdown
 
 In some situations (e.g. when using the LeapMotion provider in the Unity Editor), it is possible for the CameraCache to re-create the MainCamera on shutdown. Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8459) for more information.
@@ -31,9 +35,7 @@ To resolve, please ensure that:
 
   ![Select Audio Apatializer](Images/ReleaseNotes/SpatializerSelection.png)
 
-
 ### NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)
-
 
 In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
 This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:
@@ -44,7 +46,6 @@ This error is due to the Scene Transition Service's configuration profile being 
 - Set the value of `Configuration Profile` to **MRTKExamplesHubSceneTransitionServiceProfile**
 
 <img src="Images/ReleaseNotes/FixSceneTransitionProfile.png" width="500px">
-
 
 ### Oculus Quest
 
