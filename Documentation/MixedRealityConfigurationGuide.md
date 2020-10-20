@@ -52,7 +52,8 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
     - [Service inspectors](#service-inspectors)
     - [Depth buffer renderer](#depth-buffer-renderer)
   - [Changing profiles at runtime](#changing-profiles-at-runtime)
-  - [Swapping profiles prior to MRTK initialization](#swapping-profiles-prior-to-mrtk-initialization)
+    - [Pre MRTK initialization profile switch](#pre-mrtk-initialization-profile-switch)
+    - [Active profile switch](#active-profile-switch)
   - [See also](#see-also)
 
 These configuration profiles are detailed below in their relevant sections:
