@@ -29,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string renderingOptionsTitle = "Rendering Options";
             public static string advancedOptionsTitle = "Advanced Options";
             public static string fluentOptionsTitle = "Fluent Options";
-            public static string instancedColorName = "_InstancedColor";
-            public static string instancedColorFeatureName = "_INSTANCED_COLOR";
             public static string stencilComparisonName = "_StencilComparison";
             public static string stencilOperationName = "_StencilOperation";
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
@@ -38,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static string albedoMapAlphaSmoothnessName = "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A";
             public static string propertiesComponentHelp = "Use the {0} component(s) to control {1} properties.";
             public static readonly string[] albedoAlphaModeNames = Enum.GetNames(typeof(AlbedoAlphaMode));
-            public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
             public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
             public static GUIContent albedoAssignedAtRuntime = new GUIContent("Assigned at Runtime", "As an optimization albedo operations are disabled when no albedo texture is specified. If a albedo texture will be specified at runtime enable this option.");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
@@ -121,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent ignoreZScale = new GUIContent("Ignore Z Scale", "For Features That Use Object Scale (Round Corners, Border Light, etc.), Ignore the Z Scale of the Object");
         }
 
-        protected MaterialProperty instancedColor;
         protected MaterialProperty albedoMap;
         protected MaterialProperty albedoColor;
         protected MaterialProperty albedoAlphaMode;
@@ -209,7 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.FindProperties(props);
 
-            instancedColor = FindProperty(Styles.instancedColorName, props);
             albedoMap = FindProperty("_MainTex", props);
             albedoColor = FindProperty("_Color", props);
             albedoAlphaMode = FindProperty("_AlbedoAlphaMode", props);
@@ -699,17 +694,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             materialEditor.EnableInstancingField();
-
-            if (material.enableInstancing)
-            {
-                GUI.enabled = true;
-                materialEditor.ShaderProperty(instancedColor, Styles.instancedColor, 2);
-            }
-            else
-            {
-                // When instancing is disable, disable instanced color.
-                SetShaderFeatureActive(material, Styles.instancedColorFeatureName, Styles.instancedColorName, 0.0f);
-            }
 
             materialEditor.ShaderProperty(stencil, Styles.stencil);
 

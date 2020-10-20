@@ -20,9 +20,9 @@ inline float PointVsSphere(float3 worldPosition, float4 sphere)
 #endif
 
 #if defined(_CLIPPING_BOX)
-inline float PointVsBox(float3 worldPosition, float3 boxSize, float4x4 boxInverseTransform)
+inline float PointVsBox(float3 worldPosition, float4x4 boxInverseTransform)
 {
-    float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - boxSize;
+    float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - 0.5;
     return length(max(distance, 0.0)) + min(max(distance.x, max(distance.y, distance.z)), 0.0);
 }
 #endif

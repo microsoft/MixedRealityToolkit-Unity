@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// The property name of the clip sphere data within the shader.
         /// </summary>
         protected int clipSphereID;
+        private Vector4 clipSphere;
 
         /// <inheritdoc />
         protected override string Keyword
@@ -61,12 +62,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             clipSphereID = Shader.PropertyToID("_ClipSphere");
         }
 
+        protected override void BeginUpdateShaderProperties()
+        {
+            Vector3 position = transform.position;
+            clipSphere = new Vector4(position.x, position.y, position.z, Radius);
+
+            base.BeginUpdateShaderProperties();
+        }
+
         /// <inheritdoc />
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {
-            Vector3 position = transform.position;
-            Vector4 sphere = new Vector4(position.x, position.y, position.z, Radius);
-            materialPropertyBlock.SetVector(clipSphereID, sphere);
+            materialPropertyBlock.SetVector(clipSphereID, clipSphere);
         }
     }
 }

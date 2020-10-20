@@ -96,24 +96,23 @@ Shader "Mixed Reality Toolkit/Text3DShader"
 
             UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-            #define _Color_arr Props
-            UNITY_INSTANCING_BUFFER_END(Props)
-
+        
         #if defined(_CLIPPING_PLANE)
-            fixed _ClipPlaneSide;
-            float4 _ClipPlane;
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipPlaneSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _ClipPlane)
         #endif
 
         #if defined(_CLIPPING_SPHERE)
-            fixed _ClipSphereSide;
-            float4 _ClipSphere;
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipSphereSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipSphereInverseTransform)
         #endif
 
         #if defined(_CLIPPING_BOX)
-            fixed _ClipBoxSide;
-            float4 _ClipBoxSize;
-            float4x4 _ClipBoxInverseTransform;
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipBoxSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipBoxInverseTransform)
         #endif
+
+            UNITY_INSTANCING_BUFFER_END(Props)
 
             v2f vert(appdata_t v)
             {
@@ -144,20 +143,26 @@ Shader "Mixed Reality Toolkit/Text3DShader"
 
                 half4 col = i.color;
                 col.a *= tex2D(_MainTex, i.texcoord).a;
-                col = col * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color);
+                col = col * UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                     
                 // Primitive clipping.
         #if defined(_CLIPPING_PRIMITIVE)
                 float primitiveDistance = 1.0;
-            #if defined(_CLIPPING_PLANE)
-                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition, _ClipPlane) * _ClipPlaneSide);
-            #endif
-            #if defined(_CLIPPING_SPHERE)
-                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition, _ClipSphere) * _ClipSphereSide);
-            #endif
-            #if defined(_CLIPPING_BOX)
-                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
-            #endif
+        #if defined(_CLIPPING_PLANE)
+                fixed clipPlaneSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlaneSide);
+                float4 clipPlane = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlane);
+                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, clipPlane) * clipPlaneSide);
+        #endif
+        #if defined(_CLIPPING_SPHERE)
+                fixed clipSphereSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereSide);
+                float4x4 clipSphereInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, clipSphereInverseTransform) * clipSphereSide);
+        #endif
+        #if defined(_CLIPPING_BOX)
+                fixed clipBoxSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxSide);
+                float4x4 clipBoxInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, clipBoxInverseTransform) * clipBoxSide);
+        #endif
                 col *= step(0.0, primitiveDistance);
         #endif
 
