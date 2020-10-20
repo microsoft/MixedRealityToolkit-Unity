@@ -88,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
         /// first Update() of all services.
-        /// A noticable application hesitation may occur during this process. Also any scripts with higher priority than this can enter its Update
-        /// before the new profiles are properly setup.
+        /// A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
+        /// before the new profile is properly setup. Special handling required for Unity UI.
         /// You are strongly recommended to see 
         /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.
