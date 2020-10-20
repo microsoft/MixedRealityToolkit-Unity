@@ -789,6 +789,7 @@ Shader "Mixed Reality Toolkit/Standard"
                                 tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
 #if defined(_USE_SSAA)
+				// Does SSAA on the texture, implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
 				// per pixel screen space partial derivatives
 				float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
 				float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset

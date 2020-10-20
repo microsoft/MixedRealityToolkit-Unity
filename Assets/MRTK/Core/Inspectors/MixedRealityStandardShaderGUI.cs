@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(triplanarMappingBlendSharpness, Styles.triplanarMappingBlendSharpness, 2);
             }
 
-
+            // SSAA implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
             materialEditor.ShaderProperty(enableSSAA, Styles.enableSSAA);
             if (PropertyEnabled(enableSSAA))
             {
