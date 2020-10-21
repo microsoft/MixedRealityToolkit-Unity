@@ -789,19 +789,19 @@ Shader "Mixed Reality Toolkit/Standard"
                                 tex2D(_MainTex, uvZ) * triplanarBlend.z;
 #else
 #if defined(_USE_SSAA)
-				// Does SSAA on the texture, implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
-				// per pixel screen space partial derivatives
-				float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
-				float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset
-				// supersampled 2x2 ordered grid
-				fixed4 albedo = 0;
-				albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx + dy, 0.0, _MipmapBias));
-				albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx + dy, 0.0, _MipmapBias));
-				albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx - dy, 0.0, _MipmapBias));
-				albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx - dy, 0.0, _MipmapBias));
-				albedo *= 0.25;
+                // Does SSAA on the texture, implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
+                // per pixel screen space partial derivatives
+                float2 dx = ddx(i.uv.xy) * 0.25; // horizontal offset
+                float2 dy = ddy(i.uv.xy) * 0.25; // vertical offset
+                // supersampled 2x2 ordered grid
+                fixed4 albedo = 0;
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx + dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx + dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy + dx - dy, 0.0, _MipmapBias));
+                albedo += tex2Dbias(_MainTex, float4(i.uv.xy - dx - dy, 0.0, _MipmapBias));
+                albedo *= 0.25;
 #else
-				fixed4 albedo = tex2D(_MainTex, i.uv);
+                fixed4 albedo = tex2D(_MainTex, i.uv);
 #endif
 #endif
 #endif
