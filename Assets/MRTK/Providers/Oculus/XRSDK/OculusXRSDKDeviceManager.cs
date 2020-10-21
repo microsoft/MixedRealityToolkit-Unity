@@ -251,8 +251,8 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         #region Hand Utilities
         protected void UpdateHands()
         {
-            UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
             UpdateHand(leftHand, leftSkeleton, righMeshRenderer, Handedness.Left);
+            UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
         }
 
         protected void UpdateHand(OVRHand ovrHand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer, Handedness handedness)
@@ -264,6 +264,14 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             if (ovrHand.IsTracked)
             {
                 var hand = GetOrAddHand(handedness, ovrHand);
+
+                MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
+                bool showHandMesh = handTrackingProfile.EnableHandMeshVisualization;
+                bool showHandJoints = handTrackingProfile.EnableHandJointVisualization;
+
+                ovrMeshRenderer.enabled = showHandMesh;
+                hand.Visualizer.GameObjectProxy.SetActive(showHandJoints);
+
                 hand.UpdateController(ovrHand, ovrSkeleton, cameraRig.trackingSpace);
             }
             else
