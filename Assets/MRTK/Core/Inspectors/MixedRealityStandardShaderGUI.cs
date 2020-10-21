@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent emissiveColor = new GUIContent("Color");
             public static GUIContent enableTriplanarMapping = new GUIContent("Triplanar Mapping", "Enable Triplanar Mapping, a technique which programmatically generates UV coordinates");
             public static GUIContent enableSSAA = new GUIContent("Super Sample Anti-Aliasing", "Enable Super Sample Anti-Aliasing, a technique improves texture clarity at long distances");
-            public static GUIContent mipmapBias = new GUIContent("Mipmap Bias", "Degree to bias the mip map. A more negative value increases aliasing but gives a clearer image");
+            public static GUIContent mipmapBias = new GUIContent("Mipmap Bias", "Degree to bias the mip map. A larger negative value reduces aliasing and improves clarity, but may decrease performance");
             public static GUIContent enableLocalSpaceTriplanarMapping = new GUIContent("Local Space", "If True Triplanar Mapping is Calculated in Local Space");
             public static GUIContent triplanarMappingBlendSharpness = new GUIContent("Blend Sharpness", "The Power of the Blend with the Normal");
             public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
