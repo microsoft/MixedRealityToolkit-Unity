@@ -123,7 +123,7 @@ Material:
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
-    - _MipmapBias: -5
+    - _MipmapBias: -2
     - _Mode: 1
     - _NearLightFade: 0
     - _NearPlaneFade: 0
