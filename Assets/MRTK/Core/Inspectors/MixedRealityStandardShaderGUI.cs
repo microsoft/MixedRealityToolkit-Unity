@@ -468,6 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(emissiveColor, Styles.emissiveColor, 2);
             }
 
+            GUI.enabled = !PropertyEnabled(enableSSAA);
             materialEditor.ShaderProperty(enableTriplanarMapping, Styles.enableTriplanarMapping);
 
             if (PropertyEnabled(enableTriplanarMapping))
@@ -475,13 +476,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 materialEditor.ShaderProperty(enableLocalSpaceTriplanarMapping, Styles.enableLocalSpaceTriplanarMapping, 2);
                 materialEditor.ShaderProperty(triplanarMappingBlendSharpness, Styles.triplanarMappingBlendSharpness, 2);
             }
+            GUI.enabled = true;
 
+            GUI.enabled = !PropertyEnabled(enableTriplanarMapping);
             // SSAA implementation based off this article: https://medium.com/@bgolus/sharper-mipmapping-using-shader-based-supersampling-ed7aadb47bec
             materialEditor.ShaderProperty(enableSSAA, Styles.enableSSAA);
+
             if (PropertyEnabled(enableSSAA))
             {
                 materialEditor.ShaderProperty(mipmapBias, Styles.mipmapBias, 2);
             }
+            GUI.enabled = true;
 
             EditorGUILayout.Space();
             materialEditor.TextureScaleOffsetProperty(albedoMap);
