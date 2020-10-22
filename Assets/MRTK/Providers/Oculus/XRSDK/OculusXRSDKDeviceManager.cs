@@ -63,6 +63,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         /// Input > Input Data Providers > Oculus XRSDK Device Manager in the MixedRealityToolkit object in the hierarchy.
         /// </summary>
         private OculusXRSDKDeviceManagerProfile SettingsProfile => ConfigurationProfile as OculusXRSDKDeviceManagerProfile;
+        private MixedRealityHandTrackingProfile handTrackingProfile;
 #endif
 
         #region IMixedRealityCapabilityCheck Implementation
@@ -139,6 +140,8 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         public override void Enable()
         {
             base.Enable();
+            handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
+
             SetupInput();
             ConfigurePerformancePreferences();
             SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
@@ -265,7 +268,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             {
                 var hand = GetOrAddHand(handedness, ovrHand);
 
-                MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
                 bool showHandMesh = handTrackingProfile.EnableHandMeshVisualization;
                 bool showHandJoints = handTrackingProfile.EnableHandJointVisualization;
 

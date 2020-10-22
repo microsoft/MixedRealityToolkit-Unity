@@ -69,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 #endif
         
         private OculusXRSDKDeviceManagerProfile settingsProfile;
+        private MixedRealityHandTrackingProfile handTrackingProfile;
         private int pinchStrengthProp;
 
 
@@ -110,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         public void InitializeHand(OVRHand ovrHand, OculusXRSDKDeviceManagerProfile deviceManagerSettings)
         {
             settingsProfile = deviceManagerSettings;
+            handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
 
             handRenderer = ovrHand.GetComponent<Renderer>();
             UpdateHandMaterial(settingsProfile.CustomHandMaterial);
@@ -403,7 +405,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             // Disable hand if not tracked
             if (handRenderer != null)
             {
-                MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
                 bool showHandMesh = handTrackingProfile.EnableHandMeshVisualization;
                 handRenderer.enabled = isTracked && showHandMesh;
             }
