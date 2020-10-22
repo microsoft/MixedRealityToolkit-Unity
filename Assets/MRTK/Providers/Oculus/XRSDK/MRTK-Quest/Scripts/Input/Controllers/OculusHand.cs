@@ -194,14 +194,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// Update the controller data from the provided platform state
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void UpdateController(OVRHand hand, OVRSkeleton ovrSkeleton, Transform trackingOrigin)
+        public void UpdateController(OVRHand hand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer, Transform trackingOrigin)
         {
             if (!Enabled || hand == null || ovrSkeleton == null)
             {
                 return;
             }
 
-            bool isTracked = UpdateHandData(hand, ovrSkeleton);
+            bool isTracked = UpdateHandData(hand, ovrSkeleton, ovrMeshRenderer);
             IsPositionAvailable = IsRotationAvailable = isTracked;
 
             if (isTracked)
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         };
 
         private float _lastHighConfidenceTime = 0f;
-        protected bool UpdateHandData(OVRHand ovrHand, OVRSkeleton ovrSkeleton)
+        protected bool UpdateHandData(OVRHand ovrHand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer)
         {
             bool isTracked = ovrHand.IsTracked;
             if (ovrHand.HandConfidence == OVRHand.TrackingConfidence.High)
@@ -402,11 +402,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 settingsProfile.CurrentRightHandTrackingConfidence = ovrHand.HandConfidence;
             }
 
-            // Disable hand if not tracked
+            // Managing hand visuals based on the handtracking visualization profile and if the hand is tracked
             if (handRenderer != null)
             {
-                bool showHandMesh = handTrackingProfile.EnableHandMeshVisualization;
+                bool showHandMesh = handTrackingProfile.IsNull() ? false : handTrackingProfile.EnableHandMeshVisualization;
+                bool showHandJoints = handTrackingProfile.IsNull() ? false : handTrackingProfile.EnableHandJointVisualization;
+
+                ovrMeshRenderer.enabled = isTracked && showHandMesh;
                 handRenderer.enabled = isTracked && showHandMesh;
+                Visualizer.GameObjectProxy.SetActive(isTracked && showHandJoints);
             }
 
             if (ovrSkeleton != null)
