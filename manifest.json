@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "D:/a/1/s/scripts/docs",
+  "source_base_path": "F:/AIPMRHosted5/_work/23/s/scripts/docs",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -374,6 +374,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../CHANGELOG.md",
+      "output": {
+        ".html": {
+          "relative_path": "CHANGELOG.html",
+          "hash": "O48IFnIBY1Qtwz/uPtqYKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../CODE_OF_CONDUCT.md",
       "output": {
         ".html": {
@@ -486,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "ahTRnqg3purEv1LtRYhGPg=="
+          "hash": "qSg9hvCZT89GqEvXRGI0Cg=="
         }
       },
       "is_incremental": false,
@@ -6750,6 +6762,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/DefaultResourcesMessage.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/DefaultResourcesMessage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
       "output": {
         "resource": {
@@ -6820,6 +6843,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/ReimportSceneSystemResources.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/ReimportSceneSystemResources.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/SceneSystem/UpmImportSceneSystemResources.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SceneSystem/UpmImportSceneSystemResources.png"
         }
       },
       "is_incremental": false,
@@ -8318,7 +8363,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "ZHgfCDpRwkBkFtMpgbQkGw=="
+          "hash": "BCGkxmKFDiewCpXuXSDsyw=="
         }
       },
       "is_incremental": false,
@@ -8678,7 +8723,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "8n0OuwdALmdmprNv5O9FuA=="
+          "hash": "iY8Wt7iW4xs9UvC1v98vGA=="
         }
       },
       "is_incremental": false,
@@ -8750,7 +8795,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemGettingStarted.html",
-          "hash": "ZabMoh0vkzVMLy5w4vXy9g=="
+          "hash": "7fqCiJfRE4PbqDCnUwUB3w=="
         }
       },
       "is_incremental": false,
@@ -9038,7 +9083,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/usingupm.html",
-          "hash": "DklmIsg/LmbQAzgaQuW/BQ=="
+          "hash": "ghxzfjSgMW9jGIvvsLGhYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../../LICENSE.md",
+      "output": {
+        ".html": {
+          "relative_path": "LICENSE.html",
+          "hash": "/Uf4jWnevsMfV+rSOWiC7w=="
         }
       },
       "is_incremental": false,
@@ -11002,18 +11059,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.html",
-          "hash": "/NgL5CA7NC3aVLLJXii2IA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DebugTextOutput.yml",
       "output": {
         ".html": {
@@ -12254,7 +12299,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "oQ6sIpARHUMuymMwWVovWw=="
+          "hash": "A0ASwll9QMQ/WW6AOh06BQ=="
         }
       },
       "is_incremental": false,
@@ -21530,7 +21575,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportCursor.html",
-          "hash": "1pZLYWbmK8jby9ZRDdVQzg=="
+          "hash": "kYcHUGJjBOR77uUW+1QgOg=="
         }
       },
       "is_incremental": false,
@@ -23446,6 +23491,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.ColorChangerUnityUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ColorChangerUnityUI.html",
+          "hash": "Bs7tznrf8FtO49kdEXsweQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.ConnectorFollowType.yml",
       "output": {
         ".html": {
@@ -25118,7 +25175,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "R2/mCn8PFdqySomcYYtrfA=="
+          "hash": "i7WK2T/dpWkBjHxgU0npAw=="
         }
       },
       "is_incremental": false,
@@ -29354,7 +29411,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "CHpAjW8Ukapnv+XfrExE1A=="
+          "hash": "FudZEQxuc6FB4sqXzTakug=="
         }
       },
       "is_incremental": false,
@@ -29417,6 +29474,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -29427,20 +29491,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 164,
+          "total_file_count": 166,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1690,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

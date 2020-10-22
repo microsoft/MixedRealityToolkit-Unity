@@ -100,6 +100,43 @@
 <li>You want a simple way to keep track of load operations in progress or a simple way to control scene activation for multiple scenes being loaded at once.</li>
 <li>You want to keep lighting consistent and predictable across all your scenes.</li>
 </ul>
+<h2 id="scene-system-resources">Scene System Resources</h2>
+<p>By default, the Scene System utilizes a pair of scene objects (DefaultManagerScene and DefaultLighting scene). If either of these scenes cannot be located,
+a message will appear in the Scene System profile inspector.</p>
+<p><img src="../Images/SceneSystem/DefaultResourcesMessage.png" alt="Default resources message"></p>
+<blockquote>
+<p>![Note]
+If the project is using custom manager and lighting scenes, this message can be safely ignored.</p>
+</blockquote>
+<p>The following sections describe now to resolve this message, based on which method was used to import the Mixed Reality Toolkit.</p>
+<h3 id="unity-package-manager-upm">Unity Package Manager (UPM)</h3>
+<p>In the Mixed Reality Toolkit UPM packages, the scene system resources are packaged as a sample. Due to UPM packages being immutable, Unity
+is unable to open the necessary scene file unless they are explicitly imported into the project.</p>
+<p>To import use the following steps:</p>
+<ul>
+<li><p>Select <strong>Window</strong> &gt; <strong>Package Manager</strong></p>
+</li>
+<li><p>Select <strong>Mixed Reality Toolkit Foundation</strong></p>
+</li>
+<li><p>Locate <strong>Scene System Resources</strong> in the <strong>Samples</strong> section</p>
+<p><img src="../Images/SceneSystem/UpmImportSceneSystemResources.png" alt="Import scene system resources"></p>
+</li>
+<li><p>Select <strong>Import</strong></p>
+</li>
+</ul>
+<h3 id="asset-unitypackage-files">Asset (.unitypackage) files</h3>
+<p>If the SceneSystemResources folder has been deleted, or was deselected during import, it can be recovered using the following steps:</p>
+<ul>
+<li><p>Select <strong>Assets</strong> &gt; <strong>Import Package</strong> &gt; <strong>Custom Package</strong></p>
+</li>
+<li><p>Open the <strong>Microsoft.MixedReality.Toolkit.Foundation</strong> package</p>
+</li>
+<li><p>Ensure that <strong>Services/SceneSystem/SceneSystemResources</strong> and all child options are selected</p>
+<p><img src="../Images/SceneSystem/ReimportSceneSystemResources.png" alt="Reimport scene system resources"></p>
+</li>
+<li><p>Select <strong>Import</strong></p>
+</li>
+</ul>
 <h2 id="how-to-use-the-scene-system">How to use the scene system</h2>
 <ul>
 <li><a href="SceneSystemSceneTypes.html">Scene Types</a></li>
