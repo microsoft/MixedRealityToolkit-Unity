@@ -403,7 +403,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             // Disable hand if not tracked
             if (handRenderer != null)
             {
-                handRenderer.enabled = isTracked;
+                MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
+                bool showHandMesh = handTrackingProfile.EnableHandMeshVisualization;
+                handRenderer.enabled = isTracked && showHandMesh;
             }
 
             if (ovrSkeleton != null)

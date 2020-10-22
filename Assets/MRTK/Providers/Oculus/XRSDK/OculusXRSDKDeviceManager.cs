@@ -50,7 +50,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         private OVRCameraRig cameraRig;
 
         private OVRHand rightHand;
-        private OVRMeshRenderer righMeshRenderer;
+        private OVRMeshRenderer rightMeshRenderer;
         private OVRSkeleton rightSkeleton;
 
         private OVRHand leftHand;
@@ -230,7 +230,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
                     case OVRSkeleton.SkeletonType.HandRight:
                         rightHand = ovrHand;
                         rightSkeleton = ovrSkeleton;
-                        righMeshRenderer = meshRenderer;
+                        rightMeshRenderer = meshRenderer;
                         break;
                 }
             }
@@ -251,8 +251,8 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         #region Hand Utilities
         protected void UpdateHands()
         {
-            UpdateHand(leftHand, leftSkeleton, righMeshRenderer, Handedness.Left);
-            UpdateHand(rightHand, rightSkeleton, righMeshRenderer, Handedness.Right);
+            UpdateHand(leftHand, leftSkeleton, leftMeshRenderer, Handedness.Left);
+            UpdateHand(rightHand, rightSkeleton, rightMeshRenderer, Handedness.Right);
         }
 
         protected void UpdateHand(OVRHand ovrHand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer, Handedness handedness)
