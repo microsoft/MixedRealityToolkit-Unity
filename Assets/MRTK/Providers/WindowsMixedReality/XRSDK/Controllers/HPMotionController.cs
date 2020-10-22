@@ -43,75 +43,87 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Button.X Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
-            new MixedRealityInteractionMapping(4, "Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
-            new MixedRealityInteractionMapping(5, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(2, "Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
+            new MixedRealityInteractionMapping(3, "Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
+            new MixedRealityInteractionMapping(4, "Grip Press", AxisType.Digital, DeviceInputType.GripPress),
+            new MixedRealityInteractionMapping(5, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInteractionMapping(6, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
+            new MixedRealityInteractionMapping(7, "Trigger Press", AxisType.Digital, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(8, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(9, "Button.X Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInteractionMapping(10, "Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInteractionMapping(11, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(12, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInteractionMapping(13, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
         };
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(2, "Trigger Press", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Button.A Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
-            new MixedRealityInteractionMapping(4, "Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
-            new MixedRealityInteractionMapping(5, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(2, "Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
+            new MixedRealityInteractionMapping(3, "Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
+            new MixedRealityInteractionMapping(4, "Grip Press", AxisType.Digital, DeviceInputType.GripPress),
+            new MixedRealityInteractionMapping(5, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInteractionMapping(6, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
+            new MixedRealityInteractionMapping(7, "Trigger Press", AxisType.Digital, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(8, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(9, "Button.A Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInteractionMapping(10, "Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInteractionMapping(11, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(12, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInteractionMapping(13, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
         };
+
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
 
         public override void UpdateController(InputDevice inputDevice)
         {
-            if (MotionControllerState != null)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
-                UpdateController(MotionControllerState);
-                base.UpdateSixDofData(inputDevice);
-            }
-            else
-            {
-                // Otherwise, update normally
-                base.UpdateController(inputDevice);
+                if (MotionControllerState != null)
+                {
+                    // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
+                    UpdateController(MotionControllerState);
+                    base.UpdateSixDofData(inputDevice);
+                }
+                else
+                {
+                    // Otherwise, update normally
+                    base.UpdateController(inputDevice);
+                }
             }
         }
-
-        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
 
         /// <summary>
         /// Update the controller data from .
         /// </summary>
         public virtual void UpdateController(MotionControllerState controllerState)
         {
+            if (!Enabled) { return; }
+
             using (UpdateControllerPerfMarker.Auto())
             {
-                if (!Enabled) { return; }
-
-                using (UpdateControllerPerfMarker.Auto())
+                //base.UpdateController(interactionSourceState);
+                for (int i = 0; i < Interactions?.Length; i++)
                 {
-                    //base.UpdateController(interactionSourceState);
-                    for (int i = 0; i < Interactions?.Length; i++)
+                    switch (Interactions[i].AxisType)
                     {
-                        switch (Interactions[i].AxisType)
-                        {
-                            case AxisType.None:
-                                break;
-                            case AxisType.Digital:
-                                UpdateButtonData(Interactions[i], controllerState);
-                                break;
-                            case AxisType.SingleAxis:
-                                UpdateSingleAxisData(Interactions[i], controllerState);
-                                break;
-                            case AxisType.DualAxis:
-                                UpdateDualAxisData(Interactions[i], controllerState);
-                                break;
-                            default:
-                                break;
-                        }
+                        case AxisType.None:
+                            break;
+                        case AxisType.Digital:
+                            UpdateButtonData(Interactions[i], controllerState);
+                            break;
+                        case AxisType.SingleAxis:
+                            UpdateSingleAxisData(Interactions[i], controllerState);
+                            break;
+                        case AxisType.DualAxis:
+                            UpdateDualAxisData(Interactions[i], controllerState);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -132,19 +144,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 // Handedness must be left or right in order to differentiate between buttons for the left and right hand.
                 MixedReality.Input.Handedness controllerHandedness = controllerState.MotionController.Handedness;
 
-
                 Debug.Assert(controllerHandedness != MixedReality.Input.Handedness.Unknown);
                 Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-                if (interactionMapping.InputType == DeviceInputType.TriggerTouch)
+                if (interactionMapping.InputType == DeviceInputType.TriggerPress)
                 {
                     var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
-                    interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
+                    interactionMapping.BoolData = triggerData.Equals(1);
                 }
-                else if (interactionMapping.InputType == DeviceInputType.GripTouch)
+                else if (interactionMapping.InputType == DeviceInputType.GripPress)
                 {
                     var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
-                    interactionMapping.BoolData = !Mathf.Approximately(gripData, 0.0f);
+                    interactionMapping.BoolData = gripData.Equals(1);
                 }
                 else
                 {
@@ -154,12 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     switch (interactionMapping.InputType)
                     {
                         case DeviceInputType.Select:
+                        case DeviceInputType.TriggerTouch:
                         case DeviceInputType.TriggerNearTouch:
-                        case DeviceInputType.TriggerPress:
                             button = ControllerInput.Trigger;
                             break;
+                        case DeviceInputType.GripTouch:
                         case DeviceInputType.GripNearTouch:
-                        case DeviceInputType.GripPress:
                             button = ControllerInput.Grasp;
                             break;
                         case DeviceInputType.ButtonPress:
@@ -168,10 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                             break;
                         case DeviceInputType.SecondaryButtonPress:
                             button = controllerHandedness == MixedReality.Input.Handedness.Left ? ControllerInput.Y_Button : ControllerInput.B_Button;
-                            break;
-                        case DeviceInputType.TouchpadTouch:
-                        case DeviceInputType.TouchpadPress:
-                            button = ControllerInput.Touchpad;
                             break;
                         case DeviceInputType.Menu:
                             button = ControllerInput.Menu;
@@ -281,20 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-                InputFeatureUsage<Vector2> axisUsage;
-
-                // Update the interaction data source
-                switch (interactionMapping.InputType)
-                {
-                    case DeviceInputType.ThumbStick:
-                        axisUsage = CommonUsages.primary2DAxis;
-                        break;
-                    case DeviceInputType.Touchpad:
-                        axisUsage = CommonUsages.secondary2DAxis;
-                        break;
-                    default:
-                        return;
-                }
+                // Only process the reading if the input mapping is for the thumbstick
+                if (interactionMapping.InputType != DeviceInputType.ThumbStick)
+                    return;
 
                 System.Numerics.Vector2 controllerAxisData = controllerState.CurrentReading.GetXYValue(ControllerInput.Thumbstick);
                 Vector2 axisData = new Vector2(controllerAxisData.X, controllerAxisData.Y);

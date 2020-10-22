@@ -151,15 +151,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 Debug.Assert(controllerHandedness != MixedReality.Input.Handedness.Unknown);
                 Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-                if (interactionMapping.InputType == DeviceInputType.TriggerTouch)
+                if (interactionMapping.InputType == DeviceInputType.TriggerPress)
                 {
                     var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
-                    interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
+                    interactionMapping.BoolData = triggerData.Equals(1);
                 }
-                else if (interactionMapping.InputType == DeviceInputType.GripTouch)
+                else if (interactionMapping.InputType == DeviceInputType.GripPress)
                 {
                     var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
-                    interactionMapping.BoolData = !Mathf.Approximately(gripData, 0.0f);
+                    interactionMapping.BoolData = gripData.Equals(1);
                 }
                 else
                 {
@@ -171,12 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         case DeviceInputType.Select:
                         case DeviceInputType.TriggerTouch:
                         case DeviceInputType.TriggerNearTouch:
-                        case DeviceInputType.TriggerPress:
                             button = ControllerInput.Trigger;
                             break;
                         case DeviceInputType.GripTouch:
                         case DeviceInputType.GripNearTouch:
-                        case DeviceInputType.GripPress:
                             button = ControllerInput.Grasp;
                             break;
                         case DeviceInputType.ButtonPress:
@@ -199,14 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
 
                     var buttonData = controllerState.CurrentReading.GetPressedValue(button);
-                    if(interactionMapping.InputType == DeviceInputType.TriggerPress || interactionMapping.InputType == DeviceInputType.GripPress)
-                    {
-                        interactionMapping.BoolData = buttonData.Equals(1);
-                    }
-                    else
-                    {
-                        interactionMapping.BoolData = buttonData > 0.0f;
-                    }
+                    interactionMapping.BoolData = buttonData > 0.0f;
                 }
 
                 // If our value changed raise it.
@@ -321,4 +312,4 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
     }
 #endif
-        }
+}
