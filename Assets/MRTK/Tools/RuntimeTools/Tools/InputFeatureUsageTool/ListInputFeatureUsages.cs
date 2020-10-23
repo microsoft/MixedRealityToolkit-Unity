@@ -55,9 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                     continue;
                 }
 
-                if (i >= inputDevices.Count && textMesh.text != string.Empty)
+                if (i >= inputDevices.Count)
                 {
-                    textMesh.text = string.Empty;
+                    if (textMesh.text != string.Empty)
+                    {
+                        textMesh.text = string.Empty;
+                    }
                     continue;
                 }
 
