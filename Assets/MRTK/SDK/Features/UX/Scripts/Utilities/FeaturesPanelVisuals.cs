@@ -30,13 +30,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
             handMeshButton.IsToggled = (CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile.EnableHandMeshVisualization).GetValueOrDefault(false);
             handJointsButton.IsToggled = (CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile.EnableHandJointVisualization).GetValueOrDefault(false);
         }
-
-        private void Update()
-        {
-            if(UnityEngine.Input.GetKeyDown(KeyCode.Q))
-            {
-                handJointsButton.IsToggled = !handJointsButton.IsToggled;
-            }
-        }
     }
 }
