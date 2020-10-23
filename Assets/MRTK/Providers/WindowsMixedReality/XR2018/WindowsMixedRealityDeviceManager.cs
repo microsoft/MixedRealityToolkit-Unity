@@ -493,21 +493,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                 }
 
-#if HP_CONTROLLER_ENABLED
-                foreach (MotionControllerState controllerState in trackedMotionControllerStates.Values)
-                {
-                    uint controllerId = GetControllerId(controllerState.MotionController);
-
-                    if (activeControllers.ContainsKey(controllerId))
-                    {
-                        var controller = activeControllers[controllerId] as HPMotionController;
-
-                        controllerState.Update(DateTime.Now);
-                        controller.UpdateController(controllerState);
-                    }
-                }
-#endif
-
                 LastInteractionManagerStateReading = interactionManagerStates;
             }
         }

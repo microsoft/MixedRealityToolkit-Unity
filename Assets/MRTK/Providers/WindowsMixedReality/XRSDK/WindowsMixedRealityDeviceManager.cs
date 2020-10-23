@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using Unity.Profiling;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 
 #if HP_CONTROLLER_ENABLED
 using Microsoft.MixedReality.Input;
