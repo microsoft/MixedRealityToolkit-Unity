@@ -126,7 +126,7 @@ public class SecondClippingBox : ClippingBox
 #endif
 ```
 
-Finally, add two [`ClippingBox`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) and `SecondClippingBox` component to your scene and specify the same Renderer for both boxes. The Renderer should now be clipped by both boxes.
+Finally, add a [`ClippingBox`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) and `SecondClippingBox` component to your scene and specify the same Renderer for both boxes. The Renderer should now be clipped by both boxes.
 
 ## See also
 
