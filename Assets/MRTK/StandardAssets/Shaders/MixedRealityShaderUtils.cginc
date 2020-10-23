@@ -13,9 +13,9 @@ inline float PointVsPlane(float3 worldPosition, float4 plane)
 #endif
 
 #if defined(_CLIPPING_SPHERE)
-inline float PointVsSphere(float3 worldPosition, float4 sphere)
+inline float PointVsSphere(float3 worldPosition, float4x4 sphereInverseTransform)
 {
-    return distance(worldPosition, sphere.xyz) - sphere.w;
+    return length(mul(sphereInverseTransform, float4(worldPosition, 1.0)).xyz) - 0.5;
 }
 #endif
 

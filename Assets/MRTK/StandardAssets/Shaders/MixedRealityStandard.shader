@@ -322,7 +322,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_CLIPPING_SPHERE)
             UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipSphereSide)
-            UNITY_DEFINE_INSTANCED_PROP(float4, _ClipSphere)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipSphereInverseTransform)
 #endif
 
 #if defined(_CLIPPING_BOX)
@@ -806,8 +806,8 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #if defined(_CLIPPING_SPHERE)
                 fixed clipSphereSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereSide);
-                float4 clipSphere = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphere);
-                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, clipSphere) * clipSphereSide);
+                float4x4 clipSphereInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, clipSphereInverseTransform) * clipSphereSide);
 #endif
 #if defined(_CLIPPING_BOX)
                 fixed clipBoxSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxSide);
