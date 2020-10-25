@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             Parallel.ForEach(searchAssemblies, (assembly) =>
             {
-                Parallel.ForEach(assembly.GetTypes(), (type) =>
+                Parallel.ForEach(assembly.GetLoadableTypes(), (type) =>
                 {
                     if (type != null && type.IsClass && !type.IsAbstract && type.IsSubclassOf(rootType))
                     {

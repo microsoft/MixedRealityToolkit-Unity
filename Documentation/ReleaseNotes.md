@@ -5,11 +5,21 @@
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 - [Known issues](#known-issues)
 
+> [!IMPORTANT]
+> There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
+> ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the 
+> update is available, please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
+> a workaround.
+
 ## What's new
 
 ## Breaking changes
 
 ## Known issues
+
+### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
+
+When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.
 
 ### CameraCache may create a new camera on shutdown
 
@@ -31,9 +41,7 @@ To resolve, please ensure that:
 
   ![Select Audio Apatializer](Images/ReleaseNotes/SpatializerSelection.png)
 
-
 ### NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)
-
 
 In some situations, opening `EyeTrackingDemo-00-RootScene` may cause a NullReferenceException in the Initialize method of the SceneTransitionService class.
 This error is due to the Scene Transition Service's configuration profile being unset. To resolve, please use the following steps:
@@ -44,7 +52,6 @@ This error is due to the Scene Transition Service's configuration profile being 
 - Set the value of `Configuration Profile` to **MRTKExamplesHubSceneTransitionServiceProfile**
 
 <img src="Images/ReleaseNotes/FixSceneTransitionProfile.png" width="500px">
-
 
 ### Oculus Quest
 
