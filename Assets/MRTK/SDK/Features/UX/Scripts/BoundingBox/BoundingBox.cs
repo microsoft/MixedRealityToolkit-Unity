@@ -1126,7 +1126,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (active != value)
                 {
                     active = value;
-                    rigRoot?.gameObject.SetActive(value);
+                    if (rigRoot != null)
+                    {
+                        rigRoot.gameObject.SetActive(value);
+                    }
                     ResetHandleVisibility();
 
                     if (value && proximityEffectActive)

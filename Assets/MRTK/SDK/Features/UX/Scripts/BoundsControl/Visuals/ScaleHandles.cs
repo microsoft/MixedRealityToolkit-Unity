@@ -188,9 +188,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         #region BoundsControlHandlerBase
+
         protected override Transform GetVisual(Transform handle)
         {
-            Transform visual = handle.GetChild(0)?.GetChild(0);
+            Transform firstChild = handle.GetChild(0);
+            if (firstChild == null)
+            {
+                return null;
+            }
+
+            Transform visual = firstChild.GetChild(0);
             if (visual != null && visual.name == visualsName)
             {
                 return visual;
@@ -208,6 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             return HandleType.Scale;
         }
+
         #endregion BoundsControlHandlerBase
 
         #region IProximityScaleObjectProvider 
