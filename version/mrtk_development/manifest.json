@@ -14075,7 +14075,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.GameObjectExtensions.html",
-          "hash": "HLT/gRPJ20mEBqOCgxM0Hw=="
+          "hash": "tmagnrhVQU6Ux1NFNBuCyg=="
         }
       },
       "is_incremental": false,
@@ -25223,7 +25223,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UnityObjectExtensions.html",
-          "hash": "jfTrt2bc2NqCoFjp9K5pFQ=="
+          "hash": "2yywbB5iamNhJj97qbMmsA=="
         }
       },
       "is_incremental": false,
@@ -29535,17 +29535,17 @@
           "total_file_count": 167,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1693,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1693,
           "skipped_file_count": 0
         }
       }
