@@ -375,7 +375,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 foreach (var pointer in currentInputSources[currentInputSources.Count - 1].Pointers)
                 {
-                    ProximityLight[] proximityLights = pointer.BaseCursor?.GameObjectReference?.GetComponentsInChildren<ProximityLight>();
+                    GameObject cursorGameObject = pointer.BaseCursor?.GameObjectReference;
+                    if (cursorGameObject == null)
+                    {
+                        return;
+                    }
+
+                    ProximityLight[] proximityLights = cursorGameObject.GetComponentsInChildren<ProximityLight>();
 
                     if (proximityLights != null)
                     {

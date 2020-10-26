@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public string MainLabelText
         {
-            get { return mainLabelText?.text; }
+            get { return mainLabelText != null ? mainLabelText.text : null; }
             set
             {
                 if (mainLabelText == null)
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public string SeeItSayItLabelText
         {
-            get { return seeItSatItLabelText?.text; }
+            get { return seeItSayItLabelText != null ? seeItSayItLabelText.text : null; }
             set
             {
                 if (seeItSatItLabelText == null)
