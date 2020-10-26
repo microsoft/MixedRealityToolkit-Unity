@@ -15,17 +15,17 @@ The [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.Clipping
 
 ## Examples
 
-The **ClippingExamples** and **MaterialGallery** scenes demonstrate usage of the [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) behaviors, and can be found at: MRTK/Examples/Demos/StandardShader/Scenes/
+The **ClippingExamples**, **MaterialGallery**, and **ClippingInstancedExamples** scenes demonstrate usage of the [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) behaviors, and can be found at: MRTK/Examples/Demos/StandardShader/Scenes/
 
 ## Instancing
 
-In order to avoid assumptions when enabling shader features, by default ClippingPrimitives instance the Renderers' materials. This disables Unity's ability to batch the Renderers' draw calls through GPU instancing. 
+In order to avoid assumptions when enabling shader features, by default `ClippingPrimitives` instance the `Renderers'` materials. This disables Unity's ability to batch the `Renderers'` draw calls through GPU instancing. 
 
 To enable batching you need to take these steps:
 
-* Ensure every group of objects that you want batched that share a clipping primitive use the same material, and only that group uses that material.
+* Ensure every group of objects that you want batched share the same material, and only that group uses that material.
 * Ensure that material has `Enable GPU Instancing` checked on.
-* Check on `Apply To Shared Material` for the relevant [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) in the Unity Inspector.
+* Check on `Apply To Shared Material` for the relevant [`ClippingPrimitive(s)`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) in the Unity Inspector.
 
 The [Unity Frame Debugger](https://docs.unity3d.com/Manual/FrameDebugger.html) is a great tool for validating that objects are being batched as intended.
 
