@@ -13,9 +13,6 @@
 
 ## What's new
 
-> [!NOTE]
-> The Mixed Reality Toolkit 2.5.1 release is available exclusively via the [Unity Package Manager](usingupm.md).
-
 ### Package dependency errors fixed
 
 This release fixes incorrect inter-package file dependencies (ex: files in Standard Assets no longer incorrectly reference files in Foundation). Version 2.5.1 also adds an explicit dependency on Text Mesh Pro.
