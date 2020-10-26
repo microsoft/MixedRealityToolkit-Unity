@@ -375,7 +375,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 foreach (var pointer in currentInputSources[currentInputSources.Count - 1].Pointers)
                 {
-                    GameObject cursorGameObject = pointer.BaseCursor?.GameObjectReference;
+                    if (!pointer.BaseCursor.TryGetMonoBehaviour(out MonoBehaviour baseCursor))
+                    {
+                        return;
+                    }
+
+                    GameObject cursorGameObject = baseCursor.gameObject;
                     if (cursorGameObject == null)
                     {
                         return;
