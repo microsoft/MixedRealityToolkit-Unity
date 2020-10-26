@@ -112,6 +112,39 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         }
 
         /// <summary>
+        /// Initialize the Oculus Project Config with the appropriate settings to enable handtracking and keyboard support.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config")]
+        internal static void InitializeOculusProjectConfig()
+        {
+#if OCULUSINTEGRATION_PRESENT
+            // Updating the oculus project config to allow for handtracking and system keyboard usage
+            string[] defaultOculusProjectConfigGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(OculusIntegrationProjectConfig));
+            OVRProjectConfig defaultOculusProjectConfig = null;
+            if (defaultOculusProjectConfigGuids.Length > 0)
+            {
+                string oculusProjectConfigPath = AssetDatabase.GUIDToAssetPath(defaultOculusProjectConfigGuids[0]);
+                defaultOculusProjectConfig = AssetDatabase.LoadAssetAtPath<OVRProjectConfig>(oculusProjectConfigPath);
+
+                defaultOculusProjectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
+                defaultOculusProjectConfig.requiresSystemKeyboard = true;
+
+                Debug.Log("Updated default project settings");
+            }
+#endif
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
+        private static bool CheckScriptingDefinePresent()
+        {
+#if OCULUSINTEGRATION_PRESENT
+            return true;
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>
         /// Detects if the Oculus Integration package is present and updates the project definitions and prefab references.
         /// </summary>
         internal static void ConfigureOculusIntegration(bool oculusIntegrationPresent)
