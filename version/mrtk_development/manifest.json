@@ -738,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/OculusQuestMRTK.html",
-          "hash": "IMBrz9EjgXucghuG6pduGw=="
+          "hash": "6Ropdd3/wAmRNiI5i1lfaA=="
         }
       },
       "is_incremental": false,
@@ -2781,10 +2781,21 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "../../Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png",
+      "source_relative_path": "../../Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationConfig.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png"
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationConfig.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationConfigSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/OculusQuest/OculusIntegrationConfigSettings.png"
         }
       },
       "is_incremental": false,
@@ -29522,18 +29533,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 167,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1693,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -29546,6 +29545,18 @@
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 167,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1693,
           "skipped_file_count": 0
         }
       }
