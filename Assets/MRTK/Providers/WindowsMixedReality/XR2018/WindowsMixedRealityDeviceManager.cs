@@ -746,8 +746,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         // Add the controller as a HP Motion Controller
                         detectedController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
-                        if(trackedMotionControllerStates.ContainsKey(controllerId))
+                        if (trackedMotionControllerStates.ContainsKey(controllerId))
+                        {
                             ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
+                        }
                     }
                     else
                     {
