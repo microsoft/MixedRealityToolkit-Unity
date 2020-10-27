@@ -74,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");
 
+        /// <inheritdoc />
         public override void UpdateController(InputDevice inputDevice)
         {
             using (UpdateControllerPerfMarker.Auto())
