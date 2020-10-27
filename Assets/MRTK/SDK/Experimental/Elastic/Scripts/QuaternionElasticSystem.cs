@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Physics
             currentVelocity = Add(currentVelocity, Scale(accel, deltaTime));
 
             // x' = x + v' * deltaT
-            currentValue = currentValue * Scale(currentVelocity, deltaTime).normalized;
+            currentValue *= Scale(currentVelocity, deltaTime).normalized;
 
             // As the current value is a quaternion, we must renormalize the quaternion
             // before using it as a representation of a rotation.

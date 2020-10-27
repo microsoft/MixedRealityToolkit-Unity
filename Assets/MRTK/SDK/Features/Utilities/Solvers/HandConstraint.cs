@@ -612,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior);
             }
 
-            angleOffset = angleOffset % 360;
+            angleOffset %= 360;
             while (angleOffset < 0)
             {
                 angleOffset = (angleOffset + 360) % 360;
