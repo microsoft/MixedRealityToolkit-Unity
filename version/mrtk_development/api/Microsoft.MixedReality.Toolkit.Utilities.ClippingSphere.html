@@ -121,6 +121,9 @@ per pixel based clipping.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ClippingSide">ClippingPrimitive.ClippingSide</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ApplyToSharedMaterial">ClippingPrimitive.ApplyToSharedMaterial</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UseOnPreRender">ClippingPrimitive.UseOnPreRender</a>
     </div>
     <div>
@@ -163,6 +166,9 @@ per pixel based clipping.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UpdateRenderers">ClippingPrimitive.UpdateRenderers()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_EndUpdateShaderProperties">ClippingPrimitive.EndUpdateShaderProperties()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_System_Boolean_">ClippingPrimitive.ToggleClippingFeature(Boolean)</a>
     </div>
     <div>
@@ -182,13 +188,13 @@ per pixel based clipping.</p>
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_clipSphereID" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.clipSphereID">clipSphereID</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_clipSphereInverseTransformID" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.clipSphereInverseTransformID">clipSphereInverseTransformID</h4>
   <div class="markdown level1 summary"><p>The property name of the clip sphere data within the shader.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int clipSphereID</code></pre>
+    <pre><code class="lang-csharp hljs">protected int clipSphereInverseTransformID</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -263,14 +269,41 @@ per pixel based clipping.</p>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_Keyword">ClippingPrimitive.Keyword</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radius_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radius*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radius" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radius">Radius</h4>
-  <div class="markdown level1 summary"><p>The radius of the clipping sphere, which is determined by the largest axis of the transform's scale.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radii_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radii*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radii" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radii">Radii</h4>
+  <div class="markdown level1 summary"><p>The radius of the clipping sphere on each axis, determined by the transform's scale.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float Radius { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3 Radii { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radius_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radius*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Radius" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Radius">Radius</h4>
+  <div class="markdown level1 summary"><p>The radius of the clipping sphere, determined by the largest axis of the transform's scale.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Radii instead as ellipsoids are supported. &quot;)]
+public float Radius { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -289,6 +322,18 @@ per pixel based clipping.</p>
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_BeginUpdateShaderProperties_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.BeginUpdateShaderProperties*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_BeginUpdateShaderProperties" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.BeginUpdateShaderProperties">BeginUpdateShaderProperties()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void BeginUpdateShaderProperties()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_BeginUpdateShaderProperties">ClippingPrimitive.BeginUpdateShaderProperties()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingSphere_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.Initialize*"></a>
