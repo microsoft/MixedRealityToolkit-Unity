@@ -119,13 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         {
 #if OCULUSINTEGRATION_PRESENT
             // Updating the oculus project config to allow for handtracking and system keyboard usage
-            string[] defaultOculusProjectConfigGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(OculusIntegrationProjectConfig));
-            OVRProjectConfig defaultOculusProjectConfig = null;
-            if (defaultOculusProjectConfigGuids.Length > 0)
+            OVRProjectConfig defaultOculusProjectConfig = OVRProjectConfig.GetProjectConfig();
+            if (defaultOculusProjectConfig != null)
             {
-                string oculusProjectConfigPath = AssetDatabase.GUIDToAssetPath(defaultOculusProjectConfigGuids[0]);
-                defaultOculusProjectConfig = AssetDatabase.LoadAssetAtPath<OVRProjectConfig>(oculusProjectConfigPath);
-
                 defaultOculusProjectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
                 defaultOculusProjectConfig.requiresSystemKeyboard = true;
 
