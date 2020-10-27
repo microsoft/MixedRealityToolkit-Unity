@@ -6,11 +6,11 @@ using Unity.Profiling;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 
-//#if HP_CONTROLLER_ENABLED
+#if HP_CONTROLLER_ENABLED
 using Microsoft.MixedReality.Input;
 using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
 using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
-//#endif
+#endif
 
 /// <summary>
 /// Class for handling updating a controller via data provided by the HP Motion Controller's API
@@ -18,7 +18,7 @@ using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
-    //#if HP_CONTROLLER_ENABLED
+#if HP_CONTROLLER_ENABLED
     public class MotionControllerState
     {
         public MotionControllerState(MotionController mc)
@@ -256,4 +256,5 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
     }
+#endif
 }

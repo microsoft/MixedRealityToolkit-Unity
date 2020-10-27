@@ -17,15 +17,15 @@ using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
-#if HP_CONTROLLER_ENABLED
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right },
-        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
+        new[] { Handedness.Left, Handedness.Right })]
     public class HPMotionController : WindowsMixedRealityController
     {
+#if HP_CONTROLLER_ENABLED
         internal HPMotionControllerInputHandler inputHandler;
         internal MotionControllerState MotionControllerState;
+#endif
 
         public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
@@ -77,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             using (UpdateControllerPerfMarker.Auto())
             {
+#if HP_CONTROLLER_ENABLED
                 if (MotionControllerState != null)
                 {
                     if (!Enabled) { return; }
@@ -90,8 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // Otherwise, update normally
                     base.UpdateController(interactionSourceState);
                 }
+#else
+                
+                    base.UpdateController(inputDevice);
+#endif
             }
         }
     }
-#endif
 }

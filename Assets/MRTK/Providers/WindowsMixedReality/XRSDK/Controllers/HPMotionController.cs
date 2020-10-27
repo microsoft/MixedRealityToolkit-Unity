@@ -17,15 +17,15 @@ using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
-#if HP_CONTROLLER_ENABLED
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
-        new[] { Handedness.Left, Handedness.Right },
-        flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
+        new[] { Handedness.Left, Handedness.Right })]
     public class HPMotionController : WindowsMixedRealityXRSDKMotionController
     {
+#if HP_CONTROLLER_ENABLED
         internal HPMotionControllerInputHandler inputHandler;
         internal MotionControllerState MotionControllerState;
+#endif
 
         public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
@@ -79,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdateControllerPerfMarker.Auto())
             {
+#if HP_CONTROLLER_ENABLED
                 if (MotionControllerState != null)
                 {
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
@@ -90,8 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     // Otherwise, update normally
                     base.UpdateController(inputDevice);
                 }
+#else
+                
+                    base.UpdateController(inputDevice);
+#endif
             }
         }
     }
-#endif
 }
