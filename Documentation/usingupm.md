@@ -42,10 +42,15 @@ To add an MRTK package, modify the dependencies section of the `Packages/manifes
 
 ```
   "dependencies": {
-    "com.microsoft.mixedreality.toolkit.foundation": "2.5.1,
+    "com.microsoft.mixedreality.toolkit.foundation": "2.5.1",
     "com.microsoft.mixedreality.toolkit.tools": "2.5.1",
     "com.microsoft.mixedreality.toolkit.examples": "2.5.1",
 ```
+> [!IMPORTANT]
+> There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
+> ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the 
+> update is available, please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
+> a workaround.
 
 ## Managing Mixed Reality features with the Unity Package Manager
 

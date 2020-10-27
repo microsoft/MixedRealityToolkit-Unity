@@ -176,6 +176,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        public override bool IsModuleSupported()
+        {
+            return true;
+        }
+
         private static readonly ProfilerMarker ProcessMrtkPointerLostPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.ProcessMrtkPointerLost");
 
         private void ProcessMrtkPointerLost(PointerData pointerData)

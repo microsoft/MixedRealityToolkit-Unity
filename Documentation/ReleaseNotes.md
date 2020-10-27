@@ -5,6 +5,12 @@
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 - [Known issues](#known-issues)
 
+> [!IMPORTANT]
+> There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
+> ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the 
+> update is available, please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
+> a workaround.
+
 ## What's new
 
 ### Runtime profile switching support

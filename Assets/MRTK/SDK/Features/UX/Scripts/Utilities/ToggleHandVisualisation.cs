@@ -25,7 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private void UpdateHandVisibility()
         {
-            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile == null)
+            {
+                return;
+            }
+
+            MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null)
             {
                 handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;
