@@ -564,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         AsyncOperation sceneOp = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
                         // Set this to true unless we have an activation token
-                        sceneOp.allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        sceneOp.allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
                         loadSceneOps.Add(sceneOp);
                     }
 
@@ -580,7 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                         completedAllSceneOps = true;
                         bool readyToProceed = false;
-                        bool allowSceneActivation = (activationToken != null) ? activationToken.AllowSceneActivation : true;
+                        bool allowSceneActivation = activationToken == null || activationToken.AllowSceneActivation;
 
                         // Go through all the load scene ops and see if we're ready to be activated
                         float sceneOpProgress = 0;

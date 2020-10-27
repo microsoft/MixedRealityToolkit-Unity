@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static bool UsesCustomInteractionMapping(Type controllerType)
         {
             var attribute = MixedRealityControllerAttribute.Find(controllerType);
-            return attribute != null ? attribute.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings) : false;
+            return attribute != null && attribute.Flags.HasFlag(MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings);
         }
 
         private static Handedness[] GetSupportedHandedness(Type controllerType)

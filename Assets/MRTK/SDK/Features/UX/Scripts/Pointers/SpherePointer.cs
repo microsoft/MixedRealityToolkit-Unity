@@ -510,8 +510,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void OnDrawGizmos()
         {
-            bool NearObjectCheck = queryBufferNearObjectRadius != null ? IsNearObject : false;
-            bool IsInteractionEnabledCheck = queryBufferInteractionRadius != null ? IsInteractionEnabled : false;
+            bool NearObjectCheck = queryBufferNearObjectRadius != null && IsNearObject;
+            bool IsInteractionEnabledCheck = queryBufferInteractionRadius != null && IsInteractionEnabled;
 
             TryGetNearGraspAxis(out Vector3 sectorForwardAxis);
             TryGetNearGraspPoint(out Vector3 point);
