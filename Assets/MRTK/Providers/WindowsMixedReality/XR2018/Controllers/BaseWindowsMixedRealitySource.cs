@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        public void UpdateSixDofData(InteractionSourceState interactionSourceState)
+        protected void UpdateSixDofData(InteractionSourceState interactionSourceState)
         {
             UpdateSourceData(interactionSourceState);
             UpdateVelocity(interactionSourceState);
