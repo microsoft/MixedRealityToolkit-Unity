@@ -38,10 +38,11 @@ It will also update the csc file to filter out the obsolete warnings produced by
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
 
-1. In the imported Oculus folder (It should be found at Assets/Oculus), there is a scriptable object called OculusProjectConfig. In that config file, you need to set HandTrackingSupport 
-to "Controllers and Hands".
+1. After the modules have been integrated, navigate to Mixed Reality Toolkit > Utilities > Oculus > Initialize Oculus Project Config and run it. This will modify a scriptable object called OculusProjectConfig (It should be found at Assets/Oculus).
+In that config file, you should see the HandTrackingSupport field set to "Controllers and Hands" and the Requires System Keyboard field checked off. This will enable handtracking and keyboard input on the Quest.
 
-    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationControllerAndHands.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfig.png)
+    ![OculusIntegrationControllerAndHands](../Images/CrossPlatform/OculusQuest/OculusIntegrationConfigSettings.png)
    
 ## Setting up the scene
 1. Create a new Unity scene or open a pre-existing scene like HandInteractionExamples
