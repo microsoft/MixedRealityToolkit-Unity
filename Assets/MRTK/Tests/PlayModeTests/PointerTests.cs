@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
                                                 out IMixedRealityController controller)
-            where T : IMixedRealityPointer
+            where T : MonoBehaviour, IMixedRealityPointer
         {
             var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);
             var result = PrefabUtility.InstantiatePrefab(pointerPrefab) as GameObject;

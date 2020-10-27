@@ -19,7 +19,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 If you're new to MRTK or Mixed Reality development in Unity, we recommend you start at the beginning of our [Unity development journey](https://docs.microsoft.com/windows/mixed-reality/unity-development-overview?tabs=mrtk%2Chl2). The Unity development journey is the **recommended starting point for MRTK**, specifically created to walk you through the installation, core concepts, and usage of MRTK in Unity. 
 
 > [!CAUTION]
-> The Unity development journey currently uses **MRTK version 2.5.0** and **Unity 2019.4**. If you're working with other configurations it's still recommended that you start there, but you can also refer to the [installation instructions](Installation.md).
+> The Unity development journey currently uses **MRTK version 2.4.0** and **Unity 2019.4**. If you're working with other configurations it's still recommended that you start there, but you can also refer to the [installation instructions](Installation.md).
 
 ## Documentation versioning
 

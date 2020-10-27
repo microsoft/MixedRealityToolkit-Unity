@@ -543,7 +543,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (active != value)
                 {
                     active = value;
-                    rigRoot?.gameObject.SetActive(value);
+                    if (rigRoot != null)
+                    {
+                        rigRoot.gameObject.SetActive(value);
+                    }
                     ResetVisuals();
 
                     if (active)
