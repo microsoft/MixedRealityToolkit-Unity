@@ -11,6 +11,19 @@ locally and then create pull request to upstream branch.
 
 Also recommend to track locall changes here on this document.
 
-
-
-
+#fix 27/10/20 
+Line renderer points are not exposed
+namespace Microsoft.MixedReality.Toolkit.Utilities
+{
+    public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
+    {
+	+/// <summary>
+        +/// Gets the LineRenderer points
+        +/// </summary>
+        +public Vector3[] Positions
+        +{
+        +    get => positions;
+        +}
+    }
+}
+	
