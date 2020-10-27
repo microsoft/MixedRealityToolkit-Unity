@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 #if HP_CONTROLLER_ENABLED
 using Microsoft.MixedReality.Input;
 using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
-#region IMixedRealityCapabilityCheck Implementation
+        #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -112,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             return false;
         }
 
-#endregion IMixedRealityCapabilityCheck Implementation
+        #endregion IMixedRealityCapabilityCheck Implementation
 
 #if HP_CONTROLLER_ENABLED
         private MotionControllerWatcher motionControllerWatcher;
@@ -334,9 +333,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)navigationSettings;
         private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)railsNavigationSettings;
 
-#endregion Gesture Settings
+        #endregion Gesture Settings
 
-#region IMixedRealityDeviceManager Interface
+        #region IMixedRealityDeviceManager Interface
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
@@ -623,10 +622,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-#endregion IMixedRealityDeviceManager Interface
+        #endregion IMixedRealityDeviceManager Interface
 
-#region Controller Utilities
-        // Creates a unique key for the controller based on it's vendor ID, product ID, version number, and handedness
+        #region Controller Utilities
+
+        /// <summary>
+        /// Creates a unique key for the controller based on its vendor ID, product ID, version number, and handedness.
+        /// </summary>
         private uint GetControllerId(uint vid, uint pid, uint version, uint handedness)
         {
             return (vid << 48) + (pid << 32) + (version << 16) + handedness;
@@ -645,8 +647,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             var handedness = ((uint)(interactionSource.handedness == InteractionSourceHandedness.Right ? 2 : (interactionSource.handedness == InteractionSourceHandedness.Left ? 1 : 0)));
             return GetControllerId(interactionSource.vendorId, interactionSource.productId, interactionSource.productVersion, handedness);
         }
-
-
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
@@ -804,17 +804,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         private void RemoveControllerFromScene(BaseWindowsMixedRealitySource controller)
         {
-                Service?.RaiseSourceLost(controller.InputSource, controller);
+            Service?.RaiseSourceLost(controller.InputSource, controller);
 
-                RecyclePointers(controller.InputSource);
+            RecyclePointers(controller.InputSource);
 
-                var visualizer = controller.Visualizer;
+            var visualizer = controller.Visualizer;
 
-                if (visualizer != null && !visualizer.Equals(null) &&
-                    visualizer.GameObjectProxy != null)
-                {
-                    visualizer.GameObjectProxy.SetActive(false);
-                }
+            if (visualizer != null && !visualizer.Equals(null) &&
+                visualizer.GameObjectProxy != null)
+            {
+                visualizer.GameObjectProxy.SetActive(false);
+            }
         }
 
         [Obsolete("This function exists to workaround a bug in Unity and will be removed in an upcoming release. For more details, see https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8101")]
@@ -862,9 +862,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 #endif
 
-#endregion Controller Utilities
+        #endregion Controller Utilities
 
-#region Unity InteractionManager Events
+        #region Unity InteractionManager Events
 
         /// <summary>
         /// SDK Interaction Source Detected Event handler
@@ -914,9 +914,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             RemoveController(args.state.source);
         }
 
-#endregion Unity InteractionManager Events
+        #endregion Unity InteractionManager Events
 
-#region Gesture Recognizer Events
+        #region Gesture Recognizer Events
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
@@ -990,9 +990,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-                    #endregion Gesture Recognizer Events
+        #endregion Gesture Recognizer Events
 
-                    #region Navigation Recognizer Events
+        #region Navigation Recognizer Events
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
@@ -1030,9 +1030,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-#endregion Navigation Recognizer Events
+        #endregion Navigation Recognizer Events
 
-#region Private Methods
+        #region Private Methods
 
         private static readonly ProfilerMarker UpdateInteractionManagerReadingPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.UpdateInteractionManagerReading");
 
@@ -1077,9 +1077,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-#endregion Private Methods
+        #endregion Private Methods
 
 #endif // UNITY_WSA
 
-                }
-            }
+    }
+}
