@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -87,10 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Gets the LineRenderer points
         /// </summary>
-        public Vector3[] Positions
-        {
-            get => positions;
-        }
+        public IReadOnlyList<Vector3> Positions => positions;
 
         [SerializeField]
         [HideInInspector]
