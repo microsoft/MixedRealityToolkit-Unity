@@ -2651,7 +2651,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -2676,7 +2676,7 @@ MonoBehaviour:
       invertYAxis: 0
     - id: 4
       description: Trigger Touch
-      axisType: 3
+      axisType: 2
       inputType: 11
       inputAction:
         id: 0
@@ -2742,7 +2742,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 7
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -2768,7 +2768,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 7
+      inputType: 18
       inputAction:
         id: 0
         description: None
@@ -2812,7 +2812,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 13
+      inputType: 60
       inputAction:
         id: 7
         description: Grip Press
@@ -2837,7 +2837,7 @@ MonoBehaviour:
       invertYAxis: 0
     - id: 4
       description: Trigger Touch
-      axisType: 3
+      axisType: 2
       inputType: 11
       inputAction:
         id: 0
@@ -2903,7 +2903,7 @@ MonoBehaviour:
     - id: 9
       description: Menu Press
       axisType: 2
-      inputType: 7
+      inputType: 27
       inputAction:
         id: 2
         description: Menu
@@ -2929,7 +2929,7 @@ MonoBehaviour:
     - id: 11
       description: Thumbstick Press
       axisType: 2
-      inputType: 7
+      inputType: 18
       inputAction:
         id: 0
         description: None
