@@ -1,6 +1,6 @@
 # Roadmap
 
-This document outlines the roadmap of the Mixed Reality Toolkit.
+This document outlines the roadmap of the Mixed Reality Toolkit. Please note that the following reflects work that is in development and target dates reflect estimates.
 
 ## Current release
 
@@ -18,9 +18,9 @@ Release details, including backlog items, can be found on the [GitHub milestone 
 
 ## Mixed Reality Toolkit (MRTK) roadmap
 
-The Mixed Reality Toolkit is built to be cross MR/AR/VR/XR platform by design. The toolkit currently supports Unity 2019.4.x and Unity 2019.4.x.
+The Mixed Reality Toolkit is built to be cross MR/AR/VR/XR platform by design. The toolkit currently supports Unity 2019.4.x and Unity 2018.4.x.
 
-> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2020.1) tech branch version of Unity, at the time at which MRTK was released.
+> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release.
 
 ### 2.6.0
 
@@ -32,10 +32,15 @@ Target Timeline: January 2021
 
 Themes:
 
+- Stability
 - User Experience
 - Platform Expansion: OpenXR
 - Developer Education
 - Packaging
+
+**Stability**
+
+Quality and stability are the top priority for this and all Microsoft Mixed Reality Toolkit releases. We will continue to prioritize customer and partner issues that impact the stability of MRTK components.
 
 **User Experience**
 
@@ -47,7 +52,7 @@ We're listening to your feedback about MRTK and have continued plans for:
 
 **Platform Expansion**
 
-The MRTK team is happy to support the open future of mixed reality. Support for OpenXR is currently under development and will be available alongside Unity's OpenXR preview package.
+The MRTK team supports the open future of mixed reality through [OpenXR](https://techcommunity.microsoft.com/t5/mixed-reality-blog/moving-forward-to-openxr/ba-p/1825672). Support for OpenXR is currently under development and will be available alongside Unity's OpenXR preview package. 
 
 **Developer Education**
 
@@ -57,17 +62,17 @@ With continued investments in [MRTK tutorials](https://docs.microsoft.com/en-us/
 
  **Packaging**
 
-The MRTK currently supports Unity Package Manager (UPM). We want to make it even easier for you to download packages with UPM as we make improvements and respond to your feedback.
+In MRTK 2.5.0 we released support for Unity Package Manager (UPM). We are continuing to make improvements so it's even easier for you to download packages with UPM.
 
 
 ## Backlog
 
 The following list highlights some of the key investments the MRTK team intends to pursue.
 
-- Platform expansion: WebXR
 - Extensibility
 - Modularity
 - Accessibility features
 - Globalization enhancements
 - Cloud service support
+- Platform expansion
 - Tools
