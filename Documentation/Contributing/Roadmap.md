@@ -50,9 +50,9 @@ We're listening to your feedback about MRTK and have continued plans for:
 - HoloLens Shell parity
 - Tests to ensure features do not regress
 
-**Platform Expansion**
+**Platform Expansion: OpenXR**
 
-The MRTK team supports the open future of mixed reality through [OpenXR](https://techcommunity.microsoft.com/t5/mixed-reality-blog/moving-forward-to-openxr/ba-p/1825672). Support for OpenXR is currently under development and will be available alongside Unity's OpenXR preview package. 
+The MRTK team supports the open future of mixed reality through [OpenXR](https://techcommunity.microsoft.com/t5/mixed-reality-blog/moving-forward-to-openxr/ba-p/1825672). Support for OpenXR is currently under development. 
 
 **Developer Education**
 
@@ -69,10 +69,10 @@ In MRTK 2.5.0 we released support for Unity Package Manager (UPM). We are contin
 
 The following list highlights some of the key investments the MRTK team intends to pursue.
 
+- Platform expansion
 - Extensibility
 - Modularity
 - Accessibility features
 - Globalization enhancements
 - Cloud service support
-- Platform expansion
 - Tools
