@@ -89,6 +89,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                    mixedRealityInteractionMapping.invertXAxis,
                    mixedRealityInteractionMapping.invertYAxis) { }
 
+        public MixedRealityInteractionMapping(MixedRealityInteractionMapping mixedRealityInteractionMapping, MixedRealityInteractionMappingLegacyInput legacyInput)
+            : this(mixedRealityInteractionMapping.id,
+                   mixedRealityInteractionMapping.description,
+                   mixedRealityInteractionMapping.axisType,
+                   mixedRealityInteractionMapping.inputType,
+                   mixedRealityInteractionMapping.inputAction,
+                   legacyInput.KeyCode,
+                   legacyInput.AxisCodeX,
+                   legacyInput.AxisCodeY,
+                   legacyInput.InvertXAxis,
+                   legacyInput.InvertYAxis) { }
+
         #region Interaction Properties
 
         [SerializeField]
