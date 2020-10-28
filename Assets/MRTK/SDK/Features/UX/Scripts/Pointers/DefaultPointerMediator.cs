@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         continue;
                     }
 
-                    if (pointer.BaseCursor != null)
+                    if (!(pointer is GGVPointer))
                     {
                         pointer.IsActive = true;
                         unassignedPointers.Remove(pointer);
@@ -214,12 +214,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
                             {
-                                if (!unassignedPointers.Contains(otherPointer))
+                                if (!unassignedPointers.Contains(otherPointer) || !farInteractPointers.Contains(otherPointer))
                                 {
                                     continue;
                                 }
-                                // If GGV pointer
-                                if (otherPointer.BaseCursor == null)
+                                
+                                if (otherPointer is GGVPointer)
                                 {
                                     // Disable the GGV pointer of an input source
                                     // when there is another far pointer belonging to the same source
