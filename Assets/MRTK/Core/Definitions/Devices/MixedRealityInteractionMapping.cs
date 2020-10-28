@@ -79,10 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public MixedRealityInteractionMapping(MixedRealityInteractionMapping mixedRealityInteractionMapping)
             : this(mixedRealityInteractionMapping.id,
-                   mixedRealityInteractionMapping.Description,
-                   mixedRealityInteractionMapping.AxisType,
-                   mixedRealityInteractionMapping.InputType,
-                   mixedRealityInteractionMapping.MixedRealityInputAction,
+                   mixedRealityInteractionMapping.description,
+                   mixedRealityInteractionMapping.axisType,
+                   mixedRealityInteractionMapping.inputType,
+                   mixedRealityInteractionMapping.inputAction,
                    mixedRealityInteractionMapping.keyCode,
                    mixedRealityInteractionMapping.axisCodeX,
                    mixedRealityInteractionMapping.axisCodeY,
