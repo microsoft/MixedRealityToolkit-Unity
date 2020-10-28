@@ -3,10 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Profiling;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -25,13 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions =>
-            (Handedness == Handedness.Left) ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions; 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Axis1D.PrimaryIndexTrigger", AxisType.SingleAxis, DeviceInputType.Trigger),
@@ -52,10 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(16, "Touch.PrimaryThumbRest Near Touch", AxisType.Digital, DeviceInputType.ThumbNearTouch),
         };
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        /// <inheritdoc />
+        protected override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Axis1D.SecondaryIndexTrigger", AxisType.SingleAxis, DeviceInputType.Trigger),

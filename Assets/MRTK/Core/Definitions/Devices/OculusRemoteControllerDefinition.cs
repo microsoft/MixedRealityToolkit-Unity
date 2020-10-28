@@ -2,25 +2,21 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections.Generic;
-using Unity.Profiling;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// 
     /// </summary>
-    public class OpenVROculusRemoteControllerDefinition : BaseControllerDefinition
+    public class OculusRemoteControllerDefinition : BaseControllerDefinition
     {
         /// <summary>
         /// 
         /// </summary>
-        public OpenVROculusRemoteControllerDefinition() : base(Handedness.None)
-        { }
+        public OculusRemoteControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "D-Pad Position", AxisType.DualAxis, DeviceInputType.DirectionalPad),
             new MixedRealityInteractionMapping(1, "Button.One", AxisType.Digital, DeviceInputType.ButtonPress),

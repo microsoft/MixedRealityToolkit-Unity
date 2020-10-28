@@ -8,15 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the base interactions and data that an controller can provide.
     /// </summary>
-    public class XboxControllerDefinition
+    public class XboxControllerDefinition : BaseControllerDefinition
     {
         /// <summary>
         /// 
         /// </summary>
-        public XboxControllerDefinition()
-        { }
+        public XboxControllerDefinition() : base(Handedness.None) { }
 
-        public MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        /// <inheritdoc />
+        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Left Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
             new MixedRealityInteractionMapping(1, "Left Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),

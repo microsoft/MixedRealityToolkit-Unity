@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         // Notify that hand mesh has been updated (cleared)
                         HandMeshInfo handMeshInfo = new HandMeshInfo();
-                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         hasRequestedHandMeshObserver = false;
                         handMeshObserver = null;
                     }
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 rotation = rotationUnity
                             };
 
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, Handedness, handMeshInfo);
                         }
                     }
                 }

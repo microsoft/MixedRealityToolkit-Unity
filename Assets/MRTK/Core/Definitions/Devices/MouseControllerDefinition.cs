@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections.Generic;
-using Unity.Profiling;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -16,11 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// 
         /// </summary>
-        public MouseControllerDefinition() : base(Handedness.None)
-        { }
+        public MouseControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
+        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition),
