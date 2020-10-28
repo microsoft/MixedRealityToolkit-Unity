@@ -20,7 +20,7 @@ Release details, including backlog items, can be found on the [GitHub milestone 
 
 The Mixed Reality Toolkit is built to be cross MR/AR/VR/XR platform by design. The toolkit currently supports Unity 2019.4.x and Unity 2018.4.x.
 
-> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release.
+> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. Although the Mixed Reality Toolkit runs on the latest non-beta (ex: 2020.1) tech branch version of Unity, it is not officially supported.
 
 ### 2.6.0
 
