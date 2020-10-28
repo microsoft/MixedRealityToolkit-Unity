@@ -142,7 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     case DeviceInputType.MiddleFingerNearTouch:
                     case DeviceInputType.RingFingerNearTouch:
                     case DeviceInputType.PinkyFingerNearTouch:
-                        interactionMapping.BoolData = !UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(0);
+                        interactionMapping.BoolData = interactionMapping.KeyCode == KeyCode.None ?
+                            !UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(0) :
+                            UInput.GetKey(interactionMapping.KeyCode);
                         break;
                     default:
                         interactionMapping.BoolData = UInput.GetKey(interactionMapping.KeyCode);
