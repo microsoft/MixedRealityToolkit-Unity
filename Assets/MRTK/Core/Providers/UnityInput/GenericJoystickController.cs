@@ -135,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     case DeviceInputType.TriggerPress:
                         interactionMapping.BoolData = UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(1);
                         break;
+                    case DeviceInputType.TriggerTouch:
                     case DeviceInputType.TriggerNearTouch:
                     case DeviceInputType.ThumbNearTouch:
                     case DeviceInputType.IndexFingerNearTouch:
