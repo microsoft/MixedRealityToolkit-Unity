@@ -103,7 +103,6 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
-        [Toggle(_INSTANCED_COLOR)] _InstancedColor("Instanced Color", Float) = 0.0
         [Toggle(_IGNORE_Z_SCALE)] _IgnoreZScale("Ignore Z Scale", Float) = 0.0
         [Toggle(_STENCIL)] _Stencil("Enable Stencil Testing", Float) = 0.0
         _StencilReference("Stencil Reference", Range(0, 255)) = 0
@@ -179,7 +178,6 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _INNER_GLOW
             #pragma shader_feature _IRIDESCENCE
             #pragma shader_feature _ENVIRONMENT_COLORING
-            #pragma shader_feature _INSTANCED_COLOR
             #pragma shader_feature _IGNORE_Z_SCALE
 
             #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
@@ -313,19 +311,30 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed3 worldNormal : COLOR3;
 #endif
 #endif
-                UNITY_VERTEX_OUTPUT_STEREO
-#if defined(_INSTANCED_COLOR)
                 UNITY_VERTEX_INPUT_INSTANCE_ID
-#endif
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
-#if defined(_INSTANCED_COLOR)
             UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-            UNITY_INSTANCING_BUFFER_END(Props)
-#else
-            fixed4 _Color;
+
+#if defined(_CLIPPING_PLANE)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipPlaneSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _ClipPlane)
 #endif
+
+#if defined(_CLIPPING_SPHERE)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipSphereSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipSphereInverseTransform)
+#endif
+
+#if defined(_CLIPPING_BOX)
+            UNITY_DEFINE_INSTANCED_PROP(fixed, _ClipBoxSide)
+            UNITY_DEFINE_INSTANCED_PROP(float4x4, _ClipBoxInverseTransform)
+#endif
+
+            UNITY_INSTANCING_BUFFER_END(Props)
+
             sampler2D _MainTex;
             fixed4 _MainTex_ST;
 
@@ -381,21 +390,6 @@ Shader "Mixed Reality Toolkit/Standard"
             float _VertexExtrusionValue;
 #endif
 
-#if defined(_CLIPPING_PLANE)
-            fixed _ClipPlaneSide;
-            float4 _ClipPlane;
-#endif
-
-#if defined(_CLIPPING_SPHERE)
-            fixed _ClipSphereSide;
-            float4 _ClipSphere;
-#endif
-
-#if defined(_CLIPPING_BOX)
-            fixed _ClipBoxSide;
-            float4 _ClipBoxSize;
-            float4x4 _ClipBoxInverseTransform;
-#endif
 
 #if defined(_CLIPPING_PRIMITIVE)
             float _BlendedClippingWidth;
@@ -576,10 +570,10 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-#if defined(_INSTANCED_COLOR)
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
-#endif
+
                 float4 vertexPosition = v.vertex;
 
 #if defined(_WORLD_POSITION) || defined(_VERTEX_EXTRUSION)
@@ -760,9 +754,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
-#if defined(_INSTANCED_COLOR)
                 UNITY_SETUP_INSTANCE_ID(i);
-#endif
 
 #if defined(_TRIPLANAR_MAPPING)
                 // Calculate triplanar uvs and apply texture scale and offset values like TRANSFORM_TEX.
@@ -830,13 +822,19 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_CLIPPING_PRIMITIVE)
                 float primitiveDistance = 1.0;
 #if defined(_CLIPPING_PLANE)
-                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
+                fixed clipPlaneSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlaneSide);
+                float4 clipPlane = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipPlane);
+                primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, clipPlane) * clipPlaneSide);
 #endif
 #if defined(_CLIPPING_SPHERE)
-                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, _ClipSphere) * _ClipSphereSide);
+                fixed clipSphereSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereSide);
+                float4x4 clipSphereInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipSphereInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsSphere(i.worldPosition.xyz, clipSphereInverseTransform) * clipSphereSide);
 #endif
 #if defined(_CLIPPING_BOX)
-                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+                fixed clipBoxSide = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxSide);
+                float4x4 clipBoxInverseTransform = UNITY_ACCESS_INSTANCED_PROP(Props, _ClipBoxInverseTransform);
+                primitiveDistance = min(primitiveDistance, PointVsBox(i.worldPosition.xyz, clipBoxInverseTransform) * clipBoxSide);
 #endif
 #if defined(_CLIPPING_BORDER)
                 fixed3 primitiveBorderColor = lerp(_ClippingBorderColor, fixed3(0.0, 0.0, 0.0), primitiveDistance / _ClippingBorderWidth);
@@ -894,11 +892,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 float roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #endif
 
-#if defined(_INSTANCED_COLOR)
                 albedo *= UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-#else
-                albedo *= _Color;
-#endif
 
 #if defined(_VERTEX_COLORS)
                 albedo *= i.color;
