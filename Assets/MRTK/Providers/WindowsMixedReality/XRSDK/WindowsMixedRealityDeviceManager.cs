@@ -166,51 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (GetOrAddControllerPerfMarker.Auto())
             {
-                // If a device is already registered with the ID provided, just return it.
-                if (ActiveControllers.ContainsKey(inputDevice))
-                {
-                    var controller = ActiveControllers[inputDevice];
-                    Debug.Assert(controller != null);
-                    return controller;
-                }
-
-                Handedness controllingHand;
-
-                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                {
-                    controllingHand = Handedness.Left;
-                }
-                else if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
-                {
-                    controllingHand = Handedness.Right;
-                }
-                else
-                {
-                    controllingHand = Handedness.None;
-                }
-
+                GenericXRSDKController detectedController = base.GetOrAddController(inputDevice);
                 SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
-                Type controllerType = GetControllerType(currentControllerType);
-                InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
-
-                IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-                IMixedRealityInputSource inputSource = Service?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
-                GenericXRSDKController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
-
-                if (detectedController == null || !detectedController.Enabled)
-                {
-                    // Controller failed to be set up correctly.
-                    Debug.LogError($"Failed to create {controllerType.Name} controller");
-
-                    // Return null so we don't raise the source detected.
-                    return null;
-                }
-
-                for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-                {
-                    detectedController.InputSource.Pointers[i].Controller = detectedController;
-                }
-
 
                 // Add the Motion Controller state if it's an HPMotionController
                 uint controllerId = GetControllerId(inputDevice);
@@ -218,8 +175,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 {
                     ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
                 }
-
-                ActiveControllers.Add(inputDevice, detectedController);
 
                 return detectedController;
             }
@@ -245,7 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                 if (!(activeMotionControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
                 {
-                    // for some reason this controller was never tracked in the first place, ignore it
+                    // for some reason this controller was never tracked in the first place, ignore removing it from the scene, but remove its tracked reference
+                    trackedMotionControllerStates.Remove(controllerId);
                     return;
                 }
 
