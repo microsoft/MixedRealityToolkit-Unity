@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
 #else
                 
-                    base.UpdateController(inputDevice);
+                base.UpdateController(inputDevice);
 #endif
             }
         }
