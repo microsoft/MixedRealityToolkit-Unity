@@ -10,28 +10,27 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// Manages state values of Interaction States within the Tracked States Scriptable Object.  The Tracked States
-    /// scriptable object is contained within a class that derives from BaseInteractionElement.  This class contains helper
-    /// methods for setting, getting and creating new Interaction States to track.
+    /// Manages the state values of Interaction States within BaseInteractiveElement's States list. This class contains helper
+    /// methods for setting, getting and creating new Interaction States for the States list.
     /// </summary>
     public class StateManager
     {
         /// <summary>
         /// Create a new state manager with a given states scriptable object.
         /// </summary>
-        /// <param name="trackedStates">TrackedStates scriptable object</param>
+        /// <param name="states">List of Interaction States for this state manager to watch</param>
         /// <param name="interactiveElement">The interactive element source</param>
-        public StateManager(TrackedStates trackedStatesSource, BaseInteractiveElement interactiveElementSource)
+        public StateManager(List<InteractionState> states, BaseInteractiveElement interactiveElementSource)
         {
-            trackedStates = trackedStatesSource;
+            interactionStates = states;
 
-            // Add states to an internal dictionary fo
-            foreach (InteractionState state in trackedStatesSource.States)
-            { 
+            // Add the list of InteractionStates to an internal dictionary
+            foreach (InteractionState state in states)
+            {
                 statesDictionary.Add(state.Name, state);
             }
 
-            interactiveElement = interactiveElementSource;
+            InteractiveElement = interactiveElementSource;
 
             InitializeEventReceiverManager();
         }
@@ -55,22 +54,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public InteractionStateInactiveEvent OnStateDeactivated { get; protected set; } = new InteractionStateInactiveEvent();
 
         /// <summary>
-        /// The read only list of the current Interaction States being tracked.  To modify this list use the AddNewState()
-        /// RemoveState() methods, to set the value of a state in this list use SetStateOn/Off() methods.
+        /// The read only dictionary for the Interaction States.  To modify this dictionary use the AddNewState()
+        /// RemoveState() methods. To set the value of a state in this dictionary use SetStateOn/Off() methods.
         /// </summary>
         public IReadOnlyDictionary<string, InteractionState> States => statesDictionary.ToDictionary((pair) => pair.Key, (pair) => pair.Value);
 
-        // Dictionary of the states currently being tracked by this state manager
+        // The interactive element for this state manager
+        public BaseInteractiveElement InteractiveElement { get; protected set; }
+
+        // Dictionary of the states being watched by this state manager
         private Dictionary<string, InteractionState> statesDictionary = new Dictionary<string, InteractionState>();
 
-        // The interactive element for this state manager
-        private BaseInteractiveElement interactiveElement = null;
-
-        // The TrackedStates scriptable for this state manager
-        private TrackedStates trackedStates = null;
+        // The List of InteractionStates for this state manager
+        private List<InteractionState> interactionStates = null;
 
         // List of all core states
         private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
+
+        // List of all core states
+        private string defaultStateName = CoreInteractionState.Default.ToString();
 
         // List of active states, used for tracking the current and previous states
         private List<InteractionState> activeStates = new List<InteractionState>();
@@ -150,13 +152,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                         activeStates.Add(state);
                     }
 
-                    InteractionState defaultState = GetState(CoreInteractionState.Default.ToString());
+                    InteractionState defaultState = GetState(defaultStateName);
 
                     // If the state getting switched on and is NOT the default state, then make sure the default state is off
                     // The default state is only active when ALL other states are not active
-                    if (state.Name != CoreInteractionState.Default.ToString() && defaultState.Active)
+                    if (state.Name != defaultStateName && defaultState.Active)
                     {
-                        SetStateOff(CoreInteractionState.Default.ToString());
+                        SetStateOff(defaultStateName);
                     }
                 }  
             }
@@ -188,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     // If the only state in active states is going to be removed, then activate the default state
                     if (activeStates.Count == 1 && activeStates.First() == state)
                     {
-                        SetStateOn(CoreInteractionState.Default.ToString());
+                        SetStateOn(defaultStateName);
                     }
 
                     // We need to save the last state active state so we can add transitions 
@@ -215,10 +217,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             if (state != null)
             {
-                if (stateName != CoreInteractionState.Default.ToString())
+                if (stateName != defaultStateName)
                 {
                     // Remove the state from tracked states to update the changes in the inspector
-                    trackedStates.States.Remove(state);
+                    interactionStates.Remove(state);
 
                     statesDictionary.Remove(state.Name);
                 }
@@ -270,6 +272,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <returns>The new state added</returns>
         public InteractionState AddNewState(string stateName)
         {
+            // Check if the state name is an empty string
+            if (stateName == string.Empty)
+            {
+                Debug.LogError("The state name entered is empty, please add characters to the state name.");
+                return null;
+            }
+
             // If a user tries to add a state with the same name as a core state, then log an error telling them to choose a 
             // different name.
             if (coreStates.Contains(stateName))
@@ -283,11 +292,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 InteractionState newState = new InteractionState(stateName);
 
-                // Add the state to the tracked states scriptable to ensure the inspector displays the new state
-                trackedStates.States.Add(newState);
-                
                 statesDictionary.Add(newState.Name, newState);
 
+                // Add the state to the tracked states scriptable to ensure the inspector displays the new state
+                interactionStates.Add(newState);
+                
                 // Set the event configuration if one exists for the core interaction state
                 EventReceiverManager.SetEventConfiguration(newState);
 
@@ -328,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     }
 
                     // Add the state to the tracked states scriptable to ensure the inspector displays the new state
-                    trackedStates.States.Add(newState);
+                    interactionStates.Add(newState);
 
                     statesDictionary.Add(newState.Name, newState);
                     return newState;
