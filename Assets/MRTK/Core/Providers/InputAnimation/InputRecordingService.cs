@@ -1,9 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -28,55 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public event Action OnRecordingStopped;
 
         /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
-        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="name">Friendly name of the service.</param>
-        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's configuration profile.</param>
-        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public InputRecordingService(
-            IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            string name = null,
-            uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="name">Friendly name of the service.</param>
-        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's configuration profile.</param>
-        public InputRecordingService(
-            IMixedRealityInputSystem inputSystem,
-            string name = null,
-            uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
-        { }
-
-        /// <summary>
-        /// Return the service profile and ensure that the type is correct.
-        /// </summary>
-        public MixedRealityInputRecordingProfile InputRecordingProfile
-        {
-            get
-            {
-                var profile = ConfigurationProfile as MixedRealityInputRecordingProfile;
-                if (!profile)
-                {
-                    Debug.LogError("Profile for Input Recording Service must be a MixedRealityInputRecordingProfile");
-                }
-                return profile;
-            }
-        }
-
-        /// <summary>
         /// Service has been enabled.
         /// </summary>
         public bool IsEnabled { get; private set; } = false;
@@ -98,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 useBufferTimeLimit = value;
+                
                 if (useBufferTimeLimit)
                 {
                     PruneBuffer();
@@ -113,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 recordingBufferTimeLimit = Mathf.Max(value, 0.0f);
+                
                 if (useBufferTimeLimit)
                 {
                     PruneBuffer();
@@ -120,11 +76,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private InputAnimation recordingBuffer = null;
-
         // Start time of recording if buffer is unlimited.
         // Nullable to determine when time needs to be reset.
         private float? unlimitedRecordingStartTime = null;
+        /// Start time of recording.
         public float StartTime
         {
             get
@@ -133,34 +88,81 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (useBufferTimeLimit)
                     {
-                        return Mathf.Max(unlimitedRecordingStartTime.Value, Time.time - recordingBufferTimeLimit);
+                        return Mathf.Max(unlimitedRecordingStartTime.Value, EndTime - recordingBufferTimeLimit);
                     }
                     else
                     {
                         return unlimitedRecordingStartTime.Value;
                     }
                 }
-                return Time.time;
+                
+                return EndTime;
+            }
+        }
+        
+        /// End time of recording.
+        public float EndTime { get; private set; }
+
+        /// The profile used for recording.
+        public MixedRealityInputRecordingProfile InputRecordingProfile
+        {
+            get
+            {
+                var profile = ConfigurationProfile as MixedRealityInputRecordingProfile;
+                
+                if (!profile)
+                {
+                    Debug.LogError("Profile for Input Recording Service must be a MixedRealityInputRecordingProfile");
+                }
+                
+                return profile;
             }
         }
 
-        private void ResetStartTime()
+        private float frameRate;
+        private float frameInterval;
+        private float nextFrame;
+        private InputRecordingBuffer recordingBuffer = null;
+        private IMixedRealityGazeProvider eyeGazeProvider;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public InputRecordingService(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this( inputSystem, name, priority, profile)
         {
-            if (IsRecording)
-            {
-                unlimitedRecordingStartTime = Time.time;
-            }
-            else
-            {
-                unlimitedRecordingStartTime = null;
-            }
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public InputRecordingService(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
+        { }
 
         /// <inheritdoc />
         public override void Enable()
         {
             IsEnabled = true;
-            recordingBuffer = new InputAnimation();
+            recordingBuffer = new InputRecordingBuffer();
         }
 
         /// <inheritdoc />
@@ -174,7 +176,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void StartRecording()
         {
+            eyeGazeProvider = CoreServices.InputSystem.GazeProvider;
             IsRecording = true;
+            frameRate = InputRecordingProfile.FrameRate;
+            frameInterval = 1f / frameRate;
+            nextFrame = Time.time + frameInterval;
+            
             if (UseBufferTimeLimit)
             {
                 PruneBuffer();
@@ -191,24 +198,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void StopRecording()
         {
             IsRecording = false;
-
             OnRecordingStopped?.Invoke();
         }
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            if (IsEnabled)
+            if (IsEnabled && IsRecording && Time.time > nextFrame)
             {
-                if (IsRecording)
+                EndTime = Time.time;
+                nextFrame += frameInterval * (Mathf.Floor((Time.time - nextFrame) * frameRate) + 1f);
+                
+                if (UseBufferTimeLimit)
                 {
-                    if (UseBufferTimeLimit)
-                    {
-                        PruneBuffer();
-                    }
-
-                    RecordKeyframe();
+                    PruneBuffer();
                 }
+
+                RecordKeyframe();
             }
         }
 
@@ -222,6 +228,88 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        public string SaveInputAnimation(string directory = null) => SaveInputAnimation(InputAnimationSerializationUtils.GetOutputFilename(), directory);
+        
+        /// <inheritdoc />
+        public string SaveInputAnimation(string filename, string directory)
+        {
+            if (IsEnabled)
+            {
+                string path = Path.Combine(directory ?? Application.persistentDataPath, filename);
+
+                try
+                {
+                    using (Stream fileStream = File.Open(path, FileMode.Create))
+                    {
+                        PruneBuffer();
+                        
+                        var animation = InputAnimation.FromRecordingBuffer(recordingBuffer, InputRecordingProfile);
+                        
+                        Debug.Log($"Recording buffer saved to animation");
+                        animation.ToStream(fileStream, 0f);
+                        Debug.Log($"Recorded input animation exported to {path}");
+                    }
+                    
+                    return path;
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogWarning(ex.Message);
+                }
+            }
+            
+            return "";
+        }
+        
+        /// <inheritdoc />
+        public Task<string> SaveInputAnimationAsync(string directory = null) => SaveInputAnimationAsync(InputAnimationSerializationUtils.GetOutputFilename(), directory);
+
+        /// <inheritdoc />
+        public async Task<string> SaveInputAnimationAsync(string filename, string directory)
+        {
+            if (IsEnabled)
+            {
+                string path = Path.Combine(directory ?? Application.persistentDataPath, filename);
+
+                try
+                {
+                    using (Stream fileStream = File.Open(path, FileMode.Create))
+                    {
+                        PruneBuffer();
+
+                        var animation = await Task.Run(() => InputAnimation.FromRecordingBuffer(recordingBuffer, InputRecordingProfile));
+                        
+                        Debug.Log($"Recording buffer saved to animation");
+
+                        await animation.ToStreamAsync(fileStream, 0f);
+                        
+                        Debug.Log($"Recorded input animation exported to {path}");
+                    }
+                    
+                    return path;
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogWarning(ex.Message);
+                }
+            }
+            
+            return "";
+        }
+
+        private void ResetStartTime()
+        {
+            if (IsRecording)
+            {
+                unlimitedRecordingStartTime = Time.time;
+            }
+            else
+            {
+                unlimitedRecordingStartTime = null;
+            }
+        }
+
         /// <summary>
         /// Record a keyframe at the given time for the main camera and tracked input devices.
         /// </summary>
@@ -230,19 +318,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float time = Time.time;
             var profile = InputRecordingProfile;
 
-            RecordInputHandData(Handedness.Left);
-            RecordInputHandData(Handedness.Right);
-            if (CameraCache.Main)
+            recordingBuffer.NewKeyframe(time);
+
+            if (profile.RecordHandData)
             {
-                var cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
-                recordingBuffer.AddCameraPoseKey(time, cameraPose, profile.CameraPositionThreshold, profile.CameraRotationThreshold);
+                RecordInputHandData(Handedness.Left);
+                RecordInputHandData(Handedness.Right);
+            }
+
+            MixedRealityPose cameraPose;
+            
+            if (profile.RecordCameraPose && CameraCache.Main)
+            {
+                cameraPose = new MixedRealityPose(CameraCache.Main.transform.position, CameraCache.Main.transform.rotation);
+                recordingBuffer.SetCameraPose(cameraPose);
+            }
+            else
+            {
+                cameraPose = new MixedRealityPose(Vector3.zero, Quaternion.identity);
+            }
+
+            if (profile.RecordEyeGaze)
+            {
+                if (eyeGazeProvider != null)
+                {
+                    recordingBuffer.SetGazeRay(new Ray(eyeGazeProvider.GazeOrigin, eyeGazeProvider.GazeDirection));
+                }
+                else 
+                {
+                    recordingBuffer.SetGazeRay(new Ray(cameraPose.Position, cameraPose.Forward));
+                }
             }
         }
 
         /// <summary>
         /// Record a keyframe at the given time for a hand with the given handedness it is tracked.
         /// </summary>
-        private bool RecordInputHandData(Handedness handedness)
+        private void RecordInputHandData(Handedness handedness)
         {
             float time = Time.time;
             var profile = InputRecordingProfile;
@@ -250,8 +362,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var hand = HandJointUtils.FindHand(handedness);
             if (hand == null)
             {
-                recordingBuffer.AddHandStateKey(time, handedness, false, false);
-                return false;
+                recordingBuffer.SetHandState(handedness, false, false);
+
+                return;
             }
 
             bool isTracked = (hand.TrackingState == TrackingState.Tracked);
@@ -269,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            recordingBuffer.AddHandStateKey(time, handedness, isTracked, isPinching);
+            recordingBuffer.SetHandState(handedness, isTracked, isPinching);
 
             if (isTracked)
             {
@@ -277,49 +390,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (hand.TryGetJoint((TrackedHandJoint)i, out MixedRealityPose jointPose))
                     {
-                        recordingBuffer.AddHandJointKey(time, handedness, (TrackedHandJoint)i, jointPose, profile.JointPositionThreshold, profile.JointRotationThreshold);
+                        recordingBuffer.SetJointPose(handedness, (TrackedHandJoint)i, jointPose);
                     }
                 }
             }
-
-            return true;
-        }
-
-        /// <inheritdoc />
-        public string SaveInputAnimation(string directory = null)
-        {
-            return SaveInputAnimation(InputAnimationSerializationUtils.GetOutputFilename(), directory);
-        }
-
-        /// <inheritdoc />
-        public string SaveInputAnimation(string filename, string directory = null)
-        {
-            if (IsEnabled)
-            {
-                string path = Path.Combine(directory ?? Application.persistentDataPath, filename);
-
-                try
-                {
-                    using (Stream fileStream = File.Open(path, FileMode.Create))
-                    {
-                        PruneBuffer();
-                        recordingBuffer.ToStream(fileStream, StartTime);
-                        Debug.Log($"Recorded input animation exported to {path}");
-                    }
-                    return path;
-                }
-                catch (IOException ex)
-                {
-                    Debug.LogWarning(ex.Message);
-                }
-            }
-            return "";
         }
 
         /// Discard keyframes before the cutoff time.
         private void PruneBuffer()
         {
-            recordingBuffer.CutoffBeforeTime(StartTime);
+            recordingBuffer.RemoveBeforeTime(StartTime);
         }
     }
 }
