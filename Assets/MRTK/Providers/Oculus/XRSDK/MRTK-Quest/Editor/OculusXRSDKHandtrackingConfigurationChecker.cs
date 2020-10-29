@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         }
 
         /// <summary>
-        /// Detects if the Oculus Integration package is present and updates the project definitions and prefab references.	
+        /// Configures the default device manager profile with default prefabs if they are not yet loaded
         /// </summary>
         internal static void ConfigureOculusDeviceManagerDefaults()
         {
