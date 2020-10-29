@@ -1,0 +1,10 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
