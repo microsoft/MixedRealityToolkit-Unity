@@ -196,6 +196,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                // Check for far interactions
+                // Any far pointer other than GGV has priority over GGV
+                foreach (IMixedRealityPointer pointer in farInteractPointers)
+                {
+                    if (!unassignedPointers.Contains(pointer))
+                    {
+                        continue;
+                    }
+
+                    if (!(pointer is GGVPointer))
+                    {
+                        pointer.IsActive = true;
+                        unassignedPointers.Remove(pointer);
+
+                        if (pointer.InputSourceParent != null)
+                        {
+                            foreach (IMixedRealityPointer otherPointer in pointerByInputSourceParent[pointer.InputSourceParent])
+                            {
+                                if (!unassignedPointers.Contains(otherPointer) || !farInteractPointers.Contains(otherPointer))
+                                {
+                                    continue;
+                                }
+                                
+                                if (otherPointer is GGVPointer)
+                                {
+                                    // Disable the GGV pointer of an input source
+                                    // when there is another far pointer belonging to the same source
+                                    otherPointer.IsActive = false;
+                                    unassignedPointers.Remove(otherPointer);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // All other pointers that have not been assigned this frame
                 // have no reason to be disabled, so make sure they are active
                 foreach (IMixedRealityPointer unassignedPointer in unassignedPointers)
