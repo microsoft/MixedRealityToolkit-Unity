@@ -117,7 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime, new ConfigGetter(IsLatestScriptingRuntime) },
             { Configurations.ForceTextSerialization, new ConfigGetter(IsForceTextSerialization) },
             { Configurations.VisibleMetaFiles, new ConfigGetter(IsVisibleMetaFiles) },
+#if !UNITY_2019_3_OR_NEWER
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
+#endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
             { Configurations.AudioSpatializer, new ConfigGetter(SpatializerUtilities.CheckSettings) },
@@ -151,7 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime, SetLatestScriptingRuntime },
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
+#if !UNITY_2019_3_OR_NEWER
             { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
+#endif // !UNITY_2019_3_OR_NEWER
             { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
             { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
             { Configurations.AudioSpatializer, SetAudioSpatializer },

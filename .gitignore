@@ -17,6 +17,7 @@ UnityPackageManager/
 project.json
 project.lock.json
 *.package
+**/.DS_Store
 Assets/XR/
 Assets/XR.meta
 Assets/Oculus/
@@ -106,3 +107,8 @@ Dependencies*
 Nuget.config*
 *.obj
 *.bin
+
+# =========== #
+# Other files #
+# =========== #
+.DS_Store

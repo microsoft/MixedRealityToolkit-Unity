@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4f726b4cb3605994fac74d508110ec62
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ovrCameraRigPrefab: {instanceID: 0}
+  - localAvatarPrefab: {instanceID: 0}
+  - customHandMaterial: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

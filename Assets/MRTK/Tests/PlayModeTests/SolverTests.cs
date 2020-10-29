@@ -1099,13 +1099,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
 
-            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
-            yield return new WaitForFixedUpdate();
-            yield return null;
-
-            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
-
-            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 90));
             yield return new WaitForFixedUpdate();
             yield return null;
 

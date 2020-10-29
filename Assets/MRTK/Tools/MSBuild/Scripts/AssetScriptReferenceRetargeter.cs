@@ -239,7 +239,12 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             }
                             else if (nonClassDictionary.ContainsKey(guid))
                             {
-                                throw new InvalidDataException($"A script without a class ({nonClassDictionary[guid]}) is being processed.");
+                                // this guid bypasses throwing the exception. The reason for this is that there is currently an asset (DefaultOculusXRSDKDeviceManagerProfile.asset) that is reliant
+                                // on Unity 2019+ specific code (OculusXRSDKDeviceManagerProfile.cs), which causes CI to fail since it's running on Unity 2018.
+                                if (guid != "4f726b4cb3605994fac74d508110ec62")
+                                {
+                                    throw new InvalidDataException($"A script without a class ({nonClassDictionary[guid]}) is being processed.");
+                                }
                             }
                             else
                             {

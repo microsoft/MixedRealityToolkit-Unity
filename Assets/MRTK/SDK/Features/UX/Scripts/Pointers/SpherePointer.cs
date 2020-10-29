@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Test if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
         /// Uses SphereCastRadius + NearObjectMargin to determine if near an object within the sector angle
-        /// Also returns true of any grabable objects are within SphereCastRadius even if they aren't within the sector angle
+        /// Also returns true of any grabbable objects are within SphereCastRadius even if they aren't within the sector angle
         /// Ignores bounds handlers for the IsNearObject check.
         /// </summary>
         /// <returns>True if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.</returns>
@@ -266,11 +266,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNearGraspAxis");
 
         /// <summary>
-        /// Gets the axis that the grasp happens
-        /// For the SpherePointer it's the axis from the palm to the index tip
-        /// For any other IMixedRealityController, return just the pointer's forward orientation
+        /// Because pointers shouldn't be able to interact with objects that are "behind" it, it is necessary to determine the forward axis of the pointer when making interaction checks.
+        /// 
+        /// For example, a grab pointer's axis should is the result of Vector3.Lerp(palm forward axis, palm to index finger axis).
+        ///
+        /// This method provides a mechanism to get this normalized forward axis.
         /// </summary>
-        public bool TryGetNearGraspAxis(out Vector3 axis)
+        /// <param name="axis">Out parameter filled with the grasp's forward axis if available, otherwise returns the forward axis of the transform.</param>
+        /// <returns>True if a grasp's forward axis was retrieved, false if not.</returns>
+        private bool TryGetNearGraspAxis(out Vector3 axis)
         {
             using (TryGetNearGraspAxisPerfMarker.Auto())
             {
@@ -386,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Constructor for a sphere overlap query
             /// </summary>
-            /// <param name="bufferSize">Size to make the phyiscs query buffer array</param>
+            /// <param name="bufferSize">Size to make the physics query buffer array</param>
             /// <param name="radius">Radius of the sphere </param>
             /// <param name="angle">Angle range of the forward axis to query in degrees. Angle > 360 means the entire sphere is queried</param>
             /// <param name="minDistance">"Minimum required distance to be registered in the query"</param>
@@ -453,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 if (!mainCam.IsInFOVCached(collider))
                                 {
-                                    // Additional check: is grabbable in the camera frustrum
+                                    // Additional check: is grabbable in the camera frustum
                                     // We do this so that if grabbable is not visible it is not accidentally grabbed
                                     // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
                                     grabbable = null;
@@ -471,14 +475,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // Check to ensure the object is beyond the minimum distance
                         bool pastMinDistance = relativeColliderPosition.sqrMagnitude >= queryMinDistance * queryMinDistance;
 
-                        bool isBoundHandles = ignoreBoundsHandlesForQuery && grabbable != null &&  grabbable.IsBoundsHandles;
+                        bool isBoundHandles = ignoreBoundsHandlesForQuery && grabbable != null && grabbable.IsBoundsHandles;
 
                         if (!pastMinDistance || !inAngle || isBoundHandles)
                         {
                             grabbable = null;
                             continue;
                         }
-                        
+
                         if (grabbable != null)
                         {
                             return true;
@@ -500,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public bool NearObjectDetected => ContainsGrabbable && !grabbable.IsBoundsHandles;
         }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         /// <summary>
         /// When in editor, draws an approximation of what is the "Near Object" area
         /// </summary>
@@ -546,10 +550,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                                  gizmoNearObjectRadius * Mathf.Sin(GizmoAngle));
             }
 
-            // Draw the sphere representing the grabable area
+            // Draw the sphere representing the grabbable area
             Gizmos.color = Color.green - Color.black * (IsInteractionEnabledCheck ? 0.3f : 0.8f);
             Gizmos.DrawSphere(point, SphereCastRadius);
         }
-    #endif
+#endif
     }
 }

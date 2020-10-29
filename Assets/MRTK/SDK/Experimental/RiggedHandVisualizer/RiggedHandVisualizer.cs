@@ -308,7 +308,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                             if (!ModelPalmAtLeapWrist)
                             {
                                 Wrist.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
-                                Wrist.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
                             }
                         }
                         else

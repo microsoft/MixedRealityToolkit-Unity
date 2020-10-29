@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty mouseLookButton;
         private SerializedProperty mouseLookToggle;
         private SerializedProperty isControllerLookInverted;
+        private SerializedProperty cameraOriginOffset;
         private SerializedProperty currentControlMode;
         private SerializedProperty fastControlKey;
         private SerializedProperty controlSlowSpeed;
@@ -82,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
             mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
             isControllerLookInverted = serializedObject.FindProperty("isControllerLookInverted");
+            cameraOriginOffset = serializedObject.FindProperty("cameraOriginOffset");
             currentControlMode = serializedObject.FindProperty("currentControlMode");
             fastControlKey = serializedObject.FindProperty("fastControlKey");
             controlSlowSpeed = serializedObject.FindProperty("controlSlowSpeed");
@@ -156,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(mouseLookButton);
                         EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);
+                        EditorGUILayout.PropertyField(cameraOriginOffset);
                         EditorGUILayout.PropertyField(currentControlMode);
                         EditorGUILayout.PropertyField(fastControlKey);
                         EditorGUILayout.PropertyField(controlSlowSpeed);
