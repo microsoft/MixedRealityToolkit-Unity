@@ -21,13 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// The name of the node's TRS property to modify.
         /// </summary>
-        [NonSerialized]
-        public GltfAnimationChannelPath Path;
+        public GltfAnimationChannelPath Path { get; set; }
 
         [SerializeField]
         private string path = null;
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(path, out GltfAnimationChannelPath result))
             {
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

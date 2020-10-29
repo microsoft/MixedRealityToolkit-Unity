@@ -28,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// interpolation is `\"STEP\"`, animated value remains constant to the value
         /// of the first point of the timeframe, until the next timeframe.
         /// </summary>
-        [NonSerialized]
-        public GltfInterpolationType Interpolation;
+        public GltfInterpolationType Interpolation { get; set; }
 
         [SerializeField]
         private string interpolation = null;
@@ -41,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public int output;
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(interpolation, out GltfInterpolationType result))
             {
@@ -53,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

@@ -17,8 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// Magnification filter.
         /// Valid values correspond to WebGL enums: `9728` (NEAREST) and `9729` (LINEAR).
         /// </summary>
-        [NonSerialized]
-        public GltfMagnificationFilterMode MagFilter;
+        public GltfMagnificationFilterMode MagFilter { get; set; }
 
         [SerializeField]
         private string magFilter = null;
@@ -26,8 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// Minification filter. All valid values correspond to WebGL enums.
         /// </summary>
-        [NonSerialized]
-        public GltfMinFilterMode MinFilter;
+        public GltfMinFilterMode MinFilter { get; set; }
 
         [SerializeField]
         private string minFilter = null;
@@ -35,8 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// s wrapping mode.  All valid values correspond to WebGL enums.
         /// </summary>
-        [NonSerialized]
-        public GltfWrapMode WrapS;
+        public GltfWrapMode WrapS { get; set; }
 
         [SerializeField]
         private string wrapS = null;
@@ -44,13 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// t wrapping mode.  All valid values correspond to WebGL enums.
         /// </summary>
-        [NonSerialized]
-        public GltfWrapMode WrapT;
+        public GltfWrapMode WrapT { get; set; }
 
         [SerializeField]
         private string wrapT = null;
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(magFilter, out GltfMagnificationFilterMode result))
             {
@@ -86,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

@@ -32,8 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// 5125 (UNSIGNED_INT) is only allowed when the accessor contains indices
         /// i.e., the accessor is only referenced by `primitive.indices`.
         /// </summary>
-        [NonSerialized]
-        public GltfComponentType ComponentType;
+        public GltfComponentType ComponentType { get; set; }
 
         [SerializeField]
         private string componentType = null;
@@ -106,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public GltfBufferView BufferView { get; internal set; }
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(componentType, out GltfComponentType result))
             {
@@ -118,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

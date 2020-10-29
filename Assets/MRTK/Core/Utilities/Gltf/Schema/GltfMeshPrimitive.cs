@@ -35,8 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// <summary>
         /// The type of primitives to render. All valid values correspond to WebGL enums.
         /// </summary>
-        [NonSerialized]
-        public GltfDrawMode Mode;
+        public GltfDrawMode Mode { get; set; }
 
         [SerializeField]
         private string mode = null;
@@ -61,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public Mesh SubMesh { get; internal set; }
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(mode, out GltfDrawMode result))
             {
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

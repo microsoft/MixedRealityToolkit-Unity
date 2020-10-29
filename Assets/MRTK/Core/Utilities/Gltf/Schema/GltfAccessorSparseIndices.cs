@@ -31,13 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// `5123` (UNSIGNED_SHORT)
         /// `5125` (UNSIGNED_INT)
         /// </summary>
-        [NonSerialized]
-        public GltfComponentType ComponentType;
+        public GltfComponentType ComponentType { get; set; }
 
         [SerializeField]
         private string componentType = null;
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(componentType, out GltfComponentType result))
             {
@@ -49,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

@@ -31,13 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// Based on this, either the camera's `perspective` or `orthographic` property
         /// will be defined.
         /// </summary>
-        [NonSerialized]
-        public GltfCameraType Type;
+        public GltfCameraType Type { get; set; }
 
         [SerializeField]
         private string type = null;
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(type, out GltfCameraType result))
             {
@@ -49,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }

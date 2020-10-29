@@ -43,8 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// All valid values correspond to WebGL enums.
         /// When this is not provided, the bufferView contains animation or skin data.
         /// </summary>
-        [NonSerialized]
-        public GltfBufferViewTarget Target;
+        public GltfBufferViewTarget Target { get; set; }
 
         [SerializeField]
         private string target = null;
@@ -54,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// </summary>
         public GltfBuffer Buffer { get; internal set; }
 
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (Enum.TryParse(target, out GltfBufferViewTarget result))
             {
@@ -66,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
             }
         }
 
-        public void OnBeforeSerialize()
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
 
         }
