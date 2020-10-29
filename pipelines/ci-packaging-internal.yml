@@ -9,7 +9,7 @@ jobs:
   pool:
     name: Analog N-1
     demands:
-    - Unity2018.4.23f1
+    - ${{ variables.Unity2018VersionInternal }}
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:

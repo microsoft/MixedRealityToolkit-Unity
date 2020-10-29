@@ -3743,22 +3743,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 589
+      value: 619
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 118
+      value: 122
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 93
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 17
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -3768,19 +3768,20 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: "This scene compares the Unity/Standard shader to the MRTK/Standard shader.
-        A traditional PBR style material matrix is displayed with varying metallic
-        and smoothness properties. Comparison stats can be seen below:\n\n<size=32><b>Unity/Standard
-        Shader</size></b>\n // Stats for Vertex shader:\n //     d3d11: 32 avg math
-        (22..55)\n // Stats for Fragment shader:\n //     d3d11: 135 avg math (94..176),
-        5 avg texture (3..7), 5 avg branch (2..8)\n\n<size=32><b>MRTK/Standard Shader</size></b>\n
+      value: "<size=40><b>Standard Material Comparison</size></b>\n\nThis scene compares
+        the Unity/Standard shader to the MRTK/Standard shader. A traditional PBR style
+        material matrix is displayed with varying metallic and smoothness properties.
+        Comparison stats can be seen below:\n\n<size=32><b>Unity/Standard Shader</size></b>\n
+        // Stats for Vertex shader:\n //     d3d11: 32 avg math (22..55)\n // Stats
+        for Fragment shader:\n //     d3d11: 135 avg math (94..176), 5 avg texture
+        (3..7), 5 avg branch (2..8)\n\n<size=32><b>MRTK/Standard Shader</size></b>\n
         // Stats for Vertex shader:\n //      d3d11: 21 avg math (8..56)\n // Stats
         for Fragment shader:\n //      d3d11: 47 avg math (1..89), 0 avg texture (0..1)\n"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 214
+      value: 207
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

@@ -207,7 +207,7 @@ MRTK Standard shader statistics example
 
 - [Unity Performance Optimization for Beginners](https://www.youtube.com/watch?v=1e5WY2qf600)
 - [Unity Performance Optimization Tutorials](https://unity3d.com/learn/tutorials/topics/performance-optimization)
-- [Unity Optimization Best Practices](https://docs.unity3d.com/2019.1/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html)
+- [Unity Optimization Best Practices](https://docs.unity3d.com/Documentation/Manual/BestPracticeUnderstandingPerformanceInUnity.html)
 - [Optimizing graphics performance](https://docs.unity3d.com/Manual/OptimizingGraphicsPerformance.html)
 - [Mobile Optimization Practical Guide](https://docs.unity3d.com/Manual/MobileOptimizationPracticalGuide.html)
 
@@ -225,5 +225,5 @@ MRTK Standard shader statistics example
 
 ### Mesh optimization
 
-- [Optimize 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/optimize-models#performance-targets)
-- [Best practices for converting and optimizing real-time 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/best-practices)
+- [Optimize 3D models](https://docs.microsoft.com/dynamics365/mixed-reality/import-tool/optimize-models#performance-targets)
+- [Best practices for converting and optimizing real-time 3D models](https://docs.microsoft.com/dynamics365/mixed-reality/import-tool/best-practices)

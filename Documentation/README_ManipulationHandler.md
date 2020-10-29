@@ -51,7 +51,7 @@ Specifies how the object will rotate when it is being grabbed with one hand.
 
 * *Maintain original rotation*: Does not rotate object as it is being moved
 * *Maintain rotation to user*: Maintains the object's original rotation for X/Y axis to the user
-* *Gravity aligned maintain rotation to user*: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.
+* *Gravity aligned maintain rotation to user*: Maintains object's original rotation to user, but makes the object vertical. Useful for objects with a bounds control.
 * *Face user*: Ensures object always faces the user. Useful for slates/panels.
 * *Face away from user*: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.
 * *Rotate about object center*:  Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.

@@ -420,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Texture2D icon = null;
 
-            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons"))
+            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles(MixedRealityToolkitModuleType.StandardAssets, "Icons"))
             {
                 if (iconPath.EndsWith("test_icon.png"))
                 {

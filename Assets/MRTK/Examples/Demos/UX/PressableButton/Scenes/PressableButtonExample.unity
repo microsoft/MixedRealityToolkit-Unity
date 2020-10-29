@@ -5272,7 +5272,7 @@ GameObject:
   - component: {fileID: 509045572}
   - component: {fileID: 509045571}
   m_Layer: 0
-  m_Name: MixedRealityToolkit (Inactive)
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7106,22 +7106,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 125
+      value: 152
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 15
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -7131,8 +7131,16 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: This example scene demonstrates various customization examples of Pressable
-        Buttons including HoloLens 2 shell style buttons.
+      value: '<size=42><b>Pressable Button Examples</size></b>
+
+
+        This example scene demonstrates various customization examples of Pressable
+        Buttons including HoloLens 2 shell style buttons.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 144
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -8217,7 +8225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 914966062}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -8238,13 +8245,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -12421,7 +12431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1755076300
 Transform:
   m_ObjectHideFlags: 0

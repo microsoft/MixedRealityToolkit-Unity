@@ -397,7 +397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 10894720}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -414,7 +413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5f249786382754b8635a1375f7b76c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 10894720}
   handType: 1
   proximityType: 3
   faceAway: 1
@@ -434,13 +432,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: -1
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -622,7 +623,7 @@ GameObject:
   - component: {fileID: 228477924}
   - component: {fileID: 228477923}
   m_Layer: 0
-  m_Name: MixedRealityToolkit (Inactive)
+  m_Name: MixedRealityToolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -958,7 +959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 283354342}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -975,7 +975,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5f249786382754b8635a1375f7b76c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 283354342}
   handType: 1
   proximityType: 3
   faceAway: 1
@@ -995,13 +994,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: -1
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -1320,7 +1322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 355382937}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -1337,7 +1338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5f249786382754b8635a1375f7b76c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 355382937}
   handType: 1
   proximityType: 3
   faceAway: 1
@@ -1357,13 +1357,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: -1
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -1480,7 +1483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &483432262
 Transform:
   m_ObjectHideFlags: 0
@@ -1580,22 +1583,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 208
+      value: 223
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 29
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 30
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1605,9 +1608,17 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: This example scene demonstrates the use of HandInteractionPanZoom script
-        on the Slate prefab. Please take a look at 'ContentQuad' to see various configuration
-        options for the panning and zooming interactions.
+      value: '<size=42><b>Slate Example</size></b>
+
+
+        This example scene demonstrates the use of HandInteractionPanZoom script on
+        the Slate prefab. Please take a look at ''ContentQuad'' to see various configuration
+        options for the panning and zooming interactions.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2374,7 +2385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 914966062}
   handType: 3
   proximityType: 3
   constraintOnRotation: 5
@@ -2395,13 +2405,16 @@ MonoBehaviour:
   manipulationType: 3
   twoHandedManipulationType: 7
   allowFarManipulation: 1
+  useForcesForNearManipulation: 0
   oneHandRotationModeNear: 1
   oneHandRotationModeFar: 1
   releaseBehavior: 3
-  smoothingActive: 1
+  smoothingFar: 1
+  smoothingNear: 0
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:

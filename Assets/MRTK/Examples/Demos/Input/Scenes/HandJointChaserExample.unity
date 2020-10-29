@@ -4719,22 +4719,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 210
+      value: 230
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 33
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 34
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -4744,10 +4744,25 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: 'This example scene demonstrates how to use Solver to track hand joints.
-
-        In Solver Handler, Select ''Tracked Object to Reference'' to ''Hand Joint
-        Left or Right'' then select ''Tracked Hand Joint'' for specific joint.'
+      value: "<size=42><b>Hand Joint Chaser</b></size>\r\n\nThis example scene demonstrates
+        how to use Solver to track hand joints.\nIn Solver Handler, Select 'Tracked
+        Object to Reference' to 'Hand Joint Left or Right' then select 'Tracked Hand
+        Joint' for specific joint."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 92
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4044241
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

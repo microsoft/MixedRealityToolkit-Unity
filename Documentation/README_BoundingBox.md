@@ -2,6 +2,9 @@
 
 ![Bounding box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)
 
+> [!NOTE]
+> Bounding box is deprecated and replaced by its successor [bounds control](README_BoundsControl.md). Use [one of the migration options](#migrating-to-bounds-control) to upgrade existing game objects.
+
 The [`BoundingBox.cs`](xref:Microsoft.MixedReality.Toolkit.UI.BoundingBox) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2, for example, the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.
 
 For more information, see [Bounding box and App bar](https://docs.microsoft.com/windows/mixed-reality/app-bar-and-bounding-box) in the Windows Dev Center.
@@ -184,3 +187,10 @@ A bounding box can be combined with [`ManipulationHandler.cs`](README_Manipulati
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
 In order for the bounding box edges to behave the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for *On Manipulation Started* / *On Manipulation Ended* to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
+
+## Migrating to bounds control
+Existing prefabs and instances using [bounding box](README_BoundingBox.md) can be upgraded to the new bounds control via the [migration window](Tools/MigrationWindow.md) which is part of the MRTK tools package.
+
+For upgrading individual instances of bounding box there's also an a migration option inside the property inspector of the component.
+
+<img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Migrate.png" width="450">

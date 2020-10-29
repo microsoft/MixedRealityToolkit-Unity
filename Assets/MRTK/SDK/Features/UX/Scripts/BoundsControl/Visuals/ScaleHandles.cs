@@ -137,11 +137,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             GameObject prefabType = isFlattened ? config.HandleSlatePrefab : config.HandlePrefab;
             if (prefabType == null)
             {
-                // instantiate default prefab, a cube. Remove the box collider from it
+                // instantiate default prefab, a cube with box collider
                 cornerVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cornerVisual.transform.parent = parent.transform;
                 cornerVisual.transform.localPosition = Vector3.zero;
-                GameObject.Destroy(cornerVisual.GetComponent<BoxCollider>());
+                // deactivate collider on visuals and register for deletion - actual collider
+                // of handle is attached to the handle gameobject, not the visual
+                var collider = cornerVisual.GetComponent<BoxCollider>();
+                collider.enabled = false;
+                Object.Destroy(collider);
             }
             else
             {
@@ -184,9 +188,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         #region BoundsControlHandlerBase
+
         protected override Transform GetVisual(Transform handle)
         {
-            Transform visual = handle.GetChild(0)?.GetChild(0);
+            Transform firstChild = handle.GetChild(0);
+            if (firstChild == null)
+            {
+                return null;
+            }
+
+            Transform visual = firstChild.GetChild(0);
             if (visual != null && visual.name == visualsName)
             {
                 return visual;
@@ -204,6 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             return HandleType.Scale;
         }
+
         #endregion BoundsControlHandlerBase
 
         #region IProximityScaleObjectProvider 

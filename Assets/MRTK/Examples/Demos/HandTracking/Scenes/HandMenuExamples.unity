@@ -818,28 +818,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 69
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_textInfo.pageCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_text
-      value: <size=32><b>To bring up the hand menu, raise your hand and look at your
-        flat palm</b></size>
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4776066136358859, guid: 18470d71939382448be2ecd06efa9662, type: 3}
       propertyPath: m_firstOverflowCharacterIndex
@@ -898,22 +897,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 228
+      value: 298
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 42
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 41
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -923,7 +922,9 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: '
+      value: '<size=32><b>To bring up the hand menu, raise your hand and look at your
+        flat palm</b></size>
+
 
         You may need to move your hands out of view then back into view for the toggled
         menu to appear. To prevent false activation, these examples are using <b><color="yellow">Require
@@ -936,7 +937,7 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 197
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -947,6 +948,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.8414972
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007107686680505935, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1011,27 +1017,27 @@ PrefabInstance:
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 312.7
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -135.85
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 625.4
       objectReference: {fileID: 0}
     - target: {fileID: 7614231224962994365, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2801,22 +2807,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 860
+      value: 880
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 133
+      value: 137
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 127
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 19
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2826,23 +2832,24 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: "This scene demonstrates use of the HandConstraint, a solver that constrains
-        the tracked object to a region safe for hand constrained content. (Such as
-        hand UI/menus.) Safe regions are considered areas that don't intersect with
-        the hand.\r\n\r\nA derived class of HandConstraint called \"HandConstraintPalmUp\"
-        is also included to demonstrate a common behavior of activating the solver
-        tracked object when the palm is facing the user, and the user looks at the
-        safezone the UI is tethered to.\n\nTo support testing the Hand Menu with 'Require
-        Flat Hand' option in the Unity editor, this example scene uses modified MRTK
-        profile 'HandMenuExampleMixedRealityToolkit\nConfigurationProfile'. This profile
-        has modified default hand gesture in Input > Input Data Providers > Input
-        Simulation Service > Hand Gesture Settings > Default Hand Gesture > 'Flat'
-        \n(default is 'Open')"
+      value: "<size=42><b>Hand Menu Examples</b></size>\n\nThis scene demonstrates
+        use of the HandConstraint, a solver that constrains the tracked object to
+        a region safe for hand constrained content. (Such as hand UI/menus.) Safe
+        regions are considered areas that don't intersect with the hand.\r\n\r\nA
+        derived class of HandConstraint called \"HandConstraintPalmUp\" is also included
+        to demonstrate a common behavior of activating the solver tracked object when
+        the palm is facing the user, and the user looks at the safezone the UI is
+        tethered to.\n\nTo support testing the Hand Menu with 'Require Flat Hand'
+        option in the Unity editor, this example scene uses modified MRTK profile
+        'HandMenuExampleMixedRealityToolkit\nConfigurationProfile'. This profile has
+        modified default hand gesture in Input > Input Data Providers > Input Simulation
+        Service > Hand Gesture Settings > Default Hand Gesture > 'Flat' \n(default
+        is 'Open')"
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: 240
+      value: 141
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2853,6 +2860,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.8414972
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007107686680505935, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2917,27 +2929,27 @@ PrefabInstance:
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 312.7
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -135.85
       objectReference: {fileID: 0}
     - target: {fileID: 7222516727875101447, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 625.4
       objectReference: {fileID: 0}
     - target: {fileID: 7614231224962994365, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}

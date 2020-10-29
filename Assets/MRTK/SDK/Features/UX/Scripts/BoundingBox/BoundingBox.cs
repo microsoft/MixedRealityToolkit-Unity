@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
-    [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox")]
+    [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox (deprecated)")]
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return scaleConstraint.ScaleMinimum;
                 }
-                return 0.0f;
+                return scaleMinimum;
             }
         }
 
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     return scaleConstraint.ScaleMaximum;
                 }
-                return 0.0f;
+                return scaleMaximum;
             }
         }
 
@@ -1126,7 +1126,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (active != value)
                 {
                     active = value;
-                    rigRoot?.gameObject.SetActive(value);
+                    if (rigRoot != null)
+                    {
+                        rigRoot.gameObject.SetActive(value);
+                    }
                     ResetHandleVisibility();
 
                     if (value && proximityEffectActive)

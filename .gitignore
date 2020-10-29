@@ -17,6 +17,7 @@ UnityPackageManager/
 project.json
 project.lock.json
 *.package
+**/.DS_Store
 Assets/XR/
 Assets/XR.meta
 Assets/Oculus/
@@ -104,3 +105,8 @@ MSBuildForUnity.Common.props
 *.msb4u.sln.meta
 Dependencies*
 Nuget.config*
+
+# =========== #
+# Other files #
+# =========== #
+.DS_Store

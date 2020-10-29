@@ -607,10 +607,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -669,30 +670,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &50335113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,10 +1000,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -1085,30 +1063,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &111228198
 GameObject:
   m_ObjectHideFlags: 0
@@ -3105,10 +3059,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -3167,30 +3122,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &890199414
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,10 +3426,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -3581,30 +3513,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &971160997
 GameObject:
   m_ObjectHideFlags: 0
@@ -4581,10 +4489,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -4643,30 +4552,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &1305638154
 GameObject:
   m_ObjectHideFlags: 0
@@ -5397,10 +5282,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -5459,30 +5345,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1001 &1672675963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5567,22 +5429,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 178
+      value: 202
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 24
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 25
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -5592,19 +5454,25 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: Bounding Box is the standard UI for manipulation objects in mixed reality.
-        This example scene demonstrates various types Bounding Box handle visualization
-        and activation options.
+      value: "<size=42><b>Bounding Box Examples</b></size>\r\n\nBounding Box is the
+        standard UI for manipulation objects in mixed reality. This example scene
+        demonstrates various types Bounding Box handle visualization and activation
+        options."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 144
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1062
+      value: -0.1101
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.34229258
+      value: 0.35003302
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -6617,10 +6485,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -6679,30 +6548,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!1 &1791984875
 GameObject:
   m_ObjectHideFlags: 0
@@ -7434,10 +7279,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
@@ -7496,30 +7342,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!4 &1984437770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789,

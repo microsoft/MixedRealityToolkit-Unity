@@ -256,10 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             else
             {
                 midpointVisual = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                if (config.HandlePrefabColliderType != HandlePrefabCollider.Sphere)
-                {
-                    Object.Destroy(midpointVisual.GetComponent<SphereCollider>());
-                }
+                // deactivate collider on visuals and register for deletion - actual collider
+                // of handle is attached to the handle gameobject, not the visual
+                var collider = midpointVisual.GetComponent<SphereCollider>();
+                collider.enabled = false;
+                Object.Destroy(collider);
             }
 
             Quaternion realignment = GetRotationRealignment(handleIndex);

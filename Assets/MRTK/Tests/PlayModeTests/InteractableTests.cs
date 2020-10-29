@@ -625,6 +625,90 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test the TriggerOnClick API for Interactable in toggle mode both when Can(De)Select and not.
+        /// Also test the force parameter of TriggerOnClick.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestToggleTriggerOnClick()
+        {
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable toggle,
+                out Transform innerCylinderTransform);
+
+            toggle.NumOfDimensions = 2;
+            toggle.IsToggled = false;
+
+            // Subscribe to toggle's on click so we know the click went through
+            bool wasClicked = false;
+            toggle.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Test TriggerOnClick when CanSelect is false
+            toggle.CanSelect = false;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.False(wasClicked, "Toggle was clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            // Test TriggerOnClick when CanSelect is true
+            toggle.CanSelect = true;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            toggle.IsToggled = false;
+            wasClicked = false;
+
+            // Test force TriggerOnClick when CanSelect is false
+            toggle.CanSelect = false;
+
+            toggle.TriggerOnClick(true);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            wasClicked = false;
+
+            // Test TriggerOnClick when CanDeselect is false
+            toggle.CanDeselect = false;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.False(wasClicked, "Toggle was clicked.");
+            Assert.True(toggle.IsToggled, "Toggle was not selected.");
+
+            // Test TriggerOnClick when CanDeselect is true
+            toggle.CanDeselect = true;
+
+            toggle.TriggerOnClick();
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            toggle.IsToggled = true;
+            wasClicked = false;
+
+            // Test force TriggerOnClick when CanDeselect is false
+            toggle.CanDeselect = false;
+
+            toggle.TriggerOnClick(true);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.True(wasClicked, "Toggle was not clicked.");
+            Assert.False(toggle.IsToggled, "Toggle was selected.");
+
+            GameObject.Destroy(toggle.gameObject);
+        }
+
+        /// <summary>
         /// Tests that radial buttons can be selected and deselected, and that a radial button
         /// set allows just one button to be selected at a time
         /// </summary>

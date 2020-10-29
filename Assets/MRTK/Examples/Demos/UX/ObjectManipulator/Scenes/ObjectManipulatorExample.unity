@@ -321,22 +321,22 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 91
+      value: 119
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 15
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -346,8 +346,16 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_text
-      value: The sphere in this example can be manipulated. Once it hits the wall
-        interaction will stop.
+      value: '<size=38><b>Object Manipulator Example</b></size>
+
+
+        The sphere in this example can be manipulated. Once it hits the wall interaction
+        will stop.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1176,10 +1184,11 @@ MonoBehaviour:
   oneHandRotationModeFar: 5
   releaseBehavior: 3
   smoothingFar: 1
-  smoothingNear: 0
+  smoothingNear: 1
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -1192,30 +1201,6 @@ MonoBehaviour:
   onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  translationElasticConfigurationObject: {fileID: 0}
-  rotationElasticConfigurationObject: {fileID: 0}
-  scaleElasticConfigurationObject: {fileID: 0}
-  translationElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  rotationElasticExtent:
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  scaleElasticExtent:
-    StretchBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    UseBounds: 0
-    SnapPoints: []
-    RepeatSnapPoints: 0
-    SnapRadius: 0
-  elasticTypes: 0
 --- !u!135 &1279065137
 SphereCollider:
   m_ObjectHideFlags: 0
