@@ -870,7 +870,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             bool isNear = eventData.Pointer is IMixedRealityNearPointer;
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
-            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            if (!isNear && eventData.Pointer.Controller.IsRotationAvailable)
             {
                 eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
             }
