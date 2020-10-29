@@ -39,9 +39,9 @@ Ensure your project is configured to use MSBuild.
 
 A restart of the unity editor maybe required if there are errors about missing assembly references. This should trigger download of packages.
 
-![Manage MRTK Configuration](../../../Documentation/Experimental/SceneUnderstanding/Images/ConfigureMRTKMSBuildMenu.jpg)
+![Manage MRTK Configuration](Images/ConfigureMRTKMSBuildMenu.jpg)
 
-![MSBuild enabled](../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKProjectConfiguratorMSBuildEnabled.jpg)
+![MSBuild enabled](Images/MRTKProjectConfiguratorMSBuildEnabled.jpg)
 
 
 ## Demonstration and debugging Scene Understanding
@@ -56,8 +56,8 @@ Open the scene file and press play!
 
 Select the 'MixedRealityTookit' game object and check the inspector.
 
-![scene understanding location in heirarchy](../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKHierarchy.png)
-![mrkt location in inspector](../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKLocation.png)
+![scene understanding location in heirarchy](Images/MRTKHierarchy.png)
+![mrkt location in inspector](Images/MRTKLocation.png)
 
 These options will allow one to configure the observer on play. 
 
@@ -76,7 +76,7 @@ This example script uses MRKT UI to toggle service features on the Spatial Under
 
 Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [Scene Objects](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/ff68a86445152d98ee5b0b1a25bd5f303169e4ed/Assets/MixedRealityToolkit/Definitions/SpatialAwareness/Experimental/SpatialAwarenessSceneObject.cs), gathered neatly under a parent object.
 
-![demo controller options](../../../Documentation/Experimental/SceneUnderstanding/Images/Controller.png)
+![demo controller options](Images/Controller.png)
 
 ### Built app notes
 
@@ -89,8 +89,8 @@ Note, their are some pit falls in making queries to the observer. Misconfigurati
 
 Saved .bytes files can be accessed through the [device portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. These `bytes` can be used in edtor by specifying them in the observer profile found in the inspector.
 
-![Device Portal location of bytes file](../../../Documentation/Experimental/SceneUnderstanding/Images/BytesInDevicePortal.png)
-![Serialized scene bytes in observer](../../../Documentation/Experimental/SceneUnderstanding/Images/BytesLocationInObserver.png)
+![Device Portal location of bytes file](Images/BytesInDevicePortal.png)
+![Serialized scene bytes in observer](Images/BytesLocationInObserver.png)
 
 # See Also
 
