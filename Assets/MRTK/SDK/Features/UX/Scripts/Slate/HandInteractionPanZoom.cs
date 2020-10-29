@@ -868,7 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            bool isNear = eventData.Pointer as IMixedRealityNearPointer != null;
+            bool isNear = eventData.Pointer is IMixedRealityNearPointer;
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
             if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
             {
