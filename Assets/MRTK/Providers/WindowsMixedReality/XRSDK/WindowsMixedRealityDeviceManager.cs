@@ -170,10 +170,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
 
                 // Add the Motion Controller state if it's an HPMotionController
-                uint controllerId = GetControllerId(inputDevice);
                 if (currentControllerType == SupportedControllerType.HPMotionController)
                 {
-                    ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
+                    lock (trackedMotionControllerStates)
+                    {
+                        uint controllerId = GetControllerId(inputDevice);
+                        if (trackedMotionControllerStates.ContainsKey(controllerId))
+                        {
+                            ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
+                        }
+                    }
                 }
 
                 return detectedController;
