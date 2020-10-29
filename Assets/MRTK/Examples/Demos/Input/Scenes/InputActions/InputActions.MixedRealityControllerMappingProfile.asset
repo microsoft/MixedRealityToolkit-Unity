@@ -3080,7 +3080,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKTouchController,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 1
     interactions:
@@ -3306,7 +3306,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusXRSDKTouchController,
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKTouchController,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
     interactions:
@@ -3519,7 +3519,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 1
     interactions:
     - id: 0
@@ -3588,7 +3588,7 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
     interactions:
     - id: 0

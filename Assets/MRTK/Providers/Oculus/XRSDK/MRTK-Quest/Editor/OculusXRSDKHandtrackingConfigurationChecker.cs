@@ -76,8 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             // Update the ScriptingDefinitions depending on the presence of the Oculus Integration Unity Modules
             ReconcileOculusIntegrationDefine(oculusIntegrationPresent);
 
-            // Configure the project definitions and prefabs
-            ConfigureOculusIntegration(oculusIntegrationPresent);
+            // Update the CSC to filter out warnings emitted by the Oculus Integration Package
+            if (oculusIntegrationPresent)
+            {
+                UpdateCSC();
+            }
+            ConfigureOculusDeviceManagerDefaults();
         }
 
         /// <summary>
@@ -101,9 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             // Force removal of the ScriptingDefinitions while the Oculus Integration is still in the project
             ReconcileOculusIntegrationDefine(false);
 
-            // Remove the references to the Oculus Integration assembly definitions
-            ConfigureOculusIntegration(false);
-
             // Prompt the user to close unity and delete the assets to completely remove.  Closing unity and deleting the assets is optional.
             EditorUtility.DisplayDialog(
                 "MRTK Oculus Integration Removal",
@@ -112,16 +113,39 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         }
 
         /// <summary>
-        /// Detects if the Oculus Integration package is present and updates the project definitions and prefab references.
+        /// Initialize the Oculus Project Config with the appropriate settings to enable handtracking and keyboard support.
         /// </summary>
-        internal static void ConfigureOculusIntegration(bool oculusIntegrationPresent)
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config")]
+        internal static void InitializeOculusProjectConfig()
         {
-            // Update the CSC to filter out warnings emitted by the Oculus Integration Package
-            if(oculusIntegrationPresent)
+#if OCULUSINTEGRATION_PRESENT
+            // Updating the oculus project config to allow for handtracking and system keyboard usage
+            OVRProjectConfig defaultOculusProjectConfig = OVRProjectConfig.GetProjectConfig();
+            if (defaultOculusProjectConfig != null)
             {
-                UpdateCSC();
-            }
+                defaultOculusProjectConfig.handTrackingSupport = OVRProjectConfig.HandTrackingSupport.ControllersAndHands;
+                defaultOculusProjectConfig.requiresSystemKeyboard = true;
 
+                Debug.Log("Enabled Oculus Quest Keyboard and Handtracking in the Oculus Project Config");
+            }
+#endif
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
+        private static bool CheckScriptingDefinePresent()
+        {
+#if OCULUSINTEGRATION_PRESENT
+            return true;
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>
+        /// Configures the default device manager profile with default prefabs if they are not yet loaded
+        /// </summary>
+        internal static void ConfigureOculusDeviceManagerDefaults()
+        {
             // Updating the device manager profile to point to the right gameobjects
             string[] defaultOvrCameraRigPPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_OVRCameraRig.prefab"));
             string[] defaultLocalAvatarPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_LocalAvatar.prefab"));
@@ -140,23 +164,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 defaultLocalAvatarPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(localAvatarPrefabPath);
             }
 
-            string[] deviceManagerProfileGuids = AssetDatabase.FindAssets("t:OculusXRSDKDeviceManagerProfile");
-            foreach(string deviceManagerProfileGuid in deviceManagerProfileGuids)
+            string[] defaultDeviceManagerProfileGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("DefaultOculusXRSDKDeviceManagerProfile.asset"));
+            if (defaultDeviceManagerProfileGuids.Length > 0)
             {
-                string deviceManagerProfilePath = AssetDatabase.GUIDToAssetPath(deviceManagerProfileGuid);
+                string deviceManagerProfilePath = AssetDatabase.GUIDToAssetPath(defaultDeviceManagerProfileGuids[0]);
                 OculusXRSDKDeviceManagerProfile deviceManagerProfile = AssetDatabase.LoadAssetAtPath<OculusXRSDKDeviceManagerProfile>(deviceManagerProfilePath);
-                if (oculusIntegrationPresent)
-                {
-                    if(deviceManagerProfile.OVRCameraRigPrefab == null)
-                        deviceManagerProfile.OVRCameraRigPrefab = defaultOvrCameraRigPrefab;
-                    if (deviceManagerProfile.LocalAvatarPrefab == null)
-                        deviceManagerProfile.LocalAvatarPrefab = defaultLocalAvatarPrefab;
-                }
-                else
-                {
-                    deviceManagerProfile.OVRCameraRigPrefab = null;
-                    deviceManagerProfile.LocalAvatarPrefab = null;
-                }
+
+                if (deviceManagerProfile.OVRCameraRigPrefab == null)
+                    deviceManagerProfile.OVRCameraRigPrefab = defaultOvrCameraRigPrefab;
+                if (deviceManagerProfile.LocalAvatarPrefab == null)
+                    deviceManagerProfile.LocalAvatarPrefab = defaultLocalAvatarPrefab;
 
                 EditorUtility.SetDirty(deviceManagerProfile);
             }

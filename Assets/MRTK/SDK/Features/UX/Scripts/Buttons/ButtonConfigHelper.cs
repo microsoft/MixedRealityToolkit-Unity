@@ -4,7 +4,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
+using UnityEngine.Serialization;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public string MainLabelText
         {
-            get { return mainLabelText?.text; }
+            get { return mainLabelText != null ? mainLabelText.text : null; }
             set
             {
                 if (mainLabelText == null)
@@ -42,16 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public string SeeItSayItLabelText
         {
-            get { return seeItSatItLabelText?.text; }
+            get { return seeItSayItLabelText != null ? seeItSayItLabelText.text : null; }
             set
             {
-                if (seeItSatItLabelText == null)
+                if (seeItSayItLabelText == null)
                 {
                     Debug.LogWarning("No see it / say it label set in " + name + " - not setting see it / say it label text.");
                     return;
                 }
 
-                seeItSatItLabelText.text = value;
+                seeItSayItLabelText.text = value;
             }
         }
 
@@ -132,8 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Interactable interactable = null;
         [SerializeField, Tooltip("Optional see it / say it object.")]
         private GameObject seeItSayItLabel = null;
-        [SerializeField, Tooltip("Optional see it / say it label used by the button. Should be subsumed under the seeItSayItLabel object.")]
-        private TextMeshPro seeItSatItLabelText = null;
+        [SerializeField, Tooltip("Optional see it / say it label used by the button. Should be subsumed under the seeItSayItLabel object."), FormerlySerializedAs("seeItSatItLabelText")]
+        private TextMeshPro seeItSayItLabelText = null;
         [SerializeField, Tooltip("How the button icon should be rendered.")]
         private ButtonIconStyle iconStyle = ButtonIconStyle.Quad;
 
