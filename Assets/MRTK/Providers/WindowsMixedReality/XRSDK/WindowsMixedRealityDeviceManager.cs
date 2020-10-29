@@ -359,7 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return base.GetCurrentControllerType(inputDevice);
         }
 
-#endregion Controller Utilities
+        #endregion Controller Utilities
     }
 }
-
