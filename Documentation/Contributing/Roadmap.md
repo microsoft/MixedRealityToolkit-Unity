@@ -60,7 +60,7 @@ The MRTK team supports the open future of mixed reality through [OpenXR](https:/
 
 With continued investments in [MRTK tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/tutorials), the MRTK team seeks to accelerate the getting started experience for developers and improve instructions on how to leverage Azure Services and other extensions with the MRTK.
 
- **Packaging**
+**Packaging**
 
 In MRTK 2.5.0 we released support for Unity Package Manager (UPM). We are continuing to make improvements so it's even easier for you to download packages with UPM.
 
