@@ -868,6 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            bool isNear = eventData.Pointer as IMixedRealityNearPointer != null;
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
             if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
             {
@@ -875,7 +876,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, false);
+            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, isNear);
             eventData.Use();
         }
 
