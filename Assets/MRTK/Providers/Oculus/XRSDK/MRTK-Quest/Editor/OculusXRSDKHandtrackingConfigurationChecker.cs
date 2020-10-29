@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             {
                 UpdateCSC();
             }
+            ConfigureOculusDeviceManagerDefaults();
         }
 
         /// <summary>
@@ -128,6 +129,46 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 Debug.Log("Enabled Oculus Quest Keyboard and Handtracking in the Oculus Project Config");
             }
 #endif
+        }
+
+        /// <summary>	
+        /// Detects if the Oculus Integration package is present and updates the project definitions and prefab references.	
+        /// </summary>	
+        internal static void ConfigureOculusDeviceManagerDefaults()
+        {
+            // Updating the device manager profile to point to the right gameobjects
+            string[] defaultOvrCameraRigPPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_OVRCameraRig.prefab"));
+            string[] defaultLocalAvatarPrefabGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("MRTK-Quest_LocalAvatar.prefab"));
+            GameObject defaultOvrCameraRigPrefab = null;
+            GameObject defaultLocalAvatarPrefab = null;
+
+            if (defaultOvrCameraRigPPrefabGuids.Length > 0)
+            {
+                string ovrCameraRigPrefabPath = AssetDatabase.GUIDToAssetPath(defaultOvrCameraRigPPrefabGuids[0]);
+                defaultOvrCameraRigPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ovrCameraRigPrefabPath);
+            }
+
+            if (defaultLocalAvatarPrefabGuids.Length > 0)
+            {
+                string localAvatarPrefabPath = AssetDatabase.GUIDToAssetPath(defaultLocalAvatarPrefabGuids[0]);
+                defaultLocalAvatarPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(localAvatarPrefabPath);
+            }
+            
+            string[] defaultDeviceManagerProfileGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("DefaultOculusXRSDKDeviceManagerProfile.asset"));
+            if (defaultDeviceManagerProfileGuids.Length > 0)
+            {
+                string deviceManagerProfilePath = AssetDatabase.GUIDToAssetPath(defaultDeviceManagerProfileGuids[0]);
+                OculusXRSDKDeviceManagerProfile deviceManagerProfile = AssetDatabase.LoadAssetAtPath<OculusXRSDKDeviceManagerProfile>(deviceManagerProfilePath);
+
+                if (deviceManagerProfile.OVRCameraRigPrefab == null)
+                    deviceManagerProfile.OVRCameraRigPrefab = defaultOvrCameraRigPrefab;
+                if (deviceManagerProfile.LocalAvatarPrefab == null)
+                    deviceManagerProfile.LocalAvatarPrefab = defaultLocalAvatarPrefab;
+
+                EditorUtility.SetDirty(deviceManagerProfile);
+            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
