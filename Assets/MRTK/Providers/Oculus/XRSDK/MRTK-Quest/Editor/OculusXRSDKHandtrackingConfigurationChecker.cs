@@ -131,6 +131,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 #endif
         }
 
+        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
+        private static bool CheckScriptingDefinePresent()
+        {
+#if OCULUSINTEGRATION_PRESENT
+            return true;
+#else
+            return false;
+#endif
+        }
+
         /// <summary>	
         /// Detects if the Oculus Integration package is present and updates the project definitions and prefab references.	
         /// </summary>	
@@ -153,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
                 string localAvatarPrefabPath = AssetDatabase.GUIDToAssetPath(defaultLocalAvatarPrefabGuids[0]);
                 defaultLocalAvatarPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(localAvatarPrefabPath);
             }
-            
+
             string[] defaultDeviceManagerProfileGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension("DefaultOculusXRSDKDeviceManagerProfile.asset"));
             if (defaultDeviceManagerProfileGuids.Length > 0)
             {
@@ -169,16 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-        }
-
-        [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Initialize Oculus Project Config", true)]
-        private static bool CheckScriptingDefinePresent()
-        {
-#if OCULUSINTEGRATION_PRESENT
-            return true;
-#else
-            return false;
-#endif
         }
 
         /// <summary>
