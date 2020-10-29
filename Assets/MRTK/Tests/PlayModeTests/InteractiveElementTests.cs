@@ -78,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus.ToString());
 
             var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
+            yield return null;
 
             focusEventConfiguration.OnFocusOn.AddListener((focusEventData) => 
             {
@@ -141,6 +142,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure the state was activated
             Assert.True(stateActivated);  
+        }
+
+        /// <summary>
+        /// Test the OnStateActivated event in the State Manager.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestEventConfigOfNewState()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Create a new state
+            interactiveElement.AddNewState("MyNewState");
+
+            // Get the event configuration 
+            var eventConfiguration = interactiveElement.GetStateEvents<StateEvents>("MyNewState");
+
+            bool onStateOn = false;
+            bool onStateOff = false;
+
+            eventConfiguration.OnStateOn.AddListener(() =>
+            {
+                onStateOn = true;
+            });
+
+            eventConfiguration.OnStateOff.AddListener(() =>
+            {
+                onStateOff = true;
+            });
+
+
+            interactiveElement.SetStateOn("MyNewState");
+            yield return null;
+
+            // Check if OnFocusOn has fired
+            Assert.True(onStateOn);
+
+            interactiveElement.SetStateOff("MyNewState");
+            yield return null;
+
+            // Check if OnFocusOn has fired
+            Assert.True(onStateOff);
+
+            yield return null;
         }
 
         /// <summary>
