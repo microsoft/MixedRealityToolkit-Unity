@@ -33,7 +33,7 @@ This data provider does **NOT** use Unity's **XR Pipeline** or **Legacy XR Pipel
 work is 20.0.0. Older versions can be found from this [archive](https://developer.oculus.com/downloads/package/unity-integration-archive/)
 
 1. Navigate to Mixed Reality Toolkit > Utilities > Oculus > Integrate Oculus Integration Unity Modules and run it. Doing this will update the asmdefs with definitions and references needed for the
-relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **OculusXRSDKDeviceManagerProfile**.
+relevant Oculus Quest code to function. Additionally, it should populate the **Prefab reference** fields of the **DefaultOculusXRSDKDeviceManagerProfile** if they are unfilled.
 It will also update the csc file to filter out the obsolete warnings produced by the Oculus Integration assets. The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the MRTK-Quest configuration process.
 
     ![OculusIntegrationAsmdef](../Images/CrossPlatform/OculusQuest/OculusIntegrationAsmdef.png)
