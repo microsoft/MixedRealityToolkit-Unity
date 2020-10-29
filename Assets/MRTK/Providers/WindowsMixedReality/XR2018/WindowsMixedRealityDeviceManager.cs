@@ -658,7 +658,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             uint controllerId = GetControllerId(interactionSource);
             // If a device is already registered with the ID provided, just return it.
-            if (activeControllers.ContainsKey(GetControllerId(interactionSource)))
+            if (activeControllers.ContainsKey(controllerId))
             {
                 var controller = activeControllers[controllerId] as BaseWindowsMixedRealitySource;
                 Debug.Assert(controller != null);
@@ -744,13 +744,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if HP_CONTROLLER_ENABLED
                     if (isHPController)
                     {
-                        // Add the controller as a HP Motion Controller
-                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
-                        if (trackedMotionControllerStates.ContainsKey(controllerId))
+                        lock (trackedMotionControllerStates)
                         {
-                            hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
+                            // Add the controller as a HP Motion Controller
+                            HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
+                            if (trackedMotionControllerStates.ContainsKey(controllerId))
+                            {
+                                hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
+                            }
+                            detectedController = hpController;
                         }
-                        detectedController = hpController;
                     }
                     else
                     {
@@ -848,7 +851,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (!(activeControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
                 {
-                    // for some reason this controller was never tracked in the first place, ignore it
+                    // for some reason this controller was never tracked in the first place, ignore removing it from the scene, but remove its tracked reference
+                    trackedMotionControllerStates.Remove(controllerId);
                     return;
                 }
 

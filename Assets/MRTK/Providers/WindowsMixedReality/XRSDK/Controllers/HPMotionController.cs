@@ -79,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdateControllerPerfMarker.Auto())
             {
+                if (!Enabled) { return; }
+
 #if HP_CONTROLLER_ENABLED
                 if (MotionControllerState != null)
                 {

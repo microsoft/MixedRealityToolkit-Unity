@@ -77,11 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             using (UpdateControllerPerfMarker.Auto())
             {
+                if (!Enabled) { return; }
+
 #if HP_CONTROLLER_ENABLED
                 if (MotionControllerState != null)
                 {
-                    if (!Enabled) { return; }
-
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
                     inputHandler.UpdateController(MotionControllerState);
                     UpdateSixDofData(interactionSourceState);
