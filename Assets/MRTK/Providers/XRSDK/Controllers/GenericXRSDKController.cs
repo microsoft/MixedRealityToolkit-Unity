@@ -240,11 +240,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         {
                             interactionMapping.BoolData = triggerPressed;
                         }
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
+                        {
+                            interactionMapping.FloatData = triggerData;
+                        }
                         break;
                     case DeviceInputType.GripPress:
                         if (inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool gripPressed))
                         {
                             interactionMapping.BoolData = gripPressed;
+                        }
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float gripData))
+                        {
+                            interactionMapping.FloatData = gripData;
                         }
                         break;
                     default:
@@ -263,29 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     {
                         CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
-                }
 
-                switch (interactionMapping.InputType)
-                {
-                    case DeviceInputType.Trigger:
-                        if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
-                        {
-                            interactionMapping.FloatData = triggerData;
-                        }
-                        break;
-                    case DeviceInputType.Grip:
-                        if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float gripData))
-                        {
-                            interactionMapping.FloatData = gripData;
-                        }
-                        break;
-                    default:
-                        return;
-                }
-
-                // If our value changed raise it.
-                if (interactionMapping.Changed)
-                {
                     // Raise float input system event if it's enabled
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }

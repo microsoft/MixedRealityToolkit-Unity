@@ -183,10 +183,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     case DeviceInputType.Trigger:
                         var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
                         interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
+                        interactionMapping.FloatData = triggerData;
                         break;
                     case DeviceInputType.Grip:
                         var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
                         interactionMapping.BoolData = !Mathf.Approximately(gripData, 0.0f);
+                        interactionMapping.FloatData = gripData;
                         break;
                     default:
                         return;
@@ -204,25 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
-                }
-
-                switch (interactionMapping.InputType)
-                {
-                    case DeviceInputType.Trigger:
-                        var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
-                        interactionMapping.FloatData = triggerData;
-                        break;
-                    case DeviceInputType.Grip:
-                        var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
-                        interactionMapping.FloatData = gripData;
-                        break;
-                    default:
-                        return;
-                }
-
-                // If our value changed raise it.
-                if (interactionMapping.Changed)
-                {
                     // Raise float input system event if it's enabled
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }

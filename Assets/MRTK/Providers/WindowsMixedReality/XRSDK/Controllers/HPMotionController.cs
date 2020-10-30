@@ -52,9 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 #if HP_CONTROLLER_ENABLED
                 if (MotionControllerState != null)
                 {
-                    // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data and the interaction source to update the 6-dof data
-                    inputHandler.UpdateController(MotionControllerState);
+                    // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data 
+                    // the interaction source updates the 6-dof data first since some interaction mappings rely on 6dof data
                     base.UpdateSixDofData(inputDevice);
+                    inputHandler.UpdateController(MotionControllerState);
                 }
                 else
                 {
