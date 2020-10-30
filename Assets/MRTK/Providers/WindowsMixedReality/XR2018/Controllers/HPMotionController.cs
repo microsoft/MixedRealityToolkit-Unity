@@ -40,8 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
 
+
+#if UNITY_WSA
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionController.UpdateController");
 
+        /// <inheritdoc />
         public override void UpdateController(InteractionSourceState interactionSourceState)
         {
             using (UpdateControllerPerfMarker.Auto())
@@ -66,5 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif
             }
         }
+#endif
     }
 }
