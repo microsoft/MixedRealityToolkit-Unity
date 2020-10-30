@@ -15,6 +15,24 @@ The rest of the file is taken up by animation data, which may change between ver
 | Minor Version Number | Int32 |
 | Animation Data | _see version section_ |
 
+## Version 1.1
+
+The input animation data consists of three boolean values that indicate whether the animation contains Camera, Hand, and Eye Gaze data, followed by a sequence of animation curves. The curves present depends on the values of these booleans. Each curve can have a different number of keyframes.
+
+| Section | Type |
+|---------|------|
+| Has Camera Pose | [Boolean] |
+| Has Hand Data | [Boolean] |
+| Has Eye Gaze | [Boolean] |
+| Camera | [Pose Curves](#pose-curves) | Only if Has Camera Pose is true
+| Hand Tracked Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
+| Hand Tracked Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
+| Hand Pinching Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
+| Hand Pinching Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
+| Hand Joints Left | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true
+| Hand Joints Right | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true
+| Eye Gaze | [Ray Curves](#ray-curves) | Only if Has eye Gaze is true
+
 ## Version 1.0
 
 The input animation data consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.
@@ -76,6 +94,19 @@ Pose curves are a sequence of 3 animation curves for the position vector, follow
 | Rotation Y | [Float Curve](#float-curve) |
 | Rotation Z | [Float Curve](#float-curve) |
 | Rotation W | [Float Curve](#float-curve) |
+
+### Ray curves
+
+Ray curves are a sequence of 3 animation curves for the origin vector, followed by 3 animation curves for the direction vector.
+
+| Section | Type |
+|---------|------|
+| Origin X | [Float Curve](#float-curve) |
+| Origin Y | [Float Curve](#float-curve) |
+| Origin Z | [Float Curve](#float-curve) |
+| Direction X | [Float Curve](#float-curve) |
+| Direction Y | [Float Curve](#float-curve) |
+| Direction Z | [Float Curve](#float-curve) |
 
 ### Float curve
 
