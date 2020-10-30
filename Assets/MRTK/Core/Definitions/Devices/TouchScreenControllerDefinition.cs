@@ -11,13 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class TouchControllerDefinition : BaseControllerDefinition
+    public class TouchScreenControllerDefinition : BaseControllerDefinition
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        public TouchControllerDefinition(
+        public TouchScreenControllerDefinition(
             IMixedRealityInputSource source) : base(source, Handedness.None)
         { }
 

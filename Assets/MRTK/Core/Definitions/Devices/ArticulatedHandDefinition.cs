@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
             new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
             new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
-            new MixedRealityInteractionMapping(5, "Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick)
+            new MixedRealityInteractionMapping(5, "Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
 
         /// <summary>

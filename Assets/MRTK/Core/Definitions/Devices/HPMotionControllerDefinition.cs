@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(9, "Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
             new MixedRealityInteractionMapping(10, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
             new MixedRealityInteractionMapping(11, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
+            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
         };
 
         /// <inheritdoc />
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(9, "Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
             new MixedRealityInteractionMapping(10, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
             new MixedRealityInteractionMapping(11, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
+            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
         };
     }
 }
