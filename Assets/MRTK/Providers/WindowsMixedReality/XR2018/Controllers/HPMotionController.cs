@@ -33,10 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if HP_CONTROLLER_ENABLED
             inputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
 #endif
-            controllerDefinition = new HPControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
         }
 
-        private readonly HPControllerDefinition controllerDefinition;
+        private readonly HPMotionControllerDefinition controllerDefinition;
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
 

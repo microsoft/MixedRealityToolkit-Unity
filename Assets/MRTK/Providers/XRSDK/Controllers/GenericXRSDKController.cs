@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             using (UpdateSingleAxisDataPerfMarker.Auto())
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-                // Update the interaction data source
+                // First handle updating the bool values, since those events are only raised once the trigger/gripped is presssed
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.TriggerPress:
@@ -240,23 +240,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         {
                             interactionMapping.BoolData = triggerPressed;
                         }
-                        if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
-                        {
-                            interactionMapping.FloatData = triggerData;
-                        }
                         break;
                     case DeviceInputType.GripPress:
                         if (inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool gripPressed))
                         {
                             interactionMapping.BoolData = gripPressed;
                         }
-                        if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float gripData))
-                        {
-                            interactionMapping.FloatData = gripData;
-                        }
                         break;
                     default:
-                        return;
+                        break;
                 }
 
                 // If our value changed raise it.
@@ -271,7 +263,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     {
                         CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
+                }
 
+                // Next handle updating the float values
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.Trigger:
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
+                        {
+                            interactionMapping.FloatData = triggerData;
+                        }
+                        break;
+                    case DeviceInputType.Grip:
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float gripData))
+                        {
+                            interactionMapping.FloatData = gripData;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
                     // Raise float input system event if it's enabled
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }

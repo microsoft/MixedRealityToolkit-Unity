@@ -177,21 +177,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             using (UpdateSingleAxisDataPerfMarker.Auto())
             {
                 Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-                // Update the interaction data source
+                // First handle updating the bool values, since those events are only raised once the trigger/gripped is presssed
                 switch (interactionMapping.InputType)
                 {
-                    case DeviceInputType.Trigger:
+                    case DeviceInputType.TriggerPress:
                         var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
-                        interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
-                        interactionMapping.FloatData = triggerData;
+                        interactionMapping.BoolData = triggerData.Equals(1);
                         break;
-                    case DeviceInputType.Grip:
+                    case DeviceInputType.GripPress:
                         var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
-                        interactionMapping.BoolData = !Mathf.Approximately(gripData, 0.0f);
-                        interactionMapping.FloatData = gripData;
+                        interactionMapping.BoolData = gripData.Equals(1);
                         break;
                     default:
-                        return;
+                        break;
                 }
 
                 // If our value changed raise it.
@@ -206,6 +204,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
+                }
+
+                // Next handle updating the float values
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.Trigger:
+                        var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
+                        interactionMapping.FloatData = triggerData;
+                        break;
+                    case DeviceInputType.Grip:
+                        var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
+                        interactionMapping.FloatData = gripData;
+                        break;
+                    default:
+                        return;
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
                     // Raise float input system event if it's enabled
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }

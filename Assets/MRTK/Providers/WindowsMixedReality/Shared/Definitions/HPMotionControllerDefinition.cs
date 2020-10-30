@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HPControllerDefinition
+    public class HPMotionControllerDefinition
     {
-        public HPControllerDefinition(IMixedRealityInputSource source, Handedness handedness)
+        public HPMotionControllerDefinition(IMixedRealityInputSource source, Handedness handedness)
         {
             inputSource = source;
             this.handedness = handedness;
