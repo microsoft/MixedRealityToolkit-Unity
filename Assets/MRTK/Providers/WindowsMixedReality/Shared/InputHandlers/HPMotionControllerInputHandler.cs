@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     }
 
 
-    public class HPMotionControllerInputHandler : MonoBehaviour
+    public class HPMotionControllerInputHandler
     {
         private IMixedRealityInputSource InputSource;
         private Handedness ControllerHandedness;
