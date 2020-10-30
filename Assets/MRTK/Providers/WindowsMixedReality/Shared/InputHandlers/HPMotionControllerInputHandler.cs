@@ -118,14 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     {
                         case DeviceInputType.Select:
                         case DeviceInputType.TriggerTouch:
-                        case DeviceInputType.TriggerNearTouch:
                             button = ControllerInput.Trigger;
                             break;
                         case DeviceInputType.GripTouch:
-                        case DeviceInputType.GripNearTouch:
                             button = ControllerInput.Grasp;
                             break;
-                        case DeviceInputType.ButtonPress:
                         case DeviceInputType.PrimaryButtonPress:
                             button = controllerHandedness == MotionControllerHandedness.Left ? ControllerInput.X_Button : ControllerInput.A_Button;
                             break;
@@ -135,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         case DeviceInputType.Menu:
                             button = ControllerInput.Menu;
                             break;
-                        case DeviceInputType.ThumbStickTouch:
                         case DeviceInputType.ThumbStickPress:
                             button = ControllerInput.Thumbstick;
                             break;
