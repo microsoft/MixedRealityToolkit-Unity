@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
-        private SerializedProperty seeItSatItLabelTextProp;
+        private SerializedProperty seeItSayItLabelTextProp;
 
         private SerializedProperty interactableProp;
 
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             mainLabelTextProp = serializedObject.FindProperty("mainLabelText");
             seeItSayItLabelProp = serializedObject.FindProperty("seeItSayItLabel");
-            seeItSatItLabelTextProp = serializedObject.FindProperty("seeItSatItLabelText");
+            seeItSayItLabelTextProp = serializedObject.FindProperty("seeItSayItLabelText");
 
             interactableProp = serializedObject.FindProperty("interactable");
 
@@ -161,12 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             {
                                 if (showComponents)
                                 {
-                                    EditorGUILayout.PropertyField(seeItSatItLabelTextProp);
+                                    EditorGUILayout.PropertyField(seeItSayItLabelTextProp);
                                 }
 
                                 EditorGUI.BeginChangeCheck();
 
-                                SerializedObject sisiLabelTextObject = new SerializedObject(seeItSatItLabelTextProp.objectReferenceValue);
+                                SerializedObject sisiLabelTextObject = new SerializedObject(seeItSayItLabelTextProp.objectReferenceValue);
                                 SerializedProperty sisiTextProp = sisiLabelTextObject.FindProperty("m_text");
                                 EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
                                 EditorGUILayout.Space();
