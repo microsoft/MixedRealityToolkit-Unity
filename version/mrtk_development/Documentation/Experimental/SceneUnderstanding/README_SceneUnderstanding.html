@@ -119,16 +119,16 @@
 <p>Ensure build settings' platform is set to UWP.</p>
 <p>Ensure your project is configured to use MSBuild.</p>
 <p>A restart of the unity editor maybe required if there are errors about missing assembly references. This should trigger download of packages.</p>
-<p><img src="Images/ConfigureMRTKMSBuildMenu.jpg" alt="Manage MRTK Configuration"></p>
-<p><img src="Images/MRTKProjectConfiguratorMSBuildEnabled.jpg" alt="MSBuild enabled"></p>
+<p><img src="../../../Documentation/Experimental/SceneUnderstanding/Images/ConfigureMRTKMSBuildMenu.jpg" alt="Manage MRTK Configuration"></p>
+<p><img src="../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKProjectConfiguratorMSBuildEnabled.jpg" alt="MSBuild enabled"></p>
 <h2 id="demonstration-and-debugging-scene-understanding">Demonstration and debugging Scene Understanding</h2>
 <h3 id="unity-demo-scene">Unity demo scene</h3>
 <p>Open the scene file and press play!</p>
 <p><code>Assets/MixedRealityToolkit.Examples/Experimental/SpatialAwareness/DemoSpatialAwareness.unity</code></p>
 <h4 id="configuring-the-observer-service">Configuring the observer service</h4>
 <p>Select the 'MixedRealityTookit' game object and check the inspector.</p>
-<p><img src="Images/MRTKHierarchy.png" alt="scene understanding location in heirarchy">
-<img src="Images/MRTKLocation.png" alt="mrkt location in inspector"></p>
+<p><img src="../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKHierarchy.png" alt="scene understanding location in heirarchy">
+<img src="../../../Documentation/Experimental/SceneUnderstanding/Images/MRTKLocation.png" alt="mrkt location in inspector"></p>
 <p>These options will allow one to configure the observer on play.</p>
 <p>Press play at this point the example serialized scene data will be loaded and displayed in the editor (assuming the observer is configured to show 'debug' objects)</p>
 <h3 id="example-script">Example script</h3>
@@ -141,14 +141,14 @@
 </ul>
 <p>This example script uses MRKT UI to toggle service features on the Spatial Understanding observer.</p>
 <p>Turning on <em>Instantiate Prefabs</em>, will demonstrate creating objects that size to fit themselves to all <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/ff68a86445152d98ee5b0b1a25bd5f303169e4ed/Assets/MixedRealityToolkit/Definitions/SpatialAwareness/Experimental/SpatialAwarenessSceneObject.cs">Scene Objects</a>, gathered neatly under a parent object.</p>
-<p><img src="Images/Controller.png" alt="demo controller options"></p>
+<p><img src="../../../Documentation/Experimental/SceneUnderstanding/Images/Controller.png" alt="demo controller options"></p>
 <h3 id="built-app-notes">Built app notes</h3>
 <p>Build and deploy to HoloLens in the standard way. Once running, a number of buttons should appear to play with the features.</p>
 <p>The &quot;Place&quot; button will make a prefab appear on the nearest platform. (which may be behind the person!) One should hear a spatial sound when this occurs in order to help locate it.</p>
 <p>Note, their are some pit falls in making queries to the observer. Misconfiguration of a fetch request result in your event payload not containing the expected data. For example, if one dosen't request quads, then no occlusion mask textures will be present. Like wise, no world mesh will appear if the observer is not configured to request meshes. The <code>DemoSpatialAwarenessController</code> script takes care of some of these dependencies, but not all.</p>
 <p>Saved .bytes files can be accessed through the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal">device portal</a> at <code>User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes</code>. These <code>bytes</code> can be used in edtor by specifying them in the observer profile found in the inspector.</p>
-<p><img src="Images/BytesInDevicePortal.png" alt="Device Portal location of bytes file">
-<img src="Images/BytesLocationInObserver.png" alt="Serialized scene bytes in observer"></p>
+<p><img src="../../../Documentation/Experimental/SceneUnderstanding/Images/BytesInDevicePortal.png" alt="Device Portal location of bytes file">
+<img src="../../../Documentation/Experimental/SceneUnderstanding/Images/BytesLocationInObserver.png" alt="Serialized scene bytes in observer"></p>
 <h1 id="see-also">See Also</h1>
 <ul>
 <li><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding">https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding</a></li>
