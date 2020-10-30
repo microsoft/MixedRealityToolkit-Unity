@@ -20,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         MonoBehaviour,
         IMixedRealityFocusHandler
     {
-
         [SerializeField]
         [Tooltip("A list of the interaction states for this interactive element.")]
         private List<InteractionState> states = new List<InteractionState>();
@@ -223,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <summary>
         /// Used for setting the event configuration for a new state when the state is added via inspector.
         /// </summary>
-        /// <param name="stateName"></param>
+        /// <param name="stateName">The name of the state</param>
         public void SetEventConfigurationInstance(string stateName)
         {
             InteractionState state = States.Find((interactionState) => interactionState.Name == stateName);
