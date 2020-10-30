@@ -757,9 +757,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             InputAction = ResolveInputAction(InputActionId);
 
-            CurrentDimension = startDimensionIndex;
-
             RefreshSetup();
+
+            CurrentDimension = startDimensionIndex;
+            IsToggled = CurrentDimension > 0;
 
             IsEnabled = enabledOnStart;
         }
