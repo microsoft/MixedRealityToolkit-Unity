@@ -1,22 +1,16 @@
 # Interactive Element 
 
-An Interactive Element is the next generation of MRTK's Interactable. An Interactive Element is an object that receives input and fires events depending on the type of input.  The type of input supported is defined in the form of states. 
+Interactive Element is the next generation of MRTK's Interactable. This component serves as an easy customizable entry point to MRTK's Input System events. Interactive Element supports the addition of already defined MRTK input states and user defined states.   
 
 ## Adding a Core State
 
-A CoreInteractionState is a state where the setting logic is already defined. For example, in BaseInteractiveElement, the Focus state is set to on when the IMixedRealityFocusHandler's OnFocusOn is called, making the state setting logic already defined.
-
-Currently, Focus is the only core state supported but the following core states will be added in the future:
-
-![AddCoreState](Images/InteractionElements/HowToExamples/NewCoreStates.png)
-
-All Core Interaction States will have an associated custom event configuration.
+A CoreInteractionState is a state that has its state setting logic already defined. For example, in BaseInteractiveElement, the Focus state is set to on when the IMixedRealityFocusHandler's OnFocusOn is called.  
 
 ### How to Add a Core State
 
 #### In-Editor
 
-![AddCoreState](Images/InteractionElements/HowToExamples/AddCoreStateEx.gif)
+![AddCoreState](Images/InteractiveElement/HowToExamples/AddCoreState.gif)
 
 #### Script
 
@@ -25,7 +19,7 @@ All Core Interaction States will have an associated custom event configuration.
     {
         InteractiveElement interactiveElement = gameObject.AddComponent<InteractiveElement>();
 
-        InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus);
+        InteractionState focusState = interactiveElement.GetState("Focus");
 
         // Get the event configuration for the Focus state
         var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
@@ -42,17 +36,14 @@ All Core Interaction States will have an associated custom event configuration.
     }
 ```
 
-## Adding New States
+## Adding New (User Defined) States
 
 ### How to Add a New State
 
 #### In-Editor
 
-![AddCoreState](Images/InteractionElements/HowToExamples/AddNewState.gif)
+![AddNewState](Images/InteractiveElement/HowToExamples/AddNewState.gif)
 
-A new state can be added in the editor and set from another event configuration in the editor. 
-
-![AddCoreState](Images/InteractionElements/HowToExamples/SetNewStateInEditor.gif)
 
 #### Script
 
@@ -63,18 +54,23 @@ A new state can be added in the editor and set from another event configuration 
     {
         interactiveElement = gameObject.AddComponent<InteractiveElement>();
 
-        interactiveElement.AddNewState("Keyboard");
+        InteractionState keyboardState = interactiveElement.AddNewState("Keyboard");
 
-        interactiveElement.StateManager.OnStateActivated.AddListener((state) => 
-        { 
-            if (state.Name == "Keyboard")
-            {
-                Debug.Log("The Keyboard state was set on");
-            }
+        // Get the events attached to the Keyboard state
+        var keyboardStateEvents = interactiveElement.GetStateEvents<StateEvents>("Keyboard");
+
+        keyboardStateEvents.OnStateOn.AddListener(() =>
+        {
+            Debug.Log("The Keyboard state has been set to on");
+        });
+
+        keyboardStateEvents.OnStateOff.AddListener(() =>
+        {
+            Debug.Log("The Keyboard state has been set to off");
         });
     }
 
-    private void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
