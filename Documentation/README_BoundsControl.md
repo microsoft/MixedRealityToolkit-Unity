@@ -121,7 +121,7 @@ The links configuration enables the wireframe feature of bounds control. The fol
 - **Show wireframe**: controls visibility of the wireframe.
 
 ### Proximity effect configuration
-Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to Hololens 2 style behavior.
+Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to HoloLens 2 style behavior.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Proximity.png">
 
