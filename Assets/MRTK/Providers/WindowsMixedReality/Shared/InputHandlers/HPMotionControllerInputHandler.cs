@@ -99,30 +99,35 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 Debug.Assert(controllerHandedness != MotionControllerHandedness.Unknown);
                 Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-                if (interactionMapping.InputType == DeviceInputType.TriggerPress)
+                if (interactionMapping.InputType == DeviceInputType.TriggerTouch)
                 {
                     var triggerData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Trigger);
-                    interactionMapping.BoolData = triggerData.Equals(1);
+                    interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
                 }
-                else if (interactionMapping.InputType == DeviceInputType.GripPress)
+                else if (interactionMapping.InputType == DeviceInputType.GripTouch)
                 {
                     var gripData = controllerState.CurrentReading.GetPressedValue(ControllerInput.Grasp);
-                    interactionMapping.BoolData = gripData.Equals(1);
+                    interactionMapping.BoolData = !Mathf.Approximately(gripData, 0.0f);
                 }
                 else
                 {
                     ControllerInput button;
 
                     // Update the interaction data source
+                    // Interactions handled mirror the GenericXRSDKController to maintain parity. ThumbstickTouch and Touchpad are left out
+                    // due to having no ControllerInput equivalents
                     switch (interactionMapping.InputType)
                     {
                         case DeviceInputType.Select:
-                        case DeviceInputType.TriggerTouch:
+                        case DeviceInputType.TriggerNearTouch:
+                        case DeviceInputType.TriggerPress:
                             button = ControllerInput.Trigger;
                             break;
-                        case DeviceInputType.GripTouch:
+                        case DeviceInputType.GripNearTouch:
+                        case DeviceInputType.GripPress:
                             button = ControllerInput.Grasp;
                             break;
+                        case DeviceInputType.ButtonPress:
                         case DeviceInputType.PrimaryButtonPress:
                             button = controllerHandedness == MotionControllerHandedness.Left ? ControllerInput.X_Button : ControllerInput.A_Button;
                             break;
