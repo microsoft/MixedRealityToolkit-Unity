@@ -356,18 +356,19 @@ using UnityEngine;
 public class PreInitProfileSwapper : MonoBehaviour
 {
 
-    public MixedRealityToolkitConfigurationProfile ProfileToUse;
+    [SerializeField]
+    private MixedRealityToolkitConfigurationProfile profileToUse = null;
 
     private void Awake()
     {
         // Here you could choose any arbitrary MixedRealityToolkitConfigurationProfile (for example, you could
         // add some platform checking code here to determine which profile to load).
-        MixedRealityToolkit.SetProfileBeforeInitialization(ProfileToUse);
+        MixedRealityToolkit.SetProfileBeforeInitialization(profileToUse);
     }
 }
 ```
 
-Instead of "ProfileToUse", it's possible to have some arbitrary set of profiles which apply to
+Instead of "profileToUse", it's possible to have some arbitrary set of profiles which apply to
 specific platforms (for example, one for HoloLens 1, one for VR, one for HoloLens 2, etc). It's possible
 to use various other indicators (e.g. https://docs.unity3d.com/ScriptReference/SystemInfo.html, or
 whether or not the camera is opaque/transparent), to figure out which profile to load.
@@ -377,7 +378,7 @@ whether or not the camera is opaque/transparent), to figure out which profile to
 This can be accomplished by setting the `MixedRealityToolkit.Instance.ActiveProfile` property to a new profile replacing the active profile.
 
 ```csharp
-MixedRealityToolkit.Instance.ActiveProfile = ProfileToUse;
+MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
 ```
 
 Note when setting `ActiveProfile` during runtime, the destroy of the currently running services will happen after the last LateUpdate() of all services, and the instantiation and initialization of the services associated with the new profile will happen before the first Update() of all services.
@@ -388,6 +389,12 @@ Special handling is required when Unity UI elements are present in the scene. Su
 
 
 ```csharp
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 /// <summary>
 /// Sample MonoBehaviour that will change the active profile and update the references
 /// to UI camera for Canvases to ensure the functionality of Unity UI after the change.
@@ -396,16 +403,10 @@ Special handling is required when Unity UI elements are present in the scene. Su
 /// Note that this script assumes there is no instantiation and/or destroy of Canvases.
 /// Canvases to be used with MRTK have the CanvasUtility script attached.
 /// </remarks>
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ActiveProfileSwapper : MonoBehaviour
 {
-    
-    public MixedRealityToolkitConfigurationProfile ProfileToUse;
+    [SerializeField]
+    private MixedRealityToolkitConfigurationProfile profileToUse = null;
     private CanvasUtility[] allCanvases;// All MRTK canvases (i.e. with the CanvasUtility script) in scene
     private List<CanvasUtility> cameraNotNullCanvases; // Canvases with not-null cameras
 
@@ -423,7 +424,7 @@ public class ActiveProfileSwapper : MonoBehaviour
                 }
             }
         }
-        MixedRealityToolkit.Instance.ActiveProfile = ProfileToUse;
+        MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
         StartCoroutine(UpdateCanvasCameraReference());
     }
 
