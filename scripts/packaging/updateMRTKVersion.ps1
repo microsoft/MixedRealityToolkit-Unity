@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Updates Mixed Reality Toolkit version (i.e. major.minor.patch) across all known files.
