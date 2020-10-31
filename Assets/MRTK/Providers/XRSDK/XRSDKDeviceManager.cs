@@ -115,13 +115,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     GenericXRSDKController controller = GetOrAddController(device);
                     if (controller != null)
                     {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         RemoveController(device);
                     }
                 }
 
                 lastInputDevices.Clear();
                 lastInputDevices.AddRange(inputDevices);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            var controllersCopy = ActiveControllers.ToReadOnlyCollection();
+            foreach (var controller in controllersCopy)
+            {
+                RemoveController(controller.Key);
             }
         }
 
@@ -214,6 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         protected void RemoveControllerFromScene(GenericXRSDKController controller)
         {
+            CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
             RecyclePointers(controller.InputSource);
 
             if (controller.Visualizer != null &&
