@@ -105,6 +105,8 @@ update is available, please import the <code>com.microsoft.mixedreality.toolkit.
 a workaround.</p>
 </div>
 <h2 id="whats-new">What's new</h2>
+<h3 id="runtime-profile-switching-support">Runtime profile switching support</h3>
+<p>MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the <a href="MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">documentation on profile switching</a> for more information and code samples.</p>
 <h2 id="breaking-changes">Breaking changes</h2>
 <h2 id="known-issues">Known issues</h2>
 <h3 id="some-mixed-reality-toolkit-standard-shader-features-require-the-foundation-package">Some Mixed Reality Toolkit Standard Shader features require the Foundation package</h3>
@@ -115,13 +117,13 @@ a workaround.</p>
 <p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
 <h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound.</h3>
-<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.</p>
+<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.</p>
 <p>To resolve, please ensure that:</p>
 <ul>
 <li><p><strong>Window</strong> &gt; <strong>Package Manager</strong> has one or more XR packages installed</p>
 </li>
 <li><p><strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Configure Unity Project</strong> and make a selection for <strong>Audio Spatializer</strong></p>
-<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="Select Audio Apatializer"></p>
+<p><img src="Images/ReleaseNotes/SpatializerSelection.png" alt="Select Audio Spatializer"></p>
 </li>
 </ul>
 <h3 id="nullreferenceexception-object-reference-not-set-to-an-instance-of-an-object-scenetransitionserviceinitialize">NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)</h3>
