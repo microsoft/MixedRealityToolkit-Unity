@@ -779,11 +779,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+#if UNITY_2019_1_OR_NEWER
         [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline")]
+#else
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline")]
+#endif
         protected static void UpgradeShaderForUniversalRenderPipeline()
         {
+            string confirmationMessage;
+#if UNITY_2019_1_OR_NEWER
+            confirmationMessage = "This will alter the MRTK Standard Shader for use with Unity's Universal Render Pipeline. You cannot undo this action.";
+#else
+            confirmationMessage = "This will alter the MRTK Standard Shader for use with Unity's Lightweight Render Pipeline. You cannot undo this action.";
+#endif
+
             if (EditorUtility.DisplayDialog("Upgrade MRTK Standard Shader?",
-                                            "This will alter the MRTK Standard Shader for use with Unity's Universal Render Pipeline. You cannot undo this action.",
+                                            confirmationMessage,
                                             "Ok",
                                             "Cancel"))
             {
@@ -794,14 +805,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     try
                     {
                         string upgradedShader = File.ReadAllText(path);
+
+#if UNITY_2019_1_OR_NEWER
                         upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
                                                                 "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"UniversalForward\" }");
-                        upgradedShader = upgradedShader.Replace("//#define _UNIVERSAL_RENDER_PIPELINE",
-                                                                "#define _UNIVERSAL_RENDER_PIPELINE");
+#else
+                        upgradedShader = upgradedShader.Replace("Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"ForwardBase\" }",
+                                                                "Tags{ \"RenderType\" = \"Opaque\" \"LightMode\" = \"LightweightForward\" }");
+#endif
+
+                        upgradedShader = upgradedShader.Replace("//#define _RENDER_PIPELINE",
+                                                                "#define _RENDER_PIPELINE");
+
                         File.WriteAllText(path, upgradedShader);
                         AssetDatabase.Refresh();
 
+#if UNITY_2019_1_OR_NEWER
                         Debug.LogFormat("Upgraded {0} for use with the Universal Render Pipeline.", path);
+#else
+                        Debug.LogFormat("Upgraded {0} for use with the Lightweight Render Pipeline.", path);
+#endif
                     }
                     catch (Exception e)
                     {
@@ -815,7 +838,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+#if UNITY_2019_1_OR_NEWER
         [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Universal Render Pipeline", true)]
+#else
+        [MenuItem("Mixed Reality Toolkit/Utilities/Upgrade MRTK Standard Shader for Lightweight Render Pipeline", true)]
+#endif
         protected static bool UpgradeShaderForUniversalRenderPipelineValidate()
         {
             // If a scriptable render pipeline is not present, no need to upgrade the shader.
