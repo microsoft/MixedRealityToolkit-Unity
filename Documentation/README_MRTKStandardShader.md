@@ -85,9 +85,13 @@ For static lighting, the shader will respect lightmaps built by Unity's [Lightma
 
 ## Universal Render Pipeline support
 
-The MRTK contains an upgrade path to allow developers to utilize Unity's Universal Render Pipeline (URP) with MRTK shaders. Tested in Unity 2019.4.13f1 and Universal RP 7.3.1 package. For instructions on getting started with the URP, see [this page](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.3/manual/index.html).
+The MRTK contains an upgrade path to allow developers to utilize Unity's Universal Render Pipeline (URP) with MRTK shaders. For instructions on getting started with the URP, see [this page](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.3/manual/index.html). Please note that the upgrade path also works for the Lightweight Render Pipeline, which is the former name for what is now the Universal Render Pipeline.
 
-To perform the MRTK upgrade, select: **Mixed Reality Toolkit -> Utilities -> Upgrade MRTK Standard Shader for Universal Render Pipeline**
+To perform the MRTK upgrade, select: **Mixed Reality Toolkit -> Utilities -> Upgrade MRTK Standard Shader for Universal Render Pipeline**.
+
+*Tested:*
+- Universal Render Pipeline: Unity 2019.4.13f1 + URP v7.3.1
+- Lightweight Render Pipeline: Unity 2018.4.28f1 + LWRP v4.10.0
 
 ![urp upgrade](../Documentation/Images/MRTKStandardShader/MRTK_URPUpgrade.jpg)
 
