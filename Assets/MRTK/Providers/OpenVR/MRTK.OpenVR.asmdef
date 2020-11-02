@@ -1,8 +1,7 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.OpenVR",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "includePlatforms": [
         "Editor",
