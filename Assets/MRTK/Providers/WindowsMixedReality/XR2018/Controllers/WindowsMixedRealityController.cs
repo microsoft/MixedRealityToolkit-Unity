@@ -35,27 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
         }
+
+        private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
 
         /// <summary>
         /// The Windows Mixed Reality Controller default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
-        {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
-            new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad),
-            new MixedRealityInteractionMapping(7, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch),
-            new MixedRealityInteractionMapping(8, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress),
-            new MixedRealityInteractionMapping(9, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(10, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
-        };
+        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
 
 #if UNITY_WSA
         private bool controllerModelInitialized = false;

@@ -9,21 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [AddComponentMenu("Scripts/MRTK/SDK/ToggleHandVisualisation")]
     public class ToggleHandVisualisation : MonoBehaviour
     {
-        public bool isHandMeshVisible = false;
-        public bool isHandJointVisible = false;
-
         /// <summary>
-        /// Initial setting of hand mesh visualization - default is disabled
+        /// Toggles hand mesh visualization
         /// </summary>
-        private void Start()
-        {
-            UpdateHandVisibility();
-        }
-
-        /// <summary>
-        /// Updates the hand tracking profile with the current local visualization settings
-        /// </summary>
-        private void UpdateHandVisibility()
+        public void OnToggleHandMesh()
         {
             MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
             if (inputSystemProfile == null)
@@ -34,18 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityHandTrackingProfile handTrackingProfile = inputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null)
             {
-                handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;
-                handTrackingProfile.EnableHandJointVisualization = isHandJointVisible;
+                handTrackingProfile.EnableHandMeshVisualization = !handTrackingProfile.EnableHandMeshVisualization;
             }
-        }
-
-        /// <summary>
-        /// Toggles hand mesh visualization
-        /// </summary>
-        public void OnToggleHandMesh()
-        {
-            isHandMeshVisible = !isHandMeshVisible;
-            UpdateHandVisibility();
         }
 
         /// <summary>
@@ -53,8 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnToggleHandJoint()
         {
-            isHandJointVisible = !isHandJointVisible;
-            UpdateHandVisibility();
+            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            if (handTrackingProfile != null)
+            {
+                handTrackingProfile.EnableHandJointVisualization = !handTrackingProfile.EnableHandJointVisualization;
+            }
         }
     }
 }

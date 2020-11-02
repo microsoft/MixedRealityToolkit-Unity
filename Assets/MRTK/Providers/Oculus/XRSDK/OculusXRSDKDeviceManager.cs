@@ -50,7 +50,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         private OVRCameraRig cameraRig;
 
         private OVRHand rightHand;
-        private OVRMeshRenderer righMeshRenderer;
+        private OVRMeshRenderer rightMeshRenderer;
         private OVRSkeleton rightSkeleton;
 
         private OVRHand leftHand;
@@ -139,6 +139,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         public override void Enable()
         {
             base.Enable();
+
             SetupInput();
             ConfigurePerformancePreferences();
             //SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
@@ -257,7 +258,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             if (ovrHand.IsTracked)
             {
                 var hand = GetOrAddHand(handedness, ovrHand);
-                hand.UpdateController(ovrHand, ovrSkeleton, cameraRig.trackingSpace);
+                hand.UpdateController(ovrHand, ovrSkeleton, ovrMeshRenderer, cameraRig.trackingSpace);
             }
             else
             {
