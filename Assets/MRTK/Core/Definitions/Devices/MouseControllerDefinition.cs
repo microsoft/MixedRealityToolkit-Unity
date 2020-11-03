@@ -16,11 +16,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="source"></param>
-        public MouseControllerDefinition(
-            IMixedRealityInputSource source) : base(source, Handedness.None)
+        public MouseControllerDefinition() : base(Handedness.None)
         { }
 
-        // todo
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition),
+            new MixedRealityInteractionMapping(2, "Mouse Scroll Position", AxisType.DualAxis, DeviceInputType.Scroll),
+            new MixedRealityInteractionMapping(3, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(4, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(5, "Mouse Button 2", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(6, "Mouse Button 3", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(7, "Mouse Button 4", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(8, "Mouse Button 5", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInteractionMapping(9, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress),
+        };
     }
 }

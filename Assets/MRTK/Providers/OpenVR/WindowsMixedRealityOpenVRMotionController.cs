@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public WindowsMixedRealityOpenVRMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new WindowsMixedRealityControllerDefinition(controllerHandedness);
         }
 
         private readonly WindowsMixedRealityControllerDefinition controllerDefinition;

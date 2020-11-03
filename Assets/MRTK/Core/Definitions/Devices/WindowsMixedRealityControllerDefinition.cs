@@ -15,10 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="source"></param>
         /// <param name="handedness">The handedness that this definition represents.</param>
-        public WindowsMixedRealityControllerDefinition(
-            IMixedRealityInputSource source, 
-            Handedness handedness) : base(source, handedness)
-        { }
+        public WindowsMixedRealityControllerDefinition(Handedness handedness) : base(handedness) { }
 
         /// <inheritdoc />
         protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]

@@ -15,19 +15,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class OculusTouchControllerDefinition : BaseControllerDefinition
     {
-        public OculusTouchControllerDefinition(
-            IMixedRealityInputSource source,
-            Handedness handedness) : base(source, handedness)
+        public OculusTouchControllerDefinition(Handedness handedness) : base(handedness)
         {
-            if ((handedness != Handedness.Left) && (handedness != Handedness.Right))
+            if ((Handedness != Handedness.Left) && 
+                (Handedness != Handedness.Right))
             {
-                throw new ArgumentException($"Unsupported Handedness ({handedness}). The OculusTouchControllerDefinition supports Left and Right.");
+                throw new ArgumentException($"Unsupported Handedness ({Handedness}). The OculusTouchControllerDefinition supports Left and Right.");
             }
         }
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions =>
-            (this.handedness == Handedness.Left) ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions; 
+            (Handedness == Handedness.Left) ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions; 
 
         /// <summary>
         /// 
