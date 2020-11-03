@@ -133,30 +133,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Render the event configuration of a state
         private void RenderStateEventConfiguration(SerializedProperty stateName, SerializedProperty stateEventConfiguration)
         {
+            // Do not draw the state events if the state is in the selection process, i.e. the state name is "New Core State" or "Create New State"
             if (stateEventConfiguration.managedReferenceFullTypename != string.Empty && stateName.stringValue != newCoreStateName && stateName.stringValue != createNewStateName)
             {
-                DrawStateEvents(stateEventConfiguration, stateName);               
-            }
-        }
-
-        // Draw custom container for the event configuration 
-        private void DrawStateEvents(SerializedProperty stateEventConfiguration, SerializedProperty stateName)
-        {
-            if (stateName.stringValue == "Focus")
-            {
-                SerializedProperty onFocusOn = stateEventConfiguration.FindPropertyRelative("OnFocusOn");
-                SerializedProperty onFocusOff = stateEventConfiguration.FindPropertyRelative("OnFocusOff");
-
-                EditorGUILayout.PropertyField(onFocusOn);
-                EditorGUILayout.PropertyField(onFocusOff);
-            }
-            else
-            {
-                SerializedProperty onStateOn = stateEventConfiguration.FindPropertyRelative("OnStateOn");
-                SerializedProperty onStateOff = stateEventConfiguration.FindPropertyRelative("OnStateOff");
-
-                EditorGUILayout.PropertyField(onStateOn);
-                EditorGUILayout.PropertyField(onStateOff);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    // Draw this state's event configuration 
+                    EditorGUILayout.PropertyField(stateEventConfiguration, true);
+                }
             }
         }
 

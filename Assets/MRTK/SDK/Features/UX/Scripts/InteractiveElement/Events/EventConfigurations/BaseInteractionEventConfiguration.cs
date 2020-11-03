@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     [System.Serializable]
     public class BaseInteractionEventConfiguration : IStateEventConfig
     {
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string stateName = null;
 
         /// <summary>
