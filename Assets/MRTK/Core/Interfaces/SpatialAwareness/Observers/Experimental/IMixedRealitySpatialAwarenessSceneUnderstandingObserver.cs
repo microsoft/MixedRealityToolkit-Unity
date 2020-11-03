@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             out Vector3 bestLocationOnPlane);
 
         /// <summary>
-        /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.
+        /// The set of SpatialAwarenessSceneObjects being managed by the observer, keyed by a unique id.
         /// </summary>
         IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
 
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When enabled, the service will provide surface planes, represented as a quad.
         /// </summary>
         /// <remarks>
-        /// Use <see cref="PlaneValidationMask"/> for the validation mask on the quad.
+        /// Use PlaneValidationMask for the validation mask on the quad.
         /// </remarks>
         bool RequestPlaneData { get; set; }
 

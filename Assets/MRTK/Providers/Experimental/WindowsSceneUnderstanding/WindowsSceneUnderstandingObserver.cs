@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
-        /// <returns>returns <see cref="false"/> if API returns null.</returns>
+        /// <returns>Returns false if a centermost placement location cannot be found.</returns>
         public bool TryFindCentermostPlacement(
             Guid quadGuid, 
             Vector2 objExtents, 
@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <summary>
         /// Sends SceneObject Added event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
         /// </summary>
-        /// <param name="sceneObj">The <see cref="SpatialAwarenessSceneObject"/> being created</param>
+        /// <param name="sceneObj">The SpatialAwarenessSceneObject being created</param>
         /// <param name="id">the id associated with the <paramref name="sceneObj"/></param>
         protected virtual void SendSceneObjectAdded(SpatialAwarenessSceneObject sceneObj, Guid id)
         {
@@ -502,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <summary>
         /// Sends SceneObject Updated event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
         /// </summary>
-        /// <param name="sceneObj">The <see cref="SpatialAwarenessSceneObject"/> being updated</param>
+        /// <param name="sceneObj">The SpatialAwarenessSceneObject being updated</param>
         /// <param name="id">the id associated with the <paramref name="sceneObj"/></param>
         protected virtual void SendSceneObjectUpdated(SpatialAwarenessSceneObject sceneObj, Guid id)
         {
@@ -770,10 +770,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// Converts a <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneObject"/> to a MRTK/platform agnostic <see cref="SpatialAwarenessSceneObject"/>.
+        /// Converts a <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneObject"/> to a MRTK/platform agnostic SpatialAwarenessSceneObject.
         /// </summary>
         /// <param name="sceneObject">The <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneObject"/> to convert</param>
-        /// <returns>The converted <see cref="SpatialAwarenessSceneObject"/></returns>
+        /// <returns>The converted SpatialAwarenessSceneObject.</returns>
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
             int quadCount = sceneObject.Quads.Count;
@@ -845,10 +845,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// Converts all SurfaceType-matching <see cref="SceneObject"/>s in a scene to <see cref="SpatialAwarenessSceneObject"/>s.
+        /// Converts all SurfaceType-matching <see cref="SceneObject"/>s in a scene to SpatialAwarenessSceneObjects.
         /// </summary>
         /// <param name="scene">The scene containing <see cref="SceneObject"/>s to convert</param>
-        /// <returns>Task containing the resulting list of converted <see cref="SpatialAwarenessSceneObject"/>s</returns>
+        /// <returns>Task containing the resulting list of converted SpatialAwarenessSceneObjects.</returns>
         private async Task<List<SpatialAwarenessSceneObject>> ConvertSceneObjectsAsync(Scene scene)
         {
             convertedObjects.Clear();
