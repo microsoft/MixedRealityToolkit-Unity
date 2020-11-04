@@ -26,16 +26,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         void SaveScene(string filenamePrefix);
 
         /// <summary>
-        /// 
+        /// Finds best placement position in local space to the quad
         /// </summary>
-        /// <param name="quadGuid"></param>
-        /// <param name="forSize"></param>
-        /// <param name="bestLocationOnPlane"></param>
-        /// <returns></returns>
+        /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
+        /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
+        /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
+        /// <returns>Returns false if a centermost placement location cannot be found.</returns>
         bool TryFindCentermostPlacement(
-            Guid quadGuid, 
-            Vector2 forSize, 
-            out Vector3 bestLocationOnPlane);
+            Guid quadGuid,
+            Vector2 objExtents,
+            out Vector3 placementPosOnQuad);
 
         /// <summary>
         /// The set of SpatialAwarenessSceneObjects being managed by the observer, keyed by a unique id.

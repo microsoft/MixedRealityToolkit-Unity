@@ -392,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <param name="textureWidth">Width of the mask</param>
         /// <param name="textureHeight">Height of the mask</param>
         /// <param name="mask">Mask result</param>
-        /// <returns></returns>
+        /// <returns>Returns false if fails to get the mask</returns>
         public bool TryGetOcclusionMask(
             Guid quadGuid, 
             ushort textureWidth, 
@@ -422,13 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 #endif // SCENE_UNDERSTANDING_PRESENT
         }
 
-        /// <summary>
-        /// Returns best placement position in local space to the quad
-        /// </summary>
-        /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
-        /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
-        /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
-        /// <returns>Returns false if a centermost placement location cannot be found.</returns>
+        /// <inheritdoc/>
         public bool TryFindCentermostPlacement(
             Guid quadGuid, 
             Vector2 objExtents, 
@@ -547,8 +541,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// Creates a quad based on extents
         /// </summary>
         /// <param name="mesh">Mesh to contain the quad</param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">Length of the quad</param>
+        /// <param name="y">Width of the quad</param>
         private void CreateQuadFromExtents(Mesh mesh, float x, float y)
         {
             List<Vector3> vertices = new List<Vector3>()
@@ -571,8 +565,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 0, 3, 1,
                 0, 2, 3,
-                //1, 3, 0,
-                //3, 2, 0
+                // 1, 3, 0,
+                // 3, 2, 0
             };
 
             mesh.SetVertices(vertices);
@@ -715,7 +709,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <summary>
         /// Gets scene asynchronously from file or SceneObserver
         /// </summary>
-        /// <param name="previousScene"></param>
+        /// <param name="previousScene">The previous scene</param>
         /// <returns>The retrieved scene</returns>
         private Scene GetSceneAsync(Scene previousScene)
         {
@@ -828,16 +822,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             System.Numerics.Matrix4x4 worldTransformMatrix = sceneObject.GetLocationAsMatrix() * sceneToWorldTransformMatrix * correctOrientation;
 
             System.Numerics.Vector3 worldTranslationSystem;
-            System.Numerics.Quaternion worldRotationSytem;
+            System.Numerics.Quaternion worldRotationSystem;
             System.Numerics.Vector3 localScale;
 
-            System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out localScale, out worldRotationSytem, out worldTranslationSystem);
+            System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out localScale, out worldRotationSystem, out worldTranslationSystem);
 
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
                 SpatialAwarenessSurfaceType(sceneObject.Kind),
                 worldTranslationSystem.ToUnityVector3(),
-                worldRotationSytem.ToUnityQuaternion(),
+                worldRotationSystem.ToUnityQuaternion(),
                 quads,
                 meshes);
 
@@ -945,7 +939,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 // Add MeshFilter, attach shared quad and scale it
                 // later, we can update scale of existing quads if they change size
-                // (as opposed to modifying the vertexs directly, when persisting objects)
+                // (as opposed to modifying the vertices directly, when persisting objects)
                 int quadCount = saso.Quads.Count;
 
                 for (int i = 0; i < quadCount; ++i)
@@ -975,7 +969,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     {
                         if (quad.occlusionMask != null)
                         {
-                            var occlusionTexture = OcclulsionTexture(quad.occlusionMask);
+                            var occlusionTexture = OcclusionTexture(quad.occlusionMask);
                             meshRenderer.material.mainTexture = occlusionTexture;
                         }
                     }
@@ -1028,10 +1022,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Gets the color of the given surface type
         /// </summary>
-        /// <param name="surfaceType"></param>
-        /// <returns></returns>
+        /// <param name="surfaceType">The surface type to get color for</param>
+        /// <returns>The color of the type</returns>
         // todo: this should be in a demo scene and not in the observer itself
         private Color ColorForSurfaceType(SpatialAwarenessSurfaceTypes surfaceType)
         {
@@ -1061,11 +1055,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// 
+        /// Generates occlusion texture from the occlusion mask
         /// </summary>
-        /// <param name="textureBytes"></param>
-        /// <returns></returns>
-        private Texture2D OcclulsionTexture(byte[] textureBytes)
+        /// <param name="textureBytes">The occlusion mask to use</param>
+        /// <returns>The generated texture</returns>
+        private Texture2D OcclusionTexture(byte[] textureBytes)
         {
             Assert.IsNotNull(textureBytes);
 
@@ -1126,7 +1120,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public override void ClearObservations()
         {
             base.ClearObservations();
-            //cachedSceneQuads.Clear();
+            // cachedSceneQuads.Clear();
             CleanupInstantiatedSceneObjects();
             instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
             sceneObjects.Clear();
@@ -1166,11 +1160,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <summary>
         /// Converts a MRTK/platform agnostic <see cref="SpatialAwarenessMeshLevelOfDetail"/> to a <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneMeshLevelOfDetail"/>.
         /// </summary>
-        /// <param name="levelofDetail">The <see cref="SpatialAwarenessMeshLevelOfDetail"/> to convert.</param>
+        /// <param name="levelOfDetail">The <see cref="SpatialAwarenessMeshLevelOfDetail"/> to convert.</param>
         /// <returns>The equivalent <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneMeshLevelOfDetail"/></returns>
-        private SceneMeshLevelOfDetail LevelOfDetailToMeshLOD(SpatialAwarenessMeshLevelOfDetail levelofDetail)
+        private SceneMeshLevelOfDetail LevelOfDetailToMeshLOD(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
         {
-            switch (levelofDetail)
+            switch (levelOfDetail)
             {
                 case SpatialAwarenessMeshLevelOfDetail.Custom:
                     Debug.LogWarning("SceneUnderstanding LOD is set to custom, falling back to Medium");
@@ -1239,7 +1233,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 
         /// <summary>
         /// Orients the root game object, such that the Scene Understanding floor lies on the Unity world's X-Z plane.
-        /// The floor type with the largest area is choosen as the reference.
+        /// The floor type with the largest area is chosen as the reference.
         /// </summary>
         /// <param name="scene">Scene Understanding scene.</param>
         private System.Numerics.Vector3 ToUpFromBiggestFloor(IReadOnlyList<SceneObject> sasos)
