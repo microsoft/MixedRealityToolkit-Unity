@@ -120,7 +120,6 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
-    
     <img src="../Documentation/Images/MRTK_SceneSetup.png" width="300">
 
     Which contains the following:
@@ -162,7 +161,7 @@ To try the scene, do the following steps.
 
 1. Close the TMP dialog. After this you need to reload the scene. You can do this by double-clicking the scene in the Project tab.
 
-1. Uncheck(Unity 2019 or higher) or shrink the size of the 3d icons using the slider(Unity 2018) under the Gizmos tab in the Scene view to reduce scene clutter
+1. Uncheck (Unity 2019 or higher) or shrink the size of the 3d icons using the slider (Unity 2018) under the Gizmos tab in the Scene view to reduce scene clutter
 
      ![Gizmos](https://user-images.githubusercontent.com/13754172/80819866-a8aed800-8b8a-11ea-8d7b-a3822fdfc907.png)
 
