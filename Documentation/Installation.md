@@ -42,10 +42,10 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ### Optional
 
-* [Getting started tutorials](#getting-started-tutorials)
-* [XR SDK getting started guide (Unity 2019.3 or later)](GettingStartedWithMRTKAndXRSDK.md).
-* [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
+* [Getting started tutorials](#getting-started-tutorials)
+* [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
+* [XR SDK getting started guide (Unity 2019.3 or later)](GettingStartedWithMRTKAndXRSDK.md).
 
 ### 1. Get the latest MRTK Unity packages
 
@@ -95,7 +95,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
 1. Select **Universal Windows Platform** in the **Platform** list
 1. Click the **Switch Platform** button
 
-![Switch Platform](../Documentation/Images/getting_started/SwitchPlatform.png)
+    <img src="../Documentation/Images/getting_started/SwitchPlatform.png" width="600">
 
 >[!NOTE]
 > The Mixed Reality Toolkit will prompt to apply recommended changes to the project when the platform is selected. Whenever the platform is switched, the appropriate settings will be checked and prompted, if necessary.
@@ -120,6 +120,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
+    
     <img src="../Documentation/Images/MRTK_SceneSetup.png" width="300">
 
     Which contains the following:
@@ -142,7 +143,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
 
 You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
-### Run the HandInteractionExamples scene in the Unity Editor
+## Run the HandInteractionExamples scene in the Unity Editor
 
 The Hand Interaction Examples scene is a great place to experience core spatial interactions and UX controls.
 
@@ -192,11 +193,11 @@ Have fun exploring the scene! You can learn more about the UI controls [in the h
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
 
-### Getting started tutorials
+## Getting started tutorials
 
 If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/tutorials/mr-learning-base-01) which uses MRTK v2.
 
-### Learn about the core building blocks of MRTK
+## Learn about the core building blocks of MRTK
 
 - Check out [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions (HoloLens 2, HoloLens, Windows Mixed Reality, Open VR)](https://docs.microsoft.com/windows/mixed-reality/mrtk-101) to learn about core building blocks.
 
