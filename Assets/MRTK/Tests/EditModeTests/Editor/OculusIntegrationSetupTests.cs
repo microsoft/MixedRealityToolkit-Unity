@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
             // Remove the dummy asset and clean up the project to prevent errors
             TearDown();
             OculusXRSDKHandtrackingConfigurationChecker.ReconcileOculusIntegrationDefine(false);
-            OculusXRSDKHandtrackingConfigurationChecker.ConfigureOculusIntegration(false);
 
             // Check that the definitions and amdefs are set up correctly when Oculus Integration is not present
             Assert.IsFalse(OculusXRSDKHandtrackingConfigurationChecker.DetectOculusIntegrationDefine());
