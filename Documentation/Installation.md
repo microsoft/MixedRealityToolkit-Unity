@@ -35,10 +35,10 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ### Required
 
-1. [Get the latest MRTK Unity packages](#1.-get-the-latest-mrtk-unity-packages)
-1. [Import MRTK packages into your Unity project](#2.-import-mrtk-packages-into-your-unity-project)
-1. [Switch your Unity project to the target platform](#3.-switch-your-unity-project-to-the-target-platform)
-1. [Add and configure MRTK with a new scene](#4.-add-and-configure-MRTK-with-a-new-scene)
+1. [Get the latest MRTK Unity packages](#1-get-the-latest-mrtk-unity-packages)
+1. [Import MRTK packages into your Unity project](#2-import-mrtk-packages-into-your-unity-project)
+1. [Switch your Unity project to the target platform](#3-switch-your-unity-project-to-the-target-platform)
+1. [Add and configure MRTK with a new scene](#4-add-and-configure-MRTK-with-a-new-scene)
 
 ### Optional
 
@@ -104,7 +104,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
 
 1. Create a new Unity project, or start a new scene in your current project.
 
-1. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
+1. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#2-import-mrtk-packages-into-your-unity-project).
 
 1. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
 
