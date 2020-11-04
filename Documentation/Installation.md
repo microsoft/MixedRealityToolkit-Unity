@@ -156,7 +156,7 @@ To try the scene, do the following steps.
 
 1. You may get a prompt asking you to import "TMP Essentials".
 
-    ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
+    <img src="../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png" width="600">
 
     If you get such a prompt, select the "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/windows/mixed-reality/text-in-unity) for more detailed information)
 
