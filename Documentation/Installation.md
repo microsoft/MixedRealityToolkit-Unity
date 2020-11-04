@@ -74,7 +74,7 @@ For details on the packages and their contents, please see [MRTK Packages](Packa
 > Android and iOS development require additional package installations. For more information, see [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md).
 After importing the Foundation package, you may see a prompt similar to the following:
 
-![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)
+<img src="../Documentation/Images/MRTK_UnitySetupPrompt.png" width="600">
 
 MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
 
