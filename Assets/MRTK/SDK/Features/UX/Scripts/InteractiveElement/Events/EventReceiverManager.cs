@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         internal EventReceiverManager(StateManager interactiveStateManager)
         {
             stateManager = interactiveStateManager;
+            InitializeEventReceivers();
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     state.Value.EventConfiguration = CreateEventConfigurationInstance(state.Key);
                 }
 
-                // Initialize runtime event receiver classes for states that have an event configuration 
+                // Initialize runtime event receiver classes for the states 
                 InitializeAndAddEventReceiver(state.Key);  
             }
         }

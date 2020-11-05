@@ -55,8 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             // Populate the States list with the initial states when this component is initialized via inspector
             if (States.Count == 0)
             {
-                States.Add(new InteractionState("Default"));
-                States.Add(new InteractionState("Focus"));
+                States.Add(new InteractionState(DefaultStateName));
+                States.Add(new InteractionState(FocusStateName));
             }
         }
 
@@ -66,38 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             // Populate the States list with the initial states when this component is initialized via script instead of the inspector
             if (States.Count == 0)
             {
-                States.Add(new InteractionState("Default"));
-                States.Add(new InteractionState("Focus"));
+                States.Add(new InteractionState(DefaultStateName));
+                States.Add(new InteractionState(FocusStateName));
             }
 
-            InitializeStateManager();
+            // Initializes the state dictionary in the StateManager with the states defined in the States list
+            StateManager = new StateManager(States, this);
 
             // Initially set the default state to on
             SetStateOn(DefaultStateName);
-        }
-
-        /// <summary>
-        /// Initializes the StateList in the StateManager with the states defined in the States list
-        /// </summary>
-        private void InitializeStateManager()
-        {
-            StateManager = new StateManager(States, this);
-
-            StateManager.OnStateActivated.AddListener((state) =>
-            {
-                if (!coreStates.Contains(state.Name))
-                {
-                    EventReceiverManager.InvokeStateEvent(state.Name);
-                }
-            });
-
-            StateManager.OnStateDeactivated.AddListener((previousState, currentState) =>
-            {
-                if (!coreStates.Contains(previousState.Name))
-                {
-                    EventReceiverManager.InvokeStateEvent(previousState.Name);
-                }
-            });
         }
 
         #region Focus

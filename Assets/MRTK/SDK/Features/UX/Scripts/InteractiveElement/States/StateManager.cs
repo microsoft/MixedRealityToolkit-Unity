@@ -32,7 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             InteractiveElement = interactiveElementSource;
 
-            InitializeEventReceiverManager();
+            // Create a new event receiver manager for this state manager
+            EventReceiverManager = new EventReceiverManager(this);
+
+            // Add listeners to the OnStateActivated and OnStateDeactivated events
+            AddStateEventListeners();
         }
 
         /// <summary>
@@ -72,19 +76,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
 
         // List of all core states
-        private string defaultStateName = CoreInteractionState.Default.ToString();
+        private string defaultStateName = "Default";
 
         // List of active states, used for tracking the current and previous states
         private List<InteractionState> activeStates = new List<InteractionState>();
-
-        // Initializes the EventReceiverManager and creates the runtime classes for states that contain a valid 
-        // configuration
-        internal void InitializeEventReceiverManager()
-        {
-            // Create a new event receiver manager for this state manager
-            EventReceiverManager = new EventReceiverManager(this);
-            EventReceiverManager.InitializeEventReceivers();
-        }
 
         /// <summary>
         /// Gets a state by using the state name.
@@ -93,9 +88,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <returns>The state contained in the Tracked States scriptable object.</returns>
         public InteractionState GetState(string stateName)
         {
-            InteractionState interactionState = statesDictionary[stateName];
-
-            return interactionState;
+            try
+            {
+                InteractionState interactionState = statesDictionary[stateName];
+                return interactionState;
+            }
+            catch 
+            {
+                Debug.LogError($"{stateName} state was not found, please check the spelling or add a new state with {stateName} as the name.");
+                return null;
+            }
         }
 
         /// <summary>
@@ -353,6 +355,28 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 Debug.LogError($"The {stateName} state is already tracking, please use another name.");
                 return state;
             }
+        }
+
+        // Add listeners to the OnStateActivated and OnStateDeactivated events
+        private void AddStateEventListeners()
+        {
+            OnStateActivated.AddListener((state) =>
+            {
+                // Add listeners to invoke a state event if it is not a core state.
+                // A core state usually has event data associated with while a non-core state usually does not.
+                if (!coreStates.Contains(state.Name) )
+                {
+                    EventReceiverManager.InvokeStateEvent(state.Name);
+                }
+            });
+
+            OnStateDeactivated.AddListener((previousState, currentState) =>
+            {
+                if (!coreStates.Contains(previousState.Name))
+                {
+                    EventReceiverManager.InvokeStateEvent(previousState.Name);
+                }
+            });
         }
     }
 }
