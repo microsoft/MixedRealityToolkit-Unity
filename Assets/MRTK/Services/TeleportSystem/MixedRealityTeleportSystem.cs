@@ -51,8 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public override void Initialize()
         {
-            base.Initialize();
             InitializeInternal();
+            base.Initialize();
         }
 
         private void InitializeInternal()

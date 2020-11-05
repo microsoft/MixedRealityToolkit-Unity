@@ -158,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
                 }
             }
+
+            base.Initialize();
         }
 
         /// <inheritdoc />

@@ -35,7 +35,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <inheritdoc />
-        public virtual void Reset() { }
+        public virtual void Reset() 
+        {
+            IsInitialized = false;
+        }
 
         /// <inheritdoc />
         public virtual void Enable() 
@@ -55,10 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void Disable() 
         {
-            if (IsInitialized)
-            {
-                IsEnabled = false;
-            }
+            IsEnabled = false;
         }
 
         /// <inheritdoc />

@@ -96,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             ShowProfilerDuringMRC = profile.ShowProfilerDuringMRC;
 
             CreateVisualizations();
+
+            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -115,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
                 diagnosticVisualizationParent = null;
             }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityService

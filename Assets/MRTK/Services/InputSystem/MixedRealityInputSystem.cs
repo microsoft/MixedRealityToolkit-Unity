@@ -239,6 +239,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
 
             CreateDataProviders();
+
+            base.Initialize();
         }
 
         /// <inheritdoc />

@@ -61,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
+            base.Initialize();
+
             // The profile needs to be read on initialization to ensure that re-initialization
             // after profile change reads the correct data.
             ReadProfile();
@@ -169,6 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             showCeiling = false;
 
             RaiseBoundaryVisualizationChanged();
+
+            base.Destroy();
         }
 
 

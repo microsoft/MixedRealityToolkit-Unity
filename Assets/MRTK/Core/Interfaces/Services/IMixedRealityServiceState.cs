@@ -11,9 +11,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Indicates whether or not the service has been initialized.
         /// </summary>
-        /// <remarks>
-        /// Calls to the service's Uninitialize method will reset this value to false.
-        /// </remarks>
         bool IsInitialized { get; }
 
         /// <summary>
@@ -24,9 +21,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Indicates whether or not the Destroy method been called on this service.
         /// </summary>
-        /// <remarks>
-        /// There may be a short period of time between when an object i
-        /// </remarks>
         bool IsMarkedDestroyed { get; }
     }
 }
