@@ -394,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 GestureRecognizerEnabled = true;
             }
 
-            base.Enable();
+            IsEnabled = true;
         }
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
@@ -581,8 +581,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc/>
         public override void Disable()
         {
-            base.Disable();
-
             UnregisterGestureEvents();
             gestureRecognizer?.Dispose();
             gestureRecognizer = null;
@@ -601,6 +599,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 RemoveController(states[i].source);
             }
+
+            base.Disable();
         }
 
         #endregion IMixedRealityDeviceManager Interface

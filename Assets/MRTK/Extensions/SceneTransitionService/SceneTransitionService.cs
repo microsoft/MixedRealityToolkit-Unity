@@ -93,12 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
             UseFadeColor = sceneTransitionServiceProfile.UseFadeColor;
             FadeColor = sceneTransitionServiceProfile.FadeColor;
             FadeInTime = sceneTransitionServiceProfile.FadeInTime;
             FadeOutTime = sceneTransitionServiceProfile.FadeOutTime;
             FadeTargets = sceneTransitionServiceProfile.FadeTargets;
-            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -108,15 +108,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 Debug.LogError("This extension requires an active IMixedRealitySceneService.");
             }
-            base.Enable();
+
+            IsEnabled = true;
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
-            base.Destroy();
             CleanUpDefaultProgressIndicator();
             CleanUpCameraFader();
+            base.Destroy();
         }
 
         #endregion

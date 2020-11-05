@@ -95,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 return;
             }
 
+            base.Update();
             SendMeshObjects();
         }
 

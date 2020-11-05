@@ -100,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
 
             if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
@@ -158,8 +160,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
                 }
             }
-
-            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -208,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 if (IsOpaque != cameraOpaqueLastFrame)
                 {
                     cameraOpaqueLastFrame = IsOpaque;

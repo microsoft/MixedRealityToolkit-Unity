@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             CreateDataProviders();
 
-            base.Initialize();
+            IsInitialized = true;
         }
 
         /// <inheritdoc />

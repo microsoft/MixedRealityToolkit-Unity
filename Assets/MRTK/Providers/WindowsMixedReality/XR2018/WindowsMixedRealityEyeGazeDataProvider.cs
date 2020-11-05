@@ -135,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 AskForETPermission();
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 ReadProfile();
+                IsInitialized = true;
             }
         }
 
@@ -168,6 +169,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     return;
                 }
+
+                base.Update();
 
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)

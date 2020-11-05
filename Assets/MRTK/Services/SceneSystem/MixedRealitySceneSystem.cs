@@ -178,14 +178,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 SetLightingScene(Profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
 
-            base.Initialize();
+            IsInitialized = true;
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
             base.Enable();
-
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif

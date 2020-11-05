@@ -241,8 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
                 UnityEditor.PlayerSettings.WSACapability.Microphone,
                 this.GetType());
-
-            base.Initialize();
         }
 #endif
 
@@ -265,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 InitializeDictationRecognizer();
             }
 
-            base.Enable();
+            IsEnabled = true;
         }
 
         private void InitializeDictationRecognizer()
@@ -297,9 +295,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (UpdatePerfMarker.Auto())
             {
-                base.Update();
-
                 if (!Application.isPlaying || Service == null || dictationRecognizer == null) { return; }
+
+                base.Update();
 
                 if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
                 {
@@ -318,8 +316,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override async void Disable()
         {
-            base.Disable();
-
             if (Application.isPlaying && dictationRecognizer != null)
             {
                 if (!isTransitioning && IsListening) { await StopRecordingAsync(); }
@@ -331,6 +327,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
                 dictationRecognizer.Dispose();
             }
+
+            base.Disable();
         }
 
         /// <inheritdoc />

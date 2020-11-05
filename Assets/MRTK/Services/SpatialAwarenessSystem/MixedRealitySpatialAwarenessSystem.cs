@@ -72,11 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc/>
         public override void Initialize()
         {
+            base.Initialize();
+
             meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
 
             InitializeInternal();
-
-            base.Initialize();
         }
 
         /// <summary>

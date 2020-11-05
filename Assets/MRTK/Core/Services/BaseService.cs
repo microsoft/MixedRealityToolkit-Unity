@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void Destroy()
         {
             IsInitialized = false;
+            IsEnabled = false;
             IsMarkedDestroyed = true;
         }
 

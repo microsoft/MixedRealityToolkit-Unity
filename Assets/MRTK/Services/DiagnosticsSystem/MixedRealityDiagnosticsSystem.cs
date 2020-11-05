@@ -81,6 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             MixedRealityDiagnosticsProfile profile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
             if (profile == null) { return; }
 
+            base.Initialize();
+
             eventData = new DiagnosticsEventData(EventSystem.current);
 
             // Apply profile settings
@@ -96,8 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             ShowProfilerDuringMRC = profile.ShowProfilerDuringMRC;
 
             CreateVisualizations();
-
-            base.Initialize();
         }
 
         /// <inheritdoc />
