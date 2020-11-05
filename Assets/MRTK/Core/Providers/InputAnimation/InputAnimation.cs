@@ -182,7 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private List<InputAnimationMarker> markers;
         public int markerCount => markers.Count;
 
-        [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         public InputAnimation()
         {
             handTrackedCurveLeft = new AnimationCurve();

@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
+#pragma warning disable 67
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
