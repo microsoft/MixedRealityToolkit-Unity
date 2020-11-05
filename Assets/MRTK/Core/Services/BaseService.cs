@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// The base service implements <see cref="IMixedRealityService"/> and provides default properties for all services.
     /// </summary>
-    public abstract class BaseService : IMixedRealityService
+    public abstract class BaseService : IMixedRealityService, IMixedRealityServiceState
     {
         public const uint DefaultPriority = 10;
 
@@ -24,13 +24,27 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual BaseMixedRealityProfile ConfigurationProfile { get; protected set; } = null;
 
         /// <inheritdoc />
-        public virtual void Initialize() { }
+        public virtual void Initialize() 
+        {
+            if (IsMarkedDestroyed)
+            {
+                throw new InvalidOperationException("It is not allowed to re-initialize a service after Destroy() has been called.");
+            }
+
+            IsInitialized = true;
+        }
 
         /// <inheritdoc />
         public virtual void Reset() { }
 
         /// <inheritdoc />
-        public virtual void Enable() { }
+        public virtual void Enable() 
+        {
+            if (IsInitialized)
+            {
+                IsEnabled = true;
+            }
+        }
 
         /// <inheritdoc />
         public virtual void Update() { }
@@ -39,12 +53,34 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void LateUpdate() { }
 
         /// <inheritdoc />
-        public virtual void Disable() { }
+        public virtual void Disable() 
+        {
+            if (IsInitialized)
+            {
+                IsEnabled = false;
+            }
+        }
 
         /// <inheritdoc />
-        public virtual void Destroy() { }
+        public virtual void Destroy() 
+        {
+            IsMarkedDestroyed = true;
+        }
 
         #endregion IMixedRealityService Implementation
+
+        #region IMixedRealityServiceState Implementation
+
+        /// <inheritdoc />
+        public bool IsInitialized { get; protected set; } = false;
+
+        /// <inheritdoc />
+        public bool IsEnabled { get; protected set; } = false;
+
+        /// <inheritdoc />
+        public bool IsMarkedDestroyed { get; protected set; } = false;
+
+        #endregion IMixedRealityServiceState Implementation
 
         #region IDisposable Implementation
 
