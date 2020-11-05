@@ -123,6 +123,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
                     UnityEditor.PlayerSettings.WSACapability.Microphone,
                     this.GetType());
+
+            base.Initialize();
         }
 #endif
 
@@ -134,6 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 InitializeKeywordRecognizer();
                 StartRecognition();
             }
+
+            base.Enable();
         }
 
         private void InitializeKeywordRecognizer()
@@ -180,6 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 if (keywordRecognizer != null && keywordRecognizer.IsRunning)
                 {
                     for (int i = 0; i < Commands.Length; i++)
@@ -196,6 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             if (keywordRecognizer != null)
             {
                 StopRecognition();
