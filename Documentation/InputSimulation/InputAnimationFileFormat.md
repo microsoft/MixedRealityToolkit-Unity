@@ -127,11 +127,11 @@ A float keyframe stores tangent and weight values alongside the basic time and v
 |---------|------|
 | Time | Float32 |
 | Value | Float32 |
-| InTangent | Float32 |
-| OutTangent | Float32 |
-| InWeight | Float32 |
-| OutWeight | Float32 |
-| WeightedMode | Int32, [Weighted Mode](#weighted-mode) |
+| InTangent | Float32 | Version 1.0 only
+| OutTangent | Float32 | Version 1.0 only
+| InWeight | Float32 | Version 1.0 only
+| OutWeight | Float32 | Version 1.0 only
+| WeightedMode | Int32, [Weighted Mode](#weighted-mode) | Version 1.0 only
 
 ### Boolean curve
 
