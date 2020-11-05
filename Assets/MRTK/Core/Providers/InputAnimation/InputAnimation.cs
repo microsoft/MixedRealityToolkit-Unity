@@ -44,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private float duration = 0.0f;
         public float Duration => duration;
-        
         public class PoseCurves
         {
             public AnimationCurve PositionX = new AnimationCurve();
