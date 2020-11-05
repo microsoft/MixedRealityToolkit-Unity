@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool recordHandData = true;
         public bool RecordHandData => recordHandData;
 
+        [SerializeField]
         [Tooltip("Minimum movement of hand joints to record a keyframe")]
         private float jointPositionThreshold = 0.001f;
         public float JointPositionThreshold => jointPositionThreshold;
