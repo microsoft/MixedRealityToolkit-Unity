@@ -129,8 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Initialize()
         {
-            base.Initialize();
-
             if (InputSystemProfile != null && InputSystemProfile.PointerProfile != null)
             {
                 var initPointerOptions = InputSystemProfile.PointerProfile.PointerOptions;
@@ -150,11 +148,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointerConfigurations[i].cache = new Stack<IMixedRealityPointer>();
                 }
             }
+
+            base.Initialize();
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
+            base.Destroy();
+
             DestroyPointerCache();
 
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary

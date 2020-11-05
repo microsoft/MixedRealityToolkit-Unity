@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public override void Initialize()
         {
             CreateObserver();
+            base.Initialize();
         }
 
         /// <summary>
@@ -88,8 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         public override void Reset()
         {
-            Destroy();
+            base.Reset();
+            Disable();
+            CleanupObservationsAndObserver();
             Initialize();
+            Enable();
         }
 
         /// <inheritdoc />
@@ -99,11 +103,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             {
                 Resume();
             }
+            base.Enable();
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             // If we are disabled while running...
             if (IsRunning)
             {
@@ -115,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Destroy()
         {
+            base.Destroy();
             CleanupObservationsAndObserver();
         }
 
