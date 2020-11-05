@@ -611,7 +611,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return animation;
             }
 
-            if (versionMajor > 1 || versionMajor == 1 && versionMinor >= 1)
+            bool useNewFormat = versionMajor > 1 || versionMajor == 1 && versionMinor >= 1;
+            
+            if (useNewFormat)
             {
                 animation.HasCameraPose = reader.ReadBoolean();
                 animation.HasHandData = reader.ReadBoolean();
@@ -626,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (animation.HasCameraPose)
             {
-                PoseCurvesFromStream(reader, animation.cameraCurves);
+                PoseCurvesFromStream(reader, animation.cameraCurves, useNewFormat);
             }
 
             if (animation.HasHandData)
@@ -644,7 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         animation.handJointCurvesLeft.Add((TrackedHandJoint) i, curves);
                     }
 
-                    PoseCurvesFromStream(reader, curves);
+                    PoseCurvesFromStream(reader, curves, useNewFormat);
                 }
 
                 for (int i = 0; i < jointCount; ++i)
@@ -655,13 +657,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         animation.handJointCurvesRight.Add((TrackedHandJoint) i, curves);
                     }
 
-                    PoseCurvesFromStream(reader, curves);
+                    PoseCurvesFromStream(reader, curves, useNewFormat);
                 }
             }
 
             if (animation.HasEyeGaze)
             {
-                RayCurvesFromStream(reader, animation.gazeCurves);
+                RayCurvesFromStream(reader, animation.gazeCurves, useNewFormat);
             }
             
             InputAnimationSerializationUtils.ReadMarkerList(reader, animation.markers);
@@ -936,16 +938,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.RotationW, startTime);
         }
 
-        private static void PoseCurvesFromStream(BinaryReader reader, PoseCurves curves)
+        private static void PoseCurvesFromStream(BinaryReader reader, PoseCurves curves, bool readSimple)
         {
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionX);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionY);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionZ);
+             if (readSimple)
+             {
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionX);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionY);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.PositionZ);
 
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationX);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationY);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationZ);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationW);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationX);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationY);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationZ);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.RotationW);
+             }
+             else
+             {
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionX);
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionY);
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.PositionZ);
+
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationX);
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationY);
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationZ);
+                 InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.RotationW);
+             }
         }
         
         private static void RayCurvesToStream(BinaryWriter writer, RayCurves curves, float startTime)
@@ -959,15 +975,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputAnimationSerializationUtils.WriteFloatCurveSimple(writer, curves.DirectionZ, startTime);
         }
         
-        private static void RayCurvesFromStream(BinaryReader reader, RayCurves curves)
+        private static void RayCurvesFromStream(BinaryReader reader, RayCurves curves, bool readSimple)
         {
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginX);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginY);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginZ);
-            
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionX);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionY);
-            InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionZ);
+            if (readSimple)
+            {
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginX);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginY);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.OriginZ);
+
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionX);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionY);
+                InputAnimationSerializationUtils.ReadFloatCurveSimple(reader, curves.DirectionZ);
+            }
+            else 
+            {
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.OriginX);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.OriginY);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.OriginZ);
+
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.DirectionX);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.DirectionY);
+                InputAnimationSerializationUtils.ReadFloatCurve(reader, curves.DirectionZ);
+            }
         }
     
         /// <summary>
