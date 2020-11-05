@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Diagnostics;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -26,11 +27,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public virtual void Initialize() 
         {
-            if (IsMarkedDestroyed)
-            {
-                throw new InvalidOperationException("It is not allowed to re-initialize a service after Destroy() has been called.");
-            }
-
             IsInitialized = true;
         }
 
@@ -41,12 +37,9 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <inheritdoc />
-        public virtual void Enable() 
+        public virtual void Enable()
         {
-            if (IsInitialized)
-            {
-                IsEnabled = true;
-            }
+            IsEnabled = true;
         }
 
         /// <inheritdoc />
@@ -56,14 +49,15 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void LateUpdate() { }
 
         /// <inheritdoc />
-        public virtual void Disable() 
+        public virtual void Disable()
         {
             IsEnabled = false;
         }
 
         /// <inheritdoc />
-        public virtual void Destroy() 
+        public virtual void Destroy()
         {
+            IsInitialized = false;
             IsMarkedDestroyed = true;
         }
 
@@ -71,14 +65,50 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region IMixedRealityServiceState Implementation
 
-        /// <inheritdoc />
-        public bool IsInitialized { get; protected set; } = false;
+        protected bool? isInitialized = null;
 
         /// <inheritdoc />
-        public bool IsEnabled { get; protected set; } = false;
+        public virtual bool IsInitialized
+        {
+            get
+            {
+                Debug.Assert(isInitialized.HasValue, $"{this.GetType()} has not set a value for IsInitialized, returning false.");
+                return isInitialized.HasValue ? isInitialized.Value : false;
+            }
+
+            set => isInitialized = value;
+        }
+
+        protected bool? isEnabled = null;
 
         /// <inheritdoc />
-        public bool IsMarkedDestroyed { get; protected set; } = false;
+        public virtual bool IsEnabled
+        {
+            get
+            {
+                Debug.Assert(isEnabled.HasValue, $"{this.GetType()} has not set a value for IsEnabled, returning false.");
+                return isEnabled.HasValue ? isEnabled.Value : false;
+            }
+
+            set => isEnabled = value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected bool? isMarkedDestroyed = null;
+
+        /// <inheritdoc />
+        public virtual bool IsMarkedDestroyed
+        {
+            get
+            {
+                Debug.Assert(isMarkedDestroyed.HasValue, $"{this.GetType()} has not set a value for IsMarkedDestroyed, returning false.");
+                return isMarkedDestroyed.HasValue ? isMarkedDestroyed.Value : false;
+            }
+
+            set => isMarkedDestroyed = value;
+        }
 
         #endregion IMixedRealityServiceState Implementation
 
