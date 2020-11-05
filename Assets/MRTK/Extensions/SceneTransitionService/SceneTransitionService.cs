@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             FadeInTime = sceneTransitionServiceProfile.FadeInTime;
             FadeOutTime = sceneTransitionServiceProfile.FadeOutTime;
             FadeTargets = sceneTransitionServiceProfile.FadeTargets;
+            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -107,11 +108,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 Debug.LogError("This extension requires an active IMixedRealitySceneService.");
             }
+            base.Enable();
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
+            base.Destroy();
             CleanUpDefaultProgressIndicator();
             CleanUpCameraFader();
         }

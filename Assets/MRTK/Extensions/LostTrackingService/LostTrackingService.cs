@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         {
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
             WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
+            base.Initialize();
 #elif !ARSUBSYSTEMS_ENABLED
             Debug.LogWarning("This service is not supported on this platform.");
 #endif
@@ -99,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 XRSessionSubsystem sessionSubsystem = SessionSubsystem;
                 if (sessionSubsystem == null)
                 {
