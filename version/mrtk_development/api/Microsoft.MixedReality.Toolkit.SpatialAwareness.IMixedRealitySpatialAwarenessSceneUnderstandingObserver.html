@@ -354,13 +354,13 @@ When disabled, generates data only for observed regions in the scene.</p>
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSceneUnderstandingObserver_RequestPlaneData_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Use <see cref="!:PlaneValidationMask"></see> for the validation mask on the quad.</p>
+  <div class="markdown level1 remarks"><p>Use PlaneValidationMask for the validation mask on the quad.</p>
 </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSceneUnderstandingObserver_SceneObjects_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSceneUnderstandingObserver.SceneObjects*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSceneUnderstandingObserver_SceneObjects" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSceneUnderstandingObserver.SceneObjects">SceneObjects</h4>
-  <div class="markdown level1 summary"><p>The set of <see cref="!:SpatialAwarenessSceneObject"></see>s being managed by the observer, keyed by a unique id.</p>
+  <div class="markdown level1 summary"><p>The set of SpatialAwarenessSceneObjects being managed by the observer, keyed by a unique id.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -523,11 +523,12 @@ When disabled, generates data only for observed regions in the scene.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSceneUnderstandingObserver_TryFindCentermostPlacement_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSceneUnderstandingObserver.TryFindCentermostPlacement*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSceneUnderstandingObserver_TryFindCentermostPlacement_System_Guid_Vector2_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSceneUnderstandingObserver.TryFindCentermostPlacement(System.Guid,Vector2,Vector3@)">TryFindCentermostPlacement(Guid, Vector2, out Vector3)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Finds best placement position in local space to the quad</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool TryFindCentermostPlacement(Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane)</code></pre>
+    <pre><code class="lang-csharp hljs">bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnQuad)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -542,17 +543,20 @@ When disabled, generates data only for observed regions in the scene.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
         <td><span class="parametername">quadGuid</span></td>
-        <td></td>
+        <td><p>The Guid of quad that will be used for placement</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector2</span></td>
-        <td><span class="parametername">forSize</span></td>
-        <td></td>
+        <td><span class="parametername">objExtents</span></td>
+        <td><p>Total width and height of object to be placed in meters.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">bestLocationOnPlane</span></td>
-        <td></td>
+        <td><span class="parametername">placementPosOnQuad</span></td>
+        <td><p>Base position on plane in local space.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -567,7 +571,8 @@ When disabled, generates data only for observed regions in the scene.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>Returns false if a centermost placement location cannot be found.</p>
+</td>
       </tr>
     </tbody>
   </table>
