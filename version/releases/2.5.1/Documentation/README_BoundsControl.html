@@ -197,7 +197,7 @@ Visual configurations are either linked or inlined scriptable objects and are de
 <li><strong>Show wireframe</strong>: controls visibility of the wireframe.</li>
 </ul>
 <h3 id="proximity-effect-configuration">Proximity effect configuration</h3>
-<p>Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to Hololens 2 style behavior.</p>
+<p>Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to HoloLens 2 style behavior.</p>
 <img src="Images/BoundsControl/MRTK_BoundsControl_Proximity.png">
 <ul>
 <li><strong>Proximity Effect Active</strong>: Enable proximity-based handle activation</li>
@@ -212,7 +212,7 @@ Visual configurations are either linked or inlined scriptable objects and are de
 </ul>
 <h2 id="constraint-system">Constraint System</h2>
 <p>Bounds control supports using the <a href="README_ConstraintManager.html">constraint manager</a> to limit or modify translation, rotation or scaling behavior while using bounds control handles.</p>
-<p>The property inspector will show all available constraint managers attached to the same game object in a dropwdown with an option to scroll and highlight the selected constraint manager.</p>
+<p>The property inspector will show all available constraint managers attached to the same game object in a dropdown with an option to scroll and highlight the selected constraint manager.</p>
 <img src="Images/BoundsControl/MRTK_BoundsControl_Constraints.png" width="450">
 <h2 id="events">Events</h2>
 <p>Bounds control provides the following events. This example uses these events to play audio feedback.</p>
@@ -306,7 +306,7 @@ rotationHandleConfiguration.HandleSize = 0.016f;
 rotationHandleConfiguration.ColliderPadding = 0.016f;
 </code></pre>
 <h3 id="example-set-minimum-maximum-bounds-control-scale-using-minmaxscaleconstraint">Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint</h3>
-<p>To set the minimum and maximum scale, attach a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a> to your constrol. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured.</p>
+<p>To set the minimum and maximum scale, attach a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a> to your control. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured.</p>
 <p>You can also use MinMaxScaleConstraint to set minimum and maximum scale for <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html"><code>ObjectManipulator</code></a>.</p>
 <pre><code class="lang-c#">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 bcontrol = cube.AddComponent&lt;BoundsControl&gt;();
