@@ -26,6 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get { return nodeList; }
         }
 
+        /// <summary>
+        /// Read only list of objects with generated data on the object.
+        /// </summary>
         public IReadOnlyList<ObjectCollectionNode> NodeListReadOnly
         {
             get { return nodeList.AsReadOnly<ObjectCollectionNode>(); }
