@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Diagnostics;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {

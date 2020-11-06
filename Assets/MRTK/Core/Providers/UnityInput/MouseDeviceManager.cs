@@ -96,9 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Initialize()
         {
-            ReadProfile();
-
             base.Initialize();
+
+            ReadProfile();
         }
 
         /// <inheritdoc />
