@@ -85,13 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Gets a state by using the state name.
         /// </summary>
         /// <param name="stateName">The name of the state to retrieve</param>
-        /// <returns>The state contained in the Tracked States scriptable object.</returns>
+        /// <returns>The state contained in the State list, returns null if the state was not found.</returns>
         public InteractionState GetState(string stateName)
         {
             try
             {
-                InteractionState interactionState = statesDictionary[stateName];
-                return interactionState;
+                return statesDictionary[stateName];
             }
             catch 
             {
@@ -221,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 if (stateName != defaultStateName)
                 {
-                    // Remove the state from tracked states to update the changes in the inspector
+                    // Remove the state from States list to update the changes in the inspector
                     interactionStates.Remove(state);
 
                     statesDictionary.Remove(state.Name);
@@ -296,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
                 statesDictionary.Add(newState.Name, newState);
 
-                // Add the state to the tracked states scriptable to ensure the inspector displays the new state
+                // Add the state to the States list to ensure the inspector displays the new state
                 interactionStates.Add(newState);
                 
                 // Set the event configuration if one exists for the core interaction state
@@ -338,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                         Debug.LogError("The event configuration entered is null and the event configuration was not set");
                     }
 
-                    // Add the state to the tracked states scriptable to ensure the inspector displays the new state
+                    // Add the state to the States list to ensure the inspector displays the new state
                     interactionStates.Add(newState);
 
                     statesDictionary.Add(newState.Name, newState);
@@ -346,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 }
                 else
                 {
-                    Debug.LogError($"The state name {stateName} is a defined core state, please use AddCoreState() to add to Tracked States.");
+                    Debug.LogError($"The state name {stateName} is a defined core state, please use AddCoreState() to add to the States list.");
                     return null;
                 }
             }

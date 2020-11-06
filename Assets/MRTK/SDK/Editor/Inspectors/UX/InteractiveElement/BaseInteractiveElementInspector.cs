@@ -28,6 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string newCoreStateName = "New Core State";
         private const string createNewStateName = "Create New State";
         private const string defaultStateName = "Default";
+        private const string removeStateLabel = "Remove State";
+        private const string statesLabel = "States";
+
+        private const int stateValueDisplayWidth = 20;
+        private const int stateValueDisplayContainerWidth = 10;
 
         protected virtual void OnEnable()
         {
@@ -35,14 +40,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             states = serializedObject.FindProperty("states");
 
-            RemoveStateButtonLabel = new GUIContent(InspectorUIUtility.Minus, "Remove State");
+            RemoveStateButtonLabel = new GUIContent(InspectorUIUtility.Minus, removeStateLabel);
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            InspectorUIUtility.DrawTitle("States");
+            InspectorUIUtility.DrawTitle(statesLabel);
 
             RenderStates();
 
@@ -119,10 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // Draw the state value in the inspector next to the state during play mode for debugging
                     if (Application.isPlaying)
                     {
-                        using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,GUILayout.Width(20)))
+                        using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,GUILayout.Width(stateValueDisplayWidth)))
                         {
                             EditorGUILayout.Space();
-                            EditorGUILayout.LabelField(stateValue.intValue.ToString(), GUILayout.Width(10));
+                            EditorGUILayout.LabelField(stateValue.intValue.ToString(), GUILayout.Width(stateValueDisplayContainerWidth));
                             EditorGUILayout.Space();
                         }
                     }
@@ -201,7 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else
                     {
-                        Debug.LogError("The state name entered is empty or this state name is already taken, please add characters to the state name or choose another name.");
+                        // Display dialog telling the user to change the state name entered
+                        EditorUtility.DisplayDialog("Change State Name", "The state name entered is empty or this state name is already taken, please add characters to the state name or choose another name.","OK");
                     }
                 }
             }

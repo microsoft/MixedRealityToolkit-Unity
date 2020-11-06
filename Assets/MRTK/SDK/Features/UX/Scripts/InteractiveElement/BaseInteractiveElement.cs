@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// Base class for an Interaction Element.  Contains state management methods, event management and the state setting logic for 
+    /// Base class for an Interactive Element.  Contains state management methods, event management and the state setting logic for 
     /// some Core Interaction States.
     /// </summary>
     public abstract class BaseInteractiveElement :
@@ -47,34 +47,36 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         protected string DefaultStateName = CoreInteractionState.Default.ToString();
         protected string FocusStateName = CoreInteractionState.Focus.ToString();
 
-        // List of all core states
+        // List of all core state namnes
         private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
 
         private void OnValidate()
         {
             // Populate the States list with the initial states when this component is initialized via inspector
-            if (States.Count == 0)
-            {
-                States.Add(new InteractionState(DefaultStateName));
-                States.Add(new InteractionState(FocusStateName));
-            }
+            PopulateInitialStates();
         }
 
         // Initialize the State Manager in Awake because the State Visualizer depends on the initialization of these elements
         private void Awake()
         {
             // Populate the States list with the initial states when this component is initialized via script instead of the inspector
-            if (States.Count == 0)
-            {
-                States.Add(new InteractionState(DefaultStateName));
-                States.Add(new InteractionState(FocusStateName));
-            }
+            PopulateInitialStates();
 
             // Initializes the state dictionary in the StateManager with the states defined in the States list
             StateManager = new StateManager(States, this);
 
             // Initially set the default state to on
             SetStateOn(DefaultStateName);
+        }
+
+        // Add the Default and the Focus state as the initial states in the States list
+        private void PopulateInitialStates()
+        {
+            if (States.Count == 0)
+            {
+                States.Add(new InteractionState(DefaultStateName));
+                States.Add(new InteractionState(FocusStateName));
+            }
         }
 
         #region Focus
