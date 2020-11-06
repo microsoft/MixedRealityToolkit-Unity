@@ -109,7 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 Debug.LogError("This extension requires an active IMixedRealitySceneService.");
             }
 
-            IsEnabled = true;
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         /// <inheritdoc />

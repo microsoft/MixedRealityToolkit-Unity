@@ -263,7 +263,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 InitializeDictationRecognizer();
             }
 
-            IsEnabled = true;
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private void InitializeDictationRecognizer()

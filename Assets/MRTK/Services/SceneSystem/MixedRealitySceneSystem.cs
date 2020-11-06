@@ -178,7 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 SetLightingScene(Profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
 
-            IsInitialized = true;
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />

@@ -135,7 +135,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 AskForETPermission();
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 ReadProfile();
-                IsInitialized = true;
+
+                // Call the base after initialization to ensure any early exits do not
+                // artificially declare the service as initialized.
+                base.Initialize();
             }
         }
 

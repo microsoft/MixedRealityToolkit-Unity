@@ -394,7 +394,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 GestureRecognizerEnabled = true;
             }
 
-            IsEnabled = true;
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");

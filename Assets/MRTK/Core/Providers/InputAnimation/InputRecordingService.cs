@@ -154,14 +154,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            IsEnabled = true;
+            base.Enable();
             recordingBuffer = new InputAnimation();
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
-            IsEnabled = false;
+            base.Disable();
             recordingBuffer = null;
             ResetStartTime();
         }

@@ -240,7 +240,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             CreateDataProviders();
 
-            IsInitialized = true;
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />
