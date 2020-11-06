@@ -110,6 +110,8 @@ In the event that the installation of the DotNetAdapter cannot be performed via 
 
 1. Select Install
 
+1. Enable [a required flag](#dotnetwinrt_present-define-written-into-player-settings)
+
 
 ### Removing HoloLens 2-specific remoting support
 
