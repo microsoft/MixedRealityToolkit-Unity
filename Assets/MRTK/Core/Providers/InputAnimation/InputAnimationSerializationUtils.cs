@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Generate a file name for export.
         /// </summary>
-        public static string GetOutputFilename(string baseName="InputAnimation", bool appendTimestamp=true)
+        public static string GetOutputFilename(string baseName = "InputAnimation", bool appendTimestamp = true)
         {
             string filename;
             if (appendTimestamp)
