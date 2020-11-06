@@ -19,19 +19,19 @@ The rest of the file is taken up by animation data, which may change between ver
 
 The input animation data consists of three boolean values that indicate whether the animation contains Camera, Hand, and Eye Gaze data, followed by a sequence of animation curves. The curves present depends on the values of these booleans. Each curve can have a different number of keyframes.
 
-| Section | Type |
-|---------|------|
+| Section | Type | Notes |
+|---------|------| ----- |
 | Has Camera Pose | [Boolean] |
 | Has Hand Data | [Boolean] |
 | Has Eye Gaze | [Boolean] |
-| Camera | [Pose Curves](#pose-curves) | Only if Has Camera Pose is true
-| Hand Tracked Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
-| Hand Tracked Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
-| Hand Pinching Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
-| Hand Pinching Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true
-| Hand Joints Left | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true
-| Hand Joints Right | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true
-| Eye Gaze | [Ray Curves](#ray-curves) | Only if Has eye Gaze is true
+| Camera | [Pose Curves](#pose-curves) | Only if Has Camera Pose is true |
+| Hand Tracked Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Tracked Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Pinching Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Pinching Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Joints Left | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true |
+| Hand Joints Right | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true |
+| Eye Gaze | [Ray Curves](#ray-curves) | Only if Has Eye Gaze is true
 
 ## Version 1.0
 
@@ -123,15 +123,15 @@ Floating point curves are fully fledged Bézier curves with a variable number of
 
 A float keyframe stores tangent and weight values alongside the basic time and value.
 
-| Section | Type |
-|---------|------|
+| Section | Type | Notes |
+|---------|------| ----- |
 | Time | Float32 |
 | Value | Float32 |
-| InTangent | Float32 | Version 1.0 only
-| OutTangent | Float32 | Version 1.0 only
-| InWeight | Float32 | Version 1.0 only
-| OutWeight | Float32 | Version 1.0 only
-| WeightedMode | Int32, [Weighted Mode](#weighted-mode) | Version 1.0 only
+| InTangent | Float32 | Version 1.0 only |
+| OutTangent | Float32 | Version 1.0 only |
+| InWeight | Float32 | Version 1.0 only |
+| OutWeight | Float32 | Version 1.0 only |
+| WeightedMode | Int32, [Weighted Mode](#weighted-mode) | Version 1.0 only |
 
 ### Boolean curve
 
