@@ -682,7 +682,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return result;
         }
 
+        /// <summary>
         /// Add a keyframe for the tracking state of a hand.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private void AddHandStateKey(float time, bool isTracked, bool isPinching, AnimationCurve trackedCurve, AnimationCurve pinchCurve)
         {
@@ -692,7 +694,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             duration = Mathf.Max(duration, time);
         }
 
+        /// <summary>
         /// Add a keyframe for one hand joint.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private void AddHandJointKey(float time, TrackedHandJoint joint, MixedRealityPose jointPose, Dictionary<TrackedHandJoint, PoseCurves> jointCurves, float positionThreshold, float rotationThreshold)
         {
@@ -733,7 +737,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         
+        /// <summary>
         /// Optimizes the curves contained within the animation
+        /// </summary>
         private void Optimize(MixedRealityInputRecordingProfile profile)
         {
             if (profile.RecordCameraPose)
@@ -760,14 +766,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
         /// Evaluate hand tracking state at the given time.
+        /// </summary>
         private void EvaluateHandState(float time, AnimationCurve trackedCurve, AnimationCurve pinchCurve, out bool isTracked, out bool isPinching)
         {
             isTracked = (trackedCurve.Evaluate(time) > 0.5f);
             isPinching = (pinchCurve.Evaluate(time) > 0.5f);
         }
 
+        /// <summary>
         /// Evaluate joint pose at the given time.
+        /// </summary>
         private MixedRealityPose EvaluateHandJoint(float time, TrackedHandJoint joint, Dictionary<TrackedHandJoint, PoseCurves> jointCurves)
         {
             if (jointCurves.TryGetValue(joint, out var curves))
@@ -823,8 +833,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             yield return gazeCurves.DirectionY;
             yield return gazeCurves.DirectionZ;
         }
-
+        
+        /// <summary>
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
+        /// </summary>
         private static void AddBoolKey(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
@@ -834,8 +846,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             keyframe.weightedMode = WeightedMode.Both;
             curve.AddKey(keyframe);
         }
-
+        
+        /// <summary>
         /// Add a float value to an animation curve.
+        /// </summary>
         private static void AddFloatKey(AnimationCurve curve, float time, float value)
         {
             // Use linear interpolation by setting tangents and weights to zero.
@@ -845,6 +859,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curve.AddKey(keyframe);
         }
         
+        /// <summary>
+        /// Add a vector value to an animation curve.
+        /// </summary>
         private static void AddVectorKey(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, float time, Vector3 vector)
         {
             curveX.AddKey(time, vector.x);
@@ -852,8 +869,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             curveZ.AddKey(time, vector.z);
         }
         
+        /// <summary>
         /// Add a pose keyframe to an animation curve.
         /// Keys are only added if the value changes sufficiently.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private static void AddPoseKeyFiltered(PoseCurves curves, float time, MixedRealityPose pose, float positionThreshold, float rotationThreshold)
         {
@@ -861,8 +880,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddRotationKeyFiltered(curves.RotationX, curves.RotationY, curves.RotationZ, curves.RotationW, time, pose.Rotation, rotationThreshold);
         }
         
-        // Add a vector keyframe to animation curve if the threshold distance to the previous value is exceeded.
-        // Otherwise replace the last keyframe instead of adding a new one.
+        /// <summary>
+        /// Add a vector keyframe to animation curve if the threshold distance to the previous value is exceeded.
+        /// Otherwise replace the last keyframe instead of adding a new one.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private static void AddPositionKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, float time, Vector3 position, float threshold)
         {
@@ -891,8 +912,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             AddFloatKey(curveZ, time, position.z);
         }
 
-        // Add a quaternion keyframe to animation curve if the threshold angular difference (in degrees) to the previous value is exceeded.
-        // Otherwise replace the last keyframe instead of adding a new one.
+        /// <summary>
+        /// Add a quaternion keyframe to animation curve if the threshold angular difference (in degrees) to the previous value is exceeded.
+        /// Otherwise replace the last keyframe instead of adding a new one.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private static void AddRotationKeyFiltered(AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, AnimationCurve curveW, float time, Quaternion rotation, float threshold)
         {
@@ -1255,9 +1278,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
         /// Utility function that creates a non-interpolated keyframe suitable for boolean values.
         /// Keys are only added if the value changes.
         /// Returns the index of the newly added keyframe, or -1 if no keyframe has been added.
+        /// </summary>
         [Obsolete("Use FromRecordingBuffer to construct new InputAnimations")]
         private static int AddBoolKeyFiltered(AnimationCurve curve, float time, bool value)
         {

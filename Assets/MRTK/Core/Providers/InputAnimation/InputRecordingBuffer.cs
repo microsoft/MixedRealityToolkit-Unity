@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
