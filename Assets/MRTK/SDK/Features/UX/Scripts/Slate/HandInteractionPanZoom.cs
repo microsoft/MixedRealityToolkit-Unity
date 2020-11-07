@@ -789,8 +789,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void EndAllTouches()
         {
-            handDataMap.Clear();
-            RaisePanEnded(0);
+            if (handDataMap.Count > 0)
+            {
+                handDataMap.Clear();
+                RaisePanEnded(0);
+            }
         }
 
         private void MoveTouch(uint sourceId)
