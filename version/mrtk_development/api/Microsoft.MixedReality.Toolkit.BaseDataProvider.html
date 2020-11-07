@@ -106,6 +106,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
@@ -152,6 +153,24 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isInitialized">BaseService.isInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsInitialized">BaseService.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isEnabled">BaseService.isEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsEnabled">BaseService.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isMarkedDestroyed">BaseService.isMarkedDestroyed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsMarkedDestroyed">BaseService.IsMarkedDestroyed</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
@@ -187,7 +206,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_BaseDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Add a &lt;T&gt; of type IMixedRealityService, which defines the service type this data provider is valid for.&quot;)]
-public abstract class BaseDataProvider : BaseDataProvider&lt;IMixedRealityService&gt;, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public abstract class BaseDataProvider : BaseDataProvider&lt;IMixedRealityService&gt;, IMixedRealityServiceState, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -293,6 +312,9 @@ protected BaseDataProvider(IMixedRealityServiceRegistrar registrar, IMixedRealit
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
   </div>

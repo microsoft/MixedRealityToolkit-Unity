@@ -108,6 +108,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
@@ -115,12 +116,6 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_IsEnabled">TestBaseDataProvider.IsEnabled</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_IsInitialized">TestBaseDataProvider.IsInitialized</a>
-    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Initialize">TestBaseDataProvider.Initialize()</a>
     </div>
@@ -161,6 +156,24 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isInitialized">BaseService.isInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsInitialized">BaseService.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isEnabled">BaseService.isEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsEnabled">BaseService.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isMarkedDestroyed">BaseService.isMarkedDestroyed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsMarkedDestroyed">BaseService.IsMarkedDestroyed</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
@@ -196,7 +209,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Test Input Data Provider&quot;)]
-public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealityInputDeviceManager</code></pre>
+public class TestInputDataProvider : TestBaseDataProvider, IMixedRealityServiceState, ITestInputDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealityInputDeviceManager</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -270,6 +283,9 @@ public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvide
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
   </div>

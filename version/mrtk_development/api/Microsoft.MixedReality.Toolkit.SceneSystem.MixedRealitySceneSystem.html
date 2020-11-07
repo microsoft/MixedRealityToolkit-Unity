@@ -110,6 +110,7 @@ This part handles the runtime parts of the service.</p>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.html">IMixedRealitySceneSystem</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
@@ -163,6 +164,24 @@ This part handles the runtime parts of the service.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isInitialized">BaseService.isInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsInitialized">BaseService.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isEnabled">BaseService.isEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsEnabled">BaseService.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isMarkedDestroyed">BaseService.isMarkedDestroyed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsMarkedDestroyed">BaseService.IsMarkedDestroyed</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
@@ -197,7 +216,7 @@ This part handles the runtime parts of the service.</p>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_SceneSystem_MixedRealitySceneSystem_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer, IMixedRealitySceneSystemEditor</code></pre>
+    <pre><code class="lang-csharp hljs">public class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealityServiceState, IMixedRealitySceneSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer, IMixedRealitySceneSystemEditor</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -1599,6 +1618,9 @@ If a scene operation is in progress, no action will be taken.</p>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.IMixedRealitySceneSystem.html">IMixedRealitySceneSystem</a>
   </div>

@@ -109,6 +109,7 @@ When tracking is restored, the camera mask is restored and the visual indicator 
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingService.html">ILostTrackingService</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
@@ -150,6 +151,24 @@ When tracking is restored, the camera mask is restored and the visual indicator 
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isInitialized">BaseService.isInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsInitialized">BaseService.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isEnabled">BaseService.isEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsEnabled">BaseService.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_isMarkedDestroyed">BaseService.isMarkedDestroyed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_IsMarkedDestroyed">BaseService.IsMarkedDestroyed</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
@@ -184,7 +203,7 @@ When tracking is restored, the camera mask is restored and the visual indicator 
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class LostTrackingService : BaseExtensionService, IMixedRealityServiceState, ILostTrackingService, IMixedRealityExtensionService, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -376,6 +395,9 @@ This method is called once all services have been registered in the Mixed Realit
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingService.html">ILostTrackingService</a>
   </div>
