@@ -109,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
             HandPhysicsLayer = handPhysicsServiceProfile.HandPhysicsLayer;
             UsePalmKinematicBody = handPhysicsServiceProfile.UsePalmKinematicBody;
             FingerTipKinematicBodyPrefab = handPhysicsServiceProfile.FingerTipKinematicBodyPrefab;
@@ -118,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
             HandPhysicsServiceRoot = new GameObject("Hand Physics Service");
 
             CreateKinematicBodies();
@@ -131,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
                 UnityEngine.Object.Destroy(HandPhysicsServiceRoot);
                 HandPhysicsServiceRoot = null;
             }
+            base.Disable();
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] HandPhysicsService.Update");
@@ -140,6 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
                 foreach (JointKinematicBody jointKinematicBody in jointKinematicBodies)
                 {
                     if (HandJointService.IsHandTracked(jointKinematicBody.HandednessType))
