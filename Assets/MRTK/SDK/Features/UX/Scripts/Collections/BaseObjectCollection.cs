@@ -26,6 +26,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get { return nodeList; }
         }
 
+        /// <summary>
+        /// Read only list of objects with generated data on the object.
+        /// </summary>
+        public IReadOnlyList<ObjectCollectionNode> NodeListReadOnly
+        {
+            get { return nodeList.AsReadOnly<ObjectCollectionNode>(); }
+        }
+
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
         private bool ignoreInactiveTransforms = true;
@@ -160,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="node">The Transform belonging to <see cref="ObjectCollectionNode"/></param>
         /// <param name="nodeIndex">The index of the element in <see cref="NodeList"/></param>
         /// <returns>true when <paramref name="node"/> belongs to an element of the list.</returns>
-        protected bool ContainsNode(Transform node, out int nodeIndex)
+        public bool ContainsNode(Transform node, out int nodeIndex)
         {
             nodeIndex = 0;
             if (node == null)
