@@ -77,7 +77,7 @@ Material:
     - _Outline: 0.01
     - _OutlineWidth: 0.007
     - _Parallax: 0.02
-    - _PressIntensity: 0.31542373
+    - _PressIntensity: 0.31542385
     - _PressRimPower: 5
     - _RimPower: 6.6
     - _SmoothnessTextureChannel: 0

@@ -194,14 +194,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// Update the controller data from the provided platform state
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void UpdateController(OVRHand hand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer, Transform trackingOrigin)
+        public void UpdateController(OVRHand hand, OVRSkeleton ovrSkeleton, Transform trackingOrigin)
         {
             if (!Enabled || hand == null || ovrSkeleton == null)
             {
                 return;
             }
 
-            bool isTracked = UpdateHandData(hand, ovrSkeleton, ovrMeshRenderer);
+            bool isTracked = UpdateHandData(hand, ovrSkeleton);
             IsPositionAvailable = IsRotationAvailable = isTracked;
 
             if (isTracked)
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         };
 
         private float _lastHighConfidenceTime = 0f;
-        protected bool UpdateHandData(OVRHand ovrHand, OVRSkeleton ovrSkeleton, OVRMeshRenderer ovrMeshRenderer)
+        protected bool UpdateHandData(OVRHand ovrHand, OVRSkeleton ovrSkeleton)
         {
             bool isTracked = ovrHand.IsTracked;
             if (ovrHand.HandConfidence == OVRHand.TrackingConfidence.High)

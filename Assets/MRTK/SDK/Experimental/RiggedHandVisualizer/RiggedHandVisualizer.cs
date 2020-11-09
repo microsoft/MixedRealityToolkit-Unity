@@ -163,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
         }
 
         private Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
+        private Dictionary<TrackedHandJoint, Transform> joints2 = new Dictionary<TrackedHandJoint, Transform>();
 
         private void Start()
         {
@@ -311,6 +312,71 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
             }
             Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
+            //***************Testing with base debug info*****************
+            MixedRealityHandTrackingProfile handTrackingProfile = inputSystem?.InputSystemProfile.HandTrackingProfile;
+            if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)
+            {
+                // clear existing joint GameObjects / meshes
+                foreach (var joint in joints2)
+                {
+                    Destroy(joint.Value.gameObject);
+                }
+
+                joints2.Clear();
+                return;
+            }
+
+            foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+            {
+                Transform jointTransform2;
+                if (joints2.TryGetValue(handJoint, out jointTransform2))
+                {
+                    jointTransform2.position = eventData.InputData[handJoint].Position;
+                    jointTransform2.rotation = eventData.InputData[handJoint].Rotation;
+                }
+                else
+                {
+                    GameObject prefab;
+                    if (handJoint == TrackedHandJoint.None)
+                    {
+                        // No visible mesh for the "None" joint
+                        prefab = null;
+                    }
+                    else if (handJoint == TrackedHandJoint.Palm)
+                    {
+                        prefab = inputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
+                    }
+                    else if (handJoint == TrackedHandJoint.IndexTip)
+                    {
+                        prefab = inputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                    }
+                    else
+                    {
+                        prefab = inputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
+                    }
+
+                    GameObject jointObject;
+                    if (prefab != null)
+                    {
+                        jointObject = Instantiate(prefab);
+                    }
+                    else
+                    {
+                        jointObject = new GameObject();
+                    }
+
+                    jointObject.name = handJoint.ToString() + " Proxy Transform";
+                    jointObject.transform.position = eventData.InputData[handJoint].Position;
+                    jointObject.transform.rotation = eventData.InputData[handJoint].Rotation;
+                    jointObject.transform.parent = transform;
+
+                    joints2.Add(handJoint, jointObject.transform);
+                }
+            }
+
+            //***************End Testing with base debug info*****************
+
+
             Transform jointTransform;
             // Apply updated TrackedHandJoint pose data to the assigned transforms
             foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
@@ -346,16 +412,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                             if (DeformPosition)
                             {
                                 jointTransform.position = eventData.InputData[handJoint].Position;
+                            }
 
-                                if (ScaleLastFingerBone &&
+                            if (ScaleLastFingerBone &&
                                     (handJoint == TrackedHandJoint.ThumbDistalJoint ||
                                     handJoint == TrackedHandJoint.IndexDistalJoint ||
                                     handJoint == TrackedHandJoint.MiddleDistalJoint ||
                                     handJoint == TrackedHandJoint.RingDistalJoint ||
                                     handJoint == TrackedHandJoint.PinkyDistalJoint))
-                                {
-                                    ScaleFingerTip(eventData, jointTransform, handJoint + 1, jointTransform.position);
-                                }
+                            {
+                                ScaleFingerTip(eventData, jointTransform, handJoint + 1, jointTransform.position);
                             }
                         }
                     }

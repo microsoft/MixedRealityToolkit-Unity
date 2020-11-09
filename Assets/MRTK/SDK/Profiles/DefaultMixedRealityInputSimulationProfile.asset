@@ -30,6 +30,7 @@ MonoBehaviour:
     code: 1
   mouseLookToggle: 0
   isControllerLookInverted: 1
+  cameraOriginOffset: {x: 0, y: 0, z: 0}
   currentControlMode: 0
   fastControlKey:
     bindingType: 2
@@ -62,7 +63,7 @@ MonoBehaviour:
     code: 306
   defaultHandGesture: 2
   leftMouseHandGesture: 3
-  middleMouseHandGesture: 0
+  middleMouseHandGesture: 1
   rightMouseHandGesture: 0
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5

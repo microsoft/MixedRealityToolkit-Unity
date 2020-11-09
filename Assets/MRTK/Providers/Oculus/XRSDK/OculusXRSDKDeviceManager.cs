@@ -258,7 +258,7 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             if (ovrHand.IsTracked)
             {
                 var hand = GetOrAddHand(handedness, ovrHand);
-                hand.UpdateController(ovrHand, ovrSkeleton, ovrMeshRenderer, cameraRig.trackingSpace);
+                hand.UpdateController(ovrHand, ovrSkeleton, cameraRig.trackingSpace);
             }
             else
             {
