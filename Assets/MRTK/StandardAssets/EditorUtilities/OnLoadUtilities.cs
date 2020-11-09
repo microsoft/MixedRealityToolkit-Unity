@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string SessionStateKey = "StandardAssetsOnLoadUtilitiesSessionStateKey";
 
         private const string ShaderSentinelGuid = "05852dd420bb9ec4cb7318bfa529d37c";
-        private const string ShaderSentinelFile = "MRTK.Shaders.Sentinel";
+        private const string ShaderSentinelFile = "MRTK.Shaders.sentinel";
 
         private const string ShaderImportDestination = "MRTK/Shaders";
 
