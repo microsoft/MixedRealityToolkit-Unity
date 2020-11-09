@@ -177,11 +177,16 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {   // Set our lighting scene immediately, with no transition
                 SetLightingScene(Profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
@@ -193,6 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
+            base.Disable();
         }
 
         /// <inheritdoc />
@@ -201,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDestroy();
 #endif
+            base.Destroy();
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MixedRealitySceneSystem.Update");
