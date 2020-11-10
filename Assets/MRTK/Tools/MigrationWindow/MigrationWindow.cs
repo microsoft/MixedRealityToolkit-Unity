@@ -129,6 +129,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             EditorGUILayout.LabelField(WindowDescription, EditorStyles.wordWrappedLabel);
 
+            // show a warning as long as we're not handling dependencies
+            EditorGUILayout.HelpBox("Note that the migration window currently doesn't do dependency checks, " +
+                "so overrides on prefab instances might be lost after choosing to upgrade. Create a local copy " +
+                "or make sure to use version control before using the tool on game objects or scenes that are " +
+                "using prefab overrides.", MessageType.Warning);
+
             EditorGUILayout.Space();
             EditorGUILayout.Space();
         }

@@ -28,7 +28,7 @@ This tooling will find the AppX manifest after the Unity build is completed and 
 
 Prior to Unity 2019, when using Unity's build window, the capability will need to be manually added after the Unity build, as follows:
 1. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
-2. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_. If you don't see a _'GazeInput'_ capability, check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md#prerequisites) (in particular the Windows SDK version).
+2. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_. If you don't see a _'GazeInput'_ capability, check that your system meets the [prerequisites for using MRTK](../Installation.md#prerequisites) (in particular the Windows SDK version).
 
 _Please note:_
 You only have to do this if you build into a new build folder.

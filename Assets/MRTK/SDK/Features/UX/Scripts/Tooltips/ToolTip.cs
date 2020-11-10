@@ -377,13 +377,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 toolTipText = " ";
 
             backgrounds.Clear();
-            foreach (IToolTipBackground background in GetComponents(typeof(IToolTipBackground)))
+            foreach (IToolTipBackground background in GetComponents<IToolTipBackground>())
             {
                 backgrounds.Add(background);
             }
 
             highlights.Clear();
-            foreach (IToolTipHighlight highlight in GetComponents(typeof(IToolTipHighlight)))
+            foreach (IToolTipHighlight highlight in GetComponents<IToolTipHighlight>())
             {
                 highlights.Add(highlight);
             }

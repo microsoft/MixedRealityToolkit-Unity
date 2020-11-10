@@ -113,11 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 if (controllerType == null) { continue; }
 
                 Handedness handedness = controllerMapping.Handedness;
-                bool useCustomInteractionMappings = controllerMapping.HasCustomInteractionMappings;
                 SupportedControllerType supportedControllerType = controllerMapping.SupportedControllerType;
-
-                var controllerMappingProperty = controllerList.GetArrayElementAtIndex(i);
-                var handednessProperty = controllerMappingProperty.FindPropertyRelative("handedness");
 
                 ControllerMappingSignature currentSignature = new ControllerMappingSignature(supportedControllerType, handedness);
                 if(!controllersAffectedByMappingSignatures.ContainsKey(currentSignature))

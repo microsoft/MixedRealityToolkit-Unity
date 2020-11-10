@@ -16,7 +16,7 @@ MonoBehaviour:
   useManagerScene: 0
   managerScene:
     Name: DefaultManagerScene
-    Path: Assets/MRTK/SDK/StandardAssets/Scenes/DefaultManagerScene.unity
+    Path: Assets/MRTK/Services/SceneSystem/SceneSystemResources/DefaultManagerScene.unity
     Included: 0
     BuildIndex: -1
     Tag: Untagged
@@ -25,7 +25,7 @@ MonoBehaviour:
   defaultLightingSceneIndex: 0
   lightingScenes:
   - Name: DefaultLightingScene
-    Path: Assets/MRTK/SDK/StandardAssets/Scenes/DefaultLightingScene.unity
+    Path: Assets/MRTK/Services/SceneSystem/SceneSystemResources/DefaultLightingScene.unity
     Included: 0
     BuildIndex: -1
     Tag: Untagged

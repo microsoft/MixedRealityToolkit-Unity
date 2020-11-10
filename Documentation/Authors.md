@@ -2,6 +2,7 @@
 
 The Microsoft Mixed Reality Toolkit is a collaborative project containing contributions from individuals around the world. Our sincere thanks to all who have, and continue to contribute.
 
+- a-iafrate
 - achaperon
 - AdamMitchell-ms
 - againstlightning
@@ -13,6 +14,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Austin Ha
 - Bertrand Oustrière
 - Bertrand75014
+- brandf
 - Cameron-Micka
 - CDiaz-MS
 - chbecker-ms
@@ -43,7 +45,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - JoeyBytes
 - julenka
 - julesra
- -julianloehr-kg
+- julianloehr-kg
 - jwittner
 - Kent1LG
 - keveleigh
@@ -97,5 +99,6 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Weasy666
 - witian
 - wiwei
+- xwipeoutx
 - Yoyozilla
 - Zee2

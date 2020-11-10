@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 114102700686190618}
   - component: {fileID: 114225980339285346}
   - component: {fileID: 114917070612713698}
+  - component: {fileID: 5571717125842689191}
   m_Layer: 0
   m_Name: ParabolicPointer
   m_TagString: Untagged
@@ -113,6 +114,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -124,6 +126,7 @@ LineRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -424,13 +427,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70751eb9a4a4872b711b9d9ea27b3d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 1
   destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 4
     description: Pointer Pose
     axisConstraint: 7
+  handedness: 1
   cursorPrefab: {fileID: 1554777696564956, guid: ae2b3fffb00f464287cda86f49109b47,
     type: 3}
   disableCursorOnStart: 1
@@ -450,11 +453,10 @@ MonoBehaviour:
   pointerExtent: 20
   defaultPointerExtent: 20
   sphereCastRadius: 0.1
-  LineCastResolution: 15
   LineColorSelected:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0, g: 0, b: 1, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -482,8 +484,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 4
   LineColorValid:
     serializedVersion: 2
-    key0: {r: 0, g: 1, b: 0, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -499,8 +501,8 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 3277
-    atime2: 62258
+    atime1: 1311
+    atime2: 64224
     atime3: 65535
     atime4: 0
     atime5: 0
@@ -569,8 +571,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
+    key0: {r: 0.45882353, g: 0.7529412, b: 0.98039216, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -599,6 +601,7 @@ MonoBehaviour:
   lineBase: {fileID: 114203474425088848}
   lineRenderers:
   - {fileID: 114102700686190618}
+  LineCastResolution: 15
   teleportAction:
     id: 5
     description: Teleport
@@ -647,12 +650,113 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}
+  pointerAudioSource: {fileID: 5571717125842689191}
+  teleportRequestedClip: {fileID: 8300000, guid: a16c53885bdbc54469088880ea44a9fd,
+    type: 3}
+  teleportCompletedClip: {fileID: 8300000, guid: 06f9d598e90313646bbff63530142344,
+    type: 3}
   pointerOrientation: 0
   minParabolaVelocity: 5
   maxParabolaVelocity: 20
   minDistanceModifier: 1
   maxDistanceModifier: 20
   parabolicLineData: {fileID: 114203474425088848}
+--- !u!82 &5571717125842689191
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196247974088106}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.75
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 1
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1402685148736964
 GameObject:
   m_ObjectHideFlags: 0

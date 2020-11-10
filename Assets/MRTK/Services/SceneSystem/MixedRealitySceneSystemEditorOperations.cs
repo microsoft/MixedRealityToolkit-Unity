@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Returns the manager scene found in profile.
         /// </summary>
-        public SceneInfo ManagerScene => profile.ManagerScene;
+        public SceneInfo ManagerScene => Profile.ManagerScene;
 
         /// <summary>
         /// Returns all lighting scenes found in profile.
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Returns all content tags found in profile scenes.
         /// </summary>
-        public IEnumerable<string> ContentTags => profile.ContentTags;
+        public IEnumerable<string> ContentTags => Profile.ContentTags;
 
         // Cache these so we're not looking them up constantly
         private EditorBuildSettingsScene[] cachedBuildScenes = Array.Empty<EditorBuildSettingsScene>();
@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             // Update cached lighting settings, if the profile has requested it
-            if (profile.EditorLightingCacheUpdateRequested)
+            if (Profile.EditorLightingCacheUpdateRequested)
             {
                 updatingCachedLightingSettings = true;
                 updatingSettingsOnEditorChanged = true;
@@ -311,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 contentTracker.RefreshLoadedContent();
             }
 
-            EditorUtility.SetDirty(profile);
+            EditorUtility.SetDirty(Profile);
 
             updatingSettingsOnEditorChanged = false;
         }
@@ -321,10 +321,10 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void EditorCheckIfCachedLightingOutOfDate()
         {
-            DateTime cachedLightingTimestamp = profile.GetEarliestLightingCacheTimestamp();
+            DateTime cachedLightingTimestamp = Profile.GetEarliestLightingCacheTimestamp();
             bool outOfDate = false;
 
-            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            foreach (SceneInfo lightingScene in Profile.LightingScenes)
             {
                 if (FileModificationWarning.ModifiedAssetPaths.Contains(lightingScene.Path))
                 {
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             if (outOfDate)
             {
-                profile.SetLightingCacheDirty();
+                Profile.SetLightingCacheDirty();
             }
         }
 
@@ -350,12 +350,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private async Task EditorUpdateCachedLighting()
         {
             // Clear out our lighting cache
-            profile.ClearLightingCache();
-            profile.EditorLightingCacheUpdateRequested = false;
+            Profile.ClearLightingCache();
+            Profile.EditorLightingCacheUpdateRequested = false;
 
-            SceneInfo defaultLightingScene = profile.DefaultLightingScene;
+            SceneInfo defaultLightingScene = Profile.DefaultLightingScene;
 
-            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            foreach (SceneInfo lightingScene in Profile.LightingScenes)
             {
                 // Load all our lighting scenes
                 Scene scene;
@@ -365,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             // Wait for a moment so all loaded scenes have time to get set up
             await Task.Delay(100);
 
-            foreach (SceneInfo lightingScene in profile.LightingScenes)
+            foreach (SceneInfo lightingScene in Profile.LightingScenes)
             {
                 Scene scene;
                 EditorSceneUtils.GetSceneIfLoaded(lightingScene, out scene);
@@ -406,7 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                     }
                 }
 
-                profile.SetLightingCache(lightingScene, lightingSettings, renderSettings, sunlightSettings);
+                Profile.SetLightingCache(lightingScene, lightingSettings, renderSettings, sunlightSettings);
             }
         }
 
@@ -415,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void EditorUpdateContentScenes(bool activeSceneDirty)
         {
-            if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
+            if (!Profile.UseLightingScene || !Profile.EditorManageLoadedScenes)
             {   // Nothing to do here
                 return;
             }
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             bool contentSceneIsActive = false;
             SceneInfo firstLoadedContentScene = SceneInfo.Empty;
 
-            foreach (SceneInfo contentScene in profile.ContentScenes)
+            foreach (SceneInfo contentScene in Profile.ContentScenes)
             {
                 Scene scene;
                 if (EditorSceneUtils.GetSceneIfLoaded(contentScene, out scene))
@@ -463,15 +463,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void EditorUpdateManagerScene()
         {
-            if (!profile.UseManagerScene || !profile.EditorManageLoadedScenes)
+            if (!Profile.UseManagerScene || !Profile.EditorManageLoadedScenes)
             {   // Nothing to do here.
                 return;
             }
 
-            if (EditorSceneUtils.LoadScene(profile.ManagerScene, true, out Scene scene))
+            if (EditorSceneUtils.LoadScene(Profile.ManagerScene, true, out Scene scene))
             {
                 // If we're managing scene hierarchy, move this to the front
-                if (profile.EditorEnforceSceneOrder)
+                if (Profile.EditorEnforceSceneOrder)
                 {
                     Scene currentFirstScene = EditorSceneManager.GetSceneAt(0);
                     if (currentFirstScene.name != scene.name)
@@ -559,18 +559,18 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void EditorUpdateLightingScene(bool heirarchyDirty)
         {
-            if (!profile.UseLightingScene || !profile.EditorManageLoadedScenes)
+            if (!Profile.UseLightingScene || !Profile.EditorManageLoadedScenes)
             {
                 return;
             }
 
             if (string.IsNullOrEmpty(ActiveLightingScene))
             {
-                ActiveLightingScene = profile.DefaultLightingScene.Name;
+                ActiveLightingScene = Profile.DefaultLightingScene.Name;
             }
             else
             {
-                foreach (SceneInfo lightingScene in profile.LightingScenes)
+                foreach (SceneInfo lightingScene in Profile.LightingScenes)
                 {
                     if (lightingScene.Name == ActiveLightingScene)
                     {
@@ -579,13 +579,13 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         {
                             EditorSceneUtils.CopyLightingSettingsToActiveScene(scene);
 
-                            if (profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
+                            if (Profile.EditorEnforceLightingSceneTypes && heirarchyDirty)
                             {
                                 EditorEnforceLightingSceneTypes(scene);
                             }
                         }
 
-                        if (profile.EditorEnforceSceneOrder)
+                        if (Profile.EditorEnforceSceneOrder)
                         {   // If we're enforcing scene order, make sure this scene comes after the current scene
                             Scene currentFirstScene = EditorSceneManager.GetSceneAt(0);
                             EditorSceneManager.MoveSceneAfter(scene, currentFirstScene);
@@ -610,7 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             }
 
             List<Component> violations = new List<Component>();
-            if (EditorSceneUtils.EnforceSceneComponents(scene, profile.PermittedLightingSceneComponentTypes, violations))
+            if (EditorSceneUtils.EnforceSceneComponents(scene, Profile.PermittedLightingSceneComponentTypes, violations))
             {
                 Scene targetScene = default(Scene);
                 for (int i = 0; i < EditorSceneManager.sceneCount; i++)
@@ -668,15 +668,15 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// </summary>
         private void EditorUpdateBuildSettings()
         {
-            if (!profile.EditorManageBuildSettings)
+            if (!Profile.EditorManageBuildSettings)
             {   // Nothing to do here
                 return;
             }
 
-            if (profile.UseManagerScene)
+            if (Profile.UseManagerScene)
             {
                 if (EditorSceneUtils.AddSceneToBuildSettings(
-                    profile.ManagerScene,
+                    Profile.ManagerScene,
                     cachedBuildScenes,
                     EditorSceneUtils.BuildIndexTarget.First))
                 {
@@ -684,7 +684,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
             }
 
-            foreach (SceneInfo contentScene in profile.ContentScenes)
+            foreach (SceneInfo contentScene in Profile.ContentScenes)
             {
                 if (EditorSceneUtils.AddSceneToBuildSettings(
                     contentScene,
@@ -695,9 +695,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
             }
 
-            if (profile.UseLightingScene)
+            if (Profile.UseLightingScene)
             {
-                foreach (SceneInfo lightingScene in profile.LightingScenes)
+                foreach (SceneInfo lightingScene in Profile.LightingScenes)
                 {   // Make sure ALL lighting scenes are added to build settings
                     if (EditorSceneUtils.AddSceneToBuildSettings(
                         lightingScene,
@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             List<SceneInfo> allScenes = new List<SceneInfo>();
             Dictionary<string, List<int>> duplicates = new Dictionary<string, List<int>>();
 
-            foreach (SceneInfo sceneInfo in profile.LightingScenes)
+            foreach (SceneInfo sceneInfo in Profile.LightingScenes)
             {
                 if (!sceneInfo.IsEmpty)
                 {   // Don't bother with empty scenes, they'll be handled elsewhere.
@@ -729,7 +729,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
             }
 
-            foreach (SceneInfo sceneInfo in profile.ContentScenes)
+            foreach (SceneInfo sceneInfo in Profile.ContentScenes)
             {
                 if (!sceneInfo.IsEmpty)
                 {   // Don't bother with empty scenes, they'll be handled elsewhere.
@@ -737,9 +737,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 }
             }
 
-            if (profile.UseManagerScene && !profile.ManagerScene.IsEmpty)
+            if (Profile.UseManagerScene && !Profile.ManagerScene.IsEmpty)
             {
-                allScenes.Add(profile.ManagerScene);
+                allScenes.Add(Profile.ManagerScene);
             }
 
             if (EditorSceneUtils.CheckBuildSettingsForDuplicates(allScenes, duplicates))

@@ -489,6 +489,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         }
 
+        /// <summary>
+        /// This tests that the gaze pointer can be used to directly invoke the manipulation logic via simulated pointer events, used
+        /// for scenarios like voice-driven movement using the gaze pointer.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerGazePointerMove()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneHandedOnly;
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            var gazePointer = CoreServices.InputSystem.GazeProvider.GazePointer;
+            MixedRealityPointerEventData pointerDownData = new MixedRealityPointerEventData(UnityEngine.EventSystems.EventSystem.current);
+            pointerDownData.Initialize(gazePointer, MixedRealityInputAction.None, Microsoft.MixedReality.Toolkit.Utilities.Handedness.None);
+
+            manipHandler.OnPointerDown(pointerDownData);
+
+            Vector3 cameraMovement = new Vector3(2.1f, 0.4f, 0.2f);
+            CameraCache.Main.transform.position += cameraMovement;
+
+            yield return null;
+
+            MixedRealityPointerEventData pointerMoveData = new MixedRealityPointerEventData(UnityEngine.EventSystems.EventSystem.current);
+            pointerMoveData.Initialize(gazePointer, MixedRealityInputAction.None, Microsoft.MixedReality.Toolkit.Utilities.Handedness.None);
+            manipHandler.OnPointerDragged(pointerMoveData);
+
+            Vector3 expectedPosition = initialObjectPosition + cameraMovement;
+            TestUtilities.AssertAboutEqual(manipHandler.HostTransform.position, expectedPosition, "Camera movement translates to object movement from pointer updates");
+
+            MixedRealityPointerEventData pointerUpData = new MixedRealityPointerEventData(UnityEngine.EventSystems.EventSystem.current);
+            pointerUpData.Initialize(gazePointer, MixedRealityInputAction.None, Microsoft.MixedReality.Toolkit.Utilities.Handedness.None);
+            manipHandler.OnPointerUp(pointerUpData);
+
+            Vector3 cameraSecondMovement = new Vector3(-0.7f, 0.9f, 2.2f);
+            CameraCache.Main.transform.position += cameraSecondMovement;
+
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(manipHandler.HostTransform.position, expectedPosition, "Camera movement after releasing pointer does not continue to affect object");
+        }
 
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.

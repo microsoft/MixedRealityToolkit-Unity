@@ -105,12 +105,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates a bounds control at boundsControlStartCenter
         /// transform is at scale boundsControlStartScale
         /// </summary>
-        private BoundsControl InstantiateSceneAndDefaultBoundsControl()
+        private BoundsControl InstantiateSceneAndDefaultBoundsControl(GameObject target = null)
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = boundsControlStartCenter;
-            cube.transform.localScale = boundsControlStartScale;
-            BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
+            GameObject boundsControlGameObject;
+            if(target != null)
+            {
+                boundsControlGameObject = new GameObject();
+            }
+            else
+            {
+                boundsControlGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
+            boundsControlGameObject.transform.position = boundsControlStartCenter;
+            boundsControlGameObject.transform.localScale = boundsControlStartScale;
+            BoundsControl boundsControl = boundsControlGameObject.AddComponent<BoundsControl>();
+            if (target != null)
+            {
+                target.transform.parent = boundsControlGameObject.transform;
+                target.transform.localScale = Vector3.one;
+                target.transform.localPosition = Vector3.zero;
+                boundsControl.Target = target;
+            }
             TestUtilities.PlayspaceToOriginLookingForward();
             boundsControl.Active = true;
 
@@ -125,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             yield return null;
             yield return new WaitForFixedUpdate();
-            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
+            BoxCollider boxCollider = boundsControl.Target.GetComponent<BoxCollider>();
             var bounds = boxCollider.bounds;
             TestUtilities.AssertAboutEqual(bounds.center, boundsControlStartCenter, "bounds control incorrect center at start");
             TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
@@ -140,11 +155,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator BoundsControlInstantiate()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            Assert.IsNotNull(boundsControl, "Bounds control creation failed!");
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            Assert.IsNotNull(boundsControl);
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Verify correct collider attachment for handles after bounds control instantiation
+        /// </summary>
+        [UnityTest]
+        public IEnumerator HandleColliderInstantiation([ValueSource("handleTestData")] HandleTestData testData)
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            Assert.IsNotNull(boundsControl, "Bounds control creation failed!");
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
+            yield return null;
+
+            // get handle and their visuals and check if collider is only attached to the handle gameobject
+            // but not the handle visuals
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            Transform handle = rigRoot.transform.Find(testData.handleName);
+            Assert.IsNotNull(handle, "couldn't find handle");
+            Transform handleVisual = rigRoot.transform.Find(testData.handleVisualPath);
+            Assert.IsNotNull(handleVisual, "couldn't find handle visual");
+
+            Assert.IsNotNull(handle.GetComponent<Collider>(), "Handle should have collider.");
+            Assert.IsNull(handleVisual.GetComponent<Collider>(), "Visual should not have collider.");
+
             yield return null;
         }
 
@@ -379,6 +421,59 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test bounds control rotation via motion controller
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where ray points on the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.122f, -0.201f, 0.518f); // position of motion controller for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestMotionController motionController = new TestMotionController(Handedness.Left);
+            yield return motionController.Show(pointOnCube); // Initially make sure that ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return motionController.MoveTo(rightFrontRotationHandlePoint);
+            SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return motionController.SetState(buttonState);
+            // move to left side of cube
+            yield return motionController.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 54f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+            yield return null;
+        }
+
+        /// <summary>
         /// Test bounds control rotation via far interaction, while moving extremely slowly.
         /// Rotation amount should be coherent even with extremely small per-frame motion
         /// </summary>
@@ -426,6 +521,69 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via motion controller, while moving extremely slowly.
+        /// Rotation amount should be coherent even with extremely small per-frame motion
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateVerySlowlyViaMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where ray points on the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.122f, -0.201f, 0.518f); // position of motion controller for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestMotionController motionController = new TestMotionController(Handedness.Left);
+            yield return motionController.Show(pointOnCube); // Initially make sure that ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return motionController.MoveTo(rightFrontRotationHandlePoint);
+            SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return motionController.SetState(buttonState);
+
+            // First, we make a series of very very tiny movements, as if the user
+            // is making very precise adjustments to the rotation. If the rotation is
+            // being calculated per-frame instead of per-manipulation-event, this should
+            // induce drift/error.
+            for (int i = 0; i < 50; i++)
+            {
+                yield return motionController.MoveTo(Vector3.Lerp(rightFrontRotationHandlePoint, endRotation, (1 / 1000.0f) * i));
+            }
+
+            // Move the rest of the way very quickly.
+            yield return motionController.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            boundsControl.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 54f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -571,8 +729,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BoundsControl control = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(control);
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // move camera to look at rotation sphere
             CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
@@ -604,9 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -636,6 +793,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObject.Destroy(boundsControl.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests scaling of bounds control by grabbing a corner with the motion controller
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            Vector3 rightCornerInteractionPoint = new Vector3(0.1673f, 0.121f, 0.7813f); // position of motion controller for interacting with front right corner 
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where ray points on the test cube
+            Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for motion controller scaling
+
+            TestMotionController motionController = new TestMotionController(Handedness.Left);
+            yield return motionController.Show(pointOnCube); // Initially make sure that ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return motionController.MoveTo(rightCornerInteractionPoint);
+            SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return motionController.SetState(buttonState);
+            yield return motionController.MoveTo(scalePoint);
+            var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.022f, 0.022f, 1.478f);
+            Vector3 expectedSize = Vector3.one * 0.543f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+
             yield return null;
         }
 
@@ -690,6 +890,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// This tests the minimum and maximum scaling for the bounds control when target is its child.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleChildTargetMinMax()
+        {
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            var target = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl(target);
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            var scaleHandler = boundsControl.EnsureComponent<MinMaxScaleConstraint>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+
+            Vector3 initialScale = boundsControl.Target.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = boundsControl.Target.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(initialScale, boundsControl.Target.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, boundsControl.Target.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return hand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum * 2, -scaleHandler.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, boundsControl.Target.transform.localScale);
+        }
+
+        /// <summary>
         /// Uses far interaction (HoloLens 1 style) to scale the bounds control
         /// </summary>
         [UnityTest]
@@ -698,8 +944,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
             BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
@@ -725,9 +972,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -766,6 +1011,57 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
+
+        /// <summary>
+        /// Test bounds control translation via motion controller
+        /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TranslateViaMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+            boundsControl.TranslationHandlesConfig.ShowHandleForX = true;
+            boundsControl.SmoothingActive = false;
+            boundsControl.transform.position = new Vector3(-1.0f, 0.0f, 1.5f);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where ray points on the test cube
+            Vector3 transformHandlePosition = new Vector3(-0.538f, -0.313f, 0.31f);
+            Vector3 endPosition = new Vector3(0.497f, -0.188f, 0.499f);
+
+            TestMotionController motionController = new TestMotionController(Handedness.Right);
+            yield return motionController.Show(pointOnCube); // Initially make sure that ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return motionController.MoveTo(transformHandlePosition);
+            SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return motionController.SetState(buttonState);
+            // move to left side of cube
+            yield return motionController.MoveTo(endPosition);
+
+            // make sure translation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0.035f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            TestUtilities.AssertAboutEqual(boundsControl.transform.position, expectedPosition, "cube didn't move as expected");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.localScale, expectedSize, "cube scaled while translating");
+            TestUtilities.AssertAboutEqual(boundsControl.transform.rotation, Quaternion.identity, "cube rotated while translating");
+
+            GameObject.Destroy(boundsControl.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
+
+            yield return null;
+        }
+
         /// <summary>
         /// Test bounds control translation via near interaction
         /// Verifies gameobject has translation in one axis only applied and no other transform changes happen during interaction
@@ -814,8 +1110,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return VerifyInitialBoundsCorrect(control);
             control.TranslationHandlesConfig.ShowHandleForZ = true;
             control.SmoothingActive = false;
-            PlayModeTestUtilities.PushControllerSimulationProfile();
-            PlayModeTestUtilities.SetControllerSimulationMode(ControllerSimulationMode.HandGestures);
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.HandGestures;
 
             // move camera to look at translation sphere
             Transform transformHandle = control.gameObject.transform.Find("rigRoot/faceCenter_2");
@@ -842,9 +1139,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
-            // Restore the input simulation profile
-            PlayModeTestUtilities.PopControllerSimulationProfile();
-
+            iss.ControllerSimulationMode = oldSimMode;
             yield return null;
         }
 
@@ -2099,6 +2394,114 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, boundsControlStartCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, boundsControlStartScale, "endBounds incorrect size");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test starting and ending manipulating an object via the app bar
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulateViaAppBarMotionController()
+        {
+            // Switch to motion controller
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldSimMode = iss.ControllerSimulationMode;
+            iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
+
+            // create cube with bounds control and app bar
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = boundsControlStartCenter;
+            BoundsControl boundsControl = cube.AddComponent<BoundsControl>();
+
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            boundsControl.transform.localScale = boundsControlStartScale;
+            Object appBarPrefab = AssetDatabase.LoadAssetAtPath(appBarPrefabLink, typeof(Object));
+            Assert.IsNotNull(appBarPrefab, "Couldn't load app bar prefab from assetdatabase");
+            GameObject appBarGameObject = Object.Instantiate(appBarPrefab) as GameObject;
+            Assert.IsNotNull(appBarGameObject, "Couldn't instantiate appbar prefab");
+            appBarGameObject.SetActive(false);
+            AppBar appBar = appBarGameObject.GetComponent<AppBar>();
+            Assert.IsNotNull(appBar, "Couldn't find AppBar component in prefab");
+
+            appBarGameObject.transform.localScale = Vector3.one * 5.0f;
+            appBar.Target = boundsControl;
+            appBarGameObject.SetActive(true);
+
+            // manipulation coords
+            Vector3 rightCornerInteractionPoint = new Vector3(0.1659f, 0.123f, 0.79f); // position of motion controller for far interacting with front right corner 
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where ray points on the test cube
+            Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for motion controller scaling
+            Vector3 appBarButtonStart = new Vector3(-0.12f, -0.435f, 0.499f); // location of motion controller for interaction with the app bar manipulation button after scene setup
+            Vector3 appBarButtonAfterScale = new Vector3(-0.075f, -0.414f, 0.499f); // location of the motion controller for interaction with the app bar manipulation button after scaling
+
+            // first test to interact with the cube without activating the app bar
+            // this shouldn't scale the cube
+            TestMotionController motionController = new TestMotionController(Handedness.Left);
+            yield return motionController.Show(pointOnCube); // Initially make sure that ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return motionController.MoveTo(rightCornerInteractionPoint);
+            SimulatedMotionControllerButtonState selectButtonState = new SimulatedMotionControllerButtonState()
+            {
+                IsSelecting = true
+            };
+            yield return motionController.SetState(selectButtonState);
+            yield return motionController.MoveTo(scalePoint);
+            yield return motionController.SetState(new SimulatedMotionControllerButtonState());
+            var endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(endBounds.center, boundsControlStartCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, boundsControlStartScale, "endBounds incorrect size");
+
+            // now activate the bounds control via app bar
+            yield return motionController.MoveTo(appBarButtonStart);
+            yield return motionController.Click();
+
+            // check if we can scale the box now
+            yield return motionController.MoveTo(pointOnCube); // make sure our ray is on the cube again before moving to the scale corner
+            yield return motionController.MoveTo(rightCornerInteractionPoint); // move to scale corner
+            yield return motionController.SetState(selectButtonState);
+            yield return motionController.MoveTo(scalePoint);
+            yield return motionController.SetState(new SimulatedMotionControllerButtonState());
+            endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedScaleCenter = new Vector3(0.023f, 0.023f, 1.477f);
+            Vector3 expectedScaleSize = Vector3.one * 0.546f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedScaleCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedScaleSize, "endBounds incorrect size");
+
+            // deactivate the bounds control via app bar
+            yield return motionController.MoveTo(appBarButtonAfterScale);
+            yield return motionController.Click();
+
+            // check if we can scale the box - box shouldn't scale
+            Vector3 startScaleLocation = new Vector3(0.173f, 0.104f, 0.499f);
+            Vector3 endScaleLocation = new Vector3(0.406f, 0.271f, 0.499f);
+            yield return motionController.MoveTo(pointOnCube); // make sure our ray is on the cube again before moving to the scale corner
+            yield return motionController.MoveTo(startScaleLocation); // move to scale corner
+            yield return motionController.SetState(selectButtonState);
+            yield return motionController.MoveTo(endScaleLocation);
+            yield return motionController.SetState(new SimulatedMotionControllerButtonState());
+            endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedScaleCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedScaleSize, "endBounds incorrect size");
+
+            // activate the bounds control via app bar
+            yield return motionController.MoveTo(appBarButtonAfterScale);
+            yield return motionController.Click();
+
+            // try again to scale the box back
+            yield return motionController.MoveTo(pointOnCube); // make sure our ray is on the cube again before moving to the scale corner
+            yield return motionController.MoveTo(startScaleLocation); // move to scale corner
+            yield return motionController.SetState(selectButtonState);
+            yield return motionController.MoveTo(endScaleLocation);
+            yield return motionController.SetState(new SimulatedMotionControllerButtonState());
+            endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.089f, 0.089f, 1.411f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * 0.679f, "endBounds incorrect size");
+
+            yield return null;
+
+            // Restore the input simulation profile
+            iss.ControllerSimulationMode = oldSimMode;
 
             yield return null;
         }

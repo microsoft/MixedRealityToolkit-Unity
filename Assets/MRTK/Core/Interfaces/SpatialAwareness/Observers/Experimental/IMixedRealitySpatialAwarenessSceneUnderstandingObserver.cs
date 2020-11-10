@@ -26,19 +26,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         void SaveScene(string filenamePrefix);
 
         /// <summary>
-        /// 
+        /// Finds best placement position in local space to the quad
         /// </summary>
-        /// <param name="quadGuid"></param>
-        /// <param name="forSize"></param>
-        /// <param name="bestLocationOnPlane"></param>
-        /// <returns></returns>
+        /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
+        /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
+        /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
+        /// <returns>Returns false if a centermost placement location cannot be found.</returns>
         bool TryFindCentermostPlacement(
-            Guid quadGuid, 
-            Vector2 forSize, 
-            out Vector3 bestLocationOnPlane);
+            Guid quadGuid,
+            Vector2 objExtents,
+            out Vector3 placementPosOnQuad);
 
         /// <summary>
-        /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.
+        /// The set of SpatialAwarenessSceneObjects being managed by the observer, keyed by a unique id.
         /// </summary>
         IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
 
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When enabled, the service will provide surface planes, represented as a quad.
         /// </summary>
         /// <remarks>
-        /// Use <see cref="PlaneValidationMask"/> for the validation mask on the quad.
+        /// Use PlaneValidationMask for the validation mask on the quad.
         /// </remarks>
         bool RequestPlaneData { get; set; }
 

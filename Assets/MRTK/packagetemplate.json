@@ -14,7 +14,7 @@
         "xr",
         "hololens"
     ],
-    "author": "Microsoft Corporation",
+    "author": "Microsoft",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -31,6 +31,18 @@
         "Providers*",
         "SDK*",
         "Services*",
-        "package.json.meta"
+        "package.json.meta",
+        "LICENSE*",
+        "NOTICE*",
+        "CHANGELOG*",
+        "Documentation~*",
+        "Samples~"
+    ],
+    "samples": [
+        {
+          "displayName": "Scene System Resources",
+          "description": "Resources used by the MRTK Scene System",
+          "path": "Samples~/SceneSystemResources"
+        }
     ]
 }

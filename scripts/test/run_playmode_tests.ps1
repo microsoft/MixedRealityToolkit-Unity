@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
  # Runs the playmode tests in batch mode. This is the same technique as 
  # used by the MRTK PR validation when you do "/azp run mrtk_pr" on github.

@@ -18,6 +18,7 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Input.Editor;
 using UnityEditor;
 #endif
 
@@ -36,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
         private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
+
+        private bool isProfileSwitching = false;
 
         #region Mixed Reality Toolkit Profile configuration
 
@@ -80,11 +83,16 @@ namespace Microsoft.MixedReality.Toolkit
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
         /// </summary>
         /// <remarks>
+        /// If changing the Active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/> is desired, 
+        /// call the static funtion <see cref="SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)"/> instead.
         /// When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
         /// first Update() of all services.
-        /// A noticable application hesitation may occur during this process. Also any scripts with high priority than this can enter its Update
-        /// before the new profiles are properly setup.
+        /// A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
+        /// before the new profile is properly setup. Special handling required for Unity UI.
+        /// You are strongly recommended to see 
+        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// for more information on profile switching.
         /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
@@ -106,6 +114,23 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Set the active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/>
+        /// </summary>
+        /// <remarks>
+        /// If changing the Active profile during runtime is desired, modify <see cref="ActiveProfile"/> of the active instance directly.
+        /// This function requires the caller script to be executed earlier than the <see cref="MixedRealityToolkit"/> script, which can be achieved by setting 
+        /// <see href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</see>.
+        /// You are strongly recommended to see 
+        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// for more information on profile switching.
+        /// </remarks>
+        public static void SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile profile)
+        {
+            MixedRealityToolkit toolkit = FindObjectOfType<MixedRealityToolkit>();
+            toolkit.activeProfile = profile;
         }
 
         /// <summary>
@@ -400,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 DebugUtilities.LogVerbose("Begin registration of the input system");
 
+#if UNITY_EDITOR
+                // Make sure unity axis mappings are set.	
+                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
                 object[] args = { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || CoreServices.InputSystem == null)
                 {
@@ -421,6 +451,12 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 DebugUtilities.LogVerbose("End registration of the input system");
+            }
+            else
+            {
+#if UNITY_EDITOR
+                InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -672,10 +708,11 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 // Before any Update() of a service is performed check to see if we need to switch profile
                 // If so we instantiate and initialize the services associated with the new profile.
-                if (newProfile != null)
+                if (newProfile != null && isProfileSwitching)
                 {
                     InitializeNewProfile(newProfile);
                     newProfile = null;
+                    isProfileSwitching = false;
                 }
                 UpdateAllServices();
             }
@@ -691,6 +728,7 @@ namespace Microsoft.MixedReality.Toolkit
                 if (newProfile != null)
                 {
                     RemoveCurrentProfile(newProfile);
+                    isProfileSwitching = true;
                 }
             }
         }

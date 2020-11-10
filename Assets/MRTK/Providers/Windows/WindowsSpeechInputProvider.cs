@@ -134,6 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                 InitializeKeywordRecognizer();
                 StartRecognition();
             }
+
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private void InitializeKeywordRecognizer()
@@ -180,6 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 if (keywordRecognizer != null && keywordRecognizer.IsRunning)
                 {
                     for (int i = 0; i < Commands.Length; i++)
@@ -205,6 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
 
             keywordRecognizer = null;
+
+            base.Disable();
         }
 
         /// <inheritdoc />

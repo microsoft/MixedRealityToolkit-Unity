@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 }
 
-                if (cameraControl != null && CameraCache.Main)
+                if (cameraControl != null && CameraCache.Main  != null)
                 {
                     cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
                 }
@@ -425,6 +425,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (cameraControl == null)
             {
                 cameraControl = new ManualCameraControl(InputSimulationProfile);
+            
+                if (CameraCache.Main != null)
+                {
+                    cameraControl.SetInitialTransform(CameraCache.Main.transform);
+                }
             }
         }
 

@@ -204,14 +204,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Frame-rate independent smoothing for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.")]
-        private bool smoothingNear = false;
+        [Tooltip("Frame-rate independent smoothing for near interactions. Note that enabling near smoothing may be perceived as being 'disconnected' from the hand.")]
+        private bool smoothingNear = true;
 
         /// <summary>
         /// Whether to enable frame-rate independent smoothing for near interactions.
         /// </summary>
         /// <remarks>
-        /// Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.
+        /// Note that enabling near smoothing may be perceived as being 'disconnected' from the hand.
         /// </remarks>
         public bool SmoothingNear
         {
@@ -259,6 +259,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get => scaleLerpTime;
             set => scaleLerpTime = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Enable or disable constraint support of this component. When enabled transform " +
+            "changes will be post processed by the linked constraint manager.")]
+        private bool enableConstraints = true;
+        /// <summary>
+        /// Enable or disable constraint support of this component. When enabled, transform
+        /// changes will be post processed by the linked constraint manager.
+        /// </summary>
+        public bool EnableConstraints
+        {
+            get => enableConstraints;
+            set => enableConstraints = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Constraint manager slot to enable constraints when manipulating the object.")]
+        private ConstraintManager constraintsManager;
+        /// <summary>
+        /// Constraint manager slot to enable constraints when manipulating the object.
+        /// </summary>
+        public ConstraintManager ConstraintsManager
+        {
+            get => constraintsManager;
+            set => constraintsManager = value;
         }
 
         [SerializeField]
@@ -368,8 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool wasGravity = false;
         private bool wasKinematic = false;
 
-        private ConstraintManager constraints;
-
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
@@ -391,7 +415,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void Start()
         {
             rigidBody = HostTransform.GetComponent<Rigidbody>();
-            constraints = gameObject.EnsureComponent<ConstraintManager>();
+            if (constraintsManager == null && EnableConstraints)
+            {
+                constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
+            }
         }
 
         #endregion
@@ -663,12 +690,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
             {
                 targetTransform.Scale = scaleLogic.UpdateMap(handPositionArray);
-                constraints.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
+                if (EnableConstraints && constraintsManager != null)
+                {
+                    constraintsManager.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
+                }
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
             {
                 targetTransform.Rotation = rotateLogic.Update(handPositionArray, targetTransform.Rotation);
-                constraints.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
+                if (EnableConstraints && constraintsManager != null)
+                {
+                    constraintsManager.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
+                }
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
@@ -677,7 +710,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // look-rotation-based pointer pose is used.
                 MixedRealityPose pose = IsNearManipulation() ? new MixedRealityPose(GetPointersGrabPoint()) : GetPointersPose();
                 targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
-                constraints.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
+                if (EnableConstraints && constraintsManager != null)
+                {
+                    constraintsManager.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
+                }
             }
 
             ApplyTargetTransform(targetTransform);
@@ -708,19 +744,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-            constraints.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
+            if (EnableConstraints && constraintsManager != null)
+            {
+                constraintsManager.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
+            }
 
             Quaternion gripRotation;
             TryGetGripRotation(pointer, out gripRotation);
             targetTransform.Rotation = gripRotation * objectToGripRotation;
 
-            constraints.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
+            if (EnableConstraints && constraintsManager != null)
+            {
+                constraintsManager.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
+            }
 
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
 
-            constraints.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
+            if (EnableConstraints && constraintsManager != null)
+            {
+                constraintsManager.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
+            }
 
             ApplyTargetTransform(targetTransform);
         }
@@ -754,7 +799,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigidBody.isKinematic = false;
             }
 
-            constraints.Initialize(new MixedRealityTransform(HostTransform));
+            if (EnableConstraints && constraintsManager != null)
+            {
+                constraintsManager.Initialize(new MixedRealityTransform(HostTransform));
+            }
             if (elasticsManager != null)
             {
                 elasticsManager.EnableElasticsUpdate = false;
@@ -936,7 +984,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            for (int i = 0; i < (pointer.Controller?.Interactions?.Length ?? 0); i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
                 {

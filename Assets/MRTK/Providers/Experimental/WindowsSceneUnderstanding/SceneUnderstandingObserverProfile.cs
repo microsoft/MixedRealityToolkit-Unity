@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [Tooltip("Controls the amount of polygons returned for the mesh")]
         private SpatialAwarenessMeshLevelOfDetail worldMeshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Medium;
         /// <summary>
-        /// The amount of detail applied to the <see cref="BoundlessSRMesh"/> and/or <see cref="GeneratePlanarMeshes"/>.
+        /// The amount of detail applied to the BoundlessSRMesh and/or GeneratePlanarMeshes.
         /// </summary>
         public SpatialAwarenessMeshLevelOfDetail WorldMeshLevelOfDetail => worldMeshLevelOfDetail;
 

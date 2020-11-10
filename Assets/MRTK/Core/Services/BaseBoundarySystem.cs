@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             CeilingPhysicsLayer = BoundaryProfile.CeilingPhysicsLayer;
         }
 
+        /// <summary>
+        /// Whether any XR device is present.
+        /// </summary>
+        protected virtual bool IsXRDevicePresent { get; } = true;
+
         #region IMixedRealityService Implementation
 
         private MixedRealityBoundaryVisualizationProfile BoundaryProfile { get; }
@@ -56,11 +61,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
+            base.Initialize();
+
             // The profile needs to be read on initialization to ensure that re-initialization
             // after profile change reads the correct data.
             ReadProfile();
 
-            if (!Application.isPlaying) { return; }
+            if (!Application.isPlaying || !IsXRDevicePresent) { return; }
 
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
@@ -164,6 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             showCeiling = false;
 
             RaiseBoundaryVisualizationChanged();
+
+            base.Destroy();
         }
 
 

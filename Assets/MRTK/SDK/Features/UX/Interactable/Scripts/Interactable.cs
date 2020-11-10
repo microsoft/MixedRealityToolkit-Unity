@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        rollOffTimer = rollOffTime;
+                        rollOffTimer = RollOffTime;
                     }
 
                     SetState(InteractableStates.InteractableStateEnum.Focus, value);
@@ -564,9 +564,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
-        // allows for switching colliders without firing a lose focus immediately
-        // for advanced controls like drop-downs
-        protected float rollOffTime = 0.25f;
+        /// <summary>
+        /// Allows for switching colliders without firing a lose focus immediately for advanced controls like drop-downs
+        /// </summary>
+        public float RollOffTime { get; protected set; } = 0.25f;
         protected float rollOffTimer = 0.25f;
 
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
@@ -679,11 +680,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InternalUpdate()
         {
-            if (rollOffTimer < rollOffTime && HasPress)
+            if (rollOffTimer < RollOffTime && HasPress)
             {
                 rollOffTimer += Time.deltaTime;
 
-                if (rollOffTimer >= rollOffTime)
+                if (rollOffTimer >= RollOffTime)
                 {
                     HasPress = false;
                     HasGesture = false;
@@ -756,9 +757,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             InputAction = ResolveInputAction(InputActionId);
 
-            CurrentDimension = startDimensionIndex;
-
             RefreshSetup();
+
+            CurrentDimension = startDimensionIndex;
+            IsToggled = CurrentDimension > 0;
 
             IsEnabled = enabledOnStart;
         }
@@ -1229,9 +1231,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A public way to trigger or route an onClick event from an external source, like PressableButton
         /// </summary>
-        public void TriggerOnClick()
+        /// <param name="force">Force the click without checking CanInteract(). Does not override IsEnabled and only applies to toggle.</param>
+        public void TriggerOnClick(bool force = false)
         {
-            if (!IsEnabled)
+            if (!IsEnabled || (!force && !CanInteract()))
             {
                 return;
             }
@@ -1508,7 +1511,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus))
+            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus) && CanInteract())
             {
                 StartGlobalVisual(true);
                 HasVoiceCommand = true;

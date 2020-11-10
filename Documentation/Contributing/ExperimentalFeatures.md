@@ -63,7 +63,7 @@ Adding a component menu:
 
 Follow these steps to add documentation for your experimental feature:
 
-1. Any documentation for an experimental feature should go in a `README.md` file in the experimental folder. For example, [`MRTK/SDK/Experimental/ScrollingObjectCollection/README.md`](../../Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.md).
+1. Any documentation for an experimental feature should go in a `README.md` file in the experimental folder. For example, [`MRTK/SDK/Experimental/PulseShader/README.md`](../../Assets/MRTK/SDK/Experimental/PulseShader/README.md).
 
 1. Under *Feature Overviews* Add a link in the *Experimental* section at [`Documentation/toc.yml`](../toc.yml).
 

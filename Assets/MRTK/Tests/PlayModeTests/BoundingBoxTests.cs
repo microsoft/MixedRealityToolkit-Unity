@@ -45,22 +45,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a bounding box at 0, 0, -1.5f
         /// box is at scale .5, .5, .5
+        /// Target is set to its child if targetIsChild is true
         /// </summary>
-        private BoundingBox InstantiateSceneAndDefaultBbox()
+        private BoundingBox InstantiateSceneAndDefaultBbox(GameObject target = null)
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = boundingBoxStartCenter;
-            BoundingBox bbox = cube.AddComponent<BoundingBox>();
+            GameObject bboxGameObject;
+            if (target != null)
+            {
+                bboxGameObject = new GameObject();
+            }
+            else
+            {
+                bboxGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
+            bboxGameObject.transform.position = boundingBoxStartCenter;
+            bboxGameObject.transform.localScale = boundingBoxStartScale;
+            BoundingBox bbox = bboxGameObject.AddComponent<BoundingBox>();
+            if (target != null)
+            {
+                target.transform.parent = bboxGameObject.transform;
+                target.transform.localScale = Vector3.one;
+                target.transform.localPosition = Vector3.zero;
+                bbox.Target = target;
+            }
 
             MixedRealityPlayspace.PerformTransformation(
             p =>
             {
                 p.position = Vector3.zero;
-                p.LookAt(cube.transform.position);
+                p.LookAt(bboxGameObject.transform.position);
             });
 
-            bbox.Target = cube;
-            bbox.transform.localScale = boundingBoxStartScale;
             bbox.Active = true;
 
             return bbox;
@@ -328,6 +343,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// This tests the minimum and maximum scaling for the bounding box when target is a child of the box.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleChildTargetMinMax()
+        {
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            var target = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var bbox = InstantiateSceneAndDefaultBbox(target);
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+            yield return null;
+
+            Vector3 initialScale = bbox.Target.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(initialScale, bbox.Target.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
+            
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, bbox.Target.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return hand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum * 2, -scaleHandler.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, bbox.Target.transform.localScale);
+        }
+
+        /// <summary>
         /// Uses far interaction (HoloLens 1 style) to scale the bounding box
         /// </summary>
         [UnityTest]
@@ -363,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.Move(delta);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
-            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center", 0.02f);
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
             GameObject.Destroy(bbox.gameObject);
@@ -418,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
-            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center", 0.02f);
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
             GameObject.Destroy(bbox.gameObject);

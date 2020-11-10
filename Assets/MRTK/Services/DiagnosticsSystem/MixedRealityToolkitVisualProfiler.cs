@@ -378,14 +378,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
-                    if (defaultInstancedMaterial != null)
+                    if (defaultInstancedMaterial != null && SystemInfo.supportsInstancing)
                     {
                         frameInfoPropertyBlock.SetMatrix(parentMatrixID, parentLocalToWorldMatrix);
                         Graphics.DrawMeshInstanced(quadMesh, 0, defaultInstancedMaterial, frameInfoMatrices, frameInfoMatrices.Length, frameInfoPropertyBlock, UnityEngine.Rendering.ShadowCastingMode.Off, false);
                     }
                     else
                     {
-                        // If a instanced material is not available, fall back to non-instanced rendering.
+                        // If a instanced material is not available or instancing isn't supported, fall back to non-instanced rendering.
                         for (int i = 0; i < frameInfoMatrices.Length; ++i)
                         {
                             frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
