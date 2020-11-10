@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     if (rigRoot != null)
                     {
                         rigRoot.parent = targetObject.transform;
-                        OnTargetBoundsChanged();
+                        UpdateBounds();
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         prevBoundsOverride = new Bounds();
                     }
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (boundsCalculationMethod != value)
                 {
                     boundsCalculationMethod = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -634,6 +634,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
+        }
+
+        /// <summary>
+        /// Update the bounds.
+        /// Call this function after modifying the transform of the target externally to make sure the bounds are also updated accordingly.
+        /// </summary>
+        public void UpdateBounds()
+        {
+            DetermineTargetBounds();
+            UpdateExtents();
+            UpdateVisuals();
         }
 
         #endregion
@@ -1251,13 +1262,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     } 
                 }
             }
-        }
-        
-        private void OnTargetBoundsChanged()
-        {
-            DetermineTargetBounds();
-            UpdateExtents();
-            UpdateVisuals();
         }
 
         #endregion Private Methods
