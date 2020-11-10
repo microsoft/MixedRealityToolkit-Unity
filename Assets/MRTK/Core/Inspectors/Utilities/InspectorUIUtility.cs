@@ -654,7 +654,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         if (prefabStage != null)
                         {
                             var instancePath = AssetDatabase.GetAssetPath(scriptable.objectReferenceValue);
-                            isNestedInCurrentPrefab = (instancePath != "" && instancePath == prefabStage.prefabAssetPath);
+                            isNestedInCurrentPrefab = instancePath != "" &&
+#if UNITY_2020_1_OR_NEWER
+                                instancePath == prefabStage.assetPath
+#else
+                                instancePath == prefabStage.prefabAssetPath
+#endif
+                            ;
                         }
                         
                         
