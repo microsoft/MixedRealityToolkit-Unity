@@ -18,10 +18,6 @@ using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
 using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 #endif
 
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-
 #if WINDOWS_UWP
 using Windows.Perception;
 using Windows.Perception.People;
@@ -155,10 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private readonly Dictionary<uint, GenericXRSDKController> activeMotionControllers = new Dictionary<uint, GenericXRSDKController>();
 #endif
 
-        #endregion IMixedRealityCapabilityCheck Implementation
+#endregion IMixedRealityCapabilityCheck Implementation
 
 
-        #region Controller Utilities
+#region Controller Utilities
 #if HP_CONTROLLER_ENABLED
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindwosMixedRealityXRSDKDeviceManager.GetOrAddController");
 
@@ -313,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 {
                     return SupportedControllerType.WindowsMixedReality;
                 }
-#else                
+#else
                 return SupportedControllerType.WindowsMixedReality;
 #endif
             }
@@ -321,6 +317,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return base.GetCurrentControllerType(inputDevice);
         }
 
-        #endregion Controller Utilities
+#endregion Controller Utilities
     }
 }

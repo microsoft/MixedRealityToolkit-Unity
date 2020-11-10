@@ -76,18 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         case DeviceInputType.None:
                             break;
-                        case DeviceInputType.SpatialPointer:
-                            UpdatePointerData(interactionSourceState, Interactions[i]);
-                            break;
                         case DeviceInputType.Select:
                         case DeviceInputType.Trigger:
                         case DeviceInputType.TriggerTouch:
                         case DeviceInputType.TriggerPress:
                         case DeviceInputType.GripPress:
                             UpdateTriggerData(interactionSourceState, Interactions[i]);
-                            break;
-                        case DeviceInputType.SpatialGrip:
-                            UpdateGripData(interactionSourceState, Interactions[i]);
                             break;
                     }
                 }
@@ -100,6 +94,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             UpdateSourceData(interactionSourceState);
             UpdateVelocity(interactionSourceState);
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                switch (Interactions[i].InputType)
+                {
+                    case DeviceInputType.None:
+                        break;
+                    case DeviceInputType.SpatialPointer:
+                        UpdatePointerData(interactionSourceState, Interactions[i]);
+                        break;
+                    case DeviceInputType.SpatialGrip:
+                        UpdateGripData(interactionSourceState, Interactions[i]);
+                        break;
+                }
+            }
         }
 
         private static readonly ProfilerMarker UpdateVelocityPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");

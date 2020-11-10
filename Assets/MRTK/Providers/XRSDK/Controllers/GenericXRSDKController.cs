@@ -80,9 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         case AxisType.DualAxis:
                             UpdateDualAxisData(Interactions[i], inputDevice);
                             break;
-                        case AxisType.SixDof:
-                            UpdatePoseData(Interactions[i], inputDevice);
-                            break;
                     }
                 }
             }
@@ -127,6 +124,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 else if (!IsPositionAvailable && IsRotationAvailable)
                 {
                     CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                }
+            }
+
+            for (int i = 0; i < Interactions?.Length; i++)
+            {
+                switch (Interactions[i].AxisType)
+                {
+                    case AxisType.SixDof:
+                        UpdatePoseData(Interactions[i], inputDevice);
+                        break;
                 }
             }
         }
