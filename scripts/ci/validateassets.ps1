@@ -3,7 +3,7 @@
     Validates the asset files to ensure references flow along the allowed
     dependency chain (ex: Examples -> Foundation -> Standard Assets).
 .DESCRIPTION
-    This currently checks a subset of Unity serialized assets:
+    This script checks a subset of Unity serialized assets, including
 
     - Scenes (.unity)
     - Prefabs (.prefab)
@@ -21,7 +21,7 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    [Parameter(Mandatory=$true)]
+    #[Parameter(Mandatory=$true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -37,6 +37,8 @@ param(
     # The directory containing the repo root. Used in conjunction with ChangesFile
     [string]$RepoRoot
 )
+
+$Directory = "C:\git-os\dk\mrtk\depValidationCi\Assets"
 
 $Directory = Resolve-Path -Path $Directory
 
@@ -134,6 +136,59 @@ function IsArray {
 
 <#
 .SYNOPSIS
+    Given a string, determine if it is a valud GUID
+.DESCRIPTION
+    Attempts to parse the provided string into a Guid. Returns true if successful, otherwise false.
+    Note: This method defines an empty GUID (all 0) as being invalid.
+#>
+function IsValidGuid {
+    [CmdletBinding()]
+    param(
+        [string]$guid
+    )
+    process {
+        [System.Guid]$temp = [System.Guid]::Empty;
+        [bool] $isValid = [System.Guid]::TryParse($guid, [ref]$temp)
+        if ($isValid) {
+            $isValid = ($temp -ne [System.Guid]::Empty)
+        }
+
+        $isValid
+    }
+}
+
+<#
+.SYNOPSIS
+    Extracts a GUID, if present, from a string (expected format: "guid: <32-digits>").
+.DESCRIPTION
+    Returns the GUID identified or an empty string.
+#>function ExtractGuid {
+    [CmdletBinding()]
+    param(
+        [string]$text
+    )
+    process {
+        [string]$tag = "guid: "
+        [int] $tagLength = $tag.Length
+        [int] $guidStringLength = 32
+
+        $guid = ""
+        
+        if ($text.Contains($tag)) {
+            [int]$idx = $line.IndexOf($tag)
+            $guid = $text.Substring($idx + $tagLength, $guidStringLength)
+            $isValid = IsValidGuid($guid)
+            if (-not $isValid) {
+                $guid = ""
+            }
+        }
+
+        $guid        
+    }
+}
+
+<#
+.SYNOPSIS
     Reads a single GUID contained within a file.
 .DESCRIPTION
     This function returns the first GUID, when formatted as "guid: <32-digits>", found in the file.
@@ -143,18 +198,12 @@ function ReadSingleGuid {
     param(
         [System.IO.FileInfo]$file
     )
-    process {
-        [string]$tag = "guid: "
-        [int] $tagLength = $tag.Length
-        [int] $guidStringLength = 32
-        
+    process {      
         $guid = ""
         $fileContents = [System.IO.File]::ReadAllLines($file.FullName)
         foreach ($line in $fileContents.GetEnumerator()) {          
-            [int]$idx = $line.IndexOf($tag)
-            $guid = ""
-            if ($idx -ge 0) {
-                $guid = $line.Substring($idx + $tagLength, $guidStringLength)
+            $guid = ExtractGuid($line)
+            if ($guid -ne "") {
                 break
             }
         }
@@ -174,21 +223,17 @@ function ReadGuids {
         [System.IO.FileInfo]$file
     )
     process {
-        [string]$tag = "guid: "
-        [int] $tagLength = $tag.Length
-        [int] $guidStringLength = 32
-        
-        $guids = New-Object System.Collections.ArrayList
+        $guids = New-Object -TypeName System.Collections.ArrayList
         $fileContents = [System.IO.File]::ReadAllLines($file.FullName)
         foreach ($line in $fileContents.GetEnumerator()) {
-           
-            [int]$idx = $line.IndexOf($tag)
-            if ($idx -ge 0) {
-                $guid = $line.Substring($idx + $tagLength, $guidStringLength)
-                $guids.Add($guid)
-            }
-
+            $guid = ExtractGuid($line)
+            if ($guid -ne "") {
+                if (-not $guids.Contains($guid)) {
+                    $guids.Add($guid)
+                }
+            }      
         }
+
         $guids
     }
 }
@@ -206,8 +251,6 @@ function GatherGuids {
     [CmdletBinding()]
     param()
     process {
-        $guidTable = @{}
-
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
             Write-Output "Collecting files and GUIDs from $packageName"
@@ -232,7 +275,6 @@ function GatherGuids {
                 }     
             }
         }
-
     }
 }
 
@@ -244,55 +286,59 @@ function GatherGuids {
 .DESCRIPTION
     Reads the target assets and collects the dependency GUIDs.
 #>
-# function GatherDependencyGuids { 
-#     [CmdletBinding()]
-#     param()
-#     process {       
-#         foreach ($package in $packages.GetEnumerator()) {
-#             $packageName = $package.name
-#             Write-Output $packageName
+function GatherDependencyGuids { 
+    [CmdletBinding()]
+    param()
+    process {       
+        foreach ($package in $packages.GetEnumerator()) {
+            $packageName = $package.name
+            Write-Output $packageName
 
-#             foreach ($folder in $package.value.GetEnumerator()) {
-#                 $packageFolder = Join-Path $Directory $folder
+            foreach ($folder in $package.value.GetEnumerator()) {
+                $packageFolder = Join-Path $Directory $folder
 
-#                 foreach ($ext in $assetExtensions.GetEnumerator()) {
-#                     Write-Output $ext
+                foreach ($ext in $assetExtensions.GetEnumerator()) {
+                    Write-Output $ext
 
-#                     $assetFiles = Get-ChildItem -Path $packageFolder -Filter $ext -File -Recurse
-#                     if (-not $assetFiles) {
-#                         continue
-#                     }
+                    $assetFiles = Get-ChildItem -Path $packageFolder -Filter $ext -File -Recurse
+                    if (-not $assetFiles) {
+                        continue
+                    }
 
-#                     if (IsArray($assetFiles.GetType())){        
-#                         foreach ($asset in $assetFiles.GetEnumerator()) {
-#                             $assetName = $asset.FullName
-#                             Write-Output $assetName
-#                             $guids = ReadGuids($asset)
-#                             foreach ($g in $guids.GetEnumerator()) {
-#                                 Write-Output $g
-#                             }
-#                             # $dependencies.Add($asset, $guids)
-#                         }
-#                     }
-#                     else {
-#                         $guids = ReadGuids($assetFiles)
-#                         # $dependencies.Add($assetFiles, $guids)
-#                     }
-#                 }
-#             }
-#         }
+                    if (IsArray($assetFiles.GetType())){        
+                        foreach ($asset in $assetFiles.GetEnumerator()) {
+                            $assetName = $asset.FullName
+                            Write-Output $assetName
+                            $guids = ReadGuids($asset)
+                            # $assetDependencies.Add($asset, $guids)
+                            # $dependencies.Add($asset, $guids)
+                        }
+                    }
+                    else {
+                        $guids = ReadGuids($assetFiles)
+                        # $assetDependencies.Add($assetFiles, $guids)
+                        # $dependencies.Add($assetFiles, $guids)
+                    }
+                }
+            }
+        }
 
-#         $dependencies
-#     }
-# }
-
-GatherGuids
-foreach ($entry in $allFiles.GetEnumerator()){
-    $fileName = $entry.key
-    $guid = $entry.value
-    Write-Output "$fileName : $guid"
+        # $dependencies
+    }
 }
-Write-Output "---"
+
+# GatherGuids
+# foreach ($entry in $allFiles.GetEnumerator()){
+#     $fileName = $entry.key
+#     $guid = $entry.value
+#     Write-Output "$fileName : $guid"
+# }
+# Write-Output "---"
+$testGuids = ReadGuids("C:\git-os\dk\mrtk\depValidationCi\Assets\MRTK\Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity")
+foreach ($item in $testGuids) {
+    $isValid = IsValidGuid($item)
+    Write-Output "$item : $isValid"
+}
 # GatherDependencyGuids
 # Write-Output "---"
 
