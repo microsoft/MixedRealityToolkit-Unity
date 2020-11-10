@@ -262,6 +262,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 InitializeDictationRecognizer();
             }
+
+            // Call the base here to ensure any early exits do not
+            // artificially declare the service as enabled.
+            base.Enable();
         }
 
         private void InitializeDictationRecognizer()
@@ -295,6 +299,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             {
                 if (!Application.isPlaying || Service == null || dictationRecognizer == null) { return; }
 
+                base.Update();
+
                 if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
                 {
                     // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
@@ -323,6 +329,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
                 dictationRecognizer.Dispose();
             }
+
+            base.Disable();
         }
 
         /// <inheritdoc />

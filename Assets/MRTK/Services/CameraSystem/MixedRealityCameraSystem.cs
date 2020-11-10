@@ -100,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
 
             if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
@@ -206,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
+
                 if (IsOpaque != cameraOpaqueLastFrame)
                 {
                     cameraOpaqueLastFrame = IsOpaque;
