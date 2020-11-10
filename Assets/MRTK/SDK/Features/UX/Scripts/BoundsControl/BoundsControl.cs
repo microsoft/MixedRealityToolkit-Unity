@@ -151,6 +151,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         [SerializeField]
+        [Tooltip("Whether scale the flattened axis when uniform scale is used.")]
+        private bool uniformScaleOnFlattenedAxis = true;
+
+        /// <summary>
+        /// Whether scale the flattened axis when uniform scale is used.
+        /// </summary>
+        public bool UniformScaleOnFlattenedAxis
+        {
+            get => uniformScaleOnFlattenedAxis;
+            set => uniformScaleOnFlattenedAxis = value;
+        }
+
+        [SerializeField]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
 
@@ -1174,6 +1187,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                         Vector3 currentDist = (currentGrabPoint - oppositeCorner);
                         Vector3 grabDiff = (currentDist - initialDist);
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
+                    }
+
+                    // If non-uniform scaling or uniform scaling only on the non-flattened axes
+                    if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
+                    {
+                        FlattenModeType determinedType = FlattenAxis == FlattenModeType.FlattenAuto ? VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents) : FlattenAxis;
+                        if (determinedType == FlattenModeType.FlattenX)
+                        {
+                            scaleFactor.x = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenY)
+                        {
+                            scaleFactor.y = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenZ)
+                        {
+                            scaleFactor.z = 1;
+                        }
                     }
 
                     Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
