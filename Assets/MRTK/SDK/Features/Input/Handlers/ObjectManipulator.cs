@@ -984,7 +984,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            for (int i = 0; i < (pointer.Controller?.Interactions?.Length ?? 0); i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
                 {

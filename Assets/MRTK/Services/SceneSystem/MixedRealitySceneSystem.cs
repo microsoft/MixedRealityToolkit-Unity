@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             MixedRealitySceneSystemProfile profile) : base(profile)
         { }
 
-        private MixedRealitySceneSystemProfile profile => ConfigurationProfile as MixedRealitySceneSystemProfile;
+        private MixedRealitySceneSystemProfile Profile => ConfigurationProfile as MixedRealitySceneSystemProfile;
 
         // Internal scene operation info
         private bool managerSceneOpInProgress;
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public override void Initialize()
         {
             // Create a new instance of our content tracker
-            contentTracker = new SceneContentTracker(profile);
+            contentTracker = new SceneContentTracker(Profile);
             lightingExecutor = new SceneLightingExecutor();
 
 #if UNITY_EDITOR
@@ -168,20 +168,25 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
-            if (profile.UseManagerScene)
+            if (Profile.UseManagerScene)
             {
-                SetManagerScene(profile.ManagerScene.Name);
+                SetManagerScene(Profile.ManagerScene.Name);
             }
 
-            if (profile.UseLightingScene)
+            if (Profile.UseLightingScene)
             {   // Set our lighting scene immediately, with no transition
-                SetLightingScene(profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
+                SetLightingScene(Profile.DefaultLightingScene.Name, LightingSceneTransitionType.None);
             }
+
+            // Call the base after initialization to ensure any early exits do not
+            // artificially declare the service as initialized.
+            base.Initialize();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
@@ -193,6 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDisable();
 #endif
+            base.Disable();
         }
 
         /// <inheritdoc />
@@ -201,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 #if UNITY_EDITOR
             EditorOnDestroy();
 #endif
+            base.Destroy();
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MixedRealitySceneSystem.Update");
@@ -211,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             using (UpdatePerfMarker.Auto())
             {
                 // Ensure the lighting scene is active, if we're using one.
-                if (profile.UseLightingScene)
+                if (Profile.UseLightingScene)
                 {
                     lightingExecutor.UpdateTransition(Time.unscaledDeltaTime);
                 }
@@ -279,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         {
             using (LoadContentByTagPerfMarker.Auto())
             {
-                await LoadContent(profile.GetContentSceneNamesByTag(tag), mode, activationToken);
+                await LoadContent(Profile.GetContentSceneNamesByTag(tag), mode, activationToken);
             }
         }
 
@@ -292,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             {
                 try
                 {
-                    await UnloadScenesInternal(profile.GetContentSceneNamesByTag(tag), SceneType.Content);
+                    await UnloadScenesInternal(Profile.GetContentSceneNamesByTag(tag), SceneType.Content);
                 }
                 catch (Exception e)
                 {
@@ -412,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 RuntimeLightingSettings lightingSettings = default(RuntimeLightingSettings);
                 RuntimeRenderSettings renderSettings = default(RuntimeRenderSettings);
                 RuntimeSunlightSettings sunSettings = default(RuntimeSunlightSettings);
-                if (!string.IsNullOrEmpty(newLightingSceneName) && !profile.GetLightingSceneSettings(
+                if (!string.IsNullOrEmpty(newLightingSceneName) && !Profile.GetLightingSceneSettings(
                     newLightingSceneName,
                     out lightingScene,
                     out lightingSettings,
@@ -435,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
                 List<string> lightingSceneNames = new List<string>();
                 // Create a list of lighting scenes to unload
-                foreach (SceneInfo lso in profile.LightingScenes)
+                foreach (SceneInfo lso in Profile.LightingScenes)
                 {
                     if (lso.Name != newLightingSceneName)
                     {

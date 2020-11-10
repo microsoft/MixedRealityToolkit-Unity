@@ -514,6 +514,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!IsSetupValid) { return; }
 
+            base.Initialize();
+
             if (Application.isPlaying)
             {
                 Debug.Assert(uiRaycastCamera == null);
@@ -553,6 +555,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (UpdatePerfMarker.Auto())
             {
                 if (!IsSetupValid) { return; }
+
+                base.Update();
 
                 UpdatePointers();
                 UpdateGazeProvider();

@@ -32,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             public Material Material { get; private set; }
         }
 
-        private static readonly Hashtable models = new Hashtable();
-        private static readonly Hashtable materials = new Hashtable();
+        private static readonly Hashtable Models = new Hashtable();
+        private static readonly Hashtable Materials = new Hashtable();
 
         private string renderModelName = string.Empty;
 
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     var s = nameStringBuilder.ToString();
 
                     // Only need to pre-load if not already cached.
-                    if (!(models[s] is RenderModel model) || model.Mesh == null)
+                    if (!(Models[s] is RenderModel model) || model.Mesh == null)
                     {
                         renderModelNames[componentIndex] = s;
                     }
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             else
             {
                 // Only need to pre-load if not already cached.
-                if (!(models[newRenderModelName] is RenderModel model) || model.Mesh == null)
+                if (!(Models[newRenderModelName] is RenderModel model) || model.Mesh == null)
                 {
                     renderModelNames = new string[] { newRenderModelName };
                 }
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         var renderModel = MarshalRenderModel(pRenderModel);
 
                         // Check the cache first.
-                        var material = materials[renderModel.diffuseTextureId] as Material;
+                        var material = Materials[renderModel.diffuseTextureId] as Material;
                         if (material == null || material.mainTexture == null)
                         {
                             var pDiffuseTexture = System.IntPtr.Zero;
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             if (!string.IsNullOrEmpty(renderModelName))
             {
-                var model = models[renderModelName] as RenderModel;
+                var model = Models[renderModelName] as RenderModel;
                 if (model == null || model.Mesh == null)
                 {
                     var renderModels = Headers.OpenVR.RenderModels;
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         return false;
                     }
 
-                    models[renderModelName] = model;
+                    Models[renderModelName] = model;
                 }
 
                 gameObject.AddComponent<MeshFilter>().mesh = model.Mesh;
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             };
 
             // Check cache before loading texture.
-            var material = materials[renderModel.diffuseTextureId] as Material;
+            var material = Materials[renderModel.diffuseTextureId] as Material;
             if (material == null || material.mainTexture == null)
             {
                 var pDiffuseTexture = System.IntPtr.Zero;
@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         mainTexture = texture
                     };
 
-                    materials[renderModel.diffuseTextureId] = material;
+                    Materials[renderModel.diffuseTextureId] = material;
 
                     renderModels.FreeTexture(pDiffuseTexture);
                 }

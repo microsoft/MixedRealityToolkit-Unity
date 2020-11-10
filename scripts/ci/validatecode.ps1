@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Validates the code and assets to check for common patterns and usage that shouldn't be
@@ -366,10 +369,7 @@ $InitializeOnLoadExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Core/Utilities/Async/Internal/SyncContextUtility.cs",
     "Assets/MRTK/Core/Utilities/Editor/EditorProjectUtilities.cs",
     "Assets/MRTK/Core/Utilities/Editor/USB/USBDeviceListener.cs",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/OculusXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/Shared/Editor/WindowsMixedRealityConfigurationChecker.cs",
-    "Assets/MRTK/Providers/WindowsMixedReality/XRSDK/Editor/WindowsMixedRealityXRSDKConfigurationChecker.cs",
-    "Assets/MRTK/Providers/XRSDK/Editor/XRSDKConfigurationChecker.cs"
+    "Assets/MRTK/StandardAssets/EditorUtilities/OnLoadUtilities.cs"
 )
 
 <#
@@ -600,7 +600,6 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/LeapMotion/MRTK.LeapMotion.asmdef",
     "Assets/MRTK/Providers/LeapMotion/Editor/MRTK.LeapMotion.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
-    "Assets/MRTK/Providers/Oculus/XRSDK/Editor/MRTK.Oculus.Editor.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
@@ -622,6 +621,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Services/SceneSystem/MRTK.SceneSystem.asmdef",
     "Assets/MRTK/Services/SpatialAwarenessSystem/MRTK.SpatialAwarenessSystem.asmdef",
     "Assets/MRTK/Services/TeleportSystem/MRTK.TeleportSystem.asmdef",
+    "Assets/MRTK/StandardAssets/EditorUtilities/MRTK.StandardAssets.Editor.asmdef",
     "Assets/MRTK/Tests/EditModeTests/MRTK.EditModeTests.asmdef",
     "Assets/MRTK/Tests/PlayModeTests/MRTK.PlayModeTests.asmdef",
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",

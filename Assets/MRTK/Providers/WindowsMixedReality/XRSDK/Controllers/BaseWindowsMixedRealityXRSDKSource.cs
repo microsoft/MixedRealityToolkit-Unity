@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             using (UpdatePoseDataPerfMarker.Auto())
             {
-                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);      
+                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
                 // Update the interaction data source
                 switch (interactionMapping.InputType)

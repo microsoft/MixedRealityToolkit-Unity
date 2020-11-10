@@ -197,12 +197,11 @@ SubShader {
 
 #if defined(_CLIPPING_SPHERE)
         fixed _ClipSphereSide;
-        float4 _ClipSphere;
+        float4x4 _ClipSphereInverseTransform;
 #endif
 
 #if defined(_CLIPPING_BOX)
         fixed _ClipBoxSide;
-        float4 _ClipBoxSize;
         float4x4 _ClipBoxInverseTransform;
 #endif
 
@@ -352,10 +351,10 @@ SubShader {
             primitiveDistance = min(primitiveDistance, PointVsPlane(input.worldPosition, _ClipPlane) * _ClipPlaneSide);
 #endif
 #if defined(_CLIPPING_SPHERE)
-            primitiveDistance = min(primitiveDistance, PointVsSphere(input.worldPosition, _ClipSphere) * _ClipSphereSide);
+            primitiveDistance = min(primitiveDistance, PointVsSphere(input.worldPosition, _ClipSphereInverseTransform) * _ClipSphereSide);
 #endif
 #if defined(_CLIPPING_BOX)
-            primitiveDistance = min(primitiveDistance, PointVsBox(input.worldPosition, _ClipBoxSize.xyz, _ClipBoxInverseTransform) * _ClipBoxSide);
+            primitiveDistance = min(primitiveDistance, PointVsBox(input.worldPosition, _ClipBoxInverseTransform) * _ClipBoxSide);
 #endif
             c *= step(0.0, primitiveDistance);
 #endif

@@ -184,6 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         {
             using (UpdatePerfMarker.Auto())
             {
+                base.Update();
                 UpdateObserver();
             }
         }

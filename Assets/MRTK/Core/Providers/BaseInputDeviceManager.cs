@@ -168,6 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             pointerConfigurations = System.Array.Empty<PointerConfig>();
             activePointersToConfig.Clear();
+
+            base.Destroy();
         }
 
         #endregion
