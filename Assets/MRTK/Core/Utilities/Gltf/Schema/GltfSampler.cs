@@ -84,7 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-
+            magFilter = MagFilter.ToString();
+            minFilter = MinFilter.ToString();
+            wrapT = WrapT.ToString();
+            wrapS = WrapS.ToString();
         }
     }
 }

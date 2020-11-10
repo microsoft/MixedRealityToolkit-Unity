@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-
+            path = Path.ToString();
         }
     }
 }

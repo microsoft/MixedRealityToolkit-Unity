@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-
+            target = Target.ToString();
         }
     }
 }
