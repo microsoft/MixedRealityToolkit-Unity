@@ -132,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             {
                 RemoveController(controller.Key);
             }
+
+            base.Disable();
         }
 
         #region Controller Utilities
