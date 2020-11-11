@@ -238,7 +238,7 @@ function ReadGuids {
     }
 }
 
-$allFiles = @{}
+$fileGuids = @{}
 
 <#
 .SYNOPSIS
@@ -247,13 +247,13 @@ $allFiles = @{}
     Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
     data to validate the dependencies.
 #>
-function GatherGuids { 
+function GatherFileGuids { 
     [CmdletBinding()]
     param()
     process {
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
-            Write-Output "Collecting files and GUIDs from $packageName"
+            Write-Output "Collecting file GUIDs from $packageName"
 
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
@@ -266,19 +266,19 @@ function GatherGuids {
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
-                        $allFiles.Add($asset.FullName, $guid)
+                        $fileGuids.Add($asset.FullName, $guid)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                    $allFiles.Add($assetFiles.FullName, $guid)
+                    $fileGuids.Add($assetFiles.FullName, $guid)
                 }     
             }
         }
     }
 }
 
-# $assetDependencies = ${}
+$dependencyGuids = @{}
 
 <#
 .SYNOPSIS
@@ -292,14 +292,12 @@ function GatherDependencyGuids {
     process {       
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
-            Write-Output $packageName
-
+            Write-Output "Collecting dependency GUIDs from $packageName"
+            
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
 
                 foreach ($ext in $assetExtensions.GetEnumerator()) {
-                    Write-Output $ext
-
                     $assetFiles = Get-ChildItem -Path $packageFolder -Filter $ext -File -Recurse
                     if (-not $assetFiles) {
                         continue
@@ -307,39 +305,34 @@ function GatherDependencyGuids {
 
                     if (IsArray($assetFiles.GetType())){        
                         foreach ($asset in $assetFiles.GetEnumerator()) {
-                            $assetName = $asset.FullName
-                            Write-Output $assetName
                             $guids = ReadGuids($asset)
-                            # $assetDependencies.Add($asset, $guids)
-                            # $dependencies.Add($asset, $guids)
+                            $dependencyGuids.Add($asset.FullName, $guids)
                         }
                     }
                     else {
                         $guids = ReadGuids($assetFiles)
-                        # $assetDependencies.Add($assetFiles, $guids)
-                        # $dependencies.Add($assetFiles, $guids)
+                        $dependencyGuids.Add($assetFiles.FullName, $guids)
                     }
                 }
             }
         }
-
-        # $dependencies
     }
 }
 
-# GatherGuids
-# foreach ($entry in $allFiles.GetEnumerator()){
+# GatherFileGuids
+# foreach ($entry in $fileGuids.GetEnumerator()){
 #     $fileName = $entry.key
 #     $guid = $entry.value
 #     Write-Output "$fileName : $guid"
 # }
 # Write-Output "---"
-$testGuids = ReadGuids("C:\git-os\dk\mrtk\depValidationCi\Assets\MRTK\Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity")
-foreach ($item in $testGuids) {
-    $isValid = IsValidGuid($item)
-    Write-Output "$item : $isValid"
+GatherDependencyGuids
+foreach ($entry in $dependencyGuids.GetEnumerator()){
+    $fileName = $entry.key
+    Write-Output "$fileName :"
+    $dependencies = $entry.value
+    Write-Output $dependencies
 }
-# GatherDependencyGuids
 # Write-Output "---"
 
 [int]$errorCount = 0
