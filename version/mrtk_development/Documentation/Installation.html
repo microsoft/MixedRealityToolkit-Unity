@@ -166,7 +166,7 @@ After importing the Foundation package, you may see a prompt similar to the foll
 <li>Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).</li>
 </ul>
 <p>Accepting these options is completely optional, but recommended.</p>
-<p>Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
+<p>Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to reopen the scene to see changes</strong>. Double click the selected scene in the Project tab to see the TMP changes reflected in the scene.</p>
 <h3 id="3-switch-your-unity-project-to-the-target-platform">3. Switch your Unity project to the target platform</h3>
 <p>With the packages imported, the next step is to select the correct platform for the application.</p>
 <p>To create a <strong>HoloLens application</strong>, switch to the Universal Windows Platform:</p>
@@ -201,8 +201,8 @@ Profiles configure the behavior of MRTK core components and are described in mor
 <li>See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</li>
 </ul>
 </div>
-<p>You will then see the following in your Scene hierarchy:
-<img src="Images/MRTK_SceneSetup.png" width="300"></p>
+<p>You will then see the following in your Scene hierarchy:</p>
+ <img src="Images/MRTK_SceneSetup.png" width="300">
 <p>Which contains the following:</p>
 <ul>
 <li><strong>Mixed Reality Toolkit</strong> - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
