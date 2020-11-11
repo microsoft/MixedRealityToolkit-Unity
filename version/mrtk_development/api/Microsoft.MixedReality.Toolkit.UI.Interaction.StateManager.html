@@ -1,0 +1,748 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class StateManager
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class StateManager
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager" class="text-break">Class StateManager
+  </h1>
+  <div class="markdown level0 summary"><p>Manages the state values of Interaction States within BaseInteractiveElement's States list. This class contains helper
+methods for setting, getting and creating new Interaction States for the States list.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">StateManager</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.html">Microsoft.MixedReality.Toolkit.UI.Interaction</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StateManager</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager__ctor_List_Microsoft_MixedReality_Toolkit_UI_Interaction_InteractionState__Microsoft_MixedReality_Toolkit_UI_Interaction_BaseInteractiveElement_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.#ctor(List{Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState},Microsoft.MixedReality.Toolkit.UI.Interaction.BaseInteractiveElement)">StateManager(List&lt;InteractionState&gt;, BaseInteractiveElement)</h4>
+  <div class="markdown level1 summary"><p>Create a new state manager with a given states scriptable object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StateManager(List&lt;InteractionState&gt; states, BaseInteractiveElement interactiveElementSource)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a>&gt;</td>
+        <td><span class="parametername">states</span></td>
+        <td><p>List of Interaction States for this state manager to watch</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.BaseInteractiveElement.html">BaseInteractiveElement</a></td>
+        <td><span class="parametername">interactiveElementSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_EventReceiverManager_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.EventReceiverManager*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_EventReceiverManager" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.EventReceiverManager">EventReceiverManager</h4>
+  <div class="markdown level1 summary"><p>The Event Receiver Manager for this State Manager. Each state can contain an event configuration scriptable which defines
+the events associated with the state.  The Event Receiver Manager depends on a State Manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EventReceiverManager EventReceiverManager { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.EventReceiverManager.html">EventReceiverManager</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_InteractiveElement_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.InteractiveElement*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_InteractiveElement" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.InteractiveElement">InteractiveElement</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BaseInteractiveElement InteractiveElement { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.BaseInteractiveElement.html">BaseInteractiveElement</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_OnStateActivated_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.OnStateActivated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_OnStateActivated" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.OnStateActivated">OnStateActivated</h4>
+  <div class="markdown level1 summary"><p>The Unity Event with the activated state as the event data. This event is invoked when a state is
+set to on.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionStateActiveEvent OnStateActivated { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionStateActiveEvent.html">InteractionStateActiveEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_OnStateDeactivated_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.OnStateDeactivated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_OnStateDeactivated" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.OnStateDeactivated">OnStateDeactivated</h4>
+  <div class="markdown level1 summary"><p>The Unity Event with the previous active state and the current active state.  The event is invoked when
+a state is set to off.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionStateInactiveEvent OnStateDeactivated { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionStateInactiveEvent.html">InteractionStateInactiveEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_States_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.States*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_States" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.States">States</h4>
+  <div class="markdown level1 summary"><p>The read only dictionary for the Interaction States.  To modify this dictionary use the AddNewState()
+RemoveState() methods. To set the value of a state in this dictionary use SetStateOn/Off() methods.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;string, InteractionState&gt; States { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_AddNewState_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.AddNewState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_AddNewState_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.AddNewState(System.String)">AddNewState(String)</h4>
+  <div class="markdown level1 summary"><p>Create and add a new state to track given the new state name.  Also sets the state's event configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState AddNewState(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to add</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The new state added</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_AddNewStateWithCustomEventConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.AddNewStateWithCustomEventConfiguration*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_AddNewStateWithCustomEventConfiguration_System_String_Microsoft_MixedReality_Toolkit_UI_Interaction_BaseInteractionEventConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.AddNewStateWithCustomEventConfiguration(System.String,Microsoft.MixedReality.Toolkit.UI.Interaction.BaseInteractionEventConfiguration)">AddNewStateWithCustomEventConfiguration(String, BaseInteractionEventConfiguration)</h4>
+  <div class="markdown level1 summary"><p>Create and add a new state given the state name and the associated existing event configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState AddNewStateWithCustomEventConfiguration(string stateName, BaseInteractionEventConfiguration eventConfiguration)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to create</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.BaseInteractionEventConfiguration.html">BaseInteractionEventConfiguration</a></td>
+        <td><span class="parametername">eventConfiguration</span></td>
+        <td><p>The existing event configuration for the new state</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The new state added</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_GetState_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.GetState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_GetState_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.GetState(System.String)">GetState(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a state by using the state name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState GetState(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to retrieve</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The state contained in the Tracked States scriptable object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_IsStateActive_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.IsStateActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_IsStateActive_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.IsStateActive(System.String)">IsStateActive(String)</h4>
+  <div class="markdown level1 summary"><p>Check if a state is currently active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsStateActive(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to check</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the state is active, false if the state is not active</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_IsStateTracking_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.IsStateTracking*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_IsStateTracking_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.IsStateTracking(System.String)">IsStateTracking(String)</h4>
+  <div class="markdown level1 summary"><p>Check if a state is currently being tracked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsStateTracking(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to check</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the state is being tracked, false if the state is not being tracked</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_RemoveState_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.RemoveState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_RemoveState_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.RemoveState(System.String)">RemoveState(String)</h4>
+  <div class="markdown level1 summary"><p>Removes a state. The state will no longer be tracked if it is removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveState(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to remove</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetState_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetState_System_String_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetState(System.String,System.Int32)">SetState(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets and sets state given the state name and state value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState SetState(string stateName, int value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to set</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The new state value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The state that was set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetStateOff_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetStateOff*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetStateOff_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetStateOff(System.String)">SetStateOff(String)</h4>
+  <div class="markdown level1 summary"><p>Gets and sets a state to Off and invokes the OnStateDeactivated event.  Setting a
+state off changes the state value to 0.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState SetStateOff(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to set to off</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The state that was set to off</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetStateOn_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetStateOn*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interaction_StateManager_SetStateOn_System_String_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interaction.StateManager.SetStateOn(System.String)">SetStateOn(String)</h4>
+  <div class="markdown level1 summary"><p>Gets and sets a state to On and invokes the OnStateActivated event. Setting a
+state on changes the state value to 1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractionState SetStateOn(string stateName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">stateName</span></td>
+        <td><p>The name of the state to set to on</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interaction.InteractionState.html">InteractionState</a></td>
+        <td><p>The state that was set to on</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
