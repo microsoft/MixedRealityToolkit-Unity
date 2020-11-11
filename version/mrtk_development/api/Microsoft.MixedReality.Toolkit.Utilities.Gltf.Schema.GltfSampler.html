@@ -106,6 +106,10 @@
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfChildOfRootProperty.html">GltfChildOfRootProperty</a></div>
     <div class="level3"><span class="xref">GltfSampler</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ISerializationCallbackReceiver</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -144,47 +148,23 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class GltfSampler : GltfChildOfRootProperty</code></pre>
+public class GltfSampler : GltfChildOfRootProperty, ISerializationCallbackReceiver</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_GltfMinFilter" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.GltfMinFilter">GltfMinFilter</h4>
-  <div class="markdown level1 summary"><p>Minification filter. All valid values correspond to WebGL enums.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfMinFilterMode GltfMinFilter</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMinFilterMode.html">GltfMinFilterMode</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_magFilter" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.magFilter">magFilter</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_MagFilter_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.MagFilter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_MagFilter" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.MagFilter">MagFilter</h4>
   <div class="markdown level1 summary"><p>Magnification filter.
 Valid values correspond to WebGL enums: <code>9728</code> (NEAREST) and <code>9729</code> (LINEAR).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfMagnificationFilterMode magFilter</code></pre>
+    <pre><code class="lang-csharp hljs">public GltfMagnificationFilterMode MagFilter { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -201,15 +181,42 @@ Valid values correspond to WebGL enums: <code>9728</code> (NEAREST) and <code>97
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_wrapS" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.wrapS">wrapS</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_MinFilter_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.MinFilter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_MinFilter" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.MinFilter">MinFilter</h4>
+  <div class="markdown level1 summary"><p>Minification filter. All valid values correspond to WebGL enums.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GltfMinFilterMode MinFilter { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMinFilterMode.html">GltfMinFilterMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_WrapS_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.WrapS*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_WrapS" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.WrapS">WrapS</h4>
   <div class="markdown level1 summary"><p>s wrapping mode.  All valid values correspond to WebGL enums.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfWrapMode wrapS</code></pre>
+    <pre><code class="lang-csharp hljs">public GltfWrapMode WrapS { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -226,15 +233,16 @@ Valid values correspond to WebGL enums: <code>9728</code> (NEAREST) and <code>97
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_wrapT" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.wrapT">wrapT</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_WrapT_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.WrapT*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfSampler_WrapT" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfSampler.WrapT">WrapT</h4>
   <div class="markdown level1 summary"><p>t wrapping mode.  All valid values correspond to WebGL enums.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfWrapMode wrapT</code></pre>
+    <pre><code class="lang-csharp hljs">public GltfWrapMode WrapT { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -249,6 +257,10 @@ Valid values correspond to WebGL enums: <code>9728</code> (NEAREST) and <code>97
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">ISerializationCallbackReceiver</span>
+  </div>
 </article>
           </div>
           

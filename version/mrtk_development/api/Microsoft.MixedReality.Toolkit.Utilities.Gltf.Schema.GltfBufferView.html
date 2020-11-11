@@ -106,6 +106,10 @@
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfChildOfRootProperty.html">GltfChildOfRootProperty</a></div>
     <div class="level3"><span class="xref">GltfBufferView</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ISerializationCallbackReceiver</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -144,7 +148,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfBufferView_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class GltfBufferView : GltfChildOfRootProperty</code></pre>
+public class GltfBufferView : GltfChildOfRootProperty, ISerializationCallbackReceiver</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -253,33 +257,6 @@ When this is zero, data is tightly packed.
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfBufferView_target" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfBufferView.target">target</h4>
-  <div class="markdown level1 summary"><p>The target that the WebGL buffer should be bound to.
-All valid values correspond to WebGL enums.
-When this is not provided, the bufferView contains animation or skin data.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfBufferViewTarget target</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfBufferViewTarget.html">GltfBufferViewTarget</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -308,6 +285,38 @@ When this is not provided, the bufferView contains animation or skin data.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfBufferView_Target_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfBufferView.Target*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfBufferView_Target" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfBufferView.Target">Target</h4>
+  <div class="markdown level1 summary"><p>The target that the WebGL buffer should be bound to.
+All valid values correspond to WebGL enums.
+When this is not provided, the bufferView contains animation or skin data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GltfBufferViewTarget Target { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfBufferViewTarget.html">GltfBufferViewTarget</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">ISerializationCallbackReceiver</span>
+  </div>
 </article>
           </div>
           

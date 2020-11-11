@@ -105,6 +105,10 @@
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfProperty.html">GltfProperty</a></div>
     <div class="level2"><span class="xref">GltfMeshPrimitive</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ISerializationCallbackReceiver</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -140,7 +144,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitive_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class GltfMeshPrimitive : GltfProperty</code></pre>
+public class GltfMeshPrimitive : GltfProperty, ISerializationCallbackReceiver</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -202,31 +206,6 @@ when <code>OES_element_index_uint</code> extension is used; <code>type</code> mu
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitive_mode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitive.mode">mode</h4>
-  <div class="markdown level1 summary"><p>The type of primitives to render. All valid values correspond to WebGL enums.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GltfDrawMode mode</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfDrawMode.html">GltfDrawMode</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -252,6 +231,32 @@ and each value is the index of the accessor containing attribute's data.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.html">GltfMeshPrimitiveAttributes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitive_Mode_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitive.Mode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitive_Mode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitive.Mode">Mode</h4>
+  <div class="markdown level1 summary"><p>The type of primitives to render. All valid values correspond to WebGL enums.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GltfDrawMode Mode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfDrawMode.html">GltfDrawMode</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -311,6 +316,10 @@ displacements' data).</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">ISerializationCallbackReceiver</span>
+  </div>
 </article>
           </div>
           
