@@ -71,7 +71,7 @@ $packages = [ordered]@{
 }
 
 # This table contains the collection of allowed package dependencies.
-$allowePackageDependencies = [ordered]@{
+$allowedPackageDependencies = [ordered]@{
     "StandardAssets" =  @(
         "StandardAssets"
     );
@@ -194,7 +194,7 @@ function IsValidGuid {
 function ReadSingleGuid { 
     [CmdletBinding()]
     param(
-        [System.IO.FileInfo]$file
+        $file
     )
     process {      
         $guid = ""
@@ -218,7 +218,7 @@ function ReadSingleGuid {
 function ReadGuids { 
     [CmdletBinding()]
     param(
-        [System.IO.FileInfo]$file
+        $file
     )
     process {
         $guids = New-Object -TypeName System.Collections.ArrayList
@@ -323,12 +323,12 @@ function GatherDependencyGuids {
 .SYNOPSIS
     Determines the name of the package containing the specified file.
 .DESCRIPTION
-    Compares the name of the file with the substrings included in each package. Returns the package name or the empty string.
+    Compares the name of the file with the folders included in each package. Returns the package name or the empty string.
 #>
 function GetPackageName { 
     [CmdletBinding()]
     param(
-        [System.IO.FileInfo]$file
+        $file
     )
     process {
         [string]$packageName = ""
@@ -353,7 +353,35 @@ function GetPackageName {
     }
 }
 
-[int]$errorCount = 0
+<#
+.SYNOPSIS
+    Determines whether or not a dependency is valid for a given package.
+.DESCRIPTION
+    Checks to see if a dependency package is in the collection of allowed packages. Returns true if allowed, false otherwise.
+#>
+function IsValidDependentPackage { 
+    [CmdletBinding()]
+    param(
+        [string]$depenentPackageName,
+        [string]$packageName
+    )
+    process {
+        [bool]$isValid = $false
+
+        $allowed = $allowedPackageDependencies[$packageName]
+        if ($null -ne $allowed) {
+            foreach ($dependency in $allowed.GetEneumerator()) {
+                if ($depenentPackageName -eq $dependency) {
+                    $isValid = $true
+                    break
+                }
+            }
+        }
+
+        $isValid
+    }
+}
+
 <#
 .SYNOPSIS
     Validates the dependencies for the provided asset.
@@ -363,53 +391,53 @@ function GetPackageName {
 function ValidateDependencies { 
     [CmdletBinding()]
     param(
-        [System.IO.FileInfo]$file,
+        $file,
         [System.Array]$dependencies
     )
     process {
-        [bool]$isValid = $false;
+        [int]$numInvalid = 0
+
+        [string]$filePackage = GetPackageName($file)
 
         if ($null -ne $dependencies) {
             foreach ($guid in $dependencies.GetEnumerator()) {
                 $dependencyFile = $fileGuids[$guid]
                 if ($null -ne $dependencyFile) {
-                    $dependencyFile = $dependencyFile.Replace('\', '/')
-                    # todo - check against the allow list
-                    # increment error count
+                    [string]$depenentPackage = GetPackageName($dependencyFile)
+                    [bool]$isValid = IsValidDependentPackage($depenentPackage, $filePackage)
+                    if (-not $isValid) {
+                        $numInvalid++
+                    }
                 }
             }
         }
 
-        $isValid
+        $numInvalid
     }
 }
 
-$errors = New-Object -TypeName System.Collections.ArrayList
-
+# ####################
+# Start of main script
+# ####################
 GatherFileGuids
+
+[int]$errorCount = 0;
+
 GatherDependencyGuids
 foreach ($item in $dependencyGuids.GetEnumerator()) {
     $file = $item.key
     $dependencies = $item.value
-    $packageName = GetPackageName($file)
-    $fileName = $file.FullName
-    Write-Output "[$packageName] $fileName"
-    # Write-Output "Validating $file dependencies..."
-    # $isValid = ValidateDependencies($file, $dependencies)
-    # if (-not $isValid) {
-    #     $errors.Add($file) | Out-Null
-    # }
+
+    Write-Output "Validating $file dependencies..."
+    $numInvalid = ValidateDependencies($file, $dependencies)
+    $errorCount = $errorCount + $numInvalid
+    if ($numInvalid -ne 0) {
+        $fileName = $file.FullName
+        Write-Output "$fileInfo contains $numInvalid dependency errors."
+    }
 }
 
-Write-Output "Found $errorCount asset dependency issues."
-
-if ($errorCount -ne 0) {
-    [int]$fileCount = $errors.Count 
-    Write-Output "$fileCount files with one or more incorrect dependencies:"
-    foreach ($item in $errors.GetEnumerator()) {
-        # todo
-    }    
-}
+Write-Output "Found $errorCount total dependency issues."
 
 # # If the file containing the list of changes was provided and actually exists,
 # # this validation should scope to only those changed files.
