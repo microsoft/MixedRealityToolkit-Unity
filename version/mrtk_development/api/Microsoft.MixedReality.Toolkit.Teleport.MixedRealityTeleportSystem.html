@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MixedRealityTeleportSystem
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,11 +73,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -331,7 +331,8 @@ public MixedRealityTeleportSystem(IMixedRealityServiceRegistrar registrar)</code
   
   <a id="Microsoft_MixedReality_Toolkit_Teleport_MixedRealityTeleportSystem_HandleEvent_" data-uid="Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem.HandleEvent*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Teleport_MixedRealityTeleportSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__" data-uid="Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})">HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The main function for handling and forwarding all events to their intended recipients.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -351,12 +352,14 @@ public MixedRealityTeleportSystem(IMixedRealityServiceRegistrar registrar)</code
       <tr>
         <td><span class="xref">BaseEventData</span></td>
         <td><span class="parametername">eventData</span></td>
-        <td></td>
+        <td><p>Event Data</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">ExecuteEvents.EventFunction</span>&lt;T&gt;</td>
         <td><span class="parametername">eventHandler</span></td>
-        <td></td>
+        <td><p>Event Handler delegate</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -371,12 +374,16 @@ public MixedRealityTeleportSystem(IMixedRealityServiceRegistrar registrar)</code
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>Event Handler Interface Type</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)</span></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Teleport_MixedRealityTeleportSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>See: <a href="https://docs.unity3d.com/Manual/MessagingSystem.html">https://docs.unity3d.com/Manual/MessagingSystem.html</a></p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Teleport_MixedRealityTeleportSystem_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem.Initialize*"></a>
@@ -582,7 +589,8 @@ This method is called once all services have been registered in the Mixed Realit
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
