@@ -229,7 +229,7 @@ function ReadGuids {
             $guid = ExtractGuid($line)
             if ($guid -ne "") {
                 if (-not $guids.Contains($guid)) {
-                    $guids.Add($guid)
+                    $guids.Add($guid) | Out-Null
                 }
             }      
         }
