@@ -21,8 +21,7 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    # todo - uncomment
-    # [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -39,8 +38,6 @@ param(
     [string]$RepoRoot
 )
 
-# todo - remove
-$Directory = "C:\git-os\dk\mrtk\depValidationCi\Assets"
 $Directory = Resolve-Path -Path $Directory
 
 # This table defines MRTK pacakge layout.
