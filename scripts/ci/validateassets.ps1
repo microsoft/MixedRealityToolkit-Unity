@@ -21,7 +21,8 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    #[Parameter(Mandatory=$true)]
+    # todo - uncomment
+    # [Parameter(Mandatory=$true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -38,8 +39,8 @@ param(
     [string]$RepoRoot
 )
 
+# todo - remove
 $Directory = "C:\git-os\dk\mrtk\depValidationCi\Assets"
-
 $Directory = Resolve-Path -Path $Directory
 
 # This table defines MRTK pacakge layout.
@@ -266,13 +267,14 @@ function GatherFileGuids {
                 
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
+                        $type = $asset.GetType()
                         $guid = ReadSingleGuid($asset)
-                        $fileGuids.Add($guid, $asset.FullName)
+                        $fileGuids.Add($guid, $asset)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                    $fileGuids.Add($guid, $assetFiles.FullName)
+                    $fileGuids.Add($guid, $assetFiles)
                 }     
             }
         }
@@ -307,12 +309,12 @@ function GatherDependencyGuids {
                     if (IsArray($assetFiles.GetType())){        
                         foreach ($asset in $assetFiles.GetEnumerator()) {
                             $guids = ReadGuids($asset)
-                            $dependencyGuids.Add($asset.FullName, $guids)
+                            $dependencyGuids.Add($asset, $guids)
                         }
                     }
                     else {
                         $guids = ReadGuids($assetFiles)
-                        $dependencyGuids.Add($assetFiles.FullName, $guids)
+                        $dependencyGuids.Add($assetFiles, $guids)
                     }
                 }
             }
@@ -322,6 +324,41 @@ function GatherDependencyGuids {
 
 <#
 .SYNOPSIS
+    Determines the name of the package containing the specified file.
+.DESCRIPTION
+    Compares the name of the file with the substrings included in each package. Returns the package name or the empty string.
+#>
+function GetPackageName { 
+    [CmdletBinding()]
+    param(
+        [System.IO.FileInfo]$file
+    )
+    process {
+        [string]$packageName = ""
+
+        foreach($item in $packages.GetEnumerator()) {
+            $name = $item.key
+            $folders = $item.value
+
+            $fileName = $file.FullName
+            $filename = $fileName.Replace('\', '/')
+
+            foreach($folder in $folders.GetEnumerator()) {
+                [int]$index = $fileName.IndexOf($folder)
+                if ($index -ge 0) {
+                    $packageName = $name
+                    break
+                }
+            }
+        }
+
+        $packageName
+    }
+}
+
+[int]$errorCount = 0
+<#
+.SYNOPSIS
     Validates the dependencies for the provided asset.
 .DESCRIPTION
     Checks the paths of each dependency file with against the allow list. Returns true if valid, false otherwise.
@@ -329,20 +366,19 @@ function GatherDependencyGuids {
 function ValidateDependencies { 
     [CmdletBinding()]
     param(
-        $fileName,
+        [System.IO.FileInfo]$file,
         [System.Array]$dependencies
     )
     process {
         [bool]$isValid = $false;
 
-        Write-Output "Validating $fileName dependencies..."
         if ($null -ne $dependencies) {
             foreach ($guid in $dependencies.GetEnumerator()) {
                 $dependencyFile = $fileGuids[$guid]
                 if ($null -ne $dependencyFile) {
                     $dependencyFile = $dependencyFile.Replace('\', '/')
                     # todo - check against the allow list
-                    Write-Output $dependencyFile
+                    # increment error count
                 }
             }
         }
@@ -356,46 +392,52 @@ $errors = New-Object -TypeName System.Collections.ArrayList
 GatherFileGuids
 GatherDependencyGuids
 foreach ($item in $dependencyGuids.GetEnumerator()) {
-    $fileName = $item.key
+    $file = $item.key
     $dependencies = $item.value
-    $isValid = ValidateDependencies($fileName, $dependencies)
-    if (-not $isValid) {
-        $errors.Add($fileName) | Out-Null
-        # todo
-    }
-}
-
-foreach ($item in $errors.GetEnumerator()) {
-    # todo
-}
-
-[int]$errorCount = $errors.Length 
-
-# If the file containing the list of changes was provided and actually exists,
-# this validation should scope to only those changed files.
-if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
-    # TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7022)
-    # There may be ways to configure common modules so that paths like this aren't required
-    Import-Module -Force (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
-
-    Write-Host "Checking only changed files for asset issues: $ChangesFile"
-    # todo
-    # $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
-    # ForEach ($changedFile in $changedFiles) {
-    #     Write-Host "Checking file: $changedFile"
-    #     if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
-    #         ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
-    #         ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-    #         ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or
-    #         ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile))) {
-    #         $containsIssue = $true;
-    #     }
-    #}
-}
-else {
-    Write-Host "Checking $Directory for common asset issues"
-    # todo
+    $packageName = GetPackageName($file)
+    $fileName = $file.FullName
+    Write-Output "[$packageName] $fileName"
+    # Write-Output "Validating $file dependencies..."
+    # $isValid = ValidateDependencies($file, $dependencies)
+    # if (-not $isValid) {
+    #     $errors.Add($file) | Out-Null
+    # }
 }
 
 Write-Output "Found $errorCount asset dependency issues."
+
+if ($errorCount -ne 0) {
+    [int]$fileCount = $errors.Count 
+    Write-Output "$fileCount files with one or more incorrect dependencies:"
+    foreach ($item in $errors.GetEnumerator()) {
+        # todo
+    }    
+}
+
+# # If the file containing the list of changes was provided and actually exists,
+# # this validation should scope to only those changed files.
+# if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
+#     # TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7022)
+#     # There may be ways to configure common modules so that paths like this aren't required
+#     Import-Module -Force (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
+
+#     Write-Host "Checking only changed files for asset issues: $ChangesFile"
+#     # todo
+#     # $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
+#     # ForEach ($changedFile in $changedFiles) {
+#     #     Write-Host "Checking file: $changedFile"
+#     #     if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
+#     #         ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
+#     #         ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
+#     #         ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or
+#     #         ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile))) {
+#     #         $containsIssue = $true;
+#     #     }
+#     #}
+# }
+# else {
+#     Write-Host "Checking $Directory for common asset issues"
+#     # todo
+# }
+
 exit $errorCount
