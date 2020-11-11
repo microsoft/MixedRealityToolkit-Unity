@@ -195,11 +195,16 @@
 <ul>
 <li>See <a href="Rendering/ProximityLight.html">Proximity Light</a></li>
 </ul>
-<h2 id="lightweight-scriptable-render-pipeline-support">Lightweight Scriptable Render Pipeline support</h2>
-<p>The MRTK contains an upgrade path to allow developers to utilize Unity's Lightweight Scriptable Render Pipeline (LWRP) with MRTK shaders. Tested in Unity 2019.1.1f1 and Lightweight RP 5.7.2 package. or instructions on getting started with the LWRP, see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.lightweight@5.10/manual/getting-started-with-lwrp.html">this page</a>.</p>
-<p>To perform the MRTK upgrade, select: <strong>Mixed Reality Toolkit -&gt; Utilities -&gt; Upgrade MRTK Standard Shader for Lightweight Render Pipeline</strong></p>
-<p><img src="Images/MRTKStandardShader/MRTK_LWRPUpgrade.jpg" alt="lwrp upgrade"></p>
-<p>After the upgrade occurs, the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred, check the console for: <strong>Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.</strong></p>
+<h2 id="universal-render-pipeline-support">Universal Render Pipeline support</h2>
+<p>The MRTK contains an upgrade path to allow developers to utilize Unity's Universal Render Pipeline (URP) with MRTK shaders. For instructions on getting started with the URP, see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.3/manual/index.html">this page</a>. Please note that the upgrade path also works for the Lightweight Render Pipeline, which is the former name for what is now the Universal Render Pipeline.</p>
+<p>To perform the MRTK upgrade, select: <strong>Mixed Reality Toolkit -&gt; Utilities -&gt; Upgrade MRTK Standard Shader for Universal Render Pipeline</strong>.</p>
+<p><em>Tested:</em></p>
+<ul>
+<li>Universal Render Pipeline: Unity 2019.4.13f1 + URP v7.3.1</li>
+<li>Lightweight Render Pipeline: Unity 2018.4.28f1 + LWRP v4.10.0</li>
+</ul>
+<p><img src="Images/MRTKStandardShader/MRTK_URPUpgrade.jpg" alt="urp upgrade"></p>
+<p>After the upgrade occurs, the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred, check the console for: <strong>Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Universal Render Pipeline.</strong></p>
 <h2 id="ugui-support">UGUI support</h2>
 <p>The MRTK Standard shading system works with Unity's built in <a href="https://docs.unity3d.com/Manual/UISystem.html">UI system</a>. On Unity UI components, the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of its parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue, the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect.html"><code>ScaleMeshEffect.cs</code></a> will store scaling information into UV channel attributes during UI mesh construction.</p>
 <p>Note, when using a Unity Image component, it is recommended to specify &quot;None (Sprite)&quot; for the Source Image to prevent Unity UI from generating extra vertices.</p>
