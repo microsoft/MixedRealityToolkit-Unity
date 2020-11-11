@@ -272,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             }
         }
 
-        private static readonly ProfilerMarker RequestMeshPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.RequestMesh");
+        private static readonly ProfilerMarker RequestMeshPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.RequestMesh");
 
         /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
