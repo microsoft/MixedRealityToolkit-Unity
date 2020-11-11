@@ -73,7 +73,7 @@ $packages = [ordered]@{
 }
 
 # This table contains the collection of allowed package dependencies.
-$packageDependencies = [ordered]@{
+$allowePackageDependencies = [ordered]@{
     "StandardAssets" =  @(
         "StandardAssets"
     );
@@ -253,6 +253,7 @@ function GatherFileGuids {
     process {
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
+
             Write-Output "Collecting file GUIDs from $packageName"
 
             foreach ($folder in $package.value.GetEnumerator()) {
@@ -266,12 +267,12 @@ function GatherFileGuids {
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
-                        $fileGuids.Add($asset.FullName, $guid)
+                        $fileGuids.Add($guid, $asset.FullName)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                    $fileGuids.Add($assetFiles.FullName, $guid)
+                    $fileGuids.Add($guid, $assetFiles.FullName)
                 }     
             }
         }
@@ -319,23 +320,56 @@ function GatherDependencyGuids {
     }
 }
 
-# GatherFileGuids
-# foreach ($entry in $fileGuids.GetEnumerator()){
-#     $fileName = $entry.key
-#     $guid = $entry.value
-#     Write-Output "$fileName : $guid"
-# }
-# Write-Output "---"
-GatherDependencyGuids
-foreach ($entry in $dependencyGuids.GetEnumerator()){
-    $fileName = $entry.key
-    Write-Output "$fileName :"
-    $dependencies = $entry.value
-    Write-Output $dependencies
-}
-# Write-Output "---"
+<#
+.SYNOPSIS
+    Validates the dependencies for the provided asset.
+.DESCRIPTION
+    Checks the paths of each dependency file with against the allow list. Returns true if valid, false otherwise.
+#>
+function ValidateDependencies { 
+    [CmdletBinding()]
+    param(
+        $fileName,
+        [System.Array]$dependencies
+    )
+    process {
+        [bool]$isValid = $false;
 
-[int]$errorCount = 0
+        Write-Output "Validating $fileName dependencies..."
+        if ($null -ne $dependencies) {
+            foreach ($guid in $dependencies.GetEnumerator()) {
+                $dependencyFile = $fileGuids[$guid]
+                if ($null -ne $dependencyFile) {
+                    $dependencyFile = $dependencyFile.Replace('\', '/')
+                    # todo - check against the allow list
+                    Write-Output $dependencyFile
+                }
+            }
+        }
+
+        $isValid
+    }
+}
+
+$errors = New-Object -TypeName System.Collections.ArrayList
+
+GatherFileGuids
+GatherDependencyGuids
+foreach ($item in $dependencyGuids.GetEnumerator()) {
+    $fileName = $item.key
+    $dependencies = $item.value
+    $isValid = ValidateDependencies($fileName, $dependencies)
+    if (-not $isValid) {
+        $errors.Add($fileName) | Out-Null
+        # todo
+    }
+}
+
+foreach ($item in $errors.GetEnumerator()) {
+    # todo
+}
+
+[int]$errorCount = $errors.Length 
 
 # If the file containing the list of changes was provided and actually exists,
 # this validation should scope to only those changed files.
