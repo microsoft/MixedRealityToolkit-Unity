@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor")]
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         private KeyType bindingType;
+
         /// <summary>
         /// Type of input this binding maps to.
         /// </summary>
@@ -102,7 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private int code;
 
-        /// <inheritdoc />
         public override string ToString()
         {
             string s = "";
