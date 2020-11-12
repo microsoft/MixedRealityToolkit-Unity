@@ -57,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         public virtual void UpdateController(MotionControllerState controllerState)
         {
+            controllerState.Update(DateTime.Now);
+
             using (UpdateControllerPerfMarker.Auto())
             {
                 for (int i = 0; i < Interactions?.Length; i++)
@@ -247,7 +249,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     return;
 
                 System.Numerics.Vector2 controllerAxisData = controllerState.CurrentReading.GetXYValue(ControllerInput.Thumbstick);
-                Vector2 axisData = new Vector2(controllerAxisData.X, controllerAxisData.Y);
+                float xAxisData = AdjustForDeadzone(2.0f * (controllerAxisData.X - 0.5f));
+                float yAxisData = AdjustForDeadzone(2.0f * (controllerAxisData.Y - 0.5f));
+                Vector2 axisData = new Vector2(xAxisData, yAxisData);
 
                 // Update the interaction data source
                 interactionMapping.Vector2Data = axisData;
@@ -258,6 +262,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     // Raise input system event if it's enabled
                     CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
                 }
+            }
+        }
+
+        private const float INNER_DEADZONE = 0.25f;
+        private const float OUTER_DEADZONE = 0.1f;
+        /// <summary>
+        /// Returns a float which snaps to 0, 1.0f, or -1.0f if the input parameter falls within certain deadzones
+        /// </summary>
+        /// <param name="f">float between -1.0f and 1.0f</param>
+        /// <returns>A float adjusted to snap to certain values if the initial value fell within certain deadzones</returns>
+        private float AdjustForDeadzone(float f)
+        {
+            if (Mathf.Abs(f) < INNER_DEADZONE)
+            {
+                return 0.0f;
+            }
+            else if (Mathf.Abs(f) > 1.0f-OUTER_DEADZONE)
+            {
+                return 1.0f * Mathf.Sign(f);
+            }
+            else
+            {
+                return f;
             }
         }
     }
