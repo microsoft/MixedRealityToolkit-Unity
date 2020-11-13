@@ -41,7 +41,9 @@ Indicates whether the control is flattened in one of the axes, making it 2 dimen
 If flatten axis is set to *Flatten Auto* the script will automatically pick the axis with the smallest extent as flatten axis.
 
 ### Uniform Scale On Flattened Axis
-Indicates whether to scale along the flattened axis when uniform scale is used. If set to false, uniform scaling will not happen along the flattened axis. Note when using non-uniform scaling, the flattened axis is never scaled along.
+Only applies when uniform scale is used. The default behavior (set to true) leads to the flattened axis being scaled along with other axes. If set to false, uniform scaling will not happen along the flattened axis.
+
+Note when using non-uniform scaling, the flattened axis is never scaled along.
 
 ### Smoothing
 The smoothing section allows to configure smoothing behavior for scale and rotate of the control.
