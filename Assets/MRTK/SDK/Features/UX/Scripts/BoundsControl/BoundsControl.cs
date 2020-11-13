@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     if (rigRoot != null)
                     {
                         rigRoot.parent = targetObject.transform;
-                        OnTargetBoundsChanged();
+                        UpdateBounds();
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     {
                         prevBoundsOverride = new Bounds();
                     }
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (boundsCalculationMethod != value)
                 {
                     boundsCalculationMethod = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -151,6 +151,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         }
 
         [SerializeField]
+        [Tooltip("Whether scale the flattened axis when uniform scale is used.")]
+        private bool uniformScaleOnFlattenedAxis = true;
+
+        /// <summary>
+        /// Whether scale the flattened axis when uniform scale is used.
+        /// </summary>
+        public bool UniformScaleOnFlattenedAxis
+        {
+            get => uniformScaleOnFlattenedAxis;
+            set => uniformScaleOnFlattenedAxis = value;
+        }
+
+        [SerializeField]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
 
@@ -165,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    OnTargetBoundsChanged();
+                    UpdateBounds();
                 }
             }
         }
@@ -621,6 +634,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
+        }
+
+        /// <summary>
+        /// Update the bounds.
+        /// Call this function after modifying the transform of the target externally to make sure the bounds are also updated accordingly.
+        /// </summary>
+        public void UpdateBounds()
+        {
+            DetermineTargetBounds();
+            UpdateExtents();
+            UpdateVisuals();
         }
 
         #endregion
@@ -1176,6 +1200,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                         scaleFactor = Vector3.one + grabDiff.Div(initialDist);
                     }
 
+                    // If non-uniform scaling or uniform scaling only on the non-flattened axes
+                    if (ScaleHandlesConfig.ScaleBehavior != HandleScaleMode.Uniform || !UniformScaleOnFlattenedAxis)
+                    {
+                        FlattenModeType determinedType = FlattenAxis == FlattenModeType.FlattenAuto ? VisualUtils.DetermineAxisToFlatten(TargetBounds.bounds.extents) : FlattenAxis;
+                        if (determinedType == FlattenModeType.FlattenX)
+                        {
+                            scaleFactor.x = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenY)
+                        {
+                            scaleFactor.y = 1;
+                        }
+                        if (determinedType == FlattenModeType.FlattenZ)
+                        {
+                            scaleFactor.z = 1;
+                        }
+                    }
+
                     Vector3 newScale = initialScaleOnGrabStart.Mul(scaleFactor);
                     MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
                     if (EnableConstraints && constraintsManager != null)
@@ -1220,13 +1262,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
                     } 
                 }
             }
-        }
-        
-        private void OnTargetBoundsChanged()
-        {
-            DetermineTargetBounds();
-            UpdateExtents();
-            UpdateVisuals();
         }
 
         #endregion Private Methods
