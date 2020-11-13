@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private MixedRealityToolkitConfigurationProfile configProfile = null;
 
-        private void LateUpdate()
+        private void Update()
         {
             if ((configProfile != null) && (MixedRealityToolkit.Instance != null))
             {
