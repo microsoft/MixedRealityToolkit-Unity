@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty activationType;
         private SerializedProperty controlPadding;
         private SerializedProperty flattenAxis;
+        private SerializedProperty uniformScaleOnFlattenedAxis;
 
         private SerializedProperty smoothingActive;
         private SerializedProperty rotateLerpTime;
@@ -70,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             boundsOverride = serializedObject.FindProperty("boundsOverride");
             boundsCalculationMethod = serializedObject.FindProperty("boundsCalculationMethod");
             flattenAxis = serializedObject.FindProperty("flattenAxis");
+            uniformScaleOnFlattenedAxis = serializedObject.FindProperty("uniformScaleOnFlattenedAxis");
             controlPadding = serializedObject.FindProperty("boxPadding");
 
             smoothingActive = serializedObject.FindProperty("smoothingActive");
@@ -123,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(boundsCalculationMethod);
                     EditorGUILayout.PropertyField(controlPadding);
                     EditorGUILayout.PropertyField(flattenAxis);
+                    EditorGUILayout.PropertyField(uniformScaleOnFlattenedAxis);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField(new GUIContent("Smoothing"), EditorStyles.boldLabel);
