@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
