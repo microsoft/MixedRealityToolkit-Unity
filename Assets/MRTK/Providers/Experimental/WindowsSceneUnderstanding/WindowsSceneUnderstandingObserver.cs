@@ -1031,39 +1031,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <summary>
-        /// Gets the color of the given surface type
-        /// </summary>
-        /// <param name="surfaceType">The surface type to get color for</param>
-        /// <returns>The color of the type</returns>
-        // todo: this should be in a demo scene and not in the observer itself
-        private Color ColorForSurfaceType(SpatialAwarenessSurfaceTypes surfaceType)
-        {
-            // shout-out to solarized!
-
-            switch (surfaceType)
-            {
-                case SpatialAwarenessSurfaceTypes.Unknown:
-                    return new Color32(220, 50, 47, 255); // red
-                case SpatialAwarenessSurfaceTypes.Floor:
-                    return new Color32(38, 139, 210, 255); // blue
-                case SpatialAwarenessSurfaceTypes.Ceiling:
-                    return new Color32(108, 113, 196, 255); // violet
-                case SpatialAwarenessSurfaceTypes.Wall:
-                    return new Color32(181, 137, 0, 255); // yellow
-                case SpatialAwarenessSurfaceTypes.Platform:
-                    return new Color32(133, 153, 0, 255); // green
-                case SpatialAwarenessSurfaceTypes.Background:
-                    return new Color32(203, 75, 22, 255); // orange
-                case SpatialAwarenessSurfaceTypes.World:
-                    return new Color32(211, 54, 130, 255); // magenta
-                case SpatialAwarenessSurfaceTypes.Inferred:
-                    return new Color32(42, 161, 152, 255); // cyan
-                default:
-                    return new Color32(220, 50, 47, 255); // red
-            }
-        }
-
-        /// <summary>
         /// Generates occlusion texture from the occlusion mask
         /// </summary>
         /// <param name="textureBytes">The occlusion mask to use</param>
