@@ -221,7 +221,9 @@
       - name: Controller Mapping tool
         href: Tools/ControllerMappingTool.md
       - name: InputFeatureUsage tool
-        href: Tools/InputFeatureUsageTool.md 
+        href: Tools/InputFeatureUsageTool.md
+      - name: MixedRealityInteractionMapping tool
+        href: Tools/MixedRealityInteractionTool.md 
   - name: UX Building Blocks
     items:
     - name: Toolbox Window
