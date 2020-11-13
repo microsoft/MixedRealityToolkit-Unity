@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             if (!isInit && (observer != null))
             {
-                //InitToggleButtonState();
+                // InitToggleButtonState();
                 isInit = true;
             }
 
@@ -426,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             bool foundQuadGuid = false;
             SpatialAwarenessSceneObject closestObject = null;
 
-            var cameraPosition = Camera.main.transform.position;
+            var cameraPosition = CameraCache.Main.transform.position;
 
             for (int i = 0; i < platformCount; ++i)
             {

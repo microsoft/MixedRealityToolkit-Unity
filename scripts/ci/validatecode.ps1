@@ -627,7 +627,8 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Tests/TestUtilities/MRTK.Tests.Utilities.asmdef",
     "Assets/MRTK/Tools/MRTK.Tools.asmdef",
     "Assets/MRTK/Tools/MSBuild/MRTK.Tools.MSBuild.asmdef",
-    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef"
+    "Assets/MRTK/Tools/RuntimeTools/Tools/MRTK.Tools.Runtime.asmdef",
+    "Assets/MRTK/Providers/Experimental/WindowsSceneUnderstanding/Microsoft.MixedReality.Toolkit.SU.asmdef"
 )
 
 function CheckAsmDef {
