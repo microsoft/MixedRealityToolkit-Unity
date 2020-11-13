@@ -264,7 +264,6 @@ function GatherFileGuids {
                 
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
-                        $type = $asset.GetType()
                         $guid = ReadSingleGuid($asset)
                         $fileGuids.Add($guid, $asset)
                     }
@@ -423,6 +422,7 @@ GatherFileGuids
 
 [int]$errorCount = 0;
 
+# todo - https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8944 - support scoped validation here (GatherScopedDependencyGuids)
 GatherDependencyGuids
 foreach ($item in $dependencyGuids.GetEnumerator()) {
     $file = $item.key
@@ -438,31 +438,5 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
 }
 
 Write-Output "Found $errorCount total dependency issues."
-
-# # If the file containing the list of changes was provided and actually exists,
-# # this validation should scope to only those changed files.
-# if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
-#     # TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7022)
-#     # There may be ways to configure common modules so that paths like this aren't required
-#     Import-Module -Force (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
-
-#     Write-Host "Checking only changed files for asset issues: $ChangesFile"
-#     # todo
-#     # $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
-#     # ForEach ($changedFile in $changedFiles) {
-#     #     Write-Host "Checking file: $changedFile"
-#     #     if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
-#     #         ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
-#     #         ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-#     #         ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or
-#     #         ((IsAsmDef -Filename $changedFile) -and (CheckAsmDef $changedFile))) {
-#     #         $containsIssue = $true;
-#     #     }
-#     #}
-# }
-# else {
-#     Write-Host "Checking $Directory for common asset issues"
-#     # todo
-# }
 
 exit $errorCount
