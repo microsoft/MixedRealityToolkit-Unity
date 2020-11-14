@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
 
                     var buttonData = controllerState.CurrentReading.GetPressedValue(button);
-                    interactionMapping.BoolData = buttonData > 0.0f;
+                    interactionMapping.BoolData = Mathf.Approximately(buttonData, 1.0f);
                 }
 
                 // If our value changed raise it.
