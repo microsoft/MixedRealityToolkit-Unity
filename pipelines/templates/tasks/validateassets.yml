@@ -9,14 +9,14 @@ parameters:
   changesFile: ''
 
 steps:
-- ${{ if eq(parameters.scopedValidation, false) }}:
-  - task: PowerShell@2
-    displayName: 'Global asset dependency validation'
-    inputs:
-      targetType: filePath
-      filePath: ./scripts/ci/validateassets.ps1
-      arguments: >
-        -Directory: '$(Build.SourcesDirectory)\Assets'
+#v- ${{ if eq(parameters.scopedValidation, false) }}:
+- task: PowerShell@2
+  displayName: 'Global asset dependency validation'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validateassets.ps1
+    arguments: >
+      -Directory: '$(Build.SourcesDirectory)\Assets'
 # - ${{ if eq(parameters.scopedValidation, true) }}:
 #   - task: PowerShell@2
 #     displayName: 'Scoped asset dependency validation'
