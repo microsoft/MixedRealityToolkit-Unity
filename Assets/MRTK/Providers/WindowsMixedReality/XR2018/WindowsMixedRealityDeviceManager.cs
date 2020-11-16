@@ -719,7 +719,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
 
 #if HP_CONTROLLER_ENABLED
-            bool isHPController = trackedMotionControllerStates.ContainsKey(controllerId) || !interactionSource.supportsTouchpad;
+            bool isHPController = !interactionSource.supportsTouchpad;
             string inputSourceName = isHPController ? $"HP Motion Controller {nameModifier}" : $"Mixed Reality Controller {nameModifier}";
             var inputSource = Service?.RequestNewGenericInputSource(inputSourceName, pointers, inputSourceType);
 #else

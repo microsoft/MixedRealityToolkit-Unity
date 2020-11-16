@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     public class HPMotionController : WindowsMixedRealityXRSDKMotionController
     {
 #if HP_CONTROLLER_ENABLED
-        internal HPMotionControllerInputHandler inputHandler;
+        internal HPMotionControllerInputHandler InputHander;
         internal MotionControllerState MotionControllerState;
 #endif
 
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
 #if HP_CONTROLLER_ENABLED
-            inputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
+            InputHander = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
 #endif
             controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
         }
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     // If the Motion controller state is instantiated and tracked, use it to update the interaction bool data 
                     // the interaction source updates the 6-dof data first since some interaction mappings rely on 6dof data
                     base.UpdateSixDofData(inputDevice);
-                    inputHandler.UpdateController(MotionControllerState);
+                    InputHander.UpdateController(MotionControllerState);
                 }
                 else
                 {
