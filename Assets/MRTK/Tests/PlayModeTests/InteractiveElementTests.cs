@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class InteractiveElementTests : BasePlayModeTests
     {
+        private string focusStateName = CoreInteractionState.Focus.ToString();
+        private string touchStateName = CoreInteractionState.Touch.ToString();
+        private string defaultStateName = CoreInteractionState.Default.ToString();
+        private string newStateName = "MyNewState";
+
         /// <summary>
         /// Tests adding listeners to the event configuration of the focus state.
         /// </summary>
@@ -26,24 +31,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // The focus state is a state that is added by default
-            InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus.ToString());
+            InteractionState focusState = interactiveElement.GetState(focusStateName);
             yield return null;
 
             // Get the event configuration for the focus state
-            var eventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
+            var eventConfiguration = interactiveElement.GetStateEvents<FocusEvents>(focusStateName);
 
             bool onFocusOn = false;
             bool onFocusOff = false;
 
             eventConfiguration.OnFocusOn.AddListener((eventData) =>
-                {
-                    onFocusOn = true;
-                });
+            {
+                onFocusOn = true;
+            });
 
             eventConfiguration.OnFocusOff.AddListener((eventData) =>
-                {
-                    onFocusOff = true;
-                });
+            {
+                onFocusOff = true;
+            });
 
             // Create a new hand and initialize it with an object in focus
             var leftHand = new TestHand(Handedness.Left);
@@ -62,6 +67,64 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests adding listeners to the event configuration of the touch state.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTouchEventConfiguration()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Add the touch state
+            InteractionState touchState = interactiveElement.AddNewState(touchStateName);
+            yield return null;
+
+            // Get the event configuration for the touch state
+            var eventConfiguration = interactiveElement.GetStateEvents<TouchEvents>(touchStateName);
+
+            bool onTouchStarted = false;
+            bool onTouchCompleted = false;
+            bool onTouchUpdated = false;
+
+            eventConfiguration.OnTouchStarted.AddListener((eventData) =>
+            {
+                onTouchStarted = true;
+            });
+
+            eventConfiguration.OnTouchCompleted.AddListener((eventData) =>
+            {
+                onTouchCompleted = true;
+            });
+
+            eventConfiguration.OnTouchUpdated.AddListener((eventData) =>
+            {
+                onTouchUpdated = true;
+            });
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+
+            // Show hand at starting position
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Move hand to Touch the object
+            yield return MoveHandTouchObject(leftHand);
+
+            Assert.True(onTouchStarted);
+            yield return null;
+
+            Assert.True(onTouchUpdated);
+            yield return null;
+
+            yield return MoveHandOutOfFocus(leftHand);
+
+            // Make sure the touch has completed when the hand moves off the object
+            Assert.True(onTouchCompleted);
+            yield return null;
+        }
+
+        /// <summary>
         /// Test creating a new state and setting the values of the new state.
         /// </summary>
         [UnityTest]
@@ -72,28 +135,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Create a new state and add it to Tracked States
-            interactiveElement.AddNewState("MyNewState");
+            interactiveElement.AddNewState(newStateName);
 
             // Change the value of my new state by using the focus state events to set the new state
             InteractionState focusState = interactiveElement.GetState(CoreInteractionState.Focus.ToString());
 
-            var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>("Focus");
+            var focusEventConfiguration = interactiveElement.GetStateEvents<FocusEvents>(focusStateName);
             yield return null;
 
-            focusEventConfiguration.OnFocusOn.AddListener((focusEventData) => 
+            focusEventConfiguration.OnFocusOn.AddListener((focusEventData) =>
             {
                 // When the object comes into focus, set my new state to on
-                interactiveElement.SetStateOn("MyNewState");
+                interactiveElement.SetStateOn(newStateName);
             });
 
             focusEventConfiguration.OnFocusOff.AddListener((focusEventData) =>
             {
                 // When the object comes out of  focus, set my new state to off
-                interactiveElement.SetStateOff("MyNewState");
+                interactiveElement.SetStateOff(newStateName);
             });
 
             // Make sure MyNewState is being tracked
-            InteractionState myNewState = interactiveElement.GetState("MyNewState");
+            InteractionState myNewState = interactiveElement.GetState(newStateName);
             Assert.IsNotNull(myNewState);
 
             // Make sure the value is 0/off initially
@@ -124,24 +187,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Create a new state
-            interactiveElement.AddNewState("MyNewState");
+            interactiveElement.AddNewState(newStateName);
 
             bool stateActivated = false;
 
             // Use the OnStateActivated event in the State Manager to set stateActivated
             interactiveElement.StateManager.OnStateActivated.AddListener((state) =>
             {
-                if (state.Name == "MyNewState")
+                if (state.Name == newStateName)
                 {
                     stateActivated = true;
                 }
             });
 
             // Set the state on
-            interactiveElement.SetStateOn("MyNewState");
+            interactiveElement.SetStateOn(newStateName);
 
             // Make sure the state was activated
-            Assert.True(stateActivated);  
+            Assert.True(stateActivated);
         }
 
         /// <summary>
@@ -155,10 +218,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Create a new state
-            interactiveElement.AddNewState("MyNewState");
+            interactiveElement.AddNewState(newStateName);
 
             // Get the event configuration 
-            var eventConfiguration = interactiveElement.GetStateEvents<StateEvents>("MyNewState");
+            var eventConfiguration = interactiveElement.GetStateEvents<StateEvents>(newStateName);
 
             bool onStateOn = false;
             bool onStateOff = false;
@@ -173,14 +236,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 onStateOff = true;
             });
 
-
-            interactiveElement.SetStateOn("MyNewState");
+            interactiveElement.SetStateOn(newStateName);
             yield return null;
 
             // Check if OnFocusOn has fired
             Assert.True(onStateOn);
 
-            interactiveElement.SetStateOff("MyNewState");
+            interactiveElement.SetStateOff(newStateName);
             yield return null;
 
             // Check if OnFocusOn has fired
@@ -204,12 +266,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add new states
             for (int i = 0; i < newStateCount; i++)
             {
-                interactiveElement.AddNewState("State"+ i.ToString());
+                interactiveElement.AddNewState("State" + i.ToString());
                 yield return null;
             }
 
             // The Default state should only be active if no other states are active
-            Assert.True(interactiveElement.IsStateActive("Default"));
+            Assert.True(interactiveElement.IsStateActive(defaultStateName));
 
             // Set each new states to active
             for (int i = 0; i < newStateCount; i++)
@@ -217,19 +279,72 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 interactiveElement.SetStateOn("State" + i.ToString());
 
                 // If any other state is active, the Default state should not be active 
-                Assert.False(interactiveElement.IsStateActive("Default"));
+                Assert.False(interactiveElement.IsStateActive(defaultStateName));
             }
 
             // Set all states to not be active 
             for (int i = 0; i < newStateCount; i++)
             {
-                interactiveElement.SetStateOff("State" + i.ToString());   
+                interactiveElement.SetStateOff("State" + i.ToString());
             }
 
             yield return null;
 
             // After all the states are deactivated, the Default state should be active
-            Assert.True(interactiveElement.IsStateActive("Default"));
+            Assert.True(interactiveElement.IsStateActive(defaultStateName));
+        }
+
+        /// <summary>
+        /// Test the Active property on interactive element by toggling the property and checking
+        /// if states are updated
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestActiveInactive()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Get the focus state
+            InteractionState focusState = interactiveElement.GetState(focusStateName);
+
+            // Add the touch state
+            InteractionState touchState = interactiveElement.AddNewState(touchStateName);
+            yield return null;
+
+            Assert.True(interactiveElement.Active);
+
+            // Make sure the Focus and Touch state are not on
+            Assert.AreEqual(touchState.Value, 0);
+            Assert.AreEqual(focusState.Value, 0);
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Move hand to Touch the object
+            yield return MoveHandTouchObject(leftHand);
+
+            // Make sure the values change when the hand is moved to touch the cube
+            Assert.AreEqual(touchState.Value, 1);
+            Assert.AreEqual(focusState.Value, 1);
+            yield return null;
+
+            yield return MoveHandOutOfFocus(leftHand);
+
+            // Set Active to false to disable internal updates
+            interactiveElement.Active = false;
+
+            // Show hand at starting position
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Move hand to Touch the object
+            yield return MoveHandTouchObject(leftHand);
+
+            // Make sure the values do not change when the hand is moved to touch the cube
+            Assert.AreEqual(touchState.Value, 0);
+            Assert.AreEqual(focusState.Value, 0);
+            yield return null;
         }
 
         #region Interaction Tests Helpers
@@ -255,6 +370,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private IEnumerator MoveHandOutOfFocus(TestHand hand)
         {
             yield return hand.Move(new Vector3(0, -0.3f, 0), 30);
+        }
+
+        private IEnumerator MoveHandTouchObject(TestHand hand)
+        {
+            yield return hand.Move(new Vector3(0, -0.25f, 0.221f), 30);
         }
 
         #endregion
