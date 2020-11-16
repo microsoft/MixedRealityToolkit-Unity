@@ -28,7 +28,8 @@
 
 # Packaging files
 *.asmdef @davidkline-ms @keveleigh
-*.nupkg @davidkline-ms
+*.nupkg @davidkline-ms @keveleigh
+packagetemplate.json @davidkline-ms @keveleigh
 
 # Core
 /Assets/MRTK/Core/ @davidkline-ms @keveleigh
