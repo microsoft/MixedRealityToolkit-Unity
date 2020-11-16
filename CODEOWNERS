@@ -21,7 +21,7 @@
 /pipelines/ @MenelvagorMilsom @macborow
 
 # Build / CI C#
-/Assets/MRTK/codeowners/Utilities/BuildAndDeploy/ @MenelvagorMilsom @macborow
+/Assets/MRTK/Core/Utilities/BuildAndDeploy/ @MenelvagorMilsom @macborow
 
 # Build / CI Powershell Scripts
 /scripts/ci/ @MenelvagorMilsom @macborow
