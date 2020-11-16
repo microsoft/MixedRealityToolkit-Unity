@@ -34,11 +34,9 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
 {
     /// <summary>
@@ -62,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         internal static void IntegrateOculusWithMRTK()
         {
             // Check if Oculus Integration package is present
-            bool oculusIntegrationPresent = DetectOculusIntegrationDefine();
+            bool oculusIntegrationPresent = DetectOculusIntegrationAsset();
 
             if (!oculusIntegrationPresent)
             {
@@ -90,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Oculus/Separate Oculus Integration Unity Modules")]
         internal static void SeparateOculusFromMRTK()
         {
-            bool oculusIntegrationPresent = DetectOculusIntegrationDefine();
+            bool oculusIntegrationPresent = DetectOculusIntegrationAsset();
 
             // If the user tries to separate the Oculus Integration assets without assets in the project display a message
             if (!oculusIntegrationPresent)
@@ -185,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
         /// Checks if the Oculus Integration Asset as present or not present
         /// </summary>
         /// <returns>true if Assets/Oculus/OculusProjectConfig exists, false otherwise</returns>
-        internal static bool DetectOculusIntegrationDefine()
+        internal static bool DetectOculusIntegrationAsset()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(OculusIntegrationProjectConfig);
 
