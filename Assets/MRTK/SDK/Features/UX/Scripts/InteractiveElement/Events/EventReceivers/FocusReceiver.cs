@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <inheritdoc />
         public override void OnUpdate(StateManager stateManager, BaseEventData eventData)
         {
-            bool hasFocus = stateManager.GetState(CoreInteractionState.Focus.ToString()).Value > 0;
+            bool hasFocus = stateManager.GetState(StateName).Value > 0;
 
             if (hadFocus != hasFocus)
             {

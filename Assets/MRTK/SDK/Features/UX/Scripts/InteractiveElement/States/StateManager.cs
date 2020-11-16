@@ -75,11 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // List of all core states
         private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
 
-        // List of all core states
-        private string defaultStateName = "Default";
-
         // List of active states, used for tracking the current and previous states
         private List<InteractionState> activeStates = new List<InteractionState>();
+
+        // State names
+        private string defaultStateName = CoreInteractionState.Default.ToString();
+        private string touchStateName = CoreInteractionState.Touch.ToString();
 
         /// <summary>
         /// Gets a state by using the state name.
@@ -140,7 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             if (state != null)
             {
-                if (state.Value != 1)
+                // Only update the state value and invoke events if InteractiveElement is Active
+                if (state.Value != 1 && InteractiveElement.Active)
                 {
                     state.Value = 1;
                     state.Active = true;
@@ -183,7 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             if (state != null)
             {
-                if (state.Value != 0)
+                // Only update the state value and invoke events if InteractiveElement is Active
+                if (state.Value != 0 && InteractiveElement.Active)
                 {
                     state.Value = 0;
                     state.Active = false;
@@ -255,15 +258,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Check if a state is currently being tracked.
+        /// Check if a state is currently being tracked by this state manager.
         /// </summary>
         /// <param name="stateName">The name of the state to check</param>
         /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
-        public bool IsStateTracking(string stateName)
+        public bool IsStatePresent(string stateName)
         {
-            InteractionState state = GetState(stateName);
-
-            return state != null;
+            return GetState(stateName) != null;
         }
 
         /// <summary>
@@ -280,14 +281,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 return null;
             }
 
-            // If a user tries to add a state with the same name as a core state, then log an error telling them to choose a 
-            // different name.
-            if (coreStates.Contains(stateName))
-            {
-                Debug.LogError($" The {stateName} state name is reserved for a core state. Please enter a different state name.");
-                return null;
-            }
-
             // If the state does not exist, then add it
             if (!statesDictionary.ContainsKey(stateName))
             {
@@ -300,6 +293,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 
                 // Set the event configuration if one exists for the core interaction state
                 EventReceiverManager.SetEventConfiguration(newState);
+
+                // If the Touch state is added, check if a Near Interaction Touchable component attached to the game object
+                if (stateName == touchStateName)
+                {
+                    // A Near Interaction Touchable component is required for an object to receive touch events
+                    InteractiveElement.AddNearInteractionTouchable();
+                }
 
                 return newState;
             }
@@ -356,14 +356,29 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
         }
 
+        /// <summary>
+        /// Reset all the state values in the list to 0. State values are reset when the Active
+        /// property is set to false. 
+        /// </summary>
+        public void ResetAllStates()
+        {
+            foreach(KeyValuePair<string,InteractionState> state in statesDictionary)
+            {
+                // Set all the state values to 0
+                SetStateOff(state.Key);
+            }
+        }
+
         // Add listeners to the OnStateActivated and OnStateDeactivated events
         private void AddStateEventListeners()
         {
+            // Add listeners to invoke a state event.
             OnStateActivated.AddListener((state) =>
             {
-                // Add listeners to invoke a state event if it is not a core state.
-                // A core state usually has event data associated with while a non-core state usually does not.
-                if (!coreStates.Contains(state.Name) )
+                // If the event configuration for a state is of type StateEvents, this means that the state
+                // does not have associated dynamic event data. Therefore, the state event can be invoked when
+                // the state value changes without passing in event data. 
+                if (state.EventConfiguration is StateEvents)
                 {
                     EventReceiverManager.InvokeStateEvent(state.Name);
                 }
@@ -371,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             OnStateDeactivated.AddListener((previousState, currentState) =>
             {
-                if (!coreStates.Contains(previousState.Name))
+                if (previousState.EventConfiguration is StateEvents)
                 {
                     EventReceiverManager.InvokeStateEvent(previousState.Name);
                 }
