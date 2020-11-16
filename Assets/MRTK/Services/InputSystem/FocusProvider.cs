@@ -698,8 +698,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GameObject cameraObject = null;
 
             var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
-            bool uiRaycastCameraObjectExists = existingUiRaycastCameraObject != null;
-            Debug.Assert(uiRaycastCameraObjectExists == MixedRealityToolkit.Instance.IsProfileSwitching);
             if (existingUiRaycastCameraObject != null)
             {
                 cameraObject = existingUiRaycastCameraObject;
