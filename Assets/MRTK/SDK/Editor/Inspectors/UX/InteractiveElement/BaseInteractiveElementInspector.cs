@@ -85,7 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 
                 if (previousActiveStatus != active.boolValue)
                 {
-                    ResetAllStates();
+                    // Only reset all states when Active is set to false
+                    if (!active.boolValue)
+                    {
+                        ResetAllStates();
+                    }
                 }
 
                 previousActiveStatus = active.boolValue;
