@@ -24,7 +24,7 @@ MonoBehaviour:
     type: 3}
   globalRightControllerModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
     type: 3}
-  globalLeftHandVisualizer: {fileID: 61451597023024772, guid: fc04e81042365e742b68b150442b64fd,
+  globalLeftHandVisualizer: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
     type: 3}
   globalRightHandVisualizer: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
     type: 3}
@@ -57,10 +57,11 @@ MonoBehaviour:
     handedness: 1
     useDefaultModel: 0
     defaultModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 61451597023024772, guid: b079cc5399dd6014ea50e19cfe444f82,
+    overrideModel: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
       type: 3}
     controllerVisualizationType:
-      reference: 
+      reference: Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
   - description: Oculus Hand
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
@@ -70,4 +71,5 @@ MonoBehaviour:
     overrideModel: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
       type: 3}
     controllerVisualizationType:
-      reference: 
+      reference: Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK

@@ -50,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRiggedHand()
         {
+            yield return PlayModeTestUtilities.WaitForEnterKey();
             // Initialize hand
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(Vector3.zero);
@@ -57,15 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             RiggedHandVisualizer handVisualizer = GameObject.FindObjectOfType<RiggedHandVisualizer>().GetComponent<RiggedHandVisualizer>();
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            Assert.IsTrue(handVisualizer.HandMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) < 0.5f);
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) < 0.5f);
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Grab);
-            Assert.IsTrue(handVisualizer.HandMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) > 0.5f);
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) > 0.5f);
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            Assert.IsTrue(handVisualizer.HandMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty)  < 0.5f);
-
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty)  < 0.5f);
         }
     }
 }
