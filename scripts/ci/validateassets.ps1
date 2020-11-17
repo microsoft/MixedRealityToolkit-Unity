@@ -48,7 +48,7 @@ $Directory = Resolve-Path -Path $Directory
 # The keys represent the package name (com.microsoft.mixedreality.toolkit.<key>). The values are the collection
 # of folders included in the package.
 #
-# The folders are relevant to the RepoRoot.
+# The folders are relative to the RepoRoot.
 $packages = [ordered]@{
     "StandardAssets" =  @(
         "MRTK/StandardAssets"
