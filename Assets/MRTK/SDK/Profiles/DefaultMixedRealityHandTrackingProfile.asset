@@ -22,4 +22,4 @@ MonoBehaviour:
   handMeshPrefab: {fileID: 1887883006053652, guid: a86f479797fea8f4189f924b3b6ad979,
     type: 3}
   handMeshVisualizationModes: -1
-  handJointVisualizationModes: -1
+  handJointVisualizationModes: 0

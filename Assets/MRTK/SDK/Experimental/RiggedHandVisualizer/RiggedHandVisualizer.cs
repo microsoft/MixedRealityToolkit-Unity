@@ -453,7 +453,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
 
                 pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
 
-                Debug.Log(pinchStrength);
                 if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
                 {
                     handRenderer.sharedMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);

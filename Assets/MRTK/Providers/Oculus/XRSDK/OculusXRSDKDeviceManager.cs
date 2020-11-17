@@ -266,14 +266,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             }
         }
 
-        //private void UpdateHandMaterial()
-        //{
-        //    foreach (var hand in trackedHands.Values)
-        //    {
-        //        hand.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
-        //    }
-        //}
-
         private OculusHand GetOrAddHand(Handedness handedness, OVRHand ovrHand)
         {
             if (trackedHands.ContainsKey(handedness))
@@ -295,7 +287,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             for (int i = 0; i < handDevice.InputSource?.Pointers?.Length; i++)
             {
                 handDevice.InputSource.Pointers[i].Controller = handDevice;
-                //handDevice.UpdateHandMaterial(SettingsProfile.CustomHandMaterial);
             }
 
             inputSystem?.RaiseSourceDetected(handDevice.InputSource, handDevice);
