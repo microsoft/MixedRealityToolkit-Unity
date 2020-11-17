@@ -137,7 +137,7 @@ function IsArray {
 
 <#
 .SYNOPSIS
-    Given a string, determine if it is a valud GUID
+    Given a string, determine if it is a valid GUID
 .DESCRIPTION
     Attempts to parse the provided string into a Guid. Returns true if successful, otherwise false.
     Note: This method defines an empty GUID (all 0) as being invalid.
