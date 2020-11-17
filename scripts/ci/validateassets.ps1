@@ -163,7 +163,8 @@ function IsValidGuid {
     Extracts a GUID, if present, from a string (expected format: "guid: <32-digits>").
 .DESCRIPTION
     Returns the GUID identified or an empty string.
-#>function ExtractGuid {
+#>
+function ExtractGuid {
     [CmdletBinding()]
     param(
         [string]$text
