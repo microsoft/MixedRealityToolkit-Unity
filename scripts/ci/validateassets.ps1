@@ -43,7 +43,7 @@ param(
 
 $Directory = Resolve-Path -Path $Directory
 
-# This table defines MRTK pacakge layout.
+# This table defines MRTK package layout.
 #
 # The keys represent the package name (com.microsoft.mixedreality.toolkit.<key>). The values are the collection
 # of folders included in the package.
