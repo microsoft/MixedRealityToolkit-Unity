@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,8 +17,30 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// </summary>
     public abstract class BaseInteractiveElement :
         MonoBehaviour,
-        IMixedRealityFocusHandler
+        IMixedRealityFocusHandler,
+        IMixedRealityTouchHandler
     {
+        [SerializeField]
+        [Tooltip("Whether or not this interactive element will react to input and update internally. If true, the " +
+            "object will react to input and update internally.  If false, the object will not update internally " +
+            "and not react to input, i.e. state values will not be updated.")]
+        private bool active = true;
+
+        /// <summary>
+        /// Whether or not this interactive element will react to input and update internally. If true, the 
+        /// object will react to input and update internally.  If false, the object will not update internally 
+        /// and not react to input, i.e. state values will not be updated.
+        /// </summary>
+        public bool Active
+        {
+            get => active;
+            set 
+            {
+                ResetAllStates();
+                active = value; 
+            }
+        }
+
         [SerializeField]
         [Tooltip("A list of the interaction states for this interactive element.")]
         private List<InteractionState> states = new List<InteractionState>();
@@ -29,8 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// </summary>
         public List<InteractionState> States
         {
-            get { return states; }
-            set { states = value; }
+            get => states; 
+            set => states = value; 
         }
 
         /// <summary>
@@ -46,11 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // Core State Names
         protected string DefaultStateName = CoreInteractionState.Default.ToString();
         protected string FocusStateName = CoreInteractionState.Focus.ToString();
+        protected string TouchStateName = CoreInteractionState.Touch.ToString();
 
-        // List of all core state namnes
+        // List of all core state names
         private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
 
-        private void OnValidate()
+        public virtual void OnValidate()
         {
             // Populate the States list with the initial states when this component is initialized via inspector
             PopulateInitialStates();
@@ -93,11 +115,36 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         #endregion
 
-        public void SetStateAndInvokeEvent(string stateName, int value, BaseEventData eventData)
+        #region Touch
+
+        public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (IsStateTracking(stateName))
+            SetStateAndInvokeEvent(TouchStateName, 1, eventData);
+        }
+
+        public void OnTouchCompleted(HandTrackingInputEventData eventData)
+        {
+            SetStateAndInvokeEvent(TouchStateName, 0, eventData);
+        }
+
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            EventReceiverManager.InvokeStateEvent(TouchStateName, eventData);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Sets a state to a given state value and invokes an event with associated event data. 
+        /// </summary>
+        /// <param name="stateName">The name of the state to set</param>
+        /// <param name="stateValue">The state value. A value of 0 = set the state off, 1 = set the state on</param>
+        /// <param name="eventData">Event data to pass into the event</param>
+        public void SetStateAndInvokeEvent(string stateName, int stateValue, BaseEventData eventData)
+        {
+            if (IsStatePresent(stateName))
             {
-                StateManager.SetState(stateName, value);
+                StateManager.SetState(stateName, stateValue);
 
                 EventReceiverManager.InvokeStateEvent(stateName, eventData);
             }
@@ -177,13 +224,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Checks if a state is currently being tracked by the state manager.
+        /// Checks if a state is currently in the States list and is being tracked by the state manager.
         /// </summary>
         /// <param name="stateName">The name of the state to check</param>
         /// <returns>True if the state is being tracked, false if the state is not being tracked</returns>
-        public bool IsStateTracking(string stateName)
+        public bool IsStatePresent(string stateName)
         {
-            return StateManager.IsStateTracking(stateName);
+            return StateManager.IsStatePresent(stateName);
         }
 
         /// <summary>
@@ -194,6 +241,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public bool IsStateActive(string stateName)
         {
             return StateManager.IsStateActive(stateName);
+        }
+
+        /// <summary>
+        /// Reset all the state values in the list to 0. State values are reset when the Active
+        /// property is set to false. 
+        /// </summary>
+        public void ResetAllStates()
+        {
+            StateManager.ResetAllStates();
         }
 
         #endregion
@@ -229,6 +285,39 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 Debug.LogError($"{stateName} is not contianted in the States list");
             }
+        }
+
+        /// <summary>
+        /// Add a Near Interaction Touchable component to the current game object if the Touch state is 
+        /// added to the States list. A Near Interaction Touchable component is required for an object to detect
+        /// touch input events. 
+        /// A Near Interaction Touchable Volume component is attached by default because it detects touch input
+        /// on the entire surface area of a collider.  While a Near Interaction Touchable component
+        /// will be attached if the object is a button because touch input is only detected within the area of a plane. 
+        /// </summary>
+        public void AddNearInteractionTouchable()
+        {
+            if (gameObject.GetComponent<BaseNearInteractionTouchable>() == null)
+            {
+                // Add a Near Interaction Touchable Volume by default because it detects touch on the 
+                // entire surface area of a collider. 
+                gameObject.AddComponent<NearInteractionTouchableVolume>();
+
+                // Add a Near Interaction Touchable if the object is a button.
+                // A Near Interaction Touchable detects touch input within the area of a plane and not the 
+                // entire surface area of an object.
+            }
+        }
+
+        /// <summary>
+        /// Checks if a state is currently in the State list. This method is specifically used for checking the 
+        /// contents of the States list during edit mode as the State Manager contains runtime methods. 
+        /// </summary>
+        /// <param name="stateName">The name of the state</param>
+        /// <returns>True if the state is in the States list. False, if the state could not be found.</returns>
+        public bool IsStatePresentEditMode(string stateName)
+        {
+            return States.Find((state) => state.Name == stateName) != null;
         }
     }
 }

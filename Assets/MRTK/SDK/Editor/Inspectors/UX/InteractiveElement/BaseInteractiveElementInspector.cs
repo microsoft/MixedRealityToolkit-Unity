@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
@@ -20,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private BaseInteractiveElement instance;
         private SerializedProperty states;
+        private SerializedProperty active;
 
         private static GUIContent RemoveStateButtonLabel;
 
@@ -27,40 +29,78 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static string newStateName = "New State Name";
         private const string newCoreStateName = "New Core State";
         private const string createNewStateName = "Create New State";
-        private const string defaultStateName = "Default";
         private const string removeStateLabel = "Remove State";
         private const string statesLabel = "States";
+        private const string settingsLabel = "Settings";
+        private const string setStateNameLabel = "Set State Name";
+        private const string addCoreStateLabel = "Add Core State";
 
         private const int stateValueDisplayWidth = 20;
         private const int stateValueDisplayContainerWidth = 10;
 
+        private bool previousActiveStatus;
+
+        private string defaultStateName = CoreInteractionState.Default.ToString();
+        private string touchStateName = CoreInteractionState.Touch.ToString();
+        
         protected virtual void OnEnable()
         {
             instance = (BaseInteractiveElement)target;
 
+            active = serializedObject.FindProperty("active");
             states = serializedObject.FindProperty("states");
 
             RemoveStateButtonLabel = new GUIContent(InspectorUIUtility.Minus, removeStateLabel);
+
+            previousActiveStatus = active.boolValue;
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            InspectorUIUtility.DrawTitle(statesLabel);
+            RenderSettings();
 
             RenderStates();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
 
             RenderAddStateButtons();
 
             serializedObject.ApplyModifiedProperties();
         }
 
+        private void RenderSettings()
+        {
+            // Draw a title for the Settings section 
+            InspectorUIUtility.DrawTitle(settingsLabel);
+
+            EditorGUILayout.PropertyField(active);
+
+            if (Application.isPlaying)
+            {
+                if (!active.boolValue)
+                {
+                    // Add a notice in the inspector to let the user know that they have disabled internal updates, i.e. state values will not update
+                    InspectorUIUtility.DrawNotice("Internal updates to this Interactive Element have been disabled.");
+                }
+                
+                if (previousActiveStatus != active.boolValue)
+                {
+                    // Only reset all states when Active is set to false
+                    if (!active.boolValue)
+                    {
+                        ResetAllStates();
+                    }
+                }
+
+                previousActiveStatus = active.boolValue;
+            }
+        }
+
         private void RenderStates()
         {
+            // Draw a States title for the State list section 
+            InspectorUIUtility.DrawTitle(statesLabel);
+
             for (int i = 0; i < states.arraySize; i++)
             {
                 SerializedProperty state = states.GetArrayElementAtIndex(i);
@@ -159,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // If the state is already being tracked then do not display the state name as an option to add
                 foreach (string coreState in coreInteractionStateNames.ToList())
                 {
-                    if (IsStatePresent(coreState))
+                    if (instance.IsStatePresentEditMode(coreState))
                     {
                         coreInteractionStateNames.Remove(coreState);
                     }
@@ -183,6 +223,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     serializedObject.ApplyModifiedProperties();
 
                     instance.SetEventConfigurationInstance(stateName.stringValue);
+
+                    if (stateName.stringValue == touchStateName)
+                    {
+                        instance.AddNearInteractionTouchable();
+                    }
                 }
             }
         }
@@ -194,9 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 newStateName = EditorGUILayout.TextField("New State Name", newStateName);
 
-                if (GUILayout.Button("Set State Name"))
+                if (GUILayout.Button(setStateNameLabel))
                 {
-                    if (newStateName != string.Empty && !IsStatePresent(newStateName) && newStateName != "New State Name")
+                    if (newStateName != string.Empty && !instance.IsStatePresentEditMode(newStateName) && newStateName != "New State Name")
                     {
                         stateName.stringValue = newStateName;
 
@@ -234,24 +279,39 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Draw the buttons for adding or creating a new state at the bottom of the inspector window side by side
         private void RenderAddStateButtons()
         {
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Add Core State"))
+                if (GUILayout.Button(addCoreStateLabel))
                 {
                     AddNewState(newCoreStateName);
                 }
 
-                if (GUILayout.Button("Create New State"))
+                if (GUILayout.Button(createNewStateName))
                 {
                     AddNewState(createNewStateName);
                 }
             }
         }
 
-        // Checks if a given state is already in the States list
-        private bool IsStatePresent(string stateName)
+        // Reset all the state values if the Active property is set to false via inspector
+        private void ResetAllStates()
         {
-            return instance.States.Find((state) => state.Name == stateName) != null;
+            for (int i = 0; i < states.arraySize; i++)
+            {
+                SerializedProperty state = states.GetArrayElementAtIndex(i);
+                SerializedProperty stateName = state.FindPropertyRelative("stateName");
+                SerializedProperty stateValue = state.FindPropertyRelative("stateValue");
+                SerializedProperty stateActive = state.FindPropertyRelative("active");
+
+                if (stateName.stringValue != defaultStateName)
+                {
+                    stateValue.intValue = 0;
+                    stateActive.boolValue = false;
+                }
+            }
         }
     }
 }

@@ -60,11 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             BaseEventReceiver receiver = EventReceivers[stateName];
 
-            if (receiver != null)
+            // Only invoke state events if Interactive Element is Active
+            if (receiver != null && stateManager.InteractiveElement.Active)
             {
                 receiver.OnUpdate(stateManager, eventData);
             }
-            else
+            else if (receiver == null)
             {
                 Debug.LogError($"The event receiver for the {stateName} state does not exist");
             }
@@ -122,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             // For example, the Focus state is associated with the FocusEvents class which has BaseInteractionEventConfiguration as its base class.
             // The FocusEvents class contains unity events with FocusEventData.
             // This pattern continues with states that have events with specific event data, i.e. the Touch state
-            // is associated with the serialized class TouchEvents which contians unity events with TouchEventData
+            // is associated with the serialized class TouchEvents which contains unity events with TouchEventData
             var eventConfigTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
             Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(stateName));
 

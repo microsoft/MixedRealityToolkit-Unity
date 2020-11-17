@@ -431,7 +431,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             Color prevColor = GUI.color;
 
-            GUI.color = ColorTint100;
+            GUI.color = ColorTint50;
             using (new EditorGUILayout.VerticalScope(EditorStyles.textArea))
             {
                 EditorGUILayout.LabelField(notice, EditorStyles.wordWrappedMiniLabel);
