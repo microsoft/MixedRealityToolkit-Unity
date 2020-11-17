@@ -44,6 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Keyframe currentKeyframe;
         private Queue<Keyframe> keyframes;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public InputRecordingBuffer() => keyframes = new Queue<Keyframe>();
 
         /// <summary>

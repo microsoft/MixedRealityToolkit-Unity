@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
+
+// Allow unused events
 #pragma warning disable 67
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -24,8 +26,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        /// <summary>
+        /// Invoked when playback begins or resumes
+        /// </summary>
         public event Action OnPlaybackStarted;
+        /// <summary>
+        /// Invoked when playback stops
+        /// </summary>
         public event Action OnPlaybackStopped;
+        /// <summary>
+        /// Invoked when playback is paused
+        /// </summary>
         public event Action OnPlaybackPaused;
 
         private bool isPlaying = false;

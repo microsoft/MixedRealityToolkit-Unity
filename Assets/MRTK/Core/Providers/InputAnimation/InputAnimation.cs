@@ -42,8 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         private float duration = 0.0f;
+        /// <summary>
+        /// Maximum duration of all animations curves.
+        /// </summary>
         public float Duration => duration;
-        public class PoseCurves
+        
+        private class PoseCurves
         {
             public AnimationCurve PositionX = new AnimationCurve();
             public AnimationCurve PositionY = new AnimationCurve();
@@ -97,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         
-        public class RayCurves
+        private class RayCurves
         {
             public AnimationCurve OriginX = new AnimationCurve();
             public AnimationCurve OriginY = new AnimationCurve();
@@ -165,12 +169,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<TrackedHandJoint, PoseCurves> handJointCurvesRight;
         [SerializeField]
         private PoseCurves cameraCurves;
-        public PoseCurves CameraCurves => cameraCurves;
         [SerializeField]
         private RayCurves gazeCurves;
 
+        /// <summary>
+        /// Whether the animation has hand state and joint curves
+        /// </summary>
         public bool HasHandData { get; private set; } = false;
+        /// <summary>
+        /// Whether the animation has camera pose curves
+        /// </summary>
         public bool HasCameraPose { get; private set; } = false;
+        /// <summary>
+        /// Whether the animation has eye gaze curves
+        /// </summary>
         public bool HasEyeGaze { get; private set; } = false;
         
         /// <summary>
@@ -178,8 +190,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         private List<InputAnimationMarker> markers;
+        /// <summary>
+        /// Number of markers in the animation.
+        /// </summary>
         public int markerCount => markers.Count;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public InputAnimation()
         {
             handTrackedCurveLeft = new AnimationCurve();
@@ -382,24 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Get animation curves for the pose of the given hand joint, if they exist.
-        /// </summary>
-        [Obsolete("Use EvaluateHandJoint to get joint pose data")]
-        public bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
-        {
-            if (handedness == Handedness.Left)
-            {
-                return handJointCurvesLeft.TryGetValue(joint, out curves);
-            }
-            else if (handedness == Handedness.Right)
-            {
-                return handJointCurvesRight.TryGetValue(joint, out curves);
-            }
-            curves = null;
-            return false;
-        }
-
-        /// <summary>
         /// Find an index i in the sorted events list, such that events[i].time &lt;= time &lt; events[i+1].time.
         /// </summary>
         /// <returns>
@@ -485,33 +485,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public InputAnimationMarker GetMarker(int index)
         {
             return markers[index];
-        }
-
-        /// <summary>
-        /// Make sure the pose animation curves for the given hand joint exist.
-        /// </summary>
-        [Obsolete("Unused")]
-        public PoseCurves CreateHandJointCurves(Handedness handedness, TrackedHandJoint joint)
-        {
-            if (handedness == Handedness.Left)
-            {
-                if (!handJointCurvesLeft.TryGetValue(joint, out var curves))
-                {
-                    curves = new PoseCurves();
-                    handJointCurvesLeft.Add(joint, curves);
-                }
-                return curves;
-            }
-            else if (handedness == Handedness.Right)
-            {
-                if (!handJointCurvesRight.TryGetValue(joint, out var curves))
-                {
-                    curves = new PoseCurves();
-                    handJointCurvesRight.Add(joint, curves);
-                }
-                return curves;
-            }
-            return null;
         }
         
         /// <summary>
@@ -690,10 +663,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             AddBoolKeyFiltered(trackedCurve, time, isTracked);
             AddBoolKeyFiltered(pinchCurve, time, isPinching);
-
+        
             duration = Mathf.Max(duration, time);
         }
-
+        
         /// <summary>
         /// Add a keyframe for one hand joint.
         /// </summary>
@@ -705,9 +678,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 curves = new PoseCurves();
                 jointCurves.Add(joint, curves);
             }
-
+        
             AddPoseKeyFiltered(curves, time, jointPose, positionThreshold, rotationThreshold);
-
+        
             duration = Mathf.Max(duration, time);
         }
 
@@ -725,6 +698,51 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 curve.keys = newKeys;
             }
+        }
+
+        /// <summary>
+        /// Make sure the pose animation curves for the given hand joint exist.
+        /// </summary>
+        [Obsolete("Unused")]
+        private PoseCurves CreateHandJointCurves(Handedness handedness, TrackedHandJoint joint)
+        {
+            if (handedness == Handedness.Left)
+            {
+                if (!handJointCurvesLeft.TryGetValue(joint, out var curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesLeft.Add(joint, curves);
+                }
+                return curves;
+            }
+            else if (handedness == Handedness.Right)
+            {
+                if (!handJointCurvesRight.TryGetValue(joint, out var curves))
+                {
+                    curves = new PoseCurves();
+                    handJointCurvesRight.Add(joint, curves);
+                }
+                return curves;
+            }
+            return null;
+        }
+        
+        /// <summary>
+        /// Get animation curves for the pose of the given hand joint, if they exist.
+        /// </summary>
+        [Obsolete("Use EvaluateHandJoint to get joint pose data")]
+        private bool TryGetHandJointCurves(Handedness handedness, TrackedHandJoint joint, out PoseCurves curves)
+        {
+            if (handedness == Handedness.Left)
+            {
+                return handJointCurvesLeft.TryGetValue(joint, out curves);
+            }
+            else if (handedness == Handedness.Right)
+            {
+                return handJointCurvesRight.TryGetValue(joint, out curves);
+            }
+            curves = null;
+            return false;
         }
 
         private void ComputeDuration()

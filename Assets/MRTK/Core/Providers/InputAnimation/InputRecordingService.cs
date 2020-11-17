@@ -25,7 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
 
+        /// <summary>
+        /// Invoked when recording begins
+        /// </summary>
         public event Action OnRecordingStarted;
+        /// <summary>
+        /// Invoked when recording ends
+        /// </summary>
         public event Action OnRecordingStopped;
 
         /// <summary>
@@ -77,7 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Start time of recording if buffer is unlimited.
         // Nullable to determine when time needs to be reset.
         private float? unlimitedRecordingStartTime = null;
+        /// <summary>
         /// Start time of recording.
+        /// </summary>
         public float StartTime
         {
             get
@@ -98,10 +106,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         
+        /// <summary>
         /// End time of recording.
+        /// </summary>
         public float EndTime { get; private set; }
 
+        /// <summary>
         /// The profile used for recording.
+        /// </summary>
         public MixedRealityInputRecordingProfile InputRecordingProfile
         {
             get
