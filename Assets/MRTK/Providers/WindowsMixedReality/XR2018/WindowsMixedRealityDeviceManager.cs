@@ -435,10 +435,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     var mrtkController = controller as WindowsMixedRealityController;
 
-                    if (mrtkController != null)
-                    {
-                        mrtkController.EnsureControllerModel(interactionSourceState.source);
-                    }
+                    //if (mrtkController != null)
+                    //{
+                    //    mrtkController.EnsureControllerModel(interactionSourceState.source);
+                    //}
 
                     // Does the controller still exist after we loaded the controller model?
                     if (GetOrAddController(interactionSourceState.source, false) != null)
@@ -747,7 +747,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         lock (trackedMotionControllerStates)
                         {
                             // Add the controller as a HP Motion Controller
-                            HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
+                            HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
                             if (trackedMotionControllerStates.ContainsKey(controllerId))
                             {
                                 hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                     else
                     {
-                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
+                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
                     }
 #else
                     detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);

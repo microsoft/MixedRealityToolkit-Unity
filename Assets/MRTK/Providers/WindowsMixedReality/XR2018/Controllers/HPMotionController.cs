@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         internal MotionControllerState MotionControllerState = null;
 #endif
 
-        public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+        public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, InteractionSource interactionSource, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, interactionSource, inputSource, interactions)
         {
 #if HP_CONTROLLER_ENABLED
             InputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
