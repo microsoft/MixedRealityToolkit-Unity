@@ -142,7 +142,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
             SetupInput();
             ConfigurePerformancePreferences();
-            //SettingsProfile.OnCustomHandMaterialUpdate += UpdateHandMaterial;
         }
 
 
@@ -239,13 +238,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
             SettingsProfile.ApplyConfiguredPerformanceSettings();
         }
 
-        public override void Disable()
-        {
-            base.Disable();
-
-            //SettingsProfile.OnCustomHandMaterialUpdate -= UpdateHandMaterial;
-        }
-
         #region Hand Utilities
         protected void UpdateHands()
         {
@@ -319,8 +311,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         private void RemoveHandDevice(OculusHand handDevice)
         {
             if (handDevice == null) return;
-
-            //handDevice.CleanupHand();
 
             CoreServices.InputSystem?.RaiseSourceLost(handDevice.InputSource, handDevice);
             trackedHands.Remove(handDevice.ControllerHandedness);

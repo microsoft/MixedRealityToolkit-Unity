@@ -112,32 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         {
             settingsProfile = deviceManagerSettings;
             handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
-
-            //handRenderer = ovrHand.GetComponent<Renderer>();
-            //UpdateHandMaterial(settingsProfile.CustomHandMaterial);
-            //pinchStrengthProp = Shader.PropertyToID(settingsProfile.PinchStrengthMaterialProperty);
         }
-
-        //public void UpdateHandMaterial(Material newHandMaterial)
-        //{
-        //    if (newHandMaterial == null || !settingsProfile.UseCustomHandMaterial) return;
-
-        //    if (handMaterial != null)
-        //    {
-        //        Object.Destroy(handMaterial);
-        //    }
-        //    handMaterial = new Material(newHandMaterial);
-        //    handRenderer.sharedMaterial = handMaterial;
-        //}
-
-        //public void CleanupHand()
-        //{
-        //    if (handRenderer != null)
-        //    {
-        //        handRenderer.enabled = false;
-        //    }
-        //}
-
 
         public override bool IsInPointingPose
         {
