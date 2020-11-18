@@ -383,83 +383,88 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                 skeletonJoints.Clear();
             }
 
-
-            // Render the rigged hand mesh itself
-            Transform jointTransform;
-            // Apply updated TrackedHandJoint pose data to the assigned transforms
-            foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
+            // Only runs if render hand mesh is true
+            bool renderHandmesh = handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization;
+            HandRenderer.enabled = renderHandmesh;
+            if (renderHandmesh)
             {
-                if (joints.TryGetValue(handJoint, out jointTransform))
+                // Render the rigged hand mesh itself
+                Transform jointTransform;
+                // Apply updated TrackedHandJoint pose data to the assigned transforms
+                foreach (TrackedHandJoint handJoint in eventData.InputData.Keys)
                 {
-                    if (jointTransform != null)
+                    if (joints.TryGetValue(handJoint, out jointTransform))
                     {
-                        if (handJoint == TrackedHandJoint.Palm)
+                        if (jointTransform != null)
                         {
-                            if (ModelPalmAtLeapWrist)
+                            if (handJoint == TrackedHandJoint.Palm)
                             {
-                                Palm.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
+                                if (ModelPalmAtLeapWrist)
+                                {
+                                    Palm.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
+                                }
+                                else
+                                {
+                                    Palm.position = eventData.InputData[TrackedHandJoint.Palm].Position;
+                                }
+                                Palm.rotation = eventData.InputData[TrackedHandJoint.Palm].Rotation * userBoneRotation;
+                            }
+                            else if (handJoint == TrackedHandJoint.Wrist)
+                            {
+                                if (!ModelPalmAtLeapWrist)
+                                {
+                                    Wrist.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
+                                }
                             }
                             else
                             {
-                                Palm.position = eventData.InputData[TrackedHandJoint.Palm].Position;
-                            }
-                            Palm.rotation = eventData.InputData[TrackedHandJoint.Palm].Rotation * userBoneRotation;
-                        }
-                        else if (handJoint == TrackedHandJoint.Wrist)
-                        {
-                            if (!ModelPalmAtLeapWrist)
-                            {
-                                Wrist.position = eventData.InputData[TrackedHandJoint.Wrist].Position;
-                            }
-                        }
-                        else
-                        {
-                            // Finger joints
-                            jointTransform.rotation = eventData.InputData[handJoint].Rotation * Reorientation();
+                                // Finger joints
+                                jointTransform.rotation = eventData.InputData[handJoint].Rotation * Reorientation();
 
-                            if (DeformPosition)
-                            {
-                                jointTransform.position = eventData.InputData[handJoint].Position;
-                            }
+                                if (DeformPosition)
+                                {
+                                    jointTransform.position = eventData.InputData[handJoint].Position;
+                                }
 
-                            if (ScaleLastFingerBone &&
-                                    (handJoint == TrackedHandJoint.ThumbDistalJoint ||
-                                    handJoint == TrackedHandJoint.IndexDistalJoint ||
-                                    handJoint == TrackedHandJoint.MiddleDistalJoint ||
-                                    handJoint == TrackedHandJoint.RingDistalJoint ||
-                                    handJoint == TrackedHandJoint.PinkyDistalJoint))
-                            {
-                                ScaleFingerTip(eventData, jointTransform, handJoint + 1, jointTransform.position);
+                                if (ScaleLastFingerBone &&
+                                        (handJoint == TrackedHandJoint.ThumbDistalJoint ||
+                                        handJoint == TrackedHandJoint.IndexDistalJoint ||
+                                        handJoint == TrackedHandJoint.MiddleDistalJoint ||
+                                        handJoint == TrackedHandJoint.RingDistalJoint ||
+                                        handJoint == TrackedHandJoint.PinkyDistalJoint))
+                                {
+                                    ScaleFingerTip(eventData, jointTransform, handJoint + 1, jointTransform.position);
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Update the hand material
-            float pinchStrength = HandPoseUtils.CalculateIndexPinch(Controller.ControllerHandedness);
+                // Update the hand material
+                float pinchStrength = HandPoseUtils.CalculateIndexPinch(Controller.ControllerHandedness);
 
-            // Hand Curl Properties: 
-            float indexFingerCurl = HandPoseUtils.IndexFingerCurl(Controller.ControllerHandedness);
-            float middleFingerCurl = HandPoseUtils.MiddleFingerCurl(Controller.ControllerHandedness);
-            float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
-            float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
+                // Hand Curl Properties: 
+                float indexFingerCurl = HandPoseUtils.IndexFingerCurl(Controller.ControllerHandedness);
+                float middleFingerCurl = HandPoseUtils.MiddleFingerCurl(Controller.ControllerHandedness);
+                float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
+                float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
 
-            if (handMaterial != null)
-            {
-                float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
-                gripStrength /= 4.0f;
-                gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
-
-                pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
-
-                if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
+                if (handMaterial != null)
                 {
-                    handRenderer.sharedMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
-                }
-                else
-                {
-                    throw new Exception(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                    float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
+                    gripStrength /= 4.0f;
+                    gripStrength = gripStrength > 0.8f ? 1.0f : gripStrength;
+
+                    pinchStrength = Mathf.Pow(Mathf.Max(pinchStrength, gripStrength), 2.0f);
+
+                    if (handRenderer.sharedMaterial.HasProperty(pinchStrengthMaterialProperty))
+                    {
+                        handRenderer.sharedMaterial.SetFloat(pinchStrengthMaterialProperty, pinchStrength);
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("The property {0} for reacting to pinch strength was not found please provide a valid material property name", pinchStrengthMaterialProperty));
+                    }
                 }
             }
         }
