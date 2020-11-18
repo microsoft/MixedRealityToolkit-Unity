@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRiggedHand()
         {
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             // Initialize hand
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(Vector3.zero);
