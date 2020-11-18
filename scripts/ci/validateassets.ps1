@@ -60,18 +60,18 @@ $packages = [ordered]@{
         "MRTK/SDK",
         "MRTK/Services"
     );
-    "Extensions" =      @(
-        "MRTK/Extensions"
-    );       
-    "Tools" =           @(
-        "MRTK/Tools"
-    );     
-    "TestUtilities" =   @(
-        "MRTK/Tests/TestUtilities"
-    );     
-    "Examples" =      @(
-        "MRTK/Examples"
-    );     
+#    "Extensions" =      @(
+#        "MRTK/Extensions"
+#    );       
+#    "Tools" =           @(
+#        "MRTK/Tools"
+#    );     
+#    "TestUtilities" =   @(
+#        "MRTK/Tests/TestUtilities"
+#    );     
+#    "Examples" =      @(
+#        "MRTK/Examples"
+#    );     
 }
 
 # This table contains the collection of allowed package dependencies.
@@ -105,13 +105,14 @@ $allowedPackageDependencies = [ordered]@{
 
 # This list contains the extensions of the asset files that will be validated.
 $assetExtensions = @(
-    "*.unity",
-    "*.prefab",
-    "*.asset",
-    "*.mat",
-    "*.anim",
-    "*.controller",
-    "*.playable"    
+"*.asset"
+#    "*.unity",
+#    "*.prefab",
+#    "*.asset",
+#    "*.mat",
+#    "*.anim",
+#    "*.controller",
+#    "*.playable"    
 )
 
 <#
@@ -240,6 +241,29 @@ function ReadGuids {
 
 <#
 .SYNOPSIS
+    Creates a System.IO.FileInfo for the file the associated with the specified .meta file. 
+.DESCRIPTION
+    Creates a FileInfo object.
+    Ex: For "ActionScript.cs.meta" return a FileInfo object for "ActionScript.cs".
+#>
+function GetFileFromMeta {
+    [CmdletBinding()]
+    param(
+        $metaFile
+    )
+    process {
+        $assetPath = $asset.FullName
+        [int]$idx = $assetPath.IndexOf(".meta")
+        $assetPath = $assetPath.Substring(0, $idx)
+        
+        $file = New-Object -TypeName System.IO.FileInfo -ArgumentList $assetPath
+
+        $file
+    }
+}
+
+<#
+.SYNOPSIS
     Obtain all MRTK file GUIDs.
 .DESCRIPTION
     Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
@@ -267,12 +291,16 @@ function GatherFileGuids {
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
-                        $guidTable.Add($guid, $asset)
+                        $file = GetFileFromMeta($asset)
+                        Write-Host $file
+                        $guidTable.Add($guid, $file)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                    $guidTable.Add($guid, $assetFiles)
+                        $file = GetFileFromMeta($asseFiles)
+                        Write-Host $file
+                        $guidTable.Add($guid, $file)
                 }     
             }
         }
@@ -384,6 +412,7 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
     if ($null -ne $dependencies) {
         foreach ($guid in $dependencies.GetEnumerator()) {
             $dependencyFile = $fileGuids[$guid]
+            # Write-Host " - $dependencyFile"
             if ($null -ne $dependencyFile) {
                 [string]$dependentPackageName = GetPackageName($dependencyFile)
 
