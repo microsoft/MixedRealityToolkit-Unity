@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
  # Runs the playmode tests in batch mode, repeatedly.
  #>

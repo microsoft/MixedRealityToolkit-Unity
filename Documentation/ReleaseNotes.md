@@ -13,7 +13,15 @@
 
 ## What's new
 
+### Runtime profile switching support
+
+MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
+
 ## Breaking changes
+
+### Certain fields of imported GLTF objects are now capitalized
+
+Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): `ComponentType`, `Path`, `Interpolation`, `Target`, `Type`, `Mode`, `MagFilter`, `MinFilter`, `WrapS`, `WrapT`.
 
 ## Known issues
 
@@ -32,14 +40,14 @@ cause of this is the path to the "missing" file being longer than MAX_PATH (256 
 
 ### No spatializer was specified. The application will not support Spatial Sound.
 
-A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.
+A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.
 
 To resolve, please ensure that:
 
 - **Window** > **Package Manager** has one or more XR packages installed
 - **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** and make a selection for **Audio Spatializer**
 
-  ![Select Audio Apatializer](Images/ReleaseNotes/SpatializerSelection.png)
+  ![Select Audio Spatializer](Images/ReleaseNotes/SpatializerSelection.png)
 
 ### NullReferenceException: Object reference not set to an instance of an object (SceneTransitionService.Initialize)
 

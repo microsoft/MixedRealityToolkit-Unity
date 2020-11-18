@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 <#
 .SYNOPSIS
     Publishes the Mixed Reality Toolkit Unity Package Manager (UPM) packacges.

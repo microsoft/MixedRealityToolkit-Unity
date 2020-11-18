@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         public override void Initialize()
         {
 #if UNITY_WSA && !UNITY_2020_1_OR_NEWER
+            base.Initialize();
             WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
 #elif !ARSUBSYSTEMS_ENABLED
             Debug.LogWarning("This service is not supported on this platform.");
@@ -109,6 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 {
                     return;
                 }
+
+                base.Update();
 
                 // This combination of states is from the Windows XR Plugin docs, describing the combination when positional tracking is inhibited.
                 if (sessionSubsystem.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.None && sessionSubsystem.notTrackingReason == NotTrackingReason.Relocalizing)

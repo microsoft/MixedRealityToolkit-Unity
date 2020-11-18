@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         public override void Initialize()
         {
+            base.Initialize();
             CreateObserver();
         }
 
@@ -95,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
             if (!IsRunning && StartupBehavior == AutoStartBehavior.AutoStart)
             {
                 Resume();
@@ -110,12 +112,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 // Suspend the observer
                 Suspend();
             }
+            base.Disable();
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
             CleanupObservationsAndObserver();
+            base.Destroy();
         }
 
         #endregion IMixedRealityDataProvider Implementation
@@ -128,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return x.Equals(y);
         }
 
-        /// <inheritdoc /> 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -151,7 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc /> 
         public override int GetHashCode()
         {
             return Mathf.Abs(SourceName.GetHashCode());

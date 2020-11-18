@@ -891,6 +891,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                         foreach (var fullBuildLocation in Builds)
                         {
+                            if (!Directory.Exists(fullBuildLocation))
+                            {
+                                continue;
+                            }
+
                             int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
 
                             var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
