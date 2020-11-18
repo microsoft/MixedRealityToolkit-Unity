@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
 
         /// <summary>
         /// Renderer of the hand mesh.
-        /// <summary>
+        /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
 
         [SerializeField]
@@ -111,17 +111,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
 
         /// <summary>
         /// Hand material to use for hand tracking hand mesh.
-        /// <summary>
+        /// </summary>
         public Material HandMaterial => handMaterial;
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
-        /// <summary>
+        /// </summary>
         private const string pinchStrengthMaterialProperty = "_PressIntensity";
 
         /// <summary>
         /// Property name for modifying the mesh's appearance based on pinch strength
-        /// <summary>
+        /// </summary>
         public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
 
         /// <summary>
