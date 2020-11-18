@@ -437,10 +437,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (controller != null)
                 {
-                    if (controller is WindowsMixedRealityController mrtkController)
-                    {
-                        mrtkController.EnsureControllerModel(interactionSourceState.source);
-                    }
+                    //if (controller is WindowsMixedRealityController mrtkController)
+                    //{
+                    //    mrtkController.EnsureControllerModel(interactionSourceState.source);
+                    //}
 
                     // Does the controller still exist after we loaded the controller model?
                     if (GetOrAddController(interactionSourceState.source, false) != null)
@@ -747,7 +747,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     if (isHPController)
                     {
                         // Add the controller as a HP Motion Controller
-                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
+                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
 
 #if HP_CONTROLLER_ENABLED
                         lock (trackedMotionControllerStates)
@@ -763,7 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                     else
                     {
-                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
+                        detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, interactionSource, inputSource);
                     }
                 }
                 else

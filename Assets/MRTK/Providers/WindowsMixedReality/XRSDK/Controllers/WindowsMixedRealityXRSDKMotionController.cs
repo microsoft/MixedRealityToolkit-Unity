@@ -128,5 +128,39 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 }
             }
         }
+
+#if WINDOWS_UWP
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        {
+            // Intercept this call if we are using the default driver provided models.
+            // Note: Obtaining models from the driver will require access to the InteractionSource.
+            // It's unclear whether the interaction source will be available during setup, so we attempt to create
+            // the controller model on an input update
+            if (controllerModelProvider.UnableToGenerateSDKModel ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else
+            {
+                TryRenderControllerModelWithModelProvider();
+            }
+
+            return !controllerModelProvider.UnableToGenerateSDKModel;
+        }
+
+        private async void TryRenderControllerModelWithModelProvider()
+        {
+            GameObject controllerModel = Task.Run(controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
+
+            if(controllerModel != null)
+            {
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+            }
+        }
+#endif
     }
 }
