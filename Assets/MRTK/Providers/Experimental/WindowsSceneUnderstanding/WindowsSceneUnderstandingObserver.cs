@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 #if SCENE_UNDERSTANDING_PRESENT
 using System.Collections.Concurrent;
@@ -152,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     if (instantiationQueue.TryDequeue(out SpatialAwarenessSceneObject saso) && CreateGameObjects)
                     {
                         InstantiateSceneObject(saso);
+                        SendSceneObjectAdded(saso, saso.Id);
                     }
                 }
             }
@@ -477,6 +479,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 handler.OnObservationUpdated(spatialEventData);
             };
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>> OnSceneObjectRemoved =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>>(eventData);
+                handler.OnObservationRemoved(spatialEventData);
+            };
+
         /// <summary>
         /// Sends SceneObject Added event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
         /// </summary>
@@ -497,6 +506,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         {
             sceneEventData.Initialize(this, id, sceneObj);
             SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectUpdated);
+        }
+
+        /// <summary>
+        /// Sends SceneObject Removed event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>
+        /// </summary>
+        /// <param name="id">the id associated with the removed SceneObject</param>
+        protected virtual void SendSceneObjectRemoved(int id)
+        {
+            sceneEventData.Initialize(this, id, null);
+            SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectRemoved);
         }
 
         /// <summary>
@@ -585,21 +604,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 switch (observerState)
                 {
                     case ObserverState.Idle:
-                        await new WaitForUpdate();
+                        await Task.Yield();
                         continue;
 
                     case ObserverState.GetScene:
                         observerState = ObserverState.Working;
-
+                        if (CreateGameObjects && instantiationQueue.Count > 0)
+                        {
+                            await Task.Yield();
+                        }
                         await new WaitForBackgroundThread();
                         {
                             scene = GetSceneAsync(previousScene);
-
                             previousScene = scene;
-
                             sceneOriginId = scene.OriginSpatialGraphNodeId;
                         }
-                        await new WaitForUpdate();
+                        await Task.Yield();
 
                         sceneToWorldTransformMatrix = GetSceneToWorldTransform();
 
@@ -616,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             {
                                 toUp = ToUpFromBiggestFloor(scene.SceneObjects);
                             }
-                            await new WaitForUpdate();
+                            await Task.Yield();
 
                             var floorNormalUnity = new Vector3(toUp.X, toUp.Y, toUp.Z);
 
@@ -629,13 +649,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         {
                             sasos = await ConvertSceneObjectsAsync(scene);
                         }
-                        await new WaitForUpdate();
+                        await Task.Yield();
 
                         await new WaitForBackgroundThread();
                         {
                             AddUniqueTo(sasos, instantiationQueue);
                         }
-                        await new WaitForUpdate();
+                        await Task.Yield();
 
                         // Add new objects to observer
                         // notify subscribers of event
@@ -653,9 +673,32 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             }
                             else
                             {
+                                if (CreateGameObjects)
+                                {
+                                    UpdateInstantiatedSceneObject(sceneObjects[saso.Id], saso);
+                                }
                                 sceneObjects[saso.Id] = saso;
                                 SendSceneObjectUpdated(saso, saso.Id);
                             }
+                        }
+
+                        List<int> removedSasoIds = new List<int>();
+                        foreach (var saso in sceneObjects.Values)
+                        {
+                            if (!sasos.Contains(saso))
+                            {
+                                removedSasoIds.Add(saso.Id);
+                            }
+                        }
+
+                        foreach (var id in removedSasoIds)
+                        {
+                            if (CreateGameObjects)
+                            {
+                                UpdateInstantiatedSceneObject(sceneObjects[id], null);
+                            }
+                            sceneObjects.Remove(id);
+                            SendSceneObjectRemoved(id);
                         }
 
                         if (observerState == ObserverState.Working)
@@ -666,7 +709,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         continue;
 
                     default:
-                        await new WaitForUpdate();
+                        await Task.Yield();
                         continue;
                 }
             }
@@ -904,8 +947,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// Adds new SpatialAwarenessSceneObjects to the existing queue
         /// </summary>
         /// <param name="newObjects">List of SpatialAwarenessSceneObjects to be added</param>
-        /// <param name="existing">The queue where new SpatialAwarenessSceneObjects will be added</param>
-        private void AddUniqueTo(List<SpatialAwarenessSceneObject> newObjects, ConcurrentQueue<SpatialAwarenessSceneObject> existing)
+        /// <param name="existingQueue">The queue where new SpatialAwarenessSceneObjects will be added</param>
+        private void AddUniqueTo(List<SpatialAwarenessSceneObject> newObjects, ConcurrentQueue<SpatialAwarenessSceneObject> existingQueue)
         {
             int length = newObjects.Count;
 
@@ -913,7 +956,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 if (!sceneObjects.ContainsKey(newObjects[i].Id))
                 {
-                    existing.Enqueue(newObjects[i]);
+                    existingQueue.Enqueue(newObjects[i]);
                 }
             }
         }
@@ -938,12 +981,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             saso.GameObject.transform.localRotation = saso.Rotation;
             saso.GameObject.transform.localScale = Vector3.one;
 
-            // Maybe make GameObjects for Quads and Meshes
-            if (!RequestPlaneData && !RequestMeshData)
-            {
-                return;
-            }
-
+            // Make GameObjects for Quads and Meshes
             if (RequestPlaneData)
             {
                 // Add MeshFilter, attach shared quad and scale it
@@ -954,44 +992,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 for (int i = 0; i < quadCount; ++i)
                 {
                     var quad = saso.Quads[i];
-
-                    var quadGo = new GameObject($"Quad {quad.Id}");
-                    quad.GameObject = quadGo;
-
-                    var meshFilter = quadGo.AddComponent<MeshFilter>();
-                    meshFilter.mesh = normalizedQuadMesh;
-
-                    var meshRenderer = quadGo.AddComponent<MeshRenderer>();
-
-                    quadGo.AddComponent<BoxCollider>();
-
-                    if (DefaultMaterial)
-                    {
-                        meshRenderer.sharedMaterial = DefaultMaterial;
-                        if (defaultTexture == null)
-                        {
-                            defaultTexture = DefaultMaterial.mainTexture;
-                        }
-                    }
-
-                    if (RequestOcclusionMask)
-                    {
-                        if (quad.OcclusionMask != null)
-                        {
-                            var occlusionTexture = OcclusionTexture(quad.OcclusionMask);
-                            meshRenderer.material.mainTexture = occlusionTexture;
-                        }
-                    }
-                    else
-                    {
-                        meshRenderer.material.mainTexture = defaultTexture;
-                    }
-
-                    quadGo.transform.SetParent(saso.GameObject.transform);
-
-                    quadGo.transform.localPosition = UnityEngine.Vector3.zero;
-                    quadGo.transform.localRotation = UnityEngine.Quaternion.identity;
-                    quadGo.transform.localScale = new UnityEngine.Vector3(quad.Extents.x, quad.Extents.y, 0);
+                    InstantiateQuad(saso, quad);
                 }
             }
 
@@ -1002,32 +1003,194 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 for (int i = 0; i < meshCount; ++i)
                 {
                     var meshAlias = saso.Meshes[i];
+                    InstantiateMesh(saso, meshAlias);
+                }
+            }
+        }
 
-                    var meshGo = new GameObject($"Mesh {meshAlias.Id}");
-                    meshAlias.GameObject = meshGo;
+        /// <summary>
+        /// Instantiate a Mesh GameObject in the scene
+        /// </summary>
+        /// <param name="saso">The SpatialAwarenessSceneObject containing the mesh to instantiate</param>
+        /// <param name="mesh">The MeshData object to instantiate</param>
+        private void InstantiateMesh(SpatialAwarenessSceneObject saso, SpatialAwarenessSceneObject.MeshData mesh)
+        {
+            var meshGo = new GameObject($"Mesh {mesh.Id}");
+            mesh.GameObject = meshGo;
 
-                    var meshFilter = meshGo.AddComponent<MeshFilter>();
-                    meshFilter.mesh = UnityMeshFromMeshData(meshAlias);
+            var meshFilter = meshGo.AddComponent<MeshFilter>();
+            meshFilter.mesh = UnityMeshFromMeshData(mesh);
 
-                    var meshRenderer = meshGo.AddComponent<MeshRenderer>();
+            var meshRenderer = meshGo.AddComponent<MeshRenderer>();
 
-                    meshGo.AddComponent<MeshCollider>();
+            meshGo.AddComponent<MeshCollider>();
 
-                    if (DefaultMaterial)
-                    {
-                        meshRenderer.sharedMaterial = DefaultMaterial;
-                    }
+            if (DefaultMaterial)
+            {
+                meshRenderer.sharedMaterial = DefaultMaterial;
+            }
 
-                    if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
-                    {
-                        meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
-                    }
+            if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
+            {
+                meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
+            }
 
-                    meshGo.transform.SetParent(saso.GameObject.transform, false);
+            meshGo.transform.SetParent(saso.GameObject.transform, false);
+        }
+
+        /// <summary>
+        /// Instantiate a Quad GameObject in the scene
+        /// </summary>
+        /// <param name="saso">The SpatialAwarenessSceneObject containing the quad to instantiate</param>
+        /// <param name="quad">The Quad object to instantiate</param>
+        private void InstantiateQuad(SpatialAwarenessSceneObject saso, SpatialAwarenessSceneObject.Quad quad)
+        {
+            var quadGo = new GameObject($"Quad {quad.Id}");
+            quad.GameObject = quadGo;
+
+            var meshFilter = quadGo.AddComponent<MeshFilter>();
+            meshFilter.mesh = normalizedQuadMesh;
+
+            var meshRenderer = quadGo.AddComponent<MeshRenderer>();
+
+            quadGo.AddComponent<BoxCollider>();
+
+            if (DefaultMaterial)
+            {
+                meshRenderer.sharedMaterial = DefaultMaterial;
+                if (defaultTexture == null)
+                {
+                    defaultTexture = DefaultMaterial.mainTexture;
                 }
             }
 
-            SendSceneObjectAdded(saso, saso.Id);
+            if (RequestOcclusionMask)
+            {
+                if (quad.OcclusionMask != null)
+                {
+                    var occlusionTexture = OcclusionTexture(quad.OcclusionMask);
+                    meshRenderer.material.mainTexture = occlusionTexture;
+                }
+            }
+            else
+            {
+                meshRenderer.material.mainTexture = defaultTexture;
+            }
+
+            quadGo.transform.SetParent(saso.GameObject.transform);
+
+            quadGo.transform.localPosition = UnityEngine.Vector3.zero;
+            quadGo.transform.localRotation = UnityEngine.Quaternion.identity;
+            quadGo.transform.localScale = new UnityEngine.Vector3(quad.Extents.x, quad.Extents.y, 0);
+        }
+
+        /// <summary>
+        /// Update an instantiated SpatialAwarenessSceneObject in the scene
+        /// </summary>
+        /// <param name="existingSaso">The existing SpatialAwarenessSceneObject in the scene</param>
+        /// <param name="newSaso">The new SpatialAwarenessSceneObject with updated info</param>
+        private void UpdateInstantiatedSceneObject(SpatialAwarenessSceneObject existingSaso, SpatialAwarenessSceneObject newSaso)
+        {
+            if (newSaso == null)
+            {
+                GameObject.Destroy(existingSaso.GameObject);
+                return;
+            }
+            
+            newSaso.GameObject = existingSaso.GameObject;
+            newSaso.GameObject.transform.localPosition = newSaso.Position;
+            newSaso.GameObject.transform.localRotation = newSaso.Rotation;
+
+            // Update GameObjects for Quads and Meshes
+            if (RequestPlaneData)
+            {
+                int i = 0;
+                while (i < existingSaso.Quads.Count && i < newSaso.Quads.Count)
+                {
+                    var gameObject = newSaso.Quads[i].GameObject = existingSaso.Quads[i].GameObject;
+                    gameObject.name = $"Quad {newSaso.Quads[i].Id}";
+                    gameObject.transform.localScale = new Vector3(newSaso.Quads[i].Extents.x, newSaso.Quads[i].Extents.y, 0);
+                    if (RequestOcclusionMask && 
+                        ((existingSaso.Quads[i].OcclusionMask == null || newSaso.Quads[i].OcclusionMask == null)
+                        || !existingSaso.Quads[i].OcclusionMask.SequenceEqual(newSaso.Quads[i].OcclusionMask)))
+                    {
+                        var meshRender = newSaso.Quads[i].GameObject.GetComponent<MeshRenderer>();
+                        meshRender.enabled = true;
+                        if (newSaso.Quads[i].OcclusionMask != null)
+                        {
+                            var occlusionTexture = OcclusionTexture(newSaso.Quads[i].OcclusionMask);
+                            meshRender.material.mainTexture = occlusionTexture;
+                        }
+                        else
+                        {
+                            meshRender.enabled = false;
+                        }
+                    }
+                    i++;
+                }
+
+                if (existingSaso.Quads.Count < newSaso.Quads.Count)
+                {
+                    for (; i < newSaso.Quads.Count; i++)
+                    {
+                        InstantiateQuad(newSaso, newSaso.Quads[i]);
+                    }
+
+                }
+                else
+                {
+                    for (; i < existingSaso.Quads.Count; i++)
+                    {
+                        GameObject.Destroy(existingSaso.Quads[i].GameObject);
+                    }
+                }
+
+            }
+
+            if (RequestMeshData)
+            {
+                int i = 0;
+                while (i < existingSaso.Meshes.Count && i < newSaso.Meshes.Count)
+                {
+                    var gameObject = newSaso.Meshes[i].GameObject = existingSaso.Meshes[i].GameObject;
+                    gameObject.name = $"Mesh {newSaso.Meshes[i].Id}";
+                    if (DefaultWorldMeshMaterial && existingSaso.SurfaceType != newSaso.SurfaceType)
+                    {
+                        if (newSaso.SurfaceType == SpatialAwarenessSurfaceTypes.World)
+                        {
+                            newSaso.Meshes[i].GameObject.GetComponent<MeshRenderer>().sharedMaterial = DefaultWorldMeshMaterial;
+                        }
+                        else if (existingSaso.SurfaceType == SpatialAwarenessSurfaceTypes.World)
+                        {
+                            newSaso.Meshes[i].GameObject.GetComponent<MeshRenderer>().sharedMaterial = DefaultMaterial;
+                        }
+                    }
+                    if (!existingSaso.Meshes[i].UVs.SequenceEqual(newSaso.Meshes[i].UVs) ||
+                        !existingSaso.Meshes[i].Indices.SequenceEqual(newSaso.Meshes[i].Indices) ||
+                        !existingSaso.Meshes[i].Vertices.SequenceEqual(newSaso.Meshes[i].Vertices))
+                    {
+                        var meshFilter = newSaso.Meshes[i].GameObject.GetComponent<MeshFilter>();
+                        meshFilter.mesh = UnityMeshFromMeshData(newSaso.Meshes[i]);
+                    }
+                    i++;
+                }
+
+                if (existingSaso.Meshes.Count < newSaso.Meshes.Count)
+                {
+                    for (; i < newSaso.Meshes.Count; i++)
+                    {
+                        InstantiateMesh(newSaso, newSaso.Meshes[i]);
+                    }
+
+                }
+                else
+                {
+                    for (; i < existingSaso.Meshes.Count; i++)
+                    {
+                        GameObject.Destroy(existingSaso.Meshes[i].GameObject);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -1099,6 +1262,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             cachedSceneQuads.Clear();
             CleanupInstantiatedSceneObjects();
             instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
+            foreach (var sceneObject in sceneObjects)
+            {
+                SendSceneObjectRemoved(sceneObject.Key);
+            }
             sceneObjects.Clear();
             IdToGuidLookup.Clear();
         }

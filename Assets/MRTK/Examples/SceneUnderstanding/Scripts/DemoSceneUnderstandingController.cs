@@ -1,21 +1,19 @@
-﻿// todo
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Examples.Demos;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
-    public class DemoSceneUnderstandingController : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
+    public class DemoSceneUnderstandingController : DemoSpatialMeshHandler, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
     {
         #region Private Fields
 
@@ -24,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         [SerializeField]
         private string SavedSceneNamePrefix = "DemoSceneUnderstanding";
         [SerializeField]
-        private GameObject StuffToPlace = null;
+        private GameObject PrefabToPlace = null;
         [SerializeField]
         private SpatialAwarenessSurfaceTypes surfaceTypeToPlaceOn = SpatialAwarenessSurfaceTypes.Platform;
         [SerializeField]
@@ -62,41 +60,51 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         #endregion Serialized Fields
         
-        private readonly List<SpatialAwarenessSceneObject> observedSceneObjects = new List<SpatialAwarenessSceneObject>(16);
+        private readonly Dictionary<int, SpatialAwarenessSceneObject> observedPlaceTargetSceneObjects = new Dictionary<int, SpatialAwarenessSceneObject>();
         private IMixedRealitySceneUnderstandingObserver observer;
-        private bool isInit = false;
 
-        // by default stick something on the nearest platform without the user requesting it
-        private bool autoPlaceStuffOnce = true;
+        // by default place a cube on the nearest platform without the user requesting it
+        private bool autoPlacePrefabOnce = true;
 
         #endregion Private Fields
 
         #region MonoBehaviour Functions
 
-        async void OnEnable()
+        protected override void Start()
         {
-            await RegisterHandlersAsync();
-            observedSceneObjects.Clear();
-        }
+            observer = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySceneUnderstandingObserver>();
 
-        void OnDisable()
-        {
-            CoreServices.SpatialAwarenessSystem?.UnregisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
-        }
-
-        async void Update()
-        {
-            if (!isInit && (observer != null))
+            if (observer == null)
             {
-                // InitToggleButtonState();
-                isInit = true;
+                Debug.LogError("Couldn't access Scene Understanding Observer!");
+                return;
             }
+            InitToggleButtonState();
+        }
 
-            if (autoPlaceStuffOnce)
+        protected override void OnEnable()
+        {
+            RegisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
+            
+        }
+
+        protected override void OnDisable()
+        {
+            UnregisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
+            observedPlaceTargetSceneObjects.Clear();
+        }
+
+        protected override void OnDestroy()
+        {
+            UnregisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
+        }
+
+        private void Update()
+        {
+            if (Time.realtimeSinceStartup > 4 && autoPlacePrefabOnce)
             {
-                autoPlaceStuffOnce = false;
-                await Task.Delay(TimeSpan.FromSeconds(4));
-                PutStuffOnNearest();
+                autoPlacePrefabOnce = false;
+                PlacePrefabOnNearestObject();
             }
         }
 
@@ -109,9 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             // This method called everytime a SceneObject created by the SU observer
             // The eventData contains everything you need do something useful
 
+            AddToData(eventData.Id);
+
             if (eventData.SpatialObject.SurfaceType == surfaceTypeToPlaceOn)
             {
-                observedSceneObjects.Add(eventData.SpatialObject);
+                observedPlaceTargetSceneObjects.Add(eventData.Id, eventData.SpatialObject);
             }
 
             if (InstantiatePrefabs)
@@ -145,17 +155,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
-
+            observedPlaceTargetSceneObjects[eventData.Id] = eventData.SpatialObject;
+            UpdateData(eventData.Id);
         }
 
         public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
-            // This is never called by the SU observer by design
-            throw new System.NotImplementedException();
+            observedPlaceTargetSceneObjects.Remove(eventData.Id);
+            RemoveFromData(eventData.Id);
         }
 
         #endregion IMixedRealitySpatialAwarenessObservationHandler Implementations
-
 
         #region UI Functions
 
@@ -342,22 +352,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         #region Helper Functions
 
-        async Task RegisterHandlersAsync()
-        {
-            await new WaitUntil(() => CoreServices.SpatialAwarenessSystem != null);
-
-            observer = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySceneUnderstandingObserver>();
-
-            if (observer == null)
-            {
-                Debug.LogError("Couldn't access Scene Understanding Observer!");
-                return;
-            }
-
-            CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
-            InitToggleButtonState();
-        }
-
         private void InitToggleButtonState()
         {
             // Configure observer
@@ -409,48 +403,47 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
-        public async void PutStuffOnNearest()
+        public void PlacePrefabOnNearestObject()
         {
-            var platformCount = observedSceneObjects.Count;
+            var platformCount = observedPlaceTargetSceneObjects.Count;
 
             if (platformCount < 1)
             {
-                await Task.Yield();
                 return;
             }
 
-            // Find the Guid of our nearest neighbor
+            // Find the id of our nearest neighbor
 
             float closestDistance = float.MaxValue;
-            int closestGuid = 0;
+            int closestId = 0;
             bool foundQuadGuid = false;
             SpatialAwarenessSceneObject closestObject = null;
 
             var cameraPosition = CameraCache.Main.transform.position;
 
-            for (int i = 0; i < platformCount; ++i)
+            foreach (var sceneObject in observedPlaceTargetSceneObjects.Values)
             {
-                var distance = Vector3.Distance(cameraPosition, observedSceneObjects[i].Position);
+                var distance = Vector3.Distance(cameraPosition, sceneObject.Position);
 
                 if (distance < closestDistance)
                 {
-                    closestObject = observedSceneObjects[i];
+                    closestObject = sceneObject;
 
                     closestDistance = Math.Min(distance, closestDistance);
 
-                    if (observedSceneObjects[i].Quads.Count == 0)
+                    if (sceneObject.Quads.Count == 0)
                     {
                         continue;
                     }
 
-                    closestGuid = observedSceneObjects[i].Quads[0].Id;
+                    closestId = sceneObject.Quads[0].Id;
                     foundQuadGuid = true;
                 }
             }
 
-            var stuff = Instantiate(StuffToPlace);
+            var InstantiatedPrefab = Instantiate(PrefabToPlace);
 
-            // Place our stuff
+            // Place our prefab
 
             if (closestObject == null)
             {
@@ -461,42 +454,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 var bounds = new Bounds(Vector3.zero, Vector3.zero);
 
-                foreach (Renderer r in StuffToPlace.GetComponentsInChildren<Renderer>())
+                foreach (Renderer r in PrefabToPlace.GetComponentsInChildren<Renderer>())
                 {
                     bounds.Encapsulate(r.bounds);
                 }
 
                 var queryArea = new Vector2(bounds.size.x, bounds.size.y);
 
-                Vector3 placement;
 
-                if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement))
+                if (observer.TryFindCentermostPlacement(closestId, queryArea, out Vector3 placement))
                 {
-                    stuff.transform.position = placement;
-                    stuff.transform.rotation = closestObject.Rotation;
+                    InstantiatedPrefab.transform.position = placement;
+                    InstantiatedPrefab.transform.rotation = closestObject.Rotation;
                 }
             }
             else
             {
-                stuff.transform.position = closestObject.Position;
-                stuff.transform.rotation = closestObject.Rotation;
+                InstantiatedPrefab.transform.position = closestObject.Position;
+                InstantiatedPrefab.transform.rotation = closestObject.Rotation;
             }
 
-            var tmp = stuff.GetComponentInChildren<TextMeshPro>();
+            var tmp = InstantiatedPrefab.GetComponentInChildren<TextMeshPro>();
 
             if (tmp)
             {
                 tmp.text = $"Distance = {closestDistance.ToString("F2")}";
             }
 
-            var demoConstraint = stuff.GetComponent<ParentConstraint>();
-
-            if (demoConstraint)
-            {
-                demoConstraint.rotationAtRest = stuff.transform.rotation.eulerAngles;
-                demoConstraint.translationAtRest = stuff.transform.position;
-                demoConstraint.constraintActive = true;
-            }
+            return;
         }
 
         #endregion Helper Functions
