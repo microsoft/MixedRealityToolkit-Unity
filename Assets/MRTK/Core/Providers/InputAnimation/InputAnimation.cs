@@ -34,8 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class InputAnimation
     {
         protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
+        /// <summary>
         /// Arbitrarily large weight for representing a boolean value in float curves.
-        const float boolOutWeight = 1.0e6f;
+        /// </summary>
+        private const float BoolOutWeight = 1.0e6f;
 
         /// <summary>
         /// Maximum duration of all animations curves.
@@ -859,7 +862,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the input value is cut off and out tangent is constant.
-            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, BoolOutWeight);
             
             keyframe.weightedMode = WeightedMode.Both;
             curve.AddKey(keyframe);
@@ -1306,7 +1309,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float fvalue = value ? 1.0f : 0.0f;
             // Set tangents and weights such than the input value is cut off and out tangent is constant.
-            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
+            var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, BoolOutWeight);
             keyframe.weightedMode = WeightedMode.Both;
 
             int insertAfter = FindKeyframeInterval(curve, time);
