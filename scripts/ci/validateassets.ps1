@@ -24,7 +24,7 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    # todo uncomment [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -41,7 +41,6 @@ param(
     [string]$RepoRoot
 )
 
-$Directory = "C:\git-os\dk\mrtk\depValidationCi\Assets"
 $Directory = Resolve-Path -Path $Directory
 
 # This table defines MRTK package layout.
@@ -60,18 +59,18 @@ $packages = [ordered]@{
         "MRTK/SDK",
         "MRTK/Services"
     );
-#    "Extensions" =      @(
-#        "MRTK/Extensions"
-#    );       
-#    "Tools" =           @(
-#        "MRTK/Tools"
-#    );     
-#    "TestUtilities" =   @(
-#        "MRTK/Tests/TestUtilities"
-#    );     
-#    "Examples" =      @(
-#        "MRTK/Examples"
-#    );     
+    "Extensions" =      @(
+        "MRTK/Extensions"
+    );       
+    "Tools" =           @(
+        "MRTK/Tools"
+    );     
+    "TestUtilities" =   @(
+        "MRTK/Tests/TestUtilities"
+    );     
+    "Examples" =      @(
+        "MRTK/Examples"
+    );     
 }
 
 # This table contains the collection of allowed package dependencies.
@@ -99,20 +98,22 @@ $allowedPackageDependencies = [ordered]@{
         "TestUtilities"
     );      
     "Examples" =      @(
-
+        "StandardAssets",
+        "Foundation",
+        "Extensions",
+        "Examples"
     );      
 }
 
 # This list contains the extensions of the asset files that will be validated.
 $assetExtensions = @(
-"*.asset"
-#    "*.unity",
-#    "*.prefab",
-#    "*.asset",
-#    "*.mat",
-#    "*.anim",
-#    "*.controller",
-#    "*.playable"    
+    "*.unity",
+    "*.prefab",
+    "*.asset",
+    "*.mat",
+    "*.anim",
+    "*.controller",
+    "*.playable"    
 )
 
 <#
@@ -131,6 +132,29 @@ function IsArray {
     )
     process {
         $objectType -eq [Object[]]
+    }
+}
+
+<#
+.SYNOPSIS
+    Creates a System.IO.FileInfo for the file the associated with the specified .meta file. 
+.DESCRIPTION
+    Creates a FileInfo object.
+    Ex: For "ActionScript.cs.meta" return a FileInfo object for "ActionScript.cs".
+#>
+function GetFileFromMeta {
+    [CmdletBinding()]
+    param(
+        $metaFile
+    )
+    process {
+        $assetPath = $asset.FullName
+        [int]$idx = $assetPath.IndexOf(".meta")
+        $assetPath = $assetPath.Substring(0, $idx)
+        
+        $file = New-Object -TypeName System.IO.FileInfo -ArgumentList $assetPath
+
+        $file
     }
 }
 
@@ -241,29 +265,6 @@ function ReadGuids {
 
 <#
 .SYNOPSIS
-    Creates a System.IO.FileInfo for the file the associated with the specified .meta file. 
-.DESCRIPTION
-    Creates a FileInfo object.
-    Ex: For "ActionScript.cs.meta" return a FileInfo object for "ActionScript.cs".
-#>
-function GetFileFromMeta {
-    [CmdletBinding()]
-    param(
-        $metaFile
-    )
-    process {
-        $assetPath = $asset.FullName
-        [int]$idx = $assetPath.IndexOf(".meta")
-        $assetPath = $assetPath.Substring(0, $idx)
-        
-        $file = New-Object -TypeName System.IO.FileInfo -ArgumentList $assetPath
-
-        $file
-    }
-}
-
-<#
-.SYNOPSIS
     Obtain all MRTK file GUIDs.
 .DESCRIPTION
     Gather the GUID for every source and asset file (from the associated .meta files). We will use this 
@@ -292,14 +293,12 @@ function GatherFileGuids {
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
                         $file = GetFileFromMeta($asset)
-                        Write-Host $file
                         $guidTable.Add($guid, $file)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
                         $file = GetFileFromMeta($asseFiles)
-                        Write-Host $file
                         $guidTable.Add($guid, $file)
                 }     
             }
@@ -372,7 +371,7 @@ function GetPackageName {
 
             $fileName = $file.FullName
             $filename = $fileName.Replace('\', '/')
-
+            
             foreach($folder in $folders.GetEnumerator()) {
                 [int]$index = $fileName.IndexOf($folder)
                 if ($index -ge 0) {
@@ -382,6 +381,8 @@ function GetPackageName {
             }
         }
 
+        Write-Host "$packageName : $fileName"
+        
         $packageName
     }
 }
@@ -402,7 +403,8 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
     Write-Host "Validating $file dependencies..."
     [int]$numInvalid = 0
 
-    [string]$filePackageName = GetPackageName($file)
+    $filePackageName = GetPackageName($file)
+    Write-Host "$file is in $filePackageName"
     if ($null -eq $filePackageName) {
         Write-Host "SCRIPT BUG: Could not determine the package containing $file - is the script missing a package?"
         $errorCount++
@@ -412,19 +414,22 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
     if ($null -ne $dependencies) {
         foreach ($guid in $dependencies.GetEnumerator()) {
             $dependencyFile = $fileGuids[$guid]
-            # Write-Host " - $dependencyFile"
+            if ($null -eq $dependencyFile) {
+                continue;
+            }
+            Write-Host " @ $dependencyFile"
             if ($null -ne $dependencyFile) {
                 [string]$dependentPackageName = GetPackageName($dependencyFile)
 
                 [bool]$isValid = $false
 
-                $allowed = $allowedPackageDependencies[$filePackage]
+                $allowed = $allowedPackageDependencies[$filePackageName]
                 if ($null -ne $allowed) {
-                    if ($allowed.Contains($filePackage)) {
+                    if ($allowed.Contains($dependentPackageName)) {
                         $isValid = $true
                     }
                     else {
-                        Write-Host "ERROR: $file is NOT allowed to depend upon files in $dependencyPackageName"
+                        Write-Host "`nERROR: $file is NOT allowed to depend upon files in the $dependentPackageName package."
                     }
                 }
 
@@ -439,10 +444,10 @@ foreach ($item in $dependencyGuids.GetEnumerator()) {
 
     if ($numInvalid -ne 0) {
         $fileName = $file.FullName
-        Write-Host "$fileInfo contains $numInvalid dependency errors."
+        Write-Host "ERROR: $fileName contains $numInvalid dependency errors.`n"
     }
 }
 
-Write-Host "Found $errorCount total dependency issues."
+Write-Host "`nFound $errorCount total dependency issues."
 
 exit $errorCount
