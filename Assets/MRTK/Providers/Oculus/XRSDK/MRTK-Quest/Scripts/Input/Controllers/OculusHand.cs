@@ -60,9 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
 #if OCULUSINTEGRATION_PRESENT
-        //private Material handMaterial = null;
-        //private Renderer handRenderer = null;
-
         private bool isIndexGrabbing = false;
         private bool isMiddleGrabbing = false;
         private bool isThumbGrabbing = false;
