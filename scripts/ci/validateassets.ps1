@@ -24,7 +24,7 @@ param(
     # The directory containing the assets to validate. This won't be used if ChangesFile
     # is specified, but is always required because it's the fallback if
     # ChangesFile doesn't exist or isn't valid.
-    [Parameter(Mandatory=$true)]
+    # todo uncomment [Parameter(Mandatory=$true)]
     [string]$Directory,
 
     # The filename containing the list of files to scope the asset validation
@@ -41,6 +41,7 @@ param(
     [string]$RepoRoot
 )
 
+$Directory = "C:\git-os\dk\mrtk\depValidationCi\Assets"
 $Directory = Resolve-Path -Path $Directory
 
 # This table defines MRTK package layout.
@@ -98,10 +99,7 @@ $allowedPackageDependencies = [ordered]@{
         "TestUtilities"
     );      
     "Examples" =      @(
-        "StandardAssets",
-        "Foundation",
-        "Extensions",
-        "Examples"
+
     );      
 }
 
@@ -240,8 +238,6 @@ function ReadGuids {
     }
 }
 
-$fileGuids = @{}
-
 <#
 .SYNOPSIS
     Obtain all MRTK file GUIDs.
@@ -253,10 +249,12 @@ function GatherFileGuids {
     [CmdletBinding()]
     param()
     process {
+        $guidTable = @{}
+
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
 
-            Write-Output "Collecting file GUIDs from $packageName"
+            Write-Host "Collecting file GUIDs from $packageName"
 
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
@@ -269,19 +267,19 @@ function GatherFileGuids {
                 if (IsArray($assetFiles.GetType())){
                     foreach ($asset in $assetFiles.GetEnumerator()) {
                         $guid = ReadSingleGuid($asset)
-                        $fileGuids.Add($guid, $asset)
+                        $guidTable.Add($guid, $asset)
                     }
                 }
                 else {
                     $guid = ReadSingleGuid($assetFiles)
-                    $fileGuids.Add($guid, $assetFiles)
+                    $guidTable.Add($guid, $assetFiles)
                 }     
             }
         }
+
+        $guidTable
     }
 }
-
-$dependencyGuids = @{}
 
 <#
 .SYNOPSIS
@@ -292,10 +290,12 @@ $dependencyGuids = @{}
 function GatherDependencyGuids { 
     [CmdletBinding()]
     param()
-    process {       
+    process {  
+        $guidTable = @{}
+
         foreach ($package in $packages.GetEnumerator()) {
             $packageName = $package.name
-            Write-Output "Collecting dependency GUIDs from $packageName"
+            Write-Host "Collecting dependency GUIDs from $packageName"
             
             foreach ($folder in $package.value.GetEnumerator()) {
                 $packageFolder = Join-Path $Directory $folder
@@ -309,16 +309,18 @@ function GatherDependencyGuids {
                     if (IsArray($assetFiles.GetType())){        
                         foreach ($asset in $assetFiles.GetEnumerator()) {
                             $guids = ReadGuids($asset)
-                            $dependencyGuids.Add($asset, $guids)
+                            $guidTable.Add($asset, $guids)
                         }
                     }
                     else {
                         $guids = ReadGuids($assetFiles)
-                        $dependencyGuids.Add($assetFiles, $guids)
+                        $guidTable.Add($assetFiles, $guids)
                     }
                 }
             }
         }
+
+        $guidTable
     }
 }
 
@@ -356,91 +358,62 @@ function GetPackageName {
     }
 }
 
-<#
-.SYNOPSIS
-    Determines whether or not a dependency is valid for a given package.
-.DESCRIPTION
-    Checks to see if a dependency package is in the collection of allowed packages. Returns true if allowed, false otherwise.
-#>
-function IsValidDependentPackage { 
-    [CmdletBinding()]
-    param(
-        [string]$depenentPackageName,
-        [string]$packageName
-    )
-    process {
-        [bool]$isValid = $false
-
-        $allowed = $allowedPackageDependencies[$packageName]
-        if ($null -ne $allowed) {
-            foreach ($dependency in $allowed.GetEneumerator()) {
-                if ($depenentPackageName -eq $dependency) {
-                    $isValid = $true
-                    break
-                }
-            }
-        }
-
-        $isValid
-    }
-}
-
-<#
-.SYNOPSIS
-    Validates the dependencies for the provided asset.
-.DESCRIPTION
-    Checks the paths of each dependency file with against the allow list. Returns true if valid, false otherwise.
-#>
-function ValidateDependencies { 
-    [CmdletBinding()]
-    param(
-        $file,
-        [System.Array]$dependencies
-    )
-    process {
-        [int]$numInvalid = 0
-
-        [string]$filePackage = GetPackageName($file)
-
-        if ($null -ne $dependencies) {
-            foreach ($guid in $dependencies.GetEnumerator()) {
-                $dependencyFile = $fileGuids[$guid]
-                if ($null -ne $dependencyFile) {
-                    [string]$depenentPackage = GetPackageName($dependencyFile)
-                    [bool]$isValid = IsValidDependentPackage($depenentPackage, $filePackage)
-                    if (-not $isValid) {
-                        $numInvalid++
-                    }
-                }
-            }
-        }
-
-        $numInvalid
-    }
-}
-
 # ####################
 # Start of main script
 # ####################
-GatherFileGuids
+$fileGuids = GatherFileGuids
 
 [int]$errorCount = 0;
 
 # todo - https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8944 - support scoped validation here (GatherScopedDependencyGuids)
-GatherDependencyGuids
+$dependencyGuids = GatherDependencyGuids
 foreach ($item in $dependencyGuids.GetEnumerator()) {
     $file = $item.key
     $dependencies = $item.value
 
-    Write-Output "Validating $file dependencies..."
-    $numInvalid = ValidateDependencies($file, $dependencies)
+    Write-Host "Validating $file dependencies..."
+    [int]$numInvalid = 0
+
+    [string]$filePackageName = GetPackageName($file)
+    if ($null -eq $filePackageName) {
+        Write-Host "SCRIPT BUG: Could not determine the package containing $file - is the script missing a package?"
+        $errorCount++
+        continue
+    }
+
+    if ($null -ne $dependencies) {
+        foreach ($guid in $dependencies.GetEnumerator()) {
+            $dependencyFile = $fileGuids[$guid]
+            if ($null -ne $dependencyFile) {
+                [string]$dependentPackageName = GetPackageName($dependencyFile)
+
+                [bool]$isValid = $false
+
+                $allowed = $allowedPackageDependencies[$filePackage]
+                if ($null -ne $allowed) {
+                    if ($allowed.Contains($filePackage)) {
+                        $isValid = $true
+                    }
+                    else {
+                        Write-Host "ERROR: $file is NOT allowed to depend upon files in $dependencyPackageName"
+                    }
+                }
+
+                if (-not $isValid) {
+                    $numInvalid++
+                }
+            }
+        }
+    }
+
     $errorCount = $errorCount + $numInvalid
+
     if ($numInvalid -ne 0) {
         $fileName = $file.FullName
-        Write-Output "$fileInfo contains $numInvalid dependency errors."
+        Write-Host "$fileInfo contains $numInvalid dependency errors."
     }
 }
 
-Write-Output "Found $errorCount total dependency issues."
+Write-Host "Found $errorCount total dependency issues."
 
 exit $errorCount
