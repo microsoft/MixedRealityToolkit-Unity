@@ -383,69 +383,9 @@ MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
 
 Note when setting `ActiveProfile` during runtime, the destroy of the currently running services will happen after the last LateUpdate() of all services, and the instantiation and initialization of the services associated with the new profile will happen before the first Update() of all services.
 
-A noticable application hesitation may occur during this process. Also any script with higher priority than the `MixedRealityToolkit` script can enter its Update before the new profile is properly setup. See [Script Execution Order settings](https://docs.unity3d.com/Manual/class-MonoManager.html) for more information on script priority.
+A noticeable application hesitation may occur during this process. Also any script with higher priority than the `MixedRealityToolkit` script can enter its Update before the new profile is properly setup. See [Script Execution Order settings](https://docs.unity3d.com/Manual/class-MonoManager.html) for more information on script priority.
 
-Special handling is required when Unity UI elements are present in the scene. Such elements are usually children of `Canvas` that often requires a reference to the world camera (UI camera). During an active profile switch, UI cameras are destroyed and recreated and thus the references to them have to be updated for all canvases with previously assigned world camera. `VerifyCanvasConfiguration` in the `CanvasUtility` script can be used to update these references. The following script is an example of one way to handle this problem.
-
-
-```csharp
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
-/// Sample MonoBehaviour that will change the active profile and update the references
-/// to UI camera for Canvases to ensure the functionality of Unity UI after the change.
-/// </summary>
-/// <remarks>
-/// Note that this script assumes there is no instantiation and/or destroy of Canvases.
-/// Canvases to be used with MRTK have the CanvasUtility script attached.
-/// </remarks>
-public class ActiveProfileSwapper : MonoBehaviour
-{
-    [SerializeField]
-    private MixedRealityToolkitConfigurationProfile profileToUse = null;
-    private CanvasUtility[] allCanvases;// All MRTK canvases (i.e. with the CanvasUtility script) in scene
-    private List<CanvasUtility> cameraNotNullCanvases; // Canvases with not-null cameras
-
-    public void ChangeActiveProfile()
-    {
-        if (cameraNotNullCanvases == null)
-        {
-            // Find canvases with not-null world cameras
-            cameraNotNullCanvases = new List<CanvasUtility>();
-            foreach (var canvas in allCanvases)
-            {
-                if (canvas.GetComponent<Canvas>().worldCamera != null)
-                {
-                    cameraNotNullCanvases.Add(canvas);
-                }
-            }
-        }
-        MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
-        StartCoroutine(UpdateCanvasCameraReference());
-    }
-
-    private IEnumerator UpdateCanvasCameraReference()
-    {
-        // Wait for the profile change to complete
-        yield return null; // Skip the frame the profile swap started
-        yield return null; // Skip the next frame as well as the UI camera creation may still be in process
-        foreach (var canvas in cameraNotNullCanvases)
-        {
-            // Update reference to UI camera
-            canvas.VerifyCanvasConfiguration();
-        }
-    }
-
-    private void Start()
-    {
-        allCanvases = (CanvasUtility[])FindObjectsOfType(typeof(CanvasUtility));
-    }
-}
-```
+In the profile switching process the existing UI camera will remain unchanged, ensuring Unity UI components that require canvas still work after the switch.
 
 ## See also
 

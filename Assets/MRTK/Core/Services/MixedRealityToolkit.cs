@@ -38,7 +38,10 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool internalShutdown = false;
         private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
 
-        private bool isProfileSwitching = false;
+        /// <summary>
+        /// Whether an active profile switching is currently in progress
+        /// </summary>
+        public bool IsProfileSwitching { get; private set; }
 
         #region Mixed Reality Toolkit Profile configuration
 
@@ -89,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
         /// first Update() of all services.
         /// A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
-        /// before the new profile is properly setup. Special handling required for Unity UI.
+        /// before the new profile is properly setup.
         /// You are strongly recommended to see 
         /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
         /// for more information on profile switching.
@@ -120,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Set the active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/>
         /// </summary>
         /// <remarks>
-        /// If changing the Active profile during runtime is desired, modify <see cref="ActiveProfile"/> of the active instance directly.
+        /// If changing the Active profile after <see cref="MixedRealityToolkit"/> has been initialized, modify <see cref="ActiveProfile"/> of the active instance directly.
         /// This function requires the caller script to be executed earlier than the <see cref="MixedRealityToolkit"/> script, which can be achieved by setting 
         /// <see href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</see>.
         /// You are strongly recommended to see 
@@ -136,6 +139,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
+        /// <remarks>
+        /// This function should only be used by editor code in most cases.
+        /// Do not call this function if resetting profile at runtime.
+        /// Instead see 
+        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// for more information on profile switching at runtime.
+        /// </remarks>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
         {
             RemoveCurrentProfile(profile);
@@ -708,11 +718,11 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 // Before any Update() of a service is performed check to see if we need to switch profile
                 // If so we instantiate and initialize the services associated with the new profile.
-                if (newProfile != null && isProfileSwitching)
+                if (newProfile != null && IsProfileSwitching)
                 {
                     InitializeNewProfile(newProfile);
                     newProfile = null;
-                    isProfileSwitching = false;
+                    IsProfileSwitching = false;
                 }
                 UpdateAllServices();
             }
@@ -727,8 +737,8 @@ namespace Microsoft.MixedReality.Toolkit
                 // If so we destroy currently running services.
                 if (newProfile != null)
                 {
+                    IsProfileSwitching = true;
                     RemoveCurrentProfile(newProfile);
-                    isProfileSwitching = true;
                 }
             }
         }
