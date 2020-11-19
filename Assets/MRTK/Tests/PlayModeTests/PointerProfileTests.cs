@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // <summary>
         /// Verifies if eye tracking configuration is correctly applied at gaze provider initialization.
         /// </summary>
-        [Test]
-        public void TestGazeProviderEyeTrackingConfiguration()
+        [UnityTest]
+        public IEnumerator TestGazeProviderEyeTrackingConfiguration()
         {
             // Default configuration profile should set head based gaze
             var eyeGazeProvider = CoreServices.InputSystem.GazeProvider as IMixedRealityEyeGazeProvider;
@@ -44,7 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Eye tracking configuration profile should set eye based gaze
             var profile = AssetDatabase.LoadAssetAtPath(eyeTrackingConfigurationProfilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
-            MixedRealityToolkit.Instance.ResetConfiguration(profile);
+            MixedRealityToolkit.Instance.ActiveProfile = profile;
+            yield return null;
+            yield return null;
+            eyeGazeProvider = CoreServices.InputSystem.GazeProvider as IMixedRealityEyeGazeProvider;
 
             Assert.IsTrue(eyeGazeProvider.IsEyeTrackingEnabled, "Use eye tracking should be set to true");
         }

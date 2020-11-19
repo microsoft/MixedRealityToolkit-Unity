@@ -422,10 +422,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (pointer.InputSourceParent == inputSource)
                     {
                         int pointerId = (int)pointer.PointerId;
-                        Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
+                        if (!pointerDataToUpdate.ContainsKey(pointerId))
+                        {
+                            // During runtime profile switch this may happen but we can ignore
+                            if (!MixedRealityToolkit.Instance.IsProfileSwitching)
+                            {
+                                Debug.LogError("The pointer you are trying to remove does not exist in the mapping dict!");
+                            }
+                            return;
+                        }
 
-                        PointerData pointerData = null;
-                        if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
+                        if (pointerDataToUpdate.TryGetValue(pointerId, out PointerData pointerData))
                         {
                             Debug.Assert(!pointerDataToRemove.Contains(pointerData));
                             pointerDataToRemove.Add(pointerData);

@@ -32,6 +32,14 @@ steps:
       scopedValidation: ${{ parameters.scopedValidation }}
       changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
 
+# Validate that no assets take dependencies on files that are not in the appropriate package.
+# For example, files in the Extensions package are not to take a dependency on a file in the Examples package.
+- ${{ if eq(parameters.validateCode, true) }}:
+  - template: tasks/validateassets.yml
+    parameters:
+      scopedValidation: ${{ parameters.scopedValidation }}
+      changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+
 # Build Standalone x86.
 # This must happen before tests run, because if the build fails and tests attempt
 # to get run, Unity will hang showing a dialog (even when in batch mode).
