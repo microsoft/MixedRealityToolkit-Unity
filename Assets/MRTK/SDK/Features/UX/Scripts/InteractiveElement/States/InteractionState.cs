@@ -3,12 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// The container that represents a single Interaction State. This class is utilited in the BaseInteractiveElement MonoBehaviour.
+    /// The container that represents a single Interaction State. This class is utilized by the BaseInteractiveElement MonoBehaviour.
     /// </summary>
     [System.Serializable]
     public class InteractionState
@@ -21,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             Name = stateName;
             SetEventConfiguration(Name);
+            SetInteractionType(Name);
         }
 
         [SerializeField]
@@ -62,6 +64,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             internal set => active = value;
         }
 
+        [SerializeField]
+        [Tooltip("The type of interaction (Near, Far, Both, None) this state is associated with.")]
+        private InteractionType interactionType = InteractionType.None;
+
+        /// <summary>
+        /// The type of interaction (Near, Far, Both, None) this state is associated with.
+        /// </summary>
+        public InteractionType InteractionType
+        {
+            get => interactionType;
+            internal set => interactionType = value;
+        }
+
         [SerializeReference]
         [Tooltip("The event configuration for this state. ")]
         private IStateEventConfig eventConfiguration = null;
@@ -75,16 +90,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             internal set => eventConfiguration = value;
         }
 
+        private const string Near = "Near";
+        private const string Far = "Far";
+
+        // List of all core state names
+        private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
+
         // Set the event configuration for a new state
-        private void SetEventConfiguration(string stateName)
+        internal void SetEventConfiguration(string stateName)
         {
             if (EventConfiguration == null)
             {
                 BaseInteractionEventConfiguration eventConfiguration;
 
+                string subStateName = GetSubStateName();
+
                 // Find matching event configuration by state name
                 var eventConfigTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-                Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(stateName));
+                Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(subStateName));
 
                 if (eventConfigType != null)
                 {
@@ -101,6 +124,51 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 eventConfiguration.StateName = stateName;
                 EventConfiguration = eventConfiguration;
             }
+        }
+
+        // Set the InteractionType for a state based on the state name 
+        internal void SetInteractionType(string stateName)
+        {
+            string defaultStateName = CoreInteractionState.Default.ToString();
+            string touchStateName = CoreInteractionState.Touch.ToString();
+
+            if (stateName == defaultStateName)
+            {
+                // The Default State is a special case because it does not have an InteractionType
+                InteractionType = InteractionType.None;
+            }
+            // The Touch state is a special case because it does not contain "Near" in the state name but 
+            // its InteractionType is Near
+            else if (stateName.Contains(Near) || stateName == touchStateName)
+            {
+                InteractionType = InteractionType.Near;
+            }
+            else if (stateName.Contains(Far))
+            {
+                InteractionType = InteractionType.Far;
+            }
+            else
+            {
+                InteractionType = InteractionType.Both;
+            }  
+        }
+
+        // Trim the name of a state if it contains "Near" or "Far"
+        internal string GetSubStateName()
+        {
+            string subStateName = Name;
+
+            // If the state name contains Near, then remove "Near" and return the remaining sub-string
+            if (subStateName.Contains(Near))
+            {
+                subStateName = stateName.Replace(Near, "");
+            }
+            else if (stateName.Contains(Far))
+            {
+                subStateName = stateName.Replace(Far, "");
+            }
+            
+            return subStateName;
         }
     }
 }
