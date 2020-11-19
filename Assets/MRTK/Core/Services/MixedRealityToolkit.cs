@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Set the active profile prior to the initialization (i.e. Awake()) of <see cref="MixedRealityToolkit"/>
         /// </summary>
         /// <remarks>
-        /// If changing the Active profile during runtime is desired, modify <see cref="ActiveProfile"/> of the active instance directly.
+        /// If changing the Active profile after <see cref="MixedRealityToolkit"/> has been initialized, modify <see cref="ActiveProfile"/> of the active instance directly.
         /// This function requires the caller script to be executed earlier than the <see cref="MixedRealityToolkit"/> script, which can be achieved by setting 
         /// <see href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</see>.
         /// You are strongly recommended to see 
@@ -139,6 +139,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
+        /// <remarks>
+        /// This function should only be used by editor code in most cases.
+        /// Do not call this function if resetting profile at runtime.
+        /// Instead see 
+        /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</see> 
+        /// for more information on profile switching at runtime.
+        /// </remarks>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
         {
             RemoveCurrentProfile(profile);
