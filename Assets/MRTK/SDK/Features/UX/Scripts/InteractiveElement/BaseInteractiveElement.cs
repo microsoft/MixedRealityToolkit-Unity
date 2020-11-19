@@ -67,10 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // Core State Names
         protected string DefaultStateName = CoreInteractionState.Default.ToString();
         protected string FocusStateName = CoreInteractionState.Focus.ToString();
+        protected string FocusNearStateName = CoreInteractionState.FocusNear.ToString();
+        protected string FocusFarStateName = CoreInteractionState.FocusFar.ToString();
         protected string TouchStateName = CoreInteractionState.Touch.ToString();
-
-        // List of all core state names
-        private string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
 
         public virtual void OnValidate()
         {
@@ -105,11 +104,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public void OnFocusEnter(FocusEventData eventData)
         {
+            // Set the FocusNear and FocusFar state depending on the type of pointer 
+            // currently active
+            if (eventData.Pointer is IMixedRealityNearPointer)
+            {
+                SetStateAndInvokeEvent(FocusNearStateName, 1, eventData);
+            }
+            else if (!(eventData.Pointer is IMixedRealityNearPointer))
+            {
+                SetStateAndInvokeEvent(FocusFarStateName, 1, eventData);
+            }
+
             SetStateAndInvokeEvent(FocusStateName, 1, eventData);
         }
 
         public void OnFocusExit(FocusEventData eventData)
         {
+            // Set the Focus, FocusNear, and FocusFar states off 
+            SetStateAndInvokeEvent(FocusNearStateName, 0, eventData);
+            SetStateAndInvokeEvent(FocusFarStateName, 0, eventData);
             SetStateAndInvokeEvent(FocusStateName, 0, eventData);
         }
 
@@ -129,7 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            EventReceiverManager.InvokeStateEvent(TouchStateName, eventData);
+            if (IsStatePresent(TouchStateName))
+            {
+                EventReceiverManager.InvokeStateEvent(TouchStateName, eventData);
+            }
         }
 
         #endregion
@@ -261,30 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public void SetEventConfigurationInstance(string stateName)
         {
             InteractionState state = States.Find((interactionState) => interactionState.Name == stateName);
-            BaseInteractionEventConfiguration eventConfiguration;
-
-            if (state != null)
-            {
-                var eventConfigTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-                Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(stateName));
-
-                if (eventConfigType != null)
-                {
-                    eventConfiguration = Activator.CreateInstance(eventConfigType) as BaseInteractionEventConfiguration;
-                }
-                else
-                {
-                    eventConfiguration = Activator.CreateInstance(typeof(StateEvents)) as BaseInteractionEventConfiguration;
-                }
-
-                state.Name = stateName;
-                eventConfiguration.StateName = state.Name;
-                state.EventConfiguration = eventConfiguration;
-            }
-            else
-            {
-                Debug.LogError($"{stateName} is not contianted in the States list");
-            }
+            
+            // Set the new Interaction Type and configuration
+            state.SetEventConfiguration(stateName);
+            state.SetInteractionType(stateName);
         }
 
         /// <summary>

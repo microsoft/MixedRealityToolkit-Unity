@@ -119,13 +119,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             BaseInteractionEventConfiguration eventConfiguration;
 
+            string subStateName = stateManager.GetState(stateName).GetSubStateName();
+
             // Check if the state has an associated event configuration by state name.
             // For example, the Focus state is associated with the FocusEvents class which has BaseInteractionEventConfiguration as its base class.
             // The FocusEvents class contains unity events with FocusEventData.
             // This pattern continues with states that have events with specific event data, i.e. the Touch state
             // is associated with the serialized class TouchEvents which contains unity events with TouchEventData
             var eventConfigTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-            Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(stateName));
+            Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(subStateName));
 
             if (eventConfigType != null)
             {
@@ -149,10 +151,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             InteractionState state = stateManager.GetState(stateName);
 
             BaseInteractionEventConfiguration eventConfiguration = (BaseInteractionEventConfiguration)state.EventConfiguration;
-            
+
+            string subStateName = state.GetSubStateName();
+
             // Find the associated event receiver for the state if it has one
             var eventReceiverTypes = TypeCacheUtility.GetSubClasses<BaseEventReceiver>();
-            Type eventReceiver = eventReceiverTypes.Find((type) => type.Name.StartsWith(stateName));
+            Type eventReceiver = eventReceiverTypes.Find((type) => type.Name.StartsWith(subStateName));
 
             if (eventReceiver != null)
             {

@@ -95,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
             catch 
             {
-                Debug.LogError($"{stateName} state was not found, please check the spelling or add a new state with {stateName} as the name.");
                 return null;
             }
         }
@@ -294,8 +293,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 // Set the event configuration if one exists for the core interaction state
                 EventReceiverManager.SetEventConfiguration(newState);
 
-                // If the Touch state is added, check if a Near Interaction Touchable component attached to the game object
-                if (stateName == touchStateName)
+                // If a near interaction state is added, check if a Near Interaction Touchable component attached to the game object
+                if (newState.InteractionType == InteractionType.Near)
                 {
                     // A Near Interaction Touchable component is required for an object to receive touch events
                     InteractiveElement.AddNearInteractionTouchable();
