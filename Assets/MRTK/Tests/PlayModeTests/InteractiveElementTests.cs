@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -16,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class InteractiveElementTests : BasePlayModeTests
     {
         private string focusStateName = CoreInteractionState.Focus.ToString();
+        private string focusNearStateName = CoreInteractionState.FocusNear.ToString();
+        private string focusFarStateName = CoreInteractionState.FocusFar.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string newStateName = "MyNewState";
@@ -64,6 +67,80 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(onFocusOff);
 
             yield return null;
+        }
+
+        /// <summary>
+        /// Test the state changes and events for the FocusNear and FocusFar states.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFocusNearFarEventConfiguration()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // The focus state is a state that is added by default
+            InteractionState focusState = interactiveElement.GetState(focusStateName);
+            yield return null;
+
+            // Add FocusNear state
+            InteractionState focusNearState = interactiveElement.AddNewState(focusNearStateName);
+            yield return null;
+
+            // Add FocusFar state
+            InteractionState focusFarState = interactiveElement.AddNewState(focusFarStateName);
+            yield return null;
+
+            // Get event configuration for the states
+            var eventConfigurationFocusNear = interactiveElement.GetStateEvents<FocusEvents>(focusNearStateName);
+            var eventConfigurationFocusFar = interactiveElement.GetStateEvents<FocusEvents>(focusFarStateName);
+
+            // Define flags for events
+            bool onFocusNearOn = false;
+            bool onFocusNearOff = false;
+            bool onFocusFarOn = false;
+            bool onFocusFarOff = false;
+
+            // Add Focus Near event listeners 
+            eventConfigurationFocusNear.OnFocusOn.AddListener((eventData) => { onFocusNearOn = true; });
+            eventConfigurationFocusNear.OnFocusOff.AddListener((eventData) => { onFocusNearOff = true; });
+
+            // Add Focus Far event listeners 
+            eventConfigurationFocusFar.OnFocusOn.AddListener((eventData) => { onFocusFarOn = true; });
+            eventConfigurationFocusFar.OnFocusOff.AddListener((eventData) =>{ onFocusFarOff = true; });
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Make sure the Focus state and Focus Far state are on
+            Assert.AreEqual(focusState.Value, 1);
+            Assert.AreEqual(focusFarState.Value, 1);
+            Assert.True(onFocusFarOn);
+
+            // Move the Hand out of focus 
+            yield return MoveHandOutOfFocus(leftHand);
+
+            // Make sure the Focus state and Focus Far state are off
+            Assert.AreEqual(focusState.Value, 0);
+            Assert.AreEqual(focusFarState.Value, 0);
+            Assert.True(onFocusFarOff);
+
+            // Move hand to a near focus position
+            yield return leftHand.Move(new Vector3(0, 0.22f, 0.221f));
+
+            // Make sure the Focus state and Focus Near state are on
+            Assert.AreEqual(focusState.Value, 1);
+            Assert.AreEqual(focusNearState.Value, 1);
+            Assert.True(onFocusNearOn);
+
+            // Move the Hand out of focus 
+            yield return leftHand.Hide();
+
+            // Make sure the Focus state and Focus Near state are off
+            Assert.AreEqual(focusState.Value, 0);
+            Assert.AreEqual(focusNearState.Value, 0);
+            Assert.True(onFocusNearOff);
         }
 
         /// <summary>
@@ -369,12 +446,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator MoveHandOutOfFocus(TestHand hand)
         {
-            yield return hand.Move(new Vector3(0, -0.3f, 0), 30);
+            yield return hand.Move(new Vector3(0, -0.3f, 0));
         }
 
         private IEnumerator MoveHandTouchObject(TestHand hand)
         {
-            yield return hand.Move(new Vector3(0, -0.25f, 0.221f), 30);
+            yield return hand.Move(new Vector3(0, -0.25f, 0.221f));
         }
 
         #endregion
