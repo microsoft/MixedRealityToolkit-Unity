@@ -150,7 +150,7 @@ When setting the ActiveProfile during runtime, the destroy of the currently runn
 of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
 first Update() of all services.
 A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
-before the new profile is properly setup. Special handling required for Unity UI.
+before the new profile is properly setup.
 You are strongly recommended to see
 <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a>
 for more information on profile switching.</p>
@@ -381,6 +381,32 @@ public static IMixedRealityInputSystem InputSystem { get; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool IsInitialized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_IsProfileSwitching_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.IsProfileSwitching*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_IsProfileSwitching" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.IsProfileSwitching">IsProfileSwitching</h4>
+  <div class="markdown level1 summary"><p>Whether an active profile switching is currently in progress</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsProfileSwitching { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1127,6 +1153,13 @@ public bool IsSystemRegistered&lt;T&gt;()
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ResetConfiguration_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This function should only be used by editor code in most cases.
+Do not call this function if resetting profile at runtime.
+Instead see
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a>
+for more information on profile switching at runtime.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_SetActiveInstance_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.SetActiveInstance*"></a>
@@ -1210,7 +1243,7 @@ public bool IsSystemRegistered&lt;T&gt;()
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_SetProfileBeforeInitialization_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If changing the Active profile during runtime is desired, modify <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ActiveProfile">ActiveProfile</a> of the active instance directly.
+  <div class="markdown level1 remarks"><p>If changing the Active profile after <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> has been initialized, modify <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ActiveProfile">ActiveProfile</a> of the active instance directly.
 This function requires the caller script to be executed earlier than the <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> script, which can be achieved by setting
 <a href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</a>.
 You are strongly recommended to see

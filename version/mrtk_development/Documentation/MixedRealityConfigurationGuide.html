@@ -417,65 +417,8 @@ whether or not the camera is opaque/transparent), to figure out which profile to
 <pre><code class="lang-csharp">MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
 </code></pre>
 <p>Note when setting <code>ActiveProfile</code> during runtime, the destroy of the currently running services will happen after the last LateUpdate() of all services, and the instantiation and initialization of the services associated with the new profile will happen before the first Update() of all services.</p>
-<p>A noticable application hesitation may occur during this process. Also any script with higher priority than the <code>MixedRealityToolkit</code> script can enter its Update before the new profile is properly setup. See <a href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</a> for more information on script priority.</p>
-<p>Special handling is required when Unity UI elements are present in the scene. Such elements are usually children of <code>Canvas</code> that often requires a reference to the world camera (UI camera). During an active profile switch, UI cameras are destroyed and recreated and thus the references to them have to be updated for all canvases with previously assigned world camera. <code>VerifyCanvasConfiguration</code> in the <code>CanvasUtility</code> script can be used to update these references. The following script is an example of one way to handle this problem.</p>
-<pre><code class="lang-csharp">using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/// &lt;summary&gt;
-/// Sample MonoBehaviour that will change the active profile and update the references
-/// to UI camera for Canvases to ensure the functionality of Unity UI after the change.
-/// &lt;/summary&gt;
-/// &lt;remarks&gt;
-/// Note that this script assumes there is no instantiation and/or destroy of Canvases.
-/// Canvases to be used with MRTK have the CanvasUtility script attached.
-/// &lt;/remarks&gt;
-public class ActiveProfileSwapper : MonoBehaviour
-{
-    [SerializeField]
-    private MixedRealityToolkitConfigurationProfile profileToUse = null;
-    private CanvasUtility[] allCanvases;// All MRTK canvases (i.e. with the CanvasUtility script) in scene
-    private List&lt;CanvasUtility&gt; cameraNotNullCanvases; // Canvases with not-null cameras
-
-    public void ChangeActiveProfile()
-    {
-        if (cameraNotNullCanvases == null)
-        {
-            // Find canvases with not-null world cameras
-            cameraNotNullCanvases = new List&lt;CanvasUtility&gt;();
-            foreach (var canvas in allCanvases)
-            {
-                if (canvas.GetComponent&lt;Canvas&gt;().worldCamera != null)
-                {
-                    cameraNotNullCanvases.Add(canvas);
-                }
-            }
-        }
-        MixedRealityToolkit.Instance.ActiveProfile = profileToUse;
-        StartCoroutine(UpdateCanvasCameraReference());
-    }
-
-    private IEnumerator UpdateCanvasCameraReference()
-    {
-        // Wait for the profile change to complete
-        yield return null; // Skip the frame the profile swap started
-        yield return null; // Skip the next frame as well as the UI camera creation may still be in process
-        foreach (var canvas in cameraNotNullCanvases)
-        {
-            // Update reference to UI camera
-            canvas.VerifyCanvasConfiguration();
-        }
-    }
-
-    private void Start()
-    {
-        allCanvases = (CanvasUtility[])FindObjectsOfType(typeof(CanvasUtility));
-    }
-}
-</code></pre>
+<p>A noticeable application hesitation may occur during this process. Also any script with higher priority than the <code>MixedRealityToolkit</code> script can enter its Update before the new profile is properly setup. See <a href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</a> for more information on script priority.</p>
+<p>In the profile switching process the existing UI camera will remain unchanged, ensuring Unity UI components that require canvas still work after the switch.</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="hologram-stabilization.html">Hologram Stabilization</a></li>
