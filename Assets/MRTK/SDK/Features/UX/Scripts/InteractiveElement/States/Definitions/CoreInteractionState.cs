@@ -14,15 +14,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         Default = 0,
 
         /// <summary>
-        /// Represents the Focus state.
+        /// Represents the Focus state. This state supports both near and far interaction.
         /// </summary>
         Focus,
 
         /// <summary>
-        /// Represents the Touch state.  THIS STATE DOES NOT HAVE LOGIC DEFINED YET.
+        /// Represents the Focus Near state. This is a near interaction state
+        /// </summary>
+        FocusNear,
+
+        /// <summary>
+        /// Represents the Focus state. This is a far interaction state. 
+        /// </summary>
+        FocusFar,
+
+        /// <summary>
+        /// Represents the Touch state. This is a near interaction state that also requires the attachment of a NearInteractionTouchable 
+        /// component to register touch input. 
         /// </summary>
         Touch
-
-        // Add more core states as the state logic is defined: Click, Grab, Speech Keyword, Pressed
     }
 }

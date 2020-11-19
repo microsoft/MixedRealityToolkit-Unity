@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
+        private string focusNearStateName = CoreInteractionState.FocusNear.ToString();
+
+        // The state selection menu is displayed when a user selects the "Add Core State" button
+        private StateSelectionMenu stateSelectionMenu; 
         
         protected virtual void OnEnable()
         {
@@ -53,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             RemoveStateButtonLabel = new GUIContent(InspectorUIUtility.Minus, removeStateLabel);
 
             previousActiveStatus = active.boolValue;
+
+            stateSelectionMenu = ScriptableObject.CreateInstance<StateSelectionMenu>();
         }
 
         public override void OnInspectorGUI()
@@ -164,12 +170,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // Draw the state value in the inspector next to the state during play mode for debugging
                     if (Application.isPlaying)
                     {
+                        Color prevColor = GUI.color;
+
+                        // Highlight the container displaying the state value during play mode if the state value is 1
+                        if (stateValue.intValue == 1)
+                        {
+                            GUI.color = Color.cyan;
+                        }
+
                         using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,GUILayout.Width(stateValueDisplayWidth)))
                         {
                             EditorGUILayout.Space();
                             EditorGUILayout.LabelField(stateValue.intValue.ToString(), GUILayout.Width(stateValueDisplayContainerWidth));
                             EditorGUILayout.Space();
                         }
+
+                        GUI.color = prevColor;
                     }
                 }
             }
@@ -189,46 +205,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        // Display a state selection menu 
         private void SetCoreStateType(SerializedProperty state, SerializedProperty stateName)
         {
-            Rect position = EditorGUILayout.GetControlRect();
-            using (new EditorGUI.PropertyScope(position, new GUIContent("State"), state))
+            stateSelectionMenu.DisplayMenu(instance);
+
+            if (stateSelectionMenu.stateSelected)
             {
-                List<string> coreInteractionStateNames = Enum.GetNames(typeof(CoreInteractionState)).ToList();
+                // Set the name of the state selected from the menu
+                string selectedStateName = stateSelectionMenu.state;
 
-                // If the state is already being tracked then do not display the state name as an option to add
-                foreach (string coreState in coreInteractionStateNames.ToList())
+                stateName.stringValue = selectedStateName;
+
+                serializedObject.ApplyModifiedProperties();
+
+                // Set the event configuration
+                instance.SetEventConfigurationInstance(stateName.stringValue);
+
+                // Add a near interaction touchable if the state selected was Touch or FocusNear
+                if (stateName.stringValue == touchStateName || stateName.stringValue == focusNearStateName)
                 {
-                    if (instance.IsStatePresentEditMode(coreState))
-                    {
-                        coreInteractionStateNames.Remove(coreState);
-                    }
+                    instance.AddNearInteractionTouchable();
                 }
 
-                // Convert coreInteractionStateNames to an array to allow the use of EditorGUI.Popup
-                string[] availableCoreInteractionStates = coreInteractionStateNames.ToArray();
-
-                int id = Array.IndexOf(availableCoreInteractionStates, -1);
-                int newId = EditorGUI.Popup(position, id, availableCoreInteractionStates);
-
-                // NOTE FOR THE FUTURE: Sort the core states in a menu that indicates whether a core state is a near 
-                // interaction state, far interaction state, or both to futher push the mental model of the MRTK interaction model
-
-                if (newId != -1)
-                {
-                    string selectedState = availableCoreInteractionStates[newId];
-
-                    stateName.stringValue = selectedState;
-
-                    serializedObject.ApplyModifiedProperties();
-
-                    instance.SetEventConfigurationInstance(stateName.stringValue);
-
-                    if (stateName.stringValue == touchStateName)
-                    {
-                        instance.AddNearInteractionTouchable();
-                    }
-                }
+                stateSelectionMenu.stateSelected = false;
             }
         }
 
