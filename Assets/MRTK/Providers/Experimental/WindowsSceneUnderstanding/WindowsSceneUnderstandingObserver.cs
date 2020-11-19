@@ -14,8 +14,13 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.SceneUnderstanding;
+#if WINDOWS_UWP
+using Windows.Perception.Spatial;
+using Windows.Perception.Spatial.Preview;
+#else
 using Microsoft.Windows.Perception.Spatial;
 using Microsoft.Windows.Perception.Spatial.Preview;
+#endif // WINDOWS_UWP
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 #endif // SCENE_UNDERSTANDING_PRESENT
@@ -604,14 +609,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 switch (observerState)
                 {
                     case ObserverState.Idle:
-                        await Task.Yield();
+                        await new WaitForUpdate();
                         continue;
 
                     case ObserverState.GetScene:
                         observerState = ObserverState.Working;
                         if (CreateGameObjects && instantiationQueue.Count > 0)
                         {
-                            await Task.Yield();
+                            await new WaitForUpdate();
                         }
                         await new WaitForBackgroundThread();
                         {
@@ -619,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             previousScene = scene;
                             sceneOriginId = scene.OriginSpatialGraphNodeId;
                         }
-                        await Task.Yield();
+                        await new WaitForUpdate();
 
                         sceneToWorldTransformMatrix = GetSceneToWorldTransform();
 
@@ -636,7 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                             {
                                 toUp = ToUpFromBiggestFloor(scene.SceneObjects);
                             }
-                            await Task.Yield();
+                            await new WaitForUpdate();
 
                             var floorNormalUnity = new Vector3(toUp.X, toUp.Y, toUp.Z);
 
@@ -649,13 +654,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         {
                             sasos = await ConvertSceneObjectsAsync(scene);
                         }
-                        await Task.Yield();
+                        await new WaitForUpdate();
 
                         await new WaitForBackgroundThread();
                         {
                             AddUniqueTo(sasos, instantiationQueue);
                         }
-                        await Task.Yield();
+                        await new WaitForUpdate();
 
                         // Add new objects to observer
                         // notify subscribers of event
@@ -709,7 +714,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                         continue;
 
                     default:
-                        await Task.Yield();
+                        await new WaitForUpdate();
                         continue;
                 }
             }
