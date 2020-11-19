@@ -13090,7 +13090,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.html",
-          "hash": "RNVSP0hrnYFUqx6OcPDvBA=="
+          "hash": "KTA33oAtFNfYaKn0XxU/Wg=="
         }
       },
       "is_incremental": false,
@@ -22530,6 +22530,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.RiggedHandVisualizerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.RiggedHandVisualizerTests.html",
+          "hash": "5KlP5W7aj0xNAQN7gUTt4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.DemoSceneTests.yml",
       "output": {
         ".html": {
@@ -22798,7 +22810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "K+OvVHZQZMJ/iV9VzJHwRw=="
+          "hash": "w/2cDlUXYKD/GVDYZevVxQ=="
         }
       },
       "is_incremental": false,
@@ -27346,7 +27358,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.HandPoseUtils.html",
-          "hash": "YO79twTTdPAnrt3fFmfpiQ=="
+          "hash": "kagVu59vwZS15HBXaS+uVw=="
         }
       },
       "is_incremental": false,
@@ -29314,7 +29326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusXRSDKDeviceManagerProfile.html",
-          "hash": "HQmFImsMKaPDoK8wJXuMvA=="
+          "hash": "WfBTpc3Q1e+3UF1H6Y9uug=="
         }
       },
       "is_incremental": false,
@@ -29506,7 +29518,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "zK2PLSzxw/mQUJkTKtTwpQ=="
+          "hash": "g44deZwZXdrTu6EKHIQk2Q=="
         }
       },
       "is_incremental": false,
@@ -29578,7 +29590,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1696,
+          "total_file_count": 1697,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
