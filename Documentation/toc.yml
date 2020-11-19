@@ -259,6 +259,8 @@
       href: README_NearMenu.md
     - name: App Bar
       href: README_AppBar.md
+    - name: Rigged Hand Visualizer
+      href: README_RiggedHandVisualizer.md     
     - name: Fingertip Visualization
       href: README_FingertipVisualization.md
     - name: Progress Indicator
@@ -273,8 +275,6 @@
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
     - name: HoloLens Keyboard Helpers [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
-    - name: Rigged Hand Visualizer [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md     
     - name: Elastic System [Experimental]
       href: Elastics/ElasticSystem.md 
     - name: Bounding Box [Obsolete]

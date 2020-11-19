@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Hand visualizer that controls a hierarchy of transforms to be used by a SkinnedMeshRenderer

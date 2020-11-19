@@ -15,11 +15,9 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
-using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -47,24 +45,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Run a basic pinch test on the rigged hand to make sure nothing crashes and that the mesh updates appropriately
         /// </summary>
-        // [UnityTest]
-        // public IEnumerator TestRiggedHand()
-        // {
-        //     // Initialize hand
-        //     var rightHand = new TestHand(Handedness.Right);
-        //     yield return rightHand.Show(Vector3.zero);
-           
-        //     RiggedHandVisualizer handVisualizer = GameObject.FindObjectOfType<RiggedHandVisualizer>().GetComponent<RiggedHandVisualizer>();
-           
-        //     yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-        //     Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) < 0.5f);
-           
-        //     yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Grab);
-        //     Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) > 0.5f);
-           
-        //     yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-        //     Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty)  < 0.5f);
-        // }
+        [UnityTest]
+        public IEnumerator TestRiggedHand()
+        {
+            // Initialize hand
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+        
+            RiggedHandVisualizer handVisualizer = GameObject.FindObjectOfType<RiggedHandVisualizer>().GetComponent<RiggedHandVisualizer>();
+        
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) < 0.5f);
+        
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Grab);
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) > 0.5f);
+        
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty)  < 0.5f);
+        }
     }
 }
 

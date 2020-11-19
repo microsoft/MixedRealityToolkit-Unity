@@ -51,3 +51,24 @@ MonoBehaviour:
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
+  - description: Oculus Hand
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
+    handedness: 1
+    useDefaultModel: 0
+    defaultModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 61451597023024772, guid: 6080fb9e3b49fda449e3d70daf6d2254,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
+  - description: Generic Joystick Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 2
+    useDefaultModel: 0
+    defaultModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
+      type: 3}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK

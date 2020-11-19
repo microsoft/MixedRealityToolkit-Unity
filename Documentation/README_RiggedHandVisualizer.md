@@ -1,4 +1,4 @@
-# Rigged Hand Visualizer [Experimental]
+# Rigged Hand Visualizer
 <img src="../../../../../Documentation/Images/RiggedHandVisualizer/MRTK_RiggedHandVisualizer_Main.png" width="600px"  style="display:inline;">
 
 The RiggedHandVisualizer can be used to control a SkinnedMesh to visualize the hands.  
