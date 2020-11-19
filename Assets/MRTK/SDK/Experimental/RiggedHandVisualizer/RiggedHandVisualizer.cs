@@ -101,6 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
         private SkinnedMeshRenderer handRenderer = null;
 
         /// <summary>
+        /// flag checking that the handRenderer was initialized with its own material
+        /// </summary>
+        private bool handRendererInitialized = false;
+
+        /// <summary>
         /// Renderer of the hand mesh.
         /// </summary>
         public SkinnedMeshRenderer HandRenderer => handRenderer;
@@ -127,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
         /// <summary>
         /// Precalculated values for LeapMotion testhand fingertip lengths
         /// </summary>
-        private const float thumbFingerTipLength = 0.12167f;
+        private const float thumbFingerTipLength = 0.02167f;
         private const float indexingerTipLength = 0.01582f;
         private const float middleFingerTipLength = 0.0174f;
         private const float ringFingerTipLength = 0.0173f;
@@ -169,13 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
 
         private Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
         private Dictionary<TrackedHandJoint, Transform> skeletonJoints = new Dictionary<TrackedHandJoint, Transform>();
-
-        private void Awake()
-        {
-            // Give the hand mesh it's on material to avoid modifying both hand materials when making property changes
-            var handMaterialInstance = new Material(handMaterial);
-            handRenderer.sharedMaterial = handMaterialInstance;
-        }
 
         private void Start()
         {
@@ -265,6 +263,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                 joints[TrackedHandJoint.PinkyDistalJoint] = RetrieveChild(TrackedHandJoint.PinkyMiddleJoint);
                 joints[TrackedHandJoint.PinkyTip] = RetrieveChild(TrackedHandJoint.PinkyDistalJoint);
             }
+
+            // Give the hand mesh it's own material to avoid modifying both hand materials when making property changes
+            var handMaterialInstance = new Material(handMaterial);
+            handRenderer.sharedMaterial = handMaterialInstance;
+            handRendererInitialized = true;
         }
 
         private Transform RetrieveChild(TrackedHandJoint parentJoint)
@@ -449,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer
                 float ringFingerCurl = HandPoseUtils.RingFingerCurl(Controller.ControllerHandedness);
                 float pinkyFingerCurl = HandPoseUtils.PinkyFingerCurl(Controller.ControllerHandedness);
 
-                if (handMaterial != null)
+                if (handMaterial != null && handRendererInitialized)
                 {
                     float gripStrength = indexFingerCurl + middleFingerCurl + ringFingerCurl + pinkyFingerCurl;
                     gripStrength /= 4.0f;
