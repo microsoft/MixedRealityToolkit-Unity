@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
+#if UNITY_2019_3_OR_NEWER
         /// <summary>
         /// Run a basic pinch test on the rigged hand to make sure nothing crashes and that the mesh updates appropriately
         /// </summary>
@@ -63,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty)  < 0.5f);
         }
+#endif
     }
 }
 
