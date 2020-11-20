@@ -433,6 +433,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (controller != null)
                 {
+                    var mrtkController = controller as WindowsMixedRealityController;
+
+                    //if (mrtkController != null)
+                    //{
+                    //    mrtkController.EnsureControllerModel(interactionSourceState.source);
+                    //}
+
                     // Does the controller still exist after we loaded the controller model?
                     if (GetOrAddController(interactionSourceState.source, false) != null)
                     {

@@ -11,11 +11,8 @@ using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
+using Windows.UI.Input.Spatial;
 #endif
-
-//#if DOTNETWINRT_PRESENT
-//using Microsoft.Windows.UI.Input.Spatial;
-//#endif
 
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Windows.Input;
@@ -33,12 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     public class WindowsMixedRealityControllerModelProvider
     {
 
-        //#if DOTNETWINRT_PRESENT
 #if WINDOWS_UWP
-        public WindowsMixedRealityControllerModelProvider(BaseController controller, SpatialInteractionSource spatialInteractionSource)
+        public WindowsMixedRealityControllerModelProvider(BaseController controller, SpatialInteractionSourceState spatialInteractionSourceState)
         {
             this.controller = controller;
-            this.spatialInteractionSource = spatialInteractionSource;
+            this.spatialInteractionSourceState = spatialInteractionSourceState;
         }
 
         public bool UnableToGenerateSDKModel;
@@ -46,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private readonly BaseController controller;
         private IMixedRealityInputSource InputSource => controller.InputSource;
         private Handedness Handedness => controller.ControllerHandedness;
-        private SpatialInteractionSource spatialInteractionSource;
+        private SpatialInteractionSourceState spatialInteractionSourceState;
 
         private static readonly Dictionary<string, GameObject> controllerModelDictionary = new Dictionary<string, GameObject>(0);
 
@@ -55,21 +51,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             // First see if we've generated this model before and if we can return it
             GameObject controllerModel;
 
-            if (controllerModelDictionary.TryGetValue(GenerateKey(spatialInteractionSource), out controllerModel))
+            if (controllerModelDictionary.TryGetValue(GenerateKey(spatialInteractionSourceState), out controllerModel))
             {
                 UnableToGenerateSDKModel = false;
                 controllerModel.SetActive(true);
                 return controllerModel;
             }
 
-            DebugUtilities.Log("Trying to load controller model from platform SDK");
+            Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
 
-            var controllerModelStream = await spatialInteractionSource.Controller.TryGetRenderableModelAsync();
+            var controllerModelStream = await spatialInteractionSourceState.Source.Controller.TryGetRenderableModelAsync();
             if (controllerModelStream == null ||
                 controllerModelStream.Size == 0)
             {
-                DebugUtilities.LogError("Failed to obtain controller model from driver");
+                Debug.LogError("Failed to obtain controller model from driver");
             }
             else
             {
@@ -88,7 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 gltfGameObject = await gltfObject.ConstructAsync();
                 if (gltfGameObject != null)
                 {
-                    DebugUtilities.LogError("Loaded model");
                     var visualizationProfile = CoreServices.InputSystem?.InputSystemProfile.ControllerVisualizationProfile;
                     if (visualizationProfile != null)
                     {
@@ -102,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                                 visualizer.DestroyOnSourceLost = false;
                             }
 
-                            controllerModelDictionary.Add(GenerateKey(spatialInteractionSource), gltfGameObject);
+                            controllerModelDictionary.Add(GenerateKey(spatialInteractionSourceState), gltfGameObject);
                             return gltfGameObject;
                         }
                         else
@@ -124,9 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             return null;
         }
 
-        private string GenerateKey(SpatialInteractionSource spatialInteractionSourceState)
+        private string GenerateKey(SpatialInteractionSourceState spatialInteractionSourceState)
         {
-            return spatialInteractionSourceState.Id + "/" + spatialInteractionSourceState.Kind + "/" + spatialInteractionSourceState.Handedness;
+            return spatialInteractionSourceState.Source.Id + "/" + spatialInteractionSourceState.Source.Kind + "/" + spatialInteractionSourceState.Source.Handedness;
         }
 #endif // WINDOWS_UWP
     }
