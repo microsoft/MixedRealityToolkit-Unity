@@ -16,7 +16,6 @@ using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Windows.Input;
 using Windows.Storage.Streams;
-using System.Threading.Tasks;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -33,19 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, InteractionSource interactionSource, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
-#if WINDOWS_UWP
-            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(this, interactionSource.GetSpatialInteractionSource());
-#endif
         }
 
         private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
-#if WINDOWS_UWP
-        private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
-#endif
 
         /// <summary>
         /// The Windows Mixed Reality Controller default interactions.
@@ -249,7 +242,33 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Controller model functions
 
-#if WINDOWS_UWP
+        /// <summary>
+        /// Ensure that if a controller model was desired that we have attempted initialization.
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
+        internal void EnsureControllerModel(InteractionSource interactionSource)
+        {
+            GameObject controllerModel;
+
+            if (controllerModelInitialized ||
+                GetControllerVisualizationProfile() == null ||
+                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                controllerModelInitialized = true;
+                return;
+            }
+            else if (controllerDictionary.TryGetValue(GenerateKey(interactionSource), out controllerModel))
+            {
+                controllerModelInitialized = true;
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+                controllerModel.SetActive(true);
+                return;
+            }
+
+            controllerModelInitialized = true;
+            CreateControllerModelFromPlatformSDK(interactionSource);
+        }
+
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
@@ -257,31 +276,90 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // Note: Obtaining models from the driver will require access to the InteractionSource.
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
             // the controller model on an input update
-            if (controllerModelProvider.UnableToGenerateSDKModel ||
+            if (failedToObtainControllerModel ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
+
+            return false;
+        }
+
+        private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
+        {
+            Debug.Log("Trying to load controller model from platform SDK");
+            byte[] fileBytes = null;
+
+#if WINDOWS_UWP
+            var controllerModelStream = await interactionSource.TryGetRenderableModelAsync();
+            if (controllerModelStream == null ||
+                controllerModelStream.Size == 0)
+            {
+                Debug.LogError("Failed to obtain controller model from driver");
+            }
             else
             {
-                TryRenderControllerModelWithModelProvider();
+                fileBytes = new byte[controllerModelStream.Size];
+                using (DataReader reader = new DataReader(controllerModelStream))
+                {
+                    await reader.LoadAsync((uint)controllerModelStream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
             }
-
-            return !controllerModelProvider.UnableToGenerateSDKModel;
-        }
-
-        private async void TryRenderControllerModelWithModelProvider()
-        {
-            GameObject controllerModel = Task.Run(controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
-
-            if(controllerModel != null)
-            {
-                TryAddControllerModelToSceneHierarchy(controllerModel);
-            }
-        }
 #endif
+
+            GameObject gltfGameObject = null;
+            if (fileBytes != null)
+            {
+                var gltfObject = GltfUtility.GetGltfObjectFromGlb(fileBytes);
+                gltfGameObject = await gltfObject.ConstructAsync();
+                if (gltfGameObject != null)
+                {
+                    var visualizationProfile = GetControllerVisualizationProfile();
+                    if (visualizationProfile != null)
+                    {
+                        var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+                        if (visualizationType != null)
+                        {
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (gltfGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
+                            TryAddControllerModelToSceneHierarchy(gltfGameObject);
+                            controllerDictionary.Add(GenerateKey(interactionSource), gltfGameObject);
+                        }
+                        else
+                        {
+                            Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                            UnityEngine.Object.Destroy(gltfGameObject);
+                            gltfGameObject = null;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to obtain a controller visualization profile");
+                    }
+                }
+            }
+
+
+            failedToObtainControllerModel = (gltfGameObject == null);
+            if (failedToObtainControllerModel)
+            {
+                Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
+                TryRenderControllerModel(GetType(), InputSourceType.Controller);
+            }
+        }
+
+        private string GenerateKey(InteractionSource source)
+        {
+            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
+        }
 
         #endregion Controller model functions
 
