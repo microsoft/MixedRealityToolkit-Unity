@@ -13,9 +13,8 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-#if WINDOWS_UWP
+#if DOTNETWINRT_PRESENT
 using Microsoft.MixedReality.Toolkit.Windows.Input;
-using Windows.Storage.Streams;
 using System.Threading.Tasks;
 #endif
 
@@ -37,14 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
+            //#if DOTNETWINRT_PRESENT
 #if WINDOWS_UWP
-            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(this, interactionSource.GetSpatialInteractionSource());
+            controllerModelProvider = new WindowsMixedRealityControllerModelProvider(this, null);//interactionSource.GetSpatialInteractionSource());
 #endif
         }
 
         private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
+        //#if DOTNETWINRT_PRESENT
 #if WINDOWS_UWP
-        private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
+            private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
 #endif
 
         /// <summary>
@@ -54,11 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
 
 #if UNITY_WSA
-        private bool controllerModelInitialized = false;
-        private bool failedToObtainControllerModel = false;
-
-        private static readonly Dictionary<string, GameObject> controllerDictionary = new Dictionary<string, GameObject>(0);
-
         #region Update data functions
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateController");
@@ -249,6 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Controller model functions
 
+        //#if DOTNETWINRT_PRESENT
 #if WINDOWS_UWP
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
@@ -261,7 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
-                controllerModelInitialized = true;
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
             else
@@ -274,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void TryRenderControllerModelWithModelProvider()
         {
-            GameObject controllerModel = Task.Run(controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
+            GameObject controllerModel = await Task.Run(() => controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
 
             if(controllerModel != null)
             {

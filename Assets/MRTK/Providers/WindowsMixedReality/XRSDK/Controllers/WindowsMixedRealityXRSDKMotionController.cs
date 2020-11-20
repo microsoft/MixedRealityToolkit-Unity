@@ -4,9 +4,19 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
+
+#if WINDOWS_UWP
+#if WMR_ENABLED
+using UnityEngine.XR.WindowsMR;
+#endif // WMR_ENABLED
+using Windows.UI.Input.Spatial;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -26,9 +36,26 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
+//#if DOTNETWINRT_PRESENT
+#if WINDOWS_UWP
+            List<object> states = new List<object>();
+            XRSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+
+            foreach (SpatialInteractionSourceState sourceState in states)
+            {
+                if (sourceState.Source.Handedness.ToMRTKHandedness() == ControllerHandedness)
+                {
+                    controllerModelProvider = new WindowsMixedRealityControllerModelProvider(this, sourceState.Source);
+                }
+            }
+#endif
         }
 
         private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
+//#if DOTNETWINRT_PRESENT
+#if WINDOWS_UWP
+        private readonly WindowsMixedRealityControllerModelProvider controllerModelProvider;
+#endif
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
@@ -124,10 +151,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
         }
 
+//#if DOTNETWINRT_PRESENT
 #if WINDOWS_UWP
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
+            DebugUtilities.Log("trying to render controller");
             // Intercept this call if we are using the default driver provided models.
             // Note: Obtaining models from the driver will require access to the InteractionSource.
             // It's unclear whether the interaction source will be available during setup, so we attempt to create
@@ -136,11 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
-                controllerModelInitialized = true;
+                DebugUtilities.Log("defaulting to base rendering");
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
             else
             {
+                DebugUtilities.Log("trying to render from drivers");
                 TryRenderControllerModelWithModelProvider();
             }
 
@@ -149,10 +179,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         private async void TryRenderControllerModelWithModelProvider()
         {
-            GameObject controllerModel = Task.Run(controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
+            GameObject controllerModel = await Task.Run(() => controllerModelProvider.TryGenerateControllerModelFromPlatformSDK());
 
-            if(controllerModel != null)
+            if (controllerModel != null)
             {
+                DebugUtilities.Log("rendering model from sdk");
                 TryAddControllerModelToSceneHierarchy(controllerModel);
             }
         }
