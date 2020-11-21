@@ -15,8 +15,7 @@ MonoBehaviour:
   isCustomProfile: 1
   renderMotionControllers: 1
   defaultControllerVisualizationType:
-    reference: Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer,
-      Microsoft.MixedReality.Toolkit.SDK
+    reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
   useDefaultModels: 0
   defaultControllerModelMaterial: {fileID: 2100000, guid: 54322026142964d4084eda2478d9b1a2,
     type: 2}

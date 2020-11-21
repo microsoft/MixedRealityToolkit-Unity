@@ -1,11 +1,73 @@
 fileFormatVersion: 2
-guid: eca55bd2e26c3bd4eb90ba12286f6af4
+guid: 80552d4fb0628b643b4a182b8d38b21a
 ModelImporter:
-  serializedVersion: 19301
-  internalIDToNameTable: []
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Arm_L
+    100002: L_Hand
+    100004: //RootNode
+    100006: MIddle_L_01
+    100008: MIddle_L_02
+    100010: MIddle_L_03
+    100012: MIddle_L_04
+    100014: MIddle_L_END
+    100016: Pinky_L_01
+    100018: Pinky_L_02
+    100020: Pinky_L_03
+    100022: Pinky_L_04
+    100024: Pinky_L_END
+    100026: Point_L_01
+    100028: Point_L_02
+    100030: Point_L_03
+    100032: Point_L_04
+    100034: Point_L_END
+    100036: Ring_L_01
+    100038: Ring_L_02
+    100040: Ring_L_03
+    100042: Ring_L_04
+    100044: Ring_L_END
+    100046: Thumb_L_01
+    100048: Thumb_L_02
+    100050: Thumb_L_03
+    100052: Thumb_L_04
+    100054: Thumb_L_END
+    100056: Wrist_L
+    400000: Arm_L
+    400002: L_Hand
+    400004: //RootNode
+    400006: MIddle_L_01
+    400008: MIddle_L_02
+    400010: MIddle_L_03
+    400012: MIddle_L_04
+    400014: MIddle_L_END
+    400016: Pinky_L_01
+    400018: Pinky_L_02
+    400020: Pinky_L_03
+    400022: Pinky_L_04
+    400024: Pinky_L_END
+    400026: Point_L_01
+    400028: Point_L_02
+    400030: Point_L_03
+    400032: Point_L_04
+    400034: Point_L_END
+    400036: Ring_L_01
+    400038: Ring_L_02
+    400040: Ring_L_03
+    400042: Ring_L_04
+    400044: Ring_L_END
+    400046: Thumb_L_01
+    400048: Thumb_L_02
+    400050: Thumb_L_03
+    400052: Thumb_L_04
+    400054: Thumb_L_END
+    400056: Wrist_L
+    2100000: lambert1
+    4300000: L_Hand
+    9500000: //RootNode
+    13700000: L_Hand
   externalObjects: {}
   materials:
-    materialImportMode: 1
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -38,28 +100,25 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
+    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
-    skinWeightsMode: 0
-    maxBonesPerVertex: 4
-    minBoneWeight: 0.001
-    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -68,10 +127,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
   importAnimation: 1
+  copyAvatar: 0
   humanDescription:
-    serializedVersion: 3
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -81,16 +140,13 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
