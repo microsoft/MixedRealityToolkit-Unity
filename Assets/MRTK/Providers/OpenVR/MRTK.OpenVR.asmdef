@@ -3,6 +3,7 @@
     "references": [
         "Microsoft.MixedReality.Toolkit"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "LinuxStandalone64",
@@ -15,7 +16,5 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "defineConstraints": []
 }
