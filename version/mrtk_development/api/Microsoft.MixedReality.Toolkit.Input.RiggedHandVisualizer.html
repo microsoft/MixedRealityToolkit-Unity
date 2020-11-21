@@ -90,10 +90,10 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer" class="text-break">Class RiggedHandVisualizer
+  <h1 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer" class="text-break">Class RiggedHandVisualizer
   </h1>
   <div class="markdown level0 summary"><p>Hand visualizer that controls a hierarchy of transforms to be used by a SkinnedMeshRenderer
 Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has visual parity</p>
@@ -106,21 +106,22 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IMixedRealityControllerVisualizer</span></div>
-    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
-    <div><span class="xref">IMixedRealityHandJointHandler</span></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerVisualizer.html">IMixedRealityControllerVisualizer</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html">IMixedRealityHandJointHandler</a></div>
+    <div><span class="xref">IEventSystemHandler</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.html">Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RiggedHandVisualizer : MonoBehaviour, IMixedRealityControllerVisualizer, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class RiggedHandVisualizer : MonoBehaviour, IMixedRealityControllerVisualizer, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_DeformPosition" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.DeformPosition">DeformPosition</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_DeformPosition" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.DeformPosition">DeformPosition</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -144,7 +145,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_IndexRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.IndexRoot">IndexRoot</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_IndexRoot" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.IndexRoot">IndexRoot</h4>
   <div class="markdown level1 summary"><p>Index metacarpal transform (index finger root)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -169,7 +170,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_IndexRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.IndexRootIsMetacarpal">IndexRootIsMetacarpal</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_IndexRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.IndexRootIsMetacarpal">IndexRootIsMetacarpal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -193,7 +194,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_MiddleRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.MiddleRoot">MiddleRoot</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_MiddleRoot" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.MiddleRoot">MiddleRoot</h4>
   <div class="markdown level1 summary"><p>Middle metacarpal transform (middle finger root)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -218,7 +219,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_MiddleRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.MiddleRootIsMetacarpal">MiddleRootIsMetacarpal</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_MiddleRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.MiddleRootIsMetacarpal">MiddleRootIsMetacarpal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -242,7 +243,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ModelFingerPointing" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ModelFingerPointing">ModelFingerPointing</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ModelFingerPointing" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ModelFingerPointing">ModelFingerPointing</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -266,7 +267,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ModelPalmAtLeapWrist" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ModelPalmAtLeapWrist">ModelPalmAtLeapWrist</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ModelPalmAtLeapWrist" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ModelPalmAtLeapWrist">ModelPalmAtLeapWrist</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -290,7 +291,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ModelPalmFacing" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ModelPalmFacing">ModelPalmFacing</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ModelPalmFacing" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ModelPalmFacing">ModelPalmFacing</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -314,7 +315,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_Palm" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.Palm">Palm</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Palm" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Palm">Palm</h4>
   <div class="markdown level1 summary"><p>Palm transform</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -339,7 +340,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_PinkyRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.PinkyRoot">PinkyRoot</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_PinkyRoot" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.PinkyRoot">PinkyRoot</h4>
   <div class="markdown level1 summary"><p>Pinky metacarpal transform (pinky finger root)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -364,7 +365,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_PinkyRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.PinkyRootIsMetacarpal">PinkyRootIsMetacarpal</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_PinkyRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.PinkyRootIsMetacarpal">PinkyRootIsMetacarpal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -388,7 +389,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_RingRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.RingRoot">RingRoot</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_RingRoot" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.RingRoot">RingRoot</h4>
   <div class="markdown level1 summary"><p>Ring metacarpal transform (ring finger root)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -413,7 +414,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_RingRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.RingRootIsMetacarpal">RingRootIsMetacarpal</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_RingRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.RingRootIsMetacarpal">RingRootIsMetacarpal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -437,7 +438,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ScaleLastFingerBone" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ScaleLastFingerBone">ScaleLastFingerBone</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ScaleLastFingerBone" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ScaleLastFingerBone">ScaleLastFingerBone</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -461,7 +462,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ThumbRoot" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ThumbRoot">ThumbRoot</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ThumbRoot" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ThumbRoot">ThumbRoot</h4>
   <div class="markdown level1 summary"><p>Thumb metacarpal transform  (thumb root)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -486,7 +487,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_ThumbRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.ThumbRootIsMetacarpal">ThumbRootIsMetacarpal</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_ThumbRootIsMetacarpal" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.ThumbRootIsMetacarpal">ThumbRootIsMetacarpal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -510,7 +511,7 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_Wrist" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.Wrist">Wrist</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Wrist" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Wrist">Wrist</h4>
   <div class="markdown level1 summary"><p>Wrist Transform</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -537,9 +538,10 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_Controller_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.Controller*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_Controller" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.Controller">Controller</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Controller_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Controller*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Controller" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Controller">Controller</h4>
+  <div class="markdown level1 summary"><p>The current controller reference.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -555,16 +557,17 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IMixedRealityController</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_GameObjectProxy_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.GameObjectProxy*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_GameObjectProxy" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.GameObjectProxy">GameObjectProxy</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_GameObjectProxy_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.GameObjectProxy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_GameObjectProxy" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.GameObjectProxy">GameObjectProxy</h4>
+  <div class="markdown level1 summary"><p>The <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> reference for this controller.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -585,10 +588,13 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_GameObjectProxy_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This reference may not always be available when called.</p>
+</div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_HandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.HandMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_HandMaterial" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.HandMaterial">HandMaterial</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_HandMaterial_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.HandMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_HandMaterial" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.HandMaterial">HandMaterial</h4>
   <div class="markdown level1 summary"><p>Hand material to use for hand tracking hand mesh.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -613,8 +619,8 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_HandRenderer_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.HandRenderer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_HandRenderer" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.HandRenderer">HandRenderer</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_HandRenderer_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.HandRenderer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_HandRenderer" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.HandRenderer">HandRenderer</h4>
   <div class="markdown level1 summary"><p>Renderer of the hand mesh.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -639,8 +645,8 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_PinchStrengthMaterialProperty_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.PinchStrengthMaterialProperty*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_RiggedHandVisualizer_RiggedHandVisualizer_PinchStrengthMaterialProperty" data-uid="Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.PinchStrengthMaterialProperty">PinchStrengthMaterialProperty</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_PinchStrengthMaterialProperty_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.PinchStrengthMaterialProperty*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_PinchStrengthMaterialProperty" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.PinchStrengthMaterialProperty">PinchStrengthMaterialProperty</h4>
   <div class="markdown level1 summary"><p>Property name for modifying the mesh's appearance based on pinch strength</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -663,15 +669,103 @@ Implementation is derived from LeapMotion RiggedHand and RiggedFinger and has vi
       </tr>
     </tbody>
   </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityHandJointHandler_OnHandJointsUpdated_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityHandJointHandler#OnHandJointsUpdated*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityHandJointHandler_OnHandJointsUpdated_Microsoft_MixedReality_Toolkit_Input_InputEventData_IDictionary_TrackedHandJoint_MixedRealityPose___" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityHandJointHandler#OnHandJointsUpdated(Microsoft.MixedReality.Toolkit.Input.InputEventData{IDictionary{TrackedHandJoint,MixedRealityPose}})">IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData-1.html">InputEventData</a>&lt;<span class="xref">IDictionary</span>&lt;<span class="xref">TrackedHandJoint</span>, <span class="xref">MixedRealityPose</span>&gt;&gt;</td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySourceStateHandler#OnSourceDetected*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySourceStateHandler#OnSourceDetected(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"><p>Raised when a source is detected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySourceStateHandler#OnSourceLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_RiggedHandVisualizer_Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.Microsoft#MixedReality#Toolkit#Input#IMixedRealitySourceStateHandler#OnSourceLost(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData)</h4>
+  <div class="markdown level1 summary"><p>Raised when a source is lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IMixedRealityControllerVisualizer</span>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerVisualizer.html">IMixedRealityControllerVisualizer</a>
   </div>
   <div>
-      <span class="xref">IMixedRealitySourceStateHandler</span>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a>
   </div>
   <div>
-      <span class="xref">IMixedRealityHandJointHandler</span>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html">IMixedRealityHandJointHandler</a>
+  </div>
+  <div>
+      <span class="xref">IEventSystemHandler</span>
   </div>
 </article>
           </div>

@@ -230,18 +230,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/Experimental/RiggedHandVisualizer/README_RiggedHandVisualizer.html",
-          "hash": "9tmONDK/UuvSlYXwS881tQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "../../Assets/MRTK/SDK/Experimental/StepSlider/README.md",
       "output": {
         ".html": {
@@ -8634,6 +8622,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/README_RiggedHandVisualizer.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_RiggedHandVisualizer.html",
+          "hash": "/vTMh5gT/vmrgrymhDGC5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/README_ScrollingObjectCollection.md",
       "output": {
         ".html": {
@@ -9094,7 +9094,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "iH1amZGHZiioC2ozeB0emA=="
+          "hash": "5/UQ9tiQDx7xmY3ThqBYPQ=="
         }
       },
       "is_incremental": false,
@@ -13086,30 +13086,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.RiggedHandVisualizer.html",
-          "hash": "KTA33oAtFNfYaKn0XxU/Wg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.RiggedHandVisualizer.html",
-          "hash": "1UNtp+8TGOedE4l3/V9iZg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SpatialAwarenessSystemManager.yml",
       "output": {
         ".html": {
@@ -16878,6 +16854,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer.html",
+          "hash": "KRrYMJQwaB9II2/eIqjZ1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Input.ScreenSpaceMousePointer.yml",
       "output": {
         ".html": {
@@ -17422,7 +17410,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "qixSC+H6PdkdNjdxPgSBKg=="
+          "hash": "kHblSdaQAkQ7rwzQf/sUrw=="
         }
       },
       "is_incremental": false,
@@ -29518,7 +29506,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "g44deZwZXdrTu6EKHIQk2Q=="
+          "hash": "W9CjngHT2KL0KPFzoIXrZw=="
         }
       },
       "is_incremental": false,
@@ -29590,7 +29578,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1697,
+          "total_file_count": 1696,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
