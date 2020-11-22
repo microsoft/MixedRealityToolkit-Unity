@@ -64,7 +64,7 @@ MonoBehaviour:
   - description: Oculus Hand
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
-    handedness: 1
+    handedness: 2
     useDefaultModel: 0
     defaultModelMaterial: {fileID: 0}
     overrideModel: {fileID: 3512491064599439886, guid: 7a857af0cb85b4a47b6ec8a1babcb73c,
