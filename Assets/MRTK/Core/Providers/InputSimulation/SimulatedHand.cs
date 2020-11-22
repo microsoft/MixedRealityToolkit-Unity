@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             UpdateVelocity();
 
+            UpdateTeleport();
             UpdateInteractions(handData);
         }
 

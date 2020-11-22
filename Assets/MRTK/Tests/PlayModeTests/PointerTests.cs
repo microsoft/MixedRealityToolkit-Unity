@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Simulate pushing "up" on joystick axis to activate teleport pointer lines
             CoreServices.InputSystem?.RaisePositionInputChanged(curveInputSource,
                 curveController.ControllerHandedness,
-                curvePointer.TeleportInputAction,
+                curvePointer.TeleportAction,
                 new Vector2(0.0f, 1.0f));
 
             var hitObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
