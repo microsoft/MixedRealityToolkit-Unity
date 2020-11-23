@@ -21,10 +21,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The Y orientation of the pointer - used for touchpad rotation and navigation
         /// </summary>
         float PointerOrientation { get; }
-
-        /// <summary>
-        /// Teleport pointer will only respond to input events for teleportation that match this MixedRealityInputAction.
-        /// </summary>
-        MixedRealityInputAction TeleportAction { get; set; }
     }
 }

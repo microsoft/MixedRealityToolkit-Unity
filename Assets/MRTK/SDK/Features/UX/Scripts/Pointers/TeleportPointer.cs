@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         /// <inheritdoc />
-        public MixedRealityInputAction TeleportAction { get => teleportAction; set => teleportAction = value; }
+        public MixedRealityInputAction TeleportAction => teleportAction;
 
         [SerializeField]
         [Range(0f, 1f)]
