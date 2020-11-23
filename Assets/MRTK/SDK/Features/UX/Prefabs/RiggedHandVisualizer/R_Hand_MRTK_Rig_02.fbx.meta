@@ -1,87 +1,70 @@
 fileFormatVersion: 2
-guid: 6c892af280c86f242bf75a7f74a0a017
+guid: eca55bd2e26c3bd4eb90ba12286f6af4
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: MainL_JNT
-    100004: MiddelL_JNT2
-    100006: MiddleL_JNT
-    100008: MiddleL_JNT1
-    100010: MiddleL_JNT3
-    100012: MiddleL_JNT3_end
-    100014: PinkyL_JNT
-    100016: PinkyL_JNT1
-    100018: PinkyL_JNT2
-    100020: PinkyL_JNT3
-    100022: PinkyL_JNT3_end
-    100024: PointL_JNT
-    100026: PointL_JNT1
-    100028: PointL_JNT2
-    100030: PointL_JNT3
-    100032: PointL_JNT3_end
-    100034: RingL_JNT
-    100036: RingL_JNT1
-    100038: RingL_JNT2
-    100040: RingL_JNT3
-    100042: RingL_JNT3_end
-    100044: ThumbL_JNT1
-    100046: ThumbL_JNT2
-    100048: ThumbL_JNT3
-    100050: ThumbL_JNT3_end
-    100052: WristL_JNT
-    100054: CoachArmature
-    100056: MeshL
-    100058: L_Hand
-    100060: MeshL.001
-    100062: L_Hand.001
-    100064: MeshL.002
-    400000: //RootNode
-    400002: MainL_JNT
-    400004: MiddelL_JNT2
-    400006: MiddleL_JNT
-    400008: MiddleL_JNT1
-    400010: MiddleL_JNT3
-    400012: MiddleL_JNT3_end
-    400014: PinkyL_JNT
-    400016: PinkyL_JNT1
-    400018: PinkyL_JNT2
-    400020: PinkyL_JNT3
-    400022: PinkyL_JNT3_end
-    400024: PointL_JNT
-    400026: PointL_JNT1
-    400028: PointL_JNT2
-    400030: PointL_JNT3
-    400032: PointL_JNT3_end
-    400034: RingL_JNT
-    400036: RingL_JNT1
-    400038: RingL_JNT2
-    400040: RingL_JNT3
-    400042: RingL_JNT3_end
-    400044: ThumbL_JNT1
-    400046: ThumbL_JNT2
-    400048: ThumbL_JNT3
-    400050: ThumbL_JNT3_end
-    400052: WristL_JNT
-    400054: CoachArmature
-    400056: MeshL
-    400058: L_Hand
-    400060: MeshL.001
-    400062: L_Hand.001
-    400064: MeshL.002
-    2100000: lambert2.001
-    2100002: lambert2.002
-    2100004: lambert2.003
-    2100006: lambert2.004
-    2300000: MeshL
-    3300000: MeshL
-    4300000: MeshL
-    4300002: MeshL.001
-    4300004: MeshL.002
+    100000: Arm_R
+    100002: MIddle_R_01
+    100004: MIddle_R_02
+    100006: MIddle_R_03
+    100008: MIddle_R_04
+    100010: MIddle_R_END
+    100012: Pinky_R_05
+    100014: Pinky_R_06
+    100016: Pinky_R_07
+    100018: Pinky_R_08
+    100020: Pinky_R_END
+    100022: Point_R_01
+    100024: Point_R_02
+    100026: Point_R_03
+    100028: Point_R_04
+    100030: Point_R_END
+    100032: R_Hand
+    100034: //RootNode
+    100036: Ring_R_01
+    100038: Ring_R_02
+    100040: Ring_R_03
+    100042: Ring_R_04
+    100044: Ring_R_END
+    100046: Thumb_R_01
+    100048: Thumb_R_02
+    100050: Thumb_R_03
+    100052: Thumb_R_04
+    100054: Thumb_R_END
+    100056: Wrist_R
+    400000: Arm_R
+    400002: MIddle_R_01
+    400004: MIddle_R_02
+    400006: MIddle_R_03
+    400008: MIddle_R_04
+    400010: MIddle_R_END
+    400012: Pinky_R_05
+    400014: Pinky_R_06
+    400016: Pinky_R_07
+    400018: Pinky_R_08
+    400020: Pinky_R_END
+    400022: Point_R_01
+    400024: Point_R_02
+    400026: Point_R_03
+    400028: Point_R_04
+    400030: Point_R_END
+    400032: R_Hand
+    400034: //RootNode
+    400036: Ring_R_01
+    400038: Ring_R_02
+    400040: Ring_R_03
+    400042: Ring_R_04
+    400044: Ring_R_END
+    400046: Thumb_R_01
+    400048: Thumb_R_02
+    400050: Thumb_R_03
+    400052: Thumb_R_04
+    400054: Thumb_R_END
+    400056: Wrist_R
+    2100000: lambert1
+    4300000: R_Hand
     9500000: //RootNode
-    13700000: MeshL
-    13700002: MeshL.001
-    13700004: MeshL.002
+    13700000: R_Hand
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -102,7 +85,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -110,7 +93,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -159,7 +142,7 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

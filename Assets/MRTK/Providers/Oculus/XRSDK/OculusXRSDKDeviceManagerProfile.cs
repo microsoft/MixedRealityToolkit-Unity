@@ -84,57 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             set { localAvatarPrefab = value; }
         }
 
-        [Header("Hand Mesh Visualization")]
-        [SerializeField]
-        [Tooltip("If true, hand mesh material will be replaced with custom material.")]
-        private bool useCustomHandMaterial = true;
-
-        /// <summary>
-        /// If true, hand mesh material will be replaced with custom material.
-        /// </summary>
-        public bool UseCustomHandMaterial => useCustomHandMaterial;
-
-        [SerializeField]
-        [Tooltip("Custom hand material to use for hand tracking hand mesh. Use Custom Hand Material must be set to true for this material to be applied")]
-        private Material customHandMaterial = null;
-
-        /// <summary>
-        /// Event triggered when the custom material for hand mesh is updated.
-        /// </summary>
-        public System.Action OnCustomHandMaterialUpdate;
-
-        /// <summary>
-        /// Custom hand material to use for hand tracking hand mesh.
-        /// </summary>
-        public Material CustomHandMaterial
-        {
-            get => customHandMaterial;
-
-            set
-            {
-                customHandMaterial = value;
-                OnCustomHandMaterialUpdate?.Invoke();
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("If true, will update material pinch strength using OVR Values.")]
-        private bool updateMaterialPinchStrengthValue = true;
-
-        /// <summary>
-        /// If true, will update material pinch strength using OVR Values.
-        /// </summary>
-        public bool UpdateMaterialPinchStrengthValue => UseCustomHandMaterial && updateMaterialPinchStrengthValue;
-
-        [SerializeField]
-        [Tooltip("Property in custom material used to visualize pinch strength.")]
-        private string pinchStrengthMaterialProperty = "_PressIntensity";
-
-        /// <summary>
-        /// Property in custom material used to visualize pinch strength.
-        /// </summary>
-        public string PinchStrengthMaterialProperty => pinchStrengthMaterialProperty;
-
 #if OCULUSINTEGRATION_PRESENT
         [Header("Hand Tracking Configuration")]
         [SerializeField]
