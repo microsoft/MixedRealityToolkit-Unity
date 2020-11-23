@@ -147,8 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 UpdateVelocity();
             }
 
-            UpdateTeleport(); 
-
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
@@ -198,7 +196,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                         break;
                     case DeviceInputType.IndexFinger:
-                        UpdateIndexFingerData(Interactions[i]);
+                        Interactions[i].PoseData = currentIndexPose;
+                        if (Interactions[i].Changed)
+                        {
+                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentIndexPose);
+                        }
+                        break;
+                    case DeviceInputType.ThumbStick:
+                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }
@@ -274,8 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 
                 UpdatePalm();
             }
-
-            CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+            
+            handDefinition?.UpdateHandJoints(jointPoses);
 
             // Note: After some testing, it seems when moving your hand fast, Oculus's pinch estimation data gets frozen, which leads to stuck pinches.
             // To counter this, we perform a distance check between thumb and index to determine if we should force the pinch to a false state.

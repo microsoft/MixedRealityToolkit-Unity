@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // We check if the palm forward is roughly in line with the camera lookAt
                 // We must also ensure we're not in teleport pose
-                return Vector3.Dot(cameraTransform.forward, projectedPalmUp) > 0.3f && !IsInTeleportPose;
+                return Vector3.Dot(cameraTransform.forward, projectedPalmUp) > 0.3f;
             }
         }
 
@@ -99,99 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             deltaTimeStart = Time.unscaledTime;
             frameOn++;
-        }
-
-        protected bool IsInTeleportPose
-        {
-            get
-            {
-                if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
-
-                Camera mainCamera = CameraCache.Main;
-
-                if (mainCamera == null)
-                {
-                    return false;
-                }
-
-                Transform cameraTransform = mainCamera.transform;
-
-                // We check if the palm up is roughly in line with the camera up
-                return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f
-                       // Thumb must be extended, and middle must be grabbing
-                       && !isThumbGrabbing && isMiddleGrabbing;
-            }
-        }
-
-        // Used to track the input that was last raised
-        private Vector2 previousStickInput = Vector2.zero;
-        private bool previousReadyToTeleport = false;
-
-        private bool isIndexGrabbing;
-        private bool isMiddleGrabbing;
-        private bool isThumbGrabbing;
-
-        protected void UpdateTeleport()
-        {
-            MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
-            IMixedRealityTeleportPointer teleportPointer = null;
-
-            // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
-            bool anyPointersLockedWithHand = false;
-            for (int i = 0; i < InputSource?.Pointers?.Length; i++)
-            {
-                if (InputSource.Pointers[i] == null) continue;
-                if (InputSource.Pointers[i] is IMixedRealityNearPointer)
-                {
-                    var nearPointer = (IMixedRealityNearPointer)InputSource.Pointers[i];
-                    anyPointersLockedWithHand |= nearPointer.IsNearObject;
-                }
-                anyPointersLockedWithHand |= InputSource.Pointers[i].IsFocusLocked;
-
-                // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
-                if (InputSource.Pointers[i] is IMixedRealityTeleportPointer)
-                {
-                    teleportPointer = (IMixedRealityTeleportPointer)InputSource.Pointers[i];
-                    teleportAction = teleportPointer.TeleportAction;
-                }
-            }
-
-            // We close middle finger to signal spider-man gesture, and as being ready for teleport
-            isIndexGrabbing = HandPoseUtils.IsIndexGrabbing(ControllerHandedness);
-            isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(ControllerHandedness);
-            isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(ControllerHandedness);
-            bool isReadyForTeleport = !anyPointersLockedWithHand && IsPositionAvailable && IsInTeleportPose;
-
-            // Tracks the input vector that should be sent out based on the gesture that is made
-            Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
-
-            // The teleport event needs to be canceled if we have not completed the teleport motion and we were previously ready to teleport, but for some reason we
-            // are no longer doing the ready to teleport gesture
-            bool teleportCanceled = previousReadyToTeleport && !isReadyForTeleport && !isIndexGrabbing;
-            if (teleportCanceled && teleportPointer != null)
-            {
-                CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
-                previousStickInput = stickInput;
-                previousReadyToTeleport = isReadyForTeleport;
-                return;
-            }
-
-            bool teleportInputChanged = stickInput != previousStickInput;
-            if (teleportInputChanged)
-            {
-                RaiseTeleportInput(stickInput, teleportAction);
-            }
-
-            previousStickInput = stickInput;
-            previousReadyToTeleport = isReadyForTeleport;
-        }
-
-        private void RaiseTeleportInput(Vector2 teleportInput, MixedRealityInputAction teleportAction)
-        {
-            if (!teleportAction.Equals(MixedRealityInputAction.None))
-            {
-                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, teleportAction, teleportInput);
-            }
         }
 
         #endregion Gesture Definitions
