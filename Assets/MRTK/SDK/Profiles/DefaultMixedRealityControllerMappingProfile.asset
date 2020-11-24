@@ -84,6 +84,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
@@ -149,6 +162,19 @@ MonoBehaviour:
         id: 13
         description: Index Finger Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -639,6 +665,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
@@ -704,6 +743,19 @@ MonoBehaviour:
         id: 13
         description: Index Finger Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -3009,6 +3061,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.LeapMotion
@@ -3074,6 +3139,19 @@ MonoBehaviour:
         id: 13
         description: Index Finger Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -3587,6 +3665,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input.OculusHand, Microsoft.MixedReality.Toolkit.Providers.XRSDK.Oculus
     handedness: 2
@@ -3651,6 +3742,19 @@ MonoBehaviour:
         id: 13
         description: Index Finger Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -3725,6 +3829,19 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
     handedness: 2
@@ -3789,6 +3906,19 @@ MonoBehaviour:
         id: 13
         description: Index Finger Pose
         axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Teleport Pose
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
