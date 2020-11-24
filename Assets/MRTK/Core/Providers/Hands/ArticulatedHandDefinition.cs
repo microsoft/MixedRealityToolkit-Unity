@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Transform cameraTransform = mainCamera.transform;
 
                 // We check if the palm up is roughly in line with the camera up
-                return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f;
+                return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f
                        // Thumb must be extended, and middle must be grabbing
                        && !isThumbGrabbing && isMiddleGrabbing;
             }
