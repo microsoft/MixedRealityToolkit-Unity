@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // We check if the palm up is roughly in line with the camera up
                 return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f;
                        // Thumb must be extended, and middle must be grabbing
-                       //&& !isThumbGrabbing && isMiddleGrabbing;
+                       && !isThumbGrabbing && isMiddleGrabbing;
             }
         }
 
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isIndexGrabbing = HandPoseUtils.IsIndexGrabbing(handedness);
                 isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(handedness);
                 isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(handedness);
-                bool isReadyForTeleport = !anyPointersLockedWithHand && IsInTeleportPose; //IsPositionAvailable (don't think I need this bool)
+                bool isReadyForTeleport = !anyPointersLockedWithHand && IsInTeleportPose;
 
                 // Tracks the input vector that should be sent out based on the gesture that is made
                 Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
