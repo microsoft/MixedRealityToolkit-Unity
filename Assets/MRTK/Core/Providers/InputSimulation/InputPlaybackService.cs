@@ -7,9 +7,6 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
-// Allow unused events
-#pragma warning disable 67
-
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -134,18 +131,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         /// <inheritdoc />
-        public void Play()
-        {
-            if (animation != null && !isPlaying)
-            {
-                isPlaying = true;
-                OnPlaybackStarted?.Invoke();
+        public void Play() {
+            if (animation == null || isPlaying) {
+                return;
             }
+
+            isPlaying = true;
+            OnPlaybackStarted?.Invoke();
         }
 
         /// <inheritdoc />
         public void Stop()
         {
+            if (!isPlaying) {
+                return;
+            }
+            
             localTime = 0.0f;
             isPlaying = false;
             OnPlaybackStopped?.Invoke();
@@ -155,7 +156,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void Pause()
         {
+            if (!isPlaying) {
+                return;
+            }
+            
             isPlaying = false;
+            OnPlaybackPaused?.Invoke();
         }
 
         /// <inheritdoc />
