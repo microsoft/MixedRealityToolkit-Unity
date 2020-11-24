@@ -151,6 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             isPlaying = false;
             OnPlaybackStopped?.Invoke();
             Evaluate();
+            RemoveControllerDevice(Handedness.Left);
+            RemoveControllerDevice(Handedness.Right);
         }
 
         /// <inheritdoc />

@@ -1,7 +1,9 @@
-﻿#if !WINDOWS_UWP
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+#if !WINDOWS_UWP
 
 using System.Collections;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -52,13 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
             string path = recordingService.SaveInputAnimation("TestHandRecording.bin", null);
             var playbackService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputPlaybackService>();
 
-            yield return new WaitForSeconds(1f);
+            yield return null;
 
             playbackService.LoadInputAnimation(path);
             playbackService.Play();
             
             yield return new WaitWhile(() => playbackService.IsPlaying);
-            yield return new WaitForSeconds(1f);
             yield return null;
         }
 
