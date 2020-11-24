@@ -56,7 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// </summary>
         public MixedRealityPose HandPointerPose => currentPointerPose;
 
-        private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
 #if OCULUSINTEGRATION_PRESENT
@@ -196,11 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                         }
                         break;
                     case DeviceInputType.IndexFinger:
-                        Interactions[i].PoseData = currentIndexPose;
-                        if (Interactions[i].Changed)
-                        {
-                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentIndexPose);
-                        }
+                        handDefinition.UpdateCurrentIndexPose(Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
                         handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
@@ -404,24 +399,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             else
             {
                 jointPoses[joint] = pose;
-            }
-        }
-
-        private void UpdateIndexFingerData(MixedRealityInteractionMapping interactionMapping)
-        {
-            if (jointPoses.TryGetValue(TrackedHandJoint.IndexTip, out var pose))
-            {
-                currentIndexPose.Rotation = pose.Rotation;
-                currentIndexPose.Position = pose.Position;
-            }
-
-            interactionMapping.PoseData = currentIndexPose;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system Event if it enabled
-                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
         }
                 #endregion
