@@ -151,10 +151,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private readonly Dictionary<uint, GenericXRSDKController> activeMotionControllers = new Dictionary<uint, GenericXRSDKController>();
 #endif
 
-#endregion IMixedRealityCapabilityCheck Implementation
+        #endregion IMixedRealityCapabilityCheck Implementation
 
 
-#region Controller Utilities
+        #region Controller Utilities
 #if HP_CONTROLLER_ENABLED
         private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindwosMixedRealityXRSDKDeviceManager.GetOrAddController");
 
@@ -190,7 +190,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 trackedMotionControllerStates[controllerId] = new MotionControllerState(motionController);
 
                 if (activeMotionControllers.ContainsKey(controllerId))
+                {
                     ((HPMotionController)activeMotionControllers[controllerId]).MotionControllerState = trackedMotionControllerStates[controllerId];
+                }
             }
         }
 
@@ -199,23 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             lock (trackedMotionControllerStates)
             {
                 uint controllerId = GetControllerId(motionController);
-
-                if (!(activeMotionControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
-                {
-                    // for some reason this controller was never tracked in the first place, ignore removing it from the scene, but remove its tracked reference
-                    trackedMotionControllerStates.Remove(controllerId);
-                    return;
-                }
-
-                if (activeMotionControllers.ContainsKey(controllerId))
-                {
-                    var controller = activeMotionControllers[controllerId] as GenericXRSDKController;
-                    Debug.Assert(controller != null);
-                    RemoveControllerFromScene(controller);
-
-                    trackedMotionControllerStates.Remove(controllerId);
-                    activeMotionControllers.Remove(controllerId);
-                }
+                trackedMotionControllerStates.Remove(controllerId);
             }
         }
 #endif
