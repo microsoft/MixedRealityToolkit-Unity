@@ -14,6 +14,7 @@ jobs:
     - ${{ variables.Unity2019Version }}
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
+    - VS2019 -equals TRUE
   steps:
   - template: templates/common-Unity2019.yml
     parameters:
