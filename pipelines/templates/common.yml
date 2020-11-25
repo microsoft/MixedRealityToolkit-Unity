@@ -40,14 +40,14 @@ steps:
       scopedValidation: ${{ parameters.scopedValidation }}
       changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
 
-# Build Standalone x86.
+# Build Standalone x64.
 # This must happen before tests run, because if the build fails and tests attempt
 # to get run, Unity will hang showing a dialog (even when in batch mode).
 # This is the fastest build, since it doesn't produce an AppX.
 - ${{ if eq(parameters.buildStandalone, true) }}:
   - template: tasks/unitybuild.yml
     parameters:
-      Arch: 'x86'
+      Arch: 'x64'
       Platform: 'Standalone'
       UnityVersion: ${{ parameters.UnityVersion }}
 
