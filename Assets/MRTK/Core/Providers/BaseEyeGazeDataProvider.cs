@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public abstract class BaseWindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
+    public abstract class BaseEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider
     {
         /// <summary>
         /// Constructor.
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseWindowsMixedRealityEyeGazeDataProvider(
+        public BaseEyeGazeDataProvider(
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
@@ -61,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             {
                 ReadProfile();
             }
+
+            base.Initialize();
         }
 
         private void ReadProfile()

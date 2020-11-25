@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using UnityEngine.XR;
 
 #if WMR_ENABLED
@@ -22,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         "XRSDK Windows Mixed Reality Eye Gaze Provider",
         "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
         true)]
-    public class WindowsMixedRealityEyeGazeDataProvider : BaseWindowsMixedRealityEyeGazeDataProvider, IMixedRealityCapabilityCheck
+    public class WindowsMixedRealityEyeGazeDataProvider : BaseEyeGazeDataProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
