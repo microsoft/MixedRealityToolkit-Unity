@@ -17,6 +17,9 @@ using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
+    /// <summary>
+    /// A HP Motion Controller Instance.
+    /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
         new[] { Handedness.Left, Handedness.Right })]

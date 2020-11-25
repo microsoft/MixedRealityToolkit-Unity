@@ -15,13 +15,12 @@ using MotionControllerHandedness = Microsoft.MixedReality.Input.Handedness;
 using Handedness = Microsoft.MixedReality.Toolkit.Utilities.Handedness;
 #endif
 
-/// <summary>
-/// Class for handling updating a controller via data provided by the HP Motion Controller's API
-/// </summary>
-
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
 #if HP_CONTROLLER_ENABLED
+    /// <summary>
+    /// Class for accessing the data provided by the HP Motion Controller's API
+    /// </summary>
     public class MotionControllerState
     {
         public MotionControllerState(MotionController mc)
@@ -36,7 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public MotionControllerReading CurrentReading { get; private set; }
     }
 
-
+    /// <summary>
+    /// Class for handling updating a controller via data provided by the HP Motion Controller's API
+    /// </summary>
     public class HPMotionControllerInputHandler
     {
         private IMixedRealityInputSource InputSource;
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             Interactions = interactions;
         }
 
-        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHander.UpdateController");
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHandler.UpdateController");
 
         /// <summary>
         /// Update the controller data from .
@@ -83,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHander.UpdateButtonData");
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHandler.UpdateButtonData");
 
         /// <summary>
         /// Update an interaction bool data type from a bool input
@@ -167,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHander.UpdateSingleAxisData");
+        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHandler.UpdateSingleAxisData");
 
         /// <summary>
         /// Update an interaction float data type from a SingleAxis (float) input
@@ -233,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-        private static readonly ProfilerMarker UpdateDualAxisDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHander.UpdateDualAxisData");
+        private static readonly ProfilerMarker UpdateDualAxisDataPerfMarker = new ProfilerMarker("[MRTK] HPMotionControllerInputHandler.UpdateDualAxisData");
 
         /// <summary>
         /// Update the touchpad / thumbstick input from the device

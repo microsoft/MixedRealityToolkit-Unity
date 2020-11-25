@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     /// <summary>
-    /// Open VR Implementation of the Windows Mixed Reality Motion Controllers.
+    /// Open VR Implementation of the HP Motion Controllers.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.HPMotionController,
