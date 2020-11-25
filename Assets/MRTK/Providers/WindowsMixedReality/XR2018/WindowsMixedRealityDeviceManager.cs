@@ -717,14 +717,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             string nameModifier = controllingHand == Handedness.None ? interactionSource.kind.ToString() : controllingHand.ToString();
-
-#if HP_CONTROLLER_ENABLED
             bool isHPController = !interactionSource.supportsTouchpad;
             string inputSourceName = isHPController ? $"HP Motion Controller {nameModifier}" : $"Mixed Reality Controller {nameModifier}";
             var inputSource = Service?.RequestNewGenericInputSource(inputSourceName, pointers, inputSourceType);
-#else
-            var inputSource = Service?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType);
-#endif
 
             BaseWindowsMixedRealitySource detectedController;
             if (interactionSource.supportsPointing)
@@ -741,27 +736,27 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
                 else if (interactionSource.kind == InteractionSourceKind.Controller)
                 {
-#if HP_CONTROLLER_ENABLED
                     if (isHPController)
                     {
+                        // Add the controller as a HP Motion Controller
+                        HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
+
+#if HP_CONTROLLER_ENABLED
                         lock (trackedMotionControllerStates)
                         {
-                            // Add the controller as a HP Motion Controller
-                            HPMotionController hpController = new HPMotionController(TrackingState.NotTracked, controllingHand, inputSource);
                             if (trackedMotionControllerStates.ContainsKey(controllerId))
                             {
                                 hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
                             }
-                            detectedController = hpController;
                         }
+#endif
+
+                        detectedController = hpController;
                     }
                     else
                     {
                         detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
                     }
-#else
-                    detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-#endif
                 }
                 else
                 {
@@ -839,7 +834,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 trackedMotionControllerStates[controllerId] = new MotionControllerState(motionController);
 
                 if (activeControllers.ContainsKey(controllerId))
+                {
                     ((HPMotionController)activeControllers[controllerId]).MotionControllerState = trackedMotionControllerStates[controllerId];
+                }
             }
         }
 
@@ -848,23 +845,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             lock (trackedMotionControllerStates)
             {
                 uint controllerId = GetControllerId(motionController);
-
-                if (!(activeControllers.ContainsKey(controllerId) && trackedMotionControllerStates.ContainsKey(controllerId)))
-                {
-                    // for some reason this controller was never tracked in the first place, ignore removing it from the scene, but remove its tracked reference
-                    trackedMotionControllerStates.Remove(controllerId);
-                    return;
-                }
-
-                if (activeControllers.ContainsKey(controllerId))
-                {
-                    var controller = activeControllers[controllerId] as BaseWindowsMixedRealitySource;
-                    Debug.Assert(controller != null);
-                    RemoveControllerFromScene(controller);
-
-                    trackedMotionControllerStates.Remove(controllerId);
-                    activeControllers.Remove(controllerId);
-                }
+                trackedMotionControllerStates.Remove(controllerId);
             }
         }
 #endif
