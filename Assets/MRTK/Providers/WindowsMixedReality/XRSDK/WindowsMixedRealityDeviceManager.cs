@@ -189,9 +189,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 uint controllerId = GetControllerId(motionController);
                 trackedMotionControllerStates[controllerId] = new MotionControllerState(motionController);
 
-                if (activeMotionControllers.ContainsKey(controllerId))
+                if (activeMotionControllers.ContainsKey(controllerId) && activeMotionControllers[controllerId] is HPMotionController hpController)
                 {
-                    ((HPMotionController)activeMotionControllers[controllerId]).MotionControllerState = trackedMotionControllerStates[controllerId];
+                    hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
                 }
             }
         }
@@ -202,6 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 uint controllerId = GetControllerId(motionController);
                 trackedMotionControllerStates.Remove(controllerId);
+
+                if (activeMotionControllers.ContainsKey(controllerId))
+                {
+                    ((HPMotionController)activeMotionControllers[controllerId]).MotionControllerState = null;
+                }
             }
         }
 #endif
