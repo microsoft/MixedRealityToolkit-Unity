@@ -171,9 +171,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     lock (trackedMotionControllerStates)
                     {
                         uint controllerId = GetControllerId(inputDevice);
-                        if (trackedMotionControllerStates.ContainsKey(controllerId))
+                        if (trackedMotionControllerStates.ContainsKey(controllerId) && detectedController is HPMotionController hpController)
                         {
-                            ((HPMotionController)detectedController).MotionControllerState = trackedMotionControllerStates[controllerId];
+                            hpController.MotionControllerState = trackedMotionControllerStates[controllerId];
                         }
                     }
                 }
@@ -285,12 +285,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
-#if HP_CONTROLLER_ENABLED
                 List<InputFeatureUsage> featureUsages = new List<InputFeatureUsage>();
                 bool hasTouchpad = inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out var reading);
 
+                bool isHPController = !hasTouchpad;
                 uint controllerId = GetControllerId(inputDevice);
-                bool isHPController = trackedMotionControllerStates.ContainsKey(controllerId) || !hasTouchpad;
 
                 if (isHPController)
                 {
@@ -300,9 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 {
                     return SupportedControllerType.WindowsMixedReality;
                 }
-#else
-                return SupportedControllerType.WindowsMixedReality;
-#endif
             }
 
             return base.GetCurrentControllerType(inputDevice);
