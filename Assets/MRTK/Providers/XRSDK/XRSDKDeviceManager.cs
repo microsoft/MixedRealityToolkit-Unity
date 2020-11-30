@@ -214,17 +214,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 if (controller != null)
                 {
-                    CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-                    RecyclePointers(controller.InputSource);
-
-                    if (controller.Visualizer != null &&
-                        controller.Visualizer.GameObjectProxy != null)
-                    {
-                        controller.Visualizer.GameObjectProxy.SetActive(false);
-                    }
-
+                    RemoveControllerFromScene(controller);
                     ActiveControllers.Remove(inputDevice);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes the controller from the scene and handles any additional cleanup
+        /// </summary>
+        protected void RemoveControllerFromScene(GenericXRSDKController controller)
+        {
+            CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+            RecyclePointers(controller.InputSource);
+
+            if (controller.Visualizer != null &&
+                controller.Visualizer.GameObjectProxy != null)
+            {
+                controller.Visualizer.GameObjectProxy.SetActive(false);
             }
         }
 
