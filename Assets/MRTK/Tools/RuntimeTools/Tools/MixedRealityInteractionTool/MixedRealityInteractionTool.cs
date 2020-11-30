@@ -71,29 +71,62 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                 {
                     textMesh.text += $"{interaction.Description} [{interaction.MixedRealityInputAction.Description}]";
 
-                    if (interaction.BoolData)
+                    switch (interaction.InputType)
                     {
-                        textMesh.text += $": {interaction.BoolData}";
-                    }
-                    else if (!Mathf.Approximately(interaction.FloatData, 0.0f))
-                    {
-                        textMesh.text += $": {interaction.FloatData}";
-                    }
-                    else if (interaction.Vector2Data != Vector2.zero)
-                    {
-                        textMesh.text += $": {interaction.Vector2Data}";
-                    }
-                    else if (interaction.PoseData != MixedRealityPose.ZeroIdentity)
-                    {
-                        textMesh.text += $": {interaction.PoseData}";
-                    }
-                    else if (interaction.PositionData != Vector3.zero)
-                    {
-                        textMesh.text += $": {interaction.PositionData}";
-                    }
-                    else if (interaction.RotationData != Quaternion.identity)
-                    {
-                        textMesh.text += $": {interaction.RotationData}";
+                        case DeviceInputType.SpatialPointer:
+                        case DeviceInputType.SpatialGrip:
+                        case DeviceInputType.Thumb:
+                        case DeviceInputType.IndexFinger:
+                        case DeviceInputType.MiddleFinger:
+                        case DeviceInputType.RingFinger:
+                        case DeviceInputType.PinkyFinger:
+                            textMesh.text += $": {interaction.PoseData}";
+                            break;
+                        case DeviceInputType.PointerPosition:
+                        case DeviceInputType.GripPosition:
+                            textMesh.text += $": {interaction.PositionData}";
+                            break;
+                        case DeviceInputType.PointerRotation:
+                        case DeviceInputType.GripRotation:
+                            textMesh.text += $": {interaction.RotationData}";
+                            break;
+                        case DeviceInputType.PointerClick:
+                        case DeviceInputType.ButtonPress:
+                        case DeviceInputType.ButtonTouch:
+                        case DeviceInputType.ButtonNearTouch:
+                        case DeviceInputType.TriggerTouch:
+                        case DeviceInputType.TriggerNearTouch:
+                        case DeviceInputType.TriggerPress:
+                        case DeviceInputType.ThumbStickPress:
+                        case DeviceInputType.ThumbStickTouch:
+                        case DeviceInputType.ThumbStickNearTouch:
+                        case DeviceInputType.TouchpadTouch:
+                        case DeviceInputType.TouchpadNearTouch:
+                        case DeviceInputType.TouchpadPress:
+                        case DeviceInputType.Select:
+                        case DeviceInputType.Start:
+                        case DeviceInputType.Menu:
+                        case DeviceInputType.PrimaryButtonPress:
+                        case DeviceInputType.PrimaryButtonTouch:
+                        case DeviceInputType.PrimaryButtonNearTouch:
+                        case DeviceInputType.SecondaryButtonPress:
+                        case DeviceInputType.SecondaryButtonTouch:
+                        case DeviceInputType.SecondaryButtonNearTouch:
+                        case DeviceInputType.GripTouch:
+                        case DeviceInputType.GripNearTouch:
+                        case DeviceInputType.GripPress:
+                            textMesh.text += $": {interaction.BoolData}";
+                            break;
+                        case DeviceInputType.Trigger:
+                        case DeviceInputType.Grip:
+                            textMesh.text += $": {interaction.FloatData}";
+                            break;
+                        case DeviceInputType.ThumbStick:
+                        case DeviceInputType.Touchpad:
+                        case DeviceInputType.DirectionalPad:
+                        case DeviceInputType.Scroll:
+                            textMesh.text += $": {interaction.Vector2Data}";
+                            break;
                     }
 
                     textMesh.text += "\n";
