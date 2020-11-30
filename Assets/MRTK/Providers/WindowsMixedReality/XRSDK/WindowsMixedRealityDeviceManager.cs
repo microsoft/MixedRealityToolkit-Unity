@@ -203,9 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 uint controllerId = GetControllerId(motionController);
                 trackedMotionControllerStates.Remove(controllerId);
 
-                if (activeMotionControllers.ContainsKey(controllerId))
+                if (activeMotionControllers.ContainsKey(controllerId) && activeMotionControllers[controllerId] is HPMotionController hpController)
                 {
-                    ((HPMotionController)activeMotionControllers[controllerId]).MotionControllerState = null;
+                    hpController.MotionControllerState = null;
                 }
             }
         }
