@@ -15030,6 +15030,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Input.HPMotionControllerDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HPMotionControllerDefinition.html",
+          "hash": "HyJOUGaENXTjuew1SPHPNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Input.HandBounds.yml",
       "output": {
         ".html": {
@@ -17194,7 +17206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SupportedControllerType.html",
-          "hash": "MxOzi/amCssGjDEf2mTwpw=="
+          "hash": "hhnF1DkKaYBul0+oCqbgTA=="
         }
       },
       "is_incremental": false,
@@ -17410,7 +17422,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "kHblSdaQAkQ7rwzQf/sUrw=="
+          "hash": "YwN2npXqv3K7v+ZSwRNPcg=="
         }
       },
       "is_incremental": false,
@@ -20338,7 +20350,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController.html",
-          "hash": "TcSE2qoHl8NiR09zCceUIw=="
+          "hash": "WJTwurR1rgCL0AryMSy2JA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Input.HPMotionController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.HPMotionController.html",
+          "hash": "Vyq6J6mXZH+3L0j3GYMojA=="
         }
       },
       "is_incremental": false,
@@ -20434,7 +20458,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.html",
-          "hash": "cNMoXDqYrkrIKUPPP/UlZA=="
+          "hash": "skMQ765rVX7k2Ihs0JQCEA=="
         }
       },
       "is_incremental": false,
@@ -28986,6 +29010,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController.html",
+          "hash": "KytGrdtVry8AVlZK7jtbqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.yml",
       "output": {
         ".html": {
@@ -29002,7 +29038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html",
-          "hash": "vvRarHa3JgcOZb84zYkgTg=="
+          "hash": "0iRvtswugWs4LOx36xpCUQ=="
         }
       },
       "is_incremental": false,
@@ -29050,7 +29086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.html",
-          "hash": "10BBoUzmOsRs6OB3rvNW+A=="
+          "hash": "KMUZf3G0X288lQcjlOX4hA=="
         }
       },
       "is_incremental": false,
@@ -29230,7 +29266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.GenericXRSDKController.html",
-          "hash": "b2pSVR1hbQHIRtsMQr73OQ=="
+          "hash": "CGf8k4IvBn3Maq9maKu42g=="
         }
       },
       "is_incremental": false,
@@ -29242,7 +29278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.Input.XRSDKDeviceManager.html",
-          "hash": "rd0kzBfjd2XLmD4iwf2HWw=="
+          "hash": "wPFF7YLXkrelo2RvcQY1fQ=="
         }
       },
       "is_incremental": false,
@@ -29358,6 +29394,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.HPMotionController.html",
+          "hash": "P6NNQqR03gaQawuQyt1UMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings.yml",
       "output": {
         ".html": {
@@ -29422,7 +29470,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKMotionController.html",
-          "hash": "uEBX29zAgQE6KKDuEaaWCQ=="
+          "hash": "JrAZ0xnfN6CYQwxRbJpmeg=="
         }
       },
       "is_incremental": false,
@@ -29446,7 +29494,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.html",
-          "hash": "ahi9zx/fUv17GkCIppd5LA=="
+          "hash": "HZZkmuXQtp5PwwaR+a+SDQ=="
         }
       },
       "is_incremental": false,
@@ -29506,7 +29554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "W9CjngHT2KL0KPFzoIXrZw=="
+          "hash": "yzY7IPcXP3us8N0GmZoLkA=="
         }
       },
       "is_incremental": false,
@@ -29578,7 +29626,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1696,
+          "total_file_count": 1700,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
