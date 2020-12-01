@@ -2549,6 +2549,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ControllerMappingTool/MixedRealityInteractionMappings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/MixedRealityInteractionMappings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png",
       "output": {
         "resource": {
@@ -8950,7 +8961,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/ControllerMappingTool.html",
-          "hash": "pvTZANWPMYKoy1pk0Uh37w=="
+          "hash": "UmCGMKqh0Rv0ZvcFCb5j9A=="
         }
       },
       "is_incremental": false,
@@ -8998,7 +9009,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/InputFeatureUsageTool.html",
-          "hash": "X4Jn0usI0+PE1QQiUVCCsQ=="
+          "hash": "LNEmGUU+HvDLvDrpYV2RoA=="
         }
       },
       "is_incremental": false,
@@ -9011,6 +9022,18 @@
         ".html": {
           "relative_path": "Documentation/Tools/MigrationWindow.html",
           "hash": "Ykhdw58pJ2M/BP+C2Uhobg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../../Documentation/Tools/MixedRealityInteractionTool.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/MixedRealityInteractionTool.html",
+          "hash": "ci0k2+8nhbk2//4I3I2rNg=="
         }
       },
       "is_incremental": false,
@@ -9094,7 +9117,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "5/UQ9tiQDx7xmY3ThqBYPQ=="
+          "hash": "7hrNVUdK2aYk2DPAm0Piig=="
         }
       },
       "is_incremental": false,
@@ -22890,11 +22913,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tools.Runtime.MixedRealityInteractionTool.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tools.Runtime.MixedRealityInteractionTool.html",
+          "hash": "TxNXAIjiWXcJOW13N9e3bQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tools.Runtime.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tools.Runtime.html",
-          "hash": "2XJHzz37E48ybgWhIGwmfQ=="
+          "hash": "iuLS+nmN5Pd5hhkyZdO1ig=="
         }
       },
       "is_incremental": false,
@@ -29554,7 +29589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "yzY7IPcXP3us8N0GmZoLkA=="
+          "hash": "i+pxMcOI6ofEB7gPobyH7Q=="
         }
       },
       "is_incremental": false,
@@ -29620,13 +29655,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 167,
+          "total_file_count": 168,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1700,
+          "total_file_count": 1701,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
