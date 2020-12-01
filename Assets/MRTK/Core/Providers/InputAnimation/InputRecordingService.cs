@@ -122,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 
                 return profile;
             }
+            set => ConfigurationProfile = value;
         }
 
         private float frameRate;

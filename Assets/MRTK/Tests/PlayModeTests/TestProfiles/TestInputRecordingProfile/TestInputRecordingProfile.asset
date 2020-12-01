@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: TestInputRecordingProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
+  isCustomProfile: 1
   targetExperienceScale: 3
   enableCameraSystem: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}

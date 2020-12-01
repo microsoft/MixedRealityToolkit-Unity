@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71cb900fa9dec5488df2deb180db58f, type: 3}
   m_Name: TestInputRecordingInputSystemProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 0
+  isCustomProfile: 1
   dataProviderConfigurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager,
@@ -74,7 +74,7 @@ MonoBehaviour:
     componentName: Input Recording Service
     priority: 0
     runtimePlatform: -1
-    deviceManagerProfile: {fileID: 11400000, guid: d0f5a7f6d1f9f0b4cb6eb35c797a0f04,
+    deviceManagerProfile: {fileID: 11400000, guid: 04200fe2a80bc2242917926e80d14d65,
       type: 2}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation
