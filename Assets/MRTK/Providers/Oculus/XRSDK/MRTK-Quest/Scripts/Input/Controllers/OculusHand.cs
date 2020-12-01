@@ -36,9 +36,6 @@ using UnityEngine;
 using static OVRSkeleton;
 #endif
 
-using Object = UnityEngine.Object;
-using TeleportPointer = Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer;
-
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
     /// <summary>

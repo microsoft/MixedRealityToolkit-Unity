@@ -11,30 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Hand ray
         protected virtual IHandRay HandRay { get; } = new HandRay();
 
-        public override bool IsInPointingPose
-        {
-            get
-            {
-                if(!HandRay.ShouldShowRay) return false;
-
-                if (!TryGetJoint(TrackedHandJoint.Palm, out var palmPose)) return false;
-
-                Camera mainCamera = CameraCache.Main;
-
-                if (mainCamera == null)
-                {
-                    return false;
-                }
-
-                Transform cameraTransform = mainCamera.transform;
-
-                Vector3 projectedPalmUp = Vector3.ProjectOnPlane(-palmPose.Up, cameraTransform.up);
-
-                // We check if the palm forward is roughly in line with the camera lookAt
-                // We must also ensure we're not in teleport pose
-                return Vector3.Dot(cameraTransform.forward, projectedPalmUp) > 0.3f;
-            }
-        }
+        public override bool IsInPointingPose => HandRay.ShouldShowRay;
 
         // Velocity internal states
         private float deltaTimeStart;
