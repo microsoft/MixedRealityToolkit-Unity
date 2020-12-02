@@ -58,19 +58,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         public class MeshData
         {
-            public int Id;
-            public int[] Indices;
-            public Vector3[] Vertices;
-            public Vector2[] UVs;
-            public GameObject GameObject;
+            public int Id { get; set; }
+            public int[] Indices { get; set; }
+            public Vector3[] Vertices { get; set; }
+            public Vector2[] UVs { get; set; }
+            public GameObject GameObject { get; set; }
         }
 
         public class Quad
         {
-            public int Id;
-            public Vector2 Extents;
-            public byte[] OcclusionMask;
-            public GameObject GameObject;
+            public int Id { get; set; }
+            public Vector2 Extents { get; set; }
+            public byte[] OcclusionMask { get; set; }
+            public GameObject GameObject { get; set; }
         }
 
         public SpatialAwarenessSurfaceTypes SurfaceType
