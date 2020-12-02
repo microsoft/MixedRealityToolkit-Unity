@@ -1,17 +1,21 @@
-﻿using UnityEngine;
+﻿using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 using UnityEngine.Animations;
 
-[RequireComponent(typeof(ParentConstraint))]
-public class DemoSceneUnderstandingStuffController : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
-    // Start is called before the first frame update
-    void Start()
+    [RequireComponent(typeof(ParentConstraint))]
+    public class DemoSceneUnderstandingStuffController : MonoBehaviour
     {
-        var source = new ConstraintSource
+        // Start is called before the first frame update
+        void Start()
         {
-            sourceTransform = Camera.main.transform,
-            weight = 1.0f
-        };
-        GetComponent<ParentConstraint>().AddSource(source);
+            var source = new ConstraintSource
+            {
+                sourceTransform = CameraCache.Main.transform,
+                weight = 1.0f
+            };
+            GetComponent<ParentConstraint>().AddSource(source);
+        }
     }
 }
