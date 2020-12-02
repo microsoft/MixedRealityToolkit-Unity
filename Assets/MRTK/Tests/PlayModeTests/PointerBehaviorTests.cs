@@ -224,6 +224,48 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests that the teleport pointer functions as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTeleport()
+        {
+            // Create a floor and make sure it's below the camera
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            floor.transform.position = -0.5f * Vector3.up;
+
+            // Test Right Hand Teleport
+            TestUtilities.PlayspaceToOriginLookingForward();
+            float initialForwardPosition = MixedRealityPlayspace.Position.z;
+
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+
+            // Make sure the hand is in front of the camera
+            yield return rightHand.Show(Vector3.forward * 0.6f);
+            rightHand.SetRotation(Quaternion.identity);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+
+            // We should have teleported in the forward direction after the teleport
+            Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
+            rightHand.Hide();
+
+            // Test Left Hand Teleport
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Make sure the hand is in front of the camera
+            yield return leftHand.Show(Vector3.forward * 0.6f);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+
+            // We should have teleported in the forward direction after the teleport
+            Assert.IsTrue(MixedRealityPlayspace.Transform.position.z > initialForwardPosition);
+            leftHand.Hide();
+        }
+
+        /// <summary>
         /// Tests that rays can be turned on and off
         /// </summary>
         [UnityTest]
