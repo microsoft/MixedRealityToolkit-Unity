@@ -542,8 +542,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 primaryPointerSelector.Destroy();
             }
+            if (!MixedRealityToolkit.Instance.IsProfileSwitching)
+            {
+                CleanUpUiRaycastCamera();
+            }
 
-            CleanUpUiRaycastCamera();
             base.Destroy();
         }
 

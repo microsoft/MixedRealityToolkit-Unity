@@ -6,7 +6,6 @@
         "Microsoft.MixedReality.Toolkit.Gltf",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "WSA"
@@ -18,5 +17,13 @@
     "autoReferenced": true,
     "defineConstraints": [
         "!UNITY_2020_1_OR_NEWER"
-    ]
+    ],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.input",
+            "expression": "",
+            "define": "HP_CONTROLLER_ENABLED"
+        }
+    ],
+    "noEngineReferences": false
 }

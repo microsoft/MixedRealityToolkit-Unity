@@ -132,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return x.Equals(y);
         }
 
-        /// <inheritdoc /> 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -155,7 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc /> 
         public override int GetHashCode()
         {
             return Mathf.Abs(SourceName.GetHashCode());

@@ -83,15 +83,19 @@ For static lighting, the shader will respect lightmaps built by Unity's [Lightma
 
 * See [Proximity Light](Rendering/ProximityLight.md)
 
-## Lightweight Scriptable Render Pipeline support
+## Universal Render Pipeline support
 
-The MRTK contains an upgrade path to allow developers to utilize Unity's Lightweight Scriptable Render Pipeline (LWRP) with MRTK shaders. Tested in Unity 2019.1.1f1 and Lightweight RP 5.7.2 package. or instructions on getting started with the LWRP, see [this page](https://docs.unity3d.com/Packages/com.unity.render-pipelines.lightweight@5.10/manual/getting-started-with-lwrp.html).
+The MRTK contains an upgrade path to allow developers to utilize Unity's Universal Render Pipeline (URP) with MRTK shaders. For instructions on getting started with the URP, see [this page](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@7.3/manual/index.html). Please note that the upgrade path also works for the Lightweight Render Pipeline, which is the former name for what is now the Universal Render Pipeline.
 
-To perform the MRTK upgrade, select: **Mixed Reality Toolkit -> Utilities -> Upgrade MRTK Standard Shader for Lightweight Render Pipeline**
+To perform the MRTK upgrade, select: **Mixed Reality Toolkit -> Utilities -> Upgrade MRTK Standard Shader for Universal Render Pipeline**.
 
-![lwrp upgrade](../Documentation/Images/MRTKStandardShader/MRTK_LWRPUpgrade.jpg)
+*Tested:*
+- Universal Render Pipeline: Unity 2019.4.13f1 + URP v7.3.1
+- Lightweight Render Pipeline: Unity 2018.4.28f1 + LWRP v4.10.0
 
-After the upgrade occurs, the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred, check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
+![urp upgrade](../Documentation/Images/MRTKStandardShader/MRTK_URPUpgrade.jpg)
+
+After the upgrade occurs, the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred, check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Universal Render Pipeline.**
 
 ## UGUI support
 

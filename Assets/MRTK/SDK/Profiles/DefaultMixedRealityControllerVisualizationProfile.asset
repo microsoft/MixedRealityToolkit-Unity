@@ -51,3 +51,25 @@ MonoBehaviour:
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
+  - description: HP Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    handedness: 1
+    useDefaultModel: 1
+    defaultModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK
+  - description: HP Motion Controller
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.HPMotionController,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    handedness: 2
+    useDefaultModel: 1
+    defaultModelMaterial: {fileID: 0}
+    overrideModel: {fileID: 0}
+    controllerVisualizationType:
+      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
+        Microsoft.MixedReality.Toolkit.SDK

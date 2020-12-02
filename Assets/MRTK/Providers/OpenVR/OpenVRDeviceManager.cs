@@ -114,6 +114,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     case SupportedControllerType.WindowsMixedReality:
                         controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
                         break;
+                    case SupportedControllerType.HPMotionController:
+                        controllerType = typeof(HPMotionController);
+                        break;
                     default:
                         return null;
                 }
@@ -196,7 +199,16 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             if (joystickName.Contains("WindowsMR"))
             {
-                return SupportedControllerType.WindowsMixedReality;
+                // Working around the fact that HP controllers identify as a WindowsMR controller, but have a specific PID we can check
+                // https://github.com/microsoft/MixedRealityToolkit-Unity/pull/8794#discussion_r523313899
+                if (joystickName.Contains("0x066A"))
+                {
+                    return SupportedControllerType.HPMotionController;
+                }
+                else
+                {
+                    return SupportedControllerType.WindowsMixedReality;
+                }
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");

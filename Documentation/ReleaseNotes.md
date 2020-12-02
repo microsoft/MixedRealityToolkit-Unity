@@ -19,6 +19,10 @@ MRTK now allows profile switching both before the initialization of the MRTK ins
 
 ## Breaking changes
 
+### Certain fields of imported GLTF objects are now capitalized
+
+Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): `ComponentType`, `Path`, `Interpolation`, `Target`, `Type`, `Mode`, `MagFilter`, `MinFilter`, `WrapS`, `WrapT`.
+
 ## Known issues
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package

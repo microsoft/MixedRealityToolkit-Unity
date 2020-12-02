@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         {
             IsActive = areHandlesActive;
             ResetHandles();
-            if (IsActive)
+            if (IsActive && handleAxes.Length == handles.Count)
             {
                 List<int> flattenedHandles = VisualUtils.GetFlattenedIndices(flattenAxis, handleAxes);
                 if (flattenedHandles != null)

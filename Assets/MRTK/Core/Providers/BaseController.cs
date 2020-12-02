@@ -219,7 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If a specific controller template wants to override the global model, assign that instead.
             if (IsControllerMappingEnabled() &&
                 GetControllerVisualizationProfile() != null &&
-                inputSourceType == InputSourceType.Controller &&
                 !(GetControllerVisualizationProfile().GetUseDefaultModelsOverride(controllerType, ControllerHandedness)))
             {
                 controllerModel = GetControllerVisualizationProfile().GetControllerModelOverride(controllerType, ControllerHandedness);
