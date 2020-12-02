@@ -18,15 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public class Keyframe
         {
-            public float Time;
-            public bool LeftTracked;
-            public bool RightTracked;
-            public bool LeftPinch;
-            public bool RightPinch;
-            public MixedRealityPose CameraPose;
-            public Ray GazeRay;
-            public Dictionary<TrackedHandJoint, MixedRealityPose> LeftJoints;
-            public Dictionary<TrackedHandJoint, MixedRealityPose> RightJoints;
+            public float Time { get; set; }
+            public bool LeftTracked { get; set; }
+            public bool RightTracked { get; set; }
+            public bool LeftPinch { get; set; }
+            public bool RightPinch { get; set; }
+            public MixedRealityPose CameraPose { get; set; }
+            public Ray GazeRay { get; set; }
+            public Dictionary<TrackedHandJoint, MixedRealityPose> LeftJoints { get; set; }
+            public Dictionary<TrackedHandJoint, MixedRealityPose> RightJoints { get; set; }
 
             public Keyframe(float time)
             {
