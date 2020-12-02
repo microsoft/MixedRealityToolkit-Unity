@@ -5,10 +5,13 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel.Design;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
+using NUnit.Framework;
+using NUnit.Framework.Internal;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests {
@@ -52,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
         {
             var profile = AssetDatabase.LoadAssetAtPath(profilePath, typeof(MixedRealityToolkitConfigurationProfile)) as MixedRealityToolkitConfigurationProfile;
 
-            Debug.Log(profilePath);
             MixedRealityToolkit.Instance.ActiveProfile = profile;
 
             yield return null;
@@ -67,6 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
             Debug.Log($"Record gaze data: {recordingProfile.RecordEyeGaze}");
             
             recordingService.InputRecordingProfile = recordingProfile;
+
+            if (recordingProfile.RecordEyeGaze)
+            {
+                CoreServices.InputSystem.EyeGazeProvider.Enabled = true;
+                CoreServices.InputSystem.EyeGazeProvider.UpdateEyeTrackingStatus(null, true);
+            }
+            
             recordingService.StartRecording();
 
             yield return MoveAround(recordingProfile.RecordHandData, recordingProfile.RecordCameraPose, recordingProfile.RecordEyeGaze);
@@ -79,8 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
             yield return null;
 
             playbackService.LoadInputAnimation(path);
-            playbackService.Play();
+
+            var animation = playbackService.Animation;
             
+            Assert.True(recordingProfile.RecordHandData == animation.HasHandData && recordingProfile.RecordCameraPose == animation.HasCameraPose && recordingProfile.RecordEyeGaze == animation.HasEyeGaze);
+            playbackService.Play();
+
             yield return new WaitWhile(() => playbackService.IsPlaying);
             yield return null;
         }
@@ -92,25 +105,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
                 var rightHand = new TestHand(Handedness.Right);
 
                 yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+                yield return rightHand.SetRotation(Quaternion.identity, 0);
                 yield return rightHand.MoveTo(new Vector3(0, 0, 2f), 40);
                 yield return rightHand.MoveTo(new Vector3(0, 0, 0.5f), 40);
                 yield return rightHand.SetRotation(Quaternion.AngleAxis(-90f, Vector3.forward), 40);
                 yield return rightHand.SetRotation(Quaternion.AngleAxis(90f, Vector3.forward), 40);
-                yield return rightHand.SetRotation(Quaternion.AngleAxis(0f, Vector3.forward), 20);
+                yield return rightHand.SetRotation(Quaternion.identity, 20);
             }
 
             if (moveCamera)
             {
                 var camera = CameraCache.Main.transform;
 
+                camera.rotation = Quaternion.identity;
+                
                 yield return InterpRotation(camera, 0.5f, Quaternion.AngleAxis(-90f, Vector3.up));
                 yield return InterpRotation(camera, 0.5f, Quaternion.AngleAxis(90f, Vector3.up));
-                yield return InterpRotation(camera, 0.5f, Quaternion.AngleAxis(0f, Vector3.up));
+                yield return InterpRotation(camera, 0.5f, Quaternion.identity);
             }
 
             if (moveGaze)
             {
+                var gazeProvider = CoreServices.InputSystem.EyeGazeProvider;
+
+                gazeProvider.UpdateEyeTrackingStatus(null, true);
+                gazeProvider.UpdateEyeGaze(null, new Ray(Vector3.zero, Vector3.forward), DateTime.UtcNow);
                 
+                yield return InterpGaze(gazeProvider, 0.5f, new Vector3(-1f, 0f, 1f).normalized);
+                yield return InterpGaze(gazeProvider, 0.5f, new Vector3(1f, 0f, 1f).normalized);
+                yield return InterpGaze(gazeProvider, 0.5f, Vector3.forward);
             }
         }
 
@@ -121,14 +144,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests {
             return Interp(duration, t => transform.rotation = Quaternion.Slerp(start, to, t));
         }
 
-        private static IEnumerator InterpGaze(IMixedRealityEyeGazeDataProvider dataProvider, IMixedRealityEyeGazeProvider gazeProvider, float duration, Vector3 to)
+        private static IEnumerator InterpGaze(IMixedRealityEyeGazeProvider gazeProvider, float duration, Vector3 to)
         {
             var start = gazeProvider.LatestEyeGaze;
 
             return Interp(duration, t =>
             {
-                gazeProvider.UpdateEyeTrackingStatus(dataProvider, true);
-                gazeProvider.UpdateEyeGaze(dataProvider, new Ray(start.origin, Vector3.Slerp(start.direction, to, t)), DateTime.UtcNow);
+                var direction = Vector3.Slerp(start.direction, to, t);
+                
+                gazeProvider.UpdateEyeTrackingStatus(null, true);
+                gazeProvider.UpdateEyeGaze(null, new Ray(start.origin, direction), DateTime.UtcNow);
             });
         }
 

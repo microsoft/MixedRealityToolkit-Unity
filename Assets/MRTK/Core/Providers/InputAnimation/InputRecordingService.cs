@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float frameInterval;
         private float nextFrame;
         private InputRecordingBuffer recordingBuffer = null;
-        private IMixedRealityGazeProvider eyeGazeProvider;
+        private IMixedRealityEyeGazeProvider eyeGazeProvider;
 
         /// <summary>
         /// Constructor.
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void StartRecording()
         {
-            eyeGazeProvider = CoreServices.InputSystem.GazeProvider;
+            eyeGazeProvider = CoreServices.InputSystem.EyeGazeProvider;
             IsRecording = true;
             frameRate = InputRecordingProfile.FrameRate;
             frameInterval = 1f / frameRate;
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (eyeGazeProvider != null)
                 {
-                    recordingBuffer.SetGazeRay(new Ray(eyeGazeProvider.GazeOrigin, eyeGazeProvider.GazeDirection));
+                    recordingBuffer.SetGazeRay(eyeGazeProvider.LatestEyeGaze);
                 }
                 else 
                 {
