@@ -15,9 +15,9 @@ MonoBehaviour:
   isCustomProfile: 1
   observerConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.SpatialAwareness.WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver,
-        Assembly-CSharp
-    componentName: Windows Mixed Reality Scene Understanding Observer
+      reference: Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver,
+        Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding
+    componentName: Windows Scene Understanding Observer
     priority: 0
     runtimePlatform: 8
     observerProfile: {fileID: 11400000, guid: c16ec84a27c8162459bd27e1758712bd, type: 2}

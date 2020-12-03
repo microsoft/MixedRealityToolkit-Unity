@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
     /// Configuration profile settings for spatial awareness mesh observers.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Scene Understanding Observer Profile", fileName = "SceneUnderstandingObserverProfile", order = (int)CreateProfileMenuItemIndices.SceneUnderstandingObserver)]
-    [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessSceneUnderstandingObserver))]
+    [MixedRealityServiceProfile(typeof(IMixedRealitySceneUnderstandingObserver))]
     public class SceneUnderstandingObserverProfile : BaseSpatialAwarenessObserverProfile
     {
         #region IMixedRealityOnDemandObserver settings
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [Tooltip("Generate plane objects for surface types.")]
         private bool requestPlaneData = true;
         /// <summary>
-        /// When updating planes, save data to file.
+        /// Generate plane objects for surface types.
         /// </summary>
         public bool RequestPlaneData => requestPlaneData;
 
@@ -180,15 +180,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [Tooltip("Sets pixel resolution of occlusion mask")]
         private Vector2Int occlusionMaskResolution = new Vector2Int(128, 128);
         /// <summary>
-        /// When instantiating quads, show the occlusion mask texture
+        /// Sets pixel resolution of occlusion mask
         /// </summary>
         public Vector2Int OcclusionMaskResolution => occlusionMaskResolution;
 
         [SerializeField]
-        [Tooltip("Attempt to align scene to largest found floor's normal. Does nothing on HoloLens.")]
+        [Tooltip("Attempt to align scene to largest found floor's normal. Only applies to the editor.")]
         private bool orientScene = true;
         /// <summary>
-        /// When NOT on HoloLens, attempt to align scene to largest found floor's normal
+        /// When in editor, attempt to align scene to largest found floor's normal
         /// </summary>
         public bool OrientScene => orientScene;
     }

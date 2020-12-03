@@ -2,23 +2,13 @@
     "name": "Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "Android",
         "Editor",
-        "iOS",
-        "LinuxStandalone32",
-        "LinuxStandalone64",
-        "LinuxStandaloneUniversal",
-        "Lumin",
-        "macOSStandalone",
-        "PS4",
-        "Switch",
-        "tvOS",
-        "WebGL",
-        "XboxOne"
+        "WSA"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

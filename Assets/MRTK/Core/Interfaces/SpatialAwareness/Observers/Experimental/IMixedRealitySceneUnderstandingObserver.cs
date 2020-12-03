@@ -11,14 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// The interface for defining an <see cref="IMixedRealitySpatialAwarenessObserver"/> which provides scene data.
     /// </summary>
-    public interface IMixedRealitySpatialAwarenessSceneUnderstandingObserver : IMixedRealityOnDemandObserver
+    public interface IMixedRealitySceneUnderstandingObserver : IMixedRealityOnDemandObserver
     {
-        /// <summary>
-        /// Loads the serialized scene file
-        /// </summary>
-        /// <param name="serializedScene">Byte array containing the scene</param>
-        void LoadScene(byte[] serializedScene);
-
         /// <summary>
         /// Save a scene file to the device
         /// </summary>
@@ -28,19 +22,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Finds best placement position in local space to the quad
         /// </summary>
-        /// <param name="quadGuid">The Guid of quad that will be used for placement</param>
+        /// <param name="quadId">The id of quad that will be used for placement</param>
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnQuad">Base position on plane in local space.</param>
         /// <returns>Returns false if a centermost placement location cannot be found.</returns>
         bool TryFindCentermostPlacement(
-            Guid quadGuid,
+            int quadId,
             Vector2 objExtents,
             out Vector3 placementPosOnQuad);
 
         /// <summary>
         /// The set of SpatialAwarenessSceneObjects being managed by the observer, keyed by a unique id.
         /// </summary>
-        IReadOnlyDictionary<Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
+        IReadOnlyDictionary<int, SpatialAwarenessSceneObject> SceneObjects { get; }
 
         /// <summary>
         /// 

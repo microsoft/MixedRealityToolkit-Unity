@@ -10,32 +10,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     public class SpatialAwarenessSceneObject : BaseSpatialAwarenessObject
     {
         public SpatialAwarenessSceneObject(
-            System.Guid guid,
+            int id,
             SpatialAwarenessSurfaceTypes surfaceType,
             Vector3 position,
             Quaternion rotation,
             List<Quad> quads,
-            List<MeshData> meshDatas
+            List<MeshData> meshData
             )
         {
-            Guid = guid;
+            Id = id;
             SurfaceType = surfaceType;
 
             Position = position;
             Rotation = rotation;
 
             Quads = quads;
-            Meshes = meshDatas;
+            Meshes = meshData;
         }
 
         public SpatialAwarenessSceneObject()
         {
-        }
-
-        public System.Guid Guid
-        {
-            get;
-            private set;
         }
 
         public Vector3 Position
@@ -62,26 +56,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             private set;
         }
 
-        public struct MeshData
+        public class MeshData
         {
-            public System.Guid guid;
-            public int[] indices;
-            public Vector3[] vertices;
-            public Vector2[] uvs;
+            public int Id { get; set; }
+            public int[] Indices { get; set; }
+            public Vector3[] Vertices { get; set; }
+            public Vector2[] UVs { get; set; }
+            public GameObject GameObject { get; set; }
         }
 
-        public struct Quad
+        public class Quad
         {
-            public System.Guid guid;
-            public Vector2 extents;
-            public byte[] occlusionMask;
-
-            public Quad(System.Guid guid, Vector2 extents, byte[] occlusionMask)
-            {
-                this.guid = guid;
-                this.extents = extents;
-                this.occlusionMask = occlusionMask;
-            }
+            public int Id { get; set; }
+            public Vector2 Extents { get; set; }
+            public byte[] OcclusionMask { get; set; }
+            public GameObject GameObject { get; set; }
         }
 
         public SpatialAwarenessSurfaceTypes SurfaceType

@@ -3,12 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 
-/// <summary>
-/// Scripts that implement this interface will have these methods called by the
-/// DemoSceneUnderstandingController to respond to state changes in the system
-/// </summary>
-
-public interface ISceneUnderstandingSceneObjectConsumer
+namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
-    void OnSpatialAwarenessSceneObjectCreated(SpatialAwarenessSceneObject sceneObject);
+    /// <summary>
+    /// Scripts that implement this interface will have these methods called by the
+    /// DemoSceneUnderstandingController to respond to state changes in the system
+    /// </summary>
+    public interface ISceneUnderstandingSceneObjectConsumer
+    {
+        void OnSpatialAwarenessSceneObjectCreated(SpatialAwarenessSceneObject sceneObject);
+    }
 }
