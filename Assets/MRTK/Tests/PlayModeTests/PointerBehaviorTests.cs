@@ -229,6 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTeleport()
         {
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+
             // Create a floor and make sure it's below the camera
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
             floor.transform.position = -0.5f * Vector3.up;
@@ -243,9 +245,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Make sure the hand is in front of the camera
             yield return rightHand.Show(Vector3.forward * 0.6f);
             rightHand.SetRotation(Quaternion.identity);
+
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // We should have teleported in the forward direction after the teleport
             Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
@@ -256,12 +265,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure the hand is in front of the camera
             yield return leftHand.Show(Vector3.forward * 0.6f);
+
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportStart);
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
+
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.TeleportEnd);
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // We should have teleported in the forward direction after the teleport
-            Assert.IsTrue(MixedRealityPlayspace.Transform.position.z > initialForwardPosition);
+            Assert.IsTrue(MixedRealityPlayspace.Position.z > initialForwardPosition);
             leftHand.Hide();
         }
 
