@@ -17,7 +17,7 @@
 
 Users can now use the teleport gesture to move around their play space across all platforms. To teleport with a controller on MR devices with default configurations, use the thumbstick. To teleport with
 articulated hands, make a gesture with your palm facuing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please 
-see our updated [Input Simulation Service documentation](InputSimulation/InputSimulationService.md).
+see our updated [Input Simulation Service documentation](InputSimulation/InputSimulationService.md#hand-gestures).
 
   ![Teleport Gesture](Images/ReleaseNotes/HandTeleport.gif)
 
