@@ -42,6 +42,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         /// <inheritdoc />
+        protected override void UpdateHandJoints(SimulatedHandData handData)
+        {
+            for (int i = 0; i < jointCount; i++)
+            {
+                TrackedHandJoint handJoint = (TrackedHandJoint)i;
+
+                if (!jointPoses.ContainsKey(handJoint))
+                {
+                    jointPoses.Add(handJoint, handData.Joints[i]);
+                }
+                else
+                {
+                    jointPoses[handJoint] = handData.Joints[i];
+                }
+            }
+
+            handDefinition?.UpdateHandJoints(jointPoses);
+        }
+
+        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             lastPointerPose = currentPointerPose;
@@ -121,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentIndexPose);
                         }
+                        break;
+                    case DeviceInputType.ThumbStick:
+                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }
