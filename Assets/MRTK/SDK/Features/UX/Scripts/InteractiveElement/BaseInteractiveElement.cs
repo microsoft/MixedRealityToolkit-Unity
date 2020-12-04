@@ -334,7 +334,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         #region Button Setting Utilities
 
         /// <summary>
-        /// Set the Clicked state and invoke the OnClicked event
+        /// Set the Clicked state which triggers the OnClicked event.  The click behavior in the
+        /// state management system is expressed by setting the Clicked state to on and then immediately setting
+        /// it to off. 
+        /// 
+        /// Note: Due to the fact that a click is triggered by setting the Clicked state to on and 
+        /// then immediately off, the cyan active state highlight in the inspector will not be visible.
         /// </summary>
         public void TriggerClickedState()
         {

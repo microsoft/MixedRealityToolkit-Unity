@@ -10,9 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     public enum InteractionType
     {
         /// <summary>
-        /// Pointer independent interaction support.
+        /// Does not support any form of input interaction.
         /// </summary>
-        Other = 0,
+        None = 0,
 
         /// <summary>
         /// Near interaction support. Input is considered near interaction when an articulated hand has 
@@ -32,5 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Encompasses both near and far interaction support. 
         /// </summary>
         NearAndFar,
+
+        /// <summary>
+        /// Pointer independent interaction support.
+        /// </summary>
+        Other
     }
 }
