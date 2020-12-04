@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Used to set the default name for the text input field when a user creates a new state
         private static string newStateName = "New State Name";
         private const string newCoreStateName = "New Core State";
-        private const string createNewStateName = "Create New State";
+        private const string createNewStateName = "Create Custom State";
         private const string removeStateLabel = "Remove State";
         private const string statesLabel = "States";
         private const string settingsLabel = "Settings";
@@ -39,10 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const int stateValueDisplayContainerWidth = 10;
 
         private bool previousActiveStatus;
+        private bool inPlayMode;
+        private bool previousGlobalStatus;
 
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
         private string focusNearStateName = CoreInteractionState.FocusNear.ToString();
+
+        private const string SelectFarStateName = "SelectFar";
 
         // The state selection menu is displayed when a user selects the "Add Core State" button
         private StateSelectionMenu stateSelectionMenu; 
@@ -63,6 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            inPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
+
             serializedObject.Update();
 
             RenderSettings();
@@ -118,9 +124,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     string stateFoldoutID = stateName.stringValue + "_" + target.name;
 
+                    Color previousGUIColor = GUI.color;
+
+                    if (inPlayMode)
+                    {
+                        // If the state is active, then highlight the state container with a new color
+                        if (stateValue.intValue == 1)
+                        {
+                            GUI.color = Color.cyan;
+                        }
+                    }
+
                     using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                     {
-                        EditorGUILayout.Space();
                         EditorGUILayout.Space();
 
                         // Draw a foldout for the state configuration
@@ -134,6 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 {
                                     // Show the event configuration for the state
                                     RenderStateEventConfiguration(stateName, stateEventConfiguration);
+
+                                    CheckSpecialCaseStates(stateName.stringValue, stateEventConfiguration);
 
                                     // When a new core state is added via inspector, the name is initialized to "New Core State" and then changed
                                     // to the name the user selects from the list of CoreInteractionStates
@@ -152,12 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                         }
 
-                        EditorGUILayout.Space();                       
                         EditorGUILayout.Space();
                     }
 
                     // Do not draw a remove button for the default state
-                    if (stateName.stringValue != defaultStateName && !Application.isPlaying)
+                    if (stateName.stringValue != defaultStateName && !inPlayMode)
                     {
                         // Draw a button with a '-' for state removal
                         if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
@@ -168,25 +185,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
                     // Draw the state value in the inspector next to the state during play mode for debugging
-                    if (Application.isPlaying)
+                    if (inPlayMode)
                     {
-                        Color prevColor = GUI.color;
-
-                        // Highlight the container displaying the state value during play mode if the state value is 1
-                        if (stateValue.intValue == 1)
-                        {
-                            GUI.color = Color.cyan;
-                        }
-
                         using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,GUILayout.Width(stateValueDisplayWidth)))
                         {
                             EditorGUILayout.Space();
                             EditorGUILayout.LabelField(stateValue.intValue.ToString(), GUILayout.Width(stateValueDisplayContainerWidth));
                             EditorGUILayout.Space();
                         }
-
-                        GUI.color = prevColor;
                     }
+
+                    GUI.color = previousGUIColor;
                 }
             }
         }
@@ -279,19 +288,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Draw the buttons for adding or creating a new state at the bottom of the inspector window side by side
         private void RenderAddStateButtons()
         {
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
-            using (new EditorGUILayout.HorizontalScope())
+            using (new EditorGUI.DisabledScope(inPlayMode))
             {
-                if (GUILayout.Button(addCoreStateLabel))
-                {
-                    AddNewState(newCoreStateName);
-                }
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
 
-                if (GUILayout.Button(createNewStateName))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    AddNewState(createNewStateName);
+                    if (GUILayout.Button(addCoreStateLabel))
+                    {
+                        AddNewState(newCoreStateName);
+                    }
+
+                    if (GUILayout.Button(createNewStateName))
+                    {
+                        AddNewState(createNewStateName);
+                    }
                 }
             }
         }
@@ -311,6 +323,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     stateValue.intValue = 0;
                     stateActive.boolValue = false;
                 }
+            }
+        }
+
+        // Check if the Global property within the SelectFar state event configuration has been modified from the 
+        // inspector during runtime and update 
+        private void CheckSelectFarGlobalProperty(SerializedProperty eventConfiguration)
+        {
+            if (inPlayMode)
+            {
+                SerializedProperty global = eventConfiguration.FindPropertyRelative("global");
+
+                if (previousGlobalStatus != global.boolValue)
+                {    
+                    instance.RegisterHandler<IMixedRealityPointerHandler>(global.boolValue);
+                }
+
+                previousGlobalStatus = global.boolValue;
+            }
+        }
+
+        // Check for special cases for state's event configuration
+        private void CheckSpecialCaseStates(string stateName, SerializedProperty eventConfiguration)
+        {
+            switch (stateName)
+            {
+                case SelectFarStateName:
+                    CheckSelectFarGlobalProperty(eventConfiguration);
+                    break;
             }
         }
     }

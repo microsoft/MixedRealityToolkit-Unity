@@ -18,12 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         internal bool stateSelected;
         internal string state;
 
-        private const string Near = "Near";
-        private const string Far = "Far";
-        private const string Both = "Both";
+        private string Near = InteractionType.Near.ToString();
+        private string Far = InteractionType.Far.ToString();
+        private string NearAndFar = InteractionType.NearAndFar.ToString();
+        private string Other = InteractionType.Other.ToString();
         private const string SelectStateButtonLabel = "Select State";
 
         private string touchStateName = CoreInteractionState.Touch.ToString();
+        private string focusStateName = CoreInteractionState.Focus.ToString();
 
         /// <summary>
         /// Display the state selection menu.
@@ -70,10 +72,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // Far Interaction States
                     AddStateToMenu(statesMenu, Far + "/" + stateName, stateName);
                 }
-                else if (!stateName.Contains(Far) && !stateName.Contains(Near))
+                else if (stateName == focusStateName)
                 {
-                    // Both Near and Far Interaction States
-                    AddStateToMenu(statesMenu, Both + "/" + stateName, stateName);
+                    // Focus is a special case state because it supports both near and far interaction
+                    AddStateToMenu(statesMenu, NearAndFar + "/" + stateName, stateName);
+                }
+                else
+                {
+                    AddStateToMenu(statesMenu, Other + "/" + stateName, stateName);
                 }
             }
         }
