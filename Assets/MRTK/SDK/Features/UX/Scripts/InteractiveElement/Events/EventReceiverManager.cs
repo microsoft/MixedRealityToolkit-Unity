@@ -58,16 +58,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="eventData">The event data for the state event (optional)</param>
         public void InvokeStateEvent(string stateName, BaseEventData eventData = null)
         {
-            BaseEventReceiver receiver = EventReceivers[stateName];
+            if (stateManager.InteractiveElement.IsStatePresent(stateName))
+            {
+                BaseEventReceiver receiver = EventReceivers[stateName];
 
-            // Only invoke state events if Interactive Element is Active
-            if (receiver != null && stateManager.InteractiveElement.Active)
-            {
-                receiver.OnUpdate(stateManager, eventData);
-            }
-            else if (receiver == null)
-            {
-                Debug.LogError($"The event receiver for the {stateName} state does not exist");
+                // Only invoke state events if Interactive Element is Active
+                if (receiver != null && stateManager.InteractiveElement.Active)
+                {
+                    receiver.OnUpdate(stateManager, eventData);
+                }
+                else if (receiver == null)
+                {
+                    Debug.LogError($"The event receiver for the {stateName} state does not exist");
+                }
             }
         }
 
