@@ -21,6 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private string focusFarStateName = CoreInteractionState.FocusFar.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
         private string defaultStateName = CoreInteractionState.Default.ToString();
+        private string selectFarStateName = CoreInteractionState.SelectFar.ToString();
+        private string clickedStateName = CoreInteractionState.Clicked.ToString();
+        private string toggleOnStateName = CoreInteractionState.ToggleOn.ToString();
+        private string toggleOffStateName = CoreInteractionState.ToggleOff.ToString();
         private string newStateName = "MyNewState";
 
         /// <summary>
@@ -199,6 +203,137 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Make sure the touch has completed when the hand moves off the object
             Assert.True(onTouchCompleted);
             yield return null;
+        }
+
+        /// <summary>
+        /// Test SelectFar state and setting the global property.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSelectFarEventConfiguration()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Add the selectFar state
+            InteractionState selectFar = interactiveElement.AddNewState(selectFarStateName);
+            yield return null;
+
+            // Get the event configuration for the SelectFar state
+            var eventConfiguration = interactiveElement.GetStateEvents<SelectFarEvents>(selectFarStateName);
+
+            // Set global to true, this registers the IMixedRealityPointerHandler
+            eventConfiguration.Global = true;
+
+            bool onSelectDown = false;
+            bool onSelectHold = false;
+            bool onSelectClicked = false;
+            bool onSelectUp = false;
+
+            eventConfiguration.OnSelectDown.AddListener((eventData) => { onSelectDown = true; });
+            eventConfiguration.OnSelectHold.AddListener((eventData) => { onSelectHold = true; });
+            eventConfiguration.OnSelectClicked.AddListener((eventData) => { onSelectClicked = true; });
+            eventConfiguration.OnSelectUp.AddListener((eventData) => { onSelectUp = true; });
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+
+            // Show hand at starting position
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            yield return MoveHandOutOfFocus(leftHand);
+
+            // Click the hand to trigger far select events
+            yield return leftHand.Click();
+
+            Assert.True(onSelectDown);
+            Assert.True(onSelectHold);
+            Assert.True(onSelectClicked);
+            Assert.True(onSelectUp);
+
+            eventConfiguration.Global = false;
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Make sure the SelectFar state is not active after setting global to false without an object in focus
+            Assert.AreEqual(0, selectFar.Value);
+        }
+
+
+        /// <summary>
+        /// Test Clicked state with a far interaction click as the entry point.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestClickedEventConfiguration()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            // Add the clicked state
+            InteractionState clicked = interactiveElement.AddNewState(clickedStateName);
+            yield return null;
+
+            // Get the event configuration for the Clicked state
+            var eventConfiguration = interactiveElement.GetStateEvents<ClickedEvents>(clickedStateName);
+
+            bool onClicked = false;
+
+            eventConfiguration.OnClicked.AddListener(() => { onClicked = true; });
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+
+            // Show hand at starting position
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Click the hand to trigger far select events
+            yield return leftHand.Click();
+
+            Assert.True(onClicked);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestToggleEvents()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            interactiveElement.AddToggleStates();
+            yield return null;
+
+            // Get the event configuration for the ToggleOn state
+            var eventConfigurationToggleOn = interactiveElement.GetStateEvents<ToggleOnEvents>(toggleOnStateName);
+
+            // Get the event configuration for the ToggleOn state
+            var eventConfigurationToggleOff = interactiveElement.GetStateEvents<ToggleOffEvents>(toggleOffStateName);
+
+            bool onToggleOn = false;
+            bool onToggleOff = false;
+
+            eventConfigurationToggleOn.OnToggleOn.AddListener(() => { onToggleOn = true; });
+            eventConfigurationToggleOff.OnToggleOff.AddListener(() => { onToggleOff = true; });
+
+            interactiveElement.SetToggleStates();
+            yield return null;
+
+            // Make sure the toggle is on at the start
+            Assert.True(onToggleOn);
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+
+            // Show hand at starting position
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Click the hand 
+            yield return leftHand.Click();
+
+            Assert.True(onToggleOff);
         }
 
         /// <summary>
