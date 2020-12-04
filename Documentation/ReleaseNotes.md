@@ -13,6 +13,14 @@
 
 ## What's new
 
+### Teleportation with the teleport gesture now supported on all platforms
+
+Users can now use the teleport gesture to move around their play space across all platforms. To teleport with a controller on MR devices with default configurations, use the thumbstick. To teleport with
+articulated hands, make a gesture with your palm facuing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please 
+see our updated [Input Simulation Service documentation](InputSimulation/InputSimulationService.md).
+
+  ![Teleport Gesture](Images/ReleaseNotes/HandTeleport.gif)
+
 ### Runtime profile switching support
 
 MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
