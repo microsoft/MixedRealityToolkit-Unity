@@ -13,6 +13,10 @@
 
 ## What's new
 
+### HP Motion Controllers now supported with MRTk
+
+Controllers for the HP Reverb now work natively with MRTK. 
+
 ### Teleportation with the teleport gesture now supported on all platforms
 
 Users can now use the teleport gesture to move around their play space across all platforms. To teleport with a controller on MR devices with default configurations, use the thumbstick. To teleport with
