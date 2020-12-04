@@ -6663,6 +6663,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/ReleaseNotes/HandTeleport.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/HandTeleport.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/ReleaseNotes/HandTrackingVisualizationModes.png",
       "output": {
         "resource": {
@@ -8289,7 +8300,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "E0fnYA6os90mYheQ514pSw=="
+          "hash": "f99yvw3Xs0rcMNuftq1CpQ=="
         }
       },
       "is_incremental": false,
@@ -8757,7 +8768,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "ZUJ9VkQjOXNLS2xfVmPzXA=="
+          "hash": "8C8pkACsKKaCMJgmOpo1Cg=="
         }
       },
       "is_incremental": false,
@@ -14325,7 +14336,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.html",
-          "hash": "CXG+7263PnkhpD25Cs/c+A=="
+          "hash": "GP5eXvnBi+KU8qloYEA7Yg=="
         }
       },
       "is_incremental": false,
@@ -16929,7 +16940,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.html",
-          "hash": "PslNBeUUWLJVa02mAM8FWw=="
+          "hash": "vY2hVPsBeyvnxvx7277JFw=="
         }
       },
       "is_incremental": false,
@@ -16965,7 +16976,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html",
-          "hash": "SZiekaOlJHxqRzwPbzKF2Q=="
+          "hash": "fgOqtm66HpqSs1+SwEU+9A=="
         }
       },
       "is_incremental": false,
@@ -16977,7 +16988,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html",
-          "hash": "wmai/vFCCgH99PsJ6vGZfA=="
+          "hash": "mVfCsMFDnC6TSgCkamt2Tw=="
         }
       },
       "is_incremental": false,
@@ -21669,7 +21680,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.html",
-          "hash": "6/T1Ea8iSEk9ba7X4oDL7Q=="
+          "hash": "w7gtZet4SsoyhkCGd2o7Lw=="
         }
       },
       "is_incremental": false,
@@ -21717,7 +21728,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html",
-          "hash": "q5ZQf5Kyea8J2iv1sEXnng=="
+          "hash": "KE8LuVFEupkVDWWJY5XXYw=="
         }
       },
       "is_incremental": false,
@@ -22497,7 +22508,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PointerBehaviorTests.html",
-          "hash": "48/HBzPKJseloas8nMN2XQ=="
+          "hash": "OcgQ8fD6UBCJ2t7enxJbjg=="
         }
       },
       "is_incremental": false,
@@ -25353,7 +25364,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.GestureId.html",
-          "hash": "dmLvKUMkeQDiAyVEY2nF6A=="
+          "hash": "UarULwF2WEU2TaelJDtlLA=="
         }
       },
       "is_incremental": false,
