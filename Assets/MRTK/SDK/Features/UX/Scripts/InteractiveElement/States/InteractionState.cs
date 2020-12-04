@@ -65,8 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField]
-        [Tooltip("The type of interaction (Near, Far, Both, None) this state is associated with.")]
-        private InteractionType interactionType = InteractionType.None;
+        [Tooltip("The type of interaction (Near, Far, Both, Other) this state is associated with.")]
+        private InteractionType interactionType = InteractionType.Other;
 
         /// <summary>
         /// The type of interaction (Near, Far, Both, None) this state is associated with.
@@ -129,45 +129,50 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // Set the InteractionType for a state based on the state name 
         internal void SetInteractionType(string stateName)
         {
-            string defaultStateName = CoreInteractionState.Default.ToString();
             string touchStateName = CoreInteractionState.Touch.ToString();
+            string focusStateName = CoreInteractionState.Focus.ToString();
 
-            if (stateName == defaultStateName)
+            if (stateName.Contains(Far))
             {
-                // The Default State is a special case because it does not have an InteractionType
-                InteractionType = InteractionType.None;
+                InteractionType = InteractionType.Far;
             }
             // The Touch state is a special case because it does not contain "Near" in the state name but 
-            // its InteractionType is Near
+            // the InteractionType is Near
             else if (stateName.Contains(Near) || stateName == touchStateName)
             {
                 InteractionType = InteractionType.Near;
             }
-            else if (stateName.Contains(Far))
+            // Special case for Focus as that state supports near and far interaction without "Near" or "Far" in the name
+            else if (stateName == focusStateName)
             {
-                InteractionType = InteractionType.Far;
+                InteractionType = InteractionType.NearAndFar;
             }
-            else
+            else 
             {
-                InteractionType = InteractionType.Both;
+                InteractionType = InteractionType.Other;
             }  
         }
 
-        // Trim the name of a state if it contains "Near" or "Far"
+        // Trim the name of a state if it contains "Near" or "Far" if the current state contains "Focus" in the name
         internal string GetSubStateName()
         {
+            string focusStateName = CoreInteractionState.Focus.ToString();
+
             string subStateName = Name;
 
-            // If the state name contains Near, then remove "Near" and return the remaining sub-string
-            if (subStateName.Contains(Near))
+            if (subStateName.Contains(focusStateName))
             {
-                subStateName = stateName.Replace(Near, "");
+                // If the state name contains Near, then remove "Near" and return the remaining sub-string
+                if (subStateName.Contains(Near))
+                {
+                    subStateName = stateName.Replace(Near, "");
+                }
+                else if (stateName.Contains(Far))
+                {
+                    subStateName = stateName.Replace(Far, "");
+                }
             }
-            else if (stateName.Contains(Far))
-            {
-                subStateName = stateName.Replace(Far, "");
-            }
-            
+
             return subStateName;
         }
     }

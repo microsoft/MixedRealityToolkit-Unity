@@ -32,6 +32,26 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Represents the Touch state. This is a near interaction state that also requires the attachment of a NearInteractionTouchable 
         /// component to register touch input. 
         /// </summary>
-        Touch
+        Touch,
+
+        /// <summary>
+        /// Represents the Select Far state. This is a far interaction state. 
+        /// </summary>
+        SelectFar,
+
+        /// <summary>
+        /// Represents the Clicked state. By default, this state is set through a far interaction selection.
+        /// </summary>
+        Clicked,
+
+        /// <summary>
+        /// Represents the Toggle On state. By default, this state is set through a far interaction selection.
+        /// </summary>
+        ToggleOn,
+
+        /// <summary>
+        /// Represents the Toggle Off state. By default, this state is set through a far interaction selection.
+        /// </summary>
+        ToggleOff
     }
 }
