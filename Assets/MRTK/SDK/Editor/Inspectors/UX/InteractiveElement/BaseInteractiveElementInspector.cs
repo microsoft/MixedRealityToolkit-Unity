@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Used to set the default name for the text input field when a user creates a new state
         private static string newStateName = "New State Name";
         private const string newCoreStateName = "New Core State";
-        private const string createNewStateName = "Create Custom State";
+        private const string createCustomStateName = "Create Custom State";
         private const string removeStateLabel = "Remove State";
         private const string statesLabel = "States";
         private const string settingsLabel = "Settings";
@@ -160,9 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                         SetCoreStateType(state, stateName);
                                     }
 
-                                    // When a new state is added via inspector, the name is initialized to "Create New State" and then changed
+                                    // When a new state is added via inspector, the name is initialized to "Create Custom State" and then changed
                                     // to the name the user enters a name in the text field and then selects the "Set State Name" button
-                                    if (stateName.stringValue == createNewStateName)
+                                    if (stateName.stringValue == createCustomStateName)
                                     {
                                         SetUserDefinedState(stateName);
                                     }
@@ -203,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Render the event configuration of a state
         private void RenderStateEventConfiguration(SerializedProperty stateName, SerializedProperty stateEventConfiguration)
         {
-            // Do not draw the state events if the state is in the selection process, i.e. the state name is "New Core State" or "Create New State"
-            if (stateEventConfiguration.managedReferenceFullTypename != string.Empty && stateName.stringValue != newCoreStateName && stateName.stringValue != createNewStateName)
+            // Do not draw the state events if the state is in the selection process, i.e. the state name is "New Core State" or "Create Custom State"
+            if (stateEventConfiguration.managedReferenceFullTypename != string.Empty && stateName.stringValue != newCoreStateName && stateName.stringValue != createCustomStateName)
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -300,9 +300,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         AddNewState(newCoreStateName);
                     }
 
-                    if (GUILayout.Button(createNewStateName))
+                    if (GUILayout.Button(createCustomStateName))
                     {
-                        AddNewState(createNewStateName);
+                        AddNewState(createCustomStateName);
                     }
                 }
             }
