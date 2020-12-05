@@ -142,7 +142,7 @@ Once the project has been configured, a connection can be established to the Hol
 1. In Unity, select **Window > XR > Holographic Emulation (if using legacy XR) / Windows XR Plugin Remoting (if using XR SDK)**.
 
     ![Start Holographic Emulation](../Images/Tools/Remoting/StartHolographicEmulation.png)
-    
+
 1. Set **Emulation Mode** to **Remote to Device**.
 
     ![Set Emulation Mode](../Images/Tools/Remoting/SelectEmulationMode.png)
