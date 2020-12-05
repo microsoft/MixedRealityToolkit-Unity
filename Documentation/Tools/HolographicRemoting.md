@@ -129,9 +129,9 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 Follow the [Windows Mixed Reality setup instructions on the Getting started with MRTK and XR SDK page](../GettingStartedWithMRTKAndXRSDK.md#windows-mixed-reality) and make sure to perform the step required for in-editor HoloLens Remoting.
 
 > [!NOTE]
-> Be sure to go to Edit > Project Settings > XR Plug-in Management, and ensure Windows Mixed Reality is checked under Plug-in Providers in the **Standalone settings**. Also ensure that Initialize XR on Startup is checked. Your remoting session will not on the device without following this step.
+> Be sure to go to Edit > Project Settings > XR Plug-in Management, and ensure Windows Mixed Reality is checked under Plug-in Providers in the **Standalone settings**. Also ensure that Initialize XR on Startup is checked. Your remoting session will not work on the device without following this step.
 
-    ![Start Holographic Emulation](../Images/Tools/Remoting/StandalonePluginManagement.png)
+![Start Holographic Emulation](../Images/Tools/Remoting/StandalonePluginManagement.png)
 
 ## Connecting to the HoloLens with Wi-Fi
 
