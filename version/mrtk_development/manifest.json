@@ -7719,6 +7719,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Tools/Remoting/StandalonePluginManagement.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/StandalonePluginManagement.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/Tools/Remoting/StartHolographicEmulation.png",
       "output": {
         "resource": {
@@ -9008,7 +9019,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "Sf+hOlEJ3XI16ePqbIOZbw=="
+          "hash": "5YL/8tMVi9Ch3KOi8U3XmQ=="
         }
       },
       "is_incremental": false,

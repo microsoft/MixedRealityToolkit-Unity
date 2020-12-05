@@ -195,6 +195,11 @@ true, this error may manifest in the Unity console:</p>
 </ol>
 <h2 id="xr-sdk-setup-instructions">XR SDK setup instructions</h2>
 <p>Follow the <a href="../GettingStartedWithMRTKAndXRSDK.html#windows-mixed-reality">Windows Mixed Reality setup instructions on the Getting started with MRTK and XR SDK page</a> and make sure to perform the step required for in-editor HoloLens Remoting.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Be sure to go to Edit &gt; Project Settings &gt; XR Plug-in Management, and ensure Windows Mixed Reality is checked under Plug-in Providers in the <strong>Standalone settings</strong>. Also ensure that Initialize XR on Startup is checked. Your remoting session will not work on the device without following this step.</p>
+</div>
+<p><img src="../Images/Tools/Remoting/StandalonePluginManagement.png" alt="Start Holographic Emulation"></p>
 <h2 id="connecting-to-the-hololens-with-wi-fi">Connecting to the HoloLens with Wi-Fi</h2>
 <p>Once the project has been configured, a connection can be established to the HoloLens.</p>
 <ol>
