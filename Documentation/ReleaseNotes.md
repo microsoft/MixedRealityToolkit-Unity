@@ -13,7 +13,7 @@
 
 ## What's new
 
-### HP Motion Controllers now supported with MRTk
+### HP Motion Controllers now supported with MRTK
 
 Controllers for the HP Reverb now work natively with MRTK. 
 
