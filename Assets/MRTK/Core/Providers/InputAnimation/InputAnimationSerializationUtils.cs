@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         const long Magic = 0x6a8faf6e0f9e42c6;
 
         public const int VersionMajor = 1;
-        public const int VersionMinor = 0;
+        public const int VersionMinor = 1;
 
         /// <summary>
         /// Generate a file name for export.
@@ -144,10 +144,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 keys[i].time = reader.ReadSingle();
                 keys[i].value = reader.ReadSingle();
-                keys[i].inTangent = 0.0f;
-                keys[i].outTangent = 0.0f;
-                keys[i].inWeight = 0.0f;
                 keys[i].outWeight = 1.0e6f;
+                keys[i].weightedMode = WeightedMode.Both;
+            }
+
+            curve.keys = keys;
+        }
+        
+        /// <summary>
+        /// Serialize an animation curve with tangents as binary data. Only encodes keyframe position and time.
+        /// </summary>
+        public static void WriteFloatCurveSimple(BinaryWriter writer, AnimationCurve curve, float startTime)
+        {
+            writer.Write((int)curve.preWrapMode);
+            writer.Write((int)curve.postWrapMode);
+
+            writer.Write(curve.length);
+            for (int i = 0; i < curve.length; ++i)
+            {
+                var keyframe = curve.keys[i];
+                writer.Write(keyframe.time - startTime);
+                writer.Write(keyframe.value);
+            }
+        }
+
+        /// <summary>
+        /// Deserialize an animation curve with tangents from binary data. Only decodes keyframe position and time.
+        /// </summary>
+        /// <remarks>Only use for curves serialized using WriteFloatCurvesSimple</remarks>
+        public static void ReadFloatCurveSimple(BinaryReader reader, AnimationCurve curve)
+        {
+            curve.preWrapMode = (WrapMode)reader.ReadInt32();
+            curve.postWrapMode = (WrapMode)reader.ReadInt32();
+
+            int keyframeCount = reader.ReadInt32();
+
+            Keyframe[] keys = new Keyframe[keyframeCount];
+            for (int i = 0; i < keyframeCount; ++i)
+            {
+                keys[i].time = reader.ReadSingle();
+                keys[i].value = reader.ReadSingle();
                 keys[i].weightedMode = WeightedMode.Both;
             }
 

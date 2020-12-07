@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -63,6 +62,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="filename">Name of the file to create.</param>
         /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
         /// <returns>File path where input has been recorded.</returns>
-        string SaveInputAnimation(string filename, string directory = null);
+        string SaveInputAnimation(string filename, string directory);
+
+        /// <summary>
+        /// Save recorded input animation to a file asynchronously.
+        /// </summary>
+        /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
+        /// <returns>File path where input has been recorded.</returns>
+        /// <remarks>
+        /// Filename is determined automatically.
+        /// </remarks>
+        Task<string> SaveInputAnimationAsync(string directory = null);
+
+        /// <summary>
+        /// Save recorded input animation to a file asynchronously.
+        /// </summary>
+        /// <param name="filename">Name of the file to create.</param>
+        /// <param name="directory">Directory in which to create the file. If null the persistent data path of the app is used.</param>
+        /// <returns>File path where input has been recorded.</returns>
+        Task<string> SaveInputAnimationAsync(string filename, string directory);
     }
 }

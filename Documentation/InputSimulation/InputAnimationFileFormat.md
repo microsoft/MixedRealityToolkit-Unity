@@ -15,6 +15,24 @@ The rest of the file is taken up by animation data, which may change between ver
 | Minor Version Number | Int32 |
 | Animation Data | _see version section_ |
 
+## Version 1.1
+
+The input animation data consists of three boolean values that indicate whether the animation contains Camera, Hand, and Eye Gaze data, followed by a sequence of animation curves. The curves present depends on the values of these booleans. Each curve can have a different number of keyframes.
+
+| Section | Type | Notes |
+|---------|------| ----- |
+| Has Camera Pose | [Boolean] |
+| Has Hand Data | [Boolean] |
+| Has Eye Gaze | [Boolean] |
+| Camera | [Pose Curves](#pose-curves) | Only if Has Camera Pose is true |
+| Hand Tracked Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Tracked Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Pinching Left | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Pinching Right | [Boolean Curve](#boolean-curve) | Only if Has Hand Data is true |
+| Hand Joints Left | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true |
+| Hand Joints Right | [Joint Pose Curves](#joint-pose-curves) | Only if Has Hand Data is true |
+| Eye Gaze | [Ray Curves](#ray-curves) | Only if Has Eye Gaze is true
+
 ## Version 1.0
 
 The input animation data consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.
@@ -77,6 +95,19 @@ Pose curves are a sequence of 3 animation curves for the position vector, follow
 | Rotation Z | [Float Curve](#float-curve) |
 | Rotation W | [Float Curve](#float-curve) |
 
+### Ray curves
+
+Ray curves are a sequence of 3 animation curves for the origin vector, followed by 3 animation curves for the direction vector.
+
+| Section | Type |
+|---------|------|
+| Origin X | [Float Curve](#float-curve) |
+| Origin Y | [Float Curve](#float-curve) |
+| Origin Z | [Float Curve](#float-curve) |
+| Direction X | [Float Curve](#float-curve) |
+| Direction Y | [Float Curve](#float-curve) |
+| Direction Z | [Float Curve](#float-curve) |
+
 ### Float curve
 
 Floating point curves are fully fledged Bézier curves with a variable number of keyframes. Each keyframe stores a time and a curve value, as well as tangents and weights on the left and right side of each keyframe.
@@ -92,15 +123,15 @@ Floating point curves are fully fledged Bézier curves with a variable number of
 
 A float keyframe stores tangent and weight values alongside the basic time and value.
 
-| Section | Type |
-|---------|------|
+| Section | Type | Notes |
+|---------|------| ----- |
 | Time | Float32 |
 | Value | Float32 |
-| InTangent | Float32 |
-| OutTangent | Float32 |
-| InWeight | Float32 |
-| OutWeight | Float32 |
-| WeightedMode | Int32, [Weighted Mode](#weighted-mode) |
+| InTangent | Float32 | Version 1.0 only |
+| OutTangent | Float32 | Version 1.0 only |
+| InWeight | Float32 | Version 1.0 only |
+| OutWeight | Float32 | Version 1.0 only |
+| WeightedMode | Int32, [Weighted Mode](#weighted-mode) | Version 1.0 only |
 
 ### Boolean curve
 
