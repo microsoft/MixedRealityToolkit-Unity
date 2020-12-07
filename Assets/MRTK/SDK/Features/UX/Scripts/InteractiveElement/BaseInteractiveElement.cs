@@ -6,9 +6,11 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
@@ -18,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     public abstract class BaseInteractiveElement :
         MonoBehaviour,
         IMixedRealityFocusHandler,
-        IMixedRealityTouchHandler
+        IMixedRealityTouchHandler,
+        IMixedRealityPointerHandler
     {
         [SerializeField]
         [Tooltip("Whether or not this interactive element will react to input and update internally. If true, the " +
@@ -70,6 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         protected string FocusNearStateName = CoreInteractionState.FocusNear.ToString();
         protected string FocusFarStateName = CoreInteractionState.FocusFar.ToString();
         protected string TouchStateName = CoreInteractionState.Touch.ToString();
+        protected string SelectFarStateName = CoreInteractionState.SelectFar.ToString();
+        protected string ClickedStateName = CoreInteractionState.Clicked.ToString();
+        protected string ToggleOnStateName = CoreInteractionState.ToggleOn.ToString();
+        protected string ToggleOffStateName = CoreInteractionState.ToggleOff.ToString();
 
         public virtual void OnValidate()
         {
@@ -88,6 +95,35 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             // Initially set the default state to on
             SetStateOn(DefaultStateName);
+        }
+
+        public virtual void Start()
+        {
+            // If the SelectFar state is in the States list at start and the Global property is true, then
+            // register the IMixedRealityPointerHandler for global usage
+            RegisterSelectFarHandler(true);
+
+            // If the SelectFar state is present, add listeners for the Global property for runtime property modification
+            StateManager.AddSelectFarListeners();
+
+            // If the Toggle states are present, ensure the set up is correct and check initial values
+            if (IsStatePresent(ToggleOnStateName) || IsStatePresent(ToggleOffStateName))
+            {
+                // Ensure both the ToggleOn and ToggleOff states are added if either state is present
+                // The Toggle behavior only works if both the ToggleOn and ToggleOff states are present
+                AddToggleStates();
+
+                var toggleOn = GetStateEvents<ToggleOnEvents>(ToggleOnStateName);
+
+                // Set the initial toggle states according to the value of ToggleOn's IsActiveOnStart property
+                ForceSetToggleStates(toggleOn.IsSelectedOnStart);
+            }
+        }
+
+        private void OnDisable()
+        {
+            // Unregister the IMixedRealityPointerHandler if it was registered
+            RegisterSelectFarHandler(false);
         }
 
         // Add the Default and the Focus state as the initial states in the States list
@@ -142,13 +178,40 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            if (IsStatePresent(TouchStateName))
-            {
-                EventReceiverManager.InvokeStateEvent(TouchStateName, eventData);
-            }
+            EventReceiverManager.InvokeStateEvent(TouchStateName, eventData);
         }
 
         #endregion
+
+        #region SelectFar
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            SetStateAndInvokeEvent(SelectFarStateName, 1, eventData);
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            EventReceiverManager.InvokeStateEvent(SelectFarStateName, eventData);
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            EventReceiverManager.InvokeStateEvent(SelectFarStateName, eventData);
+
+            TriggerClickedState();
+
+            SetToggleStates();
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            SetStateAndInvokeEvent(SelectFarStateName, 0, eventData);
+        }
+
+        #endregion
+
+        #region Event Utilities
 
         /// <summary>
         /// Sets a state to a given state value and invokes an event with associated event data. 
@@ -156,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="stateName">The name of the state to set</param>
         /// <param name="stateValue">The state value. A value of 0 = set the state off, 1 = set the state on</param>
         /// <param name="eventData">Event data to pass into the event</param>
-        public void SetStateAndInvokeEvent(string stateName, int stateValue, BaseEventData eventData)
+        public void SetStateAndInvokeEvent(string stateName, int stateValue, BaseEventData eventData = null)
         {
             if (IsStatePresent(stateName))
             {
@@ -165,8 +228,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 EventReceiverManager.InvokeStateEvent(stateName, eventData);
             }
         }
-
-        #region Event Utilities
 
         public T GetStateEvents<T>(string stateName) where T : BaseInteractionEventConfiguration
         {
@@ -270,17 +331,106 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         #endregion
 
+        #region Button Setting Utilities
+
+        /// <summary>
+        /// Set the Clicked state which triggers the OnClicked event.  The click behavior in the
+        /// state management system is expressed by setting the Clicked state to on and then immediately setting
+        /// it to off. 
+        /// 
+        /// Note: Due to the fact that a click is triggered by setting the Clicked state to on and 
+        /// then immediately off, the cyan active state highlight in the inspector will not be visible.
+        /// </summary>
+        public void TriggerClickedState()
+        {
+            // Set the Clicked state to on, invokes the OnClicked event
+            SetStateAndInvokeEvent(ClickedStateName, 1);
+
+            // Set the Clicked state to off
+            SetStateAndInvokeEvent(ClickedStateName, 0);
+        }
+
+        /// <summary>
+        /// Add the ToggleOn and ToggleOff state.
+        /// </summary>
+        public void AddToggleStates()
+        {
+            if (!IsStatePresent(ToggleOnStateName))
+            {
+                StateManager.AddNewState(ToggleOnStateName);
+            }
+
+            if (!IsStatePresent(ToggleOffStateName))
+            {
+                StateManager.AddNewState(ToggleOffStateName);
+            }
+        }
+
+        /// <summary>
+        /// Set the toggle based on the current values of the ToggleOn and ToggleOff states. 
+        /// </summary>
+        public void SetToggleStates()
+        {
+            if (IsStatePresent(ToggleOnStateName) && IsStatePresent(ToggleOffStateName))
+            {
+                bool setToggleOn = StateManager.GetState(ToggleOnStateName).Value > 0;
+
+                SetToggles(!setToggleOn);
+            }
+        }
+
+        /// <summary>
+        /// Force set the toggle states either on or off. 
+        /// </summary>
+        /// <param name="setToggleOn">If true, the toggle will be set to on. If false, the toggle will be set to off.</param>
+        public void ForceSetToggleStates(bool setToggleOn)
+        {
+            if (IsStatePresent(ToggleOnStateName) && IsStatePresent(ToggleOffStateName))
+            {
+                SetToggles(setToggleOn);
+            }
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        protected void SetToggles(bool setToggleOn)
+        {
+            if (setToggleOn)
+            {
+                SetStateAndInvokeEvent(ToggleOffStateName, 0);
+                SetStateAndInvokeEvent(ToggleOnStateName, 1);
+            }
+            else
+            {
+                SetStateAndInvokeEvent(ToggleOnStateName, 0);
+                SetStateAndInvokeEvent(ToggleOffStateName, 1);
+            }
+        }
+
         /// <summary>
         /// Used for setting the event configuration for a new state when the state is added via inspector.
         /// </summary>
         /// <param name="stateName">The name of the state</param>
-        public void SetEventConfigurationInstance(string stateName)
+        internal void SetEventConfigurationInstance(string stateName)
         {
             InteractionState state = States.Find((interactionState) => interactionState.Name == stateName);
             
             // Set the new Interaction Type and configuration
             state.SetEventConfiguration(stateName);
             state.SetInteractionType(stateName);
+        }
+
+        /// <summary>
+        /// Checks if a state is currently in the State list. This method is specifically used for checking the 
+        /// contents of the States list during edit mode as the State Manager contains runtime methods. 
+        /// </summary>
+        /// <param name="stateName">The name of the state</param>
+        /// <returns>True if the state is in the States list. False, if the state could not be found.</returns>
+        internal bool IsStatePresentEditMode(string stateName)
+        {
+            return States.Find((state) => state.Name == stateName) != null;
         }
 
         /// <summary>
@@ -291,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// on the entire surface area of a collider.  While a Near Interaction Touchable component
         /// will be attached if the object is a button because touch input is only detected within the area of a plane. 
         /// </summary>
-        public void AddNearInteractionTouchable()
+        internal void AddNearInteractionTouchable()
         {
             if (gameObject.GetComponent<BaseNearInteractionTouchable>() == null)
             {
@@ -306,14 +456,38 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Checks if a state is currently in the State list. This method is specifically used for checking the 
-        /// contents of the States list during edit mode as the State Manager contains runtime methods. 
+        /// Register the IMixedRealityPointerHandler for global input when the SelectFar state is
+        /// present on Start and the Global property is true.
         /// </summary>
-        /// <param name="stateName">The name of the state</param>
-        /// <returns>True if the state is in the States list. False, if the state could not be found.</returns>
-        public bool IsStatePresentEditMode(string stateName)
+        internal void RegisterSelectFarHandler(bool register)
         {
-            return States.Find((state) => state.Name == stateName) != null;
+            if (IsStatePresent(SelectFarStateName))
+            {
+                var selectFarEvents = GetStateEvents<SelectFarEvents>(SelectFarStateName);
+
+                // Check if far select has the Global property enabled
+                if (selectFarEvents.Global)
+                {
+                    RegisterHandler<IMixedRealityPointerHandler>(register);
+                }
+            }
         }
+
+        /// <summary>
+        /// Helper method for registering an IEventSystemHandler.
+        /// </summary>
+        internal void RegisterHandler<T>(bool register) where T : IEventSystemHandler
+        {
+            if (register)
+            {
+                CoreServices.InputSystem?.RegisterHandler<T>(this);
+            }
+            else
+            {
+                CoreServices.InputSystem?.UnregisterHandler<T>(this);
+            }
+        }
+
+        #endregion
     }
 }

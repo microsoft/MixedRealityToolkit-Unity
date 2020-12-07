@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // State names
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
+        private string selectFarStateName = CoreInteractionState.SelectFar.ToString();
 
         /// <summary>
         /// Gets a state by using the state name.
@@ -293,12 +295,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 // Set the event configuration if one exists for the core interaction state
                 EventReceiverManager.SetEventConfiguration(newState);
 
-                // If a near interaction state is added, check if a Near Interaction Touchable component attached to the game object
-                if (newState.InteractionType == InteractionType.Near)
-                {
-                    // A Near Interaction Touchable component is required for an object to receive touch events
-                    InteractiveElement.AddNearInteractionTouchable();
-                }
+                // Set special cases for specific states
+                SetStateSpecificSettings(newState);
 
                 return newState;
             }
@@ -368,6 +366,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
         }
 
+        // Check if a state has additional initialization steps 
+        private void SetStateSpecificSettings(InteractionState state)
+        {
+            // If a near interaction state is added, check if a Near Interaction Touchable component attached to the game object
+            if (state.InteractionType == InteractionType.Near)
+            {
+                // A Near Interaction Touchable component is required for an object to receive touch events
+                InteractiveElement.AddNearInteractionTouchable();
+            }
+
+            if (state.Name == selectFarStateName)
+            {
+                // Add listeners that monitor whether or not the SelectFar state's Global property has been changed
+                AddSelectFarListeners();
+            }
+        }
+
         // Add listeners to the OnStateActivated and OnStateDeactivated events
         private void AddStateEventListeners()
         {
@@ -390,6 +405,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     EventReceiverManager.InvokeStateEvent(previousState.Name);
                 }
             });
+        }
+
+        // Add listeners to the Global Changed event contained in the SelectFarEvents event configuration. 
+        internal void AddSelectFarListeners()
+        {
+            InteractionState selectFarState = GetState(selectFarStateName);
+
+            if (selectFarState != null)
+            {
+                SelectFarEvents events = InteractiveElement.GetStateEvents<SelectFarEvents>(selectFarStateName);
+
+                // If the select far state is added during runtime, then add listeners to keep track of the Global property
+                events.OnGlobalChanged.AddListener(() =>
+                {
+                    InteractiveElement.RegisterHandler<IMixedRealityPointerHandler>(events.Global);
+                });
+            }
         }
     }
 }

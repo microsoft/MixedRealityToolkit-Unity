@@ -19,18 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// direct contact with another game object, i.e. the position the articulated hand is 
         /// close to the position of the game object in world space.
         /// </summary>
-        Near = 1,
+        Near,
 
         /// <summary>
         /// Far interaction support. Input is considered far interaction when direct contact with 
         /// the game object is not required. For example, input via controller ray or gaze is considered
         /// far interaction input.
         /// </summary>
-        Far = 2,
+        Far,
         
         /// <summary>
         /// Encompasses both near and far interaction support. 
         /// </summary>
-        Both = 3
+        NearAndFar,
+
+        /// <summary>
+        /// Pointer independent interaction support.
+        /// </summary>
+        Other
     }
 }
