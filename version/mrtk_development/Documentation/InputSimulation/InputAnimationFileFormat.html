@@ -121,6 +121,74 @@
 </tr>
 </tbody>
 </table>
+<h2 id="version-11">Version 1.1</h2>
+<p>The input animation data consists of three boolean values that indicate whether the animation contains Camera, Hand, and Eye Gaze data, followed by a sequence of animation curves. The curves present depends on the values of these booleans. Each curve can have a different number of keyframes.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Has Camera Pose</td>
+<td>[Boolean]</td>
+<td></td>
+</tr>
+<tr>
+<td>Has Hand Data</td>
+<td>[Boolean]</td>
+<td></td>
+</tr>
+<tr>
+<td>Has Eye Gaze</td>
+<td>[Boolean]</td>
+<td></td>
+</tr>
+<tr>
+<td>Camera</td>
+<td><a href="#pose-curves">Pose Curves</a></td>
+<td>Only if Has Camera Pose is true</td>
+</tr>
+<tr>
+<td>Hand Tracked Left</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Hand Tracked Right</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Hand Pinching Left</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Hand Pinching Right</td>
+<td><a href="#boolean-curve">Boolean Curve</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Hand Joints Left</td>
+<td><a href="#joint-pose-curves">Joint Pose Curves</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Hand Joints Right</td>
+<td><a href="#joint-pose-curves">Joint Pose Curves</a></td>
+<td>Only if Has Hand Data is true</td>
+</tr>
+<tr>
+<td>Eye Gaze</td>
+<td><a href="#ray-curves">Ray Curves</a></td>
+<td>Only if Has Eye Gaze is true</td>
+</tr>
+</tbody>
+</table>
 <h2 id="version-10">Version 1.0</h2>
 <p>The input animation data consists of a sequence of animation curves. The number and meaning of animation curves is fixed, but each curve can have a different number of keyframes.</p>
 <table>
@@ -321,6 +389,42 @@
 </tr>
 </tbody>
 </table>
+<h3 id="ray-curves">Ray curves</h3>
+<p>Ray curves are a sequence of 3 animation curves for the origin vector, followed by 3 animation curves for the direction vector.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Origin X</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Origin Y</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Origin Z</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Direction X</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Direction Y</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+<tr>
+<td>Direction Z</td>
+<td><a href="#float-curve">Float Curve</a></td>
+</tr>
+</tbody>
+</table>
 <h3 id="float-curve">Float curve</h3>
 <p>Floating point curves are fully fledged Bézier curves with a variable number of keyframes. Each keyframe stores a time and a curve value, as well as tangents and weights on the left and right side of each keyframe.</p>
 <table>
@@ -356,36 +460,44 @@
 <tr>
 <th>Section</th>
 <th>Type</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Time</td>
 <td>Float32</td>
+<td></td>
 </tr>
 <tr>
 <td>Value</td>
 <td>Float32</td>
+<td></td>
 </tr>
 <tr>
 <td>InTangent</td>
 <td>Float32</td>
+<td>Version 1.0 only</td>
 </tr>
 <tr>
 <td>OutTangent</td>
 <td>Float32</td>
+<td>Version 1.0 only</td>
 </tr>
 <tr>
 <td>InWeight</td>
 <td>Float32</td>
+<td>Version 1.0 only</td>
 </tr>
 <tr>
 <td>OutWeight</td>
 <td>Float32</td>
+<td>Version 1.0 only</td>
 </tr>
 <tr>
 <td>WeightedMode</td>
 <td>Int32, <a href="#weighted-mode">Weighted Mode</a></td>
+<td>Version 1.0 only</td>
 </tr>
 </tbody>
 </table>

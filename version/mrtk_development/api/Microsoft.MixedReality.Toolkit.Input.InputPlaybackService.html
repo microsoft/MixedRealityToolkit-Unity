@@ -111,6 +111,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html">IMixedRealityInputPlaybackService</a></div>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
@@ -253,7 +254,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Input Playback Service&quot;)]
-public class InputPlaybackService : BaseInputSimulationService, IMixedRealityServiceState, IMixedRealityInputPlaybackService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public class InputPlaybackService : BaseInputSimulationService, IMixedRealityServiceState, IMixedRealityInputPlaybackService, IMixedRealityEyeGazeDataProvider, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -516,6 +517,56 @@ public InputPlaybackService(IMixedRealityServiceRegistrar registrar, IMixedReali
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_SaccadeProvider_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.SaccadeProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_SaccadeProvider" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.SaccadeProvider">SaccadeProvider</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMixedRealityEyeSaccadeProvider SaccadeProvider { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeSaccadeProvider.html">IMixedRealityEyeSaccadeProvider</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_SmoothEyeTracking_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.SmoothEyeTracking*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_SmoothEyeTracking" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.SmoothEyeTracking">SmoothEyeTracking</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SmoothEyeTracking { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -606,6 +657,50 @@ public InputPlaybackService(IMixedRealityServiceRegistrar registrar, IMixedReali
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_LoadInputAnimationAsync_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.LoadInputAnimationAsync*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_LoadInputAnimationAsync_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.LoadInputAnimationAsync(System.String)">LoadInputAnimationAsync(String)</h4>
+  <div class="markdown level1 summary"><p>Try to load input animation data from the given file asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; LoadInputAnimationAsync(string filepath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">filepath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>True if loading input animation from the file succeeded.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_Pause_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.Pause*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_Pause" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.Pause">Pause()</h4>
   <div class="markdown level1 summary"><p>Pause playback and keep the current local time.</p>
@@ -650,12 +745,92 @@ public InputPlaybackService(IMixedRealityServiceRegistrar registrar, IMixedReali
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a></div>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_OnPlaybackPaused" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.OnPlaybackPaused">OnPlaybackPaused</h4>
+  <div class="markdown level1 summary"><p>Invoked when playback is paused</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action OnPlaybackPaused</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_OnPlaybackStarted" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.OnPlaybackStarted">OnPlaybackStarted</h4>
+  <div class="markdown level1 summary"><p>Invoked when playback begins or resumes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action OnPlaybackStarted</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_OnPlaybackStopped" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.OnPlaybackStopped">OnPlaybackStopped</h4>
+  <div class="markdown level1 summary"><p>Invoked when playback stops</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action OnPlaybackStopped</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceState.html">IMixedRealityServiceState</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html">IMixedRealityInputPlaybackService</a>
+  </div>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html">IMixedRealityInputDeviceManager</a>

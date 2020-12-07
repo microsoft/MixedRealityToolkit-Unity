@@ -190,7 +190,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VersionMinor = 0</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VersionMinor = 1</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -389,6 +389,42 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_ReadFloatCurveSimple_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputAnimationSerializationUtils.ReadFloatCurveSimple*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_ReadFloatCurveSimple_BinaryReader_AnimationCurve_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputAnimationSerializationUtils.ReadFloatCurveSimple(BinaryReader,AnimationCurve)">ReadFloatCurveSimple(BinaryReader, AnimationCurve)</h4>
+  <div class="markdown level1 summary"><p>Deserialize an animation curve with tangents from binary data. Only decodes keyframe position and time.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ReadFloatCurveSimple(BinaryReader reader, AnimationCurve curve)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryReader</span></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">AnimationCurve</span></td>
+        <td><span class="parametername">curve</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_ReadFloatCurveSimple_BinaryReader_AnimationCurve__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only use for curves serialized using WriteFloatCurvesSimple</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_ReadHeader_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputAnimationSerializationUtils.ReadHeader*"></a>
@@ -603,6 +639,44 @@
       <tr>
         <td><span class="xref">AnimationCurve</span>[]</td>
         <td><span class="parametername">curves</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">startTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_WriteFloatCurveSimple_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputAnimationSerializationUtils.WriteFloatCurveSimple*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputAnimationSerializationUtils_WriteFloatCurveSimple_BinaryWriter_AnimationCurve_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputAnimationSerializationUtils.WriteFloatCurveSimple(BinaryWriter,AnimationCurve,System.Single)">WriteFloatCurveSimple(BinaryWriter, AnimationCurve, Single)</h4>
+  <div class="markdown level1 summary"><p>Serialize an animation curve with tangents as binary data. Only encodes keyframe position and time.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WriteFloatCurveSimple(BinaryWriter writer, AnimationCurve curve, float startTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryWriter</span></td>
+        <td><span class="parametername">writer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">AnimationCurve</span></td>
+        <td><span class="parametername">curve</span></td>
         <td></td>
       </tr>
       <tr>

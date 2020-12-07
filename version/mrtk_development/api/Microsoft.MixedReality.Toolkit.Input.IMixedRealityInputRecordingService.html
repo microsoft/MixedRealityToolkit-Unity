@@ -299,7 +299,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string SaveInputAnimation(string filename, string directory = null)</code></pre>
+    <pre><code class="lang-csharp hljs">string SaveInputAnimation(string filename, string directory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -336,6 +336,105 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>File path where input has been recorded.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimationAsync_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimationAsync*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimationAsync_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimationAsync(System.String)">SaveInputAnimationAsync(String)</h4>
+  <div class="markdown level1 summary"><p>Save recorded input animation to a file asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;string&gt; SaveInputAnimationAsync(string directory = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">directory</span></td>
+        <td><p>Directory in which to create the file. If null the persistent data path of the app is used.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>File path where input has been recorded.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimationAsync_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Filename is determined automatically.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimationAsync_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimationAsync*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimationAsync_System_String_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.SaveInputAnimationAsync(System.String,System.String)">SaveInputAnimationAsync(String, String)</h4>
+  <div class="markdown level1 summary"><p>Save recorded input animation to a file asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;string&gt; SaveInputAnimationAsync(string filename, string directory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>Name of the file to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">directory</span></td>
+        <td><p>Directory in which to create the file. If null the persistent data path of the app is used.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><p>File path where input has been recorded.</p>
 </td>
       </tr>
