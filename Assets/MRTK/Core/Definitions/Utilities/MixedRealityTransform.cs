@@ -108,6 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #region IEqualityComparer Implementation
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) { return false; }
@@ -127,12 +128,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return obj is MixedRealityTransform && Equals((MixedRealityTransform)obj);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj is MixedRealityTransform ? ((MixedRealityTransform)obj).GetHashCode() : 0;
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();

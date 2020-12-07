@@ -29,7 +29,8 @@ jobs:
       # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
       # the set of changed files, so that we can save some time. There's no need to
       # check unchanged files for code style/doc style violations.
-      scopedValidation: true
+      # Temporarily commented out due to VM issue.
+      # scopedValidation: true
       UnityVersion: $(Unity2018Version)
 
   - template: templates/end.yml
