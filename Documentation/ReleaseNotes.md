@@ -15,7 +15,7 @@
 
 ### HP Motion Controllers now supported with MRTK
 
-Controllers for the HP Reverb now work natively with MRTK. 
+Controllers for the HP Reverb G2 now work natively with MRTK. 
 
 ### Teleportation with the teleport gesture now supported on all platforms
 
