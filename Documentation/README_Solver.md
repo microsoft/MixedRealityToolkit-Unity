@@ -20,6 +20,7 @@ The third category is the solver itself. The following solvers provide the build
 * [`Orbital`](#orbital): Locks to a specified position and offset from the referenced object.
 * [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize): Scales to maintain a constant size relative to the view of the referenced object.
 * [`RadialView`](#radialview): Keeps the object within a view cone cast by the referenced object.
+* [`Follow`](#follow): Keeps the object within a set of user defined bounds of the referenced object.
 * [`InBetween`](#inbetween): Keeps an object in between two tracked objects.
 * [`SurfaceMagnetism`](#surfacemagnetism): casts rays to surfaces in the world, and align the object to that surface.
 * ['DirectionalIndicator'](#directionalindicator): Determines the position and orientation of an object as a directional indicator. From the point of reference of the SolverHandler Tracked Target, this indicator will orient towards the DirectionalTarget supplied.
@@ -136,7 +137,7 @@ The [`Follow`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Follow) cla
 
 It works similarly to the RadialView solver, with additional controls to manage *Max Horizontal & Vertical View Degrees*, and mechanisms to alter the *Orientation* of the object.
 
-![Follow properties](Images/Solver/Follow.png)  
+![Follow properties](Images/Solver/FollowExample.png)  
 *Follow properties*
 
 ![Follow example scene](Images/Solver/FollowExampleScene.gif)
