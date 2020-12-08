@@ -130,6 +130,18 @@ Generally, the [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solv
 ![RadialView Example](Images/Solver/RadialViewExample.png)  
 *RadialView example*
 
+### Follow
+
+The [`Follow`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Follow) class positions an element in front of the of the tracked target relative to its local forward axis. The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves beyond user defined bounds.
+
+It works similarly to the RadialView solver, with additional controls to manage *Max Horizontal & Vertical View Degrees*, and mechanisms to alter the *Orientation* of the object.
+
+![Follow properties](Images/Solver/Follow.png)  
+*Follow properties*
+
+![Follow example scene](Images/Solver/FollowExampleScene.gif)
+*Follow Example Scene (Assets/MRTK/Examples/Demos/Solvers/Scenes/FollowSolverExample.unity)*
+
 ### InBetween
 
 The [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween) class will keep the attached GameObject between two transforms. These two transform endpoints are defined by the GameObject's own [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) *Tracked Target Type* and the [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween) component's *Second Tracked Target Type* property. Generally, both types will be set to [`CustomOverride`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.CustomOverride) and the resulting `SolverHandler.TransformOverride` and `InBetween.SecondTransformOverride` values set to the two tracked endpoints.
@@ -193,8 +205,7 @@ The size of the indicator will shrink the closer the user is to capturing the *D
 *Directional Indicator properties*
 
 ![Directional Indicator example scene](Images/Solver/DirectionalIndicatorExampleScene.gif)
-
-*Directional Indicator Example Scene (Assets/MRTK/Examples/Demos/Solvers/Scenes/DirectionalIndicatorExample.unity)*
+*Directional Indicator Example Scene (Assets/MRTK/Examples/Demos/Solvers/Scenes/DirectionalIndicatorSolverExample.unity)*
 
 ### Hand menu with HandConstraint and HandConstraintPalmUp
 
