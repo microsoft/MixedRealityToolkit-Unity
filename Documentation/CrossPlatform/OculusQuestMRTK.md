@@ -71,7 +71,7 @@ In that config file, you should see the HandTrackingSupport field set to "Contro
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
-    - You can verify that the Oculus Controllers are detected by 
+1. The Oculus XRSDK Data Provider includes an OVR Camera Rig Prefab which automatically configures the project with an OVR Camera Rig and OVR Hands to properly route input. Manually adding an OVR Camera Rig to the scene will require manual configuration of settings and input.
 
 ## Build and deploy your project to Oculus Quest
 1. Plug in your Oculus Quest via a USB 3.0 -> USB C cable

@@ -7,11 +7,15 @@
 
 > [!IMPORTANT]
 > There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-> ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the 
-> update is available, please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
+> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio, 
+> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
 > a workaround.
 
 ## What's new
+
+### HP Motion Controllers now supported with MRTK
+
+Controllers for the HP Reverb G2 now work natively with MRTK. 
 
 ### Teleportation with the teleport gesture now supported on all platforms
 
@@ -24,6 +28,13 @@ see our updated [Input Simulation Service documentation](InputSimulation/InputSi
 ### Runtime profile switching support
 
 MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
+
+### Directional Indicator and Follow Solvers Graduated from Experimental
+
+Two new solvers are ready for use with mainline MRTK.
+
+  ![Directional Indicator Solver](Images/Solver/DirectionalIndicatorExampleScene.gif)
+
 
 ## Breaking changes
 
