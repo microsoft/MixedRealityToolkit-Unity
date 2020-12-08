@@ -192,6 +192,11 @@ The desired point in space is determined via the *Directional Target* property.
 
 If the directional target is viewable by the user, or whatever frame of reference is set in the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), then this solver will disable all [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html) components underneath it. If not viewable, then everything will be enabled on the indicator.
 
+The size of the indicator will shrink the closer the user is to capturing the *Directional Target* in their FOV.
+
+* *Min Indicator Scale* - The minimum scale for the indicator object
+* *Max Indicator Scale* - The maximum scale for the indicator object
+
 * *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
 * *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.
 
