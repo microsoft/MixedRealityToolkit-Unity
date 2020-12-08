@@ -184,7 +184,7 @@ Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities
 
 Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the `SurfaceMagnetism` raycasts.
 
-### Directional indicator
+### DirectionalIndicator
 
 The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.DirectionalIndicator) class is a tag-along component that orients itself to the direction of a desired point in space.
 
