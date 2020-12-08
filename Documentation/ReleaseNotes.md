@@ -25,6 +25,13 @@ see our updated [Input Simulation Service documentation](InputSimulation/InputSi
 
 MRTK now allows profile switching both before the initialization of the MRTK instance (i.e. Pre MRTK initialization profile switch) and after a profile has been in active use (i.e. Active profile switch). The former switch can be used to enable select components based on capabilities of the hardware, while the latter can be used to modify experience as the user enters a subpart of the application. Please read the [documentation on profile switching](MixedRealityConfigurationGuide.md#changing-profiles-at-runtime) for more information and code samples.
 
+### Directional Indicator and Follow Solvers Graduated from Experimental
+
+Two new solvers are ready for use with mainline MRTK.
+
+  ![Directional Indicator Solver](Images/Solver/DirectionalIndicatorExampleScene.gif)
+
+
 ## Breaking changes
 
 ### Certain fields of imported GLTF objects are now capitalized
