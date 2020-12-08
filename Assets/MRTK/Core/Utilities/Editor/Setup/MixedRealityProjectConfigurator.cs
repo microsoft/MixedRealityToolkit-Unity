@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing = 5,
             OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
-            [Obsolete("EnableMSBuildForUnity is obsolete is no longer honored.", true)]
+            [Obsolete("EnableMSBuildForUnity is obsolete and is no longer honored.", true)]
             EnableMSBuildForUnity,
             AudioSpatializer = 8,
 
