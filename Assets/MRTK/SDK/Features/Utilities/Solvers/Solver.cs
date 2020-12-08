@@ -3,6 +3,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -69,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values on initialization")]
+        [FormerlySerializedAs("maintainScale")]
         private bool maintainScaleOnInitialization = true;
 
         [SerializeField]
