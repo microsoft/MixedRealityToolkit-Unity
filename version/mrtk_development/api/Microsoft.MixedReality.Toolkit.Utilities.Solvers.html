@@ -105,6 +105,16 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html">ControllerFinder</a></h4>
       <section><p>ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.DirectionalIndicator.html">DirectionalIndicator</a></h4>
+      <section><p>This solver determines the position and orientation of an object as a directional indicator.
+From the point of reference of the SolverHandler Tracked Target, this indicator will orient towards the DirectionalTarget supplied.
+If the Directional Target is deemed within view of our frame of reference, then all renderers under this Solver will be disabled. They will be enabled otherwise</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Follow.html">Follow</a></h4>
+      <section><p>Follow solver positions an element in front of the of the tracked target (relative to its local forward axis).
+The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
+beyond user defined bounds.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html">HandConstraint</a></h4>
       <section><p>Provides a solver that constrains the target to a region safe for hand constrained interactive content.
 This solver is intended to work with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> but also works with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a>.</p>
@@ -144,6 +154,9 @@ as long as updateLinkedTransform is false.</p>
 </section>
     <h3 id="enums">Enums
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Follow.AngularClampType.html">Follow.AngularClampType</a></h4>
+      <section><p>Specifies the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverOffsetBehavior.html">HandConstraint.SolverOffsetBehavior</a></h4>
       <section><p>Specifies how the solver's offset relative to the hand will be computed.</p>
 </section>
