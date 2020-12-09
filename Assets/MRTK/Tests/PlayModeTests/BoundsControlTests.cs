@@ -751,7 +751,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float angle;
             Vector3 axis = new Vector3();
             control.transform.rotation.ToAngleAxis(out angle, out axis);
-            float expectedAngle = 85f;
+            float expectedAngle = 84f;
             float angleDiff = Mathf.Abs(expectedAngle - angle);
             Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
             TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
