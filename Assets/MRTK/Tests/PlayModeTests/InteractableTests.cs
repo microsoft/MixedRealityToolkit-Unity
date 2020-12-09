@@ -758,7 +758,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestPressableToggleHoloLens2()
         {
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.015f, 0f, 0.3f));
+            Vector3 p2 = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.010f, 0f, 0.3f));
 
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2ToggleButton,
@@ -916,7 +916,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(interactable.IsEnabled);
 
             var rightHand = new TestHand(Handedness.Right);
-            Vector3 focusPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0155f, 0.0145f, 0.3f));
+            Vector3 focusPosition = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0175f, 0.0145f, 0.3f));
             Vector3 releaseDelta = TestUtilities.DirectionRelativeToPlayspace(new Vector3(0.05f, 0, 0));
 
             // Focus the hand on the Button using the far ray pointer
