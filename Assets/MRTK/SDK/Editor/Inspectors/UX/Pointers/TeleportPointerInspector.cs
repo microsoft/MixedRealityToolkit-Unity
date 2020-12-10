@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
         private SerializedProperty rotationAmount;
         private SerializedProperty backStrafeActivationAngle;
         private SerializedProperty strafeAmount;
+        private SerializedProperty requiresBackStrafeHeight;
+        private SerializedProperty backStrafeHeight;
         private SerializedProperty upDirectionThreshold;
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty validLayers;
@@ -40,11 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
             rotationAmount = serializedObject.FindProperty("rotationAmount");
             backStrafeActivationAngle = serializedObject.FindProperty("backStrafeActivationAngle");
             strafeAmount = serializedObject.FindProperty("strafeAmount");
+            requiresBackStrafeHeight = serializedObject.FindProperty("requiresBackStrafeHeight");
+            backStrafeHeight = serializedObject.FindProperty("backStrafeHeight");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
             validLayers = serializedObject.FindProperty("ValidLayers");
             invalidLayers = serializedObject.FindProperty("InvalidLayers");
-
             pointerAudioSource = serializedObject.FindProperty("pointerAudioSource");
             teleportRequestedClip = serializedObject.FindProperty("teleportRequestedClip");
             teleportCompletedClip = serializedObject.FindProperty("teleportCompletedClip");
@@ -68,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
                 EditorGUILayout.PropertyField(rotationAmount);
                 EditorGUILayout.PropertyField(backStrafeActivationAngle);
                 EditorGUILayout.PropertyField(strafeAmount);
+                if(requiresBackStrafeHeight.boolValue)
+                    EditorGUILayout.PropertyField(backStrafeHeight);
                 EditorGUILayout.PropertyField(upDirectionThreshold);
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(validLayers);
