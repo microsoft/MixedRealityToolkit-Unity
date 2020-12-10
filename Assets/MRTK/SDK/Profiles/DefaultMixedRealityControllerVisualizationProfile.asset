@@ -97,27 +97,3 @@ MonoBehaviour:
     controllerVisualizationType:
       reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
         Microsoft.MixedReality.Toolkit.SDK
-  - description: Windows Mixed Reality XRSDK Articulated Hand
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 1
-    useDefaultModel: 0
-    defaultModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
-      type: 3}
-    controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
-        Microsoft.MixedReality.Toolkit.SDK
-  - description: Windows Mixed Reality XRSDK Articulated Hand
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityXRSDKArticulatedHand,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
-    handedness: 2
-    useDefaultModel: 0
-    defaultModelMaterial: {fileID: 0}
-    overrideModel: {fileID: 1788309537287834, guid: 132c9402d5843aa4f94380840186fd41,
-      type: 3}
-    controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.WindowsMixedRealityControllerVisualizer,
-        Microsoft.MixedReality.Toolkit.SDK
