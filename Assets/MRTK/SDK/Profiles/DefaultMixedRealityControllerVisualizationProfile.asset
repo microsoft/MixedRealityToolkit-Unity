@@ -83,7 +83,7 @@ MonoBehaviour:
     overrideModel: {fileID: 1227372834072826, guid: 378f91dbbff9e2343b27a467467750bf,
       type: 3}
     controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
+      reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
   - description: Windows Mixed Reality Articulated Hand
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand,
@@ -94,4 +94,4 @@ MonoBehaviour:
     overrideModel: {fileID: 1788309537287834, guid: 132c9402d5843aa4f94380840186fd41,
       type: 3}
     controllerVisualizationType:
-      reference: Microsoft.MixedReality.Toolkit.Input.RiggedHandVisualizer, Microsoft.MixedReality.Toolkit.SDK
+      reference: Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer, Microsoft.MixedReality.Toolkit
