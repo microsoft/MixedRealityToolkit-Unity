@@ -278,9 +278,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.LabelField("ComponentId: " + constraintManager.GetInstanceID(), EditorStyles.miniLabel);
 
                     // deferred delete elements from array to not break unity layout
-                    foreach (int i in indicesToRemove)
+                    for (int i = indicesToRemove.Count - 1; i > -1; i--)
                     {
-                        selectedConstraints.DeleteArrayElementAtIndex(i);
+                        var currentArraySize = selectedConstraints.arraySize;
+                        selectedConstraints.DeleteArrayElementAtIndex(indicesToRemove[i]);
+                        if (currentArraySize == selectedConstraints.arraySize)
+                        {
+                            selectedConstraints.DeleteArrayElementAtIndex(indicesToRemove[i]);
+                        }
                     }
 
                     indicesToRemove.Clear();

@@ -1,18 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Follow solver positions an element in front of the of the tracked target (relative to its local forward axis).
     /// The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
     /// beyond user defined bounds.
     /// </summary> 
-    [AddComponentMenu("Scripts/MRTK/Experimental/Solver/Follow")]
+    [AddComponentMenu("Scripts/MRTK/SDK/Follow")]
     public class Follow : Solver
     {
         [SerializeField]
@@ -41,7 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => faceTrackedObjectWhileClamped = value;
         }
 
-        [Experimental]
         [SerializeField]
         [Tooltip("Face a user defined transform rather than using the solver orientation type.")]
         private bool faceUserDefinedTargetTransform = false;

@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 lineBase.UpdateMatrix();
 
-                // Set our first and last points
+                // Set our first and last points on the Line Renderer
                 if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
                 {
                     // Make the final point 'stick' to the target at the distance of the target
@@ -206,12 +206,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Used to ensure the line doesn't extend beyond the cursor
                 float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
 
+                // Readjust the Line renderer's endpoint to match the the cursor's position if it is focus locked to a target
+                if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
+                {
+                    SetLinePoints(Position, Result.Details.Point + Rotation * Vector3.back * cursorOffsetWorldLength);
+                }
+
                 // If focus is locked, we're sticking to the target
-                // So don't clamp the world length
+                // So don't clamp the world length, the line data's end point is already set to the world cursor
                 if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
                 {
-                    float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
-                    LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
+                    LineBase.LineEndClamp = 1;
                 }
                 else
                 {

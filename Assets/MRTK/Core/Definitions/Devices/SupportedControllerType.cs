@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         TouchScreen = 1 << 8,
         Mouse = 1 << 9,
         ArticulatedHand = 1 << 10,
-        GGVHand = 1 << 11
+        GGVHand = 1 << 11,
+        HPMotionController = 1 << 12
     }
 }

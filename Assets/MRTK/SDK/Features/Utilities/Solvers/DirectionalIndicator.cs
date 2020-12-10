@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// This solver determines the position and orientation of an object as a directional indicator. 
@@ -23,11 +21,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         public Transform DirectionalTarget;
 
         /// <summary>
+        /// The minimum scale for the indicator object
+        /// </summary>
+        [Tooltip("The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen")]
+        [Min(0.0f)]
+        public float MinIndicatorScale = 0.05f;
+
+        /// <summary>
+        /// The maximum scale for the indicator object
+        /// </summary>
+        [Tooltip("The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen")]
+        [Min(0.0f)]
+        public float MaxIndicatorScale = 0.2f;
+
+        /// <summary>
         /// Multiplier factor to increase or decrease FOV range for testing if object is visible and thus turn off indicator
         /// </summary>
         [Tooltip("Multiplier factor to increase or decrease FOV range for testing if object is visible and thus turn off indicator")]
         [Min(0.1f)]
-        public float VisibilityScaleFactor = 1.25f;
+        public float VisibilityScaleFactor = 0.8f;
 
         /// <summary>
         /// The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen
@@ -111,6 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             // Find the rotation from the facing direction to the target object.
             GoalRotation = Quaternion.LookRotation(solverReferenceFrame.forward, indicatorDirection);
+
+            // Scale the solver based to be more prominent if the object is far away from the field of view
+            float minVisiblityAngle = VisibilityScaleFactor * CameraCache.Main.fieldOfView * 0.5f;
+
+            float angleToVisbilityFOV = Vector3.Angle(trackerToTargetDirection - solverReferenceFrame.position, solverReferenceFrame.forward) - minVisiblityAngle;
+            float visibilityScale = 180f - minVisiblityAngle;
+
+            GoalScale = Vector3.one * Mathf.Lerp(MinIndicatorScale, MaxIndicatorScale, angleToVisbilityFOV / visibilityScale);
         }
     }
 }

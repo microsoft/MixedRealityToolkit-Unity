@@ -141,7 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.RightControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure right hand is tracked
             Assert.True(iss.HandDataRight.IsTracked);
@@ -154,7 +156,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure correct hand is pinching
             Assert.True(iss.HandDataRight.IsPinching);
@@ -164,7 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
-            yield return null;
+            // Wait for the hand to animate
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure hands are not pinching anymore
             Assert.True(!iss.HandDataRight.IsPinching);
@@ -189,7 +195,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure left hand is tracked
             Assert.True(!iss.HandDataRight.IsTracked);
@@ -202,7 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure correct hand is pinching
             Assert.True(!iss.HandDataRight.IsPinching);
@@ -212,7 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure hands are not pinching anymore
             Assert.True(!iss.HandDataRight.IsPinching);
@@ -239,7 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.LeftControllerManipulationKey);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure hands are tracked
             Assert.True(iss.HandDataRight.IsTracked);
@@ -252,7 +266,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            // Wait for the hand to animate
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(1.0f / iss.InputSimulationProfile.HandGestureAnimationSpeed + 0.1f);
 
             // Make sure hands are pinching
             Assert.True(iss.HandDataRight.IsPinching);

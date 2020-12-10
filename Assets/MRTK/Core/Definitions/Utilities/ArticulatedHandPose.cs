@@ -199,6 +199,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// Relaxed hand pose, grab point does not move
             /// </summary>
             OpenSteadyGrabPoint,
+            /// <summary>
+            /// Hand facing upwards, Index and Thumb stretched out to start a teleport
+            /// </summary>
+            TeleportStart,
+            /// <summary>
+            /// Hand facing upwards, Index curled in to finish a teleport
+            /// </summary>
+            TeleportEnd,
         }
 
         [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]
