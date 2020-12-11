@@ -13,25 +13,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public class MRTKUGUIInputField : InputField
     {
 #if UNITY_2019_3_OR_NEWER
-        [SerializeField, Tooltip("Currently there is a Unity bug that needs a workaround. Please keep this setting to be true until an announcement of the version of Unity/UGUI that resolves the issue is made.")]
-        private bool enableUGUIWorkaround = false;
-#endif
-#if !UNITY_2019_3_OR_NEWER
+        [SerializeField]
+        private bool disableUGUIWorkaround = false;
+
+        /// <summary>
+        /// Currently there is a Unity bug that needs a workaround. Please keep this setting to be false until an announcement of the version of Unity/UGUI that resolves the issue is made.
+        /// </summary>
+        public bool DisableUGUIWorkaround
+        {
+            get => disableUGUIWorkaround;
+            set => disableUGUIWorkaround = value;
+        }
+
+        protected override void LateUpdate()
+        {
+            if (!DisableUGUIWorkaround && isFocused && m_Keyboard != null && (UnityEngine.Input.GetKeyDown(KeyCode.Backspace)))
+            {
+                m_Keyboard.text = m_Text;
+            }
+            base.LateUpdate();
+        }
+#else
         public int SelectionPosition
         {
             get => caretSelectPositionInternal;
             set => caretSelectPositionInternal = value;
         }
         public override void OnUpdateSelected(BaseEventData eventData) { }
-#else
-        protected override void LateUpdate()
-        {
-            if (enableUGUIWorkaround && isFocused && m_Keyboard != null && (UnityEngine.Input.GetKeyDown(KeyCode.Backspace) || UnityEngine.Input.GetKey(KeyCode.Backspace)))
-            {
-                m_Keyboard.text = m_Text;
-            }
-            base.LateUpdate();
-        }
 #endif
     }
 }

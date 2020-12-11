@@ -7,13 +7,11 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard.
-    /// No longer used in Unity 2019.3 and later versions.
+    /// A component that can be added to InputField to make it work with Windows Mixed Reality's system keyboard.
+    /// Will no longer be necessary in Unity 2019.3 and later versions after a Unity/UGUI bug is fixed (see disableUGUIWorkaround).
     /// </summary>
-#if !UNITY_2019_3_OR_NEWER
     [RequireComponent(typeof(MRTKUGUIInputField))]
     [AddComponentMenu("Scripts/MRTK/Experimental/Keyboard/UI_KeyboardInputField")]
-#endif
     public class UI_KeyboardInputField :
 #if UNITY_2019_3_OR_NEWER
         MonoBehaviour
@@ -29,6 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             inputField.caretPosition = CaretIndex;
             inputField.SelectionPosition = CaretIndex;
+        }
+#else
+        [SerializeField, Tooltip("Currently there is a Unity bug that needs a workaround. Please keep this setting to be false until an announcement of the version of Unity/UGUI that resolves the issue is made.")]
+        private bool disableUGUIWorkaround = false;
+        
+        private void OnValidate()
+        {
+            GetComponent<MRTKUGUIInputField>().DisableUGUIWorkaround = disableUGUIWorkaround;
         }
 #endif
     }
