@@ -2915,7 +2915,7 @@ GameObject:
   - component: {fileID: 8242345886942139595}
   - component: {fileID: 4654131966140333715}
   - component: {fileID: 3755923931878965870}
-  - component: {fileID: 7316661051877317490}
+  - component: {fileID: 1238338373029837197}
   - component: {fileID: 5909963037666368398}
   m_Layer: 5
   m_Name: InputField
@@ -2980,7 +2980,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &7316661051877317490
+--- !u!114 &1238338373029837197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2989,7 +2989,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3773139067219331622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 84239935bdcf03749afaf60cbaaee80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -3052,6 +3052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22217b78c404b3d41816e937276869ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableUIInteractionWhenTyping: 0
   onShowKeyboard:
     m_PersistentCalls:
       m_Calls: []
@@ -6773,11 +6774,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7779420039263858270, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_Name
-      value: SlateUGUI
-      objectReference: {fileID: 0}
     - target: {fileID: 1484589535602960653, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -6828,6 +6824,21 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1763406999217791378, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1807168023245165402, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3348377780797107193, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40261cd01d861f241b945b4fb6609cff, type: 2}
     - target: {fileID: 5373150653584304409, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: m_Mesh
@@ -6933,6 +6944,11 @@ PrefabInstance:
       propertyPath: assetVersion
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858270, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Name
+      value: SlateUGUI
+      objectReference: {fileID: 0}
     - target: {fileID: 7779420039263858271, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7012,21 +7028,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.z
       value: 0.07609945
-      objectReference: {fileID: 0}
-    - target: {fileID: 1763406999217791378, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3348377780797107193, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 40261cd01d861f241b945b4fb6609cff, type: 2}
-    - target: {fileID: 1807168023245165402, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
