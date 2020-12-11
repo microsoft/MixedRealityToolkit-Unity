@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 #else
         protected override void LateUpdate()
         {
-            if (enableUGUIWorkaround && isFocused && m_Keyboard != null && (Input.GetKeyDown(KeyCode.Backspace) || Input.GetKey(KeyCode.Backspace)))
+            if (enableUGUIWorkaround && isFocused && m_Keyboard != null && (UnityEngine.Input.GetKeyDown(KeyCode.Backspace) || UnityEngine.Input.GetKey(KeyCode.Backspace)))
             {
                 m_Keyboard.text = m_Text;
             }
