@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// This class implements the abstract class Dialog.

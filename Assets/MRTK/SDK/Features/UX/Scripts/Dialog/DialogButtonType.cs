@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// The style (caption) of button on a Dialog.

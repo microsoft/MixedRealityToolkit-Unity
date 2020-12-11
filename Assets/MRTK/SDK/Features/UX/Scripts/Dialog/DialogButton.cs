@@ -4,7 +4,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Handling click event and dismiss dialog
