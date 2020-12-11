@@ -3,9 +3,11 @@
 
 using UnityEngine;
 using UnityEngine.Events;
-#if WINDOWS_UWP
-using Windows.UI.ViewManagement;
 using Microsoft.MixedReality.Toolkit.Input;
+#if WINDOWS_UWP
+using Windows.Globalization;
+using Windows.UI.ViewManagement;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 #endif
 
@@ -37,7 +39,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             private set;
         } = 0;
 
-        [Experimental, SerializeField, Tooltip("Event which triggers when the keyboard is shown.")]
+        [Experimental, SerializeField, Tooltip("Whether disable user's interaction with other UI elements while typing. Use this option to decrease the chance of keyboard getting accidentally closed.")]
+        private bool disableUIInteractionWhenTyping = false;
+
+        /// <summary>
+        /// Whether disable user's interaction with other UI elements while typing.
+        /// Use this option to decrease the chance of keyboard getting accidentally closed.
+        /// </summary>
+        public bool DisableUIInteractionWhenTyping
+        {
+            get => disableUIInteractionWhenTyping;
+            set
+            {
+                if (value != disableUIInteractionWhenTyping && value == false && inputModule != null && inputModule.ProcessPaused)
+                {
+                    inputModule.ProcessPaused = false;
+                }
+                disableUIInteractionWhenTyping = value;
+            }
+        }
+
+        [SerializeField, Tooltip("Event which triggers when the keyboard is shown.")]
         private UnityEvent onShowKeyboard = new UnityEvent();
 
         /// <summary>
@@ -90,21 +112,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private KeyboardState state = KeyboardState.Hidden;
 
+        private bool multiLine = false;
+
+        private MixedRealityInputModule inputModule = null;
+
 #if WINDOWS_UWP
         private InputPane inputPane = null;
-
+        
         private TouchScreenKeyboard keyboard = null;
 
         private Coroutine stateUpdate;
-#endif
 
-        private bool multiLine = false;
+        private string keyboardLanguage = string.Empty;
+#endif
 
         #endregion Private fields
 
         #region MonoBehaviour Implementation
 
 #if WINDOWS_UWP
+        protected virtual void Awake()
+        {
+            inputModule = CameraCache.Main.GetComponent<MixedRealityInputModule>();
+        }
+
         /// <summary>
         /// Initializes the UWP input pane.
         /// </summary>
@@ -121,11 +152,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void OnInputPaneHiding(InputPane inputPane, InputPaneVisibilityEventArgs args)
         {
             OnKeyboardHiding();
+            if (DisableUIInteractionWhenTyping && inputModule != null)
+            {
+                inputModule.ProcessPaused = false;
+            }
         }
 
         private void OnInputPaneShowing(InputPane inputPane, InputPaneVisibilityEventArgs args)
         {
             OnKeyboardShowing();
+            if (DisableUIInteractionWhenTyping && inputModule != null)
+            {
+                inputModule.ProcessPaused = true;
+            }
         }
 
         void OnDestroy()
@@ -252,57 +291,79 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             if (keyboard != null)
             {
+                string newKeyboardLanguage = Language.CurrentInputMethodLanguageTag;
+                if (newKeyboardLanguage != keyboardLanguage)
+                {
+                    keyboard.text = Text;
+                    if (IsIMERequired(newKeyboardLanguage))
+                    {
+                        MovePreviewCaretToEnd();
+                    }
+                }
+                keyboardLanguage = newKeyboardLanguage;
+
+                var characterDelta = keyboard.text.Length - Text.Length;
                 // Handle character deletion.
-                if (UnityEngine.Input.GetKeyDown(KeyCode.Delete) || 
+                if (UnityEngine.Input.GetKey(KeyCode.Backspace) ||
                     UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
                 {
-                    if (CaretIndex > 0)
+                    if (Text.Length > keyboard.text.Length && IsIMERequired(keyboardLanguage))
+                    {
+                        Text = keyboard.text;
+                        CaretIndex = Mathf.Clamp(CaretIndex + characterDelta, 0, Text.Length);
+                        return;
+                    }
+                    else if (CaretIndex > 0)
                     {
                         Text = Text.Remove(CaretIndex - 1, 1);
                         keyboard.text = Text;
                         --CaretIndex;
                     }
                 }
-
-                // Add the new characters.
-                var characterDelta = keyboard.text.Length - Text.Length;
-                var caretWasAtEnd = IsPreviewCaretAtEnd();
-
-                if (characterDelta > 0)
+                if (IsIMERequired(keyboardLanguage))
                 {
-                    var newCharacters = keyboard.text.Substring(Text.Length, characterDelta);
-                    Text = Text.Insert(CaretIndex, newCharacters);
-                    keyboard.text = Text;
-
-                    if (caretWasAtEnd)
-                    {
-                        MovePreviewCaretToEnd();
-                    }
-                    else
-                    {
-                        CaretIndex += newCharacters.Length;
-                    }
-                }
-                else if (characterDelta < 0)
-                {
-                    // Take what is currently in the keyboard and move the caret to the end.
                     Text = keyboard.text;
                     MovePreviewCaretToEnd();
                 }
-
-                // Handle the arrow keys.
-                if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow) || 
-                    UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+                else
                 {
-                    CaretIndex = Mathf.Clamp(CaretIndex - 1, 0, Text.Length);
-                }
+                    // Add the new characters.
 
-                if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow) || 
-                    UnityEngine.Input.GetKey(KeyCode.RightArrow))
-                {
-                    CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);
-                }
+                    var caretWasAtEnd = IsPreviewCaretAtEnd();
 
+                    if (characterDelta > 0)
+                    {
+                        var newCharacters = keyboard.text.Substring(Text.Length, characterDelta);
+                        Text = Text.Insert(CaretIndex, newCharacters);
+                        if (keyboard.text != Text)
+                        {
+                            keyboard.text = Text;
+                        }
+
+                        if (caretWasAtEnd)
+                        {
+                            MovePreviewCaretToEnd();
+                        }
+                        else
+                        {
+                            CaretIndex += newCharacters.Length;
+                        }
+                    }
+
+                    // Handle the arrow keys.
+                    if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow) ||
+                        UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+                    {
+                        CaretIndex = Mathf.Clamp(CaretIndex - 1, 0, Text.Length);
+                    }
+
+                    if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow) ||
+                        UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                    {
+                        CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);
+                    }
+                }
+                
                 // Handle commit via the return key.
                 if (!multiLine)
                 {
@@ -313,6 +374,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         HideKeyboard();
                     }
                 }
+
+                SyncCaret();
             }
         }
 
@@ -329,6 +392,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private void OnKeyboardShowing() { }
+
+        private bool IsIMERequired(string language)
+        {
+            return language.StartsWith("zh") || language.StartsWith("ja") || language.StartsWith("kr");
+        }
 #endif
+        protected virtual void SyncCaret() { }
+
     }
 }

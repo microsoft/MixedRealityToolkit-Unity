@@ -50,6 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool ManualInitializationRequired { get; private set; } = false;
 
+        /// <summary>
+        /// Whether the input module should pause processing temporarily
+        /// </summary>
+        public bool ProcessPaused { get; set; } = false;
+
         public IEnumerable<IMixedRealityPointer> ActiveMixedRealityPointers
         {
             get
@@ -131,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (ProcessPerfMarker.Auto())
             {
                 // Do not process when we are waiting for initialization
-                if (ManualInitializationRequired)
+                if (ManualInitializationRequired || ProcessPaused)
                 {
                     return;
                 }
