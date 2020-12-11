@@ -31,10 +31,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 #else
         [SerializeField, Tooltip("Currently there is a Unity bug that needs a workaround. Please keep this setting to be false until an announcement of the version of Unity/UGUI that resolves the issue is made.")]
         private bool disableUGUIWorkaround = false;
+
+        private MRTKUGUIInputField inputField;
         
         private void OnValidate()
         {
-            GetComponent<MRTKUGUIInputField>().DisableUGUIWorkaround = disableUGUIWorkaround;
+            if (inputField == null)
+            {
+                inputField = GetComponent<MRTKUGUIInputField>();
+            }
+            inputField.DisableUGUIWorkaround = disableUGUIWorkaround;
         }
 #endif
     }

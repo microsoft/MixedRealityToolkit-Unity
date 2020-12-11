@@ -291,10 +291,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             if (keyboard != null)
             {
+                // Check the current language of the keyboard
                 string newKeyboardLanguage = Language.CurrentInputMethodLanguageTag;
                 if (newKeyboardLanguage != keyboardLanguage)
                 {
                     keyboard.text = Text;
+                    // For the languages requiring IME (Chinese, Japanese and Korean) move the caret to the end
+                    // As we do not support editing in the middle of a string
                     if (IsIMERequired(newKeyboardLanguage))
                     {
                         MovePreviewCaretToEnd();
@@ -307,11 +310,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (UnityEngine.Input.GetKey(KeyCode.Backspace) ||
                     UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
                 {
+                    // Handle languages requiring IME
                     if (Text.Length > keyboard.text.Length && IsIMERequired(keyboardLanguage))
                     {
                         Text = keyboard.text;
                         CaretIndex = Mathf.Clamp(CaretIndex + characterDelta, 0, Text.Length);
-                        return;
                     }
                     else if (CaretIndex > 0)
                     {
@@ -320,7 +323,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         --CaretIndex;
                     }
                 }
-                if (IsIMERequired(keyboardLanguage))
+                // Handle other character changes for languages requiring IME
+                else if (IsIMERequired(keyboardLanguage))
                 {
                     Text = keyboard.text;
                     MovePreviewCaretToEnd();

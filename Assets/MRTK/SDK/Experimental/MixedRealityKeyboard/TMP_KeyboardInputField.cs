@@ -7,8 +7,9 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard.
-    /// No longer used in Unity 2019.3 and later versions.
+    /// A component that can be added to InputField to make it work with Windows Mixed Reality's system keyboard.
+    /// Required when using Unity 2018.4.
+    /// No longer used in Unity 2019.3 and later versions (becomes an empty MonoBehaviour and is only around for compatibility) and you can safely remove it if you wish
     /// </summary>
 #if !UNITY_2019_3_OR_NEWER
     [RequireComponent(typeof(MRTKTMPInputField))]
