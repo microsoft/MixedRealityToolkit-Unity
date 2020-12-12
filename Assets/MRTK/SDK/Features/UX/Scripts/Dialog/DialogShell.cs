@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Function to destroy the Dialog.
         /// </summary>
-        public void DismissDialog()
+        public override void DismissDialog()
         {
             State = DialogState.InputReceived;
         }

@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A reference to the Dialog that this button is on.
         /// </summary>
-        public DialogShell ParentDialog { get; set; }
+        public Dialog ParentDialog { get; set; }
 
         /// <summary>
         /// The type description of the button
