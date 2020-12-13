@@ -118,6 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected abstract void SetTitleAndMessage();
 
         /// <summary>
+        /// Function to destroy the Dialog.
+        /// </summary>
+        public abstract void DismissDialog();
+
+        /// <summary>
         /// Instantiates a dialog and passes it a result
         /// </summary>
         /// <param name="dialogPrefab">Dialog prefab</param>
