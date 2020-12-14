@@ -621,9 +621,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsEyeCalibrationValid = userIsEyeCalibrated;
         }
 
-#endregion IMixedRealityEyeGazeProvider Implementation
+        #endregion IMixedRealityEyeGazeProvider Implementation
 
-#region IMixedRealityGazeProviderHeadOverride Implementation
+        #region IMixedRealityGazeProviderHeadOverride Implementation
 
         /// <inheritdoc />
         public bool UseHeadGazeOverride { get; set; }
@@ -635,6 +635,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             overrideHeadForward = forward;
         }
 
-#endregion IMixedRealityGazeProviderHeadOverride Implementation
+        #endregion IMixedRealityGazeProviderHeadOverride Implementation
     }
 }
