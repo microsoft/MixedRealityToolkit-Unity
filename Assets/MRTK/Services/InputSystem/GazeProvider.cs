@@ -609,7 +609,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
+#if false // Receive data relative to playspace, transform to world space
+            Ray worldEyeRay = new Ray(
+                MixedRealityPlayspace.TransformPoint(eyeRay.origin),
+                MixedRealityPlayspace.TransformDirection(eyeRay.direction));
+            LatestEyeGaze = worldEyeRay;
+#else // Receive data in world space
             LatestEyeGaze = eyeRay;
+#endif // Transform incoming data if necessary
+
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;
         }
@@ -620,9 +628,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsEyeCalibrationValid = userIsEyeCalibrated;
         }
 
-        #endregion IMixedRealityEyeGazeProvider Implementation
+#endregion IMixedRealityEyeGazeProvider Implementation
 
-        #region IMixedRealityGazeProviderHeadOverride Implementation
+#region IMixedRealityGazeProviderHeadOverride Implementation
 
         /// <inheritdoc />
         public bool UseHeadGazeOverride { get; set; }
@@ -634,6 +642,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             overrideHeadForward = forward;
         }
 
-        #endregion IMixedRealityGazeProviderHeadOverride Implementation
+#endregion IMixedRealityGazeProviderHeadOverride Implementation
     }
 }
