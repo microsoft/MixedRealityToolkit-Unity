@@ -609,14 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
-#if false // Receive data relative to playspace, transform to world space
-            Ray worldEyeRay = new Ray(
-                MixedRealityPlayspace.TransformPoint(eyeRay.origin),
-                MixedRealityPlayspace.TransformDirection(eyeRay.direction));
-            LatestEyeGaze = worldEyeRay;
-#else // Receive data in world space
             LatestEyeGaze = eyeRay;
-#endif // Transform incoming data if necessary
 
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;

@@ -185,14 +185,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                         if (eyes.Gaze.HasValue)
                         {
-#if true // Send data in world space
                             Vector3 origin = MixedRealityPlayspace.TransformPoint(eyes.Gaze.Value.Origin.ToUnityVector3());
                             Vector3 direction = MixedRealityPlayspace.TransformDirection(eyes.Gaze.Value.Direction.ToUnityVector3());
 
                             Ray newGaze = new Ray(origin, direction);
-#else // Send data relative to playspace
-                            Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
-#endif // Send data in proper space
 
                             if (SmoothEyeTracking)
                             {
