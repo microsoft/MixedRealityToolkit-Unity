@@ -1,9 +1,9 @@
 {
     "name": "com.microsoft.mixedreality.toolkit.tools",
     "displayName": "Mixed Reality Toolkit Tools",
+    "msftFeatureCategory": "Mixed Reality Toolkit",
     "version": "%version%",
     "unity": "2019.4",
-
     "description": "Tools for the Microsoft Mixed Reality Toolkit",
     "keywords": [
         "mrtk",
