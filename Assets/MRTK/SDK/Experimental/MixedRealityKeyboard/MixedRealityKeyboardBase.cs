@@ -118,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 #if WINDOWS_UWP
         private InputPane inputPane = null;
-        
         private TouchScreenKeyboard keyboard = null;
 
         private Coroutine stateUpdate;
