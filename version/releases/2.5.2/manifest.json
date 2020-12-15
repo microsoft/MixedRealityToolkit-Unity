@@ -8291,7 +8291,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/LargeProjects.html",
-          "hash": "DkrDvpdjOAcc7uctq3aY2A=="
+          "hash": "UWaiWNlQqduYGNtli3TkWA=="
         }
       },
       "is_incremental": false,
@@ -8303,7 +8303,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTK_Configuration_Dialog.html",
-          "hash": "JomkhjYs+Ny7TWCdbT4Zyw=="
+          "hash": "VL3VZLCmQATgJeTytokZhQ=="
         }
       },
       "is_incremental": false,
@@ -8963,7 +8963,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "Sf+hOlEJ3XI16ePqbIOZbw=="
+          "hash": "87XASu4Y0+prNxLSjQqtrA=="
         }
       },
       "is_incremental": false,
@@ -21835,18 +21835,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.PackageManifestUpdaterTests.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.PackageManifestUpdaterTests.html",
-          "hash": "7sodWGw/c0mk30QW6OBZYw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.ProjectPreferencesTest.yml",
       "output": {
         ".html": {
@@ -21863,7 +21851,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.html",
-          "hash": "wAuSZg18JMiQx8nbbYfuVg=="
+          "hash": "xdKmHrCAAWrQBkD8YGtf6g=="
         }
       },
       "is_incremental": false,
@@ -29411,7 +29399,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FudZEQxuc6FB4sqXzTakug=="
+          "hash": "sUb21yKli+HMti0882yTYg=="
         }
       },
       "is_incremental": false,
@@ -29483,7 +29471,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1690,
+          "total_file_count": 1689,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
