@@ -64,12 +64,6 @@ More information can be found on the [Resonance Audio documentation](https://res
 
 ![UWP Settings](Images/ConfigurationDialog/ConfigurationDialogUWPSettings.png)
 
-### Enable MSBuild for Unity
-
-**Unity 2019.2 and earlier**
-
-MSBuild for Unity is a component that enables automatic restoring of specific NuGet packages. In this version, the **Microsoft.Windows.MixedReality.DotNetWinRT** package will be installed after enabling MSBuild for Unity.
-
 ### UWP Capabilities
 
 Enables specific application capabilities for Universal Windows Platform application. These capabilities enable the platform to inform and request permission to enable specific functionality.
