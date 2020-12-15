@@ -40,13 +40,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private bool previousActiveStatus;
         private bool inPlayMode;
-        private bool previousGlobalStatus;
+        private bool previousSelectFarGlobalStatus;
+        private bool previousSpeechKeywordGlobalStatus;
 
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
         private string focusNearStateName = CoreInteractionState.FocusNear.ToString();
 
+        // Const state names for case comparison 
         private const string SelectFarStateName = "SelectFar";
+        private const string SpeechKeywordStateName = "SpeechKeyword";
 
         // The state selection menu is displayed when a user selects the "Add Core State" button
         private StateSelectionMenu stateSelectionMenu; 
@@ -208,8 +211,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    // Draw this state's event configuration 
-                    EditorGUILayout.PropertyField(stateEventConfiguration, true);
+                    if (stateName.stringValue == SpeechKeywordStateName)
+                    {
+                        // Render a custom inspector for the SpeechKeyword state
+                        RenderSpeechKeywordInspector(stateEventConfiguration);
+                    }
+                    else
+                    {
+                        // Draw this state's event configuration 
+                        EditorGUILayout.PropertyField(stateEventConfiguration, true);
+                    }
                 }
             }
         }
@@ -326,21 +337,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        // Check if the Global property within the SelectFar state event configuration has been modified from the 
+        // Check if the Global property within the SelectFar or SpeechKeyword state event configurations have been modified from the 
         // inspector during runtime and update 
-        private void CheckSelectFarGlobalProperty(SerializedProperty eventConfiguration)
+        private void CheckGlobalProperty(SerializedProperty eventConfiguration, string stateName)
         {
             if (inPlayMode)
             {
                 SerializedProperty global = eventConfiguration.FindPropertyRelative("global");
 
-                if (previousGlobalStatus != global.boolValue)
-                {    
-                    instance.RegisterHandler<IMixedRealityPointerHandler>(global.boolValue);
+                if (stateName == SelectFarStateName)
+                {
+                    if (previousSelectFarGlobalStatus != global.boolValue)
+                    {
+                        instance.RegisterHandler<IMixedRealityPointerHandler>(global.boolValue);
+                    }
+
+                    previousSelectFarGlobalStatus = global.boolValue;
                 }
 
-                previousGlobalStatus = global.boolValue;
-            }
+                if (stateName == SpeechKeywordStateName)
+                {
+                    if (previousSpeechKeywordGlobalStatus != global.boolValue)
+                    {
+                        instance.RegisterHandler<IMixedRealitySpeechHandler>(global.boolValue);
+                    }
+
+                    previousSpeechKeywordGlobalStatus = global.boolValue;
+                }
+             }
         }
 
         // Check for special cases for state's event configuration
@@ -349,9 +373,96 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             switch (stateName)
             {
                 case SelectFarStateName:
-                    CheckSelectFarGlobalProperty(eventConfiguration);
+                    CheckGlobalProperty(eventConfiguration, SelectFarStateName);
+                    break;
+                case SpeechKeywordStateName:
+                    CheckGlobalProperty(eventConfiguration, SpeechKeywordStateName);
                     break;
             }
         }
+
+        // Draw custom inspector for the SpeechKeyword state
+        private void RenderSpeechKeywordInspector(SerializedProperty speechKeywordEventConfiguration)
+        {
+            SerializedProperty global = speechKeywordEventConfiguration.FindPropertyRelative("global");
+            SerializedProperty keywords = speechKeywordEventConfiguration.FindPropertyRelative("keywords");
+            SerializedProperty speechKeywordEvent = speechKeywordEventConfiguration.FindPropertyRelative("onAnySpeechKeywordRecognized");
+
+            EditorGUILayout.PropertyField(global);
+            EditorGUILayout.PropertyField(speechKeywordEvent);
+
+            InspectorUIUtility.DrawTitle("Keyword Events");
+
+            for (int j = 0; j < keywords.arraySize; j++)
+            {
+                SerializedProperty keywordContainter = keywords.GetArrayElementAtIndex(j);
+                SerializedProperty keyword = keywordContainter.FindPropertyRelative("keyword");
+                SerializedProperty keywordResponseEvent = keywordContainter.FindPropertyRelative("OnKeywordRecognized");
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    using (new EditorGUILayout.VerticalScope())
+                    {
+                        EditorGUILayout.Space();
+
+                        EditorGUILayout.PropertyField(keyword);
+
+                        var speechCommands = GetProfileSpeechCommands();
+
+                        if (speechCommands != null)
+                        {
+                            bool doesKeywordExistInProfile = Array.Exists(speechCommands, word => word.Keyword == keyword.stringValue);
+
+                            if (!doesKeywordExistInProfile)
+                            {
+                                EditorGUILayout.HelpBox(
+                                    "The Keyword above is not registered in the speech command profile. \n " +
+                                    "To register a keyword:\n " +
+                                    "1. Select the MixedRealityToolkit game object\n " +
+                                    "2. Select Copy and Customize at the top of the profile\n " +
+                                    "3. Navigate to the Input section and select Clone to enable modification of the Input profile\n " +
+                                    "4. Scroll down to the Speech section in the Input profile and clone the Speech Profile\n " +
+                                    "5. Select Add a New Speech Command\n ", MessageType.Error);
+                            }
+                            else
+                            {
+                                EditorGUILayout.PropertyField(keywordResponseEvent);
+                            }
+                        }
+
+                        EditorGUILayout.Space();
+                    }
+
+                    if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
+                    {
+                        keywords.DeleteArrayElementAtIndex(j);
+                        break;
+                    }
+                }
+            }
+
+            if (GUILayout.Button("Add Keyword"))
+            {
+                keywords.InsertArrayElementAtIndex(keywords.arraySize);
+            }
+        }
+
+        // Make sure conditions are met before trying to get the list of SpeechCommands in the MRTK profile
+        private SpeechCommands[] GetProfileSpeechCommands()
+        {
+            if (!MixedRealityToolkit.IsInitialized ||
+                !MixedRealityToolkit.Instance.HasActiveProfile ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+            }
+        }
+
     }
 }
