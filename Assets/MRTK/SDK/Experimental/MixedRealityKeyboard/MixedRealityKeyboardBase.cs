@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             onShowKeyboard?.Invoke();
-
+            MovePreviewCaretToEnd();
             if (stateUpdate == null)
             {
                 stateUpdate = StartCoroutine(UpdateState());
