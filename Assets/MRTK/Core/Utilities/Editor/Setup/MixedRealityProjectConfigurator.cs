@@ -304,11 +304,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IsVisibleMetaFiles()
         {
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             return VersionControlSettings.mode.Equals("Visible Meta Files");
 #else
             return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
-#endif // UNITY_2020_2_OR_NEWER
+#endif // UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
@@ -316,11 +316,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void SetVisibleMetaFiles()
         {
-#if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             VersionControlSettings.mode = "Visible Meta Files";
 #else
             EditorSettings.externalVersionControl = "Visible Meta Files";
-#endif // UNITY_2020_2_OR_NEWER
+#endif // UNITY_2020_1_OR_NEWER
         }
 
         /// <summary>
