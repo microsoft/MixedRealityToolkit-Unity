@@ -2,9 +2,10 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.OpenXR",
     "rootNamespace": "",
     "references": [
+        "Microsoft.MixedReality.OpenXR",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
-        "Microsoft.MixedReality.OpenXR"
+        "Unity.XR.OpenXR"
     ],
     "includePlatforms": [
         "Editor",
@@ -25,6 +26,11 @@
             "name": "com.microsoft.mixedreality.openxr",
             "expression": "",
             "define": "MSFT_OPENXR"
+        },
+        {
+            "name": "com.unity.xr.openxr",
+            "expression": "",
+            "define": "UNITY_OPENXR"
         }
     ],
     "noEngineReferences": false

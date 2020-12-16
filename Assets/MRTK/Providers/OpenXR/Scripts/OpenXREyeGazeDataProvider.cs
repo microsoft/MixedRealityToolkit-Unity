@@ -9,6 +9,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if UNITY_OPENXR
+using UnityEngine.XR.OpenXR.Features.Interactions;
+#endif // UNITY_OPENXR
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     [MixedRealityDataProvider(
@@ -81,18 +85,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             if (ConfigurationProfile == null)
             {
-                Debug.LogError("Windows Mixed Reality Eye Tracking Provider requires a configuration profile to run properly.");
+                Debug.LogError("OpenXR Eye Tracking Provider requires a configuration profile to run properly.");
                 return;
             }
 
             MixedRealityEyeTrackingProfile profile = ConfigurationProfile as MixedRealityEyeTrackingProfile;
             if (profile == null)
             {
-                Debug.LogError("Windows Mixed Reality Eye Tracking Provider's configuration profile must be a MixedRealityEyeTrackingProfile.");
+                Debug.LogError("OpenXR Eye Tracking Provider's configuration profile must be a MixedRealityEyeTrackingProfile.");
                 return;
             }
 
             SmoothEyeTracking = profile.SmoothEyeTracking;
+
+#if !UNITY_OPENXR
+            Debug.LogWarning("OpenXR Eye Tracking Provider requires Unity's OpenXR Plugin to be installed.");
+#endif // !UNITY_OPENXR
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] OpenXREyeGazeDataProvider.Update");
@@ -117,13 +125,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
 
+#if UNITY_OPENXR
                 if (eyeTrackingDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool gazeAvailable))
                 {
                     Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, gazeAvailable);
 
                     if (gazeAvailable &&
-                        eyeTrackingDevice.TryGetFeatureValue(CustomUsages.GazePosition, out Vector3 eyeGazePosition) &&
-                        eyeTrackingDevice.TryGetFeatureValue(CustomUsages.GazeRotation, out Quaternion eyeGazeRotation))
+                        eyeTrackingDevice.TryGetFeatureValue(EyeTrackingUsages.gazePosition, out Vector3 eyeGazePosition) &&
+                        eyeTrackingDevice.TryGetFeatureValue(EyeTrackingUsages.gazeRotation, out Quaternion eyeGazeRotation))
                     {
                         Vector3 worldPosition = MixedRealityPlayspace.TransformPoint(eyeGazePosition);
                         Vector3 worldRotation = MixedRealityPlayspace.TransformDirection(eyeGazeRotation * Vector3.forward);
@@ -135,13 +144,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                             newGaze = SmoothGaze(newGaze);
                         }
 
-                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, System.DateTime.UtcNow);
+                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, DateTime.UtcNow);
                     }
                 }
                 else
                 {
                     Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, false);
                 }
+#endif // UNITY_OPENXR
             }
         }
 
@@ -152,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// </summary>
         /// <param name="newGaze">The ray to smooth.</param>
         /// <returns>The smoothed ray.</returns>
-        protected Ray SmoothGaze(Ray? newGaze)
+        private Ray SmoothGaze(Ray? newGaze)
         {
             using (SmoothGazePerfMarker.Auto())
             {
