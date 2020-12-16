@@ -61,9 +61,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform.Translate(this.lastTrackerToUnityTranslation, Space.World);
         }
 
-        private static float GetKeyDir(string neg, string pos)
+        private static float GetKeyDir(KeyCode neg, KeyCode pos)
         {
+#if INPUTSYSTEM_PACKAGE
+            return UnityEngine.InputSystem.Keyboard.current[KeyInputSystem.MapKeyCodeToKey(neg)].isPressed ?
+                -1.0f :
+                UnityEngine.InputSystem.Keyboard.current[KeyInputSystem.MapKeyCodeToKey(pos)].isPressed ?
+                1.0f : 0.0f;
+#else
             return UnityEngine.Input.GetKey(neg) ? -1.0f : UnityEngine.Input.GetKey(pos) ? 1.0f : 0.0f;
+#endif // INPUTSYSTEM_PACKAGE
         }
 
         private Vector3 GetCameraControlTranslation(Transform transform)
@@ -86,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 // use page up/down in this case
-                deltaPosition += GetKeyDir("page down", "page up") * Vector3.up;
+                deltaPosition += GetKeyDir(KeyCode.PageDown, KeyCode.PageUp) * Vector3.up;
             }
 
             deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveHorizontal)) * transform.right;

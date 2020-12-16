@@ -1,16 +1,25 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+    "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+        "Unity.InputSystem",
         "Unity.TextMeshPro"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "INPUTSYSTEM_PACKAGE"
+        }
+    ],
+    "noEngineReferences": false
 }

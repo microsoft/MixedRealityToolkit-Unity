@@ -222,7 +222,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (isSimulating)
             {
                 // Start at current mouse position
+
+#if INPUTSYSTEM_PACKAGE
+                Vector3 mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+#else
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
+#endif // INPUTSYSTEM_PACKAGE
+
                 state.ResetPosition(CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultControllerDistance)));
             }
             else
