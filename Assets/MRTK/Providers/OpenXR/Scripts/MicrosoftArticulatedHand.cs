@@ -13,7 +13,9 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     /// <summary>
-    /// Open XR + XR SDK implementation of Windows Mixed Reality articulated hands.
+    /// Open XR + XR SDK implementation of
+    /// <see href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#XR_MSFT_hand_interaction">XR_MSFT_hand_interaction</see> and
+    /// <see href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#XR_EXT_hand_tracking">XR_EXT_hand_tracking</see>.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,

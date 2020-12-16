@@ -11,7 +11,7 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     /// <summary>
-    /// Open XR + XR SDK implementation of Windows Mixed Reality motion controllers.
+    /// Open XR + XR SDK implementation of <see href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_microsoft_mixed_reality_motion_controller_profile">interaction_profiles/microsoft/motion_controller</see>.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
