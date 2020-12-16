@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Providers.XRSDK"
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Microsoft.MixedReality.OpenXR"
     ],
     "includePlatforms": [
         "Editor",
@@ -19,6 +20,12 @@
     "defineConstraints": [
         "UNITY_2020_2_OR_NEWER"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "",
+            "define": "MSFT_OPENXR"
+        }
+    ],
     "noEngineReferences": false
 }

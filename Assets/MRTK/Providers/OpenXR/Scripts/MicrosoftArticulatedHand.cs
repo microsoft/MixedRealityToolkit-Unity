@@ -10,6 +10,10 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if MSFT_OPENXR
+using Microsoft.MixedReality.OpenXR.Preview;
+#endif //MSFT_OPENXR
+
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
     /// <summary>
@@ -19,16 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Utilities.Handedness.Left, Utilities.Handedness.Right })]
     public class MicrosoftArticulatedHand : GenericXRSDKController, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MicrosoftArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public MicrosoftArticulatedHand(TrackingState trackingState, Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
+#if MSFT_OPENXR
+            handTracker = new HandTracker(controllerHandedness == Utilities.Handedness.Left ? MixedReality.OpenXR.Preview.Handedness.Left : MixedReality.OpenXR.Preview.Handedness.Right, HandPoseType.Tracked);
+#endif // MSFT_OPENXR
         }
 
         /// <inheritdoc />
@@ -43,6 +50,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
+
+#if MSFT_OPENXR
+        private static readonly HandJoint[] HandJoints = Enum.GetValues(typeof(HandJoint)) as HandJoint[];
+        private readonly HandTracker handTracker = null;
+        private readonly HandJointLocation[] locations = new HandJointLocation[HandTracker.JointCount];
+#endif // MSFT_OPENXR
 
         #region IMixedRealityHand Implementation
 
@@ -221,6 +234,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             using (UpdateHandDataPerfMarker.Auto())
             {
+#if MSFT_OPENXR
+                if (handTracker != null && handTracker.TryLocateHandJoints(FrameTime.OnUpdate, locations))
+                {
+                    foreach (HandJoint handJoint in HandJoints)
+                    {
+                        HandJointLocation handJointLocation = locations[(int)handJoint];
+
+                        // We want input sources to follow the playspace, so fold in the playspace transform here to
+                        // put the pose into world space.
+                        Vector3 position = MixedRealityPlayspace.TransformPoint(handJointLocation.Position);
+                        Quaternion rotation = MixedRealityPlayspace.Rotation * handJointLocation.Rotation;
+
+                        unityJointPoses[ConvertToTrackedHandJoint(handJoint)] = new MixedRealityPose(position, rotation);
+                    }
+#else
                 if (inputDevice.TryGetFeatureValue(CommonUsages.handData, out Hand hand))
                 {
                     foreach (HandFinger finger in handFingers)
@@ -238,12 +266,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                             }
                         }
                     }
+#endif // MSFT_OPENXR
 
                     handDefinition?.UpdateHandJoints(unityJointPoses);
                 }
             }
         }
 
+#if MSFT_OPENXR
+        private TrackedHandJoint ConvertToTrackedHandJoint(HandJoint handJoint)
+        {
+            switch (handJoint)
+            {
+                case HandJoint.Palm: return TrackedHandJoint.Palm;
+                case HandJoint.Wrist: return TrackedHandJoint.Wrist;
+
+                case HandJoint.ThumbMetacarpal: return TrackedHandJoint.ThumbMetacarpalJoint;
+                case HandJoint.ThumbProximal: return TrackedHandJoint.ThumbProximalJoint;
+                case HandJoint.ThumbDistal: return TrackedHandJoint.ThumbDistalJoint;
+                case HandJoint.ThumbTip: return TrackedHandJoint.ThumbTip;
+
+                case HandJoint.IndexMetacarpal: return TrackedHandJoint.IndexMetacarpal;
+                case HandJoint.IndexProximal: return TrackedHandJoint.IndexKnuckle;
+                case HandJoint.IndexIntermediate: return TrackedHandJoint.IndexMiddleJoint;
+                case HandJoint.IndexDistal: return TrackedHandJoint.IndexDistalJoint;
+                case HandJoint.IndexTip: return TrackedHandJoint.IndexTip;
+
+                case HandJoint.MiddleMetacarpal: return TrackedHandJoint.MiddleMetacarpal;
+                case HandJoint.MiddleProximal: return TrackedHandJoint.MiddleKnuckle;
+                case HandJoint.MiddleIntermediate: return TrackedHandJoint.MiddleMiddleJoint;
+                case HandJoint.MiddleDistal: return TrackedHandJoint.MiddleDistalJoint;
+                case HandJoint.MiddleTip: return TrackedHandJoint.MiddleTip;
+
+                case HandJoint.RingMetacarpal: return TrackedHandJoint.RingMetacarpal;
+                case HandJoint.RingProximal: return TrackedHandJoint.RingKnuckle;
+                case HandJoint.RingIntermediate: return TrackedHandJoint.RingMiddleJoint;
+                case HandJoint.RingDistal: return TrackedHandJoint.RingDistalJoint;
+                case HandJoint.RingTip: return TrackedHandJoint.RingTip;
+
+                case HandJoint.LittleMetacarpal: return TrackedHandJoint.PinkyMetacarpal;
+                case HandJoint.LittleProximal: return TrackedHandJoint.PinkyKnuckle;
+                case HandJoint.LittleIntermediate: return TrackedHandJoint.PinkyMiddleJoint;
+                case HandJoint.LittleDistal: return TrackedHandJoint.PinkyDistalJoint;
+                case HandJoint.LittleTip: return TrackedHandJoint.PinkyTip;
+
+                default: return TrackedHandJoint.None;
+            }
+        }
+#else
         private void ReadHandJoint(TrackedHandJoint trackedHandJoint, Bone bone)
         {
             bool positionAvailable = bone.TryGetPosition(out Vector3 position);
@@ -252,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             if (positionAvailable && rotationAvailable)
             {
                 // We want input sources to follow the playspace, so fold in the playspace transform here to
-                // put the controller pose into world space.
+                // put the pose into world space.
                 position = MixedRealityPlayspace.TransformPoint(position);
                 rotation = MixedRealityPlayspace.Rotation * rotation;
 
@@ -282,5 +352,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 default: return TrackedHandJoint.None;
             }
         }
+#endif // MSFT_OPENXR
     }
 }
