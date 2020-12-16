@@ -127,12 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// </summary>
         public bool EnforceFrontPush { get => enforceFrontPush; private set => enforceFrontPush = value; }
 
-        //[Header("Events")]
-        //public UnityEvent TouchBegin = new UnityEvent();
-        //public UnityEvent TouchEnd = new UnityEvent();
-        //public UnityEvent ButtonPressed = new UnityEvent();
-        //public UnityEvent ButtonReleased = new UnityEvent();
-
         #region Private Members
 
         // The maximum distance before the button is reset to its initial position when retracting.
@@ -357,7 +351,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         #endregion
         #endregion
 
-
         private void OnEnable()
         {
             currentPushDistance = startPushDistance;
@@ -456,7 +449,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 UpdateHightlightPlateVisuals(0.0f);
                 highlightPlate.enabled = false;
             }
-
         }
 
         void OnDisable()
