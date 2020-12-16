@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         #region Controller Utilities
 
         /// <summary>
-        /// The OpenXR plugin uses extensions to expose all possible data, which might be surfaced through multiple input devices.
+        /// The OpenXR plug-in uses extensions to expose all possible data, which might be surfaced through multiple input devices.
         /// This method is overridden to account for multiple input devices and reuse MRTK controllers if a match is found.
         /// </summary>
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
