@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     ///<summary>
     /// A button that can be pushed via direct touch.

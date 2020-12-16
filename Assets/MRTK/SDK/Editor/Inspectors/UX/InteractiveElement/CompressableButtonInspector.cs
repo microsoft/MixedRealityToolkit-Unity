@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System.Reflection;
+using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using UnityEditor;
 using UnityEngine;
 
