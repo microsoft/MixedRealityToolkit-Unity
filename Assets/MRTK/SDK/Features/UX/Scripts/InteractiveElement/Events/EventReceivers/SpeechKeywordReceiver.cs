@@ -42,11 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     // Get the keyword that was recognized
                     string speechEventKeyword = speechData.Command.Keyword;
 
-                    // Capitalize the first letter of the state in case the keyword is in lower case
-                    string speechEventKeywordUpperCase = CapitalizeFirstLetter(speechEventKeyword);
-
                     // Find the corresponding event for the speech keyword that was recognized
-                    KeywordEvent keywordResponseEvent = keywordsAndResponses.Find((keyEvent) => keyEvent.Keyword == speechEventKeyword || keyEvent.Keyword == speechEventKeywordUpperCase);
+                    KeywordEvent keywordResponseEvent = keywordsAndResponses.Find((keyEvent) => String.Equals(keyEvent.Keyword, speechEventKeyword, StringComparison.OrdinalIgnoreCase));
 
                     if (keywordResponseEvent != null)
                     {
@@ -58,14 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 // Set the state to off after the events have been fired
                 stateManager.SetStateOff(StateName);
             }
-        }
-
-        // Capitalize the first letter of a keyword string
-        private string CapitalizeFirstLetter(string keyword)
-        {
-            char[] keywordChars = keyword.ToCharArray();
-
-            return Char.ToUpper(keywordChars[0]) + keyword.Substring(1);
         }
     }
 }
