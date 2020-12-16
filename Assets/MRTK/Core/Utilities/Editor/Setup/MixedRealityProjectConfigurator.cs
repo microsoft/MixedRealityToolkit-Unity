@@ -55,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EyeTrackingCapability,
 #endif // UNITY_2019_3_OR_NEWER
 
+#if UNITY_2020_1_OR_NEWER
+            NewInputSystem,
+#endif // UNITY_2020_1_OR_NEWER
+
             // Android Settings
             AndroidMultiThreadedRendering = 2000,
             AndroidMinSdkVersion,
@@ -131,6 +135,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput), BuildTarget.WSAPlayer) },
 #endif // UNITY_2019_3_OR_NEWER
+ 
+#if UNITY_2020_1_OR_NEWER
+            { Configurations.NewInputSystem, new ConfigGetter(() => {
+                SerializedObject settings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton(nameof(PlayerSettings)));
+                SerializedProperty newInputEnabledProp = settings?.FindProperty("activeInputHandler");
+                return newInputEnabledProp?.intValue != 1; })
+            },
+#endif // UNITY_2020_1_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android), BuildTarget.Android) },
@@ -167,6 +179,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true) },
 #endif // UNITY_2019_3_OR_NEWER
+
+#if UNITY_2020_1_OR_NEWER
+            { Configurations.NewInputSystem,  () => {
+                if (EditorUtility.DisplayDialog("Unity editor restart required", "The Unity editor must be restarted for the input system change to take effect. Cancel or apply.", "Apply", "Cancel"))
+                {
+                    SerializedObject settings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton(nameof(PlayerSettings)));
+
+                    if (settings != null)
+                    {
+                        settings.Update();
+                        SerializedProperty activeInputHandlerProperty = settings.FindProperty("activeInputHandler");
+                        if (activeInputHandlerProperty != null)
+                        {
+                            activeInputHandlerProperty.intValue = 2;
+                            settings.ApplyModifiedProperties();
+                            typeof(EditorApplication).GetMethod("RestartEditorAndRecompileScripts", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)?.Invoke(null, null);
+                        }
+                    }
+                }}
+            },
+#endif // UNITY_2020_1_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false) },
