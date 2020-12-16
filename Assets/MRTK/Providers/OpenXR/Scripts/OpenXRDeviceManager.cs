@@ -61,9 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:
-                    return typeof(WindowsMixedRealityOpenXRController);
+                    return typeof(MicrosoftMotionController);
                 case SupportedControllerType.ArticulatedHand:
-                    return typeof(WindowsMixedRealityOpenXRArticulatedHand);
+                    return typeof(MicrosoftArticulatedHand);
                 default:
                     return base.GetControllerType(supportedControllerType);
             }

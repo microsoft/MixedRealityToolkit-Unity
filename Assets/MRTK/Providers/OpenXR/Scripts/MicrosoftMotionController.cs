@@ -17,12 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
         "StandardAssets/Textures/MotionController")]
-    public class WindowsMixedRealityOpenXRController : GenericXRSDKController
+    public class MicrosoftMotionController : GenericXRSDKController
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityOpenXRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public MicrosoftMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         /// <inheritdoc />

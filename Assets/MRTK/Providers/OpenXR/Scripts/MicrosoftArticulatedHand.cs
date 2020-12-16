@@ -18,12 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
         new[] { Handedness.Left, Handedness.Right })]
-    public class WindowsMixedRealityOpenXRArticulatedHand : GenericXRSDKController, IMixedRealityHand
+    public class MicrosoftArticulatedHand : GenericXRSDKController, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityOpenXRArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public MicrosoftArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
