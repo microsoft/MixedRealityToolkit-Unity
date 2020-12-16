@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         SelectFar,
 
         /// <summary>
+        /// Represents the Speech Keyword state.  This state is set when a speech keyword is recognized.
+        /// </summary>
+        SpeechKeyword,
+
+        /// <summary>
         /// Represents the Clicked state. By default, this state is set through a far interaction selection.
         /// </summary>
         Clicked,

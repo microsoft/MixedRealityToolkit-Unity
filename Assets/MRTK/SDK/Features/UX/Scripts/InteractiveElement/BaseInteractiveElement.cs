@@ -21,7 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         MonoBehaviour,
         IMixedRealityFocusHandler,
         IMixedRealityTouchHandler,
-        IMixedRealityPointerHandler
+        IMixedRealityPointerHandler,
+        IMixedRealitySpeechHandler
     {
         [SerializeField]
         [Tooltip("Whether or not this interactive element will react to input and update internally. If true, the " +
@@ -77,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         protected string ClickedStateName = CoreInteractionState.Clicked.ToString();
         protected string ToggleOnStateName = CoreInteractionState.ToggleOn.ToString();
         protected string ToggleOffStateName = CoreInteractionState.ToggleOff.ToString();
+        protected string SpeechKeywordStateName = CoreInteractionState.SpeechKeyword.ToString();
 
         public virtual void OnValidate()
         {
@@ -99,12 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public virtual void Start()
         {
-            // If the SelectFar state is in the States list at start and the Global property is true, then
-            // register the IMixedRealityPointerHandler for global usage
-            RegisterSelectFarHandler(true);
+            // If the SelectFar or Speech Keyword state is in the States list at start and the Global property is true, then
+            // register the IMixedRealityPointerHandler or IMixedRealitySpeechHandler for global usage
+            RegisterGlobalInputHandlers(true, true);
 
             // If the SelectFar state is present, add listeners for the Global property for runtime property modification
-            StateManager.AddSelectFarListeners();
+            StateManager.AddGlobalPropertyChangedListeners(SelectFarStateName);
+
+            // If the SpeechKeyword state is present, add listeners for the Global property for runtime property modification
+            StateManager.AddGlobalPropertyChangedListeners(SpeechKeywordStateName);
 
             // If the Toggle states are present, ensure the set up is correct and check initial values
             if (IsStatePresent(ToggleOnStateName) || IsStatePresent(ToggleOffStateName))
@@ -122,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         private void OnDisable()
         {
-            // Unregister the IMixedRealityPointerHandler if it was registered
-            RegisterSelectFarHandler(false);
+            // Unregister global input handlers if they were registered
+            RegisterGlobalInputHandlers(false, false);
         }
 
         // Add the Default and the Focus state as the initial states in the States list
@@ -207,6 +212,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             SetStateAndInvokeEvent(SelectFarStateName, 0, eventData);
+        }
+
+        #endregion
+
+        #region SpeechKeyword
+
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            if (IsStatePresent(SpeechKeywordStateName))
+            {
+                // After the Speech Keyword events have been fired, this state 
+                // is set to off in the SpeechKeywordReceiver
+                SetStateAndInvokeEvent(SpeechKeywordStateName, 1, eventData);
+            }
         }
 
         #endregion
@@ -456,19 +475,30 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Register the IMixedRealityPointerHandler for global input when the SelectFar state is
+        /// Register the IMixedRealityPointerHandler or IMixedRealitySpeechHandler for global input when the SelectFar or SpeechKeyword state is
         /// present on Start and the Global property is true.
         /// </summary>
-        internal void RegisterSelectFarHandler(bool register)
+        internal void RegisterGlobalInputHandlers(bool registerPointerHandler, bool registerSpeechHandler)
         {
             if (IsStatePresent(SelectFarStateName))
             {
                 var selectFarEvents = GetStateEvents<SelectFarEvents>(SelectFarStateName);
 
-                // Check if far select has the Global property enabled
+                // Check if Select Far has the Global property enabled
                 if (selectFarEvents.Global)
                 {
-                    RegisterHandler<IMixedRealityPointerHandler>(register);
+                    RegisterHandler<IMixedRealityPointerHandler>(registerPointerHandler);
+                }
+            }
+
+            if (IsStatePresent(SpeechKeywordStateName))
+            {
+                var speechKeywordEvents = GetStateEvents<SpeechKeywordEvents>(SpeechKeywordStateName);
+
+                // Check if Speech Keyword state has the Global property enabled
+                if (speechKeywordEvents.Global)
+                {
+                    RegisterHandler<IMixedRealitySpeechHandler>(registerSpeechHandler);
                 }
             }
         }

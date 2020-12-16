@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         private string defaultStateName = CoreInteractionState.Default.ToString();
         private string touchStateName = CoreInteractionState.Touch.ToString();
         private string selectFarStateName = CoreInteractionState.SelectFar.ToString();
+        private string speechKeywordStateName = CoreInteractionState.SpeechKeyword.ToString();
 
         /// <summary>
         /// Gets a state by using the state name.
@@ -379,7 +380,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             if (state.Name == selectFarStateName)
             {
                 // Add listeners that monitor whether or not the SelectFar state's Global property has been changed
-                AddSelectFarListeners();
+                AddGlobalPropertyChangedListeners(selectFarStateName);
+            }
+
+            if (state.Name == speechKeywordStateName)
+            {
+                // Add listeners that monitor whether or not the SpeechKeyword state's Global property has been changed
+                AddGlobalPropertyChangedListeners(speechKeywordStateName);
             }
         }
 
@@ -407,20 +414,33 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             });
         }
 
-        // Add listeners to the Global Changed event contained in the SelectFarEvents event configuration. 
-        internal void AddSelectFarListeners()
+        // Add listeners to the Global Changed event contained in the SelectFarEvents or the SpeechKeywordEvents event configuration 
+        internal void AddGlobalPropertyChangedListeners(string stateName)
         {
-            InteractionState selectFarState = GetState(selectFarStateName);
+            InteractionState state = GetState(stateName);
 
-            if (selectFarState != null)
+            if (state != null)
             {
-                SelectFarEvents events = InteractiveElement.GetStateEvents<SelectFarEvents>(selectFarStateName);
-
-                // If the select far state is added during runtime, then add listeners to keep track of the Global property
-                events.OnGlobalChanged.AddListener(() =>
+                if (state.Name == selectFarStateName)
                 {
-                    InteractiveElement.RegisterHandler<IMixedRealityPointerHandler>(events.Global);
-                });
+                    var eventConfiguration = InteractiveElement.GetStateEvents<SelectFarEvents>(selectFarStateName);
+
+                    // If the select far state is added during runtime, then add listeners to keep track of the Global property
+                    eventConfiguration.OnGlobalChanged.AddListener(() =>
+                    {
+                        InteractiveElement.RegisterHandler<IMixedRealityPointerHandler>(eventConfiguration.Global);
+                    });
+                }
+                else if (state.Name == speechKeywordStateName)
+                {
+                    var eventConfiguration = InteractiveElement.GetStateEvents<SpeechKeywordEvents>(speechKeywordStateName);
+
+                    // If the speech keyword state is added during runtime, then add listeners to keep track of the Global property
+                    eventConfiguration.OnGlobalChanged.AddListener(() =>
+                    {
+                        InteractiveElement.RegisterHandler<IMixedRealitySpeechHandler>(eventConfiguration.Global);
+                    });
+                }
             }
         }
     }
