@@ -316,17 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 {
                     showFloor = value;
 
-                    if (value && (currentFloorObject == null))
-                    {
-                        GetFloorVisualization();
-                    }
-
-                    if (currentFloorObject != null)
-                    {
-                        currentFloorObject.SetActive(value);
-                    }
-
-                    RaiseBoundaryVisualizationChanged();
+                    PropertyAction(value, currentFloorObject, () => GetFloorVisualization());
                 }
             }
         }
@@ -367,17 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 {
                     showPlayArea = value;
 
-                    if (value && (currentPlayAreaObject == null))
-                    {
-                        GetPlayAreaVisualization();
-                    }
-
-                    if (currentPlayAreaObject != null)
-                    {
-                        currentPlayAreaObject.SetActive(value);
-                    }
-
-                    RaiseBoundaryVisualizationChanged();
+                    PropertyAction(value, currentPlayAreaObject, () => GetPlayAreaVisualization());
                 }
             }
         }
@@ -419,17 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 {
                     showTrackedArea = value;
 
-                    if (value && (currentTrackedAreaObject == null))
-                    {
-                        GetTrackedAreaVisualization();
-                    }
-
-                    if (currentTrackedAreaObject != null)
-                    {
-                        currentTrackedAreaObject.SetActive(value);
-                    }
-
-                    RaiseBoundaryVisualizationChanged();
+                    PropertyAction(value, currentTrackedAreaObject, () => GetTrackedAreaVisualization());
                 }
             }
         }
@@ -471,17 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 {
                     showBoundaryWalls = value;
 
-                    if (value && (currentBoundaryWallObject == null))
-                    {
-                        GetBoundaryWallVisualization();
-                    }
-
-                    if (currentBoundaryWallObject != null)
-                    {
-                        currentBoundaryWallObject.SetActive(value);
-                    }
-
-                    RaiseBoundaryVisualizationChanged();
+                    PropertyAction(value, currentBoundaryWallObject, () => GetBoundaryWallVisualization());
                 }
             }
         }
@@ -523,17 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 {
                     showCeiling = value;
 
-                    if (value && (currentCeilingObject == null))
-                    {
-                        GetBoundaryCeilingVisualization();
-                    }
-
-                    if (currentCeilingObject != null)
-                    {
-                        currentCeilingObject.SetActive(value);
-                    }
-
-                    RaiseBoundaryVisualizationChanged();
+                    PropertyAction(value, currentCeilingObject, () => GetBoundaryCeilingVisualization());
                 }
             }
         }
@@ -561,6 +511,21 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     currentFloorObject.layer = ceilingPhysicsLayer;
                 }
             }
+        }
+
+        private void PropertyAction(bool value, GameObject boundaryObject, System.Action getVisualizationMethod)
+        {
+            if (value && (boundaryObject == null))
+            {
+                getVisualizationMethod();
+            }
+
+            if (boundaryObject != null)
+            {
+                boundaryObject.SetActive(value);
+            }
+
+            RaiseBoundaryVisualizationChanged();
         }
 
         /// <inheritdoc/>
