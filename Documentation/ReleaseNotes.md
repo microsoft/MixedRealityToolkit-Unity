@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.1 release notes
+# Microsoft Mixed Reality Toolkit 2.5.2 release notes
 
 - [What's new](#whats-new)
 - [Breaking changes](#breaking-changes)
@@ -7,9 +7,8 @@
 
 > [!IMPORTANT]
 > There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio, 
-> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
-> a workaround.
+> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
+> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
 ## What's new
 
@@ -27,7 +26,7 @@ This release fixes an [issue](https://github.com/microsoft/MixedRealityToolkit-U
 
 ## Breaking changes
 
-There are no breaking changes since version 2.5.0.
+There are no breaking changes since version 2.5.1.
 
 ## Known issues
 
