@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             isInitialized = true;
 
+            RefreshVisualization();
             RaiseBoundaryVisualizationChanged();
         }
 
@@ -517,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private void PropertyAction(bool value, GameObject boundaryObject, System.Action getVisualizationMethod)
+        private void PropertyAction(bool value, GameObject boundaryObject, System.Action getVisualizationMethod, bool raiseEvent = true)
         {
             // If not done initializing, no need to raise the changed event or check the visualization.
             // These will both happen at the end of the initialization flow.
@@ -536,7 +537,23 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 boundaryObject.SetActive(value);
             }
 
-            RaiseBoundaryVisualizationChanged();
+            if (raiseEvent)
+            {
+                RaiseBoundaryVisualizationChanged();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the current boundary visualizations without raising changed events.
+        /// Used during the initialization flow.
+        /// </summary>
+        private void RefreshVisualization()
+        {
+            PropertyAction(ShowFloor, currentFloorObject, () => GetFloorVisualization(), false);
+            PropertyAction(ShowPlayArea, currentPlayAreaObject, () => GetPlayAreaVisualization(), false);
+            PropertyAction(ShowTrackedArea, currentTrackedAreaObject, () => GetTrackedAreaVisualization(), false);
+            PropertyAction(ShowBoundaryWalls, currentBoundaryWallObject, () => GetBoundaryWallVisualization(), false);
+            PropertyAction(ShowBoundaryCeiling, currentCeilingObject, () => GetBoundaryCeilingVisualization(), false);
         }
 
         /// <inheritdoc/>
