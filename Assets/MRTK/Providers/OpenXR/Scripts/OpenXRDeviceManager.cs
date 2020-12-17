@@ -51,6 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
                 }
             }
+            
+            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked) && !isTracked)
+            {
+                // If this is an input device from the Microsoft Hand Interaction profile, it doesn't go invalid but instead goes untracked. Ignore it if untracked.
+                ActiveControllers.Remove(inputDevice);
+                return null;
+            }
 
             return base.GetOrAddController(inputDevice);
         }
