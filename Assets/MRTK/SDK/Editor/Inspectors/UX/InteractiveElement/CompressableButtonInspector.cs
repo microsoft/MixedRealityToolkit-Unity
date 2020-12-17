@@ -8,6 +8,12 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// Inspector for CompressableButton, includes the logic for the plane distance setting editor tool which allows for modification 
+    /// of the Start Push Distance, Max Push Distance, Press Distance and Release Distance.  
+    /// 
+    /// Note: This is the inspector for PressableButtonHoloLens2.
+    /// </summary>
     [CustomEditor(typeof(CompressableButton))]
     public class CompressableButtonInspector : BaseInteractiveElementInspector
     {
