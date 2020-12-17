@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.GripPress),
             new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
             new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
             new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
@@ -61,12 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.SpatialPointer:
-                        if (inputDevice.TryGetFeatureValue(Input.CustomUsages.PointerPosition, out currentPointerPosition))
+                        if (inputDevice.TryGetFeatureValue(CustomUsages.PointerPosition, out currentPointerPosition))
                         {
                             currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
                         }
 
-                        if (inputDevice.TryGetFeatureValue(Input.CustomUsages.PointerRotation, out currentPointerRotation))
+                        if (inputDevice.TryGetFeatureValue(CustomUsages.PointerRotation, out currentPointerRotation))
                         {
                             currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
                         }
