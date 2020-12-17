@@ -35,12 +35,20 @@ Two new solvers are ready for use with mainline MRTK.
 
   ![Directional Indicator Solver](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
+### Input Recording Service improvements
+
+`InputRecordingService` and `InputPlaybackService` can now record and plays back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see [here](InputSimulation/InputAnimationFileFormat.md#version-1.1) for more information on the new version 1.1 specifications.
+
 
 ## Breaking changes
 
 ### Certain fields of imported GLTF objects are now capitalized
 
 Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): `ComponentType`, `Path`, `Interpolation`, `Target`, `Type`, `Mode`, `MagFilter`, `MinFilter`, `WrapS`, `WrapT`.
+
+### Input animation binary file has an updated version 1.1 format
+
+Input animation binary file, used by `InputRecordingService` and `InputPlaybackService`, now has an updated file format to enable the optimizations made to those two services. Please see [here](InputSimulation/InputAnimationFileFormat.md#version-1.1) for more information on the new version 1.1 specifications.
 
 ## Known issues
 
