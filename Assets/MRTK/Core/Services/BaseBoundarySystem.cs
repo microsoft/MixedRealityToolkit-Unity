@@ -58,6 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Boundary System";
 
+        private bool isInitialized = false;
+
         /// <inheritdoc/>
         public override void Initialize()
         {
@@ -71,6 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
+
+            isInitialized = true;
 
             RaiseBoundaryVisualizationChanged();
         }
@@ -515,6 +519,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
         private void PropertyAction(bool value, GameObject boundaryObject, System.Action getVisualizationMethod)
         {
+            // If not done initializing, no need to raise the changed event or check the visualization.
+            // These will both happen at the end of the initialization flow.
+            if (!isInitialized)
+            {
+                return;
+            }
+
             if (value && (boundaryObject == null))
             {
                 getVisualizationMethod();
