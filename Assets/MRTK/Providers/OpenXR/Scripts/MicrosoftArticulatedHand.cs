@@ -12,7 +12,7 @@ using UnityEngine.XR;
 
 #if MSFT_OPENXR
 using Microsoft.MixedReality.OpenXR.Preview;
-#endif //MSFT_OPENXR
+#endif // MSFT_OPENXR
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
