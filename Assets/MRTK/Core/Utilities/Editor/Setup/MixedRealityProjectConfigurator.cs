@@ -53,11 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             InternetClientCapability,
 #if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
-#endif // UNITY_2019_3_OR_NEWER
 
-#if UNITY_2020_1_OR_NEWER
             NewInputSystem,
-#endif // UNITY_2020_1_OR_NEWER
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             AndroidMultiThreadedRendering = 2000,
@@ -136,13 +134,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput), BuildTarget.WSAPlayer) },
 #endif // UNITY_2019_3_OR_NEWER
  
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2019_3_OR_NEWER
             { Configurations.NewInputSystem, new ConfigGetter(() => {
                 SerializedObject settings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton(nameof(PlayerSettings)));
                 SerializedProperty newInputEnabledProp = settings?.FindProperty("activeInputHandler");
                 return newInputEnabledProp?.intValue != 1; })
             },
-#endif // UNITY_2020_1_OR_NEWER
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android), BuildTarget.Android) },
@@ -180,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.EyeTrackingCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true) },
 #endif // UNITY_2019_3_OR_NEWER
 
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2019_3_OR_NEWER
             { Configurations.NewInputSystem,  () => {
                 if (EditorUtility.DisplayDialog("Unity editor restart required", "The Unity editor must be restarted for the input system change to take effect. Cancel or apply.", "Apply", "Cancel"))
                 {
@@ -199,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                 }}
             },
-#endif // UNITY_2020_1_OR_NEWER
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false) },
