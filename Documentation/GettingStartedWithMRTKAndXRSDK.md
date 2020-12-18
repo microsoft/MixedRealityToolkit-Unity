@@ -23,6 +23,9 @@ Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.
    1. OpenXR Plugin
    1. Mixed Reality OpenXR Plugin
 
+> [!NOTE]
+> For the initial release of MRTK and OpenXR, only HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be released in upcoming releases.
+
 ![Plugin management](Images/XRSDK/PluginManagementOpenXR.png)
 
 #### Windows Mixed Reality
