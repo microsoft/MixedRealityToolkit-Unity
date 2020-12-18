@@ -1,7 +1,6 @@
 # Microsoft Mixed Reality Toolkit 2.5.2 release notes
 
 - [What's new](#whats-new)
-- [Breaking changes](#breaking-changes)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 - [Known issues](#known-issues)
 
@@ -10,7 +9,7 @@
 > ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
 > please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
-## What's new in 2.5.2
+## What's new
 
 ### Add support for OpenXR
 

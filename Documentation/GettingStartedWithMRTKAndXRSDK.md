@@ -77,7 +77,7 @@ to
 
 | Windows Mixed Reality | OpenXR |
 |-----------------------|--------|
-| [`XRSDK.WMR.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) | [`OpenXRDeviceManager`](xref:Microsoft.MixedReality.Toolkit.OpenXR.OpenXRDeviceManager) |
+| [`XRSDK.WMR.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) | [`OpenXRDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRDeviceManager) |
 
 ![XR SDK input settings](Images/XRSDK/InputSystemWMRXRSDK.png)
 
