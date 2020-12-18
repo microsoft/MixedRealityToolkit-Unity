@@ -10,23 +10,19 @@
 > ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
 > please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
-## What's new
+## What's new in 2.5.2
 
-### Package dependency errors fixed
+### Add support for OpenXR
 
-This release fixes incorrect inter-package file dependencies (ex: files in Standard Assets no longer incorrectly reference files in Foundation). Version 2.5.1 also adds an explicit dependency on Text Mesh Pro.
+Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See [the MRTK/XRSDK getting started page](GettingStartedWithMRTKAndXRSDK.md), [Unity's forum post](https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/), or [Microsoft's documentation](https://aka.ms/openxr-unity-install) for more information.
 
-### Standard Assets package shaders copied to Assets/MRTK/Shaders
+### Boundary visualization errors fixed
 
-When the Standard Assets package is installed via UPM, the shaders will be copied to the Assets/MRTK/Shaders folder so that they will no longer be immutable. This resolves the issue of shaders updated for the Universal Render Pipeline (URP) reverting the legacy behavior the next time the project is loaded.
+Boundary visualizations, like the floor or walls, will now be properly configured and visible at runtime according to the boundary profile.
 
-### Fixed teleport cursor sticking to hands
+### MSBuild for Unity support
 
-This release fixes an [issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8755) where the teleport destination cursor can stick to hand visuals.
-
-## Breaking changes
-
-There are no breaking changes since version 2.5.1.
+Support for MSBuild for Unity has been removed in the 2.5.2 release, to align with [Unity's new package guidance](https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/).
 
 ## Known issues
 
