@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.TestTools;
@@ -25,7 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private string clickedStateName = CoreInteractionState.Clicked.ToString();
         private string toggleOnStateName = CoreInteractionState.ToggleOn.ToString();
         private string toggleOffStateName = CoreInteractionState.ToggleOff.ToString();
+
+        // The PressedNear state is specific to the CompressableButton class and is not a CoreInteractionState
+        private string pressedNearStateName = "PressedNear";
         private string newStateName = "MyNewState";
+
+        private const string compressableCubeButtonPrefabGUID = "cd2f1e5c2c0ca934ab7b77568de1b45a";
+        private readonly string compressableCubeButtonPrefabPath = AssetDatabase.GUIDToAssetPath(compressableCubeButtonPrefabGUID);
 
         /// <summary>
         /// Tests adding listeners to the event configuration of the focus state.
@@ -111,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Add Focus Far event listeners 
             eventConfigurationFocusFar.OnFocusOn.AddListener((eventData) => { onFocusFarOn = true; });
-            eventConfigurationFocusFar.OnFocusOff.AddListener((eventData) =>{ onFocusFarOff = true; });
+            eventConfigurationFocusFar.OnFocusOff.AddListener((eventData) => { onFocusFarOff = true; });
 
             // Create a new hand and initialize it with an object in focus
             var leftHand = new TestHand(Handedness.Left);
@@ -559,6 +567,56 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+
+        #region Compressable Button
+
+        /// <summary>
+        /// Test the CompressableButtonCube prefab which contains the PressedNear state.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestCompressableButtonCube()
+        {
+            // Instantiate the CompressableCubeButton prefab
+            CompressableButton compressableButton = InstantiateCompressablePrefab(compressableCubeButtonPrefabPath);
+
+            InteractionState pressedNearState = compressableButton.GetState(pressedNearStateName);
+            InteractionState touchState = compressableButton.GetState(touchStateName);
+
+            var pressedNearEvents = compressableButton.GetStateEvents<PressedNearEvents>("PressedNear");
+
+            bool buttonPressed = false;
+            bool buttonHold = false;
+            bool buttonReleased = false;
+
+            // Add PressedNear state event listeners
+            pressedNearEvents.OnButtonPressed.AddListener(() => { buttonPressed = true; });
+            pressedNearEvents.OnButtonPressHold.AddListener(() => { buttonHold = true; });
+            pressedNearEvents.OnButtonPressReleased.AddListener(() => { buttonReleased = true; });
+
+            // Create a new hand and initialize it with an object in focus
+            var leftHand = new TestHand(Handedness.Left);
+            yield return ShowHandWithObjectInFocus(leftHand);
+
+            // Move hand to press compressable button, which will set the PressedNear state to on
+            yield return MoveHandPressObject(leftHand);
+
+            // Make sure the event listeners were triggered and that the PressedNear and Touch state are on
+            Assert.True(buttonPressed);
+            Assert.True(buttonHold);
+            Assert.AreEqual(pressedNearState.Value, 1);
+            Assert.AreEqual(touchState.Value, 1);
+
+            yield return MoveHandOutOfFocus(leftHand);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Make sure button released event was triggered and states are set to off 
+            Assert.True(buttonReleased);
+            Assert.AreEqual(pressedNearState.Value, 0);
+            Assert.AreEqual(touchState.Value, 0);
+        }
+
+        #endregion
+
         #region Interaction Tests Helpers
 
         private InteractiveElement CreateInteractiveCube()
@@ -587,6 +645,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private IEnumerator MoveHandTouchObject(TestHand hand)
         {
             yield return hand.Move(new Vector3(0, -0.25f, 0.221f));
+        }
+
+        private IEnumerator MoveHandPressObject(TestHand hand)
+        {
+            yield return hand.Move(new Vector3(0, -0.25f, 0.25f));
+        }
+
+        // Instantiate a prefab that has CompressableButton attached
+        private CompressableButton InstantiateCompressablePrefab(string path)
+        {
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
+
+            return result.GetComponent<CompressableButton>();
         }
 
         #endregion

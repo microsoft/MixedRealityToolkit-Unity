@@ -50,9 +50,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Const state names for case comparison 
         private const string SelectFarStateName = "SelectFar";
         private const string SpeechKeywordStateName = "SpeechKeyword";
+        private const string PressedNearStateName = "PressedNear";
 
         // The state selection menu is displayed when a user selects the "Add Core State" button
-        private StateSelectionMenu stateSelectionMenu; 
+        private StateSelectionMenu stateSelectionMenu;
+
+        private bool isCompressableButton;
         
         protected virtual void OnEnable()
         {
@@ -66,6 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             previousActiveStatus = active.boolValue;
 
             stateSelectionMenu = ScriptableObject.CreateInstance<StateSelectionMenu>();
+
+            isCompressableButton = instance.GetType() == typeof(CompressableButton);
         }
 
         public override void OnInspectorGUI()
@@ -177,13 +182,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
                     // Do not draw a remove button for the default state
-                    if (stateName.stringValue != defaultStateName && !inPlayMode)
+                    if (!inPlayMode && stateName.stringValue != defaultStateName)
                     {
-                        // Draw a button with a '-' for state removal
-                        if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
+                        // Do not draw a remove button for the Touch state or the PressedNear state if the current type is CompressableButton
+                        if (isCompressableButton && stateName.stringValue != touchStateName && stateName.stringValue != PressedNearStateName)
                         {
-                            states.DeleteArrayElementAtIndex(i);
-                            break;
+                            // Draw a button with a '-' for state removal
+                            if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
+                            {
+                                states.DeleteArrayElementAtIndex(i);
+                                break;
+                            }
                         }
                     }
 

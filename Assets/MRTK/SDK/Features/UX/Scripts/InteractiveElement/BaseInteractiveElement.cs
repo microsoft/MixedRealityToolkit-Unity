@@ -137,7 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             if (States.Count == 0)
             {
                 States.Add(new InteractionState(DefaultStateName));
-                States.Add(new InteractionState(FocusStateName));
+
+                // CompressableButton adds Touch and PressedNear as initial states by default instead of the Focus state
+                if (GetType() != typeof(CompressableButton))
+                {
+                    States.Add(new InteractionState(FocusStateName));
+                }
             }
         }
 
@@ -458,19 +463,36 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// touch input events. 
         /// A Near Interaction Touchable Volume component is attached by default because it detects touch input
         /// on the entire surface area of a collider.  While a Near Interaction Touchable component
-        /// will be attached if the object is a button because touch input is only detected within the area of a plane. 
+        /// will be attached if the object is a Compressable Button because touch input is only detected within the area of a plane. 
         /// </summary>
         internal void AddNearInteractionTouchable()
         {
             if (gameObject.GetComponent<BaseNearInteractionTouchable>() == null)
             {
-                // Add a Near Interaction Touchable Volume by default because it detects touch on the 
-                // entire surface area of a collider. 
-                gameObject.AddComponent<NearInteractionTouchableVolume>();
+                if (GetType() == typeof(CompressableButton))
+                {
+                    // Add a Near Interaction Touchable if the object is a button.
+                    // A Near Interaction Touchable detects touch input within the area of a plane and not the 
+                    // entire surface area of an object.
+                    NearInteractionTouchable touchable = gameObject.AddComponent<NearInteractionTouchable>();
 
-                // Add a Near Interaction Touchable if the object is a button.
-                // A Near Interaction Touchable detects touch input within the area of a plane and not the 
-                // entire surface area of an object.
+                    BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+
+                    Vector2 touchablePlaneSize = new Vector2(
+                                Math.Abs(Vector3.Dot(boxCollider.size, touchable.LocalRight)),
+                                Math.Abs(Vector3.Dot(boxCollider.size, touchable.LocalUp)));
+
+                    // Modify the bounds of the Near Interaction Touchable plane based on the size of its Box Collider
+                    touchable.SetBounds(touchablePlaneSize);
+                    touchable.SetLocalCenter(boxCollider.center + Vector3.Scale(boxCollider.size / 2.0f, touchable.LocalForward));
+
+                }
+                else
+                {
+                    // Add a Near Interaction Touchable Volume by default because it detects touch on the 
+                    // entire surface area of a collider. 
+                    gameObject.AddComponent<NearInteractionTouchableVolume>();
+                }
             }
         }
 
