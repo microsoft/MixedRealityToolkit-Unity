@@ -41,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => faceTrackedObjectWhileClamped = value;
         }
 
-        [Experimental]
         [SerializeField]
         [Tooltip("Face a user defined transform rather than using the solver orientation type.")]
         private bool faceUserDefinedTargetTransform = false;
