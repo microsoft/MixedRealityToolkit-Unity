@@ -335,7 +335,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected override void OnEnable()
         {
             base.OnEnable();
-            Recenter();
             RecalculateBoundsExtents();
         }
 
