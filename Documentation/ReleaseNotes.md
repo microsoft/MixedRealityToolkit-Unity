@@ -15,6 +15,11 @@
 
 Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See [the MRTK/XRSDK getting started page](GettingStartedWithMRTKAndXRSDK.md), [Unity's forum post](https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/), or [Microsoft's documentation](https://aka.ms/openxr-unity-install) for more information.
 
+> [!IMPORTANT]
+> OpenXR in Unity is only supported on Unity 2020.2 and higher.
+>
+> Currently, it also only supports x64 and ARM64 builds.
+
 ### Boundary visualization errors fixed
 
 Boundary visualizations, like the floor or walls, will now be properly configured and visible at runtime according to the boundary profile.

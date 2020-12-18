@@ -16,6 +16,8 @@ Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.
 
 > [!IMPORTANT]
 > OpenXR in Unity is only supported on Unity 2020.2 and higher.
+>
+> Currently, it also only supports x64 and ARM64 builds.
 
 1. Follow the [instructions to install the OpenXR plug-in](https://aka.ms/openxr-unity-install), including the steps for configuring XR Plugin Management and Optimization.
 1. Ensure the following all successfully installed:
