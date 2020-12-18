@@ -326,8 +326,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private Vector3 ReferencePosition => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
         private Quaternion ReferenceRotation => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
-        private Vector3 PreviousReferencePosition = Vector3.zero;
-        private Quaternion PreviousReferenceRotation = Quaternion.identity;
         private Quaternion PreviousGoalRotation = Quaternion.identity;
         private bool recenterNextUpdate = true;
         private Vector3 boundsExtents = Vector3.one;
@@ -376,9 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (recenterNextUpdate)
             {
                 PreviousGoalRotation = goalRotation;
-                PreviousReferencePosition = goalPosition;
-                PreviousReferenceRotation = goalRotation;
-                SnapTo(goalPosition, goalRotation);
+                SnapTo(goalPosition, goalRotation, WorkingScale);
                 recenterNextUpdate = false;
             }
             else
@@ -391,8 +387,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 GoalRotation = goalRotation;
                 PreviousGoalRotation = goalRotation;
-                PreviousReferencePosition = refPosition;
-                PreviousReferenceRotation = refRotation;
                 UpdateWorkingPositionToGoal();
                 UpdateWorkingRotationToGoal();
             }
