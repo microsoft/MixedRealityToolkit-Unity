@@ -187,18 +187,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (RemoveControllerPerfMarker.Auto())
             {
-                GenericXRSDKController controller = GetOrAddController(inputDevice);
-
-                if (controller != null)
+                if (ActiveControllers.ContainsKey(inputDevice))
                 {
-                    CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    GenericXRSDKController controller = ActiveControllers[inputDevice];
 
-                    RecyclePointers(controller.InputSource);
-
-                    if (controller.Visualizer != null &&
-                        controller.Visualizer.GameObjectProxy != null)
+                    if (controller != null)
                     {
-                        controller.Visualizer.GameObjectProxy.SetActive(false);
+                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+                        RecyclePointers(controller.InputSource);
+
+                        if (controller.Visualizer != null &&
+                            controller.Visualizer.GameObjectProxy != null)
+                        {
+                            controller.Visualizer.GameObjectProxy.SetActive(false);
+                        }
                     }
 
                     ActiveControllers.Remove(inputDevice);
