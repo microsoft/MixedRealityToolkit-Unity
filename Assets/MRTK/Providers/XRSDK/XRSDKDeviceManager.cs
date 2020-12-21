@@ -90,25 +90,20 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     {
                         GenericXRSDKController controller = GetOrAddController(device);
 
-                        if (lastInputDevices.Contains(device))
+                        if (controller != null && lastInputDevices.Contains(device))
                         {
                             // Remove devices from our previously tracked list as we update them.
                             // This will allow us to remove all stale devices that were tracked
                             // last frame but not this one.
                             lastInputDevices.Remove(device);
-                            controller?.UpdateController(device);
+                            controller.UpdateController(device);
                         }
                     }
                 }
 
                 foreach (InputDevice device in lastInputDevices)
                 {
-                    GenericXRSDKController controller = GetOrAddController(device);
-                    if (controller != null)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-                        RemoveController(device);
-                    }
+                    RemoveController(device);
                 }
 
                 lastInputDevices.Clear();
@@ -196,6 +191,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 if (controller != null)
                 {
+                    CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
                     RecyclePointers(controller.InputSource);
 
                     if (controller.Visualizer != null &&
