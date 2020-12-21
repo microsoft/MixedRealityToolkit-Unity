@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using Unity.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
@@ -30,36 +31,41 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
         #region Controller Utilities
 
+        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] OpenXRDeviceManager.GetOrAddController");
+
         /// <summary>
         /// The OpenXR plug-in uses extensions to expose all possible data, which might be surfaced through multiple input devices.
         /// This method is overridden to account for multiple input devices and reuse MRTK controllers if a match is found.
         /// </summary>
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
-            // If this is a new input device, search if an existing input device has matching characteristics
-            if (!ActiveControllers.ContainsKey(inputDevice))
+            using (GetOrAddControllerPerfMarker.Auto())
             {
-                foreach (InputDevice device in ActiveControllers.Keys)
+                // If this is a new input device, search if an existing input device has matching characteristics
+                if (!ActiveControllers.ContainsKey(inputDevice))
                 {
-                    if (((device.characteristics.HasFlag(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
-                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)))
-                        && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))))
+                    foreach (InputDevice device in ActiveControllers.Keys)
                     {
-                        ActiveControllers.Add(inputDevice, ActiveControllers[device]);
-                        break;
+                        if (((device.characteristics.HasFlag(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
+                            || (device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)))
+                            && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
+                            || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))))
+                        {
+                            ActiveControllers.Add(inputDevice, ActiveControllers[device]);
+                            break;
+                        }
                     }
                 }
-            }
-            
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked) && !isTracked)
-            {
-                // If this is an input device from the Microsoft Hand Interaction profile, it doesn't go invalid but instead goes untracked. Ignore it if untracked.
-                ActiveControllers.Remove(inputDevice);
-                return null;
-            }
 
-            return base.GetOrAddController(inputDevice);
+                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked) && !isTracked)
+                {
+                    // If this is an input device from the Microsoft Hand Interaction profile, it doesn't go invalid but instead goes untracked. Ignore it if untracked.
+                    ActiveControllers.Remove(inputDevice);
+                    return null;
+                }
+
+                return base.GetOrAddController(inputDevice);
+            }
         }
 
         /// <inheritdoc />
