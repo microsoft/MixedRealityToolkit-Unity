@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Experimental.Dialog;
+using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest
