@@ -85,13 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                         && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Controller) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
                         || (device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)))
                         && ((device.characteristics.HasFlag(InputDeviceCharacteristics.Left) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right)))
-                        && device.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking)
-                        && device.TryGetFeatureValue(CommonUsages.isTracked, out bool isTracked)
-                        && isTracked)
+                        || (device.characteristics.HasFlag(InputDeviceCharacteristics.Right) && inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))))
                     {
                         ActiveControllers.Remove(inputDevice);
-                        // Since the other device is tracked, return so a lost source isn't reported
+                        // Since an additional device exists, return so a lost source isn't reported
                         return;
                     }
                 }
