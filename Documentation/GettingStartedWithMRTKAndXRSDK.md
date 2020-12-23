@@ -19,14 +19,14 @@ Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.
 >
 > Currently, it also only supports x64 and ARM64 builds.
 
-1. Follow the [instructions to install the OpenXR plug-in](https://aka.ms/openxr-unity-install), including the steps for configuring XR Plugin Management and Optimization.
-1. Ensure the following all successfully installed:
+1. Follow the [Using the Mixed Reality OpenXR Plugin for Unity](https://aka.ms/openxr-unity-install) guide, including the steps for configuring XR Plugin Management and Optimization to install the OpenXR plug-in to your project.
+1. Ensure that the following have successfully installed:
    1. XR Plugin Management
    1. OpenXR Plugin
    1. Mixed Reality OpenXR Plugin
 
 > [!NOTE]
-> For the initial release of MRTK and OpenXR, only HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be released in upcoming releases.
+> For the initial release of MRTK and OpenXR, only the HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be added in upcoming releases.
 
 ![Plugin management](Images/XRSDK/PluginManagementOpenXR.png)
 
@@ -49,7 +49,7 @@ Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.
 
 If using OpenXR, choose "DefaultOpenXRConfigurationProfile" as the active profile or clone it to make customizations.
 
-If using other XR runtimes in the XR Plugin Management configuration, like Windows Mixed Reality or Oculus, choose "DefaultXRSDKConfigurationProfile" as the active profile or clone it to make customizations.
+If using other XR runtimes in the XR Plug-in Management configuration, like Windows Mixed Reality or Oculus, choose "DefaultXRSDKConfigurationProfile" as the active profile or clone it to make customizations.
 
 These profiles are set up with the correct systems and providers, where needed.
 
