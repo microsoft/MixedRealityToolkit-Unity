@@ -30,6 +30,12 @@ Support for MSBuild for Unity has been removed in the 2.5.2 release, to align wi
 
 ## Known issues
 
+### OpenXR
+
+There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
+Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
+
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 
 When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.
@@ -43,9 +49,9 @@ In some situations (e.g. when using the LeapMotion provider in the Unity Editor)
 Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
 
-### No spatializer was specified. The application will not support Spatial Sound.
+### No spatializer was specified. The application will not support Spatial Sound
 
-A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.
+A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.
 
 To resolve, please ensure that:
 
