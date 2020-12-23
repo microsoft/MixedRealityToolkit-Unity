@@ -63,9 +63,9 @@ From [`WindowsMixedReality.WindowsMixedRealityCameraSettings`](xref:Microsoft.Mi
 
 to
 
-| Windows Mixed Reality | OpenXR |
-|-----------------------|--------|
-| [`XRSDK.WMR.WindowsMixedRealityCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings) **and** [`GenericXRSDKCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings) | [`GenericXRSDKCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings) |
+| OpenXR | Windows Mixed Reality |
+|--------|-----------------------|
+| [`GenericXRSDKCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings) | [`XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings) **and** [`GenericXRSDKCameraSettings`](xref:Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings) |
 
 ![XR SDK camera settings](Images/XRSDK/CameraSystemXRSDK.png)
 
@@ -77,9 +77,9 @@ From [`WindowsMixedReality.Input.WindowsMixedRealityDeviceManager`](xref:Microso
 
 to
 
-| Windows Mixed Reality | OpenXR |
-|-----------------------|--------|
-| [`XRSDK.WMR.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) | [`OpenXRDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRDeviceManager) |
+| OpenXR | Windows Mixed Reality |
+|--------|-----------------------|
+| [`OpenXRDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRDeviceManager) | [`XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) |
 
 ![XR SDK input settings](Images/XRSDK/InputSystemWMRXRSDK.png)
 
@@ -91,8 +91,8 @@ From [`MixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary
 
 to
 
-| Windows Mixed Reality | OpenXR |
-|-----------------------|--------|
+| OpenXR | Windows Mixed Reality |
+|--------|-----------------------|
 | [`XRSDKBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem) | [`XRSDKBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem) |
 
 ![XR SDK boundary settings](Images/XRSDK/BoundarySystemXRSDK.png)
@@ -105,9 +105,9 @@ From [`WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserv
 
 to
 
-| Windows Mixed Reality | OpenXR |
-|-----------------------|--------|
-| [`XRSDK.WMR.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver) | In progress |
+| OpenXR | Windows Mixed Reality |
+|--------|-----------------------|
+| In progress | [`XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver) |
 
 ![XR SDK spatial awareness settings](Images/XRSDK/SpatialAwarenessXRSDK.png)
 
