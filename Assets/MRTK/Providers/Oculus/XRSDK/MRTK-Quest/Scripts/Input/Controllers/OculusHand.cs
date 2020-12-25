@@ -106,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
         }
 
+        /// <inheritdoc/>
         public override bool IsInPointingPose => handDefinition.IsInPointingPose;
 
         protected bool IsPinching { set; get; }
