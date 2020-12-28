@@ -4,7 +4,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Handling click event and dismiss dialog
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// A reference to the Dialog that this button is on.
         /// </summary>
-        public DialogShell ParentDialog { get; set; }
+        public Dialog ParentDialog { get; set; }
 
         /// <summary>
         /// The type description of the button

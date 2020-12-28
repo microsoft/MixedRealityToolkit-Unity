@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public abstract class Dialog : MonoBehaviour
     {
@@ -118,6 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         protected abstract void SetTitleAndMessage();
 
         /// <summary>
+        /// Function to destroy the Dialog.
+        /// </summary>
+        public abstract void DismissDialog();
+
+        /// <summary>
         /// Instantiates a dialog and passes it a result
         /// </summary>
         /// <param name="dialogPrefab">Dialog prefab</param>
@@ -147,17 +152,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             {
                 // For HoloLens 2, place the dialog at 45cm from the user for the near hand interactions.
                 // Size is maintained by ConstantViewSize solver
-                RadialView rv = dialogGameObject.GetComponent<RadialView>();
-                rv.MinDistance = 0.4f;
-                rv.MaxDistance = 0.7f;
+                Follow followSolver = dialogGameObject.GetComponent<Follow>();
+                followSolver.MinDistance = 0.3f;
+                followSolver.MaxDistance = 0.9f;
+                followSolver.DefaultDistance = 0.7f;
             }
             else
             {
                 // For HoloLens 1 and other platforms, place the dialog for far interactions with gaze or pointers.
                 // Size is maintained by ConstantViewSize solver
-                RadialView rv = dialogGameObject.GetComponent<RadialView>();
-                rv.MinDistance = 1.5f;
-                rv.MaxDistance = 2.0f;
+                Follow followSolver = dialogGameObject.GetComponent<Follow>();
+                followSolver.MinDistance = 1.5f;
+                followSolver.MaxDistance = 2.0f;
+                followSolver.DefaultDistance = 1.8f;
             }
 
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();
