@@ -90,16 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     {
                         GenericXRSDKController controller = GetOrAddController(device);
 
-                        if (controller == null)
-                        {
-                            continue;
-                        }
-
-                        if (!lastInputDevices.Contains(device))
-                        {
-                            CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-                        }
-                        else
+                        if (controller != null && lastInputDevices.Contains(device))
                         {
                             // Remove devices from our previously tracked list as we update them.
                             // This will allow us to remove all stale devices that were tracked
@@ -112,12 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 foreach (InputDevice device in lastInputDevices)
                 {
-                    GenericXRSDKController controller = GetOrAddController(device);
-                    if (controller != null)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-                        RemoveController(device);
-                    }
+                    RemoveController(device);
                 }
 
                 lastInputDevices.Clear();
@@ -185,6 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 ActiveControllers.Add(inputDevice, detectedController);
 
+                CoreServices.InputSystem?.RaiseSourceDetected(detectedController.InputSource, detectedController);
+
                 return detectedController;
             }
         }
@@ -199,16 +187,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             using (RemoveControllerPerfMarker.Auto())
             {
-                GenericXRSDKController controller = GetOrAddController(inputDevice);
-
-                if (controller != null)
+                if (ActiveControllers.ContainsKey(inputDevice))
                 {
-                    RecyclePointers(controller.InputSource);
+                    GenericXRSDKController controller = ActiveControllers[inputDevice];
 
-                    if (controller.Visualizer != null &&
-                        controller.Visualizer.GameObjectProxy != null)
+                    if (controller != null)
                     {
-                        controller.Visualizer.GameObjectProxy.SetActive(false);
+                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+                        RecyclePointers(controller.InputSource);
+
+                        if (controller.Visualizer != null &&
+                            controller.Visualizer.GameObjectProxy != null)
+                        {
+                            controller.Visualizer.GameObjectProxy.SetActive(false);
+                        }
                     }
 
                     ActiveControllers.Remove(inputDevice);

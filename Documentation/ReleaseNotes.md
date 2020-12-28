@@ -1,7 +1,6 @@
 # Microsoft Mixed Reality Toolkit 2.5.2 release notes
 
 - [What's new](#whats-new)
-- [Breaking changes](#breaking-changes)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
 - [Known issues](#known-issues)
 
@@ -12,23 +11,30 @@
 
 ## What's new
 
-### Package dependency errors fixed
+### Add support for OpenXR
 
-This release fixes incorrect inter-package file dependencies (ex: files in Standard Assets no longer incorrectly reference files in Foundation). Version 2.5.1 also adds an explicit dependency on Text Mesh Pro.
+Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See [the MRTK/XRSDK getting started page](GettingStartedWithMRTKAndXRSDK.md), [Unity's forum post](https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/), or [Microsoft's documentation](https://aka.ms/openxr-unity-install) for more information.
 
-### Standard Assets package shaders copied to Assets/MRTK/Shaders
+> [!IMPORTANT]
+> OpenXR in Unity is only supported on Unity 2020.2 and higher.
+>
+> Currently, it also only supports x64 and ARM64 builds.
 
-When the Standard Assets package is installed via UPM, the shaders will be copied to the Assets/MRTK/Shaders folder so that they will no longer be immutable. This resolves the issue of shaders updated for the Universal Render Pipeline (URP) reverting the legacy behavior the next time the project is loaded.
+### Boundary visualization errors fixed
 
-### Fixed teleport cursor sticking to hands
+Boundary visualizations, like the floor or walls, will now be properly configured and visible at runtime according to the boundary profile.
 
-This release fixes an [issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8755) where the teleport destination cursor can stick to hand visuals.
+### MSBuild for Unity support
 
-## Breaking changes
-
-There are no breaking changes since version 2.5.1.
+Support for MSBuild for Unity has been removed in the 2.5.2 release, to align with [Unity's new package guidance](https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/).
 
 ## Known issues
+
+### OpenXR
+
+There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
+Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 
@@ -43,9 +49,9 @@ In some situations (e.g. when using the LeapMotion provider in the Unity Editor)
 Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
 
-### No spatializer was specified. The application will not support Spatial Sound.
+### No spatializer was specified. The application will not support Spatial Sound
 
-A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.
+A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.
 
 To resolve, please ensure that:
 
