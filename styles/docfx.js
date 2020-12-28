@@ -256,7 +256,7 @@ $(function () {
           } else {
             flipContents("hide");
             $("body").trigger("queryReady");
-            $('#search-results>.search-list').text('Search Results for "' + query + '"');
+            $('#search-results>.search-list>span').text('"' + query + '"');
           }
         }).off("keydown");
       });
@@ -301,12 +301,17 @@ $(function () {
 
     function handleSearchResults(hits) {
       var numPerPage = 10;
-      $('#pagination').empty();
-      $('#pagination').removeData("twbs-pagination");
+      var pagination = $('#pagination');
+      pagination.empty();
+      pagination.removeData("twbs-pagination");
       if (hits.length === 0) {
         $('#search-results>.sr-items').html('<p>No results found</p>');
-      } else {
-        $('#pagination').twbsPagination({
+      } else {        
+        pagination.twbsPagination({
+          first: pagination.data('first'),
+          prev: pagination.data('prev'),
+          next: pagination.data('next'),
+          last: pagination.data('last'),
           totalPages: Math.ceil(hits.length / numPerPage),
           visiblePages: 5,
           onPageClick: function (event, page) {
@@ -422,6 +427,8 @@ $(function () {
       $('#toc a.active').parents('li').each(function (i, e) {
         $(e).addClass(active).addClass(expanded);
         $(e).children('a').addClass(active);
+      })
+      $('#toc a.active').parents('li').each(function (i, e) {
         top += $(e).position().top;
       })
       $('.sidetoc').scrollTop(top - 50);
@@ -447,7 +454,11 @@ $(function () {
         var val = this.value;
         //Save filter string to local session storage
         if (typeof(Storage) !== "undefined") {
-          sessionStorage.filterString = val;
+          try {
+            sessionStorage.filterString = val;
+            }
+          catch(e)
+            {}
         }
         if (val === '') {
           // Clear 'filtered' class
@@ -456,6 +467,16 @@ $(function () {
           return;
         }
         tocFilterClearButton.fadeIn();
+
+        // set all parent nodes status
+        $('#toc li>a').filter(function (i, e) {
+          return $(e).siblings().length > 0
+        }).each(function (i, anchor) {
+          var parent = $(anchor).parent();
+          parent.addClass(hide);
+          parent.removeClass(show);
+          parent.removeClass(filtered);
+        })
         
         // Get leaf nodes
         $('#toc li>a').filter(function (i, e) {
@@ -504,14 +525,22 @@ $(function () {
         tocFilterInput.val("");
         tocFilterInput.trigger('input');
         if (typeof(Storage) !== "undefined") {
-          sessionStorage.filterString = "";
+          try {
+            sessionStorage.filterString = "";
+            }
+          catch(e)
+            {}
         }
       });
 
       //Set toc filter from local session storage on page load
       if (typeof(Storage) !== "undefined") {
-        tocFilterInput.val(sessionStorage.filterString);
-        tocFilterInput.trigger('input');
+        try {
+          tocFilterInput.val(sessionStorage.filterString);
+          tocFilterInput.trigger('input');
+          }
+        catch(e)
+          {}
       }
     }
 
@@ -569,10 +598,12 @@ $(function () {
   //Setup Affix
   function renderAffix() {
     var hierarchy = getHierarchy();
-    if (hierarchy && hierarchy.length > 0) {
-      var html = '<h5 class="title">In This Article</h5>'
-      html += util.formList(hierarchy, ['nav', 'bs-docs-sidenav']);
-      $("#affix").empty().append(html);
+    if (!hierarchy || hierarchy.length <= 0) {
+      $("#affix").hide();
+    }
+    else {
+      var html = util.formList(hierarchy, ['nav', 'bs-docs-sidenav']);
+      $("#affix>div").empty().append(html);
       if ($('footer').is(':visible')) {
         $(".sideaffix").css("bottom", "70px");
       }
@@ -1162,7 +1193,7 @@ $(function () {
 
     $(window).on('hashchange', scrollToCurrent);
 
-    $(window).load(function () {
+    $(window).on('load', function () {
         // scroll to the anchor if present, offset by the header
         scrollToCurrent();
     });

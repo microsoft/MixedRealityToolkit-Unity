@@ -8,7 +8,7 @@
     <title>Getting started with MRTK and XR SDK | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Getting started with MRTK and XR SDK | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -71,11 +71,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -95,8 +95,29 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>To get started with the Mixed Reality Toolkit, follow <a href="WelcomeToMRTK.html">the provided steps</a> to add MRTK to a project.</p>
 <h2 id="add-xr-sdk-to-a-unity-project">Add XR SDK to a Unity project</h2>
-<p>Windows Mixed Reality and Oculus are supported on XR SDK.</p>
+<p>Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.</p>
 <h3 id="required-in-unity">Required in Unity</h3>
+<h4 id="openxr-preview">OpenXR (Preview)</h4>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
+<p>Currently, it also only supports x64 and ARM64 builds.</p>
+</div>
+<ol>
+<li>Follow the <a href="https://aka.ms/openxr-unity-install">Using the Mixed Reality OpenXR Plugin for Unity</a> guide, including the steps for configuring XR Plugin Management and Optimization to install the OpenXR plug-in to your project.</li>
+<li>Ensure that the following have successfully installed:
+<ol>
+<li>XR Plugin Management</li>
+<li>OpenXR Plugin</li>
+<li>Mixed Reality OpenXR Plugin</li>
+</ol>
+</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>For the initial release of MRTK and OpenXR, only the HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be added in upcoming releases.</p>
+</div>
+<p><img src="Images/XRSDK/PluginManagementOpenXR.png" alt="Plugin management"></p>
 <h4 id="windows-mixed-reality">Windows Mixed Reality</h4>
 <ol>
 <li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following all successfully installed:
@@ -115,27 +136,88 @@
 </ol>
 <p><img src="Images/XRSDK/PluginManagement.png" alt="Plugin management"></p>
 <h3 id="required-in-mrtk">Required in MRTK</h3>
-<p>Choose the &quot;DefaultXRSDKConfigurationProfile&quot; as the active profile or clone it to make customizations. This profile is set up with MRTK's XR SDK systems and providers, where needed.</p>
+<p>If using OpenXR, choose &quot;DefaultOpenXRConfigurationProfile&quot; as the active profile or clone it to make customizations.</p>
+<p>If using other XR runtimes in the XR Plug-in Management configuration, like Windows Mixed Reality or Oculus, choose &quot;DefaultXRSDKConfigurationProfile&quot; as the active profile or clone it to make customizations.</p>
+<p>These profiles are set up with the correct systems and providers, where needed.</p>
 <p>To migrate an existing profile to XR SDK, the following services and data providers should be updated:</p>
 <h4 id="camera">Camera</h4>
 <p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a></p>
 <p><img src="Images/XRSDK/CameraSystemLegacy.png" alt="Legacy camera settings"></p>
-<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a> <strong>and</strong> <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html"><code>GenericXRSDKCameraSettings</code></a></p>
+<p>to</p>
+<table>
+<thead>
+<tr>
+<th>OpenXR</th>
+<th>Windows Mixed Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html"><code>GenericXRSDKCameraSettings</code></a></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityCameraSettings</code></a> <strong>and</strong> <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html"><code>GenericXRSDKCameraSettings</code></a></td>
+</tr>
+</tbody>
+</table>
 <p><img src="Images/XRSDK/CameraSystemXRSDK.png" alt="XR SDK camera settings"></p>
 <h4 id="input">Input</h4>
 <p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html"><code>WindowsMixedReality.Input.WindowsMixedRealityDeviceManager</code></a></p>
 <p><img src="Images/XRSDK/InputSystemWMRLegacy.png" alt="Legacy input settings"></p>
-<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager</code></a></p>
+<p>to</p>
+<table>
+<thead>
+<tr>
+<th>OpenXR</th>
+<th>Windows Mixed Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRDeviceManager.html"><code>OpenXRDeviceManager</code></a></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager</code></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>OpenXR</strong>:</p>
+<p><img src="Images/XRSDK/InputSystemOpenXR.png" alt="OpenXR input settings"></p>
+<p><strong>Windows Mixed Reality</strong>:</p>
 <p><img src="Images/XRSDK/InputSystemWMRXRSDK.png" alt="XR SDK input settings"></p>
 <h4 id="boundary">Boundary</h4>
 <p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html"><code>MixedRealityBoundarySystem</code></a></p>
 <p><img src="Images/XRSDK/BoundarySystemLegacy.png" alt="Legacy boundary settings"></p>
-<p>to  <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html"><code>XRSDKBoundarySystem</code></a></p>
+<p>to</p>
+<table>
+<thead>
+<tr>
+<th>OpenXR</th>
+<th>Windows Mixed Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html"><code>XRSDKBoundarySystem</code></a></td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html"><code>XRSDKBoundarySystem</code></a></td>
+</tr>
+</tbody>
+</table>
 <p><img src="Images/XRSDK/BoundarySystemXRSDK.png" alt="XR SDK boundary settings"></p>
 <h4 id="spatial-awareness">Spatial awareness</h4>
 <p>From <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html"><code>WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver</code></a></p>
 <p><img src="Images/XRSDK/SpatialAwarenessLegacy.png" alt="Legacy spatial awareness settings"></p>
-<p>to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver</code></a></p>
+<p>to</p>
+<table>
+<thead>
+<tr>
+<th>OpenXR</th>
+<th>Windows Mixed Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>In progress</td>
+<td><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver.html"><code>XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver</code></a></td>
+</tr>
+</tbody>
+</table>
 <p><img src="Images/XRSDK/SpatialAwarenessXRSDK.png" alt="XR SDK spatial awareness settings"></p>
 <h4 id="controller-mappings">Controller mappings</h4>
 <p>If using custom controller mapping profiles, open one of them and run the Mixed Reality Toolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles menu item to ensure the new XR SDK controller types are defined.</p>
@@ -157,7 +239,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

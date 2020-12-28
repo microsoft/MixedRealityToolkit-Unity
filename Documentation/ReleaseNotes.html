@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Microsoft Mixed Reality Toolkit 2.5.1 release notes | Mixed Reality Toolkit Documentation </title>
+    <title>Microsoft Mixed Reality Toolkit 2.5.2 release notes | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.1 release notes | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.2 release notes | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -71,11 +71,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -89,31 +89,36 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="microsoft-mixed-reality-toolkit-251-release-notes">Microsoft Mixed Reality Toolkit 2.5.1 release notes</h1>
+<h1 id="microsoft-mixed-reality-toolkit-252-release-notes">Microsoft Mixed Reality Toolkit 2.5.2 release notes</h1>
 
 <ul>
 <li><a href="#whats-new">What's new</a></li>
-<li><a href="#breaking-changes">Breaking changes</a></li>
 <li><a href="Updating.html#upgrading-to-a-new-version-of-mrtk">Updating guidance</a></li>
 <li><a href="#known-issues">Known issues</a></li>
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the
-update is available, please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply
-a workaround.</p>
+ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
+please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply a workaround.</p>
 </div>
 <h2 id="whats-new">What's new</h2>
-<h3 id="package-dependency-errors-fixed">Package dependency errors fixed</h3>
-<p>This release fixes incorrect inter-package file dependencies (ex: files in Standard Assets no longer incorrectly reference files in Foundation). Version 2.5.1 also adds an explicit dependency on Text Mesh Pro.</p>
-<h3 id="standard-assets-package-shaders-copied-to-assetsmrtkshaders">Standard Assets package shaders copied to Assets/MRTK/Shaders</h3>
-<p>When the Standard Assets package is installed via UPM, the shaders will be copied to the Assets/MRTK/Shaders folder so that they will no longer be immutable. This resolves the issue of shaders updated for the Universal Render Pipeline (URP) reverting the legacy behavior the next time the project is loaded.</p>
-<h3 id="fixed-teleport-cursor-sticking-to-hands">Fixed teleport cursor sticking to hands</h3>
-<p>This release fixes an <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8755">issue</a> where the teleport destination cursor can stick to hand visuals.</p>
-<h2 id="breaking-changes">Breaking changes</h2>
-<p>There are no breaking changes since version 2.5.0.</p>
+<h3 id="add-support-for-openxr">Add support for OpenXR</h3>
+<p>Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See <a href="GettingStartedWithMRTKAndXRSDK.html">the MRTK/XRSDK getting started page</a>, <a href="https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/">Unity's forum post</a>, or <a href="https://aka.ms/openxr-unity-install">Microsoft's documentation</a> for more information.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
+<p>Currently, it also only supports x64 and ARM64 builds.</p>
+</div>
+<h3 id="boundary-visualization-errors-fixed">Boundary visualization errors fixed</h3>
+<p>Boundary visualizations, like the floor or walls, will now be properly configured and visible at runtime according to the boundary profile.</p>
+<h3 id="msbuild-for-unity-support">MSBuild for Unity support</h3>
+<p>Support for MSBuild for Unity has been removed in the 2.5.2 release, to align with <a href="https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/">Unity's new package guidance</a>.</p>
 <h2 id="known-issues">Known issues</h2>
+<h3 id="openxr">OpenXR</h3>
+<p>There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking <em>does</em> work.
+Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.</p>
 <h3 id="some-mixed-reality-toolkit-standard-shader-features-require-the-foundation-package">Some Mixed Reality Toolkit Standard Shader features require the Foundation package</h3>
 <p>When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.</p>
 <h3 id="cameracache-may-create-a-new-camera-on-shutdown">CameraCache may create a new camera on shutdown</h3>
@@ -121,8 +126,8 @@ a workaround.</p>
 <h3 id="filenotfoundexception-when-examples-are-imported-via-unity-package-manager">FileNotFoundException when examples are imported via Unity Package Manager</h3>
 <p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
-<h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound.</h3>
-<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these pacakges.</p>
+<h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound</h3>
+<p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.</p>
 <p>To resolve, please ensure that:</p>
 <ul>
 <li><p><strong>Window</strong> &gt; <strong>Package Manager</strong> has one or more XR packages installed</p>
@@ -163,7 +168,8 @@ for more details.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
