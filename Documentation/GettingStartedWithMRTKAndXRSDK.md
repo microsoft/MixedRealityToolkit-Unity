@@ -81,6 +81,12 @@ to
 |--------|-----------------------|
 | [`OpenXRDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.OpenXRDeviceManager) | [`XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) |
 
+__OpenXR__:
+
+![OpenXR input settings](Images/XRSDK/InputSystemOpenXR.png)
+
+__Windows Mixed Reality__:
+
 ![XR SDK input settings](Images/XRSDK/InputSystemWMRXRSDK.png)
 
 #### Boundary
