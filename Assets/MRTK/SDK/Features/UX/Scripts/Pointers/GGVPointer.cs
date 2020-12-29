@@ -309,6 +309,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
+        #region MonoBehaviour Implementation
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -333,6 +335,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        #endregion MonoBehaviour Implementation
 
         #region InputSystemGlobalHandlerListener Implementation
 
