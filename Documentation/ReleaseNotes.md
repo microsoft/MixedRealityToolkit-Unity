@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.2 release notes
+# Microsoft Mixed Reality Toolkit 2.5.3 release notes
 
 - [What's new](#whats-new)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
@@ -10,6 +10,10 @@
 > please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
 ## What's new
+
+### Fixes a regression with Oculus introduced in 2.5.2
+
+2.5.2 introduced [a build issue when integrating the Oculus SDK](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9083). This release reverts that issue.
 
 ### Add support for OpenXR
 
@@ -26,7 +30,7 @@ Boundary visualizations, like the floor or walls, will now be properly configure
 
 ### MSBuild for Unity support
 
-Support for MSBuild for Unity has been removed in the 2.5.2 release, to align with [Unity's new package guidance](https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/).
+Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align with [Unity's new package guidance](https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/).
 
 ## Known issues
 
