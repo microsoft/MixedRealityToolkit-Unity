@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ElasticsManager
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ElasticsManager
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager" class="text-break">Class ElasticsManager
+  </h1>
+  <div class="markdown level0 summary"><p>ElasticsManager can be used to add elastics simulation to supporting components.
+Call Initialize on manipulation start.
+Call ApplyHostTransform to apply elastics calculation to target transform.
+Elastics will continue simulating once manipulation ends through it's update function -
+to block the elastics auto update set EnableElasticsUpdate to false.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ElasticsManager</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.html">Microsoft.MixedReality.Toolkit.Experimental.Physics</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ElasticsManager : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ElasticTypes_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ElasticTypes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ElasticTypes" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ElasticTypes">ElasticTypes</h4>
+  <div class="markdown level1 summary"><p>Indication of which manipulation types use elastic feedback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransformFlags ElasticTypes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TransformFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_EnableElasticsUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.EnableElasticsUpdate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_EnableElasticsUpdate" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.EnableElasticsUpdate">EnableElasticsUpdate</h4>
+  <div class="markdown level1 summary"><p>Enables elastics simulation in the update method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableElasticsUpdate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_RotationElasticConfigurationObject_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.RotationElasticConfigurationObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_RotationElasticConfigurationObject" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.RotationElasticConfigurationObject">RotationElasticConfigurationObject</h4>
+  <div class="markdown level1 summary"><p>Reference to the ScriptableObject which holds the elastic system configuration for rotation manipulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ElasticConfiguration RotationElasticConfigurationObject { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticConfiguration.html">ElasticConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_RotationElasticExtent_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.RotationElasticExtent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_RotationElasticExtent" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.RotationElasticExtent">RotationElasticExtent</h4>
+  <div class="markdown level1 summary"><p>Extent of the rotation elastic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QuaternionElasticExtent RotationElasticExtent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticExtent.html">QuaternionElasticExtent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ScaleElasticConfigurationObject_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ScaleElasticConfigurationObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ScaleElasticConfigurationObject" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ScaleElasticConfigurationObject">ScaleElasticConfigurationObject</h4>
+  <div class="markdown level1 summary"><p>Reference to the ScriptableObject which holds the elastic system configuration for scale manipulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ElasticConfiguration ScaleElasticConfigurationObject { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticConfiguration.html">ElasticConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ScaleElasticExtent_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ScaleElasticExtent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ScaleElasticExtent" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ScaleElasticExtent">ScaleElasticExtent</h4>
+  <div class="markdown level1 summary"><p>Extent of the scale elastic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VolumeElasticExtent ScaleElasticExtent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticExtent.html">VolumeElasticExtent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_TranslationElasticConfigurationObject_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.TranslationElasticConfigurationObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_TranslationElasticConfigurationObject" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.TranslationElasticConfigurationObject">TranslationElasticConfigurationObject</h4>
+  <div class="markdown level1 summary"><p>Reference to the ScriptableObject which holds the elastic system configuration for translation manipulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ElasticConfiguration TranslationElasticConfigurationObject { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticConfiguration.html">ElasticConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_TranslationElasticExtent_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.TranslationElasticExtent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_TranslationElasticExtent" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.TranslationElasticExtent">TranslationElasticExtent</h4>
+  <div class="markdown level1 summary"><p>Extent of the translation elastic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VolumeElasticExtent TranslationElasticExtent { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Physics.VolumeElasticExtent.html">VolumeElasticExtent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ApplyTargetTransform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ApplyTargetTransform*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_ApplyTargetTransform_MixedRealityTransform_TransformFlags_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.ApplyTargetTransform(MixedRealityTransform,TransformFlags)">ApplyTargetTransform(MixedRealityTransform, TransformFlags)</h4>
+  <div class="markdown level1 summary"><p>Applies elastics calculation to the passed targetTransform and applies to the host transform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransformFlags ApplyTargetTransform(MixedRealityTransform targetTransform, TransformFlags transformsToApply = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityTransform</span></td>
+        <td><span class="parametername">targetTransform</span></td>
+        <td><p>Precalculated target transform that's influenced by elastics</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TransformFlags</span></td>
+        <td><span class="parametername">transformsToApply</span></td>
+        <td><p>Indicates which types of transforms are going to be applied. Default is Move, Rotate and Scale.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TransformFlags</span></td>
+        <td><p>Modified transform types.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_InitializeElastics_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.InitializeElastics*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_ElasticsManager_InitializeElastics_Transform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.ElasticsManager.InitializeElastics(Transform)">InitializeElastics(Transform)</h4>
+  <div class="markdown level1 summary"><p>Initialize elastics system with the given host transform.
+Caches a reference to the host transform to be able to keep updating elastics after manipulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InitializeElastics(Transform elasticsTransform)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">elasticsTransform</span></td>
+        <td><p>host transform the elastics are applied to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

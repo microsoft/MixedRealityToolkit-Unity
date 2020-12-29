@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Bounds control | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Bounds control | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="bounds-control">Bounds control</h1>
+
+<p><img src="Images/BoundsControl/MRTK_BoundsControl_Main.png" alt="Bounds control"></p>
+<p><em>BoundsControl</em> is the new component for manipulation behaviour, previously found in <em>BoundingBox</em>. Bounds control makes a number of improvements and simplifications in setup and adds new features. This component is a replacement for the bounding box, which will be deprecated.</p>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.BoundsControl.html"><code>BoundsControl.cs</code></a> script provides basic functionality for transforming objects in mixed reality. A bounds control will show a box around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the box allow scaling, rotating or translating the object. The bounds control also reacts to user input. On HoloLens 2, for example, the bounds control responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.</p>
+<h2 id="example-scene">Example scene</h2>
+<p>You can find examples of bounds control configurations in the <code>BoundsControlExamples</code> scene.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Examples.png">
+<h2 id="inspector-properties">Inspector properties</h2>
+<h3 id="target-object">Target object</h3>
+<p>This property specifies which object will get transformed by the bounds control manipulation. If no object is setit defaults to the owner object.</p>
+<h3 id="activation-behavior">Activation behavior</h3>
+<p>There are several options to activate the bounds control interface.</p>
+<ul>
+<li><em>Activate On Start</em>: Bounds control becomes visible once the scene is started.</li>
+<li><em>Activate By Proximity</em>: Bounds control becomes visible when an articulated hand is close to the object.</li>
+<li><em>Activate By Pointer</em>: Bounds control becomes visible when it is targeted by a hand-ray pointer.</li>
+<li><em>Activate By Proximity and Pointer</em>: Bounds control becomes visible when it is targeted by a hand-ray pointer or an articulated hand is close to the object.</li>
+<li><em>Activate Manually</em>: Bounds control does not become visible automatically. You can manually activate it through a script by accessing the boundsControl.Active property.</li>
+</ul>
+<h3 id="bounds-override">Bounds override</h3>
+<p>Sets a box collider from the object for bounds computation.</p>
+<h3 id="box-padding">Box padding</h3>
+<p>Adds a padding to the collider bounds used to calculate the extents of the control. This will influence not only interaction but also impact the visuals.</p>
+<h3 id="flatten-axis">Flatten axis</h3>
+<p>Indicates whether the control is flattened in one of the axes, making it 2 dimensional and disallowing manipulation along that axis. This feature can be used for thin objects like slates.
+If flatten axis is set to <em>Flatten Auto</em> the script will automatically pick the axis with the smallest extent as flatten axis.</p>
+<h3 id="smoothing">Smoothing</h3>
+<p>The smoothing section allows to configure smoothing behavior for scale and rotate of the control.</p>
+<h3 id="visuals">Visuals</h3>
+<p>The appearance of bounds control can be configured by modifying one of the corresponding visuals configurations.
+Visual configurations are either linked or inlined scriptable objects and are described in more detail in the <a href="#configuration-objects">configuration object section</a>.</p>
+<h2 id="configuration-objects">Configuration Objects</h2>
+<p>The control comes with a set of configuration objects that can be stored as scriptable objects and shared between different instances or prefabs. Configurations can be shared and linked either as individual scriptable asset files or nested scriptable assets inside of prefabs. Further configurations can also be defined directly on the instance without linking to an external or nested scriptable asset.</p>
+<p>The bounds control inspector will indicate whether a configuration is shared or inlined as part of the current instance by showing a message in the property inspector. In addition shared instances won't be editable directly in the bounds control property window itself, but instead the asset it's linking to has to be directly modfied to avoid any accidental changes on shared configurations.</p>
+<p>Currently bounds control offers configuration objects options for the following features:</p>
+<ul>
+<li>Handles
+<ul>
+<li><a href="#scale-handles-configuration">Scale handles</a></li>
+<li><a href="#rotation-handles-configuration">Rotation handles</a></li>
+<li><a href="#translation-handles-configuration">Translation handles</a></li>
+</ul>
+</li>
+<li><a href="#links-configuration">Links / Wireframe</a></li>
+<li><a href="#box-configuration">Box display</a></li>
+<li><a href="#proximity-effect-configuration">Proximity effect</a></li>
+</ul>
+<h3 id="box-configuration">Box configuration</h3>
+<p>The box configuration is responsible for rendering a solid box with bounds defined via collider size and box padding. The following properties can be set up:</p>
+<ul>
+<li><strong>Box material</strong>: defines the material applied to the rendered box when no interaction takes place. A box will only be rendered if this material is set.</li>
+<li><strong>Box grabbed material</strong>: material for the box when the user interacts with the control by grabbing via near or far interaction.</li>
+<li><strong>Flatten axis display scale</strong>: a scale that is applied to the box display if one of the axes is <a href="#flatten-axis">flattened</a>.</li>
+</ul>
+<h3 id="scale-handles-configuration">Scale handles configuration</h3>
+<p>This property drawer allows to modify behavior and visualization of scale handles of bounds control.</p>
+<ul>
+<li><strong>Handle material</strong>: material applied to the handles.</li>
+<li><strong>Handle grabbed material</strong>: material applied to the grabbed handle.</li>
+<li><strong>Handle prefab</strong>: optional prefab for the scale handle. If non is set MRTK will use a cube as default.</li>
+<li><strong>Handle size</strong>: size of the scale handle.</li>
+<li><strong>Collider padding</strong>: padding to add to the handle collider.</li>
+<li><strong>Draw tether when manipulating</strong>: when active will draw a tether line from point of start of interaction to current hand or pointer position.</li>
+<li><strong>Handles ignore collider</strong>: if a collider gets linked here, handles will ignore any collision with this collider.</li>
+<li><strong>Handle slate prefab</strong>: prefab to use for the handle when the control is flattened.</li>
+<li><strong>Show scale handles</strong>: controls visibility of the handle.</li>
+<li><strong>Scale behavior</strong>: can be set to uniform or non-uniform scaling.</li>
+</ul>
+<h3 id="rotation-handles-configuration">Rotation handles configuration</h3>
+<p>This configuration defines the rotation handle behavior.</p>
+<ul>
+<li><strong>Handle material</strong>: material applied to the handles.</li>
+<li><strong>Handle grabbed material</strong>: material applied to the grabbed handle.</li>
+<li><strong>Handle prefab</strong>: optional prefab for the handle. If non is set MRTK will use a sphere as default.</li>
+<li><strong>Handle size</strong>: size of the handle.</li>
+<li><strong>Collider padding</strong>: padding to add to the handle collider.</li>
+<li><strong>Draw tether when manipulating</strong>: when active will draw a tether line from point of start of interaction to current hand or pointer position.</li>
+<li><strong>Handles ignore collider</strong>: if a collider gets linked here, handles will ignore any collision with this collider.</li>
+<li><strong>Handle prefab collider type</strong>: collider type to be used with the created handle.</li>
+<li><strong>Show handle for X</strong>: controls visibility of the handle for X axis.</li>
+<li><strong>Show handle for Y</strong>: controls visibility of the handle for Y axis.</li>
+<li><strong>Show handle for Z</strong>: controls visibility of the handle for Z axis.</li>
+</ul>
+<h3 id="translation-handles-configuration">Translation handles configuration</h3>
+<p>Allows enabling and configuring translation handles for bounds control. Note that translation handles are disabled per default.</p>
+<ul>
+<li><strong>Handle material</strong>: material applied to the handles.</li>
+<li><strong>Handle grabbed material</strong>: material applied to the grabbed handle.</li>
+<li><strong>Handle prefab</strong>: optional prefab for the handle. If non is set MRTK will use a sphere as default.</li>
+<li><strong>Handle size</strong>: size of the handle.</li>
+<li><strong>Collider padding</strong>: padding to add to the handle collider.</li>
+<li><strong>Draw tether when manipulating</strong>: when active will draw a tether line from point of start of interaction to current hand or pointer position.</li>
+<li><strong>Handles ignore collider</strong>: if a collider gets linked here, handles will ignore any collision with this collider.</li>
+<li><strong>Handle prefab collider type</strong>: collider type to be used with the created handle.</li>
+<li><strong>Show handle for X</strong>: controls visibility of the handle for X axis.</li>
+<li><strong>Show handle for Y</strong>: controls visibility of the handle for Y axis.</li>
+<li><strong>Show handle for Z</strong>: controls visibility of the handle for Z axis.</li>
+</ul>
+<h3 id="links-configuration-wireframe"><a name="links-configuration">Links configuration (wireframe)</a></h3>
+<p>The links configuration enables the wireframe feature of bounds control. The following properties can be configured:</p>
+<ul>
+<li><strong>Wireframe material</strong>: the material applied to the wireframe mesh.</li>
+<li><strong>Wireframe edge radius</strong>: the thickness of the wireframe.</li>
+<li><strong>Wireframe shape</strong>: shape of the wireframe can by either cubic or cylindrical.</li>
+<li><strong>Show wireframe</strong>: controls visibility of the wireframe.</li>
+</ul>
+<h3 id="proximity-effect-configuration">Proximity effect configuration</h3>
+<p>Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to HoloLens 2 style behavior.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Proximity.png">
+<ul>
+<li><strong>Proximity Effect Active</strong>: Enable proximity-based handle activation</li>
+<li><strong>Object Medium Proximity</strong>: Distance for the 1st step scaling</li>
+<li><strong>Object Close Proximity</strong>: Distance for the 2nd step scaling</li>
+<li><strong>Far Scale</strong>: Default scale value of the handle asset when the hands are out of range of the bounds control interaction (distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)</li>
+<li><strong>Medium Scale</strong>: Scale value of the handle asset when the hands are within range of the bounds control interaction (distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)</li>
+<li><strong>Close Scale</strong>: Scale value of the handle asset when the hands are within range of the grab interaction (distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)</li>
+<li><strong>Far Grow Rate</strong>: Rate a proximity scaled object scales when the hand moves from medium to far proximity.</li>
+<li><strong>Medium Grow Rate</strong>: Rate a proximity scaled object scales when the hand moves from medium to close proximity.</li>
+<li><strong>Close Grow Rate</strong>: Rate a proximity scaled object scales when the hand moves from close proximity to object center.</li>
+</ul>
+<h2 id="constraint-system">Constraint System</h2>
+<p>Bounds control supports using the <a href="README_ConstraintManager.html">constraint manager</a> to limit or modify translation, rotation or scaling behavior while using bounds control handles.</p>
+<p>The property inspector will show all available constraint managers attached to the same game object in a dropdown with an option to scroll and highlight the selected constraint manager.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Constraints.png" width="450">
+<h2 id="events">Events</h2>
+<p>Bounds control provides the following events. This example uses these events to play audio feedback.</p>
+<ul>
+<li><strong>Rotate Started</strong>: Fired when rotation starts.</li>
+<li><strong>Rotate Stopped</strong>: Fired when rotation stops.</li>
+<li><strong>Scale Started</strong>: Fires when scaling starts.</li>
+<li><strong>Scale Stopped</strong>: Fires when scaling stops.</li>
+<li><strong>Translate Started</strong>: Fires when translation starts.</li>
+<li><strong>Translate Stopped</strong>: Fires when translation stops.</li>
+</ul>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Events.png" width="450">
+<h2 id="elastics-experimental">Elastics (Experimental)</h2>
+<p>Elastics can be used when manipulating objects via bounds control. Note that the <a href="Elastics/ElasticSystem.html">elastics system</a> is still in experimental state. To enable elastics either link an existing elastics manager component or create and link a new elastics manager via the <code>Add Elastics Manager</code> button.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Elastics.png" width="450">
+<h2 id="handle-styles">Handle styles</h2>
+<p>By default, when you just assign the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.BoundsControl.html"><code>BoundsControl.cs</code></a> script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.</p>
+<p><img src="Images/BoundsControl/MRTK_BoundsControl_HandleStyles1.png" alt="Bounds Control"></p>
+<p>Below are the prefabs, materials, and the scaling values for the HoloLens 2 style bounds control handles. You can find this example in the <code>BoundsControlExamples</code> scene.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_HandleStyles2.png" width="450">
+<h3 id="handles-setup-for-hololens-2-style">Handles (Setup for HoloLens 2 style)</h3>
+<ul>
+<li><strong>Handle Material</strong>: BoundingBoxHandleWhite.mat</li>
+<li><strong>Handle Grabbed Material</strong>: BoundingBoxHandleBlueGrabbed.mat</li>
+<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleHandle.prefab</li>
+<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleHandle_Slate.prefab</li>
+<li><strong>Scale Handle Size</strong>: 0.016 (1.6cm)</li>
+<li><strong>Scale Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
+<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateHandle.prefab</li>
+<li><strong>Rotation Handle Size</strong>: 0.016</li>
+<li><strong>Rotation Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
+</ul>
+<h2 id="transformation-changes-with-object-manipulator">Transformation changes with object manipulator</h2>
+<p>A bounds control can be used in combination with <a href="README_ObjectManipulator.html"><code>ObjectManipulator.cs</code></a> to allow for certain types of manipulation (eg. moving the object) without using handles. The manipulation handler supports both one and two-handed interactions. <a href="Input/HandTracking.html">Hand tracking</a> can be used to interact with an object up close.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_ObjectManipulator.png" width="450">
+<p>In order for the bounds control edges to behave the same way when moving it using <a href="README_ObjectManipulator.html"><code>ObjectManipulator</code></a>'s far interaction, it is advised to connect its events for <em>On Manipulation Started</em> / <em>On Manipulation Ended</em> to <code>BoundsControl.HighlightWires</code> / <code>BoundsControl.UnhighlightWires</code> respectively, as shown in the screenshot above.</p>
+<h2 id="how-to-add-and-configure-a-bounds-control-using-unity-inspector">How to add and configure a bounds control using Unity Inspector</h2>
+<ol>
+<li>Add Box Collider to an object</li>
+<li>Assign <code>BoundsControl</code> script to an object</li>
+<li>Configure options, such as 'Activation' methods (see <a href="#inspector-properties">Inspector properties</a> section below)</li>
+<li>(Optional) Assign prefabs and materials for a HoloLens 2 style bounds control (see <a href="#handle-styles">Handle styles</a> section below)</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Use <em>Target Object</em> and <em>Bounds Override</em> field in the inspector to assign specific object and collider in the object with multiple child components.</p>
+</div>
+<p><img src="Images/BoundsControl/MRTK_BoundsControl_Assign.png" alt="Bounds Control"></p>
+<h2 id="how-to-add-and-configure-a-bounds-control-in-the-code">How to add and configure a bounds control in the code</h2>
+<ol>
+<li><p>Instantiate cube GameObject</p>
+<pre><code class="lang-c#">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+</code></pre>
+</li>
+<li><p>Assign <code>BoundsControl</code> script to an object with collider, using AddComponent&lt;&gt;()</p>
+<pre><code class="lang-c#">private BoundsControl boundsControl;
+boundsControl = cube.AddComponent&lt;BoundsControl&gt;();
+</code></pre>
+</li>
+<li><p>Configure options either directly on the control or via one of the scriptable configurations (see <a href="#inspector-properties">Inspector properties</a> and <a href="#configuration-objects">Configurations</a> section below)</p>
+<pre><code class="lang-c#"> // Change activation method
+ boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
+// Make the scale handles large
+boundsControl.ScaleHandlesConfig.HandleSize = 0.1f;
+// Hide rotation handles for x axis
+boundsControl.RotationHandlesConfig.ShowRotationHandleForX = false;
+</code></pre>
+</li>
+<li><p>(Optional) Assign prefabs and materials for a HoloLens 2 style bounds control. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded.</p>
+</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Using Unity's 'Resources' folder or <a href="https://docs.unity3d.com/ScriptReference/Shader.Find.html">Shader.Find</a> for dynamically loading shaders is not recommended since shader permutations may be missing at runtime.</p>
+</div>
+<pre><code class="lang-c#">BoxDisplayConfiguration boxConfiguration = boundsControl.BoxDisplayConfig;
+boxConfiguration.BoxMaterial = [Assign BoundingBox.mat]
+boxConfiguration.BoxGrabbedMaterial = [Assign BoundingBoxGrabbed.mat]
+ScaleHandlesConfiguration scaleHandleConfiguration = boundsControl.ScaleHandlesConfig;
+scaleHandleConfiguration.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
+scaleHandleConfiguration.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
+scaleHandleConfiguration.HandlePrefab = [Assign MRTK_BoundingBox_ScaleHandle.prefab]
+scaleHandleConfiguration.HandleSlatePrefab = [Assign MRTK_BoundingBox_ScaleHandle_Slate.prefab]
+scaleHandleConfiguration.HandleSize = 0.016f;
+scaleHandleConfiguration.ColliderPadding = 0.016f;
+RotationHandlesConfiguration rotationHandleConfiguration = boundsControl.RotationHandlesConfig;
+rotationHandleConfiguration.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
+rotationHandleConfiguration.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
+rotationHandleConfiguration.HandlePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
+rotationHandleConfiguration.HandleSize = 0.016f;
+rotationHandleConfiguration.ColliderPadding = 0.016f;
+</code></pre>
+<h3 id="example-set-minimum-maximum-bounds-control-scale-using-minmaxscaleconstraint">Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint</h3>
+<p>To set the minimum and maximum scale, attach a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a> to your control. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured.</p>
+<p>You can also use MinMaxScaleConstraint to set minimum and maximum scale for <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html"><code>ObjectManipulator</code></a>.</p>
+<pre><code class="lang-c#">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+bcontrol = cube.AddComponent&lt;BoundsControl&gt;();
+// Important: BoundsControl creates a constraint manager on start if one does not exist.
+// There's no need to manually attach a constraint manager.
+MinMaxScaleConstraint scaleConstraint = bcontrol.gameObject.AddComponent&lt;MinMaxScaleConstraint&gt;();
+scaleConstraint.ScaleMinimum = 1f;
+scaleConstraint.ScaleMaximum = 2f;
+</code></pre>
+<h2 id="example-add-bounds-control-around-a-game-object">Example: Add bounds control around a game object</h2>
+<p>To add a bounds control around an object, simply add a <code>BoundsControl</code> component to it:</p>
+<pre><code class="lang-c#">private void PutABoundsControlAroundIt(GameObject target)
+{
+   target.AddComponent&lt;BoundsControl&gt;();
+}
+</code></pre>
+<h2 id="migrating-from-bounding-box">Migrating from Bounding Box</h2>
+<p>Existing prefabs and instances using <a href="README_BoundingBox.html">bounding box</a> can be upgraded to the new bounds control via the <a href="Tools/MigrationWindow.html">migration window</a> which is part of the MRTK tools package.</p>
+<p>For upgrading individual instances of bounding box there's also an a migration option inside the property inspector of the component.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Migrate.png" width="450">
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="README_ObjectManipulator.html">Object manipulator</a></li>
+<li><a href="README_ConstraintManager.html">Constraint manager</a></li>
+<li><a href="Tools/MigrationWindow.html">Migration window</a></li>
+<li><a href="Elastics/ElasticSystem.html">Elastics system (Experimental)</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_BoundsControl.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
