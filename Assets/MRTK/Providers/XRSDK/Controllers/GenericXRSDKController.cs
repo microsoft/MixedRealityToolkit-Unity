@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         }
                         break;
                     default:
-                        return;
+                        break;
                 }
 
                 // If our value changed raise it.

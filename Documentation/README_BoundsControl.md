@@ -121,7 +121,7 @@ The links configuration enables the wireframe feature of bounds control. The fol
 - **Show wireframe**: controls visibility of the wireframe.
 
 ### Proximity effect configuration
-Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to Hololens 2 style behavior.
+Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation. Defaults are set to HoloLens 2 style behavior.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Proximity.png">
 
@@ -139,7 +139,7 @@ Show and hide the handles with animation based on the distance to the hands. It 
 ## Constraint System
 Bounds control supports using the [constraint manager](README_ConstraintManager.md) to limit or modify translation, rotation or scaling behavior while using bounds control handles.
 
-The property inspector will show all available constraint managers attached to the same game object in a dropwdown with an option to scroll and highlight the selected constraint manager.
+The property inspector will show all available constraint managers attached to the same game object in a dropdown with an option to scroll and highlight the selected constraint manager.
 
 <img src="../Documentation/Images/BoundsControl/MRTK_BoundsControl_Constraints.png" width="450">
 
@@ -257,7 +257,7 @@ rotationHandleConfiguration.ColliderPadding = 0.016f;
 
 ### Example: Set minimum, maximum bounds control scale using MinMaxScaleConstraint
 
-To set the minimum and maximum scale, attach a [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) to your constrol. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured. 
+To set the minimum and maximum scale, attach a [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint) to your control. As bounds control automatically attaches and activates constraint manager the MinMaxScaleConstraint will be automatically applied to the transformation changes once it's attached and configured. 
 
 You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ObjectManipulator`](xref:Microsoft.MixedReality.Toolkit.UI.ObjectManipulator).
 
