@@ -7,20 +7,28 @@
 
 > [!IMPORTANT]
 > There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio, 
-> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
-> a workaround.
+> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
+> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
 ## What's new
 
+### Add support for OpenXR
+
+Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See [the MRTK/XRSDK getting started page](GettingStartedWithMRTKAndXRSDK.md), [Unity's forum post](https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/), or [Microsoft's documentation](https://aka.ms/openxr-unity-install) for more information.
+
+> [!IMPORTANT]
+> OpenXR in Unity is only supported on Unity 2020.2 and higher.
+>
+> Currently, it also only supports x64 and ARM64 builds.
+
 ### HP Motion Controllers now supported with MRTK
 
-Controllers for the HP Reverb G2 now work natively with MRTK. 
+Controllers for the HP Reverb G2 now work natively with MRTK.
 
 ### Teleportation with the teleport gesture now supported on all platforms
 
 Users can now use the teleport gesture to move around their play space across all platforms. To teleport with a controller on MR devices with default configurations, use the thumbstick. To teleport with
-articulated hands, make a gesture with your palm facuing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please 
+articulated hands, make a gesture with your palm facing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please
 see our updated [Input Simulation Service documentation](InputSimulation/InputSimulationService.md#hand-gestures).
 
   ![Teleport Gesture](Images/ReleaseNotes/HandTeleport.gif)
@@ -35,7 +43,6 @@ Two new solvers are ready for use with mainline MRTK.
 
   ![Directional Indicator Solver](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
-
 ## Breaking changes
 
 ### Certain fields of imported GLTF objects are now capitalized
@@ -43,6 +50,12 @@ Two new solvers are ready for use with mainline MRTK.
 Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): `ComponentType`, `Path`, `Interpolation`, `Target`, `Type`, `Mode`, `MagFilter`, `MinFilter`, `WrapS`, `WrapT`.
 
 ## Known issues
+
+### OpenXR
+
+There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
+Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 
@@ -57,7 +70,7 @@ In some situations (e.g. when using the LeapMotion provider in the Unity Editor)
 Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the "missing" file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.
 
-### No spatializer was specified. The application will not support Spatial Sound.
+### No spatializer was specified. The application will not support Spatial Sound
 
 A "No spatializer was specified" warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.
 
