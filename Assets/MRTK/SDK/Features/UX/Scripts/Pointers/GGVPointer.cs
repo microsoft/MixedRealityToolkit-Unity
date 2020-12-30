@@ -226,6 +226,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Now we're returning a rotation based on the vector from the camera position
                 // to the hand. This rotation is not affected by rotating your head.
                 Vector3 look = Position - CameraCache.Main.transform.position;
+
+                // If the input source is at the same position as the camera, assume it's the camera and return the InternalGazeProvider rotation.
+                // This prevents passing Vector3.zero into Quaternion.LookRotation, which isn't possible and causes a console log.
+                if (look == Vector3.zero)
+                {
+                    return Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
+                }
+
                 return Quaternion.LookRotation(look);
             }
         }
@@ -301,6 +309,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
+        #region MonoBehaviour Implementation
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -325,6 +335,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        #endregion MonoBehaviour Implementation
 
         #region InputSystemGlobalHandlerListener Implementation
 
