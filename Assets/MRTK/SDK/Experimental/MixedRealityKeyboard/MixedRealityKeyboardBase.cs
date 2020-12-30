@@ -225,6 +225,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             onShowKeyboard?.Invoke();
 
+            // if initial Text is not empty, cart index will be placed at the end when open keyboard (Maybe it's common in most case)
+            MovePreviewCaretToEnd()
+
             if (stateUpdate == null)
             {
                 stateUpdate = StartCoroutine(UpdateState());
