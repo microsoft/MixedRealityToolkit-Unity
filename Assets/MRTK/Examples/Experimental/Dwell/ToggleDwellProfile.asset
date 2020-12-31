@@ -16,5 +16,4 @@ MonoBehaviour:
   dwellIntentDelay: 0
   dwellStartDelay: 1.5
   timeToCompleteDwell: 4.54
-  allowDwellResume: 0
   timeToAllowDwellResume: 0.747
