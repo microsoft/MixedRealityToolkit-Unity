@@ -26,6 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
         }
 
+#if UNITY_2019_3_OR_NEWER
+        private static readonly List<XRInputSubsystem> XRInputSubsystems = new List<XRInputSubsystem>();
+#endif // UNITY_2019_3_OR_NEWER
+
         /// <inheritdoc/>
         protected override bool IsXRDevicePresent
         {
@@ -48,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         protected override List<Vector3> GetBoundaryGeometry()
         {
             // Boundaries are supported for Room Scale experiences only.
-            if (XRSubsystemHelpers.InputSubsystem.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
+            if (XRSubsystemHelpers.InputSubsystem?.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
             {
                 return null;
             }
@@ -58,6 +62,19 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             if (!XRSubsystemHelpers.InputSubsystem.TryGetBoundaryPoints(boundaryGeometry) || boundaryGeometry.Count == 0)
             {
+#if UNITY_2019_3_OR_NEWER
+                // If the "main" input subsystem doesn't have an available boundary, check the rest of them
+                SubsystemManager.GetInstances(XRInputSubsystems);
+                foreach (XRInputSubsystem xrInputSubsystem in XRInputSubsystems)
+                {
+                    if (xrInputSubsystem.running &&
+                        xrInputSubsystem.TryGetBoundaryPoints(boundaryGeometry) &&
+                        boundaryGeometry.Count > 0)
+                    {
+                        return boundaryGeometry;
+                    }
+                }
+#endif // UNITY_2019_3_OR_NEWER
                 return null;
             }
 
