@@ -101,15 +101,21 @@
 <h5>Important</h5>
 <p>There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
 ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
-please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply
-a workaround.</p>
+please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply a workaround.</p>
 </div>
 <h2 id="whats-new">What's new</h2>
+<h3 id="add-support-for-openxr">Add support for OpenXR</h3>
+<p>Initial support for Unity's OpenXR preview package and Microsoft's Mixed Reality OpenXR package has been added. See <a href="GettingStartedWithMRTKAndXRSDK.html">the MRTK/XRSDK getting started page</a>, <a href="https://forum.unity.com/threads/unity-support-for-openxr-in-preview.1023613/">Unity's forum post</a>, or <a href="https://aka.ms/openxr-unity-install">Microsoft's documentation</a> for more information.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
+<p>Currently, it also only supports x64 and ARM64 builds.</p>
+</div>
 <h3 id="hp-motion-controllers-now-supported-with-mrtk">HP Motion Controllers now supported with MRTK</h3>
 <p>Controllers for the HP Reverb G2 now work natively with MRTK.</p>
 <h3 id="teleportation-with-the-teleport-gesture-now-supported-on-all-platforms">Teleportation with the teleport gesture now supported on all platforms</h3>
 <p>Users can now use the teleport gesture to move around their play space across all platforms. To teleport with a controller on MR devices with default configurations, use the thumbstick. To teleport with
-articulated hands, make a gesture with your palm facuing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please
+articulated hands, make a gesture with your palm facing up with the index and thumb sticking outwards, completing the teleport by curling the index finger. To teleport with input simulation, please
 see our updated <a href="InputSimulation/InputSimulationService.html#hand-gestures">Input Simulation Service documentation</a>.</p>
 <p><img src="Images/ReleaseNotes/HandTeleport.gif" alt="Teleport Gesture"></p>
 <h3 id="runtime-profile-switching-support">Runtime profile switching support</h3>
@@ -120,7 +126,13 @@ see our updated <a href="InputSimulation/InputSimulationService.html#hand-gestur
 <h2 id="breaking-changes">Breaking changes</h2>
 <h3 id="certain-fields-of-imported-gltf-objects-are-now-capitalized">Certain fields of imported GLTF objects are now capitalized</h3>
 <p>Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): <code>ComponentType</code>, <code>Path</code>, <code>Interpolation</code>, <code>Target</code>, <code>Type</code>, <code>Mode</code>, <code>MagFilter</code>, <code>MinFilter</code>, <code>WrapS</code>, <code>WrapT</code>.</p>
+<h3 id="msbuild-for-unity-support">MSBuild for Unity support</h3>
+<p>Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align with <a href="https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/">Unity's new package guidance</a>.</p>
 <h2 id="known-issues">Known issues</h2>
+<h3 id="openxr">OpenXR</h3>
+<p>There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking <em>does</em> work.
+Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.</p>
 <h3 id="some-mixed-reality-toolkit-standard-shader-features-require-the-foundation-package">Some Mixed Reality Toolkit Standard Shader features require the Foundation package</h3>
 <p>When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.</p>
 <h3 id="cameracache-may-create-a-new-camera-on-shutdown">CameraCache may create a new camera on shutdown</h3>
@@ -128,7 +140,7 @@ see our updated <a href="InputSimulation/InputSimulationService.html#hand-gestur
 <h3 id="filenotfoundexception-when-examples-are-imported-via-unity-package-manager">FileNotFoundException when examples are imported via Unity Package Manager</h3>
 <p>Depending on the length of the project path, importing examples via Unity Package Manager may generate FileNotFoundException messages in the Unity Console. The
 cause of this is the path to the &quot;missing&quot; file being longer than MAX_PATH (256 characters). To resolve, please shorten the length of the project path.</p>
-<h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound.</h3>
+<h3 id="no-spatializer-was-specified-the-application-will-not-support-spatial-sound">No spatializer was specified. The application will not support Spatial Sound</h3>
 <p>A &quot;No spatializer was specified&quot; warning will appear if an audio spatializer is not configured. This can occur if no XR package is installed, as Unity includes spatializers in these packages.</p>
 <p>To resolve, please ensure that:</p>
 <ul>
