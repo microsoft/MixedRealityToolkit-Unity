@@ -1,0 +1,37 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.OpenXR",
+    "rootNamespace": "",
+    "references": [
+        "Microsoft.MixedReality.OpenXR",
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
+        "Unity.XR.OpenXR"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WSA",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2020_2_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.microsoft.mixedreality.openxr",
+            "expression": "",
+            "define": "MSFT_OPENXR"
+        },
+        {
+            "name": "com.unity.xr.openxr",
+            "expression": "",
+            "define": "UNITY_OPENXR"
+        }
+    ],
+    "noEngineReferences": false
+}
