@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/MotionController")]
+        "Textures/MotionController")]
     public class MicrosoftMotionController : GenericXRSDKController
     {
         /// <summary>
