@@ -267,8 +267,8 @@
       href: README_FingertipVisualization.md
     - name: Progress Indicator
       href: README_ProgressIndicator.md
-    - name: Dialog [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md
+    - name: Dialog
+      href: README_Dialog.md
     - name: Hand Coach [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
     - name: Pulse Shader [Experimental]

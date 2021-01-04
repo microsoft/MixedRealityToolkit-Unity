@@ -25,3 +25,4 @@ MonoBehaviour:
   displayOption: 1
   visibleMaterial: {fileID: 2100000, guid: b24e702ba4a7dd14bb78e04ea42311ff, type: 2}
   occlusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435, type: 2}
+  physicsMaterial: {fileID: 0}

@@ -610,6 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
             LatestEyeGaze = eyeRay;
+
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;
         }

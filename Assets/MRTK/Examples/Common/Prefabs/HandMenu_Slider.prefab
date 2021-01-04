@@ -343,6 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
+  IsBoundsHandles: 0
 --- !u!1 &4759724203258084799
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,6 +791,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 7993839106062047049}
   sliderValue: 0.5
+  trackVisuals: {fileID: 0}
+  tickMarks: {fileID: 0}
+  thumbVisuals: {fileID: 0}
   sliderAxis: 1
   sliderStartDistance: -0.028
   sliderEndDistance: 0.028

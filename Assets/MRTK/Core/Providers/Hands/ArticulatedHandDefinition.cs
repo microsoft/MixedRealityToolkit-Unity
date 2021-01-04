@@ -231,6 +231,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector2 previousStickInput = Vector2.zero;
         private bool previousReadyToTeleport = false;
 
+        private IMixedRealityTeleportPointer teleportPointer;
+
         private static readonly ProfilerMarker UpdateCurrentTeleportPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentTeleportPose");
 
         public void UpdateCurrentTeleportPose(MixedRealityInteractionMapping interactionMapping)
@@ -238,7 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (UpdateCurrentTeleportPosePerfMarker.Auto())
             {
                 MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
-                IMixedRealityTeleportPointer teleportPointer = null;
 
                 // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
                 bool anyPointersLockedWithHand = false;
@@ -253,9 +254,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     anyPointersLockedWithHand |= inputSource.Pointers[i].IsFocusLocked;
 
                     // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
-                    if (inputSource.Pointers[i] is IMixedRealityTeleportPointer)
+                    if (teleportPointer == null && inputSource.Pointers[i] is IMixedRealityTeleportPointer pointer)
                     {
-                        teleportPointer = (IMixedRealityTeleportPointer)inputSource.Pointers[i];
+                        teleportPointer = pointer;
                     }
                 }
 

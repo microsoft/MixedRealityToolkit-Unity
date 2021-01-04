@@ -171,6 +171,7 @@ MonoBehaviour:
   isFocusRequired: 0
   keywords: []
   persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!114 &1597255434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneToBeLoaded: EyeTrackingDemo-02-TargetSelection
+  LoadOption: 1
 --- !u!1 &1596409283154020
 GameObject:
   m_ObjectHideFlags: 0

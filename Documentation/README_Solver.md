@@ -20,9 +20,11 @@ The third category is the solver itself. The following solvers provide the build
 * [`Orbital`](#orbital): Locks to a specified position and offset from the referenced object.
 * [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize): Scales to maintain a constant size relative to the view of the referenced object.
 * [`RadialView`](#radialview): Keeps the object within a view cone cast by the referenced object.
-* [`SurfaceMagnetism`](#surfacemagnetism): casts rays to surfaces in the world, and align the object to that surface.
-* [`Momentum`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum): Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
+* [`Follow`](#follow): Keeps the object within a set of user defined bounds of the referenced object.
 * [`InBetween`](#inbetween): Keeps an object in between two tracked objects.
+* [`SurfaceMagnetism`](#surfacemagnetism): casts rays to surfaces in the world, and align the object to that surface.
+* ['DirectionalIndicator'](#directionalindicator): Determines the position and orientation of an object as a directional indicator. From the point of reference of the SolverHandler Tracked Target, this indicator will orient towards the DirectionalTarget supplied.
+* [`Momentum`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum): Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
 * [`HandConstraint`](#hand-menu-with-handconstraint-and-handconstraintpalmup): Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with [IMixedRealityController](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController).
 * [`HandConstraintPalmUp`](#hand-menu-with-handconstraint-and-handconstraintpalmup): Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) controllers, with other controller types this solver will behave just like its base class.
 
@@ -129,6 +131,18 @@ Generally, the [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solv
 ![RadialView Example](Images/Solver/RadialViewExample.png)  
 *RadialView example*
 
+### Follow
+
+The [`Follow`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Follow) class positions an element in front of the of the tracked target relative to its local forward axis. The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves beyond user defined bounds.
+
+It works similarly to the RadialView solver, with additional controls to manage *Max Horizontal & Vertical View Degrees*, and mechanisms to alter the *Orientation* of the object.
+
+![Follow properties](Images/Solver/FollowExample.png)  
+*Follow properties*
+
+![Follow example scene](Images/Solver/FollowExampleScene.gif)
+*Follow Example Scene (Assets/MRTK/Examples/Demos/Solvers/Scenes/FollowSolverExample.unity)*
+
 ### InBetween
 
 The [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween) class will keep the attached GameObject between two transforms. These two transform endpoints are defined by the GameObject's own [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) *Tracked Target Type* and the [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween) component's *Second Tracked Target Type* property. Generally, both types will be set to [`CustomOverride`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.CustomOverride) and the resulting `SolverHandler.TransformOverride` and `InBetween.SecondTransformOverride` values set to the two tracked endpoints.
@@ -170,27 +184,20 @@ Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities
 
 Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the `SurfaceMagnetism` raycasts.
 
-### Hand menu with HandConstraint and HandConstraintPalmUp
+### DirectionalIndicator
 
-![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
+The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.DirectionalIndicator) class is a tag-along component that orients itself to the direction of a desired point in space.
 
-The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.
-
-[Please see Hand Menu page](README_HandMenu.md) for the examples of using Hand Constraint solver to create hand menus.
-
-## Experimental solvers
-
-These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.
-
-### Directional indicator
-
-The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator) class is a tag-along component that orients itself to the direction of a desired point in space.
-
-Most commonly used when the *Tracked Target Type* of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) is set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head). In this fashion, a UX component with the [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator)  solver will direct a user to look at the desired point in space.
+Most commonly used when the *Tracked Target Type* of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) is set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head). In this fashion, a UX component with the [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.DirectionalIndicator)  solver will direct a user to look at the desired point in space.
 
 The desired point in space is determined via the *Directional Target* property.
 
 If the directional target is viewable by the user, or whatever frame of reference is set in the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), then this solver will disable all [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html) components underneath it. If not viewable, then everything will be enabled on the indicator.
+
+The size of the indicator will shrink the closer the user is to capturing the *Directional Target* in their FOV.
+
+* *Min Indicator Scale* - The minimum scale for the indicator object
+* *Max Indicator Scale* - The maximum scale for the indicator object
 
 * *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
 * *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.
@@ -199,8 +206,21 @@ If the directional target is viewable by the user, or whatever frame of referenc
 *Directional Indicator properties*
 
 ![Directional Indicator example scene](Images/Solver/DirectionalIndicatorExampleScene.gif)
+*Directional Indicator Example Scene (Assets/MRTK/Examples/Demos/Solvers/Scenes/DirectionalIndicatorSolverExample.unity)*
 
-*Directional Indicator Example Scene (Assets/MRTK/Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
+### Hand menu with HandConstraint and HandConstraintPalmUp
+
+![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
+
+The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.
+
+[Please see Hand Menu page](README_HandMenu.md) for the examples of using Hand Constraint solver to create hand menus.
+
+<!---
+## Experimental solvers
+
+These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.
+-->
 
 ## See also
 
