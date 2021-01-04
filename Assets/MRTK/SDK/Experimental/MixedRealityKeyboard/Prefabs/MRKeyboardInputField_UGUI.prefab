@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 6218909165142131979}
   - component: {fileID: 6218909165142131978}
   m_Layer: 5
-  m_Name: MRKeyboardInputField
+  m_Name: MRKeyboardInputField_UGUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

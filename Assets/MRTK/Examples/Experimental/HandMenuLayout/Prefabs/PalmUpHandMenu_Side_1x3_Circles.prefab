@@ -68,7 +68,7 @@ MonoBehaviour:
   moveLerpTime: 0.067
   rotateLerpTime: 0.2
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
 --- !u!1 &2722896806718886375
@@ -202,7 +202,7 @@ MonoBehaviour:
   moveLerpTime: 0.11
   rotateLerpTime: 0.3
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
 --- !u!1 &3131315920089838554
@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawBoundsGizmo: 0
+  drawLocalBoundsGizmo: 0
 --- !u!114 &2842901708961520680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +287,7 @@ MonoBehaviour:
   moveLerpTime: 0.1
   rotateLerpTime: 0.3
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
   safeZone: 0
@@ -295,6 +296,8 @@ MonoBehaviour:
   hideHandCursorsOnActivate: 1
   rotationBehavior: 2
   offsetBehavior: 0
+  forwardOffset: 0
+  safeZoneAngleOffset: 0
   onHandActivate:
     m_PersistentCalls:
       m_Calls:
@@ -867,7 +870,7 @@ MonoBehaviour:
   moveLerpTime: 0.03
   rotateLerpTime: 0.1
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
 --- !u!1 &8962677152068841248
