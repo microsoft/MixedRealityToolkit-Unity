@@ -697,7 +697,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             moveConstraint.UseLocalSpaceForConstraint = true;
             moveConstraint.ConstraintOnMovement = AxisFlags.XAxis | AxisFlags.YAxis;
 
-            var constraint = manipHandler.EnsureComponent<MaintainApparentSizeConstraint>();
+            manipHandler.EnsureComponent<MaintainApparentSizeConstraint>();
 
             Vector3 topLeft = testObject.transform.TransformPoint(new Vector3(-0.5f, 0.5f, -0.5f));
             Vector3 bottomRight = testObject.transform.TransformPoint(new Vector3(0.5f, -0.5f, -0.5f));
@@ -742,7 +742,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.001f);
             testObject.transform.position = new Vector3(0f, 0f, 1f);
             TestUtilities.PlaceRelativeToPlayspace(testObject.transform);
-            Vector3 initialObjectPosition = testObject.transform.position;
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingFar = false;
@@ -750,7 +749,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            var constraint = manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
+            manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();

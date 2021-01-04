@@ -125,6 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
+            // NearInteractionTouchable only works with BoxColliders
+            Object.Destroy(interactable.GetComponent<Collider>());
+            interactable.gameObject.AddComponent<BoxCollider>();
+
             // Add a touchable and configure for touch events
             NearInteractionTouchable touchable = interactable.gameObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
@@ -270,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             AssembleInteractableButton(
                 out Interactable interactable,
-                out Transform translateTargetObject);
+                out _);
 
             // Test Button type
             interactable.NumOfDimensions = 1;
@@ -364,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.True(interactable.IsVisited, "Interactable was not visited.");
 
-            GameObject.Destroy(interactable.gameObject);
+            Object.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -376,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
-                out Transform translateTargetObject);
+                out _);
 
             interactable.gameObject.AddComponent<NearInteractionTouchableVolume>();
 
@@ -905,12 +909,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Pose noRollPose = restorePose;
             noRollPose.rotation.eulerAngles = new Vector3(noRollPose.rotation.eulerAngles.x, noRollPose.rotation.eulerAngles.y, 0.0f);
             TestUtilities.ArbitraryPlayspacePose = noRollPose;
-            TestUtilities.PlayspaceToArbitraryPose();
 
+            TestUtilities.PlayspaceToArbitraryPose();
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
-                out Transform interactableTransform);
+                out _);
 
             interactable.transform.position = TestUtilities.PositionRelativeToPlayspace(new Vector3(0.0f, 0.1f, 0.4f));
             Assert.True(interactable.IsEnabled);
@@ -1023,7 +1027,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.True(wasClicked, "Interactable was not clicked.");
             }
 
-            GameObject.Destroy(result);
+            Object.Destroy(result);
         }
 
         #region Test Helpers
@@ -1053,7 +1057,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             childObject.transform.localPosition = new Vector3(0f, 1.5f, 0f);
             childObject.transform.localRotation = Quaternion.identity;
             // Only use a collider on the main object
-            GameObject.Destroy(childObject.GetComponent<Collider>());
+            Object.Destroy(childObject.GetComponent<Collider>());
 
             translateTargetObject = childObject.transform;
 
