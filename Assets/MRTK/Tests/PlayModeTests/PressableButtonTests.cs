@@ -16,7 +16,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -635,9 +634,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject emptyParent = new GameObject();
             emptyParent.transform.position = testButton.transform.position;
             // This should not cause any NaN errors, as per resolution to #7874
-            emptyParent.transform.localScale = Vector3.zero; 
+            emptyParent.transform.localScale = Vector3.zero;
             // Parent our button to the empty object.
-            testButton.transform.parent = emptyParent.transform;
+            testButton.transform.SetParent(emptyParent.transform, false);
             yield return null;
 
             // Scale up the parent. Should not throw NaN exceptions.
