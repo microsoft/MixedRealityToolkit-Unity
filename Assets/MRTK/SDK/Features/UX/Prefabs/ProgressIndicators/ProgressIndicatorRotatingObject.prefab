@@ -103,7 +103,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   messageText: {fileID: 1052188056650112564}
-  state: 0
   progress: 0
 --- !u!1 &4494216452012751501
 GameObject:

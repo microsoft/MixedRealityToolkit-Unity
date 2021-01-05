@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
@@ -16,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/MotionController")]
+        "Textures/MotionController")]
     public class WindowsMixedRealityXRSDKMotionController : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>

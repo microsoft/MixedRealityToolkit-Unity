@@ -157,7 +157,7 @@ MonoBehaviour:
   rotationLerpTime: 0.01
   lookRotationBlend: 0
   resizeCursorWithDistance: 1
-  cursorAngularScale: 50
+  cursorAngularSize: 50
   PrimaryCursorVisual: {fileID: 4000014090385390}
   SourceDownIds: 
   defaultCursorDistance: 2
@@ -485,6 +485,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 4178016473676599789, guid: bd972abbae7e3be4bbcabb327fd4291b,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorFocus
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178016473676599789, guid: bd972abbae7e3be4bbcabb327fd4291b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4178016473676959181, guid: bd972abbae7e3be4bbcabb327fd4291b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -555,16 +565,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 25
       objectReference: {fileID: 0}
-    - target: {fileID: 4178016473676599789, guid: bd972abbae7e3be4bbcabb327fd4291b,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorFocus
-      objectReference: {fileID: 0}
-    - target: {fileID: 4178016473676599789, guid: bd972abbae7e3be4bbcabb327fd4291b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd972abbae7e3be4bbcabb327fd4291b, type: 3}
 --- !u!4 &1055065070500362963 stripped
@@ -580,6 +580,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 5687318028320642791, guid: 45f90619388e38541865e0a2ed3fb47e,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorRotateArrowsVertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 5687318028320642791, guid: 45f90619388e38541865e0a2ed3fb47e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5687318028320869063, guid: 45f90619388e38541865e0a2ed3fb47e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -650,16 +660,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 25
       objectReference: {fileID: 0}
-    - target: {fileID: 5687318028320642791, guid: 45f90619388e38541865e0a2ed3fb47e,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorRotateArrowsVertical
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687318028320642791, guid: 45f90619388e38541865e0a2ed3fb47e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45f90619388e38541865e0a2ed3fb47e, type: 3}
 --- !u!4 &105401231646822886 stripped
@@ -675,6 +675,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 2087522883944475637, guid: dfdf062da9cce5c4ebabe98a14ef5364,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorRotateArrowsHorizontal
+      objectReference: {fileID: 0}
+    - target: {fileID: 2087522883944475637, guid: dfdf062da9cce5c4ebabe98a14ef5364,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2087522883944708053, guid: dfdf062da9cce5c4ebabe98a14ef5364,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -745,16 +755,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 25
       objectReference: {fileID: 0}
-    - target: {fileID: 2087522883944475637, guid: dfdf062da9cce5c4ebabe98a14ef5364,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorRotateArrowsHorizontal
-      objectReference: {fileID: 0}
-    - target: {fileID: 2087522883944475637, guid: dfdf062da9cce5c4ebabe98a14ef5364,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfdf062da9cce5c4ebabe98a14ef5364, type: 3}
 --- !u!4 &5076374374945212106 stripped
@@ -770,6 +770,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 6551073264639760439, guid: 15700cca0c876c840a30db2bef89f29f,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorMoveArrowsNorthSouth
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551073264639760439, guid: 15700cca0c876c840a30db2bef89f29f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6551073264640115735, guid: 15700cca0c876c840a30db2bef89f29f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -839,16 +849,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6551073264639760439, guid: 15700cca0c876c840a30db2bef89f29f,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorMoveArrowsNorthSouth
-      objectReference: {fileID: 0}
-    - target: {fileID: 6551073264639760439, guid: 15700cca0c876c840a30db2bef89f29f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15700cca0c876c840a30db2bef89f29f, type: 3}
@@ -960,6 +960,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 6018983043162336388, guid: f5f52f7c5c7012743af433bb1a27f3af,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorMoveArrowsNorthwestSoutheast
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018983043162336388, guid: f5f52f7c5c7012743af433bb1a27f3af,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6018983043162566820, guid: f5f52f7c5c7012743af433bb1a27f3af,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1030,16 +1040,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 25
       objectReference: {fileID: 0}
-    - target: {fileID: 6018983043162336388, guid: f5f52f7c5c7012743af433bb1a27f3af,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorMoveArrowsNorthwestSoutheast
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018983043162336388, guid: f5f52f7c5c7012743af433bb1a27f3af,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5f52f7c5c7012743af433bb1a27f3af, type: 3}
 --- !u!4 &2639907501957997659 stripped
@@ -1055,6 +1055,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4000013316072862}
     m_Modifications:
+    - target: {fileID: 2817082550597684457, guid: cab2fee02e78ee94eb110dc9a99f892f,
+        type: 3}
+      propertyPath: m_Name
+      value: CursorMoveArrowsMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 2817082550597684457, guid: cab2fee02e78ee94eb110dc9a99f892f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2817082550597718217, guid: cab2fee02e78ee94eb110dc9a99f892f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1124,16 +1134,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2817082550597684457, guid: cab2fee02e78ee94eb110dc9a99f892f,
-        type: 3}
-      propertyPath: m_Name
-      value: CursorMoveArrowsMove
-      objectReference: {fileID: 0}
-    - target: {fileID: 2817082550597684457, guid: cab2fee02e78ee94eb110dc9a99f892f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cab2fee02e78ee94eb110dc9a99f892f, type: 3}

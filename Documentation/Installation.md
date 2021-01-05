@@ -120,7 +120,7 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
-    
+
     <img src="../Documentation/Images/MRTK_SceneSetup.png" width="300">
 
     Which contains the following:
