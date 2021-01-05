@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new HPMotionControllerDefinition(controllerHandedness);
         }
 
         private readonly HPMotionControllerDefinition controllerDefinition;

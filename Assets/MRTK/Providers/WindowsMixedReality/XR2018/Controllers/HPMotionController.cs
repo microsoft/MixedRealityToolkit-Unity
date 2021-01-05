@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if HP_CONTROLLER_ENABLED
             InputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
 #endif
-            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new HPMotionControllerDefinition(controllerHandedness);
         }
 
         private readonly HPMotionControllerDefinition controllerDefinition;

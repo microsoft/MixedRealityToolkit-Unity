@@ -5,19 +5,12 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HPMotionControllerDefinition
+    public class HPMotionControllerDefinition : BaseControllerDefinition
     {
-        public HPMotionControllerDefinition(IMixedRealityInputSource source, Handedness handedness)
-        {
-            inputSource = source;
-            this.handedness = handedness;
-        }
-
-        protected readonly IMixedRealityInputSource inputSource;
-        protected readonly Handedness handedness;
+        public HPMotionControllerDefinition(Handedness handedness) : base(handedness) { }
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultLeftHandedMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
@@ -35,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultRightHandedMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
