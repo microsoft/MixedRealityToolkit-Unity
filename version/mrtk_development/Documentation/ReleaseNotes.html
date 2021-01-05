@@ -123,9 +123,13 @@ see our updated <a href="InputSimulation/InputSimulationService.html#hand-gestur
 <h3 id="directional-indicator-and-follow-solvers-graduated-from-experimental">Directional Indicator and Follow Solvers Graduated from Experimental</h3>
 <p>Two new solvers are ready for use with mainline MRTK.</p>
 <p><img src="Images/Solver/DirectionalIndicatorExampleScene.gif" alt="Directional Indicator Solver"></p>
+<h3 id="input-recording-service-improvements">Input Recording Service improvements</h3>
+<p><code>InputRecordingService</code> and <code>InputPlaybackService</code> can now record and play back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see <a href="InputSimulation/InputAnimationFileFormat.html">here</a> for more information on the new version 1.1 specifications.</p>
 <h2 id="breaking-changes">Breaking changes</h2>
 <h3 id="certain-fields-of-imported-gltf-objects-are-now-capitalized">Certain fields of imported GLTF objects are now capitalized</h3>
 <p>Due to deserialization related issues some fields of imported GLTF objects are now starting with capital letters. The affected fields are (in their new names): <code>ComponentType</code>, <code>Path</code>, <code>Interpolation</code>, <code>Target</code>, <code>Type</code>, <code>Mode</code>, <code>MagFilter</code>, <code>MinFilter</code>, <code>WrapS</code>, <code>WrapT</code>.</p>
+<h3 id="input-animation-binary-file-has-an-updated-version-11-format">Input animation binary file has an updated version 1.1 format</h3>
+<p>Input animation binary file, used by <code>InputRecordingService</code> and <code>InputPlaybackService</code>, now has an updated file format to enable the optimizations made to those two services. Please see <a href="InputSimulation/InputAnimationFileFormat.html">here</a> for more information on the new version 1.1 specifications.</p>
 <h3 id="msbuild-for-unity-support">MSBuild for Unity support</h3>
 <p>Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align with <a href="https://forum.unity.com/threads/updates-to-our-terms-of-service-and-new-package-guidelines.999940/">Unity's new package guidance</a>.</p>
 <h2 id="known-issues">Known issues</h2>
