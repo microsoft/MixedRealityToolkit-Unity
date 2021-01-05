@@ -29495,6 +29495,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.HPReverbG2Controller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.HPReverbG2Controller.html",
+          "hash": "FnL0dd/i7CWZXth3fUnLxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.MicrosoftArticulatedHand.yml",
       "output": {
         ".html": {
@@ -29547,7 +29559,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.OpenXR.html",
-          "hash": "xM2cBO7ZPX+9MMa9a/1GFg=="
+          "hash": "oEZTf2AQU4vzV4+NKkGq+A=="
         }
       },
       "is_incremental": false,
@@ -29727,7 +29739,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "qhP8Q1s3pgjROnoHqsrY7A=="
+          "hash": "5AL3wFtf7dVtXqVf3812BA=="
         }
       },
       "is_incremental": false,
@@ -29799,7 +29811,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1707,
+          "total_file_count": 1708,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
