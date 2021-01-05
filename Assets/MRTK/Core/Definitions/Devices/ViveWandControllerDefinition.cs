@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),

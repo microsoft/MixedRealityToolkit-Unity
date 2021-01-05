@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultLeftHandedMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Axis1D.PrimaryIndexTrigger", AxisType.SingleAxis, DeviceInputType.Trigger),
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultRightHandedMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Axis1D.SecondaryIndexTrigger", AxisType.SingleAxis, DeviceInputType.Trigger),

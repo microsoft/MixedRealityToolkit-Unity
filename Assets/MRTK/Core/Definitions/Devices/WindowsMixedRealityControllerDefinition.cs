@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public WindowsMixedRealityControllerDefinition(Handedness handedness) : base(handedness) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),

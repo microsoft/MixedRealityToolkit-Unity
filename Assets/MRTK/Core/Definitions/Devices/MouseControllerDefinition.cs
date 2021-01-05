@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MouseControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
             new MixedRealityInteractionMapping(1, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition),

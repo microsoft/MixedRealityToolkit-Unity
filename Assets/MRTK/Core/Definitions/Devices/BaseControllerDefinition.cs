@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -27,31 +28,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The collection of interactions supported by a left-handed instance of this controller.
         /// </summary>
-        /// <remarks>Optional, override DefaultInteractions if both handed controllers have identical interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
+        /// <remarks>Optional. Override DefaultInteractions if both handed controllers have identical interactions.</remarks>
+        protected virtual MixedRealityInteractionMapping[] DefaultLeftHandedMappings => DefaultMappings;
 
         /// <summary>
         /// The collection of interactions supported by a right-handed instance of this controller.
         /// </summary>
-        /// <remarks>Optional, override DefaultInteractions if both handed controllers have identical interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+        /// <remarks>Optional. Override DefaultInteractions if both handed controllers have identical interactions.</remarks>
+        protected virtual MixedRealityInteractionMapping[] DefaultRightHandedMappings => DefaultMappings;
 
         /// <summary>
         /// The collection of interactions supported by this controller.
         /// </summary>
-        /// <remarks>Optional, override the specifically-handed properties if each controller has different interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultInteractions => null;
+        /// <remarks>Optional. Override the specifically-handed properties if each controller has different interactions.</remarks>
+        protected virtual MixedRealityInteractionMapping[] DefaultMappings => null;
 
         public MixedRealityInteractionMapping[] GetDefaultInteractions()
         {
             switch (Handedness)
             {
                 case Handedness.Left:
-                    return DefaultLeftHandedInteractions;
+                    return DefaultLeftHandedMappings;
                 case Handedness.Right:
-                    return DefaultRightHandedInteractions;
+                    return DefaultRightHandedMappings;
                 default:
-                    return DefaultInteractions;
+                    return DefaultMappings;
             }
         }
     }

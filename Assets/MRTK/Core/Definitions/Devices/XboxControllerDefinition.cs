@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public XboxControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
         {
             new MixedRealityInteractionMapping(0, "Left Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
             new MixedRealityInteractionMapping(1, "Left Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),
