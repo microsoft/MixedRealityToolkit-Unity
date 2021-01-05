@@ -21,7 +21,7 @@ MonoBehaviour:
   colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
   drawTetherWhenManipulating: 1
   handlesIgnoreCollider: {fileID: 0}
-  translationHandlePrefabColliderType: 1
-  showTranslationHandleForX: 0
-  showTranslationHandleForY: 0
-  showTranslationHandleForZ: 0
+  handlePrefabColliderType: 1
+  showHandleForX: 0
+  showHandleForY: 0
+  showHandleForZ: 0

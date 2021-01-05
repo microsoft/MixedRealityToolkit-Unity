@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             Assert.IsNotNull(bbox);
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -121,8 +121,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
             Debug.Assert(b.size == bc.size, $"bounds size should be {bc.size} but they are {b.size}");
 
-            GameObject.Destroy(bbox.gameObject);
-            GameObject.Destroy(newObject);
+            Object.Destroy(bbox.gameObject);
+            Object.Destroy(newObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -188,8 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Debug.Assert(bc.size == expectedSize, $"boundsOverride's size was corrupted.");
             }
 
-            GameObject.Destroy(bbox.gameObject);
-            GameObject.Destroy(newObject);
+            Object.Destroy(bbox.gameObject);
+            Object.Destroy(newObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -217,8 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(new Vector3(0, 0, 1.5f), bounds.center);
             Assert.AreEqual(new Vector3(.5f, .5f, .5f), bounds.size);
 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-
             // Defining the edge and corner handlers that will be used
             Debug.Log(bbox.transform.Find("rigRoot/midpoint_0").GetChild(0));
             var originalCornerHandlerScale = bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale;
@@ -232,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the hand to a handler on the corner 
             TestHand rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
-            var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return rightHand.MoveTo(cornerHandlerPosition, numSteps);
 
             // Wait for the scaling/unscaling animation to finish
@@ -251,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.normalized, originalEdgeHandlerScale.normalized, "The edge handler scale has changed");
             Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.x / originalEdgeHandlerScale.x, bbox.MediumScale, 0.1f, "The edge handler did not grow when a pointer was near it");
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
@@ -270,8 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(new Vector3(0, 0, 1.5f), bounds.center);
             Assert.AreEqual(new Vector3(.5f, .5f, .5f), bounds.size);
 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-
             // front right corner is corner 3
             var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
 
@@ -286,10 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
-
         }
 
         /// <summary>
@@ -336,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Assert scale at min
             Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, bbox.transform.localScale);
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
@@ -427,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center", 0.02f);
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
@@ -482,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center", 0.02f);
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
 
@@ -534,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 cc0_rotated = c0.transform.position - bboxBottomCenter;
             Assert.AreApproximatelyEqual(Vector3.Angle(cc0, cc0_rotated), 30, $"rotated angle is not correct. expected {rotateAmount} but got {Vector3.Angle(cc0, cc0_rotated)}");
 
-            GameObject.Destroy(bbox.gameObject);
+            Object.Destroy(bbox.gameObject);
         }
 
         /// <summary>

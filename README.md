@@ -8,10 +8,19 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
 * Operates as an **extensible framework** that provides developers the ability to swap out core components.
 * **Supports a wide range of platforms**, including
-  * Microsoft HoloLens
-  * Microsoft HoloLens 2
-  * Windows Mixed Reality headsets
-  * OpenVR headsets (HTC Vive / Oculus Rift)
+  * OpenXR (Unity 2020.2 or newer)
+    * Microsoft HoloLens 2
+    * Windows Mixed Reality headsets
+  * Windows Mixed Reality
+    * Microsoft HoloLens
+    * Microsoft HoloLens 2
+    * Windows Mixed Reality headsets
+  * Oculus (Unity 2019.3 or newer)
+    * Oculus Quest
+  * OpenVR
+    * Windows Mixed Reality headsets
+    * HTC Vive
+    * Oculus Rift
   * Ultraleap Hand Tracking
   * Mobile devices such as iOS and Android
 
@@ -63,7 +72,7 @@ If you're an experienced Mixed Reality or MRTK developer, check the links in the
 | UI for Bounds Control's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
 |  [![Near Menu](Documentation/Images/NearMenu/MRTK_UX_NearMenu.png)](Documentation/README_NearMenu.md) [Near Menu](Documentation/README_NearMenu.md) | [![Spatial Awareness](Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) [Spatial Awareness](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) | [![Voice Command](Documentation/Images/Input/MRTK_Input_Speech.png)](Documentation/Input/Speech.md) [Voice Command](Documentation/Input/Speech.md) / [Dictation](Documentation/Input/Dictation.md) |
 | Floating menu UI for the near interactions | Make your holographic objects interact with the physical environments | Scripts and examples for integrating speech input |
-|  [![Progress Indicator](Documentation/Images/ProgressIndicator/MRTK_ProgressIndicator_Main.png)](Documentation/README_ProgressIndicator.md) [Progress Indicator](Documentation/README_ProgressIndicator.md) | [![Dialog](Documentation/Images/Dialog/MRTK_UX_Dialog_Main.png)](Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md) [Dialog [Experimental]](Assets/MRTK/SDK/Experimental/Dialog/README_Dialog.md) | [![Hand Coach](Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)](Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md) [Hand Coach [Experimental]](Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md) |
+|  [![Progress Indicator](Documentation/Images/ProgressIndicator/MRTK_ProgressIndicator_Main.png)](Documentation/README_ProgressIndicator.md) [Progress Indicator](Documentation/README_ProgressIndicator.md) | [![Dialog](Documentation/Images/Dialog/MRTK_UX_Dialog_Main.png)](Documentation/README_Dialog.md) [Dialog [Experimental]](Documentation/README_Dialog.md) | [![Hand Coach](Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)](Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md) [Hand Coach [Experimental]](Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md) |
 | Visual indicator for communicating data process or operation | UI for asking for user's confirmation or acknowledgement  | Component that helps guide the user when the gesture has not been taught |
 |  [![Hand Physics Service](Documentation/Images/HandPhysics/MRTK_UX_HandPhysics_Main.jpg)](Assets/MRTK/Extensions/HandPhysicsService/README.md) [Hand Physics Service [Experimental]](Assets/MRTK/Extensions/HandPhysicsService/README.md) | [![Scrolling Collection](Documentation/Images/ScrollingCollection/ScrollingCollection_Main.jpg)](Documentation/README_ScrollingObjectCollection.md) [Scrolling Collection](Documentation/README_ScrollingObjectCollection.md) | [![Dock](Documentation/Images/Dock/MRTK_UX_Dock_Main.png)](Assets/MRTK/SDK/Experimental/Dock/README_Dock.md) [Dock [Experimental]](Assets/MRTK/SDK/Experimental/Dock/README_Dock.md) |
 | The hand physics service enables rigid body collision events and interactions with articulated hands | An Object Collection that natively scrolls 3D objects | The Dock allows objects to be moved in and out of predetermined positions |

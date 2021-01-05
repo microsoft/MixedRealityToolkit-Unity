@@ -10,12 +10,9 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -169,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Generate default theme properties for InteractableRotationTheme. 
             // Set Relative Rotation property (index=0) to true so theme values are applied in addition instead of absolutely set
-            // Set Local Rotation property (index=1) to false so euler angles are world space
+            // Set Local Rotation property (index=1) to false so Euler angles are world space
             var defaultThemeProperties = (new InteractableRotationTheme()).GetDefaultThemeDefinition().CustomProperties;
             defaultThemeProperties[0].Value.Bool = true;
             defaultThemeProperties[1].Value.Bool = false;
@@ -476,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
-            where C : UnityEngine.Component
+            where C : Component
         {
             yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, new List<ThemeProperty>() { }, resetTest, stateTests);
         }
@@ -487,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
-            where C : UnityEngine.Component
+            where C : Component
         {
             yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, customProperties, resetTest, stateTests);
         }
@@ -498,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
-            where C : UnityEngine.Component
+            where C : Component
         {
             yield return TestTheme<T, C>(host, stateValues, new List<ThemeProperty>() { }, resetTest, stateTests);
         }
@@ -510,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
-            where C : UnityEngine.Component
+            where C : Component
         {
             foreach (List<ThemePropertyValue> values in stateValues)
             {
@@ -536,9 +533,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ThemeDefinition themeDefinition,
             Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
-            where C : UnityEngine.Component
+            where C : Component
         {
-            host.AddComponent<C>();
+            host.EnsureComponent<C>();
 
             var theme = InteractableThemeBase.CreateAndInitTheme(themeDefinition, host);
 

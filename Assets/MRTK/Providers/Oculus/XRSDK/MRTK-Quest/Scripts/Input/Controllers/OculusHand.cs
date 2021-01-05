@@ -106,6 +106,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
             handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile.HandTrackingProfile;
         }
 
+        /// <inheritdoc/>
+        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+
         protected bool IsPinching { set; get; }
 
         // Pinch was also used as grab, we want to allow hand-curl grab not just pinch.

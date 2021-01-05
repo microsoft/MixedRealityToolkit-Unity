@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 2093565322073310844}
   - component: {fileID: 2093565322073310845}
   m_Layer: 5
-  m_Name: MRKeyboardInputField (TMP)
+  m_Name: MRKeyboardInputField_TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -277,6 +277,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
   roundedEdges: 1
   roundedCaps: 1
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 120256979407580908}
   tileMaterialByWorldLength: 0
   tileMaterialScale: 1
@@ -1009,6 +1012,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   roundedEdges: 1
   roundedCaps: 1
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 1969122736175639554}
   tileMaterialByWorldLength: 0
   tileMaterialScale: 1
