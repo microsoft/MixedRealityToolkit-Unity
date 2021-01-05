@@ -2,16 +2,16 @@
 // Licensed under the MIT License.﻿
 
 using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using Unity.Profiling;
 
 #if LEAPMOTIONCORE_PRESENT
-using Leap.Unity.Attachments;
-using Leap.Unity;
 using Leap;
+using Leap.Unity;
+using Leap.Unity.Attachments;
+using System;
+using Unity.Profiling;
+using UnityEngine;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
@@ -40,9 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         internal ArticulatedHandDefinition handDefinition;
 
         // Set the interactions for each hand to the Default interactions of the hand definition
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
-
-        private static readonly ProfilerMarker UpdateStatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionArticulatedHand.UpdateState");
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
 
         // Joint poses of the MRTK hand based on the leap hand data
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
@@ -210,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 default: return AttachmentPointFlags.Wrist;
             }
         }
+
+        private static readonly ProfilerMarker UpdateStatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionArticulatedHand.UpdateState");
 
         /// <summary>
         /// Updates the joint poses and interactions for the articulated hand.

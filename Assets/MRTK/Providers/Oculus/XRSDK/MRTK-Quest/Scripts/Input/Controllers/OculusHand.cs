@@ -26,14 +26,15 @@
 //SOFTWARE.
 //------------------------------------------------------------------------------ -
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
-using UnityEngine;
 
 #if OCULUSINTEGRATION_PRESENT
 using static OVRSkeleton;
+
+using Microsoft.MixedReality.Toolkit;
+using UnityEngine;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
@@ -53,17 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// </summary>
         public MixedRealityPose HandPointerPose => currentPointerPose;
 
-        private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
-
 #if OCULUSINTEGRATION_PRESENT
+        private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
         private bool isIndexGrabbing = false;
         private bool isMiddleGrabbing = false;
-#endif
-        
         private OculusXRSDKDeviceManagerProfile settingsProfile;
         private MixedRealityHandTrackingProfile handTrackingProfile;
-        private int pinchStrengthProp;
-
+#endif
 
         /// <summary>
         /// Default constructor used by reflection for profiles
@@ -77,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         internal ArticulatedHandDefinition handDefinition;
 
         // Set the interactions for each hand to the Default interactions of the hand definition
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
 
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
 
@@ -401,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
                 jointPoses[joint] = pose;
             }
         }
-                #endregion
+        #endregion
 #endif
-            }
-        }
+    }
+}

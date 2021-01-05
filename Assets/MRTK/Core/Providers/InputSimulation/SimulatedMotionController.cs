@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The simulated motion controller's default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers. This is based on the Windows Mixed Reality controller.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.GetDefaultInteractions();
 
         internal void UpdateState(SimulatedMotionControllerData motionControllerData)
         {

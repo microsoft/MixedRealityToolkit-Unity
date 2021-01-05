@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// The Windows Mixed Reality Controller default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.GetDefaultInteractions();
 
 #if UNITY_WSA
         private bool controllerModelInitialized = false;
