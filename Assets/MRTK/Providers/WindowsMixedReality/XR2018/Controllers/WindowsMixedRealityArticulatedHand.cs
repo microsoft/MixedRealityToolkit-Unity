@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// The Windows Mixed Reality articulated hands default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly ArticulatedHandDefinition handDefinition;

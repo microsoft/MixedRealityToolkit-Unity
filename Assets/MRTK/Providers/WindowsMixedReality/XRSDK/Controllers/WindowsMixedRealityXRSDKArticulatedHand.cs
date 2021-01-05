@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly ArticulatedHandDefinition handDefinition;

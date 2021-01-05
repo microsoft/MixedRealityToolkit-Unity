@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The simulated articulated hand's default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         /// <inheritdoc />
         protected override void UpdateHandJoints(SimulatedHandData handData)

@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         internal ArticulatedHandDefinition handDefinition;
 
         // Set the interactions for each hand to the Default interactions of the hand definition
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions();
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         // Joint poses of the MRTK hand based on the leap hand data
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();

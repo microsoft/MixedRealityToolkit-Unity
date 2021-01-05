@@ -34,9 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         {
             get
             {
-                MixedRealityInteractionMapping[] definitionInteractions = controllerDefinition.DefaultLeftHandedInteractions;
-                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Length];
-                for (int i = 0; i < definitionInteractions.Length; i++)
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Left);
+                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
                 {
                     defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
                 }
@@ -66,9 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         {
             get
             {
-                MixedRealityInteractionMapping[] definitionInteractions = controllerDefinition.DefaultRightHandedInteractions;
-                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Length];
-                for (int i = 0; i < definitionInteractions.Length; i++)
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Right);
+                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
                 {
                     defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
                 }

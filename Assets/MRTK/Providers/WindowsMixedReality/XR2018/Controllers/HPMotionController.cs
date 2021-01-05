@@ -4,9 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Unity.Profiling;
-using UnityEngine;
-using UnityEngine.XR;
-using System;
 using UnityEngine.XR.WSA.Input;
 
 #if HP_CONTROLLER_ENABLED
@@ -40,9 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         private readonly HPMotionControllerDefinition controllerDefinition;
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
 
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Left) as MixedRealityInteractionMapping[];
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Right) as MixedRealityInteractionMapping[];
 
 #if UNITY_WSA
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionController.UpdateController");
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     base.UpdateController(interactionSourceState);
                 }
 #else
-                
+
                 base.UpdateController(interactionSourceState);
 #endif
             }
