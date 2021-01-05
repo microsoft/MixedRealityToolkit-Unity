@@ -104,6 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             {
                 case SupportedControllerType.WindowsMixedReality:
                     return typeof(MicrosoftMotionController);
+                case SupportedControllerType.HPMotionController:
+                    return typeof(HPReverbG2Controller);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(MicrosoftArticulatedHand);
                 default:
@@ -117,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
             switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:
+                case SupportedControllerType.HPMotionController:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
                     return InputSourceType.Hand;
@@ -135,7 +138,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
             {
-                return SupportedControllerType.WindowsMixedReality;
+                if (inputDevice.manufacturer == "HP")
+                {
+                    return SupportedControllerType.HPMotionController;
+                }
+                else // Fall back to the base WMR controller
+                {
+                    return SupportedControllerType.WindowsMixedReality;
+                }
             }
 
             return base.GetCurrentControllerType(inputDevice);

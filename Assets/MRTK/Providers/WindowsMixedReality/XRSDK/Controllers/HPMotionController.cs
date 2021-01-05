@@ -40,7 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         }
 
         private readonly HPMotionControllerDefinition controllerDefinition;
+
+        /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
+
+        /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPController.UpdateController");

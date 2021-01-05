@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -10,34 +10,33 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
 {
-    /// <summary>
-    /// Open XR + XR SDK implementation of <see href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_microsoft_mixed_reality_motion_controller_profile">interaction_profiles/microsoft/motion_controller</see>.
-    /// </summary>
     [MixedRealityController(
-        SupportedControllerType.WindowsMixedReality,
-        new[] { Handedness.Left, Handedness.Right },
-        "Textures/MotionController")]
-    public class MicrosoftMotionController : GenericXRSDKController
+        SupportedControllerType.HPMotionController,
+        new[] { Handedness.Left, Handedness.Right })]
+    public class HPReverbG2Controller : GenericXRSDKController
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MicrosoftMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public HPReverbG2Controller(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new HPMotionControllerDefinition(inputSource, controllerHandedness);
         }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition.DefaultLeftHandedInteractions;
 
-        private readonly WindowsMixedRealityControllerDefinition controllerDefinition = null;
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition.DefaultRightHandedInteractions;
+
+        private readonly HPMotionControllerDefinition controllerDefinition = null;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
-        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRController.UpdatePoseData");
+        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] HPReverbG2Controller.UpdatePoseData");
 
         /// <summary>
         /// Update spatial pointer and spatial grip data.
