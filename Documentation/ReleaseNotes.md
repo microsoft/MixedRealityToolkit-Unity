@@ -37,7 +37,7 @@ Two new solvers are ready for use with mainline MRTK.
 
 ### Input Recording Service improvements
 
-`InputRecordingService` and `InputPlaybackService` can now record and plays back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see [here](InputSimulation/InputAnimationFileFormat.md) for more information on the new version 1.1 specifications.
+`InputRecordingService` and `InputPlaybackService` can now record and play back eye gaze input. Recording has been optimized to ensure a consistent framerate throughout the recording period while recording file size and save time are also reduced by about 50%. Saving and loading of recording files can now be performed asynchronously. Note the file format of the recording has changed in this MRTK version, please see [here](InputSimulation/InputAnimationFileFormat.md) for more information on the new version 1.1 specifications.
 
 
 ## Breaking changes
