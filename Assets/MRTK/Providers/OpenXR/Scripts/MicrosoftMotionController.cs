@@ -25,11 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         public MicrosoftMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
+            controllerDefinition = new WindowsMixedRealityControllerDefinition(controllerHandedness);
         }
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         private readonly WindowsMixedRealityControllerDefinition controllerDefinition = null;
 
