@@ -35,9 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(9, "Button.PrimaryThumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
             new MixedRealityInteractionMapping(10, "Button.Three Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
             new MixedRealityInteractionMapping(11, "Button.Four Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
-            new MixedRealityInteractionMapping(12, "Button.Three Touch", AxisType.Digital, DeviceInputType.PrimaryButtonTouch),
-            new MixedRealityInteractionMapping(13, "Button.Four Touch", AxisType.Digital, DeviceInputType.SecondaryButtonTouch),
-            new MixedRealityInteractionMapping(14, "Button.Start Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(12, "Button.Start Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(13, "Button.Three Touch", AxisType.Digital, DeviceInputType.PrimaryButtonTouch),
+            new MixedRealityInteractionMapping(14, "Button.Four Touch", AxisType.Digital, DeviceInputType.SecondaryButtonTouch),
             new MixedRealityInteractionMapping(15, "Touch.PrimaryThumbRest Touch", AxisType.Digital, DeviceInputType.ThumbTouch),
             new MixedRealityInteractionMapping(16, "Touch.PrimaryThumbRest Near Touch", AxisType.Digital, DeviceInputType.ThumbNearTouch),
         };
