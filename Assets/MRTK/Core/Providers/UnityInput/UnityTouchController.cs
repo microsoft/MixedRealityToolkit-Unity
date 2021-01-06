@@ -15,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public UnityTouchController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            controllerDefinition = new TouchScreenControllerDefinition();
+            controllerDefinition = new TouchScreenDefinition();
         }
 
-        private readonly TouchScreenControllerDefinition controllerDefinition;
+        private readonly TouchScreenDefinition controllerDefinition;
 
         /// <summary>
         /// Time in seconds to determine if the contact registers as a tap or a hold

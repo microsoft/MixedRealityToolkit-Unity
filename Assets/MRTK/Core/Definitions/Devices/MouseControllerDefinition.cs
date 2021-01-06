@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the base interactions and data that an controller can provide.
     /// </summary>
-    public class MouseControllerDefinition : BaseControllerDefinition
+    public class MouseControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// 

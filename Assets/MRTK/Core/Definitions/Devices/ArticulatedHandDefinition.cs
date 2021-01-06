@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the interactions and data that an articulated hand can provide.
     /// </summary>
-    public class ArticulatedHandDefinition : BaseControllerDefinition
+    public class ArticulatedHandDefinition : BaseInputSourceDefinition
     {
         public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(handedness)
         {

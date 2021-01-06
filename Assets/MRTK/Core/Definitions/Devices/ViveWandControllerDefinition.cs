@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class ViveWandControllerDefinition : BaseControllerDefinition
+    public class ViveWandControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// 

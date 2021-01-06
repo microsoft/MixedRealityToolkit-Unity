@@ -9,13 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the base interactions and data that an controller can provide.
     /// </summary>
-    public abstract class BaseControllerDefinition : IMixedRealityInputSourceDefinition
+    public abstract class BaseInputSourceDefinition : IMixedRealityInputSourceDefinition
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="handedness"></param>
-        public BaseControllerDefinition(Handedness handedness)
+        public BaseInputSourceDefinition(Handedness handedness)
         {
             Handedness = handedness;
         }

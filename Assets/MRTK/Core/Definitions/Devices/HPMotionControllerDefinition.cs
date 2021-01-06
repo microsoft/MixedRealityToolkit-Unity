@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HPMotionControllerDefinition : BaseControllerDefinition
+    public class HPMotionControllerDefinition : BaseInputSourceDefinition
     {
         public HPMotionControllerDefinition(Handedness handedness) : base(handedness) { }
 

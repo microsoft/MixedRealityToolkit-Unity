@@ -8,12 +8,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class TouchScreenControllerDefinition : BaseControllerDefinition
+    public class TouchScreenDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// 
         /// </summary>
-        public TouchScreenControllerDefinition() : base(Handedness.None) { }
+        public TouchScreenDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
         protected override MixedRealityInteractionMapping[] DefaultMappings => new[]

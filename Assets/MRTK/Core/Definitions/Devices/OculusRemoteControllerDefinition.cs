@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class OculusRemoteControllerDefinition : BaseControllerDefinition
+    public class OculusRemoteControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// 

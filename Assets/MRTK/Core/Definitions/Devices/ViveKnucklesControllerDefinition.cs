@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class ViveKnucklesControllerDefinition : BaseControllerDefinition
+    public class ViveKnucklesControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// 

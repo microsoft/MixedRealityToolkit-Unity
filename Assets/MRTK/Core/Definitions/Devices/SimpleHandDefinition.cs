@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class SimpleHandDefinition : BaseControllerDefinition
+    public class SimpleHandDefinition : BaseInputSourceDefinition
     {
         public SimpleHandDefinition(Handedness handedness) : base(handedness) { }
 

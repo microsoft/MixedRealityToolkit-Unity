@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the interactions and data that a Windows Mixed Reality motion controller can provide.
     /// </summary>
-    public class WindowsMixedRealityControllerDefinition : BaseControllerDefinition
+    public class WindowsMixedRealityControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
         /// Constructor.

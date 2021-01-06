@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// 
     /// </summary>
-    public class OculusTouchControllerDefinition : BaseControllerDefinition
+    public class OculusTouchControllerDefinition : BaseInputSourceDefinition
     {
         public OculusTouchControllerDefinition(Handedness handedness) : base(handedness)
         {
