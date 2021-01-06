@@ -19,14 +19,31 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public OculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            controllerDefinition = new OculusRemoteControllerDefinition();
         }
 
+        OculusRemoteControllerDefinition controllerDefinition;
+
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        public override MixedRealityInteractionMapping[] DefaultInteractions
         {
-            new MixedRealityInteractionMapping(0, "D-Pad Position", AxisType.DualAxis, DeviceInputType.DirectionalPad, ControllerMappingLibrary.AXIS_5, ControllerMappingLibrary.AXIS_6),
-            new MixedRealityInteractionMapping(1, "Button.One", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton0),
-            new MixedRealityInteractionMapping(2, "Button.Two", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton1),
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions();
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LegacyInputSupport[i]);
+                }
+                return defaultInteractions;
+            }
+        }
+
+        private static readonly MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport = new[]
+        {
+            new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_5, axisCodeY: ControllerMappingLibrary.AXIS_6), // D-Pad Position
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton0), // Button.One
+            new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton1), // Button.Two
         };
     }
 }
