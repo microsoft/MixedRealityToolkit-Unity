@@ -17,30 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// Constructor.
         /// </summary>
         public ViveWandController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ViveWandControllerDefinition(controllerHandedness))
         {
-            controllerDefinition = new ViveWandControllerDefinition(controllerHandedness);
         }
-
-        ViveWandControllerDefinition controllerDefinition;
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
+        protected override MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport { get; } = new[]
         {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Left);
-                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
-                }
-                return defaultLeftHandedInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport = new[]
-{
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_9), // Trigger Position
             new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton14), // Trigger Press (Select)
@@ -53,22 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         };
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions
+        protected override MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport { get; } = new[]
         {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Right);
-                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
-                }
-                return defaultRightHandedInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport = new[]
-{
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_10), // Trigger Position
             new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton15), // Trigger Press (Select)

@@ -28,21 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif
 
         public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, new HPMotionControllerDefinition(controllerHandedness), inputSource, interactions)
         {
 #if HP_CONTROLLER_ENABLED
             InputHandler = new HPMotionControllerInputHandler(controllerHandedness, inputSource, Interactions);
 #endif
-            controllerDefinition = new HPMotionControllerDefinition(controllerHandedness);
         }
-
-        private readonly HPMotionControllerDefinition controllerDefinition;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Left) as MixedRealityInteractionMapping[];
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Right) as MixedRealityInteractionMapping[];
 
 #if UNITY_WSA
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] HPMotionController.UpdateController");

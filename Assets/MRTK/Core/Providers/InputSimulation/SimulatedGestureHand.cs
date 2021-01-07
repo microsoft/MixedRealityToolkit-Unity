@@ -45,12 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new SimpleHandDefinition(controllerHandedness))
         {
-            controllerDefinition = new SimpleHandDefinition(controllerHandedness);
         }
-
-        private readonly SimpleHandDefinition controllerDefinition;
 
         /// Lazy-init settings based on profile.
         /// This cannot happen in the constructor because the profile may not exist yet.
@@ -120,12 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
         }
-
-        /// <summary>
-        /// The GGV default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)

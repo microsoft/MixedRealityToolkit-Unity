@@ -19,32 +19,15 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// Constructor.
         /// </summary>
         public HPMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new HPMotionControllerDefinition(controllerHandedness))
         {
-            controllerDefinition = new HPMotionControllerDefinition(controllerHandedness);
         }
-
-        private readonly HPMotionControllerDefinition controllerDefinition;
 
         /// <inheritdoc />
         public override float PointerOffsetAngle { get; protected set; } = -30f;
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
-        {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Left);
-                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
-                }
-                return defaultLeftHandedInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport = new[]
+        protected override MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Grip
@@ -62,22 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         };
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions
-        {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions(Handedness.Right);
-                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
-                }
-                return defaultRightHandedInteractions;
-            }
-        }
-
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport = new[]
+        protected override MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Pointer
             new MixedRealityInteractionMappingLegacyInput(), // Spatial Grip

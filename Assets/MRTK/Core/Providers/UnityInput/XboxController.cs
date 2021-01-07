@@ -19,31 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// Constructor.
         /// </summary>
         public XboxController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new XboxControllerDefinition())
         {
-            controllerDefinition = new XboxControllerDefinition();
         }
 
-        private readonly XboxControllerDefinition controllerDefinition;
-
-        /// <summary>
-        /// Default interactions for Xbox Controller using Unity Input System.
-        /// </summary>
-        public override MixedRealityInteractionMapping[] DefaultInteractions
-        {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions();
-                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LegacyInputSupport[i]);
-                }
-                return defaultInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport = new[]
+        /// <inheritdoc />
+        protected override MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_1, axisCodeY: ControllerMappingLibrary.AXIS_2, invertYAxis: true), // Left Thumbstick
             new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton8), // Left Thumbstick Click

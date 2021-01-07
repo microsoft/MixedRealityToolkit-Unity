@@ -15,17 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     public class WindowsMixedRealityGGVHand : BaseWindowsMixedRealitySource
     {
         public WindowsMixedRealityGGVHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-        : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new SimpleHandDefinition(controllerHandedness))
         {
-            handDefinition = new SimpleHandDefinition(controllerHandedness);
         }
-
-        private readonly SimpleHandDefinition handDefinition;
-
-        /// <summary>
-        /// The GGV hand default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
     }
 }

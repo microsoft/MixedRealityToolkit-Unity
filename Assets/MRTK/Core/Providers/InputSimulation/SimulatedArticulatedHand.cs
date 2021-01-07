@@ -25,21 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor.
         /// </summary>
         public SimulatedArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
         }
 
-        /// <summary>
-        /// The definition and data store for this articulated hand class.
-        /// </summary>
-        protected ArticulatedHandDefinition handDefinition;
-
-        /// <summary>
-        /// The simulated articulated hand's default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         /// <inheritdoc />
         protected override void UpdateHandJoints(SimulatedHandData handData)
@@ -58,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            handDefinition?.UpdateHandJoints(jointPoses);
+            HandDefinition?.UpdateHandJoints(jointPoses);
         }
 
         /// <inheritdoc />
@@ -143,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case DeviceInputType.ThumbStick:
-                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
+                        HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }

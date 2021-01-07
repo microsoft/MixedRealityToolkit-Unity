@@ -31,17 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Constructor.
         /// </summary>
         public WindowsMixedRealityXRSDKArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
             handMeshProvider = new WindowsMixedRealityHandMeshProvider(this);
         }
 
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        private readonly ArticulatedHandDefinition handDefinition;
         private readonly WindowsMixedRealityHandMeshProvider handMeshProvider;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
@@ -64,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #endregion IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
         #region Update data functions
 
@@ -86,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     switch (Interactions[i].InputType)
                     {
                         case DeviceInputType.IndexFinger:
-                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            HandDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                             break;
                         case DeviceInputType.ThumbStick:
-                            handDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
+                            HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                             break;
                     }
                 }
@@ -158,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         }
                     }
 
-                    handDefinition?.UpdateHandJoints(unityJointPoses);
+                    HandDefinition?.UpdateHandJoints(unityJointPoses);
                 }
             }
         }

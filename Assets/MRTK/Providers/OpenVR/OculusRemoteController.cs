@@ -17,29 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// Constructor.
         /// </summary>
         public OculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new OculusRemoteControllerDefinition())
         {
-            controllerDefinition = new OculusRemoteControllerDefinition();
         }
-
-        OculusRemoteControllerDefinition controllerDefinition;
 
         /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions
-        {
-            get
-            {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions();
-                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
-                for (int i = 0; i < definitionInteractions.Count; i++)
-                {
-                    defaultInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LegacyInputSupport[i]);
-                }
-                return defaultInteractions;
-            }
-        }
-
-        private static readonly MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport = new[]
+        protected override MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport { get; } = new[]
         {
             new MixedRealityInteractionMappingLegacyInput(axisCodeX: ControllerMappingLibrary.AXIS_5, axisCodeY: ControllerMappingLibrary.AXIS_6), // D-Pad Position
             new MixedRealityInteractionMappingLegacyInput(keyCode: KeyCode.JoystickButton0), // Button.One

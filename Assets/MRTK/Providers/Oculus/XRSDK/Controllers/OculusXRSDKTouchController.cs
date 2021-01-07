@@ -25,18 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// </summary>
         public OculusXRSDKTouchController(TrackingState trackingState, Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new OculusTouchControllerDefinition(controllerHandedness))
         {
-            controllerDefinition = new OculusTouchControllerDefinition(controllerHandedness);
         }
-
-        private readonly OculusTouchControllerDefinition controllerDefinition;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Left) as MixedRealityInteractionMapping[];
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => controllerDefinition?.GetDefaultInteractions(Handedness.Right) as MixedRealityInteractionMapping[];
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKController.UpdateButtonData");
         protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)

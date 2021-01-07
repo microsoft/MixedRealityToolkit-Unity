@@ -25,12 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null) : base(trackingState, controllerHandedness, inputSource, interactions)
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new MouseControllerDefinition())
         {
-            controllerDefinition = new MouseControllerDefinition();
         }
-
-        private readonly MouseControllerDefinition controllerDefinition;
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions

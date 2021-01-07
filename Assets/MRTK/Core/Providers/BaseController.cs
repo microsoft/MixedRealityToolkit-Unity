@@ -15,12 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
         {
             TrackingState = trackingState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
             Interactions = interactions;
+            Definition = definition;
 
             IsPositionAvailable = false;
             IsPositionApproximate = false;
@@ -96,17 +97,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultInteractions => Definition?.GetDefaultInteractions(ControllerHandedness) as MixedRealityInteractionMapping[];
 
         /// <summary>
         /// The Default Left Handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => Definition?.GetDefaultInteractions(Handedness.Left) as MixedRealityInteractionMapping[];
 
         /// <summary>
         /// The Default Right Handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
+        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions => Definition?.GetDefaultInteractions(Handedness.Right) as MixedRealityInteractionMapping[];
+
+        /// <summary>
+        /// Represents the TODO
+        /// </summary>
+        protected virtual IMixedRealityInputSourceDefinition Definition { get; } = null;
 
         #region IMixedRealityController Implementation
 

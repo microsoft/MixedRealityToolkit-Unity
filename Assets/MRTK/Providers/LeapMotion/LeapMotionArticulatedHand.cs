@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.﻿
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap;
@@ -32,15 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <param name="inputSource">The origin of user input for this controller</param>
         /// <param name="interactions">The controller interaction map between physical inputs and the logical representation in MRTK</param>
         public LeapMotionArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
         }
-
-        internal ArticulatedHandDefinition handDefinition;
-
-        // Set the interactions for each hand to the Default interactions of the hand definition
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.GetDefaultInteractions() as MixedRealityInteractionMapping[];
 
         // Joint poses of the MRTK hand based on the leap hand data
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
@@ -53,16 +47,18 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         #endregion IMixedRealityHand Implementation
 
 #if LEAPMOTIONCORE_PRESENT
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         /// <summary>
         /// If true, the current joint pose supports far interaction via the default controller ray.  
         /// </summary>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
         /// <summary>
         /// If true, the hand is in air tap gesture, also called the pinch gesture.
         /// </summary>
-        public bool IsPinching => handDefinition.IsPinching;
+        public bool IsPinching => HandDefinition.IsPinching;
 
         // Array of TrackedHandJoint names
         private static readonly TrackedHandJoint[] TrackedHandJointEnum = (TrackedHandJoint[])Enum.GetValues(typeof(TrackedHandJoint));
@@ -222,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 SetJointPoses();
 
                 // Update hand joints and raise event via handDefinition
-                handDefinition?.UpdateHandJoints(jointPoses);
+                HandDefinition?.UpdateHandJoints(jointPoses);
 
                 UpdateInteractions();
 
@@ -283,15 +279,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         }
                         break;
                     case DeviceInputType.IndexFinger:
-                        handDefinition.UpdateCurrentIndexPose(Interactions[i]);
+                        HandDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
-                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
+                        HandDefinition?.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }
         }
 #endif
     }
-
 }

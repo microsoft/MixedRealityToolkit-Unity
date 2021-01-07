@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericJoystickController : BaseController
     {
-        public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
             // Update the spatial pointer rotation with the preconfigured offset angle
             if (PointerOffsetAngle != 0f && Interactions != null)
@@ -70,6 +70,78 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// The current pose of this controller.
         /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(ControllerHandedness);
+
+                if (definitionInteractions.Count != LegacyInputSupport.Length)
+                {
+                    Debug.LogWarning($"Legacy input mappings are being used, but an incorrect number of mappings were provided. Interaction count {definitionInteractions.Count}. Legacy count {LegacyInputSupport.Length}.");
+                    return null;
+                }
+
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LegacyInputSupport[i]);
+                }
+                return defaultInteractions;
+            }
+        }
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport { get; } = System.Array.Empty<MixedRealityInteractionMappingLegacyInput>();
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(Handedness.Left);
+
+                if (definitionInteractions.Count != LeftHandedLegacyInputSupport.Length)
+                {
+                    Debug.LogWarning($"Legacy input mappings are being used, but an incorrect number of mappings were provided. Interaction count {definitionInteractions.Count}. Legacy count {LeftHandedLegacyInputSupport.Length}.");
+                    return null;
+                }
+
+                MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
+                }
+                return defaultLeftHandedInteractions;
+            }
+        }
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport { get; } = System.Array.Empty<MixedRealityInteractionMappingLegacyInput>();
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(Handedness.Right);
+
+                if (definitionInteractions.Count != RightHandedLegacyInputSupport.Length)
+                {
+                    Debug.LogWarning($"Legacy input mappings are being used, but an incorrect number of mappings were provided. Interaction count {definitionInteractions.Count}. Legacy count {RightHandedLegacyInputSupport.Length}.");
+                    return null;
+                }
+
+                MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
+                }
+                return defaultRightHandedInteractions;
+            }
+        }
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport { get; } = System.Array.Empty<MixedRealityInteractionMappingLegacyInput>();
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateController");
 
