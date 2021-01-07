@@ -43,13 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>Optional. Override the specifically-handed properties if each controller has different interactions.</remarks>
         protected virtual MixedRealityInteractionMapping[] DefaultMappings => null;
 
-        public IReadOnlyList<MixedRealityInteractionMapping> GetDefaultInteractions(Handedness handedness = Handedness.None)
+        public IReadOnlyList<MixedRealityInteractionMapping> GetDefaultInteractions(Handedness handedness)
         {
-            if (handedness == Handedness.None)
-            {
-                handedness = Handedness;
-            }
-
             switch (handedness)
             {
                 case Handedness.Left:

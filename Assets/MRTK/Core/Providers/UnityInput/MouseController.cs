@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             get
             {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = controllerDefinition?.GetDefaultInteractions();
+                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(ControllerHandedness);
                 MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
                 for (int i = 0; i < definitionInteractions.Count; i++)
                 {
