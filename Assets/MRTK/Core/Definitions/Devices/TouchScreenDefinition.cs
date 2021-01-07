@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public TouchScreenDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Touch Pointer Delta", AxisType.DualAxis, DeviceInputType.PointerPosition),
-            new MixedRealityInteractionMapping(1, "Touch Pointer Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(2, "Touch Press", AxisType.Digital, DeviceInputType.PointerClick),
+            new MixedRealityInputActionMapping("Touch Pointer Delta", AxisType.DualAxis, DeviceInputType.PointerPosition),
+            new MixedRealityInputActionMapping("Touch Pointer Position", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInputActionMapping("Touch Press", AxisType.Digital, DeviceInputType.PointerClick),
         };
     }
 }

@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public OculusRemoteControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "D-Pad Position", AxisType.DualAxis, DeviceInputType.DirectionalPad),
-            new MixedRealityInteractionMapping(1, "Button.One", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(2, "Button.Two", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("D-Pad Position", AxisType.DualAxis, DeviceInputType.DirectionalPad),
+            new MixedRealityInputActionMapping("Button.One", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Button.Two", AxisType.Digital, DeviceInputType.ButtonPress),
         };
     }
 }

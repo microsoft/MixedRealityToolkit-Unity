@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             get
             {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(ControllerHandedness);
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(ControllerHandedness);
 
                 if (definitionInteractions.Count != LegacyInputSupport.Length)
                 {
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
                 for (int i = 0; i < definitionInteractions.Count; i++)
                 {
-                    defaultInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LegacyInputSupport[i]);
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], LegacyInputSupport[i]);
                 }
                 return defaultInteractions;
             }
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             get
             {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(Handedness.Left);
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(Handedness.Left);
 
                 if (definitionInteractions.Count != LeftHandedLegacyInputSupport.Length)
                 {
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 MixedRealityInteractionMapping[] defaultLeftHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
                 for (int i = 0; i < definitionInteractions.Count; i++)
                 {
-                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
+                    defaultLeftHandedInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], LeftHandedLegacyInputSupport[i]);
                 }
                 return defaultLeftHandedInteractions;
             }
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             get
             {
-                System.Collections.Generic.IReadOnlyList<MixedRealityInteractionMapping> definitionInteractions = Definition?.GetDefaultInteractions(Handedness.Right);
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(Handedness.Right);
 
                 if (definitionInteractions.Count != RightHandedLegacyInputSupport.Length)
                 {
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 MixedRealityInteractionMapping[] defaultRightHandedInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
                 for (int i = 0; i < definitionInteractions.Count; i++)
                 {
-                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping(definitionInteractions[i], RightHandedLegacyInputSupport[i]);
+                    defaultRightHandedInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], RightHandedLegacyInputSupport[i]);
                 }
                 return defaultRightHandedInteractions;
             }

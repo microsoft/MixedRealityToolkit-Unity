@@ -84,21 +84,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The articulated hands default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        [System.Obsolete("Call GetDefaultInteractions() instead.")]
-        public MixedRealityInteractionMapping[] DefaultInteractions => DefaultMappings;
+        [System.Obsolete("Call GetDefaultMappings(Handedness) instead.")]
+        public MixedRealityInteractionMapping[] DefaultInteractions
+        {
+            get
+            {
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[DefaultMappings.Length];
+                for (int i = 0; i < DefaultMappings.Length; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, DefaultMappings[i]);
+                }
+                return defaultInteractions;
+            }
+        }
 
         /// <summary>
         /// The articulated hands default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
-            new MixedRealityInteractionMapping(5, "Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInputActionMapping("Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInputActionMapping("Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
+            new MixedRealityInputActionMapping("Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
 
         /// <summary>

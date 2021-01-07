@@ -13,10 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public SimpleHandDefinition(Handedness handedness) : base(handedness) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInputActionMapping("Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInputActionMapping("Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
     }
 }

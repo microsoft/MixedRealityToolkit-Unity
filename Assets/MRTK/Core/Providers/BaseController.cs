@@ -97,17 +97,53 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultInteractions => Definition?.GetDefaultInteractions(ControllerHandedness) as MixedRealityInteractionMapping[];
+        public virtual MixedRealityInteractionMapping[] DefaultInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(ControllerHandedness);
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i]);
+                }
+                return defaultInteractions;
+            }
+        }
 
         /// <summary>
         /// The Default Left Handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => Definition?.GetDefaultInteractions(Handedness.Left) as MixedRealityInteractionMapping[];
+        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(Handedness.Left);
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i]);
+                }
+                return defaultInteractions;
+            }
+        }
 
         /// <summary>
         /// The Default Right Handed interactions for this controller.
         /// </summary>
-        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions => Definition?.GetDefaultInteractions(Handedness.Right) as MixedRealityInteractionMapping[];
+        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions
+        {
+            get
+            {
+                System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions = Definition?.GetDefaultMappings(Handedness.Right);
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+                for (int i = 0; i < definitionInteractions.Count; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i]);
+                }
+                return defaultInteractions;
+            }
+        }
 
         /// <summary>
         /// Represents the TODO

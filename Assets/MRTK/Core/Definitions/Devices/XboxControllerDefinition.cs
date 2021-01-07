@@ -16,24 +16,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public XboxControllerDefinition() : base(Handedness.None) { }
 
         /// <inheritdoc />
-        protected override MixedRealityInteractionMapping[] DefaultMappings => new[]
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Left Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(1, "Left Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(2, "Right Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(3, "Right Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(4, "D-Pad", AxisType.DualAxis, DeviceInputType.DirectionalPad),
-            new MixedRealityInteractionMapping(5, "Shared Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(6, "Left Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(7, "Right Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(8, "View", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(9, "Menu", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(10, "Left Bumper", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(11, "Right Bumper", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(12, "A", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(13, "B", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(14, "X", AxisType.Digital, DeviceInputType.ButtonPress),
-            new MixedRealityInteractionMapping(15, "Y", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Left Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInputActionMapping("Left Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Right Thumbstick", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInputActionMapping("Right Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("D-Pad", AxisType.DualAxis, DeviceInputType.DirectionalPad),
+            new MixedRealityInputActionMapping("Shared Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInputActionMapping("Left Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInputActionMapping("Right Trigger", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInputActionMapping("View", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Menu", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Left Bumper", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Right Bumper", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("A", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("B", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("X", AxisType.Digital, DeviceInputType.ButtonPress),
+            new MixedRealityInputActionMapping("Y", AxisType.Digital, DeviceInputType.ButtonPress),
         };
     }
 }

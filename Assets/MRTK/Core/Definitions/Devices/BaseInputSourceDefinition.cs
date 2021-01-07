@@ -29,21 +29,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The collection of interactions supported by a left-handed instance of this controller.
         /// </summary>
         /// <remarks>Optional. Override DefaultInteractions if both handed controllers have identical interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultLeftHandedMappings => DefaultMappings;
+        protected virtual MixedRealityInputActionMapping[] DefaultLeftHandedMappings => DefaultMappings;
 
         /// <summary>
         /// The collection of interactions supported by a right-handed instance of this controller.
         /// </summary>
         /// <remarks>Optional. Override DefaultInteractions if both handed controllers have identical interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultRightHandedMappings => DefaultMappings;
+        protected virtual MixedRealityInputActionMapping[] DefaultRightHandedMappings => DefaultMappings;
 
         /// <summary>
         /// The collection of interactions supported by this controller.
         /// </summary>
         /// <remarks>Optional. Override the specifically-handed properties if each controller has different interactions.</remarks>
-        protected virtual MixedRealityInteractionMapping[] DefaultMappings => null;
+        protected virtual MixedRealityInputActionMapping[] DefaultMappings => null;
 
-        public IReadOnlyList<MixedRealityInteractionMapping> GetDefaultInteractions(Handedness handedness)
+        public IReadOnlyList<MixedRealityInputActionMapping> GetDefaultMappings(Handedness handedness)
         {
             switch (handedness)
             {

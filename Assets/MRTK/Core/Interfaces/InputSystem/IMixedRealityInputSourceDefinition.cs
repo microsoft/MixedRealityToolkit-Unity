@@ -8,6 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public interface IMixedRealityInputSourceDefinition
     {
-        IReadOnlyList<MixedRealityInteractionMapping> GetDefaultInteractions(Handedness handedness);
+        IReadOnlyList<MixedRealityInputActionMapping> GetDefaultMappings(Handedness handedness);
     }
 }

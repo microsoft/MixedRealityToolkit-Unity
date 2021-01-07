@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
+    /// Maps the capabilities of controllers, linking the physical inputs of a controller to a logical construct in a runtime project.
     /// </summary>
     /// <remarks>
     /// One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.
@@ -95,6 +95,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                    mixedRealityInteractionMapping.axisType,
                    mixedRealityInteractionMapping.inputType,
                    mixedRealityInteractionMapping.inputAction,
+                   legacyInput.KeyCode,
+                   legacyInput.AxisCodeX,
+                   legacyInput.AxisCodeY,
+                   legacyInput.InvertXAxis,
+                   legacyInput.InvertYAxis) { }
+
+        public MixedRealityInteractionMapping(uint id, MixedRealityInputActionMapping mixedRealityInputActionMapping)
+            : this(id,
+                   mixedRealityInputActionMapping.Description,
+                   mixedRealityInputActionMapping.AxisType,
+                   mixedRealityInputActionMapping.InputType,
+                   mixedRealityInputActionMapping.InputAction) { }
+
+        public MixedRealityInteractionMapping(uint id, MixedRealityInputActionMapping mixedRealityInputActionMapping, MixedRealityInteractionMappingLegacyInput legacyInput)
+            : this(id,
+                   mixedRealityInputActionMapping.Description,
+                   mixedRealityInputActionMapping.AxisType,
+                   mixedRealityInputActionMapping.InputType,
+                   mixedRealityInputActionMapping.InputAction,
                    legacyInput.KeyCode,
                    legacyInput.AxisCodeX,
                    legacyInput.AxisCodeY,
