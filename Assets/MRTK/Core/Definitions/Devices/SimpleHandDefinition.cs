@@ -14,7 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor.
         /// </summary>
         /// <param name="handedness">The handedness that this definition instance represents.</param>
-        public SimpleHandDefinition(Handedness handedness) : base(handedness) { }
+        public SimpleHandDefinition(Handedness handedness) : base(handedness)
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultMappings => new[]

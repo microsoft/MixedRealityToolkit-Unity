@@ -20,10 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
+        protected BaseWindowsMixedRealitySource(
+            TrackingState trackingState,
+            Handedness sourceHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
             : base(trackingState, sourceHandedness, inputSource, interactions, definition)
-        {
-        }
+        { }
 
 #if UNITY_WSA
         /// <summary>

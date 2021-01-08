@@ -18,10 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Constructor.
         /// </summary>
-        public XboxController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public XboxController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new XboxControllerDefinition())
-        {
-        }
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport { get; } = new[]

@@ -14,9 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         new[] { Handedness.Left, Handedness.Right, Handedness.None })]
     public class WindowsMixedRealityXRSDKGGVHand : BaseWindowsMixedRealityXRSDKSource
     {
-        public WindowsMixedRealityXRSDKGGVHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public WindowsMixedRealityXRSDKGGVHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new SimpleHandDefinition(controllerHandedness))
-        {
-        }
+        { }
     }
 }

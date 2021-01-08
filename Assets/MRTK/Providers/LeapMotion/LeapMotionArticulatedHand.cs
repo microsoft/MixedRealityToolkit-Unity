@@ -31,10 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <param name="controllerHandedness">Handedness of this controller (Left or Right)</param>
         /// <param name="inputSource">The origin of user input for this controller</param>
         /// <param name="interactions">The controller interaction map between physical inputs and the logical representation in MRTK</param>
-        public LeapMotionArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public LeapMotionArticulatedHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
-        {
-        }
+        { }
 
         // Joint poses of the MRTK hand based on the leap hand data
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();

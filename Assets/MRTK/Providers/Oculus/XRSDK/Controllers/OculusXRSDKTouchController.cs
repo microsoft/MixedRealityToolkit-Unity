@@ -23,13 +23,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public OculusXRSDKTouchController(TrackingState trackingState, Handedness controllerHandedness,
-            IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusXRSDKTouchController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new OculusTouchControllerDefinition(controllerHandedness))
-        {
-        }
+        { }
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] OculusXRSDKController.UpdateButtonData");
+
         protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
             using (UpdateButtonDataPerfMarker.Auto())

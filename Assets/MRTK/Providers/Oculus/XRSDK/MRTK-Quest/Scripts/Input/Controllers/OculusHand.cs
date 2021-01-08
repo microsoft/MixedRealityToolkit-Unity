@@ -65,10 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         /// <summary>
         /// Default constructor used by reflection for profiles
         /// </summary>
-        public OculusHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusHand(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
-        {
-        }
+        { }
 
         public override void SetupDefaultInteractions()
         {

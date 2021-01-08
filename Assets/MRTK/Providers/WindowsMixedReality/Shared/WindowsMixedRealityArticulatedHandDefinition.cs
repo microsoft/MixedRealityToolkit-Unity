@@ -23,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
     {
         [Obsolete("This class is deprecated. Use WindowsMixedRealityHandMeshProvider instead.")]
-        public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
+        public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness)
+        { }
 
 #if WINDOWS_UWP
         private HandMeshObserver handMeshObserver = null;

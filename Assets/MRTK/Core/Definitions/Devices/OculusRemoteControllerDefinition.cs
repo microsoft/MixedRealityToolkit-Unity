@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public OculusRemoteControllerDefinition() : base(Handedness.None) { }
+        public OculusRemoteControllerDefinition() : base(Handedness.None)
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultMappings => new[]

@@ -15,8 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="handedness">The handedness that this definition instance represents.</param>
         public GenericOpenVRControllerDefinition(Handedness handedness) : base(handedness)
-        {
-        }
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultLeftHandedMappings => new[]

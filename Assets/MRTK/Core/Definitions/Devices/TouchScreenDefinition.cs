@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public TouchScreenDefinition() : base(Handedness.None) { }
+        public TouchScreenDefinition() : base(Handedness.None)
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultMappings => new[]

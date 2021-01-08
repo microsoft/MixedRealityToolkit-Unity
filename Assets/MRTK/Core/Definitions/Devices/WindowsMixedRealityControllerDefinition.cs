@@ -14,7 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor.
         /// </summary>
         /// <param name="handedness">The handedness that this definition represents.</param>
-        public WindowsMixedRealityControllerDefinition(Handedness handedness) : base(handedness) { }
+        public WindowsMixedRealityControllerDefinition(Handedness handedness) : base(handedness)
+        {
+            if ((handedness != Handedness.Left) &&
+                (handedness != Handedness.Right))
+            {
+                throw new System.ArgumentException($"Unsupported Handedness ({handedness}). The ViveWandControllerDefinition supports Left and Right.");
+            }
+        }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultMappings => new[]

@@ -15,10 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericXRSDKController : BaseController
     {
-        public GenericXRSDKController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
+        public GenericXRSDKController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
-        {
-        }
+        { }
 
         /// <summary>
         /// The current pose of this XR SDK controller.

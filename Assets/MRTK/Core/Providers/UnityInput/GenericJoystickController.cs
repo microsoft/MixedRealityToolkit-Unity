@@ -14,7 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericJoystickController : BaseController
     {
-        public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
+        public GenericJoystickController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
             // Update the spatial pointer rotation with the preconfigured offset angle

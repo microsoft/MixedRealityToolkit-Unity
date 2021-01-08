@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -20,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if ((handedness != Handedness.Left) &&
                 (handedness != Handedness.Right))
             {
-                throw new ArgumentException($"Unsupported Handedness ({handedness}). The ViveWandControllerDefinition supports Left and Right.");
+                throw new System.ArgumentException($"Unsupported Handedness ({handedness}). The ViveWandControllerDefinition supports Left and Right.");
             }
         }
 

@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MouseControllerDefinition() : base(Handedness.None) { }
+        public MouseControllerDefinition() : base(Handedness.None)
+        { }
 
         /// <inheritdoc />
         protected override MixedRealityInputActionMapping[] DefaultMappings => new[]

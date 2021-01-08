@@ -18,7 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericOpenVRController : GenericJoystickController
     {
-        public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)
+        public GenericOpenVRController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition ?? new GenericOpenVRControllerDefinition(controllerHandedness))
         {
             nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
