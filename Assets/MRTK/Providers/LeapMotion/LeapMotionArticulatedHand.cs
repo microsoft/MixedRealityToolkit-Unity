@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
 #if LEAPMOTIONCORE_PRESENT
         private ArticulatedHandDefinition handDefinition;
-        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
+        internal ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         /// <summary>
         /// If true, the current joint pose supports far interaction via the default controller ray.  
