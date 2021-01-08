@@ -7,6 +7,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class HPMotionControllerDefinition : BaseInputSourceDefinition
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public HPMotionControllerDefinition(Handedness handedness) : base(handedness) { }
 
         /// <inheritdoc />

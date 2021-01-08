@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="source"></param>
         /// <param name="handedness">The handedness that this definition represents.</param>
         public WindowsMixedRealityControllerDefinition(Handedness handedness) : base(handedness) { }
 

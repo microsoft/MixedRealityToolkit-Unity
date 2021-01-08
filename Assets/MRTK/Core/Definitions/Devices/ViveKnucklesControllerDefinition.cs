@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class ViveKnucklesControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
-        /// <param name="handedness"></param>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public ViveKnucklesControllerDefinition(Handedness handedness) : base(handedness)
         {
             if ((Handedness != Handedness.Left) &&

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class TouchScreenDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public TouchScreenDefinition() : base(Handedness.None) { }
 

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="handedness"></param>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public BaseInputSourceDefinition(Handedness handedness)
         {
             Handedness = handedness;
@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>Optional. Override the specifically-handed properties if each controller has different interactions.</remarks>
         protected virtual MixedRealityInputActionMapping[] DefaultMappings => null;
 
+        /// <inheritdoc />
         public IReadOnlyList<MixedRealityInputActionMapping> GetDefaultMappings(Handedness handedness)
         {
             switch (handedness)

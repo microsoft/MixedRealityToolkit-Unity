@@ -11,6 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class OculusTouchControllerDefinition : BaseInputSourceDefinition
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public OculusTouchControllerDefinition(Handedness handedness) : base(handedness)
         {
             if ((Handedness != Handedness.Left) && 

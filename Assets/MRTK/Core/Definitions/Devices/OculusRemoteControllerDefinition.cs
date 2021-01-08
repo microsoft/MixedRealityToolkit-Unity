@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class OculusRemoteControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public OculusRemoteControllerDefinition() : base(Handedness.None) { }
 

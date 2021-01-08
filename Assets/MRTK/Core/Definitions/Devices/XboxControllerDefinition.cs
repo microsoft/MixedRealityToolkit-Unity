@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class XboxControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public XboxControllerDefinition() : base(Handedness.None) { }
 

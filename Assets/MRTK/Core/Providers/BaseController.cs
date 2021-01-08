@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The Default Left Handed interactions for this controller.
+        /// The default left-handed interactions for this controller.
         /// </summary>
         public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions
         {
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// The Default Right Handed interactions for this controller.
+        /// The default right-handed interactions for this controller.
         /// </summary>
         public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions
         {
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Represents the TODO
+        /// Represents the archetypal definition of what this controller supports and can perform.
         /// </summary>
         protected virtual IMixedRealityInputSourceDefinition Definition { get; } = null;
 

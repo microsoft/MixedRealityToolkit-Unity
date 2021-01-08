@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MouseControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
         public MouseControllerDefinition() : base(Handedness.None) { }
 

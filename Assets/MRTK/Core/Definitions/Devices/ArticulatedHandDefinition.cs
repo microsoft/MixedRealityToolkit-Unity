@@ -13,11 +13,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class ArticulatedHandDefinition : BaseInputSourceDefinition
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="source">The input source backing this definition instance. Used for raising events.</param>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(handedness)
         {
             InputSource = source;
         }
 
+        /// <summary>
+        /// The input source backing this definition instance.
+        /// </summary>
         protected IMixedRealityInputSource InputSource { get; }
 
         private readonly float cursorBeamBackwardTolerance = 0.5f;

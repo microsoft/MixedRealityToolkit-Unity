@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class GenericOpenVRControllerDefinition : BaseInputSourceDefinition
     {
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
-        /// <param name="handedness"></param>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
         public GenericOpenVRControllerDefinition(Handedness handedness) : base(handedness)
         {
         }
