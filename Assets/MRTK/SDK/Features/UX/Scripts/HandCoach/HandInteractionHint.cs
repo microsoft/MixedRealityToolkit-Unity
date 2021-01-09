@@ -4,7 +4,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
 {
     /// <summary>
     /// This class provides wrapper functionality for triggering animations and fades for the hand rig.

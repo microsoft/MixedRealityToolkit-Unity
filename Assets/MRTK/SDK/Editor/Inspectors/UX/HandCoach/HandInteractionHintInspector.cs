@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Experimental.Physics;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.UI.HandCoach;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// A custom inspector for ElasticsManager used to separate
