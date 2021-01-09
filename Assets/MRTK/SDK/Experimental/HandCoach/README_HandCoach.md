@@ -41,11 +41,9 @@ Otherwise, you'll need to place the script on a gameObject one parent level up f
 #### Inspector properties
 - **HideIfHandTracked** This boolean specifies whether hand tracking state should be used to hide visuals when a user’s hands are being tracked. If this is set to false, only the scripting property “customShouldHideVisuals” will be used to determine whether to hide the hint.
 
-- **MinDelay** This property specifies the minimum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds if the user’s hands are not being tracked.
+- **HintDisplayDelay** This property specifies the delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds if the user’s hands are not being tracked.
 
-- **MaxDelay** This property specifies the maximum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds even if the user’s hands are being tracked.
-
-- **UseMaxTimer** If this boolean is set to false, it disables the max timer and only allows the hand hint to be shown when the user’s hands are out of view, or the custom condition returns false.
+- **TrackedHandHintDisplayDelay** This property specifies the delay for showing the visuals when the hands are tracked. By default, the visuals for the hand will appear after this many seconds if the user’s hands are being tracked. If HideIfHandTracked is set to true, this property is ignored.
 
 - **Repeats** This property controls how many times the hint animation plays when the min or max timer has passed. The hint then hides and waits for the delay again.
 
