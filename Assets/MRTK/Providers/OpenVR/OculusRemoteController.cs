@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new OculusRemoteControllerDefinition())
+            : base(trackingState, controllerHandedness, new OculusRemoteControllerDefinition(), inputSource, interactions)
         { }
 
         /// <inheritdoc />

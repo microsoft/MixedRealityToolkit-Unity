@@ -18,8 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null,
-            IMixedRealityInputSourceDefinition definition = null)
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, null, inputSource, interactions)
+        { }
+
+        public GenericJoystickController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
             // Update the spatial pointer rotation with the preconfigured offset angle

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new WindowsMixedRealityControllerDefinition(controllerHandedness))
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
         { }
 
         public WindowsMixedRealityController(

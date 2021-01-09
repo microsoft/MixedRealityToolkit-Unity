@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new WindowsMixedRealityControllerDefinition(controllerHandedness))
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
         { }
 
         public WindowsMixedRealityXRSDKMotionController(

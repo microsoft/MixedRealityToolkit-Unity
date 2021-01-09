@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new ViveKnucklesControllerDefinition(controllerHandedness))
+            : base(trackingState, controllerHandedness, new ViveKnucklesControllerDefinition(controllerHandedness), inputSource, interactions)
         { }
 
         /// <inheritdoc />

@@ -22,9 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             TrackingState trackingState,
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
-            MixedRealityInteractionMapping[] interactions = null,
-            IMixedRealityInputSourceDefinition definition = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, definition ?? new GenericOpenVRControllerDefinition(controllerHandedness))
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, new GenericOpenVRControllerDefinition(controllerHandedness), inputSource, interactions)
+        { }
+
+        public GenericOpenVRController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, definition, inputSource, interactions)
         {
             nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
         }

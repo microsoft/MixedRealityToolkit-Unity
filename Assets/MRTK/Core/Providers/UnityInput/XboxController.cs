@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             Handedness controllerHandedness,
             IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions, new XboxControllerDefinition())
+            : base(trackingState, controllerHandedness, new XboxControllerDefinition(), inputSource, interactions)
         { }
 
         /// <inheritdoc />
