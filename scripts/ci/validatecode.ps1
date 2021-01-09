@@ -86,7 +86,7 @@ function CheckEmptyDoccomment {
             # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
             # which basically looks for an empty tag (allowing for alphanumeric param names
             # and values in the tag itself)
-            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=_]*>\s*</$tag>"
             if ($FileContent[$LineNumber] -match $matcher) {
                 Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
                 Write-Host "Delete the line or add a description "
