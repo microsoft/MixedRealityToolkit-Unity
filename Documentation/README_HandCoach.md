@@ -17,11 +17,11 @@ The current interaction model represents a wide variety of gesture controls such
 
 ## Example scene
 You can find examples in the **HandCoachExample** scene under:
-[MixedRealityToolkit.Examples/Experimental/HandCoach/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/HandCoach/Scenes)
+[MixedRealityToolkit.Examples/Demos/HandCoach/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Demos/HandCoach/Scenes)
 
 ## Hand 3D Assets
 You can find the assets under:
-[MixedRealityToolkit.SDK/Experimental/HandCoach](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Experimental/HandCoach)
+[MixedRealityToolkit.SDK/Features/UX/Meshes/HandCoach](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Features/UX/Meshes/HandCoach)
 
 ## Quality
 If you notice distortions on the skinned mesh, you need to make sure your project is using the proper amount of joints. 
