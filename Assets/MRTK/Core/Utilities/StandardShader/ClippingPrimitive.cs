@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Adds a renderer to the list of objects this clipping primitive clips.
         /// </summary>
-        /// <param name="_renderer"></param>
+        /// <param name="_renderer">The renderer to add.</param>
         public void AddRenderer(Renderer _renderer)
         {
             if (_renderer != null)
