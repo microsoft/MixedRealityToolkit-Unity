@@ -423,7 +423,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1178938057}
   interactable: {fileID: 254180289}
   seeItSayItLabel: {fileID: 1506025428}
-  seeItSatItLabelText: {fileID: 1281984580}
+  seeItSayItLabelText: {fileID: 1281984580}
   iconStyle: 0
   iconCharLabel: {fileID: 1231166288}
   iconCharFont: {fileID: 0}
@@ -3230,7 +3230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1691576886
 Transform:
   m_ObjectHideFlags: 0
@@ -3565,6 +3565,8 @@ MonoBehaviour:
   moveLerpTime: 0.000001
   rotateLerpTime: 0.000001
   scaleLerpTime: 0.000001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -3869,7 +3871,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 185
+  m_firstOverflowCharacterIndex: 183
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -3893,7 +3895,7 @@ MonoBehaviour:
   m_margin: {x: 0.89199245, y: -1.3651797, z: 0.6270163, w: 1.3652197}
   m_textInfo:
     textComponent: {fileID: 1969411255}
-    characterCount: 552
+    characterCount: 547
     spriteCount: 0
     spaceCount: 93
     wordCount: 93
@@ -7701,7 +7703,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 8571827940396191818}
   interactable: {fileID: 1276287352499695385}
   seeItSayItLabel: {fileID: 8243642368358251873}
-  seeItSatItLabelText: {fileID: 691618133583844064}
+  seeItSayItLabelText: {fileID: 691618133583844064}
   iconStyle: 0
   iconCharLabel: {fileID: 3538109880330647431}
   iconCharFont: {fileID: 0}
@@ -8255,7 +8257,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 5297326097245849969}
   interactable: {fileID: 3368950398621251106}
   seeItSayItLabel: {fileID: 5553482679735936090}
-  seeItSatItLabelText: {fileID: 3958590522465995739}
+  seeItSayItLabelText: {fileID: 3958590522465995739}
   iconStyle: 0
   iconCharLabel: {fileID: 1040127196888559292}
   iconCharFont: {fileID: 0}
@@ -11264,6 +11266,8 @@ MonoBehaviour:
   moveLerpTime: 0.001
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:
@@ -12178,7 +12182,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 6841507273470217012}
   interactable: {fileID: 4157633979017966695}
   seeItSayItLabel: {fileID: 6513304057430320671}
-  seeItSatItLabelText: {fileID: 2422291742802774430}
+  seeItSayItLabelText: {fileID: 2422291742802774430}
   iconStyle: 0
   iconCharLabel: {fileID: 1809689170693369081}
   iconCharFont: {fileID: 0}
@@ -13857,7 +13861,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 6100550435890923169}
   interactable: {fileID: 3740955005300390386}
   seeItSayItLabel: {fileID: 5781372166254439306}
-  seeItSatItLabelText: {fileID: 3154170463447188491}
+  seeItSayItLabelText: {fileID: 3154170463447188491}
   iconStyle: 0
   iconCharLabel: {fileID: 1388558274405540204}
   iconCharFont: {fileID: 0}
@@ -14327,7 +14331,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 2932690285435219152}
   interactable: {fileID: 5760115793247261571}
   seeItSayItLabel: {fileID: 3179839651424092667}
-  seeItSatItLabelText: {fileID: 6331882239432093306}
+  seeItSayItLabelText: {fileID: 6331882239432093306}
   iconStyle: 0
   iconCharLabel: {fileID: 8025316055291775773}
   iconCharFont: {fileID: 0}
@@ -14518,7 +14522,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 3425613699699509581}
   interactable: {fileID: 5244777185810134558}
   seeItSayItLabel: {fileID: 3105289755848483942}
-  seeItSatItLabelText: {fileID: 5829459592427572199}
+  seeItSayItLabelText: {fileID: 5829459592427572199}
   iconStyle: 0
   iconCharLabel: {fileID: 7522873585236455040}
   iconCharFont: {fileID: 0}
@@ -16109,7 +16113,7 @@ MonoBehaviour:
   moveLerpTime: 0.5
   rotateLerpTime: 0.1
   scaleLerpTime: 0
-  maintainScale: 1
+  maintainScaleOnInitialization: 1
   smoothing: 1
   lifetime: 0
   orientationType: 1
@@ -16983,7 +16987,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 4061402878062556606}
   interactable: {fileID: 6853925489903323885}
   seeItSayItLabel: {fileID: 4381735738063313045}
-  seeItSatItLabelText: {fileID: 5129986426796275476}
+  seeItSayItLabelText: {fileID: 5129986426796275476}
   iconStyle: 0
   iconCharLabel: {fileID: 9201316170133131891}
   iconCharFont: {fileID: 0}
@@ -18453,7 +18457,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 3672859771871269902}
   interactable: {fileID: 6177696300175305565}
   seeItSayItLabel: {fileID: 3921108701095311653}
-  seeItSatItLabelText: {fileID: 5590305926912087716}
+  seeItSayItLabelText: {fileID: 5590305926912087716}
   iconStyle: 0
   iconCharLabel: {fileID: 8436432498862896067}
   iconCharFont: {fileID: 0}
@@ -20950,7 +20954,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 503347820459100086}
   interactable: {fileID: 7043428195989371109}
   seeItSayItLabel: {fileID: 175162351557913245}
-  seeItSatItLabelText: {fileID: 8759535577386190108}
+  seeItSayItLabelText: {fileID: 8759535577386190108}
   iconStyle: 0
   iconCharLabel: {fileID: 4688497923872497787}
   iconCharFont: {fileID: 0}
@@ -23264,7 +23268,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1280834675548283927}
   interactable: {fileID: 8540365122689489732}
   seeItSayItLabel: {fileID: 1536991154959141180}
-  seeItSatItLabelText: {fileID: 7974238070044124861}
+  seeItSayItLabelText: {fileID: 7974238070044124861}
   iconStyle: 0
   iconCharLabel: {fileID: 6209008620402885594}
   iconCharFont: {fileID: 0}
