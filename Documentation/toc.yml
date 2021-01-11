@@ -269,8 +269,8 @@
       href: README_ProgressIndicator.md
     - name: Dialog
       href: README_Dialog.md
-    - name: Hand Coach [Experimental]
-      href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
+    - name: Hand Coach
+      href: README_HandCoach.md
     - name: Pulse Shader [Experimental]
       href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
     - name: Dock Control [Experimental]
