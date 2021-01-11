@@ -284,7 +284,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestHand testHand = new TestHand(Handedness.Left);
             yield return testHand.Show(Vector3.zero);
-            yield return testHand.MoveTo(initialHandPosition);
             using (var catcher = CreateTouchEventCatcher(touchable))
             {
                 // Touch started when entering collider
@@ -487,6 +486,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var text = UnityUiUtilities.CreateText("test");
             text.transform.SetParent(button.transform, false);
 
+            Vector3 pressedPosition = objectPosition + Vector3.forward * 0.05f;
+
             canvas.transform.position = objectPosition;
 
             yield return new WaitForFixedUpdate();
@@ -497,9 +498,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             using (var catcher = new UnityButtonEventCatcher(button))
             {
                 // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, pressedPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(0, catcher.Click);
-                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(pressedPosition + Vector3.forward * 0.05f, initialHandPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.Click);
             }
 
@@ -512,13 +513,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiToggle()
         {
-
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
 
             var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
             toggle.transform.SetParent(canvas.transform, false);
             var text = UnityUiUtilities.CreateText("test");
             text.transform.SetParent(toggle.transform, false);
+
+            Vector3 pressedPosition = objectPosition + Vector3.forward * 0.05f;
 
             canvas.transform.position = objectPosition;
 
@@ -530,18 +532,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             using (var catcher = new UnityToggleEventCatcher(toggle))
             {
                 // Turn on the toggle after exiting
-                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, pressedPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(0, catcher.Changed);
-                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(pressedPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
 
                 // Turn off the toggle after exiting
-                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, pressedPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
-                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(pressedPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(2, catcher.Changed);
             }
@@ -710,35 +712,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cube2.transform.position = new Vector3(-1f, 0, 2f);
             cube2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-            // Change touchableCollider to a new BoxCollider with a different size from another object
-            BoxCollider newBoxCollider = cube2.GetComponent<BoxCollider>();
-            newBoxCollider.size = new Vector3(4, 2, 1.2f);
-
             using (var catcher = CreateTouchEventCatcher(nearIT))
             {
                 // Touch started and completed when entering and exiting the collider
                 yield return rightHand.Move(new Vector3(0, 0, 0.4f));
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
 
                 yield return rightHand.Move(new Vector3(0, 0, -0.4f));
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // Set new touchableCollider bounds
+                // Change touchableCollider to a new BoxCollider with a different size from another object
+                BoxCollider newBoxCollider = cube2.GetComponent<BoxCollider>();
+                newBoxCollider.size = new Vector3(4, 2, 1f);
                 nearIT.SetTouchableCollider(newBoxCollider);
 
                 // Move hand to the side 
-                yield return rightHand.Move(new Vector3(0.5f, 0, 0));
+                yield return rightHand.Move(new Vector3(-0.4f, 0, 0));
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // Move hand forward, on touch
                 yield return rightHand.Move(new Vector3(0, 0, 0.5f));
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(2, catcher.EventsStarted);
 
                 // Move the hand back, on touch exit
                 yield return rightHand.Move(new Vector3(0, 0, -0.5f));
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                 Assert.AreEqual(2, catcher.EventsCompleted);
             }
         }
