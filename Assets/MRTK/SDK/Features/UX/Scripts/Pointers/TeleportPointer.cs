@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         /// <summary>
-        /// Teleport pointer will only respond to input events for teleportation that match this MixedRealityInputAction.
+        /// Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction
         /// </summary>
         public MixedRealityInputAction TeleportInputAction => teleportAction;
 

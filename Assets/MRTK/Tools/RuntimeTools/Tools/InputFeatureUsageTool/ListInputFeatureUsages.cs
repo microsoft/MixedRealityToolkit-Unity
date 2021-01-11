@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
 
                 InputDevice inputDevice = inputDevices[i];
 
-                listInputDevicesTextMesh.text += $"{inputDevice.name}\n";
+                listInputDevicesTextMesh.text += $"{inputDevice.name} | {inputDevice.manufacturer} | {inputDevice.serialNumber}\n";
                 textMesh.text = $"{inputDevice.name}\n";
 
                 if (inputDevice.TryGetFeatureUsages(featureUsages))

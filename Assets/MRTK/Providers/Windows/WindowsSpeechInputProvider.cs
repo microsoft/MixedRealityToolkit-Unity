@@ -169,7 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                // Don't log if the application is currently running in batch mode (for example, when running tests). This failure is expected in this case.
+                if (!Application.isBatchMode)
+                {
+                    Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                }
                 keywordRecognizer = null;
                 return;
             }

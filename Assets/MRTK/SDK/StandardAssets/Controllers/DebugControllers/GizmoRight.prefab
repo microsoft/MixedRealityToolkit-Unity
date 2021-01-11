@@ -480,13 +480,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef91a627a11b4a22b41dd9109dfd8703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 2
   destroyOnSourceLost: 1
   useSourcePoseData: 0
   poseAction:
     id: 4
     description: Pointer Pose
     axisConstraint: 7
+  handedness: 2
 --- !u!1 &1864043575804110
 GameObject:
   m_ObjectHideFlags: 0

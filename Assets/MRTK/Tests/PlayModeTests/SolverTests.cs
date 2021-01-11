@@ -992,6 +992,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertLessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
             Assert.IsTrue(indicatorMesh.enabled);
 
+            // Check that the solver is near the max scale when turned away from the target
+            directionTarget.transform.position = 10.0f * Vector3.back;
+            yield return WaitForFrames(2);
+            TestUtilities.AssertAboutEqual(indicatorSolver.transform.lossyScale, indicatorSolver.MaxIndicatorScale * Vector3.one, "Not at max indicator size");
+
+
+            // Check that the solver is smaller when the target is closer to the cameras FOV
+            directionTarget.transform.position = 2.0f * Vector3.right + 1.0f * Vector3.forward;
+            yield return WaitForFrames(2);
+            TestUtilities.AssertLessOrEqual(indicatorSolver.transform.lossyScale.magnitude, ((indicatorSolver.MinIndicatorScale + indicatorSolver.MaxIndicatorScale * 0.5f) * Vector3.one).magnitude, "Not smaller than the average of the indicator size range");
+
             // Destroy the object and then validate that the mesh is no longer visible
             Object.Destroy(directionTarget);
             yield return null;

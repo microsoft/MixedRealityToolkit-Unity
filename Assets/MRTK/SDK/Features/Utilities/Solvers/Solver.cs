@@ -3,6 +3,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -68,8 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("If true, the Solver will respect the object's original scale values")]
-        private bool maintainScale = true;
+        [Tooltip("If true, the Solver will respect the object's original scale values on initialization")]
+        [FormerlySerializedAs("maintainScale")]
+        private bool maintainScaleOnInitialization = true;
 
         [SerializeField]
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
@@ -206,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 updateLinkedTransform = false;
             }
 
-            GoalScale = maintainScale ? transform.localScale : Vector3.one;
+            GoalScale = maintainScaleOnInitialization ? transform.localScale : Vector3.one;
         }
 
         /// <summary>

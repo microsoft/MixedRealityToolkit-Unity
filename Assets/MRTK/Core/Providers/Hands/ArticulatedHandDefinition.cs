@@ -92,7 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
             new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
             new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger)
+            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
+            new MixedRealityInteractionMapping(5, "Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick)
         };
 
         /// <summary>
@@ -122,11 +123,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
-                return true;
+                return !IsInTeleportPose;
             }
         }
 
-        private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
+        /// <summary>
+        /// Calculates whether the current pose is the one to start a teleport action
+        /// </summary>
+        protected bool IsInTeleportPose
+        {
+            get
+            {
+                if (!unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out var palmPose)) return false;
+
+                Camera mainCamera = CameraCache.Main;
+
+                if (mainCamera == null)
+                {
+                    return false;
+                }
+
+                Transform cameraTransform = mainCamera.transform;
+
+                // We check if the palm up is roughly in line with the camera up
+                return Vector3.Dot(-palmPose.Up, cameraTransform.up) > 0.6f
+                       // Thumb must be extended, and middle must be grabbing
+                       && !isThumbGrabbing && isMiddleGrabbing;
+            }
+        }
 
         /// <summary>
         /// Calculates whether the current the current joint pose is selecting (air tap gesture).
@@ -158,6 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return isPinching;
             }
         }
+
+        private bool isIndexGrabbing;
+        private bool isMiddleGrabbing;
+        private bool isThumbGrabbing;
+
+        private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
 
         /// <summary>
         /// Updates the current hand joints with new data.
@@ -194,6 +224,73 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         CoreServices.InputSystem?.RaisePoseInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
                     }
                 }
+            }
+        }
+
+        // Used to track the input that was last raised
+        private Vector2 previousStickInput = Vector2.zero;
+        private bool previousReadyToTeleport = false;
+
+        private IMixedRealityTeleportPointer teleportPointer;
+
+        private static readonly ProfilerMarker UpdateCurrentTeleportPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentTeleportPose");
+
+        public void UpdateCurrentTeleportPose(MixedRealityInteractionMapping interactionMapping)
+        {
+            using (UpdateCurrentTeleportPosePerfMarker.Auto())
+            {
+                MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
+
+                // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
+                bool anyPointersLockedWithHand = false;
+                for (int i = 0; i < inputSource?.Pointers?.Length; i++)
+                {
+                    if (inputSource.Pointers[i] == null) continue;
+                    if (inputSource.Pointers[i] is IMixedRealityNearPointer)
+                    {
+                        var nearPointer = (IMixedRealityNearPointer)inputSource.Pointers[i];
+                        anyPointersLockedWithHand |= nearPointer.IsNearObject;
+                    }
+                    anyPointersLockedWithHand |= inputSource.Pointers[i].IsFocusLocked;
+
+                    // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
+                    if (teleportPointer == null && inputSource.Pointers[i] is IMixedRealityTeleportPointer pointer)
+                    {
+                        teleportPointer = pointer;
+                    }
+                }
+
+                // We close middle finger to signal spider-man gesture, and as being ready for teleport
+                isIndexGrabbing = HandPoseUtils.IsIndexGrabbing(handedness);
+                isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(handedness);
+                isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(handedness);
+                bool isReadyForTeleport = !anyPointersLockedWithHand && IsInTeleportPose;
+
+                // Tracks the input vector that should be sent out based on the gesture that is made
+                Vector2 stickInput = (isReadyForTeleport && !isIndexGrabbing) ? Vector2.up : Vector2.zero;
+
+                // The teleport event needs to be canceled if we have not completed the teleport motion and we were previously ready to teleport, but for some reason we
+                // are no longer doing the ready to teleport gesture
+                bool teleportCanceled = previousReadyToTeleport && !isReadyForTeleport && !isIndexGrabbing;
+                if (teleportCanceled && teleportPointer != null)
+                {
+                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
+                    previousStickInput = stickInput;
+                    previousReadyToTeleport = isReadyForTeleport;
+                    return;
+                }
+
+                // Update the interaction data source
+                interactionMapping.Vector2Data = stickInput;
+
+                // If our value changed raise it
+                if (interactionMapping.Changed)
+                {
+                    CoreServices.InputSystem?.RaisePositionInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, stickInput);
+                }
+
+                previousStickInput = stickInput;
+                previousReadyToTeleport = isReadyForTeleport;
             }
         }
     }

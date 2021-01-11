@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.EyeTrackingCapability, true },
 #endif // UNITY_2019_3_OR_NEWER
 
+#if UNITY_2019_3_OR_NEWER
+            { MRConfig.NewInputSystem, true },
+#endif // UNITY_2019_3_OR_NEWER
+
             // Android Settings
             { MRConfig.AndroidMultiThreadedRendering, true },
             { MRConfig.AndroidMinSdkVersion, true },
@@ -186,6 +190,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+
+#if UNITY_2019_3_OR_NEWER
+                RenderToggle(MRConfig.NewInputSystem, "Enable old input system for input simulation (won't disable new input system)");
+#endif // UNITY_2019_3_OR_NEWER
+
                 PromptForAudioSpatializer();
                 EditorGUILayout.Space();
 
