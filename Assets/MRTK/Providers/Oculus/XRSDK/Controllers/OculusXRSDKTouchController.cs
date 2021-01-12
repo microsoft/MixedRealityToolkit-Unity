@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     [MixedRealityController(
         SupportedControllerType.OculusTouch,
         new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/OculusControllersTouch")]
+        "Textures/OculusControllersTouch")]
     public class OculusXRSDKTouchController : GenericXRSDKController
     {
         /// <summary>

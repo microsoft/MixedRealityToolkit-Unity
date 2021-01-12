@@ -950,6 +950,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       Options: []
+  resetOnDestroy: 0
   enabledOnStart: 1
 --- !u!114 &4754899564184264502
 MonoBehaviour:
@@ -1189,6 +1190,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       Options: []
+  resetOnDestroy: 0
   enabledOnStart: 1
 --- !u!114 &3360437626877041567
 MonoBehaviour:
@@ -1610,6 +1612,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       Options: []
+  resetOnDestroy: 0
   enabledOnStart: 1
 --- !u!114 &5855375433444044948
 MonoBehaviour:

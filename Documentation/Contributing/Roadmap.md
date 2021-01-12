@@ -4,7 +4,7 @@ This document outlines the roadmap of the Mixed Reality Toolkit. Please note tha
 
 ## Current release
 
-[Microsoft Mixed Reality Toolkit v2.5.1](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.5.1)
+[Microsoft Mixed Reality Toolkit v2.5.3](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.5.3)
 
 ## Upcoming releases
 
@@ -45,6 +45,7 @@ Quality and stability are the top priority for this and all Microsoft Mixed Real
 **User Experience**
 
 We're listening to your feedback about MRTK and have continued plans for:
+
 - Bug fixes
 - Making MRTK UX controls easier to understand
 - HoloLens Shell parity
@@ -52,18 +53,17 @@ We're listening to your feedback about MRTK and have continued plans for:
 
 **Platform Expansion: OpenXR**
 
-The MRTK team supports the open future of mixed reality through [OpenXR](https://techcommunity.microsoft.com/t5/mixed-reality-blog/moving-forward-to-openxr/ba-p/1825672). Support for OpenXR is currently under development. 
+The MRTK team supports the open future of mixed reality through [OpenXR](https://techcommunity.microsoft.com/t5/mixed-reality-blog/moving-forward-to-openxr/ba-p/1825672). Support for OpenXR is currently under development, with initial preview support released in MRTK 2.5.2.
 
 **Developer Education**
 
-[Developer documentation](https://microsoft.github.io/MixedRealityToolkit-Unity) and example scenes are an ongoing priority for the MRTK team. 
+[Developer documentation](https://microsoft.github.io/MixedRealityToolkit-Unity) and example scenes are an ongoing priority for the MRTK team.
 
-With continued investments in [MRTK tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/tutorials), the MRTK team seeks to accelerate the getting started experience for developers and improve instructions on how to leverage Azure Services and other extensions with the MRTK.
+With continued investments in [MRTK tutorials](https://docs.microsoft.com/windows/mixed-reality/develop/unity/tutorials), the MRTK team seeks to accelerate the getting started experience for developers and improve instructions on how to leverage Azure Services and other extensions with the MRTK.
 
 **Packaging**
 
 In MRTK 2.5.0 we released support for Unity Package Manager (UPM). We are continuing to make improvements so it's even easier for you to download packages with UPM.
-
 
 ## Backlog
 

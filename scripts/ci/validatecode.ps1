@@ -86,7 +86,7 @@ function CheckEmptyDoccomment {
             # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
             # which basically looks for an empty tag (allowing for alphanumeric param names
             # and values in the tag itself)
-            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+            $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=_]*>\s*</$tag>"
             if ($FileContent[$LineNumber] -match $matcher) {
                 Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
                 Write-Host "Delete the line or add a description "
@@ -602,6 +602,7 @@ $AsmDefExceptions = [System.Collections.Generic.HashSet[String]]@(
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK.Oculus.asmdef",
     "Assets/MRTK/Providers/Oculus/XRSDK/MRTK-Quest/Editor/MRTK.Oculus.Hands.Editor.asmdef",
     "Assets/MRTK/Providers/OpenVR/MRTK.OpenVR.asmdef",
+    "Assets/MRTK/Providers/OpenXR/MRTK.OpenXR.asmdef",
     "Assets/MRTK/Providers/UnityAR/MRTK.UnityAR.asmdef",
     "Assets/MRTK/Providers/UnityAR/Editor/MRTK.UnityAR.Editor.asmdef",
     "Assets/MRTK/Providers/Windows/MRTK.WindowsVoice.asmdef",

@@ -7,8 +7,8 @@ Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available us
 The Unity Package Manager uses a [manifest file](https://docs.unity3d.com/Manual/upm-manifestPkg.html) (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.
 
 > [!Note]
-> As of version 2.5.1 of the MRTK, initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
-> 
+> Initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.
+>
 > This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.
 
 ### Registering the Mixed Reality component server
@@ -18,7 +18,7 @@ For each project that will be using the Microsoft Mixed Reality Toolkit, the `ma
 1. Open `<projectRoot>/Packages/manifest.json` in a text editor, such as [Visual Studio Code](https://code.visualstudio.com/).
 1. At the top of the manifest file, add the Mixed Reality server to the scoped registry section and save the file.
 
-```
+```json
 {
   "scopedRegistries": [
     {
@@ -40,17 +40,17 @@ The [Unity Package Manager](Packaging/MRTK_Packages.md#unity-package-manager) se
 
 To add an MRTK package, modify the dependencies section of the `Packages/manifest.json` file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation.
 
-```
+```json
   "dependencies": {
-    "com.microsoft.mixedreality.toolkit.foundation": "2.5.1",
-    "com.microsoft.mixedreality.toolkit.tools": "2.5.1",
-    "com.microsoft.mixedreality.toolkit.examples": "2.5.1",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.5.3",
+    "com.microsoft.mixedreality.toolkit.tools": "2.5.3",
+    "com.microsoft.mixedreality.toolkit.examples": "2.5.3",
 ```
+
 > [!IMPORTANT]
 > There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-> ARM64. This issue is addressed in the forthcoming 16.8 update for Visual Studio 2019. Until the 
-> update is available, please import the `com.microsoft.mixedreality.toolkit.tools` package to apply 
-> a workaround.
+> ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
+> please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
 ## Managing Mixed Reality features with the Unity Package Manager
 

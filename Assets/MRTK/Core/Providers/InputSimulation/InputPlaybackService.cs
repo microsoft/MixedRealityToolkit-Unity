@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -17,18 +18,84 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Input Playback Service")]
     public class InputPlaybackService :
         BaseInputSimulationService,
-        IMixedRealityInputPlaybackService
+        IMixedRealityInputPlaybackService,
+        IMixedRealityEyeGazeDataProvider
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
+        /// <summary>
+        /// Invoked when playback begins or resumes
+        /// </summary>
+        public event Action OnPlaybackStarted;
+        /// <summary>
+        /// Invoked when playback stops
+        /// </summary>
+        public event Action OnPlaybackStopped;
+        /// <summary>
+        /// Invoked when playback is paused
+        /// </summary>
+        public event Action OnPlaybackPaused;
+
+        private bool isPlaying = false;
+        /// <inheritdoc />
+        public bool IsPlaying => isPlaying;
+        
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            switch (capability)
+            {
+                case MixedRealityCapability.ArticulatedHand:
+                    return true;
+                case MixedRealityCapability.GGVHand:
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool SmoothEyeTracking { get; set; }
+
+        /// <summary>
+        /// Duration of the played animation.
+        /// </summary>
+        public float Duration => (animation != null ? animation.Duration : 0.0f);
+
+        private float localTime = 0.0f;
+        /// <inheritdoc />
+        public float LocalTime
+        {
+            get { return localTime; }
+            set
+            {
+                localTime = value;
+                Evaluate();
+            }
+        }
 
         /// <summary>
         /// Pose data for the left hand.
         /// </summary>
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
+        
         /// <summary>
         /// Pose data for the right hand.
         /// </summary>
         public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
+
+        private InputAnimation animation = null;
+        /// <inheritdoc />
+        public InputAnimation Animation
+        {
+            get { return animation; }
+            set
+            {
+                animation = value;
+                Evaluate();
+            }
+        }
+        
+        public IMixedRealityEyeSaccadeProvider SaccadeProvider => null;
 
         /// <summary>
         /// Constructor.
@@ -64,74 +131,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
         { }
 
         /// <inheritdoc />
-        public bool CheckCapability(MixedRealityCapability capability)
-        {
-            switch (capability)
-            {
-                case MixedRealityCapability.ArticulatedHand:
-                    return true;
-                case MixedRealityCapability.GGVHand:
-                    return true;
+        public void Play() {
+            if (animation == null || isPlaying) {
+                return;
             }
 
-            return false;
-        }
-
-        private InputAnimation animation = null;
-        /// <inheritdoc />
-        public InputAnimation Animation
-        {
-            get { return animation; }
-            set
-            {
-                animation = value;
-                Evaluate();
-            }
-        }
-
-        /// <summary>
-        /// Duration of the played animation.
-        /// </summary>
-        public float Duration => (animation != null ? animation.Duration : 0.0f);
-
-        private bool isPlaying = false;
-        /// <inheritdoc />
-        public bool IsPlaying => isPlaying;
-
-        private float localTime = 0.0f;
-        /// <inheritdoc />
-        public float LocalTime
-        {
-            get { return localTime; }
-            set
-            {
-                localTime = value;
-                Evaluate();
-            }
-        }
-
-        /// <inheritdoc />
-        public void Play()
-        {
-            if (animation != null)
-            {
-                SetPlaying(true);
-            }
+            isPlaying = true;
+            OnPlaybackStarted?.Invoke();
         }
 
         /// <inheritdoc />
         public void Stop()
         {
-            SetPlaying(false);
+            if (!isPlaying) {
+                return;
+            }
+            
             localTime = 0.0f;
-
+            isPlaying = false;
+            OnPlaybackStopped?.Invoke();
             Evaluate();
+            RemoveControllerDevice(Handedness.Left);
+            RemoveControllerDevice(Handedness.Right);
         }
 
         /// <inheritdoc />
         public void Pause()
         {
-            SetPlaying(false);
+            if (!isPlaying) {
+                return;
+            }
+            
+            isPlaying = false;
+            OnPlaybackPaused?.Invoke();
         }
 
         /// <inheritdoc />
@@ -141,19 +173,67 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 localTime += Time.deltaTime;
 
-                if (localTime >= Duration)
+                if (localTime < Duration)
                 {
-                    localTime = 0.0f;
-                    SetPlaying(false);
+                    Evaluate();
                 }
-
-                Evaluate();
+                else
+                {
+                    Stop();
+                }
             }
         }
 
-        private void SetPlaying(bool playing)
+        /// <inheritdoc />
+        public bool LoadInputAnimation(string filepath)
         {
-            isPlaying = playing;
+            if (filepath.Length > 0)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
+                    {
+                        animation = InputAnimation.FromStream(fs);
+                        Debug.Log($"Loaded input animation from {filepath}");
+                        Evaluate();
+
+                        return true;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogError(ex.Message);
+                    animation = null;
+                }
+            }
+            
+            return false;
+        }
+        
+        /// <inheritdoc />
+        public async Task<bool> LoadInputAnimationAsync(string filepath)
+        {
+            if (filepath.Length > 0)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
+                    {
+                        animation = await InputAnimation.FromStreamAsync(fs);
+                        Debug.Log($"Loaded input animation from {filepath}");
+                        Evaluate();
+
+                        return true;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.LogError(ex.Message);
+                    animation = null;
+                }
+            }
+            
+            return false;
         }
 
         /// Evaluate the animation and update the simulation service to apply input.
@@ -161,19 +241,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (animation == null)
             {
-                SetPlaying(false);
                 localTime = 0.0f;
+                isPlaying = false;
+                
                 return;
             }
 
-            if (CameraCache.Main)
+            if (animation.HasCameraPose && CameraCache.Main)
             {
                 var cameraPose = animation.EvaluateCameraPose(localTime);
                 CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
             }
 
-            EvaluateHandData(HandDataLeft, Handedness.Left);
-            EvaluateHandData(HandDataRight, Handedness.Right);
+            if (animation.HasHandData)
+            {
+                EvaluateHandData(HandDataLeft, Handedness.Left);
+                EvaluateHandData(HandDataRight, Handedness.Right);
+            }
+            
+            if (animation.HasEyeGaze)
+            {
+                EvaluateEyeGaze();
+            }
         }
 
         private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
@@ -193,30 +282,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
-        public bool LoadInputAnimation(string filepath)
+        private void EvaluateEyeGaze() 
         {
-            if (filepath.Length > 0)
-            {
-                try
-                {
-                    using (FileStream fs = new FileStream(filepath, FileMode.Open))
-                    {
-                        animation = new InputAnimation();
-                        animation.FromStream(fs);
-
-                        Evaluate();
-
-                        return true;
-                    }
-                }
-                catch (IOException ex)
-                {
-                    Debug.LogError(ex.Message);
-                    animation = null;
-                }
-            }
-            return false;
+            var ray = animation.EvaluateEyeGaze(localTime);
+            
+            Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+            Service?.EyeGazeProvider?.UpdateEyeGaze(this, ray, DateTime.UtcNow);
         }
     }
 }

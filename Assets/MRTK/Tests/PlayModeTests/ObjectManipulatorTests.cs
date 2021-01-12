@@ -1594,7 +1594,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityPlayspace.Transform.Rotate(Vector3.up, 360 / numRotations);
                 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
                 yield return hand.Move(correction, numHandSteps);
-                yield return null;
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
                 // Ensure that the gaze cursor stays fixed on its initial position
                 TestUtilities.AssertAboutEqual(originalPosition, gazeCursor.Position, "gaze cursor has shifted from its locked on position", 0.05f);

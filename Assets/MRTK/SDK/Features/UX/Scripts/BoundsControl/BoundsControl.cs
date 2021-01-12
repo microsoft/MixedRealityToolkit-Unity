@@ -192,7 +192,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public BoxDisplayConfiguration BoxDisplayConfig
         {
             get => boxDisplayConfiguration;
-            set => boxDisplayConfiguration = value;
+            set
+            {
+                boxDisplayConfiguration = value;
+                boxDisplay = new BoxDisplay(boxDisplayConfiguration);
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -204,7 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public LinksConfiguration LinksConfig
         {
             get => linksConfiguration;
-            set => linksConfiguration = value;
+            set
+            {
+                linksConfiguration = value;
+                links = new Links(linksConfiguration);
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -216,7 +226,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ScaleHandlesConfiguration ScaleHandlesConfig
         {
             get => scaleHandlesConfiguration;
-            set => scaleHandlesConfiguration = value;
+            set 
+            {
+                scaleHandlesConfiguration = value;
+                scaleHandles = scaleHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -228,7 +243,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public RotationHandlesConfiguration RotationHandlesConfig
         {
             get => rotationHandlesConfiguration;
-            set => rotationHandlesConfiguration = value;
+            set
+            {
+                rotationHandlesConfiguration = value;
+                rotationHandles = rotationHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -240,7 +260,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public TranslationHandlesConfiguration TranslationHandlesConfig
         {
             get => translationHandlesConfiguration;
-            set => translationHandlesConfiguration = value;
+            set
+            {
+                translationHandlesConfiguration = value;
+                translationHandles = translationHandlesConfiguration.ConstructInstance();
+                CreateRig();
+            }
         }
 
         [SerializeField]
@@ -252,7 +277,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundsControl
         public ProximityEffectConfiguration HandleProximityEffectConfig
         {
             get => handleProximityEffectConfiguration;
-            set => handleProximityEffectConfiguration = value;
+            set
+            {
+                handleProximityEffectConfiguration = value;
+                proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
+                CreateRig();
+            }
         }
 
         [Tooltip("Debug only. Component used to display debug messages.")]

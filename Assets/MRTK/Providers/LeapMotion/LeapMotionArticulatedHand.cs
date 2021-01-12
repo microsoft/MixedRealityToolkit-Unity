@@ -283,11 +283,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         }
                         break;
                     case DeviceInputType.IndexFinger:
-                        Interactions[i].PoseData = indexPose;
-                        if (Interactions[i].Changed)
-                        {
-                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, indexPose);
-                        }
+                        handDefinition.UpdateCurrentIndexPose(Interactions[i]);
+                        break;
+                    case DeviceInputType.ThumbStick:
+                        handDefinition.UpdateCurrentTeleportPose(Interactions[i]);
                         break;
                 }
             }

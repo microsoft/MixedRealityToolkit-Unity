@@ -98,6 +98,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        protected override void UpdateHandJoints(SimulatedHandData handData)
+        {
+            for (int i = 0; i < jointCount; i++)
+            {
+                TrackedHandJoint handJoint = (TrackedHandJoint)i;
+
+                if (!jointPoses.ContainsKey(handJoint))
+                {
+                    jointPoses.Add(handJoint, handData.Joints[i]);
+                }
+                else
+                {
+                    jointPoses[handJoint] = handData.Joints[i];
+                }
+            }
+
+            CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+        }
 
         /// <summary>
         /// The GGV default interactions.

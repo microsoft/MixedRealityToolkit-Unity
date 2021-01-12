@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 4461144117430652406}
   - component: {fileID: 2053874024957141440}
   - component: {fileID: 4770142433846062664}
+  - component: {fileID: 5278588189399760669}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -85,10 +86,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,6 +98,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -108,6 +111,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5278588189399760669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84116291711902648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &266051739895710290
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +656,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 469346836929011033}
   interactable: {fileID: 765667106993787003}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -649,7 +666,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 9201697281808766254}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &420140636282453757
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +681,7 @@ GameObject:
   - component: {fileID: 3600245263027242664}
   - component: {fileID: 270844243041110543}
   - component: {fileID: 7710555382467960394}
+  - component: {fileID: 122057800021630850}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -705,10 +725,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -716,6 +737,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -740,6 +762,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &122057800021630850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420140636282453757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &433882955904784930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1307,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 2938778538391500167}
   interactable: {fileID: 6552797809767614443}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -1281,7 +1317,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1027654219960440130}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &687241389425217150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1849,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 5960263113645822213}
   interactable: {fileID: 576324351564883777}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -1821,7 +1859,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 895277398785666050}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1110432982926922231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2321,7 +2361,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 8133540144161697148}
   interactable: {fileID: 4775574078182727631}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -2331,7 +2371,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 8649683229544666303}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1115258196554070052
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,6 +2387,7 @@ GameObject:
   - component: {fileID: 1865701951960669307}
   - component: {fileID: 4263338627430148551}
   - component: {fileID: 469346836929011033}
+  - component: {fileID: 1807138294552704253}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -2385,10 +2428,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2396,6 +2440,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2439,6 +2484,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2535,6 +2581,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &1807138294552704253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115258196554070052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1163143472246138815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,6 +2638,7 @@ GameObject:
   - component: {fileID: 8543046077075760190}
   - component: {fileID: 6679507329538435386}
   - component: {fileID: 5960263113645822213}
+  - component: {fileID: 6303727987469401627}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -2618,10 +2679,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2629,6 +2691,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2672,6 +2735,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2768,6 +2832,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &6303727987469401627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242238790041360756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1284815330652391464
 GameObject:
   m_ObjectHideFlags: 0
@@ -3267,7 +3345,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1524424033052786360}
   interactable: {fileID: 5821240731495670602}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -3277,7 +3355,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 3781516873783884029}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1365268115445947936
 GameObject:
   m_ObjectHideFlags: 0
@@ -3290,6 +3370,7 @@ GameObject:
   - component: {fileID: 8498024370458607392}
   - component: {fileID: 4045466371586044105}
   - component: {fileID: 2355153201047413073}
+  - component: {fileID: 1267174548704007180}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -3333,10 +3414,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3344,6 +3426,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3368,6 +3451,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1267174548704007180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365268115445947936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &1373741550563726885
 GameObject:
   m_ObjectHideFlags: 0
@@ -3380,6 +3477,7 @@ GameObject:
   - component: {fileID: 6884704305979587964}
   - component: {fileID: 5452453349277574777}
   - component: {fileID: 5335488474479921759}
+  - component: {fileID: 9197245100835029868}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -3424,10 +3522,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3435,6 +3534,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3459,6 +3559,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9197245100835029868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373741550563726885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1459238153518776024
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,7 +4072,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1489391921669249212}
   interactable: {fileID: 5712936502506925345}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -3968,7 +4082,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 5042016699687752560}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650355097280919
 GameObject:
   m_ObjectHideFlags: 0
@@ -3980,6 +4096,7 @@ GameObject:
   - component: {fileID: 1611650355097280918}
   - component: {fileID: 1611650355097280912}
   - component: {fileID: 1611650355097280913}
+  - component: {fileID: 4959627774216369317}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -4023,10 +4140,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4034,6 +4152,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4046,6 +4165,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4959627774216369317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355097280919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1611650355121825522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,6 +4190,7 @@ GameObject:
   - component: {fileID: 1611650355121825523}
   - component: {fileID: 1611650355121825525}
   - component: {fileID: 1611650355121825524}
+  - component: {fileID: 8041256247471271308}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -4100,10 +4234,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4111,6 +4246,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4123,6 +4259,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8041256247471271308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355121825522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1611650355147260603
 GameObject:
   m_ObjectHideFlags: 0
@@ -4135,6 +4285,7 @@ GameObject:
   - component: {fileID: 1611650355147260583}
   - component: {fileID: 1611650355147260580}
   - component: {fileID: 2965282416597963729}
+  - component: {fileID: 6439678796232214133}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -4179,10 +4330,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4190,6 +4342,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4214,6 +4367,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6439678796232214133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355147260603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1611650355172525534
 GameObject:
   m_ObjectHideFlags: 0
@@ -4226,6 +4393,7 @@ GameObject:
   - component: {fileID: 1611650355172525506}
   - component: {fileID: 1611650355172525505}
   - component: {fileID: 2965282416640857268}
+  - component: {fileID: 2561082454519216735}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -4270,10 +4438,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4281,6 +4450,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4305,6 +4475,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2561082454519216735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355172525534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1611650355230191463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,7 +4988,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1611650355683409559}
   interactable: {fileID: 8151150256719921604}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -4814,7 +4998,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1611650356858848205}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650355387683550
 GameObject:
   m_ObjectHideFlags: 0
@@ -4828,6 +5014,7 @@ GameObject:
   - component: {fileID: 1611650355387683490}
   - component: {fileID: 1611650355387683549}
   - component: {fileID: 1611650355387683548}
+  - component: {fileID: 6746830709833584377}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -4868,10 +5055,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4879,6 +5067,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -4922,6 +5111,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5018,6 +5208,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &6746830709833584377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355387683550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1611650355474458705
 GameObject:
   m_ObjectHideFlags: 0
@@ -5091,6 +5295,7 @@ GameObject:
   - component: {fileID: 1611650355683409641}
   - component: {fileID: 1611650355683409558}
   - component: {fileID: 1611650355683409559}
+  - component: {fileID: 4404410073089690003}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -5131,10 +5336,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5142,6 +5348,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5185,6 +5392,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5281,6 +5489,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &4404410073089690003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355683409557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1611650355840893740
 GameObject:
   m_ObjectHideFlags: 0
@@ -5780,7 +6002,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1611650355387683548}
   interactable: {fileID: 8151150257431375247}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -5790,7 +6012,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1611650356361817990}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650355911782266
 GameObject:
   m_ObjectHideFlags: 0
@@ -5802,6 +6026,7 @@ GameObject:
   - component: {fileID: 1611650355911782267}
   - component: {fileID: 1611650355911782269}
   - component: {fileID: 1611650355911782268}
+  - component: {fileID: 3131799011898218513}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -5845,10 +6070,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5856,6 +6082,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5868,6 +6095,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3131799011898218513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355911782266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1611650355997379670
 GameObject:
   m_ObjectHideFlags: 0
@@ -5880,6 +6121,7 @@ GameObject:
   - component: {fileID: 1611650355997379658}
   - component: {fileID: 1611650355997379657}
   - component: {fileID: 2965282416395869500}
+  - component: {fileID: 1774958711699196512}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -5924,10 +6166,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5935,6 +6178,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -5959,6 +6203,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1774958711699196512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650355997379670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1611650356095949740
 GameObject:
   m_ObjectHideFlags: 0
@@ -5972,6 +6230,7 @@ GameObject:
   - component: {fileID: 1611650356095949776}
   - component: {fileID: 1611650356095949743}
   - component: {fileID: 1611650356095949742}
+  - component: {fileID: 1663380038786538346}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -6012,10 +6271,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6023,6 +6283,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6066,6 +6327,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6162,6 +6424,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &1663380038786538346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356095949740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1611650356136418505
 GameObject:
   m_ObjectHideFlags: 0
@@ -6175,6 +6451,7 @@ GameObject:
   - component: {fileID: 1611650356136418485}
   - component: {fileID: 1611650356136418506}
   - component: {fileID: 1611650356136418507}
+  - component: {fileID: 4245905291831525275}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -6215,10 +6492,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6226,6 +6504,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6269,6 +6548,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6365,6 +6645,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &4245905291831525275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356136418505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1611650356218472006
 GameObject:
   m_ObjectHideFlags: 0
@@ -6436,6 +6730,7 @@ GameObject:
   - component: {fileID: 1611650356361817985}
   - component: {fileID: 1611650356361817991}
   - component: {fileID: 1611650356361817990}
+  - component: {fileID: 8972999208779381673}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -6479,10 +6774,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6490,6 +6786,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -6502,6 +6799,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8972999208779381673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356361817984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1611650356433142742
 GameObject:
   m_ObjectHideFlags: 0
@@ -7001,7 +7312,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1611650356885901862}
   interactable: {fileID: 8151150255775477109}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -7011,7 +7322,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1611650355911782268}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650356545588396
 GameObject:
   m_ObjectHideFlags: 0
@@ -7024,6 +7337,7 @@ GameObject:
   - component: {fileID: 1611650356545588400}
   - component: {fileID: 1611650356545588403}
   - component: {fileID: 2965282417883995590}
+  - component: {fileID: 3279870563347693482}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -7068,10 +7382,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7079,6 +7394,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7103,6 +7419,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3279870563347693482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356545588396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1611650356674027751
 GameObject:
   m_ObjectHideFlags: 0
@@ -7115,6 +7445,7 @@ GameObject:
   - component: {fileID: 1611650356674027771}
   - component: {fileID: 1611650356674027768}
   - component: {fileID: 2965282417050923405}
+  - component: {fileID: 8375026413561929189}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -7159,10 +7490,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7170,6 +7502,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -7194,6 +7527,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8375026413561929189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356674027751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &1611650356683442782
 GameObject:
   m_ObjectHideFlags: 0
@@ -7693,7 +8040,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1611650356095949742}
   interactable: {fileID: 8151150256059262205}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -7703,7 +8050,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1611650355121825524}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650356723322171
 GameObject:
   m_ObjectHideFlags: 0
@@ -8203,7 +8552,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1611650356136418507}
   interactable: {fileID: 8151150256032097176}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -8213,7 +8562,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1611650355097280913}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &1611650356858848203
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,6 +8576,7 @@ GameObject:
   - component: {fileID: 1611650356858848202}
   - component: {fileID: 1611650356858848204}
   - component: {fileID: 1611650356858848205}
+  - component: {fileID: 8866529181837139862}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -8268,10 +8620,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8279,6 +8632,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8291,6 +8645,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8866529181837139862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356858848203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1611650356885901860
 GameObject:
   m_ObjectHideFlags: 0
@@ -8304,6 +8672,7 @@ GameObject:
   - component: {fileID: 1611650356885901912}
   - component: {fileID: 1611650356885901863}
   - component: {fileID: 1611650356885901862}
+  - component: {fileID: 7171457405502252889}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -8344,10 +8713,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8355,6 +8725,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8398,6 +8769,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8494,6 +8866,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &7171457405502252889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611650356885901860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &1611650357073340587
 GameObject:
   m_ObjectHideFlags: 0
@@ -8567,6 +8953,7 @@ GameObject:
   - component: {fileID: 1637597186069325327}
   - component: {fileID: 1214136666525581136}
   - component: {fileID: 6063816926778094283}
+  - component: {fileID: 8069191859850442358}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -8610,10 +8997,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8621,6 +9009,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8645,6 +9034,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8069191859850442358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785114755299659067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &1914088296384771467
 GameObject:
   m_ObjectHideFlags: 0
@@ -8656,6 +9059,7 @@ GameObject:
   - component: {fileID: 3626914293587093679}
   - component: {fileID: 8046237504200612210}
   - component: {fileID: 115720187159548073}
+  - component: {fileID: 3794036050651220844}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -8699,10 +9103,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8710,6 +9115,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8722,6 +9128,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3794036050651220844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914088296384771467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &1972752288791891015
 GameObject:
   m_ObjectHideFlags: 0
@@ -8766,6 +9186,7 @@ GameObject:
   - component: {fileID: 1278389758897671425}
   - component: {fileID: 7090223097544470509}
   - component: {fileID: 878106571900027399}
+  - component: {fileID: 6782385907323905100}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -8809,10 +9230,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8820,6 +9242,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8844,6 +9267,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6782385907323905100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181755616027134931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &2208753150411687020
 GameObject:
   m_ObjectHideFlags: 0
@@ -8919,6 +9356,7 @@ GameObject:
   - component: {fileID: 6398794151058926016}
   - component: {fileID: 22257815019378889}
   - component: {fileID: 6188692500130151583}
+  - component: {fileID: 2859622808628480185}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -8962,10 +9400,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8973,6 +9412,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -8997,6 +9437,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2859622808628480185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108271348693733537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &3267227724812879308
 GameObject:
   m_ObjectHideFlags: 0
@@ -9010,6 +9464,7 @@ GameObject:
   - component: {fileID: 2596484594108833277}
   - component: {fileID: 1226137863469928094}
   - component: {fileID: 1524424033052786360}
+  - component: {fileID: 1593345668599451029}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -9050,10 +9505,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9061,6 +9517,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9104,6 +9561,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9200,6 +9658,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &1593345668599451029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3267227724812879308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &3393243178507291398
 GameObject:
   m_ObjectHideFlags: 0
@@ -9212,6 +9684,7 @@ GameObject:
   - component: {fileID: 259085758309902225}
   - component: {fileID: 5598967800215880242}
   - component: {fileID: 8667011142073980928}
+  - component: {fileID: 5691440833586650474}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -9256,10 +9729,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9267,6 +9741,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9291,6 +9766,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5691440833586650474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393243178507291398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &3395916780957532036
 GameObject:
   m_ObjectHideFlags: 0
@@ -9366,6 +9855,7 @@ GameObject:
   - component: {fileID: 3940981063911625006}
   - component: {fileID: 8029046056693340628}
   - component: {fileID: 8183268646893229895}
+  - component: {fileID: 2699074914905120747}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -9410,10 +9900,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9421,6 +9912,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9445,6 +9937,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2699074914905120747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498560013527990194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &3532836016420203336
 GameObject:
   m_ObjectHideFlags: 0
@@ -9457,6 +9963,7 @@ GameObject:
   - component: {fileID: 1890112943922269009}
   - component: {fileID: 6158744379846066677}
   - component: {fileID: 5578879164896109493}
+  - component: {fileID: 6277859964542942275}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -9501,10 +10008,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9512,6 +10020,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9536,6 +10045,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6277859964542942275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3532836016420203336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &3670873714553293010
 GameObject:
   m_ObjectHideFlags: 0
@@ -9580,6 +10103,7 @@ GameObject:
   - component: {fileID: 6819874613340548601}
   - component: {fileID: 3206360287214846711}
   - component: {fileID: 247979560496088170}
+  - component: {fileID: 7988373274334798086}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -9624,10 +10148,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9635,6 +10160,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9659,6 +10185,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7988373274334798086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3704610326931353790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &3875889991607149760
 GameObject:
   m_ObjectHideFlags: 0
@@ -9671,6 +10211,7 @@ GameObject:
   - component: {fileID: 3027312058841450403}
   - component: {fileID: 1261773647939161315}
   - component: {fileID: 3138633710895779126}
+  - component: {fileID: 6967154169207679866}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -9715,10 +10256,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9726,6 +10268,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9750,6 +10293,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6967154169207679866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3875889991607149760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &4034068879761662167
 GameObject:
   m_ObjectHideFlags: 0
@@ -9762,6 +10319,7 @@ GameObject:
   - component: {fileID: 4461846271844239033}
   - component: {fileID: 3284739809913518337}
   - component: {fileID: 5565862914991383876}
+  - component: {fileID: 8098550092135022868}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -9805,10 +10363,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9816,6 +10375,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -9840,6 +10400,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8098550092135022868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034068879761662167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &4197506128946816242
 GameObject:
   m_ObjectHideFlags: 0
@@ -10100,9 +10674,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75fa637a68e599040bdd08afc22b3bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderers: []
+  renderers:
+  - {fileID: 1611650356674027768}
+  - {fileID: 1326042366967055085}
+  - {fileID: 1611650355683409640}
+  - {fileID: 1611650356858848205}
+  - {fileID: 1611650355172525505}
+  - {fileID: 1326042366589511636}
+  - {fileID: 1611650356095949777}
+  - {fileID: 1611650355121825524}
+  - {fileID: 1611650355147260580}
+  - {fileID: 1326042366614708401}
+  - {fileID: 1611650356136418484}
+  - {fileID: 1611650355097280913}
+  - {fileID: 1611650356545588403}
+  - {fileID: 1326042367493893798}
+  - {fileID: 1611650355387683491}
+  - {fileID: 1611650356361817990}
+  - {fileID: 1611650355997379657}
+  - {fileID: 1326042365768789596}
+  - {fileID: 1611650356885901913}
+  - {fileID: 1611650355911782268}
+  - {fileID: 3206360287214846711}
+  - {fileID: 5204410934636071990}
+  - {fileID: 1531944810501849511}
+  - {fileID: 115720187159548073}
+  - {fileID: 5452453349277574777}
+  - {fileID: 22257815019378889}
+  - {fileID: 7861179848807281455}
+  - {fileID: 1027654219960440130}
+  - {fileID: 1698278866786255315}
+  - {fileID: 1214136666525581136}
+  - {fileID: 6770649467456458195}
+  - {fileID: 9201697281808766254}
+  - {fileID: 1261773647939161315}
+  - {fileID: 7090223097544470509}
+  - {fileID: 2108446356654338918}
+  - {fileID: 5042016699687752560}
+  - {fileID: 8029046056693340628}
+  - {fileID: 3284739809913518337}
+  - {fileID: 7836215414447221516}
+  - {fileID: 6477937372087004908}
+  - {fileID: 2511356155602282049}
+  - {fileID: 8226624919463427876}
+  - {fileID: 5374666721468123940}
+  - {fileID: 8649683229544666303}
+  - {fileID: 6158744379846066677}
+  - {fileID: 9000220495909396123}
+  - {fileID: 4689107027449285108}
+  - {fileID: 3781516873783884029}
+  - {fileID: 4899766365064862690}
+  - {fileID: 270844243041110543}
+  - {fileID: 7452068102760341012}
+  - {fileID: 895277398785666050}
+  - {fileID: 5598967800215880242}
+  - {fileID: 4045466371586044105}
+  - {fileID: 418172195475524995}
+  - {fileID: 1582411486996508608}
+  - {fileID: 5227517884470998882}
+  - {fileID: 3980301110988872468}
+  - {fileID: 3224464581912566940}
+  - {fileID: 4770142433846062664}
   clippingSide: -1
   useOnPreRender: 1
+  applyToSharedMaterial: 0
 --- !u!65 &4411601542682591988
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10256,6 +10891,9 @@ MonoBehaviour:
   orientType: 0
   layout: 0
   anchor: 0
+  anchorAlongAxis: 0
+  columnAlignment: 0
+  rowAlignment: 0
   radius: 2
   radialRange: 180
   distance: 0
@@ -10381,7 +11019,6 @@ MonoBehaviour:
   maskEditMode: 0
   colliderEditMode: 0
   maskEnabled: 0
-  wasMaskEnabled: 1
   handDeltaScrollThreshold: 0.02
   releaseThresholdFront: 0.03
   releaseThresholdBack: 0.2
@@ -10616,6 +11253,7 @@ GameObject:
   - component: {fileID: 4437467198441018253}
   - component: {fileID: 51900260238057675}
   - component: {fileID: 7699679306459643237}
+  - component: {fileID: 8856225986747844567}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -10656,10 +11294,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10667,6 +11306,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -10710,6 +11350,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10806,6 +11447,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &8856225986747844567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4518393922345310486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &4832884704841420214
 GameObject:
   m_ObjectHideFlags: 0
@@ -10818,6 +11473,7 @@ GameObject:
   - component: {fileID: 1360931263096324178}
   - component: {fileID: 9000220495909396123}
   - component: {fileID: 1389175023046083448}
+  - component: {fileID: 2647117767897794596}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -10861,10 +11517,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10872,6 +11529,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -10896,6 +11554,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2647117767897794596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4832884704841420214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &4900137683020972128
 GameObject:
   m_ObjectHideFlags: 0
@@ -10909,6 +11581,7 @@ GameObject:
   - component: {fileID: 5690933878317775044}
   - component: {fileID: 5244215707788358874}
   - component: {fileID: 2938778538391500167}
+  - component: {fileID: 5030432653808825902}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -10949,10 +11622,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10960,6 +11634,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11003,6 +11678,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -11099,6 +11775,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &5030432653808825902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4900137683020972128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &4938643914818340009
 GameObject:
   m_ObjectHideFlags: 0
@@ -11172,6 +11862,7 @@ GameObject:
   - component: {fileID: 2533072837055523365}
   - component: {fileID: 8226624919463427876}
   - component: {fileID: 72842338362648639}
+  - component: {fileID: 4558721509928744622}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11215,10 +11906,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11226,6 +11918,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11250,6 +11943,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4558721509928744622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5120078336703333008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5218683682312939275
 GameObject:
   m_ObjectHideFlags: 0
@@ -11292,6 +11999,7 @@ GameObject:
   - component: {fileID: 261981715282283471}
   - component: {fileID: 1326042366967055085}
   - component: {fileID: 5894034035239087548}
+  - component: {fileID: 7265597163459056006}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11335,10 +12043,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11346,6 +12055,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11370,6 +12080,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7265597163459056006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357882377712216510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5357882377722611189
 GameObject:
   m_ObjectHideFlags: 0
@@ -11382,6 +12106,7 @@ GameObject:
   - component: {fileID: 261981715108177796}
   - component: {fileID: 1326042367493893798}
   - component: {fileID: 5894034035094258167}
+  - component: {fileID: 4049275256604247835}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11425,10 +12150,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11436,6 +12162,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11460,6 +12187,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4049275256604247835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357882377722611189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5357882378371482895
 GameObject:
   m_ObjectHideFlags: 0
@@ -11472,6 +12213,7 @@ GameObject:
   - component: {fileID: 261981714626684798}
   - component: {fileID: 1326042365768789596}
   - component: {fileID: 5894034036716208397}
+  - component: {fileID: 207213344848634422}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11515,10 +12257,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11526,6 +12269,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11550,6 +12294,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &207213344848634422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357882378371482895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5357882379138239458
 GameObject:
   m_ObjectHideFlags: 0
@@ -11562,6 +12320,7 @@ GameObject:
   - component: {fileID: 261981713822706067}
   - component: {fileID: 1326042366614708401}
   - component: {fileID: 5894034035960467424}
+  - component: {fileID: 2342786567983345769}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11605,10 +12364,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11616,6 +12376,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11640,6 +12401,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2342786567983345769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357882379138239458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5357882379161799815
 GameObject:
   m_ObjectHideFlags: 0
@@ -11652,6 +12427,7 @@ GameObject:
   - component: {fileID: 261981713797967606}
   - component: {fileID: 1326042366589511636}
   - component: {fileID: 5894034035933694085}
+  - component: {fileID: 5505135362642405444}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -11695,10 +12471,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11706,6 +12483,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11730,6 +12508,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5505135362642405444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5357882379161799815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &5368109179490686246
 GameObject:
   m_ObjectHideFlags: 0
@@ -11742,6 +12534,7 @@ GameObject:
   - component: {fileID: 2799918951423384043}
   - component: {fileID: 2511356155602282049}
   - component: {fileID: 6626577361086130516}
+  - component: {fileID: 2324378802900457197}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -11786,10 +12579,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11797,6 +12591,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11821,6 +12616,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2324378802900457197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5368109179490686246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &5406122223930887667
 GameObject:
   m_ObjectHideFlags: 0
@@ -11832,6 +12641,7 @@ GameObject:
   - component: {fileID: 865583341163503162}
   - component: {fileID: 957478096171118670}
   - component: {fileID: 9201697281808766254}
+  - component: {fileID: 8764014694641514986}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -11875,10 +12685,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11886,6 +12697,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -11898,6 +12710,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8764014694641514986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5406122223930887667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &5591694463188852704
 GameObject:
   m_ObjectHideFlags: 0
@@ -11943,6 +12769,7 @@ GameObject:
   - component: {fileID: 999948796608060027}
   - component: {fileID: 570106124677990036}
   - component: {fileID: 8979326100991606953}
+  - component: {fileID: 7332920630734076713}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -11983,10 +12810,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11994,6 +12822,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12037,6 +12866,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12133,6 +12963,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &7332920630734076713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5892862192009174418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &6045093228770150839
 GameObject:
   m_ObjectHideFlags: 0
@@ -12190,6 +13034,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12201,6 +13046,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12239,6 +13085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
+  IsBoundsHandles: 0
 --- !u!114 &4411601543234144105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12420,6 +13267,7 @@ GameObject:
   - component: {fileID: 3665269039271077345}
   - component: {fileID: 104584568022109557}
   - component: {fileID: 1641105770851126356}
+  - component: {fileID: 1171172635668523946}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -12460,10 +13308,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12471,6 +13320,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12514,6 +13364,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12610,6 +13461,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &1171172635668523946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6161930050604044684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &6254541063541587829
 GameObject:
   m_ObjectHideFlags: 0
@@ -12653,6 +13518,7 @@ GameObject:
   - component: {fileID: 8327477443688994469}
   - component: {fileID: 2952715661325734337}
   - component: {fileID: 1027654219960440130}
+  - component: {fileID: 8674249884823363066}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -12696,10 +13562,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12707,6 +13574,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12719,6 +13587,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8674249884823363066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6302989063593414777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &6323322999639777151
 GameObject:
   m_ObjectHideFlags: 0
@@ -12730,6 +13612,7 @@ GameObject:
   - component: {fileID: 7176106845217989481}
   - component: {fileID: 7188034279284507127}
   - component: {fileID: 895277398785666050}
+  - component: {fileID: 3559899295277855469}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -12773,10 +13656,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12784,6 +13668,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12796,6 +13681,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3559899295277855469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323322999639777151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &6324957135686711993
 GameObject:
   m_ObjectHideFlags: 0
@@ -12901,6 +13800,7 @@ GameObject:
   - component: {fileID: 3481787566811625305}
   - component: {fileID: 3981657687390578463}
   - component: {fileID: 1489391921669249212}
+  - component: {fileID: 3284485671663837730}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -12941,10 +13841,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12952,6 +13853,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -12995,6 +13897,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13091,6 +13994,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &3284485671663837730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6652621748952913474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &6828409376679002142
 GameObject:
   m_ObjectHideFlags: 0
@@ -13133,6 +14050,7 @@ GameObject:
   - component: {fileID: 9101407995508054806}
   - component: {fileID: 1789254763509777497}
   - component: {fileID: 3781516873783884029}
+  - component: {fileID: 5917981093114805115}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -13176,10 +14094,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13187,6 +14106,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -13199,6 +14119,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5917981093114805115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6951036076848727061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &6957097767706601428
 GameObject:
   m_ObjectHideFlags: 0
@@ -13242,6 +14176,7 @@ GameObject:
   - component: {fileID: 5603045813353640625}
   - component: {fileID: 8469788040922859400}
   - component: {fileID: 8301048832324198467}
+  - component: {fileID: 7329488856902732874}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -13282,10 +14217,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13293,6 +14229,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -13336,6 +14273,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13432,6 +14370,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &7329488856902732874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7029140261942086365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &7109780857529737593
 GameObject:
   m_ObjectHideFlags: 0
@@ -13931,7 +14883,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 8301048832324198467}
   interactable: {fileID: 5384555392656359213}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -13941,7 +14893,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 4770142433846062664}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &7134475362911357688
 GameObject:
   m_ObjectHideFlags: 0
@@ -14145,6 +15099,7 @@ GameObject:
   - component: {fileID: 8167813739301841028}
   - component: {fileID: 4899766365064862690}
   - component: {fileID: 3910284206809276544}
+  - component: {fileID: 8782378140780975983}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -14189,10 +15144,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14200,6 +15156,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -14224,6 +15181,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8782378140780975983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374671457476847370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &7424673523029473732
 GameObject:
   m_ObjectHideFlags: 0
@@ -14266,6 +15237,7 @@ GameObject:
   - component: {fileID: 3432260614100939074}
   - component: {fileID: 6000885000692803052}
   - component: {fileID: 1582411486996508608}
+  - component: {fileID: 8027314635893826229}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -14309,10 +15281,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14320,6 +15293,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -14332,6 +15306,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8027314635893826229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474158151586701624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &7557504973963449058
 GameObject:
   m_ObjectHideFlags: 0
@@ -14344,6 +15332,7 @@ GameObject:
   - component: {fileID: 9189436655355912995}
   - component: {fileID: 3980301110988872468}
   - component: {fileID: 6857160763103154143}
+  - component: {fileID: 4780560603275530047}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -14387,10 +15376,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14398,6 +15388,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -14422,6 +15413,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4780560603275530047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7557504973963449058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &7610075028434994198
 GameObject:
   m_ObjectHideFlags: 0
@@ -14921,7 +15926,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 8979326100991606953}
   interactable: {fileID: 2891570536203401995}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -14931,7 +15936,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 1582411486996508608}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &8090966656033177523
 GameObject:
   m_ObjectHideFlags: 0
@@ -15431,7 +16438,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 1641105770851126356}
   interactable: {fileID: 5818745725891761542}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -15441,7 +16448,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 6477937372087004908}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &8357192078030702405
 GameObject:
   m_ObjectHideFlags: 0
@@ -15453,6 +16462,7 @@ GameObject:
   - component: {fileID: 1139759747102629553}
   - component: {fileID: 2424342137762665866}
   - component: {fileID: 6477937372087004908}
+  - component: {fileID: 8755030513689661720}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -15496,10 +16506,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15507,6 +16518,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -15519,6 +16531,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8755030513689661720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357192078030702405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &8549547697362317856
 GameObject:
   m_ObjectHideFlags: 0
@@ -15561,6 +16587,7 @@ GameObject:
   - component: {fileID: 1479168242556458968}
   - component: {fileID: 5227517884470998882}
   - component: {fileID: 7832800665213766637}
+  - component: {fileID: 514950911217981982}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -15605,10 +16632,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15616,6 +16644,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -15640,6 +16669,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &514950911217981982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667093683414257757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &8678628090444740098
 GameObject:
   m_ObjectHideFlags: 0
@@ -15652,6 +16695,7 @@ GameObject:
   - component: {fileID: 4039948134957230346}
   - component: {fileID: 1698278866786255315}
   - component: {fileID: 1606826374515268393}
+  - component: {fileID: 6761978878344409060}
   m_Layer: 0
   m_Name: FrontPlate
   m_TagString: Untagged
@@ -15696,10 +16740,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15707,6 +16752,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -15731,6 +16777,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6761978878344409060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8678628090444740098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f, type: 2}
 --- !u!1 &8681212516600472267
 GameObject:
   m_ObjectHideFlags: 0
@@ -15743,6 +16803,7 @@ GameObject:
   - component: {fileID: 1656206757284519019}
   - component: {fileID: 5204410934636071990}
   - component: {fileID: 3932976563358926629}
+  - component: {fileID: 3281434838108698217}
   m_Layer: 0
   m_Name: HighlightPlate
   m_TagString: Untagged
@@ -15786,10 +16847,11 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15797,6 +16859,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -15821,6 +16884,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3281434838108698217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8681212516600472267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: 329cdefad4cf0f14e9b6767d0af094b0, type: 2}
 --- !u!1 &8789463155650619249
 GameObject:
   m_ObjectHideFlags: 0
@@ -15834,6 +16911,7 @@ GameObject:
   - component: {fileID: 6635878781967925274}
   - component: {fileID: 8979693236592611952}
   - component: {fileID: 8133540144161697148}
+  - component: {fileID: 5441140303967093988}
   m_Layer: 0
   m_Name: TextMeshPro
   m_TagString: Untagged
@@ -15874,10 +16952,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15885,6 +16964,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -15928,6 +17008,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16024,6 +17105,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &5441140303967093988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8789463155650619249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
 --- !u!1 &8940038626284065729
 GameObject:
   m_ObjectHideFlags: 0
@@ -16035,6 +17130,7 @@ GameObject:
   - component: {fileID: 7681564719223912702}
   - component: {fileID: 3408065280992628643}
   - component: {fileID: 5042016699687752560}
+  - component: {fileID: 2367975873058465681}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -16078,10 +17174,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16089,6 +17186,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -16101,6 +17199,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2367975873058465681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940038626284065729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &9001175850948789650
 GameObject:
   m_ObjectHideFlags: 0
@@ -16632,7 +17744,7 @@ MonoBehaviour:
   mainLabelText: {fileID: 7699679306459643237}
   interactable: {fileID: 153639600631161599}
   seeItSayItLabel: {fileID: 0}
-  seeItSatItLabelText: {fileID: 0}
+  seeItSayItLabelText: {fileID: 0}
   iconStyle: 0
   iconCharLabel: {fileID: 0}
   iconCharFont: {fileID: 0}
@@ -16642,7 +17754,9 @@ MonoBehaviour:
   iconQuadRenderer: {fileID: 115720187159548073}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}
+  defaultButtonQuadMaterial: {fileID: 0}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  defaultIconSet: {fileID: 0}
 --- !u!1 &9045674822935001984
 GameObject:
   m_ObjectHideFlags: 0
@@ -16654,6 +17768,7 @@ GameObject:
   - component: {fileID: 4589375339789168329}
   - component: {fileID: 7901582113024461087}
   - component: {fileID: 8649683229544666303}
+  - component: {fileID: 1031121618153412999}
   m_Layer: 5
   m_Name: UIButtonSquareIcon
   m_TagString: Untagged
@@ -16697,10 +17812,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16708,6 +17824,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -16720,6 +17837,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1031121618153412999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045674822935001984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf309545b476f649949bf93bf4830d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterials:
+  - {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f, type: 2}
 --- !u!1 &9060894806328194018
 GameObject:
   m_ObjectHideFlags: 0

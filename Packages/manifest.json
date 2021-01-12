@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.package-manager-ui": "2.0.8",
+    "com.unity.package-manager-ui": "2.0.13",
     "com.unity.textmeshpro": "1.4.1",
     "com.unity.xr.arcore": "2.1.2",
     "com.unity.xr.arfoundation": "1.5.0-preview.6",
