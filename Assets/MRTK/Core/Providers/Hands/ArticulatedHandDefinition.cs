@@ -246,9 +246,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < inputSource?.Pointers?.Length; i++)
                 {
                     if (inputSource.Pointers[i] == null) continue;
-                    if (inputSource.Pointers[i] is IMixedRealityNearPointer)
+                    if (inputSource.Pointers[i] is IMixedRealityNearPointer nearPointer)
                     {
-                        var nearPointer = (IMixedRealityNearPointer)inputSource.Pointers[i];
                         anyPointersLockedWithHand |= nearPointer.IsNearObject;
                     }
                     anyPointersLockedWithHand |= inputSource.Pointers[i].IsFocusLocked;

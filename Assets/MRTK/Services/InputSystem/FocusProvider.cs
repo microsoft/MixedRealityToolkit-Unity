@@ -898,8 +898,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             List<T> typePointers = new List<T>();
             foreach (var pointer in pointers.Values)
             {
-                T typePointer = pointer.Pointer as T;
-                if (typePointer != null)
+                if (pointer.Pointer is T typePointer)
                 {
                     typePointers.Add(typePointer);
                 }

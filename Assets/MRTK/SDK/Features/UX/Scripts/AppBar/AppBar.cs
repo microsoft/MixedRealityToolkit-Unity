@@ -373,8 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void OnClickRemove()
         {
             // Set the app bar and bounding box to inactive
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider != null)
+            if (Target is IBoundsTargetProvider boundsProvider)
             {
                 boundsProvider.Target.SetActive(false);
             }
@@ -461,8 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateTargetObject()
         {
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider == null || boundsProvider.Target == null)
+            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.Target == null)
             {
                 if (DisplayType == AppBarDisplayTypeEnum.Manipulation)
                 {
@@ -497,9 +495,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void FollowTargetObject(bool smooth)
         {
-            var boundsProvider = Target as IBoundsTargetProvider;
-            if (boundsProvider == null)
+            if (!(Target is IBoundsTargetProvider boundsProvider))
+            {
                 return;
+            }
 
             // Calculate the best follow position
             Vector3 finalPosition = Vector3.zero;
