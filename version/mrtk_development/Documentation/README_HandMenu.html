@@ -110,6 +110,15 @@
 <br><img src="Images/HandMenu/MRTK_HandMenu_Example5.png"></p>
 <h3 id="handmenu_large_autoworldlock_on_handdrop">HandMenu_Large_AutoWorldLock_On_HandDrop</h3>
 <p>This example is similar to HandMenu_Large_WorldLock_On_GrabAndPull. The only difference is that the menu will be automatically world-locked on hand drop. This is done by simply not hiding the MenuContent on <strong>OnLastHandLost()</strong> event. Grab &amp; pull behavior is same as HandMenu_Large_WorldLock_On_GrabAndPull example.</p>
+<h2 id="accessibility-voice-command-support">Accessibility: Voice command support</h2>
+<p>To support the scenario when the user cannot use both hands, hand menu examples include voice command. To reveal the menu, say <strong>&quot;Show hand menu&quot;</strong>. The menu will stay within the FOV with tag-along behavior. You can continue interacting with buttons using <strong>&quot;Select&quot;</strong> keyword.</p>
+<p>Once you are done with the menu, you can say <strong>&quot;Hide hand menu&quot;</strong> to close the menu.</p>
+<p><br><img src="Images/HandMenu/MRTK_HandMenu_VoiceCommand.png"></p>
+<p><code>SpeechInputHandler.cs</code> script is used to enable voice command input. On &quot;Show hand menu&quot; keyword recognition, the example enables <strong>Follow</strong> solver and changes SolverHandler's tracked target type to <strong>Head</strong> to achieve tag-along behavior. The example disables HandConstraintPalmUp since the menu should stay within the user's FOV without hand detection for hands-free mode. For &quot;Hide hand menu&quot; keyword, <strong>Follow</strong> solver is disabled, SolverHandler's tracked target type to <strong>Hand Joint</strong>, and HandConstraintPalmUp is enabled.</p>
+<p><br><img src="Images/HandMenu/MRTK_HandMenu_VoiceCommand2.png" width="600"></p>
+<ul>
+<li>Voice command keywords are defined in MRTK's Speech Input Profile.</li>
+</ul>
 <h2 id="scripts">Scripts</h2>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.</p>
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>

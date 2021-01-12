@@ -3790,6 +3790,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/HandMenu/MRTK_HandMenu_VoiceCommand.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_VoiceCommand.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/HandMenu/MRTK_HandMenu_VoiceCommand2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_VoiceCommand2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/HandPhysics/MRTK_UX_HandPhysics_Main.jpg",
       "output": {
         "resource": {
@@ -8595,7 +8617,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandMenu.html",
-          "hash": "Jtr+DZ4E1rin5Yjqr4s78Q=="
+          "hash": "V3HfOdqx3uaaW7y2xCx2pQ=="
         }
       },
       "is_incremental": false,
@@ -12287,6 +12309,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SolverTrackedTargetType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SolverTrackedTargetType.html",
+          "hash": "wEhtSX5cDlXpzIRuH10EHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SpawnOnPointerEvent.yml",
       "output": {
         ".html": {
@@ -12423,7 +12457,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "aw04oYIc40GUuE1/EzoIJg=="
+          "hash": "DCC23qktL7FDZF3i58CssQ=="
         }
       },
       "is_incremental": false,
@@ -29751,7 +29785,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "alrqnXPOOmT8UQbGj6Y/UA=="
+          "hash": "YJEMCOGvU801ym2CzkkgIw=="
         }
       },
       "is_incremental": false,
@@ -29823,7 +29857,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1709,
+          "total_file_count": 1710,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
