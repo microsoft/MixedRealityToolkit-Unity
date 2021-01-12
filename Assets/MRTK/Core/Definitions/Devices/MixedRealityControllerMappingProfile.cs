@@ -214,8 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             });
         }
 
-#endif // UNITY_EDITOR
-
         private static bool UsesCustomInteractionMapping(Type controllerType)
         {
             var attribute = MixedRealityControllerAttribute.Find(controllerType);
@@ -227,5 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var attribute = MixedRealityControllerAttribute.Find(controllerType);
             return attribute != null ? attribute.SupportedHandedness : Array.Empty<Handedness>();
         }
+#endif // UNITY_EDITOR
     }
 }
