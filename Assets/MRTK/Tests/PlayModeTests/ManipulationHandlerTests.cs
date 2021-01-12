@@ -1012,28 +1012,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // from the hand to the pointer.
             Vector3 correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
             yield return hand.Move(correction, numHandSteps);
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
-
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
             // Apply correction delta again as we have changed hand pose
             correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
             yield return hand.Move(correction, numHandSteps);
-            yield return null;
-
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
-            Vector3 delta = new Vector3(0.2f, 0, 0);
+            Vector3 delta = new Vector3(1.0f, 0, 0);
+            yield return hand.Move(delta);
             MixedRealityPlayspace.Transform.Translate(delta);
-            yield return hand.Move(delta, numHandSteps);
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 2.5f);
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 

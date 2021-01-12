@@ -219,8 +219,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Defining the edge and corner handlers that will be used
             Debug.Log(bbox.transform.Find("rigRoot/midpoint_0").GetChild(0));
-            var originalCornerHandlerScale = bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale;
-            var cornerHandlerPosition = bbox.transform.Find("rigRoot/corner_0").transform.position;
+            var originalCornerHandlerScale = bbox.transform.Find("rigRoot/corner_1/visualsScale/visuals").transform.localScale;
+            var cornerHandlerPosition = bbox.transform.Find("rigRoot/corner_1").transform.position;
             var originalEdgeHandlerScale = bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale;
             var edgeHandlerPosition = bbox.transform.Find("rigRoot/midpoint_0").transform.position;
 
@@ -236,15 +236,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(0.4f);
 
             TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale, originalEdgeHandlerScale, "The edge handler changed mistakingly");
-            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale.normalized, originalCornerHandlerScale.normalized, "The corner handler scale has changed");
-            Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale.x / originalCornerHandlerScale.x, bbox.MediumScale, 0.1f, "The corner handler did not grow when a pointer was near it");
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_1/visualsScale/visuals").transform.localScale.normalized, originalCornerHandlerScale.normalized, "The corner handler scale has changed");
+            Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/corner_1/visualsScale/visuals").transform.localScale.x / originalCornerHandlerScale.x, bbox.MediumScale, 0.1f, "The corner handler did not grow when a pointer was near it");
 
             // Move the hand to a handler on the edge
             yield return rightHand.MoveTo(edgeHandlerPosition, numSteps);
             // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.4f);
 
-            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_0/visualsScale/visuals").transform.localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
+            TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/corner_1/visualsScale/visuals").transform.localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
             TestUtilities.AssertAboutEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.normalized, originalEdgeHandlerScale.normalized, "The edge handler scale has changed");
             Assert.AreApproximatelyEqual(bbox.transform.Find("rigRoot/midpoint_0/Sphere").transform.localScale.x / originalEdgeHandlerScale.x, bbox.MediumScale, 0.1f, "The edge handler did not grow when a pointer was near it");
 

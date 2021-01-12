@@ -3,8 +3,9 @@ using System.Collections;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
 {
     /// <summary>
     /// This class provides wrapper functionality for triggering animations and fades for the hand rig.
@@ -33,60 +34,43 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        [Tooltip("Min delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds.")]
+        [Tooltip("When the user's hands are not in view, the visuals will appear after HintDisplayDelay seconds.")]
         [SerializeField]
-        private float minDelay = 5f;
+        [FormerlySerializedAs("minDelay")]
+        private float hintDisplayDelay = 5f;
 
         /// <summary>
-        /// Min delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds.
+        /// When the user's hands are not in view, the visuals will appear after HintDisplayDelay seconds.
         /// </summary>
-        public float MinDelay
+        public float HintDisplayDelay
         {
             get
             {
-                return minDelay;
+                return hintDisplayDelay;
             }
             set
             {
-                minDelay = value;
+                hintDisplayDelay = value;
             }
         }
 
-        [Tooltip("Max delay for showing the visuals.  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds.")]
+        [Tooltip("When the user's hands are in view, the visuals will appear after TrackedHandHintDisplayDelay seconds.")]
         [SerializeField]
-        private float maxDelay = 10f;
+        [FormerlySerializedAs("maxDelay")]
+        private float trackedHandHintDisplayDelay = 10f;
 
         /// <summary>
-        /// Max delay for showing the visuals.  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds.
+        /// When the user's hands are in view, the visuals will appear after TrackedHandHintDisplayDelay seconds."
         /// </summary>
-        public float MaxDelay
+        public float TrackedHandHintDisplayDelay
         {
             get
             {
-                return maxDelay;
+                return trackedHandHintDisplayDelay;
             }
             set
             {
-                maxDelay = value;
-            }
-        }
-
-        [Tooltip("Set to false if you don't want to use a max timer and only want to show the hint when user's hands are not tracked.")]
-        [SerializeField]
-        private bool useMaxDelay = true;
-
-        /// <summary>
-        /// Set to false if you don't want to use a max timer and only want to show the hint when user's hands are not tracked.
-        /// </summary>
-        public bool UseMaxDelay
-        {
-            get
-            {
-                return useMaxDelay;
-            }
-            set
-            {
-                useMaxDelay = value;
+                trackedHandHintDisplayDelay = value;
             }
         }
 
@@ -300,9 +284,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 // First wait for the min timer, resetting it whenever ShouldHide is true.  Also
                 // wait for the max timer, never resetting it.
-                float maxTimer = 0;
                 float timer = 0;
-                while (timer < MinDelay && maxTimer < MaxDelay)
+                float displayDelay = IsHandTracked() ? TrackedHandHintDisplayDelay : HintDisplayDelay;
+                while (timer < displayDelay)
                 {
                     if (ShouldHideVisuals())
                     {
@@ -312,11 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     {
                         timer += Time.deltaTime;
                     }
-
-                    if (UseMaxDelay)
-                    {
-                        maxTimer += Time.deltaTime;
-                    }
+                    displayDelay = IsHandTracked() ? TrackedHandHintDisplayDelay : HintDisplayDelay;
 
                     yield return null;
                 }
@@ -334,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // loop as long as visuals are active and we haven't repeated the number of times desired
                 while (VisualsRoot.activeSelf && playCount < Repeats)
                 {
-                    // hide if hand is present, but maxTimer was not hit
+                    // hide if hand is present and HideIfHandTracked is true
                     bool shouldHide = ShouldHideVisuals();
                     bool fadeOut = Time.time - visibleTime >= animationHideTime;
                     if (shouldHide || fadeOut)

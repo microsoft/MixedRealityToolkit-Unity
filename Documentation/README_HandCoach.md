@@ -1,5 +1,5 @@
 # Hand coach
-![](../../../../../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
+![](../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
 
 Hand coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand coach could be used to represent pressing a button or picking up a hologram.
 
@@ -17,16 +17,16 @@ The current interaction model represents a wide variety of gesture controls such
 
 ## Example scene
 You can find examples in the **HandCoachExample** scene under:
-[MixedRealityToolkit.Examples/Experimental/HandCoach/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/HandCoach/Scenes)
+[MixedRealityToolkit.Examples/Demos/HandCoach/Scenes](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Demos/HandCoach/Scenes)
 
 ## Hand 3D Assets
 You can find the assets under:
-[MixedRealityToolkit.SDK/Experimental/HandCoach](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Experimental/HandCoach)
+[MixedRealityToolkit.SDK/Features/UX/Meshes/HandCoach](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MRTK/SDK/Features/UX/Meshes/HandCoach)
 
 ## Quality
 If you notice distortions on the skinned mesh, you need to make sure your project is using the proper amount of joints. 
 Go to Unity's Edit > Project Settings > Quality > Other > Blend Weights. Make sure "4 bones" are selected to see Smooth Joints. 
-![](../../../../../Documentation/Images/HandCoach/MRTK_ProjectSettings.png)
+![](../Documentation/Images/HandCoach/MRTK_ProjectSettings.png)
 
 
 
@@ -41,11 +41,9 @@ Otherwise, you'll need to place the script on a gameObject one parent level up f
 #### Inspector properties
 - **HideIfHandTracked** This boolean specifies whether hand tracking state should be used to hide visuals when a user’s hands are being tracked. If this is set to false, only the scripting property “customShouldHideVisuals” will be used to determine whether to hide the hint.
 
-- **MinDelay** This property specifies the minimum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds if the user’s hands are not being tracked.
+- **HintDisplayDelay** This property specifies the delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds if the user’s hands are not being tracked.
 
-- **MaxDelay** This property specifies the maximum delay for showing the visuals. By default, the visuals for the hand will appear after this many seconds even if the user’s hands are being tracked.
-
-- **UseMaxTimer** If this boolean is set to false, it disables the max timer and only allows the hand hint to be shown when the user’s hands are out of view, or the custom condition returns false.
+- **TrackedHandHintDisplayDelay** This property specifies the delay for showing the visuals when the hands are tracked. By default, the visuals for the hand will appear after this many seconds if the user’s hands are being tracked. If HideIfHandTracked is set to true, this property is ignored.
 
 - **Repeats** This property controls how many times the hint animation plays when the min or max timer has passed. The hint then hides and waits for the delay again.
 
