@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void OnClickRemove()
         {
             // Set the app bar and bounding box to inactive
-            if (Target is IBoundsTargetProvider boundsProvider)
+            if (Target is IBoundsTargetProvider boundsProvider && !boundsProvider.IsNull())
             {
                 boundsProvider.Target.SetActive(false);
             }
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateTargetObject()
         {
-            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.Target == null)
+            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.IsNull() || boundsProvider.Target == null)
             {
                 if (DisplayType == AppBarDisplayTypeEnum.Manipulation)
                 {
@@ -495,7 +495,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void FollowTargetObject(bool smooth)
         {
-            if (!(Target is IBoundsTargetProvider boundsProvider))
+            if (!(Target is IBoundsTargetProvider boundsProvider) || boundsProvider.IsNull())
             {
                 return;
             }

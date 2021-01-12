@@ -370,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                         foreach (Object asset in assets)
                         {
-                            if (asset is MonoScript monoScript && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
+                            if (asset is MonoScript monoScript && monoScript != null && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(monoScript, out string guid, out long fileId))
                             {
                                 Type type = monoScript.GetClass();
 

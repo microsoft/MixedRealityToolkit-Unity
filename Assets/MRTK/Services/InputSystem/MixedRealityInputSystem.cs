@@ -1305,12 +1305,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                if (handler is IMixedRealityInputHandler inputHandler)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputDown(inputData);
                 }
 
-                if (handler is IMixedRealityInputActionHandler actionHandler)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1357,12 +1357,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                if (handler is IMixedRealityInputHandler inputHandler)
+                if (handler is IMixedRealityInputHandler inputHandler && !inputHandler.IsNull())
                 {
                     inputHandler.OnInputUp(inputData);
                 }
 
-                if (handler is IMixedRealityInputActionHandler actionHandler)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1545,12 +1545,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                if (handler is IMixedRealityGestureHandler gestureHandler)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureStarted(inputData);
                 }
 
-                if (handler is IMixedRealityInputActionHandler actionHandler)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(inputData);
                 }
@@ -1680,12 +1680,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var inputData = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 Debug.Assert(inputData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                if (handler is IMixedRealityGestureHandler gestureHandler)
+                if (handler is IMixedRealityGestureHandler gestureHandler && !gestureHandler.IsNull())
                 {
                     gestureHandler.OnGestureCompleted(inputData);
                 }
 
-                if (handler is IMixedRealityInputActionHandler actionHandler)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionEnded(inputData);
                 }
@@ -1821,12 +1821,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var speechData = ExecuteEvents.ValidateEventData<SpeechEventData>(eventData);
                 Debug.Assert(speechData.MixedRealityInputAction != MixedRealityInputAction.None);
 
-                if (handler is IMixedRealitySpeechHandler speechHandler)
+                if (handler is IMixedRealitySpeechHandler speechHandler && !speechHandler.IsNull())
                 {
                     speechHandler.OnSpeechKeywordRecognized(speechData);
                 }
 
-                if (handler is IMixedRealityInputActionHandler actionHandler)
+                if (handler is IMixedRealityInputActionHandler actionHandler && !actionHandler.IsNull())
                 {
                     actionHandler.OnActionStarted(speechData);
                     actionHandler.OnActionEnded(speechData);

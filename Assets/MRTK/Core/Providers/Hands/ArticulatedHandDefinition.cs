@@ -245,15 +245,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 bool anyPointersLockedWithHand = false;
                 for (int i = 0; i < inputSource?.Pointers?.Length; i++)
                 {
-                    if (inputSource.Pointers[i] == null) continue;
-                    if (inputSource.Pointers[i] is IMixedRealityNearPointer nearPointer)
+                    IMixedRealityPointer mixedRealityPointer = inputSource.Pointers[i];
+                    if (mixedRealityPointer.IsNull()) continue;
+                    if (mixedRealityPointer is IMixedRealityNearPointer nearPointer)
                     {
                         anyPointersLockedWithHand |= nearPointer.IsNearObject;
                     }
-                    anyPointersLockedWithHand |= inputSource.Pointers[i].IsFocusLocked;
+                    anyPointersLockedWithHand |= mixedRealityPointer.IsFocusLocked;
 
                     // If official teleport mode and we have a teleport pointer registered, we get the input action to trigger it.
-                    if (teleportPointer == null && inputSource.Pointers[i] is IMixedRealityTeleportPointer pointer)
+                    if (teleportPointer == null && mixedRealityPointer is IMixedRealityTeleportPointer pointer)
                     {
                         teleportPointer = pointer;
                     }

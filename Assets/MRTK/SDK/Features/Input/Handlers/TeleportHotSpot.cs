@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnBeforeFocusChange(eventData);
 
-            if (!(eventData.Pointer is IMixedRealityTeleportPointer teleportPointer))
+            if (!(eventData.Pointer is IMixedRealityTeleportPointer teleportPointer) || teleportPointer.IsNull())
             {
                 return;
             }
