@@ -20,7 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SourceId = (CoreServices.InputSystem != null) ? CoreServices.InputSystem.GenerateNewSourceId() : 0;
             SourceName = name;
-            Pointers = pointers ?? new[] { CoreServices.InputSystem?.GazeProvider?.GazePointer };
+            if (pointers != null)
+            {
+                Pointers = pointers;
+            }
+            else if (CoreServices.InputSystem?.GazeProvider?.GazePointer is IMixedRealityPointer gazePointer)
+            {
+                Pointers = new[] { gazePointer };
+            }
+            else
+            {
+                Pointers = new IMixedRealityPointer[] { };
+            }
 
             SourceType = sourceType;
         }

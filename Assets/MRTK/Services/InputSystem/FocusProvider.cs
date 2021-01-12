@@ -834,7 +834,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
-                    if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                    if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId && gazeProviderPointingData == null)
                     {
                         gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                     }
