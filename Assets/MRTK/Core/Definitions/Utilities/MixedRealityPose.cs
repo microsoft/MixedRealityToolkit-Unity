@@ -125,13 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
-            return obj is MixedRealityPose && Equals((MixedRealityPose)obj);
+            return obj is MixedRealityPose pose && Equals(pose);
         }
 
         /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
-            return obj is MixedRealityPose ? ((MixedRealityPose)obj).GetHashCode() : 0;
+            return obj is MixedRealityPose pose ? pose.GetHashCode() : 0;
         }
 
         public override int GetHashCode()

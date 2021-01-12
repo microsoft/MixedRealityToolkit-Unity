@@ -1185,9 +1185,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     foreach (var component in currentObject.GetComponents<Component>())
                     {
-                        if (component is IMixedRealityPointerHandler)
+                        if (component is IMixedRealityPointerHandler handler)
                         {
-                            ancestorPointerHandler = (IMixedRealityPointerHandler)component;
+                            ancestorPointerHandler = handler;
                             break;
                         }
                     }
