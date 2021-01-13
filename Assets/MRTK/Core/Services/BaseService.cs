@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
                 Debug.Assert(isInitialized.HasValue, $"{this.GetType()} has not set a value for IsInitialized, returning false.");
-                return isInitialized.HasValue ? isInitialized.Value : false;
+                return isInitialized ?? false;
             }
 
             set => isInitialized = value;
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
                 Debug.Assert(isEnabled.HasValue, $"{this.GetType()} has not set a value for IsEnabled, returning false.");
-                return isEnabled.HasValue ? isEnabled.Value : false;
+                return isEnabled ?? false;
             }
 
             set => isEnabled = value;
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
                 Debug.Assert(isMarkedDestroyed.HasValue, $"{this.GetType()} has not set a value for IsMarkedDestroyed, returning false.");
-                return isMarkedDestroyed.HasValue ? isMarkedDestroyed.Value : false;
+                return isMarkedDestroyed ?? false;
             }
 
             set => isMarkedDestroyed = value;

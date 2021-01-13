@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public bool IsHandTracked(Handedness handedness)
         {
-            return handedness == Handedness.Left ? leftHand != null : handedness == Handedness.Right ? rightHand != null : false;
+            return handedness == Handedness.Left ? leftHand != null : handedness == Handedness.Right && rightHand != null;
         }
 
         #endregion IMixedRealityHandJointService Implementation

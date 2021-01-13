@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             FileInfo file = new FileInfo(fileName);
 
-            bool readOnly = (file.Exists) ? file.IsReadOnly : false;
+            bool readOnly = file.Exists && file.IsReadOnly;
             if (readOnly)
             {
                 file.IsReadOnly = false;
