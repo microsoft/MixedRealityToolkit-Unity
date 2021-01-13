@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b71cb900fa9dec5488df2deb180db58f, type: 3}
-  m_Name: HandMenuMixedRealityInputSystemProfile
+  m_Name: HandMenuInputSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   dataProviderConfigurations:
@@ -102,7 +102,7 @@ MonoBehaviour:
     type: 2}
   pointerProfile: {fileID: 11400000, guid: 48aa63a9725047b28d4137fd0834bc31, type: 2}
   gesturesProfile: {fileID: 11400000, guid: bd7829a9b29409045a745b5a18299291, type: 2}
-  speechCommandsProfile: {fileID: 11400000, guid: e8d0393e66374dae9646851a57dc6bc1,
+  speechCommandsProfile: {fileID: 11400000, guid: a8a46624b341bb74ba5a063386314675,
     type: 2}
   enableControllerMapping: 1
   controllerMappingProfile: {fileID: 11400000, guid: 39ded1fd0711a0c448413d0e1ec4f7f3,
