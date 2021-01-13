@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private bool IsIMERequired(string language)
         {
-            return language.StartsWith("zh") || language.StartsWith("ja") || language.StartsWith("kr");
+            return language.StartsWith("zh") || language.StartsWith("ja") || language.StartsWith("ko");
         }
 #endif
         protected virtual void SyncCaret() { }
