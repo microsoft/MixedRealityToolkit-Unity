@@ -64,8 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (var detectedController in Service.DetectedControllers)
             {
-                var hand = detectedController as IMixedRealityHand;
-                if (hand != null)
+                if (detectedController is IMixedRealityHand hand)
                 {
                     if (detectedController.ControllerHandedness == Handedness.Left)
                     {

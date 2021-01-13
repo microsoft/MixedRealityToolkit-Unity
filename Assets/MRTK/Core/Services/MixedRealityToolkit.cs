@@ -1268,9 +1268,9 @@ namespace Microsoft.MixedReality.Toolkit
             for (int i = 0; i < length; i++)
             {
                 IMixedRealityService service = systems[i];
-                if (service is T && (isNullServiceName || service.Name == serviceName))
+                if (service is T serviceT && (isNullServiceName || service.Name == serviceName))
                 {
-                    services.Add((T)service);
+                    services.Add(serviceT);
                 }
             }
 

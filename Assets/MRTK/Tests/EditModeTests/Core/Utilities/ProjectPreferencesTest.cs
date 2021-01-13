@@ -15,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
         private const string BaseKey = "ProjectPreferencesTest_";
         private static readonly Dictionary<string, object> TestData = new Dictionary<string, object>
         {
-            { BaseKey + typeof(bool).Name, (object)true },
-            { BaseKey + typeof(float).Name, (object)2.3f },
-            { BaseKey + typeof(int).Name, (object)5 },
-            { BaseKey + typeof(string).Name, (object)"TEST"},
+            { BaseKey + typeof(bool).Name, true },
+            { BaseKey + typeof(float).Name, 2.3f },
+            { BaseKey + typeof(int).Name, 5 },
+            { BaseKey + typeof(string).Name, "TEST"},
         };
 
         /// <summary>
@@ -31,29 +31,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
             {
                 foreach (var test in TestData)
                 {
-                    if (test.Value is float)
+                    if (test.Value is float floatValue)
                     {
-                        var value = (float)test.Value;
-                        ProjectPreferences.Set(test.Key, value);
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, 0f));
+                        ProjectPreferences.Set(test.Key, floatValue);
+                        Assert.AreEqual(floatValue, ProjectPreferences.Get(test.Key, 0f));
                     }
-                    else if (test.Value is bool)
+                    else if (test.Value is bool boolValue)
                     {
-                        var value = (bool)test.Value;
-                        ProjectPreferences.Set(test.Key, value);
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, false));
+                        ProjectPreferences.Set(test.Key, boolValue);
+                        Assert.AreEqual(boolValue, ProjectPreferences.Get(test.Key, false));
                     }
-                    else if (test.Value is int)
+                    else if (test.Value is int intValue)
                     {
-                        var value = (int)test.Value;
-                        ProjectPreferences.Set(test.Key, value);
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, 0));
+                        ProjectPreferences.Set(test.Key, intValue);
+                        Assert.AreEqual(intValue, ProjectPreferences.Get(test.Key, 0));
                     }
-                    else if (test.Value is string)
+                    else if (test.Value is string stringValue)
                     {
-                        var value = (string)test.Value;
-                        ProjectPreferences.Set(test.Key, value);
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, string.Empty));
+                        ProjectPreferences.Set(test.Key, stringValue);
+                        Assert.AreEqual(stringValue, ProjectPreferences.Get(test.Key, string.Empty));
                     }
                 }
             }
@@ -76,25 +72,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
             {
                 foreach (var test in TestData)
                 {
-                    if (test.Value is float)
+                    if (test.Value is float floatValue)
                     {
-                        var value = (float)test.Value;
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, value));
+                        Assert.AreEqual(floatValue, ProjectPreferences.Get(test.Key, floatValue));
                     }
-                    else if (test.Value is bool)
+                    else if (test.Value is bool boolValue)
                     {
-                        var value = (bool)test.Value;
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, value));
+                        Assert.AreEqual(boolValue, ProjectPreferences.Get(test.Key, boolValue));
                     }
-                    else if (test.Value is int)
+                    else if (test.Value is int intValue)
                     {
-                        var value = (int)test.Value;
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, value));
+                        Assert.AreEqual(intValue, ProjectPreferences.Get(test.Key, intValue));
                     }
-                    else if (test.Value is string)
+                    else if (test.Value is string stringValue)
                     {
-                        var value = (string)test.Value;
-                        Assert.AreEqual(value, ProjectPreferences.Get(test.Key, value));
+                        Assert.AreEqual(stringValue, ProjectPreferences.Get(test.Key, stringValue));
                     }
                 }
             }

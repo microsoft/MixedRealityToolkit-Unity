@@ -49,11 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
-
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
+                if (observer is IMixedRealityCapabilityCheck capabilityChecker &&
                     capabilityChecker.CheckCapability(capability))
                 {
                     return true;

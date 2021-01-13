@@ -80,9 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
                 if (c.ControllerHandedness.IsMatch(Handedness.Both))
                 {
                     MixedRealityPose palmPose;
-                    var jointedHand = c as IMixedRealityHand;
 
-                    if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+                    if (c is IMixedRealityHand jointedHand && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                     {
                         if (Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f)
                         {

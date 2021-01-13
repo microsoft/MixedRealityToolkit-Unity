@@ -105,8 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (dataProviderType != null)
             {
-                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(dataProviderType) as MixedRealityDataProviderAttribute;
-                if (providerAttribute != null)
+                if (MixedRealityDataProviderAttribute.Find(dataProviderType) is MixedRealityDataProviderAttribute providerAttribute)
                 {
                     providerProperties.componentName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : dataProviderType.Name;
                     providerProperties.providerProfile.objectReferenceValue = providerAttribute.DefaultProfile;

@@ -437,9 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 if (controller != null)
                 {
-                    var mrtkController = controller as WindowsMixedRealityController;
-
-                    if (mrtkController != null)
+                    if (controller is WindowsMixedRealityController mrtkController)
                     {
                         mrtkController.EnsureControllerModel(interactionSourceState.source);
                     }
