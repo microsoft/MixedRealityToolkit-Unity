@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq.Expressions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
+namespace Microsoft.MixedReality.Toolkit.UI.SurfacePulse
 {
     /// <summary>
     /// Script for triggering the pulse shader effect on hand mesh.
@@ -240,6 +240,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         #endregion
-
     }
 }

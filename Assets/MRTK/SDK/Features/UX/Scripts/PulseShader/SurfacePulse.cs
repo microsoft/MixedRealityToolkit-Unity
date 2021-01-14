@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
+namespace Microsoft.MixedReality.Toolkit.UI.SurfacePulse
 {
     /// <summary>
     /// Script for generating pulse shader effect on the surface of a mesh.  
