@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #pragma warning disable 0414
         [SerializeField]
         private MixedRealityKeyboardPreview mixedRealityKeyboardPreview = null;
+        [SerializeField, Tooltip("Whether disable user's interaction with other UI elements while typing. Use this option to decrease the chance of keyboard getting accidentally closed.")]
+        private bool disableUIInteractionWhenTyping = false;
 #pragma warning restore 0414
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if WINDOWS_UWP
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-
+            wmrKeyboard.DisableUIInteractionWhenTyping = disableUIInteractionWhenTyping;
             if (wmrKeyboard.OnShowKeyboard != null)
             {
                 wmrKeyboard.OnShowKeyboard.AddListener(() =>
