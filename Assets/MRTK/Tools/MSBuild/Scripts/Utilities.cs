@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (!thisAbsolute.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
-                thisAbsolute = thisAbsolute + Path.DirectorySeparatorChar;
+                thisAbsolute += Path.DirectorySeparatorChar;
             }
 
             return GetNormalizedPath(new Uri(thisAbsolute).MakeRelativeUri(new Uri(thatAbsolute)).OriginalString);

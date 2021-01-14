@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 rotationDeltaEulerAngles.z += mouseDelta.screenDelta.z * rotationSensitivity;
                 rotationDeltaEulerAngles *= rotationScale;
 
-                ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;
+                ViewportRotation += rotationDeltaEulerAngles;
             }
             else
             {
