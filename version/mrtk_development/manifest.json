@@ -13309,7 +13309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html",
-          "hash": "QMQRqZbuByfHmPlsT1Qm3g=="
+          "hash": "unI5owB4UON2KvhYnRKxcQ=="
         }
       },
       "is_incremental": false,
@@ -13365,11 +13365,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKTMPInputField.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKTMPInputField.html",
+          "hash": "fNooiPjebSVPShF1PZl6dQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.html",
+          "hash": "bw1bhIiXSJbDUJJmjBNrYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.html",
-          "hash": "RbOPRVQD/F6+5J31E72u+A=="
+          "hash": "iAEenE2FRxl7fyFWyi+41g=="
         }
       },
       "is_incremental": false,
@@ -13381,7 +13405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html",
-          "hash": "5gb0e88tKmiMJhww8fb+EQ=="
+          "hash": "z6D2cmEw5WMi/CxA3dt5MA=="
         }
       },
       "is_incremental": false,
@@ -13489,7 +13513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField.html",
-          "hash": "K3Hh1z/1s1X4YOE5s7nlzw=="
+          "hash": "4hURnU2XVPVqMFGITsyrIA=="
         }
       },
       "is_incremental": false,
@@ -13513,7 +13537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.html",
-          "hash": "oubBDQVhdRAZMwbvvK6qqw=="
+          "hash": "v65zOrie2Vmxl9o0s+xXTg=="
         }
       },
       "is_incremental": false,
@@ -13525,7 +13549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.html",
-          "hash": "+KF/8HGQRvyWbziAUHupNA=="
+          "hash": "jn3o1JuqG5qXYACm01hQGA=="
         }
       },
       "is_incremental": false,
@@ -16405,7 +16429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.html",
-          "hash": "3GaY1PXq3ANQ0Tf2cQ0RYg=="
+          "hash": "V9z5Fo1i6+dem+afxsUiqA=="
         }
       },
       "is_incremental": false,
@@ -29785,7 +29809,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "YJEMCOGvU801ym2CzkkgIw=="
+          "hash": "pH78OGeNZGSFVPYvEL+H3A=="
         }
       },
       "is_incremental": false,
@@ -29857,7 +29881,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1710,
+          "total_file_count": 1712,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

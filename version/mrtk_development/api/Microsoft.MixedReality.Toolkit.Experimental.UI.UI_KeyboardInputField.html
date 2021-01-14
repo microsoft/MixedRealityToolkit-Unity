@@ -95,26 +95,30 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField" class="text-break">Class UI_KeyboardInputField
   </h1>
-  <div class="markdown level0 summary"><p>A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard</p>
+  <div class="markdown level0 summary"><p>A component that can be added to InputField to make it work with Windows Mixed Reality's system keyboard.
+Will no longer be necessary in Unity 2019.3 and later versions after a Unity/UGUI bug is fixed (see disableUGUIWorkaround).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html">MixedRealityKeyboardBase</a></div>
-    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html">KeyboardInputFieldBase</a>&lt;<span class="xref">InputField</span>&gt;</div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html">KeyboardInputFieldBase</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.html">MRTKUGUIInputField</a>&gt;</div>
     <div class="level3"><span class="xref">UI_KeyboardInputField</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html#Microsoft_MixedReality_Toolkit_Experimental_UI_KeyboardInputFieldBase_1_inputField">KeyboardInputFieldBase&lt;InputField&gt;.inputField</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html#Microsoft_MixedReality_Toolkit_Experimental_UI_KeyboardInputFieldBase_1_inputField">KeyboardInputFieldBase&lt;MRTKUGUIInputField&gt;.inputField</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_MixedRealityKeyboardBase_Visible">MixedRealityKeyboardBase.Visible</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_MixedRealityKeyboardBase_CaretIndex">MixedRealityKeyboardBase.CaretIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_MixedRealityKeyboardBase_DisableUIInteractionWhenTyping">MixedRealityKeyboardBase.DisableUIInteractionWhenTyping</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_MixedRealityKeyboardBase_OnShowKeyboard">MixedRealityKeyboardBase.OnShowKeyboard</a>
@@ -139,7 +143,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class UI_KeyboardInputField : KeyboardInputFieldBase&lt;InputField&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class UI_KeyboardInputField : KeyboardInputFieldBase&lt;MRTKUGUIInputField&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -175,12 +179,12 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_PlaceHolderGraphic_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.PlaceHolderGraphic*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_PlaceHolderGraphic_InputField_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.PlaceHolderGraphic(InputField)">PlaceHolderGraphic(InputField)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_PlaceHolderGraphic_Microsoft_MixedReality_Toolkit_Experimental_UI_MRTKUGUIInputField_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.PlaceHolderGraphic(Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField)">PlaceHolderGraphic(MRTKUGUIInputField)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Graphic PlaceHolderGraphic(InputField inputField)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Graphic PlaceHolderGraphic(MRTKUGUIInputField inputField)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +197,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputField</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.html">MRTKUGUIInputField</a></td>
         <td><span class="parametername">inputField</span></td>
         <td></td>
       </tr>
@@ -215,16 +219,28 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase&lt;InputField&gt;.PlaceHolderGraphic(InputField)</span></div>
+  <div><span class="xref">Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase&lt;Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField&gt;.PlaceHolderGraphic(Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField)</span></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_SyncCaret_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.SyncCaret*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_SyncCaret" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.SyncCaret">SyncCaret()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void SyncCaret()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html#Microsoft_MixedReality_Toolkit_Experimental_UI_MixedRealityKeyboardBase_SyncCaret">MixedRealityKeyboardBase.SyncCaret()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_TextGraphic_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.TextGraphic*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_TextGraphic_InputField_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.TextGraphic(InputField)">TextGraphic(InputField)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_UI_KeyboardInputField_TextGraphic_Microsoft_MixedReality_Toolkit_Experimental_UI_MRTKUGUIInputField_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.TextGraphic(Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField)">TextGraphic(MRTKUGUIInputField)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Graphic TextGraphic(InputField inputField)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Graphic TextGraphic(MRTKUGUIInputField inputField)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,7 +253,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputField</span></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.html">MRTKUGUIInputField</a></td>
         <td><span class="parametername">inputField</span></td>
         <td></td>
       </tr>
@@ -259,7 +275,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase&lt;InputField&gt;.TextGraphic(InputField)</span></div>
+  <div><span class="xref">Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase&lt;Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField&gt;.TextGraphic(Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField)</span></div>
 </article>
           </div>
           

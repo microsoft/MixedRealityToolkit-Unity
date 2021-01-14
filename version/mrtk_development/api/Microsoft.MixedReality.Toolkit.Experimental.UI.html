@@ -149,6 +149,13 @@ Unity bug tracking the issue <a href="https://fogbugz.unity3d.com/default.asp?11
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardPreview.html">MixedRealityKeyboardPreview</a></h4>
       <section><p>Component to manage the visuals for a Mixed Reality Keyboard Preview window.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKTMPInputField.html">MRTKTMPInputField</a></h4>
+      <section><p>A derived class of TMP's InputField to workaround with some issues of typing on HoloLens 2
+No longer used in Unity 2019.3 and later versions.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MRTKUGUIInputField.html">MRTKUGUIInputField</a></h4>
+      <section><p>A derived class of UGUI's InputField to workaround with some issues of typing on HoloLens 2</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.html">NonNativeKeyboard</a></h4>
       <section><p>A simple general use keyboard that is ideal for AR/VR applications that do not provide a native keyboard.</p>
 </section>
@@ -169,10 +176,13 @@ Number of steps defaults to 0, if number isn't set then slider behaves just like
       <section><p>This class switches back and forth between two symbol boards that otherwise do not fit on the keyboard entirely</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField.html">TMP_KeyboardInputField</a></h4>
-      <section><p>A component that can be added to TMP_InputField to make them work with Windows Mixed Reality's system keyboard</p>
+      <section><p>A component that can be added to InputField to make it work with Windows Mixed Reality's system keyboard.
+Required when using Unity 2018.4.
+No longer used in Unity 2019.3 and later versions (becomes an empty MonoBehaviour and is only around for compatibility) and you can safely remove it if you wish</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.html">UI_KeyboardInputField</a></h4>
-      <section><p>A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard</p>
+      <section><p>A component that can be added to InputField to make it work with Windows Mixed Reality's system keyboard.
+Will no longer be necessary in Unity 2019.3 and later versions after a Unity/UGUI bug is fixed (see disableUGUIWorkaround).</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.UICollection.html">UICollection</a></h4>
       <section><p>This component represents and ordered collection of UI elements. You
