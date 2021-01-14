@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_Pulse_ArticulatedHandMeshBlue
   m_Shader: {fileID: 4800000, guid: aca12b5bed90b92448a88757df739294, type: 3}
-  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _AUTO_PULSE__ON _COLOR_MAP_ENABLE__ON
-    _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON _RIM_LIGHT _UNITY_TO_SRGB__ON
+  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT
+    _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON _RIM_LIGHT _UNITY_TO_SRGB__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,7 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - USE_ALBEDO_TEXTURE: 1
-    - _Auto_Pulse_: 1
+    - _Auto_Pulse_: 0
     - _Desaturated_Intensity_: 0
     - _Edge_Width_: 1
     - _Fill_Start_Time_: 0.5
@@ -56,4 +56,4 @@ Material:
     m_Colors:
     - _Fill_Color_: {r: 0.15294118, g: 0.27058825, b: 0.5372549, a: 1}
     - _Line_Color_: {r: 0.5882353, g: 0.84313726, b: 1, a: 1}
-    - _Pulse_Origin_: {r: 0.8, g: 0.8, b: 0, a: 0}
+    - _Pulse_Origin_: {r: 0.5, g: 0.5, b: 0, a: 0}
