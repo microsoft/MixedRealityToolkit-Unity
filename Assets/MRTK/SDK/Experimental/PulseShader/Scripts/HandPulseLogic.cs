@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
         [SerializeField]
         [Tooltip("Trigger the pulse shader visual if the hand is in the pinch/select gesture. ")]
-        private bool pulseOnPinch;
+        private bool pulseOnPinch = false;
 
         /// <summary>
         /// Trigger the pulse shader visual if the hand is in the pinch/select gesture. 
@@ -115,6 +115,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
         private void Start()
         {
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+
+            if (Pulse == null)
+            {
+                Pulse = GetComponent<SurfacePulse>();
+            }
         }
 
         private void OnDestroy()
