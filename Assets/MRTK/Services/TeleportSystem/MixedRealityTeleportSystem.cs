@@ -281,8 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 isProcessingTeleportRequest = true;
 
                 targetRotation = Vector3.zero;
-                var teleportPointer = eventData.Pointer as IMixedRealityTeleportPointer;
-                if (teleportPointer != null)
+                if (eventData.Pointer is IMixedRealityTeleportPointer teleportPointer && !teleportPointer.IsNull())
                 {
                     targetRotation.y = teleportPointer.PointerOrientation;
                 }

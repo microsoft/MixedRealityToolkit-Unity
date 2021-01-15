@@ -668,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        hitp.y = hitp.y + gameObject.transform.localScale.y / 2;
+                        hitp.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;
@@ -750,7 +750,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     // Discrete cursor-based target movement
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {
-                        destination.y = destination.y + gameObject.transform.localScale.y / 2;
+                        destination.y += gameObject.transform.localScale.y / 2;
                     }
 
                     Vector3 objp = gameObject.transform.position;

@@ -392,8 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             while (!SolverHandler.UpdateSolvers && useGazeActivation)
             {
                 MixedRealityPose palmPose;
-                var jointedHand = GetController(SolverHandler.CurrentTrackedHandedness) as IMixedRealityHand;
-                if (jointedHand != null)
+                if (GetController(SolverHandler.CurrentTrackedHandedness) is IMixedRealityHand jointedHand)
                 {
                     if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                     {

@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             {
                 float distortion = (1f - (bulgeFalloff.Evaluate(distanceToCenter / bulgeRadius))) * bulgeStrength;
                 Vector3 direction = (point - BulgeWorldCenter).normalized;
-                point = point + (direction * distortion * bulgeStrength);
+                point += (direction * distortion * bulgeStrength);
             }
 
             return point;

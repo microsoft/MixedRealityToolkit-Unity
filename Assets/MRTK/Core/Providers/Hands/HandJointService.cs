@@ -64,8 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             foreach (var detectedController in Service.DetectedControllers)
             {
-                var hand = detectedController as IMixedRealityHand;
-                if (hand != null)
+                if (detectedController is IMixedRealityHand hand)
                 {
                     if (detectedController.ControllerHandedness == Handedness.Left)
                     {
@@ -184,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public bool IsHandTracked(Handedness handedness)
         {
-            return handedness == Handedness.Left ? leftHand != null : handedness == Handedness.Right ? rightHand != null : false;
+            return handedness == Handedness.Left ? leftHand != null : handedness == Handedness.Right && rightHand != null;
         }
 
         #endregion IMixedRealityHandJointService Implementation
