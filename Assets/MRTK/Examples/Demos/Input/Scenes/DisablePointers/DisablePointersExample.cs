@@ -28,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void ResetExample()
         {
             var pointerControl = GetComponent<PointerBehaviorControls>();
-            IMixedRealityCapabilityCheck capabilityChecker = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
-            if (capabilityChecker != null)
+            if (CoreServices.InputSystem is IMixedRealityCapabilityCheck capabilityChecker)
             {
                 if (capabilityChecker.CheckCapability(MixedRealityCapability.ArticulatedHand))
                 {

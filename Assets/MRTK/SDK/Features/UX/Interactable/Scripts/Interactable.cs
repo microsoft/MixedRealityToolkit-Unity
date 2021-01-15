@@ -1063,9 +1063,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T receiverT)
                 {
-                    return (T)InteractableEvents[i].Receiver;
+                    return receiverT;
                 }
             }
 
@@ -1081,9 +1081,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             List<T> result = new List<T>();
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T receiverT)
                 {
-                    result.Add((T)InteractableEvents[i].Receiver);
+                    result.Add(receiverT);
                 }
             }
             return result;

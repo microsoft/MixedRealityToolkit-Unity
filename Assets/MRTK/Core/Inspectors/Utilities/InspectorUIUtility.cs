@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // case 5: only show the link
 
                     // case 5 -> can't create and/or store the local scriptable above - show link
-                    bool isStoredAsset = (scriptable.objectReferenceValue == null) ? false : AssetDatabase.Contains(scriptable.objectReferenceValue);
+                    bool isStoredAsset = scriptable.objectReferenceValue != null && AssetDatabase.Contains(scriptable.objectReferenceValue);
                     bool isEmptyInStagedPrefab = !isStoredAsset && ((Component)scriptable.serializedObject.targetObject).gameObject.scene.path == "";
                     if (scriptable.objectReferenceValue == null ||  isEmptyInStagedPrefab)
                     {

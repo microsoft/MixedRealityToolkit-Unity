@@ -72,8 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         internal override void SimulateInput(ref long lastMotionControllerTrackedTimestamp, SimulatedControllerState state, bool isSimulating, bool isAlwaysVisible, MouseDelta mouseDelta, bool useMouseRotation)
         {
-            var motionControllerState = state as SimulatedMotionControllerState;
-            if (motionControllerState == null)
+            if (!(state is SimulatedMotionControllerState motionControllerState))
             {
                 return;
             }

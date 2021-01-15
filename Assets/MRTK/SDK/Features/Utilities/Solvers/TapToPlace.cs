@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected internal int GameObjectLayer { get; protected set; }
 
-        protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
+        protected internal bool IsColliderPresent => gameObject != null && gameObject.GetComponent<Collider>() != null;
 
         /// <summary>
         /// The default value for SurfaceNormalOffset if UseDefaultSurfaceNormalOffset is true.  This value ensures an object

@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
             newMesh.Id = planeId;
             newMesh.GameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            newMesh.GameObject.name = name;
             newMesh.GameObject.layer = layer;
             newMesh.GameObject.transform.localScale = size;
 

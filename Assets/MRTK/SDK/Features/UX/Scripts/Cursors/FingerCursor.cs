@@ -183,8 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Pointer != null)
             {
-                var hand = Pointer.Controller as IMixedRealityHand;
-                if (hand != null)
+                if (Pointer.Controller is IMixedRealityHand hand)
                 {
                     if (hand.TryGetJoint(joint, out MixedRealityPose handJoint))
                     {

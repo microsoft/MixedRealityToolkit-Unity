@@ -135,13 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
-            return obj is MixedRealityTransform && Equals((MixedRealityTransform)obj);
+            return obj is MixedRealityTransform transform && Equals(transform);
         }
 
         /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
-            return obj is MixedRealityTransform ? ((MixedRealityTransform)obj).GetHashCode() : 0;
+            return obj is MixedRealityTransform transform ? transform.GetHashCode() : 0;
         }
 
         public override int GetHashCode()

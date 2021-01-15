@@ -612,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return CalculateRayForSafeZone(origin, targetTransform, hand, handSafeZone, offsetBehavior);
             }
 
-            angleOffset = angleOffset % 360;
+            angleOffset %= 360;
             while (angleOffset < 0)
             {
                 angleOffset = (angleOffset + 360) % 360;
@@ -653,9 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private static MixedRealityPose? GetPalmPose(IMixedRealityController hand)
         {
             MixedRealityPose palmPose;
-            var jointedHand = hand as IMixedRealityHand;
 
-            if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+            if (hand is IMixedRealityHand jointedHand && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
             {
                 return palmPose;
             }

@@ -896,10 +896,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer
         {
             List<T> typePointers = new List<T>();
-            foreach (var pointer in pointers.Values)
+            foreach (PointerData pointer in pointers.Values)
             {
-                T typePointer = pointer.Pointer as T;
-                if (typePointer != null)
+                if (pointer.Pointer is T typePointer && !typePointer.IsNull())
                 {
                     typePointers.Add(typePointer);
                 }
@@ -1167,7 +1166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 foreach (var pointerData in pointers.Values)
                 {
-                    if (pointerData.Pointer is IMixedRealityNearPointer nearPointer)
+                    if (pointerData.Pointer is IMixedRealityNearPointer nearPointer && !nearPointer.IsNull())
                     {
                         if (nearPointer.IsInteractionEnabled || nearPointer.IsNearObject)
                         {

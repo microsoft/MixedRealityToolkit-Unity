@@ -3,6 +3,7 @@ using System.Collections;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
 {
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
 
         [Tooltip("When the user's hands are not in view, the visuals will appear after HintDisplayDelay seconds.")]
         [SerializeField]
+        [FormerlySerializedAs("minDelay")]
         private float hintDisplayDelay = 5f;
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.HandCoach
 
         [Tooltip("When the user's hands are in view, the visuals will appear after TrackedHandHintDisplayDelay seconds.")]
         [SerializeField]
+        [FormerlySerializedAs("maxDelay")]
         private float trackedHandHintDisplayDelay = 10f;
 
         /// <summary>

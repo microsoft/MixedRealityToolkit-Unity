@@ -2294,7 +2294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             // now adjust collider bounds and try grabbing the handle again
-            handleConfig.ColliderPadding = handleConfig.ColliderPadding + newColliderPadding;
+            handleConfig.ColliderPadding += newColliderPadding;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(cornerVisual, "corner visual got destroyed when setting material");
