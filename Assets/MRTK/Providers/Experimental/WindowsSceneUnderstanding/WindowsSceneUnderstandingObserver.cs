@@ -813,7 +813,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             int quadCount = sceneObject.Quads.Count;
             int meshCount = sceneObject.Meshes.Count;
 
-            List<SpatialAwarenessSceneObject.Quad> quads = new List<SpatialAwarenessSceneObject.Quad>(quadCount);
+            List<SpatialAwarenessSceneObject.QuadData> quads = new List<SpatialAwarenessSceneObject.QuadData>(quadCount);
             List<SpatialAwarenessSceneObject.MeshData> meshes = new List<SpatialAwarenessSceneObject.MeshData>(meshCount);
 
             if (RequestPlaneData)
@@ -837,7 +837,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                     var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
 
                     int hashedQuadId = quadIdKey.GetHashCode();
-                    var quad = new SpatialAwarenessSceneObject.Quad
+                    var quad = new SpatialAwarenessSceneObject.QuadData
                     { 
                         Id = hashedQuadId,
                         Extents = extents,
@@ -879,7 +879,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             System.Numerics.Matrix4x4.Decompose(worldTransformMatrix, out localScale, out worldRotationSystem, out worldTranslationSystem);
 
             int hashedId = sceneObject.Id.GetHashCode();
-            var result = new SpatialAwarenessSceneObject(
+            var result = SpatialAwarenessSceneObject.Create(
                 hashedId,
                 SpatialAwarenessSurfaceType(sceneObject.Kind),
                 worldTranslationSystem.ToUnityVector3(),
@@ -1048,7 +1048,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// </summary>
         /// <param name="saso">The SpatialAwarenessSceneObject containing the quad to instantiate</param>
         /// <param name="quad">The Quad object to instantiate</param>
-        private void InstantiateQuad(SpatialAwarenessSceneObject saso, SpatialAwarenessSceneObject.Quad quad)
+        private void InstantiateQuad(SpatialAwarenessSceneObject saso, SpatialAwarenessSceneObject.QuadData quad)
         {
             var quadGo = new GameObject($"Quad {quad.Id}");
             quad.GameObject = quadGo;

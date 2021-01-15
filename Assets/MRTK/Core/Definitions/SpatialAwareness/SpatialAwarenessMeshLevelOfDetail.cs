@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Fine,
 
         /// <summary>
-        /// The most detailed data we can offer... warning - it is DENSE
+        /// The unlimited level of detail requests meshes as detailed as possible from the device.
         /// </summary>
-        Unlimited
+        Unlimited = 255
     }
 }

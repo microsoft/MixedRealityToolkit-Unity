@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
-    /// Enumeration defining types of planar surfaces supported by Spatial Awareness.
+    /// Enumeration defining the types of planar surfaces supported by Spatial Awareness.
     /// </summary>
     [System.Flags]
     public enum SpatialAwarenessSurfaceTypes

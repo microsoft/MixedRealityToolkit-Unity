@@ -92,7 +92,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             RemoveFromData(eventData.Id);
         }
 
-
+        /// <summary>
+        /// Records the mesh id when it is first added.
+        /// </summary>
         protected void AddToData(int eventDataId)
         {
             // A new mesh has been added.
@@ -100,7 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             meshUpdateData.Add(eventDataId, 0);
         }
 
-
+        /// <summary>
+        /// Increments the update count of the mesh with the id.
+        /// </summary>
         protected void UpdateData(int eventDataId)
         {
             // A mesh has been updated. Find it and increment the update count.
@@ -113,7 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-
+        /// <summary>
+        /// Removes the mesh id.
+        /// </summary>
         protected void RemoveFromData(int eventDataId)
         {
             // A mesh has been removed. We no longer need to track the count of updates.
