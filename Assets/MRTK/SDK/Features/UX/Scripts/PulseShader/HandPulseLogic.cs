@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.SurfacePulse
         }
 
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Trigger the pulse shader visual once if the left or right hand enters the frame and is tracked.")]
         private bool pulseOnHandDetected = true;
 
         /// <summary>
