@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         IReadOnlyDictionary<int, SpatialAwarenessSceneObject> SceneObjects { get; }
 
         /// <summary>
-        /// 
+        /// Surface types to be observed by the observer.
         /// </summary>
         SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
 

@@ -5,14 +5,13 @@ using Microsoft.MixedReality.Toolkit.Examples.Demos;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
+namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 {
+    /// <summary>
+    /// Demo class to show different ways of visualizing the space using scene understanding.
+    /// </summary>
     public class DemoSceneUnderstandingController : DemoSpatialMeshHandler, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
     {
         #region Private Fields
@@ -21,10 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         [SerializeField]
         private string SavedSceneNamePrefix = "DemoSceneUnderstanding";
-        [SerializeField]
-        private GameObject PrefabToPlace = null;
-        [SerializeField]
-        private SpatialAwarenessSurfaceTypes surfaceTypeToPlaceOn = SpatialAwarenessSurfaceTypes.Platform;
         [SerializeField]
         private bool InstantiatePrefabs = false;
         [SerializeField]
@@ -60,11 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         #endregion Serialized Fields
         
-        private readonly Dictionary<int, SpatialAwarenessSceneObject> observedPlaceTargetSceneObjects = new Dictionary<int, SpatialAwarenessSceneObject>();
         private IMixedRealitySceneUnderstandingObserver observer;
-
-        // by default place a cube on the nearest platform without the user requesting it
-        private bool autoPlacePrefabOnce = true;
 
         #endregion Private Fields
 
@@ -85,13 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         protected override void OnEnable()
         {
             RegisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
-            
         }
 
         protected override void OnDisable()
         {
             UnregisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
-            observedPlaceTargetSceneObjects.Clear();
         }
 
         protected override void OnDestroy()
@@ -99,30 +88,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             UnregisterEventHandlers<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>, SpatialAwarenessSceneObject>();
         }
 
-        private void Update()
-        {
-            if (Time.realtimeSinceStartup > 4 && autoPlacePrefabOnce)
-            {
-                autoPlacePrefabOnce = false;
-                PlacePrefabOnNearestObject();
-            }
-        }
-
         #endregion MonoBehaviour Functions
 
         #region IMixedRealitySpatialAwarenessObservationHandler Implementations
 
+        /// <inheritdoc />
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             // This method called everytime a SceneObject created by the SU observer
             // The eventData contains everything you need do something useful
 
             AddToData(eventData.Id);
-
-            if (eventData.SpatialObject.SurfaceType == surfaceTypeToPlaceOn)
-            {
-                observedPlaceTargetSceneObjects.Add(eventData.Id, eventData.SpatialObject);
-            }
 
             if (InstantiatePrefabs)
             {
@@ -132,15 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 if (InstantiatedParent)
                 {
                     prefab.transform.SetParent(InstantiatedParent);
-                }
-
-                // A prefab can implement the ISpatialAwarenessSceneObjectConsumer contract
-                // this will let the prefab author decide how it wants to "react" to the new sceneObject
-                // In the demo scene, the prefab will scale itself to fit quad extents
-
-                foreach (var x in prefab.GetComponents<ISceneUnderstandingSceneObjectConsumer>())
-                {
-                    x.OnSpatialAwarenessSceneObjectCreated(eventData.SpatialObject);
                 }
             }
             else
@@ -153,15 +120,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
+        /// <inheritdoc />
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
-            observedPlaceTargetSceneObjects[eventData.Id] = eventData.SpatialObject;
             UpdateData(eventData.Id);
         }
 
+        /// <inheritdoc />
         public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
-            observedPlaceTargetSceneObjects.Remove(eventData.Id);
             RemoveFromData(eventData.Id);
         }
 
@@ -169,26 +136,42 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         #region UI Functions
 
+        /// <summary>
+        /// Request the observer to update the scene
+        /// </summary>
         public void UpdateScene()
         {
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Request the observer to save the scene
+        /// </summary>
         public void SaveSave()
         {
             observer.SaveScene(SavedSceneNamePrefix);
         }
 
+        /// <summary>
+        /// Request the observer to clear the observations in the scene
+        /// </summary>
         public void ClearScene()
         {
             observer.ClearObservations();
         }
 
+        /// <summary>
+        /// Change the auto update state of the observer
+        /// </summary>
         public void ToggleAutoUpdate()
         {
             observer.AutoUpdate = !observer.AutoUpdate;
         }
 
+        /// <summary>
+        /// Change whether to request occulusion mask from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleOcclusionMask()
         {
             var observerMask = observer.RequestOcclusionMask;
@@ -205,6 +188,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request plane data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleGeneratePlanes()
         {
             observer.RequestPlaneData = !observer.RequestPlaneData;
@@ -217,6 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request mesh data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleGenerateMeshes()
         {
             observer.RequestMeshData = !observer.RequestMeshData;
@@ -229,6 +220,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request floor data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleFloors()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Floor;
@@ -244,6 +239,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request wall data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleWalls()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Wall;
@@ -259,6 +258,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request ceiling data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleCeilings()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Ceiling;
@@ -274,6 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request platform data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void TogglePlatforms()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Platform;
@@ -289,6 +296,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request infered region data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleInferRegions()
         {
             observer.InferRegions = !observer.InferRegions;
@@ -296,6 +307,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request world mesh data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleWorld()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.World;
@@ -318,6 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request background data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleBackground()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Background;
@@ -333,6 +352,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        /// <summary>
+        /// Change whether to request completely inferred data from the observer followed by
+        /// clearing existing observations and requesting an update
+        /// </summary>
         public void ToggleCompletelyInferred()
         {
             var surfaceType = SpatialAwarenessSurfaceTypes.Inferred;
@@ -401,87 +424,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 default:
                     return new Color32(220, 50, 47, 255); // red
             }
-        }
-
-        public void PlacePrefabOnNearestObject()
-        {
-            var platformCount = observedPlaceTargetSceneObjects.Count;
-
-            if (platformCount < 1)
-            {
-                return;
-            }
-
-            // Find the id of our nearest neighbor
-
-            float closestDistance = float.MaxValue;
-            int closestId = 0;
-            bool foundQuadGuid = false;
-            SpatialAwarenessSceneObject closestObject = null;
-
-            var cameraPosition = CameraCache.Main.transform.position;
-
-            foreach (var sceneObject in observedPlaceTargetSceneObjects.Values)
-            {
-                var distance = Vector3.Distance(cameraPosition, sceneObject.Position);
-
-                if (distance < closestDistance)
-                {
-                    closestObject = sceneObject;
-
-                    closestDistance = Math.Min(distance, closestDistance);
-
-                    if (sceneObject.Quads.Count == 0)
-                    {
-                        continue;
-                    }
-
-                    closestId = sceneObject.Quads[0].Id;
-                    foundQuadGuid = true;
-                }
-            }
-
-            var InstantiatedPrefab = Instantiate(PrefabToPlace);
-
-            // Place our prefab
-
-            if (closestObject == null)
-            {
-                return;
-            }
-
-            if (foundQuadGuid)
-            {
-                var bounds = new Bounds(Vector3.zero, Vector3.zero);
-
-                foreach (Renderer r in PrefabToPlace.GetComponentsInChildren<Renderer>())
-                {
-                    bounds.Encapsulate(r.bounds);
-                }
-
-                var queryArea = new Vector2(bounds.size.x, bounds.size.y);
-
-
-                if (observer.TryFindCentermostPlacement(closestId, queryArea, out Vector3 placement))
-                {
-                    InstantiatedPrefab.transform.position = placement;
-                    InstantiatedPrefab.transform.rotation = closestObject.Rotation;
-                }
-            }
-            else
-            {
-                InstantiatedPrefab.transform.position = closestObject.Position;
-                InstantiatedPrefab.transform.rotation = closestObject.Rotation;
-            }
-
-            var tmp = InstantiatedPrefab.GetComponentInChildren<TextMeshPro>();
-
-            if (tmp)
-            {
-                tmp.text = $"Distance = {closestDistance.ToString("F2")}";
-            }
-
-            return;
         }
 
         #endregion Helper Functions
