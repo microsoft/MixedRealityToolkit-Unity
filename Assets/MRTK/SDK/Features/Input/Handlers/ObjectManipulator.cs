@@ -419,6 +419,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
             }
+
+            if (!AllowFarManipulation && GetComponent<NearInteractionGrabbable>() == null)
+            {
+                Debug.LogError($"AllowFarManipulation is false and a NearInteractionGrabbable component is not attached to {gameObject.name}. " +
+                " To enable near interaction support, attach a NearInteractionGrabbable component to this object.");
+            }
         }
 
         #endregion
@@ -559,8 +565,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.used ||
                     (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
             {
-                Debug.LogError("AllowFarManipulation is false and a NearInteractionGrabbable component is not attached to this object. " +
-                    " To enable near interaction support, attach a NearInteractionGrabbable component to this object.");
                 return;
             }
 
