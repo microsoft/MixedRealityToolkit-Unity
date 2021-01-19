@@ -559,6 +559,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (eventData.used ||
                     (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
             {
+                Debug.LogError("AllowFarManipulation is false and a NearInteractionGrabbable component is not attached to this object. " +
+                    " To enable near interaction support, attach a NearInteractionGrabbable component to this object.");
                 return;
             }
 
