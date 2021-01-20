@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         bool oneHandedFoldout = true;
         bool twoHandedFoldout = true;
         bool constraintsFoldout = true;
-        bool nearInteractionFoldout = false;
+        bool nearInteractionFoldout = true;
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
         bool eventsFoldout = true;
@@ -103,13 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(allowFarManipulation);
 
             // Near Interaction Support foldout
-            nearInteractionFoldout = EditorGUILayout.Foldout(nearInteractionFoldout, "Near Interaction Support", false);
+            nearInteractionFoldout = EditorGUILayout.Foldout(nearInteractionFoldout, "Near Interaction Support", true);
 
             if (nearInteractionFoldout)
             {
                 if (instance.GetComponent<NearInteractionGrabbable>() == null)
                 {
-                    EditorGUILayout.HelpBox("By default, ObjectManipulator is a far interaction component.  Add a NearInteractionGrabbable component to enable near interaction support.", MessageType.Info);
+                    EditorGUILayout.HelpBox($"By default, {nameof(ObjectManipulator)} only responds to far interaction input.  Add a {nameof(NearInteractionGrabbable)} component to enable near interaction support.", MessageType.Warning);
 
                     if (GUILayout.Button("Add Near Interaction Grabbable"))
                     {
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    EditorGUILayout.HelpBox("A NearInteractionGrabbable is attached to this object, near interaction support is enabled.", MessageType.Info);
+                    EditorGUILayout.HelpBox($"A {nameof(NearInteractionGrabbable)} is attached to this object, near interaction support is enabled.", MessageType.Info);
                 }
             }
 
