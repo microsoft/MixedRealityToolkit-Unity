@@ -1,3 +1,13 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+#
+# A script that will gather the non-granular experimental stats for C# files within
+# the current folder
+#
+# Works by opening up all .cs files in the current working directory, looking
+# for code that lives in the namespace with the "Experimental" word, and then
+# counting the number of lines and files that satisfy that.
+
 import argparse
 import git
 import os
@@ -5,13 +15,11 @@ from github import Github
 
 # TODO:
 # Add comments
-# Add YAML and setup pipeline
-# Profit
 
 PULL_REQUEST_TITLE_TEMPLATE = "Branch synchronization: {0} --> {1}"
 PULL_REQUEST_DESCRIPTION = "This is a pull request initiated by an automated process to keep {0} and {1} in sync"
 
-args_parser = argparse.ArgumentParser("insertadecentpieceoftextherewhendone")
+args_parser = argparse.ArgumentParser()
 args_parser.add_argument('--repo', type=str, required=True)
 args_parser.add_argument('--repo_path', type=str, required=True)
 args_parser.add_argument('--source_branch', type=str, required=True)
@@ -54,7 +62,7 @@ def main(args):
     if num_diffs == 0:
         print(f'All commits from [{args.source_branch}] that are already present in [{args.destination_branch}]')
         return
-    
+
     print(f'There are {num_diffs} commits from [{args.source_branch}] that need to be merged into [{args.destination_branch}]')
     print(f'Starting a pull request to merge [{args.source_branch}] into [{args.destination_branch}]')
 

@@ -1,0 +1,23 @@
+# Checks for changes in mrtk_development not present in a feature branch. Opens a PR into the feature branch if needed.
+
+jobs:
+- job: mergetool
+  steps:
+  - task: UsePythonVersion@0
+
+  - powershell: |
+      git fetch --force --tags --prune --progress --no-recurse-submodules origin mrtk_development
+      git fetch --force --tags --prune --progress --no-recurse-submodules origin feature/interactive_element
+
+  - powershell: pip install -r $(Build.SourcesDirectory)/scripts/ci/requirements.txt
+
+  - task: PythonScript@0
+    inputs:
+      scriptPath: $(Build.SourcesDirectory)/scripts/ci/mergetool.py
+      arguments: >
+        --repo microsoft/MixedRealityToolkit-Unity
+        --repo_path $(Build.SourcesDirectory)
+        --source_branch mrtk_development
+        --destination_branch feature/interactive_element
+        --label Automerge
+        --pat $(github.pat)
