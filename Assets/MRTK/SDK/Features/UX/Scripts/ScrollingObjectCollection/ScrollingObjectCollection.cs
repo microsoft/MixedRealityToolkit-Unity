@@ -4,7 +4,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
@@ -20,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     ///<remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
     [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
-    [SuppressMessage("ReSharper", "LocalVariableHidesMember")]
     public class ScrollingObjectCollection : MonoBehaviour,
         IMixedRealityPointerHandler,
         IMixedRealitySourceStateHandler,
@@ -56,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <remarks>Helpful for controls where you may want pagination or list movement without freeform scrolling.</remarks>
         public bool CanScroll
         {
-            get { return canScroll; }
-            set { canScroll = value; }
+            get => canScroll;
+            set => canScroll = value;
         }
 
         /// <summary>
@@ -70,8 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip(
-            "Edit modes for defining the clipping box masking boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the clipping box object.")]
+        [Tooltip("Edit modes for defining the clipping box masking boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the clipping box object.")]
         private EditMode maskEditMode;
 
         /// <summary>
@@ -79,13 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public EditMode MaskEditMode
         {
-            get { return maskEditMode; }
-            set { maskEditMode = value; }
+            get => maskEditMode;
+            set => maskEditMode = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Edit modes for defining the scroll interaction collider boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the collider.")]
+        [Tooltip("Edit modes for defining the scroll interaction collider boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the collider.")]
         private EditMode colliderEditMode;
 
         /// <summary>
@@ -93,12 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public EditMode ColliderEditMode
         {
-            get { return colliderEditMode; }
-            set { colliderEditMode = value; }
+            get => colliderEditMode;
+            set => colliderEditMode = value;
         }
 
         [SerializeField]
-        [HideInInspector]
         private bool maskEnabled = true;
 
         /// <summary>
@@ -106,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool MaskEnabled
         {
-            get { return maskEnabled; }
+            get => maskEnabled;
             set
             {
                 if (!value && value != wasMaskEnabled)
@@ -124,8 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool wasMaskEnabled = true;
 
         [SerializeField]
-        [Tooltip(
-            "The distance, in meters, the current pointer can travel along the scroll direction before triggering a scroll drag.")]
+        [Tooltip("The distance, in meters, the current pointer can travel along the scroll direction before triggering a scroll drag.")]
         [Range(0.0f, 0.2f)]
         private float handDeltaScrollThreshold = 0.02f;
 
@@ -134,13 +128,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float HandDeltaScrollThreshold
         {
-            get { return handDeltaScrollThreshold; }
-            set { handDeltaScrollThreshold = value; }
+            get => handDeltaScrollThreshold;
+            set => handDeltaScrollThreshold = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the front of the scroll boundary needed to transition from touch engaged to released.")]
         private float releaseThresholdFront = 0.03f;
 
         /// <summary>
@@ -148,13 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float ReleaseThresholdFront
         {
-            get { return releaseThresholdFront; }
-            set { releaseThresholdFront = value; }
+            get => releaseThresholdFront;
+            set => releaseThresholdFront = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the back of the scroll boundary needed to transition from touch engaged to released.")]
         private float releaseThresholdBack = 0.20f;
 
         /// <summary>
@@ -162,13 +154,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float ReleaseThresholdBack
         {
-            get { return releaseThresholdBack; }
-            set { releaseThresholdBack = value; }
+            get => releaseThresholdBack;
+            set => releaseThresholdBack = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the right or left of the scroll boundary needed to transition from touch engaged to released.")]
         private float releaseThresholdLeftRight = 0.20f;
 
         /// <summary>
@@ -176,13 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float ReleaseThresholdLeftRight
         {
-            get { return releaseThresholdLeftRight; }
-            set { releaseThresholdLeftRight = value; }
+            get => releaseThresholdLeftRight;
+            set => releaseThresholdLeftRight = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
+        [Tooltip("Withdraw amount, in meters, from the top or bottom of the scroll boundary needed to transition from touch engaged to released.")]
         private float releaseThresholdTopBottom = 0.20f;
 
         /// <summary>
@@ -190,13 +180,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float ReleaseThresholdTopBottom
         {
-            get { return releaseThresholdTopBottom; }
-            set { releaseThresholdTopBottom = value; }
+            get => releaseThresholdTopBottom;
+            set => releaseThresholdTopBottom = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
+        [Tooltip("Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.")]
         [Range(0.0f, 0.05f)]
         private float frontTouchDistance = 0.005f;
 
@@ -205,8 +194,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float FrontTouchDistance
         {
-            get { return frontTouchDistance; }
-            set { frontTouchDistance = value; }
+            get => frontTouchDistance;
+            set => frontTouchDistance = value;
         }
 
         [SerializeField]
@@ -218,13 +207,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public ScrollDirectionType ScrollDirection
         {
-            get { return scrollDirection; }
-            set { scrollDirection = value; }
+            get => scrollDirection;
+            set => scrollDirection = value;
         }
 
         [SerializeField]
-        [Tooltip(
-            "Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to manage content visibility.")]
+        [Tooltip("Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to manage content visibility.")]
         private bool useOnPreRender;
 
         /// <summary>
@@ -236,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </remarks>
         public bool UseOnPreRender
         {
-            get { return useOnPreRender; }
+            get => useOnPreRender;
             set
             {
                 if (useOnPreRender == value)
@@ -277,8 +265,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <remarks>Helpful if you want a small movement to fling the list.</remarks>
         public float VelocityMultiplier
         {
-            get { return velocityMultiplier; }
-            set { velocityMultiplier = value; }
+            get => velocityMultiplier;
+            set => velocityMultiplier = value;
         }
 
         [SerializeField]
@@ -292,8 +280,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <remarks>This can't be 0.0f since that won't allow ANY velocity - set <see cref="TypeOfVelocity"/> to <see cref="VelocityType.None"/>. It can't be 1.0f since that won't allow ANY drag.</remarks>
         public float VelocityDampen
         {
-            get { return velocityDampen; }
-            set { velocityDampen = value; }
+            get => velocityDampen;
+            set => velocityDampen = value;
         }
 
         [SerializeField]
@@ -305,8 +293,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public VelocityType TypeOfVelocity
         {
-            get { return typeOfVelocity; }
-            set { typeOfVelocity = value; }
+            get => typeOfVelocity;
+            set => typeOfVelocity = value;
         }
 
         [SerializeField]
@@ -318,8 +306,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public AnimationCurve PaginationCurve
         {
-            get { return paginationCurve; }
-            set { paginationCurve = value; }
+            get => paginationCurve;
+            set => paginationCurve = value;
         }
 
         [SerializeField]
@@ -331,12 +319,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float AnimationLength
         {
-            get { return (animationLength < 0) ? 0 : animationLength; }
-            set { animationLength = value; }
+            get => animationLength < 0 ? 0 : animationLength;
+            set => animationLength = value;
         }
 
-        [Tooltip(
-            "Number of cells in a row on up-down scroll view or number of cells in a column on left-right scroll view.")]
+        [Tooltip("Number of cells in a row on up-down scroll view or number of cells in a column on left-right scroll view.")]
         [SerializeField]
         [FormerlySerializedAs("tiers")]
         [Min(1)]
@@ -347,9 +334,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int CellsPerTier
         {
-            get { return cellsPerTier; }
+            get => cellsPerTier;
             set
             {
+                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value));
                 Debug.Assert(value > 0, "Cells per tier should have a positive non zero value");
                 cellsPerTier = Mathf.Max(1, value);
             }
@@ -366,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int TiersPerPage
         {
-            get { return tiersPerPage; }
+            get => tiersPerPage;
             set
             {
                 Debug.Assert(value > 0, "Tiers per page should have a positive non zero value");
@@ -384,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float CellWidth
         {
-            get { return cellWidth; }
+            get => cellWidth;
             set
             {
                 Debug.Assert(value > 0, "Cell width should have a positive non zero value");
@@ -402,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float CellHeight
         {
-            get { return cellHeight; }
+            get => cellHeight;
             set
             {
                 Debug.Assert(cellHeight > 0, "Cell height should have a positive non zero value");
@@ -420,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float CellDepth
         {
-            get { return cellDepth; }
+            get => cellDepth;
             set
             {
                 Debug.Assert(value > 0, "Cell depth should have a positive non zero value");
@@ -429,8 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip(
-            "Multiplier to add more bounce to the overscroll of a list when using VelocityType.FalloffPerFrame or VelocityType.FalloffPerItem.")]
+        [Tooltip("Multiplier to add more bounce to the overscroll of a list when using VelocityType.FalloffPerFrame or VelocityType.FalloffPerItem.")]
         private float bounceMultiplier = 0.1f;
 
         /// <summary>
@@ -438,8 +425,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float BounceMultiplier
         {
-            get { return bounceMultiplier; }
-            set { bounceMultiplier = value; }
+            get => bounceMultiplier;
+            set => bounceMultiplier = value;
         }
 
         // Lerping time interval used for smoothing between positions during scroll drag. Number was empirically defined.
@@ -481,15 +468,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity
         /// </summary>
-        [Tooltip(
-            "Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity.")]
         public UnityEvent OnMomentumEnded = new UnityEvent();
 
         /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.
         /// </summary>
-        [Tooltip(
-            "Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
         public UnityEvent OnMomentumStarted = new UnityEvent();
 
         [SerializeField]
@@ -1566,24 +1551,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Using dot product to check if pointer is in front or behind the scroll view plane
 
             var lossyScale = clipBoxTransform.lossyScale;
-            var isUpMagnitudeAboveThreshold =
-                Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.up)) >
-                lossyScale.y / 2 + releaseThresholdTopBottom;
-            var isRightMagnitudeAboveThreshold =
-                Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.right)) >
-                lossyScale.x / 2 + releaseThresholdLeftRight;
-            var isScrollRelease = isUpMagnitudeAboveThreshold || isRightMagnitudeAboveThreshold
-                                                              || (Vector3.Dot(scrollToPointerVector,
-                                                                  transform.forward) > 0
-                                                                  ? Vector3.Magnitude(Vector3.Project(
-                                                                        scrollToPointerVector,
-                                                                        clipBoxTransform.forward)) >
-                                                                    lossyScale.z / 2 + releaseThresholdBack
-                                                                  : Vector3.Magnitude(Vector3.Project(
-                                                                        scrollToPointerVector,
-                                                                        clipBoxTransform.forward)) >
-                                                                    lossyScale.z / 2 + releaseThresholdFront);
-            return isScrollRelease;
+            var isUpMagnitudeAboveThreshold = Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.up)) > lossyScale.y / 2 + releaseThresholdTopBottom;
+            var isRightMagnitudeAboveThreshold = Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.right)) > lossyScale.x / 2 + releaseThresholdLeftRight;
+            var isFrontOrBackMagnitudeAboveThreshold = Vector3.Dot(scrollToPointerVector, transform.forward) > 0 
+                ? Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.forward)) > lossyScale.z / 2 + releaseThresholdBack
+                : Vector3.Magnitude(Vector3.Project(scrollToPointerVector, clipBoxTransform.forward)) > lossyScale.z / 2 + releaseThresholdFront;
+            return isUpMagnitudeAboveThreshold || isRightMagnitudeAboveThreshold || isFrontOrBackMagnitudeAboveThreshold;
         }
 
         private bool HasPassedThroughFrontPlane(PokePointer pokePointer)

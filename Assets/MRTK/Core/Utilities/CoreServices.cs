@@ -43,70 +43,70 @@ namespace Microsoft.MixedReality.Toolkit
             new Dictionary<Type, WeakReference<IMixedRealityService>>();
 
         /// <summary>
-        ///     Cached reference to the active instance of the boundary system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the boundary system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityBoundarySystem BoundarySystem =>
             boundarySystem ?? (boundarySystem = GetService<IMixedRealityBoundarySystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the camera system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the camera system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityCameraSystem CameraSystem =>
             cameraSystem ?? (cameraSystem = GetService<IMixedRealityCameraSystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the diagnostics system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the diagnostics system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityDiagnosticsSystem DiagnosticsSystem =>
             diagnosticsSystem ?? (diagnosticsSystem = GetService<IMixedRealityDiagnosticsSystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the focus provider.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the focus provider.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityFocusProvider FocusProvider =>
             focusProvider ?? (focusProvider = GetService<IMixedRealityFocusProvider>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the input system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the input system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityInputSystem InputSystem =>
             inputSystem ?? (inputSystem = GetService<IMixedRealityInputSystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the raycast provider.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the raycast provider.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityRaycastProvider RaycastProvider =>
             raycastProvider ?? (raycastProvider = GetService<IMixedRealityRaycastProvider>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the scene system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the scene system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealitySceneSystem SceneSystem =>
             sceneSystem ?? (sceneSystem = GetService<IMixedRealitySceneSystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the spatial awareness system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the spatial awareness system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem =>
             spatialAwarenessSystem ?? (spatialAwarenessSystem = GetService<IMixedRealitySpatialAwarenessSystem>());
 
         /// <summary>
-        ///     Cached reference to the active instance of the teleport system.
-        ///     If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
+        /// Cached reference to the active instance of the teleport system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem =>
             teleportSystem ?? (teleportSystem = GetService<IMixedRealityTeleportSystem>());
 
         /// <summary>
-        ///     Resets all cached system references to null
+        /// Resets all cached system references to null
         /// </summary>
         public static void ResetCacheReferences()
         {
