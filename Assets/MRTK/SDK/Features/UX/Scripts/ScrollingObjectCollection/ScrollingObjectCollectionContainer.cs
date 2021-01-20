@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    ///     Container for all renderers and colliders used in the ScrollingObjectCollection.
-    ///     It's main purpose is to find and cache those Components.
-    ///     Thanks to that we don't have to run GetComponentsInChildren every frame. 
+    /// Container for all renderers and colliders used in the ScrollingObjectCollection.
+    /// It's main purpose is to find and cache those Components.
+    /// Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
     public class ScrollingObjectCollectionContainer : MonoBehaviour
     {
@@ -14,17 +14,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject[] children;
 
         /// <summary>
-        ///     Dictionary containing ScrollingObjectCollection's items child renderers.
+        /// Dictionary containing ScrollingObjectCollection's items child renderers.
         /// </summary>
         public Dictionary<GameObject, Renderer[]> ItemRenderersMap { get; } = new Dictionary<GameObject, Renderer[]>();
 
         /// <summary>
-        ///     Dictionary containing ScrollingObjectCollection's items child colliders.
+        /// Dictionary containing ScrollingObjectCollection's items child colliders.
         /// </summary>
         public Dictionary<GameObject, Collider[]> ItemCollidersMap { get; } = new Dictionary<GameObject, Collider[]>();
 
         /// <summary>
-        ///     Position of the Container.
+        /// Position of the Container.
         /// </summary>
         public Vector3 LocalPosition
         {
