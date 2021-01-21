@@ -33,11 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
         }
 
         [SerializeField]
-        [Tooltip("Automatically set pulse origin to the main camera location.")]
+        [Tooltip("Set the origin of the pulse animation to the main camera location.")]
         private bool originFollowCamera = false;
 
         /// <summary>
-        /// Automatically set pulse origin to the main camera location.
+        /// Set the origin of the pulse animation to the main camera location.
         /// </summary>
         public bool OriginFollowCamera
         {
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
 
             if (PulseOnSelect)
             {
-                // Add PointerHandler script to the parent of dynamically generated spatial mesh on the device
+                // Add a PointerHandler to the parent object of the spatial mesh to listen for clicks on the mesh
                 CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.AddComponent<PointerHandler>();
                 CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.GetComponent<PointerHandler>().OnPointerClicked.AddListener(this.OnPointerClicked);
             }
@@ -70,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
                 SetLocalOrigin(CameraCache.Main.transform.position);
             }
         }
+
         protected void TriggerAnimationOnSpatialMesh(Vector3 pulseAnimationOrigin)
         {
             SetLocalOrigin(pulseAnimationOrigin);

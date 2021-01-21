@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -143,25 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
         private bool repeatingPulse;
         private bool cancelPulse;
 
-        protected virtual void Awake()
-        {
-
-# if UNITY_EDITOR
-
-            // Reset the material property when exiting play mode so it won't be changed on disk
-            EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
-#endif
-        }
-
-        protected virtual void OnDestroy()
-        {
-# if UNITY_EDITOR
-            EditorApplication.playModeStateChanged -= HandleOnPlayModeChanged;
-#endif
-
-            ResetPulseMaterial();
-        }
-
         protected virtual void Start()
         {
             if (AutoStart)
@@ -170,19 +149,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
             }
         }
 
-        protected virtual void Update() { }
-
-
-#if UNITY_EDITOR
-        private void HandleOnPlayModeChanged(PlayModeStateChange change)
+        protected virtual void OnDestroy()
         {
-            // This method is run whenever the playmode state is changed.
-            if (!EditorApplication.isPlaying)
-            {
-                ResetPulseMaterial();
-            }
+            ResetPulseMaterial();
         }
-#endif
+
+        protected virtual void Update() { }
 
         #region Material Control
 

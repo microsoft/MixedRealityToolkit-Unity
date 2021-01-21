@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq.Expressions;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
@@ -99,11 +98,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
 
         protected override void Start()
         {
+            base.Start();
+
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
 
