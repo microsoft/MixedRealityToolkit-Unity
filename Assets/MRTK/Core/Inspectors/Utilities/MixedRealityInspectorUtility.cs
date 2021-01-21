@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using static Microsoft.MixedReality.Toolkit.Editor.MixedRealityProfileCloneWindow;
 using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -230,24 +231,207 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()
         {
-            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
-            return GetDefaultConfigProfile(allConfigProfiles);
+            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>().ToArray();;
+            return GetDefaultCustomProfile(allConfigProfiles, "MixedRealityToolkitConfigurationProfile") as MixedRealityToolkitConfigurationProfile;
         }
+
+
 
         /// <summary>
         /// Given a list of MixedRealityToolkitConfigurationProfile objects, returns
         /// the one that matches the default profile name.
         /// </summary>
-        public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile(MixedRealityToolkitConfigurationProfile[] allProfiles)
+        public static ScriptableObject GetDefaultCustomProfile(ScriptableObject[] allProfiles, string profileType)
         {
             for (int i = 0; i < allProfiles.Length; i++)
             {
-                if (allProfiles[i].name == DefaultConfigProfileName)
+                BaseMixedRealityProfile profile = allProfiles[i] as BaseMixedRealityProfile;
+                if (profile.IsDefaultProfile && profile.IsCustomProfile)
                 {
-                    return allProfiles[i];
+                    Debug.Log("Found existing default custom profile: " + profile);
+                    return profile;
+                }
+            }
+
+            // We found no custom profiles, we need to generate our own
+            Debug.Log("generating custom profile");
+            for (int i = 0; i < allProfiles.Length; i++)
+            {
+                BaseMixedRealityProfile profile = allProfiles[i] as BaseMixedRealityProfile;
+                if (profile.IsDefaultProfile)
+                {
+                    string defaultCustomProfilePath = MixedRealityToolkitFiles.GetGeneratedFolder + "/CustomProfiles";
+                    return CloneConfigurationProfile(profile, profileType, defaultCustomProfilePath, "Default " + profileType);
                 }
             }
             return null;
+        }
+
+        public static BaseMixedRealityProfile CloneConfigurationProfile(BaseMixedRealityProfile targetProfile, string profileType, string targetFolderPath, string clonedProfileAssetName, List<SubProfileAction> subProfileActions = null)
+        {
+            BaseMixedRealityProfile newProfile = CreateProfile(profileType, targetFolderPath, clonedProfileAssetName);
+            SerializedObject newProfileSerializedObject = new SerializedObject(newProfile);
+            // First paste all values outright
+            PasteProfileValues(targetProfile, newProfileSerializedObject, true);
+
+            // Then generate the appropriate subprofile actions if none were provided
+            if(subProfileActions == null)
+            {
+                subProfileActions = GenerateSubprofileActions(newProfileSerializedObject);
+            }
+
+            // Then over-write with substitutions or clones
+            foreach (SubProfileAction action in subProfileActions)
+            {
+                SerializedProperty actionProperty = newProfileSerializedObject.FindProperty(action.Property.name);
+
+                switch (action.Behavior)
+                {
+                    case ProfileCloneBehavior.UseExisting:
+                        // Do nothing
+                        break;
+
+                    case ProfileCloneBehavior.UseSubstitution:
+                        // Apply the chosen reference to the new property
+                        actionProperty.objectReferenceValue = action.SubstitutionReference;
+                        break;
+
+                    case ProfileCloneBehavior.CloneExisting:
+                        // Clone the profile, then apply the new reference
+
+                        // If the property reference is null, skip this step, the user was warned
+                        if (action.Property.objectReferenceValue == null)
+                        {
+                            break;
+                        }
+
+                        // If for some reason it's the wrong type, bail now
+                        BaseMixedRealityProfile subProfileToClone = (BaseMixedRealityProfile)action.Property.objectReferenceValue;
+                        if (subProfileToClone == null)
+                        {
+                            break;
+                        }
+
+                        // Clone the sub profile
+                        var newSubProfile = CreateProfile(action.ProfileType.Name, targetFolderPath, action.CloneName);
+                        SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
+                        // Paste values from existing profile
+                        PasteProfileValues(subProfileToClone, newSubProfileSerializedObject, true);
+
+                        // Assure that the configuration profile's property is set correctly
+                        actionProperty.objectReferenceValue = newSubProfile;
+
+                        break;
+
+                    case ProfileCloneBehavior.LeaveEmpty:
+                        actionProperty.objectReferenceValue = null;
+                        break;
+                }
+            }
+            newProfileSerializedObject.ApplyModifiedProperties();
+            return newProfile;
+        }
+
+        private static BaseMixedRealityProfile CreateProfile(string childProfileTypeName, string targetFolderPath, string profileName)
+        {
+            ScriptableObject instance = ScriptableObject.CreateInstance(childProfileTypeName);
+            instance.name = string.IsNullOrEmpty(profileName) ? childProfileTypeName : profileName;
+
+            string fileName = instance.name;
+            Debug.Log("Creating asset in path " + targetFolderPath);
+
+            var childProfile = instance.CreateAsset(targetFolderPath, fileName) as BaseMixedRealityProfile;
+
+            Debug.Log("creating profile" + fileName);
+
+            return childProfile;
+        }
+
+        private static System.Type FindProfileType(string profileTypeName)
+        {
+            System.Type type = null;
+            foreach (Assembly assembly in System.AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (System.Type checkType in assembly.GetLoadableTypes())
+                {
+                    if (checkType.Name == profileTypeName)
+                    {
+                        type = checkType;
+                        break;
+                    }
+                }
+            }
+
+            return type;
+        }
+
+        private const string IsCustomProfileProperty = "isCustomProfile";
+        private const string IsDefaultProfileProperty = "isDefaultProfile";
+        public static void PasteProfileValues(BaseMixedRealityProfile profileToCopy, SerializedObject targetProfile, bool setAsDefault)
+        {
+            bool targetIsCustom = targetProfile.FindProperty(IsCustomProfileProperty).boolValue;
+            string originalName = targetProfile.targetObject.name;
+            EditorUtility.CopySerialized(profileToCopy, targetProfile.targetObject);
+            targetProfile.Update();
+            targetProfile.FindProperty(IsCustomProfileProperty).boolValue = true;
+            targetProfile.targetObject.name = originalName;
+
+            //Set the targetProfile to be a default
+            targetProfile.FindProperty(IsDefaultProfileProperty).boolValue = setAsDefault;
+            targetProfile.ApplyModifiedProperties();
+
+            AssetDatabase.SaveAssets();
+        }
+
+        private static List<SubProfileAction> GenerateSubprofileActions(SerializedObject newProfileSerializedObject)
+        {
+            List<SubProfileAction> subProfileActions = new List<SubProfileAction>();
+            SerializedProperty iterator = newProfileSerializedObject.GetIterator();
+            System.Type basePropertyType = typeof(BaseMixedRealityProfile);
+            while (iterator.Next(true))
+            {
+                SerializedProperty subProfileProperty = newProfileSerializedObject.FindProperty(iterator.name);
+
+                if (subProfileProperty == null)
+                {
+                    continue;
+                }
+
+                if (!subProfileProperty.type.Contains("PPtr<$")) // Not an object reference type
+                {
+                    continue;
+                }
+
+                string subProfileTypeName = subProfileProperty.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty).Trim();
+                System.Type subProfileType = FindProfileType(subProfileTypeName);
+                if (subProfileType == null)
+                {
+                    continue;
+                }
+
+                if (!basePropertyType.IsAssignableFrom(subProfileType))
+                {
+                    continue;
+                }
+
+                var profileCloneBehavior = ProfileCloneBehavior.UseSubstitution;
+
+                var existingSubProfiles = ScriptableObjectExtensions.GetAllInstances(subProfileType).ToArray();
+                var subProfileReference = GetDefaultCustomProfile(existingSubProfiles, subProfileTypeName);
+
+                if (subProfileReference == null)
+                {
+                    profileCloneBehavior = ProfileCloneBehavior.CloneExisting;
+                    subProfileReference = (BaseMixedRealityProfile)subProfileProperty.objectReferenceValue;
+                }
+
+                subProfileActions.Add(new SubProfileAction(
+                    profileCloneBehavior,
+                    subProfileProperty,
+                    subProfileReference,
+                    subProfileType));
+            }
+            return subProfileActions;
         }
 
         /// <summary>
@@ -569,10 +753,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // The view asset button should always be enabled.
                     using (new GUIEnabledWrapper())
                     {
-                        if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
-                        {
-                            EditorGUIUtility.PingObject(property.objectReferenceValue);
-                        }
+                        //var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
+                        //Debug.Assert(renderedProfile != null);
+                        //if (renderedProfile is MixedRealityToolkitConfigurationProfile configProfile)
+                        //{
+                        //    if (GUILayout.Button("Load Profile", EditorStyles.miniButton, GUILayout.Width(80)))
+                        //    {
+                        //        EditorGUIUtility.PingObject(property.objectReferenceValue);
+                        //    }
+                        //}
+                        //else
+                        //{
+                            if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
+                            {
+                                EditorGUIUtility.PingObject(property.objectReferenceValue);
+                            }
+                        //}
                     }
                 }
 
@@ -595,9 +791,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
                     Debug.Assert(renderedProfile != null);
-                    if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(45f)))
+                    if(renderedProfile is MixedRealityToolkitConfigurationProfile configProfile)
                     {
-                        MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
+                        if (GUILayout.Button(new GUIContent("Make Default", "Sets the current profile as the default for the project moving forward"), EditorStyles.miniButton, GUILayout.Width(100f)))
+                        {
+                            Debug.Log("settting " + configProfile + " as default profile");
+                            configProfile.IsDefaultProfile = true;
+                            property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                            changed = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(45f)))
+                        {
+                            MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
+                        }
+
                     }
                 }
             }

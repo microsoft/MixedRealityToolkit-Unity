@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             LeaveEmpty,         // Set the reference to null
         }
 
-        private struct SubProfileAction
+        public struct SubProfileAction
         {
             public SubProfileAction(
                 ProfileCloneBehavior behavior,
@@ -235,7 +235,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (GUILayout.Button("Clone"))
                 {
                     targetFolder = EnsureTargetFolder(targetFolder);
-                    CloneMainProfile();
+                    var targetFolderPath = AssetDatabase.GetAssetPath(targetFolder);
+                    var newChildProfile = MixedRealityInspectorUtility.CloneConfigurationProfile(childProfile, childProfileTypeName, targetFolderPath, childProfileAssetName, subProfileActions);
+
+                    // If we're not working with a parent profile, select the newly created profile
+                    // UNLESS we've been given a selection target
+                    if (selectionTarget != null)
+                    {
+                        Selection.activeObject = selectionTarget;
+                    }
+                    else
+                    {
+                        if (parentProfile == null)
+                        {
+                            Selection.activeObject = newChildProfile;
+                        }
+                    }
+
+                    cloneWindow.Close();
                 }
 
                 if (GUILayout.Button("Cancel"))
@@ -261,99 +278,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Repaint();
         }
 
-        private void CloneMainProfile()
-        {
-            var newChildProfile = CloneProfile(parentProfile, childProfile, childProfileTypeName, childProperty, targetFolder, childProfileAssetName);
-            SerializedObject newChildSerializedObject = new SerializedObject(newChildProfile);
-            // First paste all values outright
-            PasteProfileValues(parentProfile, childProfile, newChildSerializedObject);
-
-            // Then over-write with substitutions or clones
-            foreach (SubProfileAction action in subProfileActions)
-            {
-                SerializedProperty actionProperty = newChildSerializedObject.FindProperty(action.Property.name);
-
-                switch (action.Behavior)
-                {
-                    case ProfileCloneBehavior.UseExisting:
-                        // Do nothing
-                        break;
-
-                    case ProfileCloneBehavior.UseSubstitution:
-                        // Apply the chosen reference to the new property
-                        actionProperty.objectReferenceValue = action.SubstitutionReference;
-                        break;
-
-                    case ProfileCloneBehavior.CloneExisting:
-                        // Clone the profile, then apply the new reference
-
-                        // If the property reference is null, skip this step, the user was warned
-                        if (action.Property.objectReferenceValue == null)
-                        {
-                            break;
-                        }
-
-                        // If for some reason it's the wrong type, bail now
-                        BaseMixedRealityProfile subProfileToClone = (BaseMixedRealityProfile)action.Property.objectReferenceValue;
-                        if (subProfileToClone == null)
-                        {
-                            break;
-                        }
-
-                        // Clone the sub profile
-                        Object subTargetFolder = (action.TargetFolder == null) ? targetFolder : action.TargetFolder;
-                        var newSubProfile = CloneProfile(newChildProfile, subProfileToClone, action.ProfileType.Name, actionProperty, subTargetFolder, action.CloneName);
-                        SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
-                        // Paste values from existing profile
-                        PasteProfileValues(newChildProfile, subProfileToClone, newSubProfileSerializedObject);
-                        newSubProfileSerializedObject.ApplyModifiedProperties();
-                        break;
-
-                    case ProfileCloneBehavior.LeaveEmpty:
-                        actionProperty.objectReferenceValue = null;
-                        break;
-                }
-            }
-
-            newChildSerializedObject.ApplyModifiedProperties();
-
-            // If we're not working with a parent profile, select the newly created profile
-            // UNLESS we've been given a selection target
-            if (selectionTarget != null)
-            {
-                Selection.activeObject = selectionTarget;
-            }
-            else
-            {
-                if (parentProfile == null)
-                {
-                    Selection.activeObject = newChildProfile;
-                }
-            }
-
-            cloneWindow.Close();
-        }
-
-        private static BaseMixedRealityProfile CloneProfile(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToClone, string childProfileTypeName, SerializedProperty childProperty, Object targetFolder, string profileName)
-        {
-            ScriptableObject instance = CreateInstance(childProfileTypeName);
-            instance.name = string.IsNullOrEmpty(profileName) ? childProfileTypeName : profileName;
-
-            string fileName = instance.name;
-            string path = AssetDatabase.GetAssetPath(targetFolder);
-            Debug.Log("Creating asset in path " + targetFolder);
-
-            var newChildProfile = instance.CreateAsset(path, fileName) as BaseMixedRealityProfile;
-
-            if (childProperty != null)
-            {
-                childProperty.objectReferenceValue = newChildProfile;
-                childProperty.serializedObject.ApplyModifiedProperties();
-            }
-
-            return newChildProfile;
-        }
-
         private static void PasteProfileValues(BaseMixedRealityProfile parentProfile, BaseMixedRealityProfile profileToCopy, SerializedObject targetProfile)
         {
             if (parentProfile != null)
@@ -361,15 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Undo.RecordObject(parentProfile, "Paste Profile Values");
             }
 
-            bool targetIsCustom = targetProfile.FindProperty(IsCustomProfileProperty).boolValue;
-            string originalName = targetProfile.targetObject.name;
-            EditorUtility.CopySerialized(profileToCopy, targetProfile.targetObject);
-            targetProfile.Update();
-            targetProfile.FindProperty(IsCustomProfileProperty).boolValue = targetIsCustom;
-            targetProfile.ApplyModifiedProperties();
-            targetProfile.targetObject.name = originalName;
-
-            AssetDatabase.SaveAssets();
+            MixedRealityInspectorUtility.PasteProfileValues(profileToCopy, targetProfile, false);
         }
 
         private static System.Type FindProfileType(string profileTypeName)

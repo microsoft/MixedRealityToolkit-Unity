@@ -18,5 +18,18 @@ namespace Microsoft.MixedReality.Toolkit
         private bool isCustomProfile = true;
 
         internal bool IsCustomProfile => isCustomProfile;
+
+        /// <summary>
+        /// Whether this is a default profile that should be loaded when MRTK is added to the scene
+        /// </summary>
+        [SerializeField]
+        [HideInInspector]
+        private bool isDefaultProfile = false;
+
+        internal bool IsDefaultProfile
+        {
+            get { return isDefaultProfile; }
+            set { isDefaultProfile = value; }
+        }
     }
 }
