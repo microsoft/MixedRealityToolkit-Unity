@@ -59,12 +59,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddItemWithRenderers(GameObject child)
         {
-            if (ItemRenderersMap.ContainsKey(child) && !child)
+            if (!child)
             {
-                ItemRenderersMap.Remove(child);
+                if (ItemRenderersMap.ContainsKey(child))
+                    ItemRenderersMap.Remove(child);
                 return;
             }
-            
+
             if (ItemRenderersMap.ContainsKey(child))
             {
                 ItemRenderersMap[child] = child.GetComponentsInChildren<Renderer>(true);
@@ -76,12 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddItemWithColliders(GameObject child)
         {
-            if (ItemCollidersMap.ContainsKey(child) && !child)
+            if (!child)
             {
-                ItemCollidersMap.Remove(child);
+                if (ItemCollidersMap.ContainsKey(child))
+                    ItemCollidersMap.Remove(child);
                 return;
             }
-            
+
+
             if (ItemCollidersMap.ContainsKey(child))
             {
                 ItemCollidersMap[child] = child.GetComponentsInChildren<Collider>(true);
