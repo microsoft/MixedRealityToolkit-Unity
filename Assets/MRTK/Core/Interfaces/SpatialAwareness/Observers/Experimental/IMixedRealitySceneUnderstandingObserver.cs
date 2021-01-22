@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
-    /// The interface for defining an <see cref="IMixedRealitySpatialAwarenessObserver"/> which provides scene data.
+    /// The interface for defining a spatial awareness observer which provides scene data.
     /// </summary>
     public interface IMixedRealitySceneUnderstandingObserver : IMixedRealityOnDemandObserver
     {
