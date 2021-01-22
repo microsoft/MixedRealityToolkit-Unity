@@ -5026,13 +5026,13 @@ PrefabInstance:
         type: 3}
       propertyPath: iconSet
       value: 
-      objectReference: {fileID: 11400000, guid: 621981f20d99d3d45b96b8d15696293d,
+      objectReference: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683,
         type: 2}
     - target: {fileID: 4008783653886513062, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
       propertyPath: iconQuadTexture
       value: 
-      objectReference: {fileID: 2800000, guid: 6a2cdab0b042b1747b6188714fed63f1, type: 3}
+      objectReference: {fileID: 2800000, guid: 559e1da0e65611c4f93ec931e1e6a8a2, type: 3}
     - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
       propertyPath: profiles.Array.data[0].Themes.Array.size
