@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Object manipulator | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Object manipulator | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="object-manipulator">Object manipulator</h1>
+
+<p><img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" alt="Object manipulator"></p>
+<p>The <em>ObjectManipulator</em> is the new component for manipulation behaviour, previously found in <em>ManipulationHandler</em>. The object manipulator makes a number of improvements and simplifications. This component is a replacement for the manipulation handler, which will be deprecated.</p>
+<p>The <em>ObjectManipulator</em> script makes an object movable, scalable, and rotatable using one or two hands. The object manipulator can be configured to control how the object will respond to various inputs. The script should work with most forms of interaction, such as HoloLens 2 articulated hand, HoloLens 2 hand rays, HoloLens 1 gaze and gestures and immersive headset motion controller input.</p>
+<h2 id="how-to-use-the-object-manipulator">How to use the object manipulator</h2>
+<p>To use the object manipulator, first add the <code>ObjectManipulator</code> script component to a GameObject. Make sure to also add a collider to the object, matching its grabbable bounds.</p>
+<p>To make the object respond to near articulated hand input, add the <code>NearInteractionGrabbable</code> script as well.</p>
+<p>Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in <a href="#physics-and-collisions"><em>Physics and collisions</em></a>.</p>
+<p>As well as this, manipulation can be constrained by adding <a href="README_ConstraintManager.html#transform-constraints">manipulation constraint components</a> to the object. These are special components that work with manipulation and change the manipulation behaviour in some way.</p>
+<p><img src="Images/ObjectManipulator/MRTK_ObjectManipulator_Howto.png" alt="Manipulation Handler"></p>
+<h2 id="inspector-properties-and-fields">Inspector properties and fields</h2>
+<img src="Images/ObjectManipulator/MRTK_ObjectManipulator_Structure.png" width="450">
+<h3 id="general-properties">General properties</h3>
+<h4 id="host-transform">Host transform</h4>
+<p>The object transform that will be manipulated. Defaults to the object of the component.</p>
+<h4 id="manipulation-type">Manipulation type</h4>
+<p>Specifies whether the object can be manipulated using one hand or two hands. Because this property is a flag, both options can be selected.</p>
+<ul>
+<li><em>One handed</em>: Enables one handed manipulation if selected.</li>
+<li><em>Two handed</em>: Enables two handed manipulation if selected.</li>
+</ul>
+<h4 id="allow-far-manipulation">Allow far manipulation</h4>
+<p>Specifies whether manipulation can be done using far interaction with pointers.</p>
+<h3 id="one-handed-manipulation-properties">One handed manipulation properties</h3>
+<h4 id="one-hand-rotation-mode-near">One hand rotation mode near</h4>
+<p>Specifies how the object will behave when it is being grabbed with one hand near. These options only work for articulated hands.</p>
+<ul>
+<li><em>Rotate about object center</em>: Object rotates using rotation of the hand, but about the object center point. The object will appear to move less as it rotates, but there may be a feeling of disconnection between the hand and the object. More useful for far interaction.</li>
+<li><em>Rotate about grab point</em>: Rotate object with the hand about the grab point between the thumb and index finger. It should feel as if the object is being held by the hand.</li>
+</ul>
+<h4 id="one-hand-rotation-mode-far">One hand rotation mode far</h4>
+<p>Specifies how the object will behave when it is being grabbed with one hand at distance. These options only work for articulated hands.</p>
+<ul>
+<li><em>Rotate about object center</em>: Rotate object using rotation of the hand, but about the object center point. Useful for inspecting at a distance without the object center moving as the object rotates.</li>
+<li><em>Rotate about grab point</em>: Rotate object using rotation of the hand, but about the pointer ray hit point. Useful for inspection.</li>
+</ul>
+<h3 id="two-handed-manipulation-properties">Two handed manipulation properties</h3>
+<h4 id="two-handed-manipulation-type">Two handed manipulation type</h4>
+<p>Specifies how two hand manipulation can transform an object. Because this property is a flag, any number of options can be selected.</p>
+<ul>
+<li><em>Move</em>: Moving is allowed if selected.</li>
+<li><em>Scale</em>: Scaling is allowed if selected.</li>
+<li><em>Rotate</em>: Rotation is allowed if selected.</li>
+</ul>
+<p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg" alt="Manipulation Handler"></p>
+<h3 id="constraints">Constraints</h3>
+<h4 id="enable-constraints">Enable constraints</h4>
+<p>This setting will enable the linked <a href="README_ConstraintManager.html">constraint manager</a>. Transform changes will be processed by constraints registered to the selected <a href="README_ConstraintManager.html">constraint manager</a>.</p>
+<h4 id="constraint-manager">Constraint manager</h4>
+<p>The dropdown allows to select any of the attached <a href="README_ConstraintManager.html">constraint managers</a>. Object manipulator ensures there's a <a href="README_ConstraintManager.html">constraint manager</a> attached at all times.
+Note that multiple components of the same type will show up under the same name in unity. To make it easier to distinguish between multiple constraint managers on the same object, the available options will show a hint on the configuration of the selected constraint manager (manual or auto constraint selection).</p>
+<h4 id="go-to-component">Go to component</h4>
+<p>The constraint manager selection comes with a <em>Go to component</em> button. This button will cause the inspector to scroll to the selected component so that it can be configured.</p>
+<h3 id="physics">Physics</h3>
+<p>Settings in this section appear only when the object has a RigidBody component.</p>
+<h4 id="release-behavior">Release behavior</h4>
+<p>Specify which physical properties a manipulated object should keep upon release. Because this property is a flag, both options can be selected.</p>
+<ul>
+<li><em>Keep Velocity</em>: When the object is released, if this option is selected it will keep its linear velocity.</li>
+<li><em>Keep Angular Velocity</em>: When the object is released, if this option is selected it will keep its angular velocity.</li>
+</ul>
+<h4 id="use-forces-for-near-manipulation">Use forces for near manipulation</h4>
+<p>Whether physics forces are used to move the object when performing near manipulations. Setting this to <em>false</em> will make the object feel more directly connected to the users hand. Setting this to <em>true</em> will honor the mass and inertia of the object, but may feel as though the object is connected through a spring. The default is <em>false</em>.</p>
+<h3 id="smoothing">Smoothing</h3>
+<h4 id="smoothing-far">Smoothing far</h4>
+<p>Whether frame-rate independent smoothing is enabled for far interactions. Far smoothing is enabled by default.</p>
+<h4 id="smoothing-near">Smoothing near</h4>
+<p>Whether frame-rate independent smoothing is enabled for near interactions. Near smoothing is disabled by default because the effect may be perceived as being 'disconnected' from the hand.</p>
+<h4 id="smoothing-active">Smoothing active</h4>
+<p>Obsolete and will be removed in a future version. Applications should use SmoothingFar, SmoothingNear or a combination of the two.</p>
+<h4 id="move-lerp-time">Move lerp time</h4>
+<p>Amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+<h4 id="rotate-lerp-time">Rotate lerp time</h4>
+<p>Amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+<h4 id="scale-lerp-time">Scale lerp time</h4>
+<p>Amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+<h3 id="manipulation-events">Manipulation events</h3>
+<p>Manipulation handler provides the following events:</p>
+<ul>
+<li><em>OnManipulationStarted</em>: Fired when manipulation starts.</li>
+<li><em>OnManipulationEnded</em>: Fires when the manipulation ends.</li>
+<li><em>OnHoverStarted</em>: Fires when a hand / controller hovers the manipulatable, near or far.</li>
+<li><em>OnHoverEnded</em>: Fires when a hand / controller un-hovers the manipulatable, near or far.</li>
+</ul>
+<p>The event fire order for manipulation is:</p>
+<p><em>OnHoverStarted</em> -&gt; <em>OnManipulationStarted</em> -&gt; <em>OnManipulationEnded</em> -&gt; <em>OnHoverEnded</em></p>
+<p>If there is no manipulation, you will still get hover events with the following fire order:</p>
+<p><em>OnHoverStarted</em> -&gt; <em>OnHoverEnded</em></p>
+<h2 id="physics-and-collisions">Physics and collisions</h2>
+<p>Physics behaviour can be enabled by adding a rigidbody component to the same object as an object manipulator. Not only does this enable configuration of <a href="#release-behavior">release behaviour</a> above, it also enables collisions. Without a rigidbody component, collisions don't behave correctly during manipulation:</p>
+<ul>
+<li>Collisions between a manipulated object and a static collider (i.e. an object with a collider but no rigidbody) do not work, the manipulated object passes straight through the static collider unaffected.</li>
+<li>Collisions between a manipulated object and a rigidbody (i.e an object with both a collider and a rigidbody) cause the rigidbody to have a collision response, but the response is jumpy and unnatural. There is also no collision response on the manipulated object.</li>
+</ul>
+<p>When a rigidbody is added, collisions should work correctly.</p>
+<h3 id="without-rigidbody">Without rigidbody</h3>
+<img src="Images/ObjectManipulator/MRTK_PhysicsManipulation_NoRigidbody.gif" width="500">
+<h3 id="with-rigidbody">With rigidbody</h3>
+<img src="Images/ObjectManipulator/MRTK_PhysicsManipulation_Rigidbody.gif" width="500">
+<h2 id="elastics-experimental">Elastics (Experimental)</h2>
+<p>Elastics can be used when manipulating objects via object manipulator. Note that the <a href="Elastics/ElasticSystem.html">elastics system</a> is still in experimental state. To enable elastics either link an existing elastics manager component or create and link a new elastics manager via the <code>Add Elastics Manager</code> button.</p>
+<img src="Images/BoundsControl/MRTK_BoundsControl_Elastics.png" width="450">
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="README_BoundsControl.html">Bounds control</a></li>
+<li><a href="README_ConstraintManager.html">Constraint manager</a></li>
+<li><a href="Tools/MigrationWindow.html">Migration window</a></li>
+<li><a href="Elastics/ElasticSystem.html">Elastics system (Experimental)</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ObjectManipulator.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

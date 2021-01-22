@@ -1,0 +1,385 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Scrolling object collection | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Scrolling object collection | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-177859076-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-177859076-1');
+    </script>
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src=".././Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="scrolling-object-collection">Scrolling object collection</h1>
+
+<p><img src="Images/ScrollingCollection/ScrollingCollection_Main.jpg" alt="Scrolling object collection"></p>
+<p>The MRTK scrolling object collection is an UX component that enables scrolling of 3D content through a contained viewable area. The scrolling movement can be triggered by near or far input interaction and by discrete pagination. It supports both interactive and non-interactive objects.</p>
+<h2 id="getting-started-with-the-scrolling-object-collection">Getting started with the scrolling object collection</h2>
+<h3 id="setting-up-the-scene">Setting up the scene</h3>
+<ol>
+<li>Create a new unity scene.</li>
+<li>Add MRTK to the scene by navigating to the <strong>Mixed Reality Toolkit</strong> &gt; <strong>Add to Scene and Configure</strong>.</li>
+</ol>
+<h3 id="setting-up-the-scrolling-object">Setting up the scrolling object</h3>
+<ol>
+<li><p>Create an empty game object in the scene and change its position to (0, 0, 1).</p>
+</li>
+<li><p>Add a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.html">scrolling object collection</a> component to the game object.</p>
+<p>When the scrolling object collection is added, a box collider and a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html">near interaction touchable</a> component will be automatically attached to the root game object. These components allow the scroll object to listen to near and far interaction input events, like a pointer touch or click.</p>
+<p>The MRTK scrolling object collection has two important elements that are created as child game objects under the root scrolling object hierarchy:</p>
+<ul>
+<li><code>Container</code> - All scrolling content objects must be children of the container game object.</li>
+<li><code>Clipping bounds</code> - If scrolling content masking is enabled, the clipping bounds element ensures that only the scrollable content inside its boundaries is visible. The clipping bounds game object has two components: a disabled box collider and a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html">clipping box</a>.</li>
+</ul>
+</li>
+</ol>
+<p><img src="Images/ScrollingCollection/ScrollingObjectCollection.png" alt="Scrolling object collection elements"></p>
+<h3 id="adding-content-to-the-scrolling-object">Adding content to the scrolling object</h3>
+<p>The scrolling object collection can be combined with a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html">grid object collection</a> to layout content in a grid of aligned elements that have uniform size and spacing.</p>
+<ol>
+<li>Create an empty game object as a child of the scroll container.</li>
+<li>Add a grid object collection component to the game object.</li>
+<li>For a vertical single column scroll, in the inspector tab, configure the grid object collection as follow:
+<ul>
+<li><strong>Num columns</strong>: 1</li>
+<li><strong>Layout</strong>: column then row</li>
+<li><strong>Anchor</strong>: upper left</li>
+</ul>
+</li>
+<li>Change the <strong>cell width</strong> and <strong>height</strong> according to the dimensions of the content objects.</li>
+<li>Add the content objects as children of the grid object.</li>
+<li>Press <strong>update collection</strong>.</li>
+</ol>
+<p><img src="Images/ScrollingCollection/ScrollingObjectCollection_GridLayout.png" alt="Grid layout"></p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Any scrolling content object material must use the <a href="README_MRTKStandardShader.html">MRTK standard shader</a> in order for the clipping effect on the viewable area to work properly.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If scrolling content masking is enabled, the scrolling object collection will add a <a href="Rendering/MaterialInstance.html">material instance</a> component to any content objects that have a renderer attached. This component is used to manage instanced materials lifetime and improve memory performance.</p>
+</div>
+<h3 id="configuring-the-scrolling-viewable-area">Configuring the scrolling viewable area</h3>
+<ol>
+<li>For vertical scrolling through a single column of objects, in the inspector tab, configure the scrolling object collection as follow:
+<ul>
+<li><strong>Cells per tier</strong>: 1</li>
+<li>Choose the number of <strong>tiers per page</strong> according to the desired number of visible rows</li>
+</ul>
+</li>
+<li>Change the <strong>page cell width</strong>, <strong>height</strong> and <strong>depth</strong> according to the dimensions of the content objects.</li>
+</ol>
+<p>Notice how the content objects lying outside the scrolling viewable area are now disabled, while objects intersecting the scroll wireframe might be partially masked by the clipping primitive.</p>
+<p><img src="Images/ScrollingCollection/ScrollingObjectCollection_ViewableArea.png" alt="Viewable area"></p>
+<h3 id="testing-the-scrolling-object-collection-in-the-editor">Testing the scrolling object collection in the editor</h3>
+<ol>
+<li>Press play and hold the space bar to show an input simulation hand.</li>
+<li>Move the hand until the scrolling collider or any scrolling interactive content is in focus and trigger the scrolling movement by clicking and dragging up and down with the left mouse.</li>
+</ol>
+<h2 id="controlling-the-scrolling-object-from-code">Controlling the scrolling object from code</h2>
+<p>The MRTK scrolling object collection exposes a few public methods that allow moving the scrolling container by snapping its position according to the <code>pagination</code> properties configuration.</p>
+<p>An example of how to access the scrolling object collection pagination interface is available to use under the <code>MRTK/Examples/Demos/ScrollingObjectCollection/Scripts</code> folder. The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Examples.Demos.ScrollablePagination.html">scrollable pagination</a> example script can be linked to any existing scrolling object collection in the scene. The script can then be referenced by scene components exposing Unity events (e.g, <a href="README_Button.html">MRTK button</a>).</p>
+<pre><code class="lang-c#">public class ScrollablePagination : MonoBehaviour
+{
+    [SerializeField]
+    private ScrollingObjectCollection scrollView;
+
+    public void ScrollByTier(int amount)
+    {
+        scrollView.MoveByTiers(amount);
+    }       
+}
+</code></pre>
+<h2 id="scrolling-object-collection-properties">Scrolling object collection properties:</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">General</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Scroll direction</td>
+<td style="text-align: left;">The direction in which content should scroll.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pagination</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Cells per tier</td>
+<td style="text-align: left;">Number of cells in a row on up-down scroll view or number of cells in a column on left-right scroll view.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tiers per page</td>
+<td style="text-align: left;">Number of visible tiers in the scrolling area.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Page cell</td>
+<td style="text-align: left;">Dimensions of the pagination cell.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Advanced settings</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Mask edit mode</td>
+<td style="text-align: left;">Edit modes for defining the clipping box masking boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the clipping box object.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Collider edit mode</td>
+<td style="text-align: left;">Edit modes for defining the scroll interaction collider boundaries. Choose 'Auto' to automatically use pagination values. Choose 'Manual' for enabling direct manipulation of the collider.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Can scroll</td>
+<td style="text-align: left;">Enables/disables scrolling with near/far interaction.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Use on pre render</td>
+<td style="text-align: left;">Toggles whether the scrollingObjectCollection will use the Camera OnPreRender event to manage content visibility.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pagination curve</td>
+<td style="text-align: left;">Animation curve for pagination.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Animation length</td>
+<td style="text-align: left;">The amount of time (in seconds) the PaginationCurve will take to evaluate.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hand delta scroll threshold</td>
+<td style="text-align: left;">The distance, in meters, the current pointer can travel along the scroll direction before triggering a scroll drag.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Front touch distance</td>
+<td style="text-align: left;">Distance, in meters, to position a local xy plane used to verify if a touch interaction started in the front of the scroll view.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Release threshold</td>
+<td style="text-align: left;">Withdraw amount, in meters, from the scroll boundaries needed to transition from touch engaged to released.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Velocity</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type of velocity</td>
+<td>The desired type of velocity falloff for the scroller.</td>
+</tr>
+<tr>
+<td>Velocity multiplier</td>
+<td>Amount of (extra) velocity to be applied to scroller.</td>
+</tr>
+<tr>
+<td>Velocity dampen</td>
+<td>Amount of falloff applied to the velocity.</td>
+</tr>
+<tr>
+<td>Bounce multiplier</td>
+<td>Multiplier to add more bounce to the overscroll of a list when using falloff per frame or falloff per item.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Debug options</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mask enabled</td>
+<td>Visibility mode of scroll content. Default value will mask all objects outside of the scroll viewable area.</td>
+</tr>
+<tr>
+<td>Show threshold planes</td>
+<td>If true, the editor will render the touch release threshold planes around the scroll boundaries.</td>
+</tr>
+<tr>
+<td>Debug pagination</td>
+<td>Use this section to debug the scroll pagination during runtime.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Events</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On click</td>
+<td>Event triggered when the scroll background collider or any of its interactive content receives a click.</td>
+</tr>
+<tr>
+<td>On touch started</td>
+<td>Event triggered when the scroll background collider or any of its interactive content receives a near interaction touch.</td>
+</tr>
+<tr>
+<td>On touch ended</td>
+<td>Event triggered when an active touch interaction is terminated by having the near interaction pointer crossing one of the release threshold planes.</td>
+</tr>
+<tr>
+<td>On momentum started</td>
+<td>Event triggered when the scroll container starts moving by interaction, velocity fallofff or pagination.</td>
+</tr>
+<tr>
+<td>On momentum ended</td>
+<td>Event triggered when the scroll container stops moving by interaction, velocity fallofff or pagination.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scrolling-example-scene">Scrolling example scene</h2>
+<p><strong>ScrollingObjectCollection.unity</strong> example scene consists of 3 scrollable examples, each one with a different velocity falloff configuration. The example scene contains walls to show the surface placement behavior that are disabled by default in the hierarchy. The example scene can be found under the <code>MRTK/Examples/Demos/ScrollingObjectCollection/Scenes</code> folder.</p>
+<p><img src="Images/ScrollingCollection/ScrollingObjectCollection_ExampleScene.png" alt="Scrolling object collection example scene"></p>
+<h2 id="scrolling-example-prefabs">Scrolling example prefabs</h2>
+<p>For convenience, two scrolling object collection prefabs are available to use. The example prefabs can be found under the <code>MRTK/Examples/Demos/ScrollingObjectCollection/Prefabs</code> folder.</p>
+<p><img src="Images/ScrollingCollection/ScrollingObjectCollection_Prefabs.png" alt="Scrolling object collection prefabs"></p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="Rendering/ClippingPrimitive.html">Clipping Primitive</a></li>
+<li><a href="Rendering/MaterialInstance.html">Material Instance</a></li>
+<li><a href="README_MRTKStandardShader.html">Standard Shader</a></li>
+<li><a href="README_ObjectCollection.html">Object collection</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ScrollingObjectCollection.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
