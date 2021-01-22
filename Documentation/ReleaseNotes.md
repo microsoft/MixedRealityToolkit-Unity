@@ -11,6 +11,10 @@
 
 ## What's new
 
+### Fixes a bug with Oculus Integration when using UPM
+
+When using UPM, the OculusXRSDKDeviceManagerProfile would always have its [prefabs set to None on startup](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9160). This release configures the Device Manager to point to a working set of prefabs on startup.
+
 ### Fixes a regression with Oculus introduced in 2.5.2
 
 2.5.2 introduced [a build issue when integrating the Oculus SDK](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9083). This release reverts that issue.
