@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.3 release notes
+# Microsoft Mixed Reality Toolkit 2.5.4 release notes
 
 - [What's new](#whats-new)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)

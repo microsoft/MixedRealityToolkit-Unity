@@ -4,7 +4,7 @@ This document outlines the roadmap of the Mixed Reality Toolkit. Please note tha
 
 ## Current release
 
-[Microsoft Mixed Reality Toolkit v2.5.3](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.5.3)
+[Microsoft Mixed Reality Toolkit v2.5.4](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.5.4)
 
 ## Upcoming releases
 
