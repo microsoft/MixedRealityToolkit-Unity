@@ -19,7 +19,6 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
-using Microsoft.Win32;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
@@ -1389,12 +1388,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void LoadWindowsSdkPaths()
         {
-            string win10KitsPath;
+            string win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+#if UNITY_EDITOR_WIN
             // Windows 10 sdk might not be installed on C: drive.
             // Try to detect the installation path by checking the registry.
             try 
             {
-                var registryKey = Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
+                var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
                 var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
                 win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
             }
@@ -1403,6 +1403,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path. {e}");
                 win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
             }
+#endif
             var windowsSdkPaths = Directory.GetDirectories(win10KitsPath);
             for (int i = 0; i < windowsSdkPaths.Length; i++)
             {
