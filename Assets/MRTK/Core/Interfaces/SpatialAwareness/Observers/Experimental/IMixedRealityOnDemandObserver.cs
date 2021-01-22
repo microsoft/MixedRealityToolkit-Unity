@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     /// <summary>
-    /// The interface for defining an <see cref="IMixedRealityOnDemandObserver"/> which enables on demand updating
+    /// The interface for defining an on-demand spatial observer which enables on demand updating
     /// </summary>
     public interface IMixedRealityOnDemandObserver : IMixedRealitySpatialAwarenessObserver
     {
