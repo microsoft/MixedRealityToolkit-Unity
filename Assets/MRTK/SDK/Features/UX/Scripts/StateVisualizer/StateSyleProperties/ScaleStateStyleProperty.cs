@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ScaleStateStyleProperty : StateStyleProperty
+    public class ScaleStateStyleProperty : StateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public ScaleStateStyleProperty()
         {
-            StylePropertyName = "Scale";
+            AnimatablePropertyName = "Scale";
         }
 
         public override void SetKeyFrames(AnimationClip animationClip)

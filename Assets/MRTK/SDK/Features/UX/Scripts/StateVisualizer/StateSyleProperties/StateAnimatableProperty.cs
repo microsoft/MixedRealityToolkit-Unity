@@ -9,29 +9,29 @@ using UnityEngine.UIElements;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// The base class for state style property configurations.  A state style property configuration is 
+    /// The base class for state animatable property configurations.  A state animatable property configuration is 
     /// a data container for visual aspects of a game object such as the material or color. 
     /// </summary>
     [Serializable]
-    public class StateStyleProperty: IStateStyleProperty
+    public class StateAnimatableProperty: IStateAnimatableProperty
     {
         [SerializeField, HideInInspector]
-        private string stylePropertyName;
+        private string animatablePropertyName;
 
         /// <summary>
-        /// The name of the interaction state associated with this state style property configuration.
+        /// The name of the interaction state associated with this state animatable property configuration.
         /// </summary>
-        public string StylePropertyName
+        public string AnimatablePropertyName
         {
-            get => stylePropertyName;
-            set => stylePropertyName = value;
+            get => animatablePropertyName;
+            set => animatablePropertyName = value;
         }
 
         [SerializeField, HideInInspector]
         private string stateName;
 
         /// <summary>
-        /// The name of the interaction state associated with this state style property configuration.
+        /// The name of the interaction state associated with this state animatable property configuration.
         /// </summary>
         public string StateName
         {
@@ -50,18 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             get => target;
             set => target = value;
         }
-
-        //[SerializeField]
-        //private List<AnimationCurve> animationCurves = new List<AnimationCurve>();
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public List<AnimationCurve> AnimationCurves
-        //{
-        //    get => animationCurves;
-        //    set => animationCurves = value;
-        //}
 
         [SerializeField]
         private float animationDuration = 0.5f;

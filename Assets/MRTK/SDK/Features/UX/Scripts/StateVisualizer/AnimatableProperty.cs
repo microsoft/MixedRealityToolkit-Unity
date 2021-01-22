@@ -5,9 +5,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
-    public enum CoreStyleProperty 
+    public enum AnimatableProperty 
     {
         Scale = 0,
-        Color
+        Color,
+        PositionOffset,
+        ShaderFloat,
+        ShaderColor,
+        ShaderVector
     }
 }

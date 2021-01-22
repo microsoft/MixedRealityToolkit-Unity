@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,15 +14,15 @@ using UnityEngine;
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
-    [RequireComponent(typeof(InteractiveElement))]
     [RequireComponent(typeof(Animator))]
     public class StateVisualizer : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("")]
         private List<StateContainer> stateContainers = new List<StateContainer>();
 
         /// <summary>
-        /// The container for each state that stores the list of the state style properties.  
+        /// The container for each state that stores the list of the state animatable properties.  
         /// </summary>
         public List<StateContainer> StateContainers
         {
@@ -69,28 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         private string defaultAnimationAssetSavePath = "Assets/MixedRealityToolkit.Generated/";
 
-        // List of the core style propery names
-        private string[] coreStyleProperties = Enum.GetNames(typeof(CoreStyleProperty)).ToArray();
-
-        /// <summary>
-        /// Get the path where the animation controller and animation clips assets are located. 
-        /// </summary>
-        /// <returns>Returns path to the animation controller and animation clip assets</returns>
-        public string GetAnimationDirectoryPath()
-        {
-            string animationDirectoryPath = Path.Combine(defaultAnimationAssetSavePath, "MRTK_Animations");
-
-            // If the animation directory path does not exist, then create a new directory
-            if (!Directory.Exists(animationDirectoryPath))
-            {
-                Directory.CreateDirectory(animationDirectoryPath);
-            }
-
-            return animationDirectoryPath;
-        }
-
-
-        public void OnValidate()
+        private void OnValidate()
         {
             if (InteractiveElement == null)
             {
@@ -111,52 +89,34 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void UpdateStateContainerStates()
-        {
-            UpdateStateStyleContainers(InteractiveElement.States);
-
-            List<string> stateContainerNames = new List<string>();
-            List<string> animatorStateNames = new List<string>();
-
-            // Get state container names
-            StateContainers.ForEach((stateContainer) => stateContainerNames.Add(stateContainer.StateName));
-
-            // Get animation state names
-            Array.ForEach(RootStateMachine.states, (animatorState) => animatorStateNames.Add(animatorState.state.name));
-
-            var statesToAdd = stateContainerNames.Except(animatorStateNames);
-
-            foreach(var state in statesToAdd)
-            {
-                AddNewStateToStateMachine(state, animator.runtimeAnimatorController as AnimatorController);
-            }
-
-            var statesToRemove = animatorStateNames.Except(stateContainerNames);
-
-            foreach (var stateAni in statesToRemove)
-            {
-                RemoveAnimatorState(RootStateMachine, stateAni);
-            }
-        }
-
         private void Start()
         {
+            if (InteractiveElement == null)
+            {
+                InteractiveElement = gameObject.AddComponent<InteractiveElement>();
+            }
+
             stateManager = InteractiveElement.StateManager;
 
             InitializeStateContainers();
 
-            stateManager.OnStateActivated.AddListener(
-                (state) =>
-                {
-                    Animator.SetTrigger("On" + state.Name);
-                });            
+            if (AnimatorController == null)
+            {
+                InitializeAnimationAssets();
+            }
+
+            stateManager.OnStateActivated.AddListener((state) =>
+            {
+                Animator.SetTrigger("On" + state.Name);
+            });
         }
 
         #region Animator State Methods
 
+        /// <summary>
+        /// Initialize the Animator State Machine by creating new animator states to match the states in Interactive Element. 
+        /// </summary>
+        /// <param name="animatorController">The animation controller contained in the attached Animator component</param>
         public void SetUpStateMachine(AnimatorController animatorController)
         {
             // Update Animation Clip References
@@ -171,7 +131,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             AssetDatabase.SaveAssets();
         }
 
-        public AnimatorState AddNewStateToStateMachine(string stateName, AnimatorController animatorController)
+        /// <summary>
+        /// Add a new state to the animator state machine and generate a new associated animation clip.
+        /// </summary>
+        /// <param name="stateName">The name of the new animation state</param>
+        /// <param name="animatorController">The animation controller contained in the attached Animator component</param>
+        /// <returns></returns>
+        private AnimatorState AddNewStateToStateMachine(string stateName, AnimatorController animatorController)
         {
             // Create animation state
             AnimatorState animatorState = AddAnimatorState(RootStateMachine, stateName);
@@ -188,32 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             stateContainer.AnimatorStateMachine = RootStateMachine;
 
             return animatorState;
-        }
-
-        public void RemoveAnimatorState(AnimatorStateMachine stateMachine, string animatorStateName)
-        {
-            AnimatorState animatorStateToRemove = GetAnimatorState(animatorStateName);
-
-            stateMachine.RemoveState(animatorStateToRemove);
-        }
-
-        public AnimatorState GetAnimatorState(string animatorStateName)
-        {
-            return Array.Find(RootStateMachine.states, (animatorState) => animatorState.state.name == animatorStateName).state;
-        }
-
-        public void SetKeyFrames(string stateName, int animationTargetIndex, string stylePropertyName)
-        {
-            StateContainer stateContainer = GetStateContainer(stateName);
-
-            stateContainer.SetKeyFrames(animationTargetIndex, stylePropertyName);
-        }
-
-        public void RemoveKeyFrames(string stateName, int animationTargetIndex, string stylePropertyName)
-        {
-            StateContainer stateContainer = GetStateContainer(stateName);
-
-            stateContainer.RemoveKeyFrames(animationTargetIndex, stylePropertyName);
         }
 
         private AnimatorState AddAnimatorState(AnimatorStateMachine stateMachine, string animatorStateName)
@@ -262,31 +202,69 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             transition.AddCondition(AnimatorConditionMode.If, 0, "On" + animatorState.name);
         }
 
-        public void SetAnimationTransition(string stateName, float value)
+        /// <summary>
+        /// Remove an animator state from the state machine.  Used in the StateVisualizerInspector
+        /// </summary>
+        /// <param name="stateMachine">The state machine for state removal</param>
+        /// <param name="animatorStateName">The name of the animator state</param>
+        internal void RemoveAnimatorState(AnimatorStateMachine stateMachine, string animatorStateName)
         {
-            StateContainer stateContainer = GetStateContainer(stateName);
+            AnimatorState animatorStateToRemove = GetAnimatorState(animatorStateName);
 
-            stateContainer.AnimationTransitionDuration = value;
+            stateMachine.RemoveState(animatorStateToRemove);
         }
 
+        /// <summary>
+        /// Get the path where the animation controller and animation clips assets are located. 
+        /// </summary>
+        /// <returns>Returns path to the animation controller and animation clip assets</returns>
+        public string GetAnimationDirectoryPath()
+        {
+            string animationDirectoryPath = Path.Combine(defaultAnimationAssetSavePath, "MRTK_Animations");
+
+            // If the animation directory path does not exist, then create a new directory
+            if (!Directory.Exists(animationDirectoryPath))
+            {
+                Directory.CreateDirectory(animationDirectoryPath);
+            }
+
+            return animationDirectoryPath;
+        }
+
+
+        internal void InitializeAnimationAssets()
+        {
+            // Create MRTK_Animation Directory if it does not exist
+            string animationAssetDirectory = GetAnimationDirectoryPath();
+            string animatorControllerName = gameObject.name + ".controller";
+            string animationControllerPath = Path.Combine(animationAssetDirectory, animatorControllerName);
+
+            // Create Animation Controller 
+            AnimatorController = AnimatorController.CreateAnimatorControllerAtPath(animationControllerPath);
+
+            // Set the runtime animation controller 
+            gameObject.GetComponent<Animator>().runtimeAnimatorController = AnimatorController;
+
+            SetUpStateMachine(AnimatorController);
+        }
 
         #endregion
 
 
         #region State Container Methods
 
-        public void InitializeStateContainers()
+        private void InitializeStateContainers()
         {
             if (States != null && StateContainers.Count == 0)
             {
                 foreach (InteractionState state in States)
                 {
-                    AddStateStyleContainer(state.Name);
+                    AddStateAnimatableContainer(state.Name);
                 }
             }
         }
 
-        public void UpdateStateStyleContainers(List<InteractionState> interactionStates)
+        private void UpdateStateAnimatableContainers(List<InteractionState> interactionStates)
         {
             if (interactionStates.Count != StateContainers.Count)
             {
@@ -295,70 +273,183 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     foreach (InteractionState state in interactionStates)
                     {
                         // Find the container that matches the state
-                        StateContainer styleContainer = GetStateContainer(state.Name);
+                        StateContainer animatableContainer = GetStateContainer(state.Name);
 
-                        if (styleContainer == null)
+                        if (animatableContainer == null)
                         {
-                            AddStateStyleContainer(state.Name);
+                            AddStateAnimatableContainer(state.Name);
                         }
                     }
                 }
                 else if (interactionStates.Count < StateContainers.Count)
                 {
-                    foreach (StateContainer styleContainer in StateContainers.ToList())
+                    foreach (StateContainer animatableContainer in StateContainers.ToList())
                     {
                         // Find the state in tracked states for this container
-                        InteractionState trackedState = interactionStates.Find((state) => (state.Name == styleContainer.StateName));
+                        InteractionState trackedState = interactionStates.Find((state) => (state.Name == animatableContainer.StateName));
 
                         // Do not remove the default state
                         if (trackedState == null)
                         {
-                            RemoveStateStyleContainer(styleContainer.StateName);
+                            RemoveStateAnimatableContainer(animatableContainer.StateName);
                         }
                     }
                 }
             }
         }
 
-        public StateContainer GetStateContainer(string stateName)
-        {
-            StateContainer stateContainer = StateContainers.Find((container) => container.StateName == stateName);
-
-            if (stateContainer != null)
-            {
-                return stateContainer;
-            }
-            else
-            {
-                Debug.LogError($"The {stateName} state does not have an existing state container for state style properties");
-                return null;
-            }
-        }
-
-        private void RemoveStateStyleContainer(string stateName)
+        private void RemoveStateAnimatableContainer(string stateName)
         {
             StateContainer containerToRemove = StateContainers.Find((container) => container.StateName == stateName);
 
             StateContainers.Remove(containerToRemove);
         }
 
-        private void AddStateStyleContainer(string stateName)
+        private void AddStateAnimatableContainer(string stateName)
         {
-            StateContainer stateStyleContainer = new StateContainer(stateName);
+            StateContainer stateAnimatableContainer = new StateContainer(stateName);
 
-            StateContainers.Add(stateStyleContainer);
+            StateContainers.Add(stateAnimatableContainer);
+        }
+
+        /// <summary>
+        /// Update the state containers in the state visualizer to match the states in InteractiveElement.  Used in the StateVisualizerInspector.
+        /// </summary>
+        internal void UpdateStateContainerStates()
+        {
+            UpdateStateAnimatableContainers(InteractiveElement.States);
+
+            List<string> stateContainerNames = new List<string>();
+            List<string> animatorStateNames = new List<string>();
+
+            // Get state container names
+            StateContainers.ForEach((stateContainer) => stateContainerNames.Add(stateContainer.StateName));
+
+            // Get animation state names
+            Array.ForEach(RootStateMachine.states, (animatorState) => animatorStateNames.Add(animatorState.state.name));
+
+            var statesToAdd = stateContainerNames.Except(animatorStateNames);
+
+            foreach (var state in statesToAdd)
+            {
+                AddNewStateToStateMachine(state, animator.runtimeAnimatorController as AnimatorController);
+            }
+
+            var statesToRemove = animatorStateNames.Except(stateContainerNames);
+
+            foreach (var stateAni in statesToRemove)
+            {
+                RemoveAnimatorState(RootStateMachine, stateAni);
+            }
         }
 
         #endregion
 
+        #region Helper Methods
 
-        public void CreateStylePropertyInstance(int animationTargetIndex, string stylePropertyName, string stateName)
+        /// <summary>
+        /// Get state container given a state name.
+        /// </summary>
+        /// <param name="stateName">The name of the state container</param>
+        /// <returns>The state container with given state name</returns>
+        public StateContainer GetStateContainer(string stateName)
+        {
+            StateContainer stateContainer = StateContainers.Find((container) => container.StateName == stateName);
+
+            return stateContainer != null ? stateContainer : null;
+        }
+
+        public void AddAnimatableProperty(string stateName, int animationTargetIndex, AnimatableProperty animatableProperty)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+
+            CreateAnimatablePropertyInstance(animationTargetIndex, animatableProperty.ToString(), stateName);
+        }
+
+        //public T GetAnimatableProperty<T>(string stateName, int animationTargetIndex) where T : StateAnimatableProperty
+        //{
+        //    StateContainer stateContainer = GetStateContainer(stateName);
+
+        //    AnimationTarget animationTarget = stateContainer.AnimationTargets[animationTargetIndex];
+
+        //    animationTarget.StateAnimatableProperties.Find((animatableProperty) => animatableProperty.AnimatablePropertyName.);
+
+        //    return T;
+        //}
+
+        /// <summary>
+        /// Set the keyframes for a given animatable property. 
+        /// </summary>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="animationTargetIndex">The index of the animation target game object</param>
+        /// <param name="animatablePropertyName">The name of the animatable property</param>
+        public void SetKeyFrames(string stateName, int animationTargetIndex, string animatablePropertyName)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+
+            stateContainer.SetKeyFrames(animationTargetIndex, animatablePropertyName);
+        }
+
+        /// <summary>
+        /// Remove previously set keyframes. 
+        /// </summary>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="animationTargetIndex">The index of the animation target game object</param>
+        /// <param name="animatablePropertyName">The name of the animatable property</param>
+        public void RemoveKeyFrames(string stateName, int animationTargetIndex, string animatablePropertyName)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+
+            stateContainer.RemoveKeyFrames(animationTargetIndex, animatablePropertyName);
+        }
+
+        /// <summary>
+        /// Set the AnimationTransitionDuration for a state.
+        /// </summary>
+        /// <param name="stateName">The name of the state</param>
+        /// <param name="transitionDurationValue">The duration of the transition in seconds</param>
+        public void SetAnimationTransitionDuration(string stateName, float transitionDurationValue)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+
+            if (stateContainer.AnimatorStateMachine == null)
+            {
+                stateContainer.AnimatorStateMachine = RootStateMachine;
+            }
+
+            stateContainer.AnimationTransitionDuration = transitionDurationValue;
+        }
+
+        /// <summary>
+        /// Set the animation clip for a state.
+        /// </summary>
+        /// <param name="stateName">The name of the state</param>
+        /// <param name="animationClip">The animation clip to set</param>
+        public void SetAnimationClip(string stateName, AnimationClip animationClip)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+            stateContainer.AnimationClip = animationClip;
+        }
+
+        /// <summary>
+        /// Get an animator state in the animator state machine by state name.
+        /// </summary>
+        /// <param name="animatorStateName">The name of the animator state</param>
+        /// <returns></returns>
+        public AnimatorState GetAnimatorState(string animatorStateName)
+        {
+            return Array.Find(RootStateMachine.states, (animatorState) => animatorState.state.name == animatorStateName).state;
+        }
+
+        #endregion
+
+        internal void CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
         {
             StateContainer stateContainer = GetStateContainer(stateName);
 
             if (stateContainer != null)
             {
-                stateContainer.CreateStylePropertyInstance(animationTargetIndex, stylePropertyName, stateName);
+                stateContainer.CreateAnimatablePropertyInstance(animationTargetIndex, animatablePropertyName, stateName);
             }
         }
     }

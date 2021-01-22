@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Utilities;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License
+
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,14 +10,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
+    /// <summary>
+    /// Definition class for an animation target, utilized in the State Visualizer component.
+    /// </summary>
     [Serializable]
     public class AnimationTarget
     {
         [SerializeField]
+        [Tooltip("The target game object for animations.")]
         private GameObject target;
 
         /// <summary>
-        /// 
+        /// The target game object for animations.
         /// </summary>
         public GameObject Target
         {
@@ -34,40 +41,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeReference]
-        private List<IStateStyleProperty> stateStyleProperties = new List<IStateStyleProperty>();
+        [Tooltip("List of animatable properties for the target game object.  A animatable property is an animatable property such as scale and color.")]
+        private List<IStateAnimatableProperty> stateAnimatableProperties = new List<IStateAnimatableProperty>();
 
         /// <summary>
-        /// 
+        /// List of animatable properties for the target game object.  A animatable property is an animatable property such as scale and color.
         /// </summary>
-        public List<IStateStyleProperty> StateStyleProperties
+        public List<IStateAnimatableProperty> StateAnimatableProperties
         {
-            get => stateStyleProperties;
-            set => stateStyleProperties = value;
-        }
-
-        public void CreateStylePropertyInstance(string stylePropertyName, string stateName)
-        {
-            StateStyleProperty styleProperty;
-
-            // Find matching event configuration by state name
-            var stylePropertyTypes = TypeCacheUtility.GetSubClasses<StateStyleProperty>();
-            Type stylePropertyType = stylePropertyTypes.Find((type) => type.Name.StartsWith(stylePropertyName));
-
-            if (stylePropertyType != null)
-            {
-                // If a state has an associated event configuration class, then create an instance with the matching type
-                styleProperty = Activator.CreateInstance(stylePropertyType) as StateStyleProperty;
-            }
-            else
-            {
-                styleProperty = null;
-                Debug.Log("The style property name given does not have a matching configuration type");
-            }
-
-            styleProperty.StateName = stateName;
-            styleProperty.Target = Target;
-
-            StateStyleProperties.Add(styleProperty);
+            get => stateAnimatableProperties;
+            internal set => stateAnimatableProperties = value;
         }
 
         public bool IsTargetObjectValid(GameObject target)
@@ -99,23 +82,55 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return false;
         }
 
-    
-        public void SetKeyFrames(string stylePropertyName, AnimationClip animationClip)
+        public void SetKeyFrames(string animatablePropertyName, AnimationClip animationClip)
         {
-            IStateStyleProperty styleProperty = StateStyleProperties.Find((prop) => prop.StylePropertyName == stylePropertyName);
+            IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
 
-            styleProperty.Target = Target;
+            animatableProperty.Target = Target;
 
-            styleProperty.SetKeyFrames(animationClip);
-
+            animatableProperty.SetKeyFrames(animationClip);
         }
 
-
-        public void RemoveKeyFrames(string stylePropertyName, AnimationClip animationClip)
+        public void RemoveKeyFrames(string animatablePropertyName, AnimationClip animationClip)
         {
-            IStateStyleProperty styleProperty = StateStyleProperties.Find((prop) => prop.StylePropertyName == stylePropertyName);
+            IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
 
-            styleProperty.RemoveKeyFrames(animationClip);
+            animatableProperty.RemoveKeyFrames(animationClip);
+        }
+
+        private IStateAnimatableProperty GetAnimatableProperty(string animatablePropertyName)
+        {
+            return StateAnimatableProperties.Find((prop) => prop.AnimatablePropertyName == animatablePropertyName);
+        }
+
+        internal void CreateAnimatablePropertyInstance(string animatablePropertyName, string stateName)
+        {
+            StateAnimatableProperty animatableProperty;
+
+            // Find matching event configuration by state name
+            var animatablePropertyTypes = TypeCacheUtility.GetSubClasses<StateAnimatableProperty>();
+            Type animatablePropertyType = animatablePropertyTypes.Find((type) => type.Name.StartsWith(animatablePropertyName));
+
+            if (animatablePropertyType != null)
+            {
+                // If a state has an associated event configuration class, then create an instance with the matching type
+                animatableProperty = Activator.CreateInstance(animatablePropertyType) as StateAnimatableProperty;
+            }
+            else
+            {
+                animatableProperty = null;
+                Debug.Log("The animatableProperty property name given does not have a matching configuration type");
+            }
+
+            animatableProperty.StateName = stateName;
+            animatableProperty.Target = Target;
+
+            StateAnimatableProperties.Add(animatableProperty);
+        }
+
+        private void GenerateUniqueID()
+        {
+           // StateAnimatableProperty animatableProperty = GetanimatableProperty()
         }
     }
 }
