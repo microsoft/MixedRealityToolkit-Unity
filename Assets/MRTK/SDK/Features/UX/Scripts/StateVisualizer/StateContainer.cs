@@ -109,9 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             AnimationTargets[animationTargetIndex].CreateAnimatablePropertyInstance(animatablePropertyName, stateName);
         }
 
-        internal void SetKeyFrames(int animationTargetIndex, string animatablePropertyName)
+        internal void SetKeyFrames(int animationTargetIndex)
         {
-            AnimationTargets[animationTargetIndex].SetKeyFrames(animatablePropertyName, AnimationClip);
+            AnimationTargets[animationTargetIndex].SetKeyFrames(AnimationClip);
         }
 
         internal void RemoveKeyFrames(int animationTargetIndex, string animatablePropertyName)

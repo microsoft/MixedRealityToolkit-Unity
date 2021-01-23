@@ -13,13 +13,6 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [Serializable]
-    internal class AnimationTargetPropertyButton
-    {
-        public string stateName;
-        public List<AnimatablePropertyMenu> animatablePropertyMenus = new List<AnimatablePropertyMenu>();
-    }
-
     /// <summary>
     /// Custom inspector for the StateVisualizer component
     /// </summary>
@@ -35,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool inPlayMode;
 
         private static GUIContent RemoveButtonLabel;
+        private static GUIContent AddButtonLabel;
 
-
-        private static List<AnimationTargetPropertyButton> animatablePropertyMenus = new List<AnimationTargetPropertyButton>();
+        private AnimatableProperty animatableProperty;
 
         protected virtual void OnEnable()
         {
@@ -48,24 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             stateContainers = serializedObject.FindProperty("stateContainers");
 
             RemoveButtonLabel = new GUIContent(InspectorUIUtility.Minus, "Remove");
-
-
-            var menus = new List<AnimationTargetPropertyButton>();
-
-
-            for (int i = 0; i < stateContainers.arraySize; i++)
-            {
-                if (stateContainers.arraySize != animatablePropertyMenus.Count)
-                {
-                    SerializedProperty stateContainer = stateContainers.GetArrayElementAtIndex(i);
-                    SerializedProperty stateContainerName = stateContainer.FindPropertyRelative("stateName");
-
-                    if (!animatablePropertyMenus.Exists((menu) => menu.stateName == stateContainerName.stringValue))
-                    {
-                        animatablePropertyMenus.Add(new AnimationTargetPropertyButton() { stateName = stateContainerName.stringValue });
-                    }
-                }
-            }
+            AddButtonLabel = new GUIContent(InspectorUIUtility.Plus, "Add");
         }
 
         public override void OnInspectorGUI()
@@ -195,13 +171,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 // Clear keyframes of a deleted target
                                 for (int k = 0; k < animatablePropertyList.arraySize; k++)
                                 {
-                                    SerializedProperty animatableProperty = animatablePropertyList.GetArrayElementAtIndex(j);
+                                    SerializedProperty animatableProperty = animatablePropertyList.GetArrayElementAtIndex(k);
                                     SerializedProperty animatablePropertyName = animatableProperty.FindPropertyRelative("animatablePropertyName");
-                                    RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, j);
+                                    
+                                    if (animatableProperty != null)
+                                    {
+                                        RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, k);
+                                    }
                                 }
 
-                                AnimationTargetPropertyButton animatablePropertyMenu = GetAnimatablePropertyMenu(stateContainerName.stringValue);
-                                animatablePropertyMenus.Remove(animatablePropertyMenu);
                                 animationTargetList.DeleteArrayElementAtIndex(j);
                                 break;
                             }
@@ -215,6 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 GameObject targetGameObject = targetObj.objectReferenceValue as GameObject;
 
+                                // Ensure the target game object is valid
                                 if (IsTargetObjectValid(targetGameObject))
                                 {
                                     string animatablePropertiesFoldoutID = stateContainerName.stringValue + "AnimatableProperties" + "_" + targetGameObject.name + target.name;
@@ -241,41 +220,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 EditorGUILayout.Space();
 
-                if (GUILayout.Button("Add Target"))
-                {
-                    animationTargetList.InsertArrayElementAtIndex(animationTargetList.arraySize);
-
-                    serializedObject.ApplyModifiedProperties();
-
-                    SerializedProperty newAnimationTarget = animationTargetList.GetArrayElementAtIndex(animationTargetList.arraySize - 1);
-                    newAnimationTarget.FindPropertyRelative("target").objectReferenceValue = null;
-
-                    SerializedProperty stateAnimatablePropertiesList = newAnimationTarget.FindPropertyRelative("stateAnimatableProperties");
-
-                    // Clear the new list
-                    for (int k = 0; k < stateAnimatablePropertiesList.arraySize; k++)
-                    {
-                        stateAnimatablePropertiesList.DeleteArrayElementAtIndex(k);
-                    }
-
-                    AnimationTargetPropertyButton animatablePropertyMenu = GetAnimatablePropertyMenu(stateContainerName.stringValue);
-                    animatablePropertyMenu.animatablePropertyMenus.Add(ScriptableObject.CreateInstance<AnimatablePropertyMenu>());
-                }
+                RenderAddTargetButton(animationTargetList);
             }
         }
 
-        private AnimationTargetPropertyButton GetAnimatablePropertyMenu(string stateContainerName)
+        private void RenderAddTargetButton(SerializedProperty animationTargetList)
         {
-            return animatablePropertyMenus.Find((menu) => menu.stateName == stateContainerName);
+            if (GUILayout.Button("Add Target"))
+            {
+                animationTargetList.InsertArrayElementAtIndex(animationTargetList.arraySize);
+
+                serializedObject.ApplyModifiedProperties();
+
+                SerializedProperty newAnimationTarget = animationTargetList.GetArrayElementAtIndex(animationTargetList.arraySize - 1);
+                newAnimationTarget.FindPropertyRelative("target").objectReferenceValue = null;
+
+                SerializedProperty stateAnimatablePropertiesList = newAnimationTarget.FindPropertyRelative("stateAnimatableProperties");
+
+                // Clear the new list
+                for (int k = 0; k < stateAnimatablePropertiesList.arraySize; k++)
+                {
+                    stateAnimatablePropertiesList.DeleteArrayElementAtIndex(k);
+                }
+
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
         private void RenderAnimatablePropertyList(SerializedProperty animatablePropertyList, SerializedProperty stateContainerName, int animationTargetIndex)
         {
             using (new EditorGUI.IndentLevelScope())
             {
-                for (int i = 0; i < animatablePropertyList.arraySize; i++)
+                for (int k = 0; k < animatablePropertyList.arraySize; k++)
                 {
-                    SerializedProperty animatableProperty = animatablePropertyList.GetArrayElementAtIndex(i);
+                    SerializedProperty animatableProperty = animatablePropertyList.GetArrayElementAtIndex(k);
                     SerializedProperty animatablePropertyName = animatableProperty.FindPropertyRelative("animatablePropertyName");
 
                     using (new EditorGUILayout.VerticalScope())
@@ -288,40 +266,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             if (InspectorUIUtility.SmallButton(RemoveButtonLabel))
                             {
                                 RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, animationTargetIndex);
-                                animatablePropertyList.DeleteArrayElementAtIndex(i);
+                                animatablePropertyList.DeleteArrayElementAtIndex(k);
                                 break;
                             }
                         }
                     }
                 }
+
+                InspectorUIUtility.DrawDivider();
             }
 
-            InspectorUIUtility.DrawDivider();
-
-            //if (GetAnimatablePropertyMenu(stateContainerName.stringValue) != null)
-            //{
-            //    RenderAddAnimatablePropertyMenuButton(stateContainerName.stringValue, animationTargetIndex);
-            //}
+            RenderAddAnimatablePropertyMenuButton(stateContainerName.stringValue, animationTargetIndex);
         }
 
         private void RenderAddAnimatablePropertyMenuButton(string stateContainerName, int animationTargetIndex)
         {
-            Debug.Log(GetAnimatablePropertyMenu(stateContainerName).animatablePropertyMenus.Count);
-
-            var animatablePropertyMenu = GetAnimatablePropertyMenu(stateContainerName).animatablePropertyMenus[animationTargetIndex];
-
-            // Show Add Animatable Property Button
-            animatablePropertyMenu.DisplayMenu();
-
-            EditorGUILayout.Space();
-
-            if (animatablePropertyMenu.animatablePropertySelected)
+            using (new EditorGUILayout.HorizontalScope())
             {
-                CreateAnimatablePropertyInstance(stateContainerName, animatablePropertyMenu.animatablePropertyNameSelected.ToString(), animationTargetIndex);
+                animatableProperty = (AnimatableProperty)EditorGUILayout.EnumPopup(animatableProperty);
 
-                serializedObject.ApplyModifiedProperties();
+                if (GUILayout.Button("Add the " + animatableProperty.ToString() + " Animatable Property"))
+                {
+                    CreateAnimatablePropertyInstance(stateContainerName, animatableProperty.ToString(), animationTargetIndex);
 
-                animatablePropertyMenu.animatablePropertySelected = false;
+                    serializedObject.ApplyModifiedProperties();
+                }
             }
         }
 
@@ -342,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     if (check.changed)
                     {
-                        instance.SetKeyFrames(stateName.stringValue, animationTargetIndex, animatablePropertyName.stringValue);
+                        instance.SetKeyFrames(stateName.stringValue, animationTargetIndex);
                     }
                 }
             }
@@ -362,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (GUILayout.Button("Generate Animation Clips"))
             {
-                instance.InitializeAnimationAssets();
+                instance.InitializeAnimatorControllerAsset();
             }
         }
 

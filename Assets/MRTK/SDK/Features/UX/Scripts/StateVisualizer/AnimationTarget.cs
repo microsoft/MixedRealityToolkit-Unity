@@ -82,20 +82,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return false;
         }
 
-        public void SetKeyFrames(string animatablePropertyName, AnimationClip animationClip)
+        public void SetKeyFrames(AnimationClip animationClip)
         {
-            IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
-
-            animatableProperty.Target = Target;
-
-            animatableProperty.SetKeyFrames(animationClip);
+            foreach (var animatableProperty in StateAnimatableProperties)
+            {
+                animatableProperty.Target = Target;
+                animatableProperty.SetKeyFrames(animationClip);
+            }
         }
 
         public void RemoveKeyFrames(string animatablePropertyName, AnimationClip animationClip)
         {
             IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
 
-            animatableProperty.RemoveKeyFrames(animationClip);
+            if (animatableProperty != null)
+            {
+                animatableProperty.RemoveKeyFrames(animationClip);
+            }
         }
 
         private IStateAnimatableProperty GetAnimatableProperty(string animatablePropertyName)
@@ -126,11 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             animatableProperty.Target = Target;
 
             StateAnimatableProperties.Add(animatableProperty);
-        }
-
-        private void GenerateUniqueID()
-        {
-           // StateAnimatableProperty animatableProperty = GetanimatableProperty()
         }
     }
 }

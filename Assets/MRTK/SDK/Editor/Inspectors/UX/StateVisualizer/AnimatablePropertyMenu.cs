@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// <summary>
     /// 
     /// </summary>
-    internal class AnimatablePropertyMenu : EditorWindow
+    public class AnimatablePropertyMenu : EditorWindow
     {
         public bool animatablePropertySelected;
 

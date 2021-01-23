@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             if (AnimatorController == null)
             {
-                InitializeAnimationAssets();
+                InitializeAnimatorControllerAsset();
             }
 
             stateManager.OnStateActivated.AddListener((state) =>
@@ -231,8 +231,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return animationDirectoryPath;
         }
 
-
-        internal void InitializeAnimationAssets()
+        // Create a new animator controller asset and add it to the MixedRealityToolkit.Generated folder. 
+        // Then set up the state machine for the animator controller.
+        internal void InitializeAnimatorControllerAsset()
         {
             // Create MRTK_Animation Directory if it does not exist
             string animationAssetDirectory = GetAnimationDirectoryPath();
@@ -249,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         #endregion
-
 
         #region State Container Methods
 
@@ -383,11 +383,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// <param name="stateName">The name of the state container</param>
         /// <param name="animationTargetIndex">The index of the animation target game object</param>
         /// <param name="animatablePropertyName">The name of the animatable property</param>
-        public void SetKeyFrames(string stateName, int animationTargetIndex, string animatablePropertyName)
+        public void SetKeyFrames(string stateName, int animationTargetIndex)
         {
             StateContainer stateContainer = GetStateContainer(stateName);
 
-            stateContainer.SetKeyFrames(animationTargetIndex, animatablePropertyName);
+            stateContainer.SetKeyFrames(animationTargetIndex);
         }
 
         /// <summary>
