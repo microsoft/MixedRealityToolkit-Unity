@@ -40,11 +40,19 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// </summary>
         public MixedRealityInputAction TeleportInputAction => teleportAction;
 
+        [SerializeField]
+        [Tooltip("Teleport Pointer Cursor visibility when a hotspot is in focus")]
+        private bool hotSpotCursorVisibility = true;
+
         /// <summary>
         /// Teleport pointer cursor visibility if pointer is focused on hotspot
         /// </summary>
-        public bool TeleportHotSpotCursorVisibility { get; set; } = true;
-        
+        public bool TeleportHotSpotCursorVisibility
+        {
+            get => hotSpotCursorVisibility;
+            set => hotSpotCursorVisibility = value;
+        }
+
         [SerializeField]
         [Range(0f, 1f)]
         [Tooltip("The threshold amount for joystick input (Dead Zone)")]
@@ -335,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                         // Clamp the end of the parabola to the result hit's point
                         LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-                        if (TeleportHotSpotCursorVisibility)
+                        if (hotSpotCursorVisibility)
                         {
                             BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
                         }
