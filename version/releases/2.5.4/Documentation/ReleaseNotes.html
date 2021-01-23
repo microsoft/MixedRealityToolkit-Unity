@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Microsoft Mixed Reality Toolkit 2.5.3 release notes | Mixed Reality Toolkit Documentation </title>
+    <title>Microsoft Mixed Reality Toolkit 2.5.4 release notes | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.3 release notes | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Microsoft Mixed Reality Toolkit 2.5.4 release notes | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
@@ -89,7 +89,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="microsoft-mixed-reality-toolkit-253-release-notes">Microsoft Mixed Reality Toolkit 2.5.3 release notes</h1>
+<h1 id="microsoft-mixed-reality-toolkit-254-release-notes">Microsoft Mixed Reality Toolkit 2.5.4 release notes</h1>
 
 <ul>
 <li><a href="#whats-new">What's new</a></li>
@@ -103,6 +103,9 @@ ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or lat
 please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply a workaround.</p>
 </div>
 <h2 id="whats-new">What's new</h2>
+<h3 id="fixes-an-issue-with-openxr-via-upm">Fixes an issue with OpenXR via UPM</h3>
+<p>Fixes an issue where the OpenXR providers weren't added to the link.xml by default, causing new projects to fail to run on-device when using OpenXR and MRTK via Unity's Package Manager. Existing projects that are upgraded will still need this added manually.</p>
+<h2 id="what-was-new-in-253">What was new in 2.5.3</h2>
 <h3 id="fixes-a-regression-with-oculus-introduced-in-252">Fixes a regression with Oculus introduced in 2.5.2</h3>
 <p>2.5.2 introduced <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9083">a build issue when integrating the Oculus SDK</a>. This release reverts that issue.</p>
 <h3 id="add-support-for-openxr">Add support for OpenXR</h3>
@@ -119,8 +122,7 @@ please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package 
 <h2 id="known-issues">Known issues</h2>
 <h3 id="openxr">OpenXR</h3>
 <p>There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
-Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking <em>does</em> work.
-Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.</p>
+Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking <em>does</em> work.</p>
 <h3 id="some-mixed-reality-toolkit-standard-shader-features-require-the-foundation-package">Some Mixed Reality Toolkit Standard Shader features require the Foundation package</h3>
 <p>When imported via the Unity Package Manager, the MRTK Standard Shader utilities scripts (ex: HoverLight.cs) are not co-located with the shader in the Standard Assets package. To access this functionality, applications will require the Foundation package to be imported.</p>
 <h3 id="cameracache-may-create-a-new-camera-on-shutdown">CameraCache may create a new camera on shutdown</h3>
