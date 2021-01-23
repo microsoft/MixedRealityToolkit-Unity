@@ -1,8 +1,6 @@
 ﻿// Copyright(c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using UnityEngine;
-
 namespace Microsoft.MixedReality.Toolkit
 {
     public static class SystemNumericsExtensions
@@ -38,10 +36,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         public static UnityEngine.Matrix4x4 ToUnity(this System.Numerics.Matrix4x4 m) => new UnityEngine.Matrix4x4(
-            new Vector4(m.M11, m.M12, -m.M13, m.M14),
-            new Vector4(m.M21, m.M22, -m.M23, m.M24),
-            new Vector4(-m.M31, -m.M32, m.M33, -m.M34),
-            new Vector4(m.M41, m.M42, -m.M43, m.M44));
+            new UnityEngine.Vector4(m.M11, m.M12, -m.M13, m.M14),
+            new UnityEngine.Vector4(m.M21, m.M22, -m.M23, m.M24),
+            new UnityEngine.Vector4(-m.M31, -m.M32, m.M33, -m.M34),
+            new UnityEngine.Vector4(m.M41, m.M42, -m.M43, m.M44));
 
         public static System.Numerics.Matrix4x4 ToSystemNumerics(this UnityEngine.Matrix4x4 m) => new System.Numerics.Matrix4x4(
              m.m00, m.m10, -m.m20, m.m30,

@@ -16,7 +16,7 @@ MonoBehaviour:
   observerConfigurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.WindowsSceneUnderstandingObserver,
-        Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding
+        Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding
     componentName: Windows Scene Understanding Observer
     priority: 0
     runtimePlatform: 8

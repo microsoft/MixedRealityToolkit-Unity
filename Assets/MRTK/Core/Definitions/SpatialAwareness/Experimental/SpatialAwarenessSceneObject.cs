@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// Creates a <see cref="SpatialAwarenessSceneObject"/>.
         /// </summary>
         /// <returns>
-        /// SpatialAwarenessSceneObject containing the fields that describe the scene object.
+        /// A SpatialAwarenessSceneObject containing the fields that describe the scene object.
         /// </returns>
         public static SpatialAwarenessSceneObject Create(
             int id,
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         }
 
         /// <summary>
-        /// The position for the scene object.
+        /// The world position for the scene object.
         /// </summary>
         public Vector3 Position
         {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         }
 
         /// <summary>
-        /// The rotation for the scene object.
+        /// The world rotation for the scene object.
         /// </summary>
         public Quaternion Rotation
         {

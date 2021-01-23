@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental;
 using System.Linq;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor.WindowsSceneUnderstanding.Experimental
+namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental.Editor
 {
     [CustomEditor(typeof(SceneUnderstandingObserverProfile))]
     public class SceneUnderstandingObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
