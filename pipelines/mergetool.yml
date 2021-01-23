@@ -10,6 +10,8 @@ parameters:
 
 jobs:
 - job: mergetool
+  pool:
+    vmImage: 'windows-latest'
   steps:
   - task: UsePythonVersion@0
     displayName: Ensure Python installation
