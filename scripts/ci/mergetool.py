@@ -1,20 +1,14 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 #
-# A script that will gather the non-granular experimental stats for C# files within
-# the current folder
+# A script that will check if any commits exist in the source branch that aren't present in the destination branch.
+# Opens a PR if needed and tags it with the passed in label.
 #
-# Works by opening up all .cs files in the current working directory, looking
-# for code that lives in the namespace with the "Experimental" word, and then
-# counting the number of lines and files that satisfy that.
+# Uses pygithub and gitpython. Requires a GitHub PAT.
 
 import argparse
 import git
-import os
 from github import Github
-
-# TODO:
-# Add comments
 
 PULL_REQUEST_TITLE_TEMPLATE = "Branch synchronization: {0} --> {1}"
 PULL_REQUEST_DESCRIPTION = "This is a pull request initiated by an automated process to keep {0} and {1} in sync"
