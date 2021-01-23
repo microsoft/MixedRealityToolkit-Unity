@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ShaderFloatStateStyleProperty : ShaderStateStyleProperty
+    public class ShaderFloatStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => shaderPropertyFloatValue = value;
         }
 
-        public ShaderFloatStateStyleProperty()
+        public ShaderFloatStateAnimatableProperty()
         {
             AnimatablePropertyName = "ShaderFloat";
         }

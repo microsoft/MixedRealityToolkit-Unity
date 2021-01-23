@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ShaderStateStyleProperty : StateAnimatableProperty
+    public class ShaderStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("The name of the shader property to animate. NOTE: Check capitalization if the keyframes" +

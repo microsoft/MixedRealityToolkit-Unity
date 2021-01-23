@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class PositionOffsetStateStyleProperty : StateAnimatableProperty
+    public class PositionOffsetStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => positionOffset = value;
         }
 
-        public PositionOffsetStateStyleProperty()
+        public PositionOffsetStateAnimatableProperty()
         {
             AnimatablePropertyName = "PositionOffset";
         }

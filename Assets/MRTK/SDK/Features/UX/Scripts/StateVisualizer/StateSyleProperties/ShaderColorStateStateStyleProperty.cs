@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ShaderColorStateStyleProperty : ShaderStateStyleProperty
+    public class ShaderColorStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => shaderPropertyColorValue = value;
         }
 
-        public ShaderColorStateStyleProperty()
+        public ShaderColorStateAnimatableProperty()
         {
             AnimatablePropertyName = "ShaderColor";
         }

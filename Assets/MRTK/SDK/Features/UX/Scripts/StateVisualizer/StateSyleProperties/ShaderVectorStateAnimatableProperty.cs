@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ShaderVectorStateStyleProperty : ShaderStateStyleProperty
+    public class ShaderVectorStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => shaderPropertyVectorValue = value;
         }
 
-        public ShaderVectorStateStyleProperty()
+        public ShaderVectorStateAnimatableProperty()
         {
             AnimatablePropertyName = "ShaderVector";
         }

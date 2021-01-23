@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     /// <summary>
     /// 
     /// </summary>
-    public class ColorStateStyleProperty : StateAnimatableProperty
+    public class ColorStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
         [Tooltip("")]
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => color = value;
         }
 
-        public ColorStateStyleProperty()
+        public ColorStateAnimatableProperty()
         {
             AnimatablePropertyName = "Color";
         }
