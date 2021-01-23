@@ -65,6 +65,7 @@ def main(args):
     existing_pull_request = get_existing_pull_request(github_repo, args.label)
     if existing_pull_request:
         print(f'Existing pull request {existing_pull_request.url} found, exiting early.')
+        return
 
     create_pull_request(github_repo, args.source_branch, args.destination_branch, args.label)
 
