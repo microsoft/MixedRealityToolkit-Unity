@@ -231,17 +231,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()
         {
-            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>().ToArray();;
-            return GetDefaultCustomProfile(allConfigProfiles, "MixedRealityToolkitConfigurationProfile") as MixedRealityToolkitConfigurationProfile;
+            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>().ToArray();
+
+            string profileType = "MixedRealityToolkitConfigurationProfile";
+            string customProfilePath = string.Format("{0}/CustomProfiles", MixedRealityToolkitFiles.GetGeneratedFolder);
+            return GetDefaultCustomProfile(allConfigProfiles, profileType, customProfilePath) as MixedRealityToolkitConfigurationProfile;
         }
-
-
 
         /// <summary>
         /// Given a list of MixedRealityToolkitConfigurationProfile objects, returns
-        /// the one that matches the default profile name.
+        /// the one that matches the default profile name. 
+        /// 
+        /// Otherwise, create default custom profile at the customProfilePath;
         /// </summary>
-        public static ScriptableObject GetDefaultCustomProfile(ScriptableObject[] allProfiles, string profileType)
+        public static ScriptableObject GetDefaultCustomProfile(ScriptableObject[] allProfiles, string profileType, string customProfilePath)
         {
             for (int i = 0; i < allProfiles.Length; i++)
             {
@@ -254,14 +257,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // We found no custom profiles, we need to generate our own
-            Debug.Log("generating custom profile");
+            EditorUtility.DisplayProgressBar("First time MRTK profile setup", "Generating Custom " + profileType, 0.0f);
+
             for (int i = 0; i < allProfiles.Length; i++)
             {
                 BaseMixedRealityProfile profile = allProfiles[i] as BaseMixedRealityProfile;
                 if (profile.IsDefaultProfile)
                 {
-                    string defaultCustomProfilePath = MixedRealityToolkitFiles.GetGeneratedFolder + "/CustomProfiles";
-                    return CloneConfigurationProfile(profile, profileType, defaultCustomProfilePath, "Default " + profileType);
+                    var defaultCustomProfile = CloneConfigurationProfile(profile, profileType, customProfilePath, profileType);
+                    EditorUtility.ClearProgressBar();
+                    return defaultCustomProfile;
                 }
             }
             return null;
@@ -269,6 +274,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public static BaseMixedRealityProfile CloneConfigurationProfile(BaseMixedRealityProfile targetProfile, string profileType, string targetFolderPath, string clonedProfileAssetName, List<SubProfileAction> subProfileActions = null)
         {
+
+
             BaseMixedRealityProfile newProfile = CreateProfile(profileType, targetFolderPath, clonedProfileAssetName);
             SerializedObject newProfileSerializedObject = new SerializedObject(newProfile);
             // First paste all values outright
@@ -277,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Then generate the appropriate subprofile actions if none were provided
             if(subProfileActions == null)
             {
-                subProfileActions = GenerateSubprofileActions(newProfileSerializedObject);
+                subProfileActions = GenerateSubprofileActions(newProfileSerializedObject, targetFolderPath);
             }
 
             // Then over-write with substitutions or clones
@@ -313,7 +320,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         }
 
                         // Clone the sub profile
-                        var newSubProfile = CreateProfile(action.ProfileType.Name, targetFolderPath, action.CloneName);
+                        var subProfilePath = string.Format("{0}/Custom{1}", targetFolderPath, action.ProfileType.Name);
+                        var newSubProfile = CreateProfile(action.ProfileType.Name, subProfilePath, action.CloneName);
                         SerializedObject newSubProfileSerializedObject = new SerializedObject(newSubProfile);
                         // Paste values from existing profile
                         PasteProfileValues(subProfileToClone, newSubProfileSerializedObject, true);
@@ -383,7 +391,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             AssetDatabase.SaveAssets();
         }
 
-        private static List<SubProfileAction> GenerateSubprofileActions(SerializedObject newProfileSerializedObject)
+        private static List<SubProfileAction> GenerateSubprofileActions(SerializedObject newProfileSerializedObject, string parentProfilePath)
         {
             List<SubProfileAction> subProfileActions = new List<SubProfileAction>();
             SerializedProperty iterator = newProfileSerializedObject.GetIterator();
@@ -417,7 +425,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 var profileCloneBehavior = ProfileCloneBehavior.UseSubstitution;
 
                 var existingSubProfiles = ScriptableObjectExtensions.GetAllInstances(subProfileType).ToArray();
-                var subProfileReference = GetDefaultCustomProfile(existingSubProfiles, subProfileTypeName);
+                var customProfilePath = string.Format("{0}/Custom{1}", parentProfilePath, subProfileTypeName);
+                var subProfileReference = GetDefaultCustomProfile(existingSubProfiles, subProfileTypeName, customProfilePath);
 
                 if (subProfileReference == null)
                 {
