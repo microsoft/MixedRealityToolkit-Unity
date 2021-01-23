@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             "  <!-- Data providers --> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.LeapMotion\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.OpenVR\" preserve=\"all\"/> \n" +
+            "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.OpenXR\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.UnityAR\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality\" preserve=\"all\"/> \n" +

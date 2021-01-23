@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit 2.5.3 release notes
+# Microsoft Mixed Reality Toolkit 2.5.4 release notes
 
 - [What's new](#whats-new)
 - [Updating guidance](Updating.md#upgrading-to-a-new-version-of-mrtk)
@@ -10,6 +10,12 @@
 > please import the `com.microsoft.mixedreality.toolkit.tools` package to apply a workaround.
 
 ## What's new
+
+### Fixes an issue with OpenXR via UPM
+
+Fixes an issue where the OpenXR providers weren't added to the link.xml by default, causing new projects to fail to run on-device when using OpenXR and MRTK via Unity's Package Manager. Existing projects that are upgraded will still need this added manually.
+
+## What was new in 2.5.3
 
 ### Fixes a regression with Oculus introduced in 2.5.2
 
@@ -38,7 +44,6 @@ Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align
 
 There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
 Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
-Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 
