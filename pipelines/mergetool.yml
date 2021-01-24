@@ -7,6 +7,9 @@ schedules:
     include:
     - mrtk_development
 
+pr: none
+trigger: none
+
 parameters:
 - name: sourceBranch
   type: string
