@@ -1,5 +1,12 @@
 # Checks for changes in one branch not present in another branch. Opens a PR into the second branch if needed.
 
+schedules:
+# Cron schedules use UTC time. This is 2pm UTC on every weekday.
+- cron: 0 14 * * 1,2,3,4,5
+  branches:
+    include:
+    - mrtk_development
+
 parameters:
 - name: sourceBranch
   type: string
@@ -9,7 +16,7 @@ parameters:
   default: feature/interactive_element
 
 jobs:
-- job: mergetool
+- job: MergeTool
   pool:
     vmImage: 'windows-latest'
   steps:
@@ -25,9 +32,10 @@ jobs:
     displayName: Install Python requirements
 
   - task: PythonScript@0
-    displayName: Run mergetool
+    displayName: Run MergeTool script
     inputs:
       scriptPath: $(Build.SourcesDirectory)/scripts/ci/mergetool.py
+      # Variable 'github.pat' should be defined in the Variables tab
       arguments: >
         --repo microsoft/MixedRealityToolkit-Unity
         --repo_path $(Build.SourcesDirectory)
