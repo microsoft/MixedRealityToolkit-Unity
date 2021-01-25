@@ -375,11 +375,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// 
+        /// Add an animation target to a state container. An animation target contains a reference to 
+        /// the target game object and a list of the animatable properties associated with the target.
         /// </summary>
-        /// <param name="stateName"></param>
-        /// <param name="target"></param>
-        /// <returns></returns>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="target">The target game object to add</param>
+        /// <returns>The newly created AnimationTarget for a state container</returns>
         public AnimationTarget AddAnimationTargetToState(string stateName, GameObject target)
         {
             StateContainer stateContainer = GetStateContainer(stateName);
@@ -390,24 +391,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// 
+        /// Add an animatable property to an animation target in a state container.
         /// </summary>
-        /// <param name="stateName"></param>
-        /// <param name="animationTargetIndex"></param>
-        /// <param name="animatableProperty"></param>
-        /// <returns></returns>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="animationTargetIndex">The index of the animation target in the StateContainer's AnimationTarget list</param>
+        /// <param name="animatableProperty">The name of the AnimatableProperty to add</param>
+        /// <returns>The new animatable property added</returns>
         public StateAnimatableProperty AddAnimatableProperty(string stateName, int animationTargetIndex, AnimatableProperty animatableProperty)
         {
             return CreateAnimatablePropertyInstance(animationTargetIndex, animatableProperty.ToString(), stateName);
         }
 
         /// <summary>
-        /// 
+        /// Get an animatable property by type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="stateName"></param>
-        /// <param name="animationTargetIndex"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">A type that derives from StateAnimatableProperty</typeparam>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="animationTargetIndex">The index of the animation target in the StateContainer's AnimationTarget list</param>
+        /// <returns>The animatable property with given type T</returns>
         public T GetAnimatableProperty<T>(string stateName, int animationTargetIndex) where T : StateAnimatableProperty
         {
             StateContainer stateContainer = GetStateContainer(stateName);
@@ -420,12 +421,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// 
+        /// Get a list of the shader animatable properties by type. 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="stateName"></param>
-        /// <param name="animationTargetIndex"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">A type that derives from ShaderStateAnimatableProperty</typeparam>
+        /// <param name="stateName">The name of the state container</param>
+        /// <param name="animationTargetIndex">The index of the animation target in the StateContainer's AnimationTarget list</param>
+        /// <returns>A list of the animatable properties in a container with the given type T</returns>
         public List<T> GetShaderAnimatablePropertyList<T>(string stateName, int animationTargetIndex) where T : ShaderStateAnimatableProperty
         {
             StateContainer stateContainer = GetStateContainer(stateName);
