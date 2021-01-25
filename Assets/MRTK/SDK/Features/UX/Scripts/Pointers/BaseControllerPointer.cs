@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnPostSceneQueryPerfMarker.Auto())
             {
-                if (dragAction != MixedRealityInputAction.None)
+                if (dragAction != MixedRealityInputAction.None && InputSourceParent.SourceType == InputSourceType.Controller)
                 {
                     if (IsDragPressed)
                     {
@@ -537,7 +537,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         IsHoldPressed = false;
                     }
 
-                    if (eventData.MixedRealityInputAction == dragAction && dragAction != MixedRealityInputAction.None)
+                    if (dragAction != MixedRealityInputAction.None &&
+                        eventData.InputSource.SourceType == InputSourceType.Controller &&
+                        eventData.MixedRealityInputAction == dragAction)
                     {
                         IsDragPressed = false;
 
@@ -574,7 +576,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         IsHoldPressed = true;
                     }
 
-                    if (eventData.MixedRealityInputAction == dragAction && dragAction != MixedRealityInputAction.None)
+                    if (dragAction != MixedRealityInputAction.None &&
+                        eventData.InputSource.SourceType == InputSourceType.Controller &&
+                        eventData.MixedRealityInputAction == dragAction)
                     {
                         IsDragPressed = true;
 
