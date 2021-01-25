@@ -374,23 +374,76 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return stateContainer != null ? stateContainer : null;
         }
 
-        public void AddAnimatableProperty(string stateName, int animationTargetIndex, AnimatableProperty animatableProperty)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stateName"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public AnimationTarget AddAnimationTargetToState(string stateName, GameObject target)
         {
             StateContainer stateContainer = GetStateContainer(stateName);
 
-            CreateAnimatablePropertyInstance(animationTargetIndex, animatableProperty.ToString(), stateName);
+            stateContainer.AnimationTargets.Add(new AnimationTarget() { Target = target});
+
+            return stateContainer.AnimationTargets.Last();
         }
 
-        //public T GetAnimatableProperty<T>(string stateName, int animationTargetIndex) where T : StateAnimatableProperty
-        //{
-        //    StateContainer stateContainer = GetStateContainer(stateName);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stateName"></param>
+        /// <param name="animationTargetIndex"></param>
+        /// <param name="animatableProperty"></param>
+        /// <returns></returns>
+        public StateAnimatableProperty AddAnimatableProperty(string stateName, int animationTargetIndex, AnimatableProperty animatableProperty)
+        {
+            return CreateAnimatablePropertyInstance(animationTargetIndex, animatableProperty.ToString(), stateName);
+        }
 
-        //    AnimationTarget animationTarget = stateContainer.AnimationTargets[animationTargetIndex];
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="stateName"></param>
+        /// <param name="animationTargetIndex"></param>
+        /// <returns></returns>
+        public T GetAnimatableProperty<T>(string stateName, int animationTargetIndex) where T : StateAnimatableProperty
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
 
-        //    animationTarget.StateAnimatableProperties.Find((animatableProperty) => animatableProperty.AnimatablePropertyName.);
+            AnimationTarget animationTarget = stateContainer.AnimationTargets[animationTargetIndex];
 
-        //    return T;
-        //}
+            IStateAnimatableProperty animatableProperty =  animationTarget.StateAnimatableProperties.Find((animatableProp) => animatableProp is T);
+
+            return animatableProperty as T;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="stateName"></param>
+        /// <param name="animationTargetIndex"></param>
+        /// <returns></returns>
+        public List<T> GetShaderAnimatablePropertyList<T>(string stateName, int animationTargetIndex) where T : ShaderStateAnimatableProperty
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+
+            AnimationTarget animationTarget = stateContainer.AnimationTargets[animationTargetIndex];
+
+            List<T> shaderPropertyList = new List<T>();
+
+            foreach (var animatableProp in animationTarget.StateAnimatableProperties)
+            {
+                if (animatableProp is T)
+                {
+                    shaderPropertyList.Add(animatableProp as T);
+                }
+            }
+
+            return shaderPropertyList;
+        }
 
         /// <summary>
         /// Set the keyframes for a given animatable property. 
@@ -456,16 +509,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return Array.Find(RootStateMachine.states, (animatorState) => animatorState.state.name == animatorStateName).state;
         }
 
-        #endregion
-
-        internal void CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
+        internal StateAnimatableProperty CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
         {
             StateContainer stateContainer = GetStateContainer(stateName);
 
             if (stateContainer != null)
             {
-                stateContainer.CreateAnimatablePropertyInstance(animationTargetIndex, animatablePropertyName, stateName);
+                return stateContainer.CreateAnimatablePropertyInstance(animationTargetIndex, animatablePropertyName, stateName);
+            }
+            else
+            {
+                Debug.LogError($"Could not find a state container with the name {stateName}");
+                return null;
             }
         }
+
+        #endregion
+
+
     }
 }

@@ -104,18 +104,45 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return false;
         }
 
-        internal void CreateAnimatablePropertyInstance(string animatablePropertyName, string stateName)
+        internal StateAnimatableProperty CreateAnimatablePropertyInstance(string animatablePropertyTypeName, string stateName)
         {
             StateAnimatableProperty animatableProperty;
 
             // Find matching event configuration by state name
             var animatablePropertyTypes = TypeCacheUtility.GetSubClasses<StateAnimatableProperty>();
-            Type animatablePropertyType = animatablePropertyTypes.Find((type) => type.Name.StartsWith(animatablePropertyName));
+            Type animatablePropertyType = animatablePropertyTypes.Find((type) => type.Name.StartsWith(animatablePropertyTypeName));
 
             if (animatablePropertyType != null)
             {
-                // If a state has an associated event configuration class, then create an instance with the matching type
-                animatableProperty = Activator.CreateInstance(animatablePropertyType) as StateAnimatableProperty;
+
+                if (CanAddAnimatableProperty(animatablePropertyTypeName))
+                {
+                    // If a state has an associated event configuration class, then create an instance with the matching type
+                    animatableProperty = Activator.CreateInstance(animatablePropertyType) as StateAnimatableProperty;
+
+                }
+                else
+                {
+                    animatableProperty = null;
+                    Debug.LogError($"Only one {animatablePropertyTypeName} animatable property can be present for this target object.");
+                }
+
+                if (animatableProperty != null)
+                {
+                    animatableProperty.StateName = stateName;
+                    animatableProperty.Target = Target;
+
+                    // Generate unique id for shader properties because multiple shader properties can be 
+                    // animated on a single target object
+                    if (animatablePropertyTypeName.Contains("Shader"))
+                    {
+                        int shaderPropertyID = GenerateIDShaderProperty();
+
+                        animatableProperty.AnimatablePropertyName = animatablePropertyTypeName + "_" + shaderPropertyID;
+                    }
+
+                    StateAnimatableProperties.Add(animatableProperty);
+                }
             }
             else
             {
@@ -123,10 +150,46 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 Debug.Log("The animatableProperty property name given does not have a matching configuration type");
             }
 
-            animatableProperty.StateName = stateName;
-            animatableProperty.Target = Target;
+            return animatableProperty;
+        }
 
-            StateAnimatableProperties.Add(animatableProperty);
+        public StateAnimatableProperty AddNewAnimatableProperty(AnimatableProperty animatablePropertyTypeName, string stateName)
+        {
+            return CreateAnimatablePropertyInstance(animatablePropertyTypeName.ToString(), stateName);
+        }
+
+        private bool CanAddAnimatableProperty(string animatablePropertyTypeName)
+        {
+            // Multiple animatable shader properties can be present on one target object
+            if (animatablePropertyTypeName.Contains("Shader"))
+            {
+                return true;
+            }
+
+            // Ensure that there is only one Scale and Position Offset property per target game object
+            foreach (var animatableProp in StateAnimatableProperties)
+            {
+                if (animatableProp.AnimatablePropertyName == animatablePropertyTypeName)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private int GenerateIDShaderProperty()
+        {
+            int i = 0;
+            foreach (var animatableProp in StateAnimatableProperties)
+            {
+                if (animatableProp is ShaderStateAnimatableProperty)
+                {
+                    i++;
+                }
+            }
+
+            return i;
         }
     }
 }

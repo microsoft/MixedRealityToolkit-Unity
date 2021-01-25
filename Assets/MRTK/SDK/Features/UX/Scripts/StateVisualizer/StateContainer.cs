@@ -103,10 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         internal AnimatorStateMachine AnimatorStateMachine { get; set; }
 
-
-        internal void CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
+        internal StateAnimatableProperty CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
         {
-            AnimationTargets[animationTargetIndex].CreateAnimatablePropertyInstance(animatablePropertyName, stateName);
+            return AnimationTargets[animationTargetIndex].CreateAnimatablePropertyInstance(animatablePropertyName, stateName);
         }
 
         internal void SetKeyFrames(int animationTargetIndex)

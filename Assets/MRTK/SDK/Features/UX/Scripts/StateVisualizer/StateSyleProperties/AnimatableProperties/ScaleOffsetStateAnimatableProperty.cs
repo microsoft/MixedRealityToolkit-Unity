@@ -12,15 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
     {
         [SerializeField]
         [Tooltip("The scale offset added to the current scale of the target object.")]
-        private Vector3 scaleoffset;
+        private Vector3 scaleOffset;
 
         /// <summary>
         /// The scale offset added to the current scale of the target object.
         /// </summary>
         public Vector3 ScaleOffset
         {
-            get => scaleoffset;
-            set => scaleoffset = value;
+            get => scaleOffset;
+            set => scaleOffset = value;
         }
 
         public ScaleOffsetStateAnimatableProperty()

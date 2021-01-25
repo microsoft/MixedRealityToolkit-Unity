@@ -329,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void RenderSetStateMachineButton()
         {
-            if (GUILayout.Button("Generate Animation Clips"))
+            if (GUILayout.Button("Generate New Animation Clips"))
             {
                 instance.InitializeAnimatorControllerAsset();
             }
