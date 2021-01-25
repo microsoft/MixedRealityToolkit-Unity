@@ -77,6 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
+        
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows Kits\Installed Roots";
+        
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_KEY = "KitsRoot10";
+        
+        private const string WINDOWS_10_KITS_PATH_POSTFIX = "Lib";
+        
+        private const string WINDOWS_10_KITS_DEFAULT_PATH = @"C:\Program Files (x86)\Windows Kits\10\Lib";
+        
 
         #endregion Constants and Readonly Values
 
@@ -1379,7 +1388,23 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void LoadWindowsSdkPaths()
         {
-            var windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
+            string win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+#if UNITY_EDITOR_WIN
+            // Windows 10 sdk might not be installed on C: drive.
+            // Try to detect the installation path by checking the registry.
+            try 
+            {
+                var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
+                var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
+                win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path. {e}");
+                win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+            }
+#endif
+            var windowsSdkPaths = Directory.GetDirectories(win10KitsPath);
             for (int i = 0; i < windowsSdkPaths.Length; i++)
             {
                 windowsSdkVersions.Add(new Version(windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1)));
