@@ -42,9 +42,9 @@ To add an MRTK package, modify the dependencies section of the `Packages/manifes
 
 ```json
   "dependencies": {
-    "com.microsoft.mixedreality.toolkit.foundation": "2.5.3",
-    "com.microsoft.mixedreality.toolkit.tools": "2.5.3",
-    "com.microsoft.mixedreality.toolkit.examples": "2.5.3",
+    "com.microsoft.mixedreality.toolkit.foundation": "2.5.4",
+    "com.microsoft.mixedreality.toolkit.tools": "2.5.4",
+    "com.microsoft.mixedreality.toolkit.examples": "2.5.4",
 ```
 
 > [!IMPORTANT]
