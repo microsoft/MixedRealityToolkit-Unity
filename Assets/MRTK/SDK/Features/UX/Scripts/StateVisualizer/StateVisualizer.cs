@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public AnimatorController AnimatorController;
 
-        private string defaultAnimationAssetSavePath = "Assets/MixedRealityToolkit.Generated/";
+        private string animationDirectoryPath;
 
         private void OnValidate()
         {
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// </summary>
         /// <param name="stateName">The name of the new animation state</param>
         /// <param name="animatorController">The animation controller contained in the attached Animator component</param>
-        /// <returns></returns>
+        /// <returns>The new animator state in the animator state machine</returns>
         private AnimatorState AddNewStateToStateMachine(string stateName, AnimatorController animatorController)
         {
             // Create animation state
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
             string animationClipFileName = stateAnimationClip.name + ".anim";
 
-            AssetDatabase.CreateAsset(stateAnimationClip, GetAnimationDirectoryPath() + "/" + animationClipFileName);
+            AssetDatabase.CreateAsset(stateAnimationClip, animationDirectoryPath + "/" + animationClipFileName);
 
             animatorState.motion = stateAnimationClip;
 
@@ -230,12 +230,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
-        /// Get the path where the animation controller and animation clips assets are located. 
+        /// Creates and returns the path to a directory for the animation controller and animation clips assets. 
         /// </summary>
         /// <returns>Returns path to the animation controller and animation clip assets</returns>
-        public string GetAnimationDirectoryPath()
+        private string CreateAnimationDirectoryPath(string path = "Assets/MixedRealityToolkit.Generated/")
         {
-            string animationDirectoryPath = Path.Combine(defaultAnimationAssetSavePath, "MRTK_Animations");
+            animationDirectoryPath = Path.Combine(path, "MRTK_Animations");
 
             // If the animation directory path does not exist, then create a new directory
             if (!Directory.Exists(animationDirectoryPath))
@@ -251,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         internal void InitializeAnimatorControllerAsset()
         {
             // Create MRTK_Animation Directory if it does not exist
-            string animationAssetDirectory = GetAnimationDirectoryPath();
+            string animationAssetDirectory = CreateAnimationDirectoryPath();
             string animatorControllerName = gameObject.name + ".controller";
             string animationControllerPath = Path.Combine(animationAssetDirectory, animatorControllerName);
 
@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Get an animator state in the animator state machine by state name.
         /// </summary>
         /// <param name="animatorStateName">The name of the animator state</param>
-        /// <returns></returns>
+        /// <returns>The animator state in the animator state machine</returns>
         public AnimatorState GetAnimatorState(string animatorStateName)
         {
             return Array.Find(RootStateMachine.states, (animatorState) => animatorState.state.name == animatorStateName).state;
@@ -526,7 +526,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         #endregion
-
-
     }
 }
