@@ -3,10 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
@@ -41,11 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeReference]
-        [Tooltip("List of animatable properties for the target game object.  A animatable property is an animatable property such as scale and color.")]
+        [Tooltip("List of animatable properties for the target game object.  Scale and material color are examples of animatable properties.")]
         private List<IStateAnimatableProperty> stateAnimatableProperties = new List<IStateAnimatableProperty>();
 
         /// <summary>
-        /// List of animatable properties for the target game object.  A animatable property is an animatable property such as scale and color.
+        /// List of animatable properties for the target game object.  Scale and material color are examples of animatable properties.
         /// </summary>
         public List<IStateAnimatableProperty> StateAnimatableProperties
         {
@@ -53,7 +51,31 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             internal set => stateAnimatableProperties = value;
         }
 
-        public bool IsTargetObjectValid(GameObject target)
+        public void SetKeyFrames(AnimationClip animationClip)
+        {
+            foreach (var animatableProperty in StateAnimatableProperties)
+            {
+                animatableProperty.Target = Target;
+                animatableProperty.SetKeyFrames(animationClip);
+            }
+        }
+
+        public void RemoveKeyFrames(string animatablePropertyName, AnimationClip animationClip)
+        {
+            IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
+
+            if (animatableProperty != null)
+            {
+                animatableProperty.RemoveKeyFrames(animationClip);
+            }
+        }
+
+        private IStateAnimatableProperty GetAnimatableProperty(string animatablePropertyName)
+        {
+            return StateAnimatableProperties.Find((prop) => prop.AnimatablePropertyName == animatablePropertyName);
+        }
+
+        private bool IsTargetObjectValid(GameObject target)
         {
             Transform startTransform = target.transform;
             Transform initialTransform = target.transform;
@@ -80,30 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             }
 
             return false;
-        }
-
-        public void SetKeyFrames(AnimationClip animationClip)
-        {
-            foreach (var animatableProperty in StateAnimatableProperties)
-            {
-                animatableProperty.Target = Target;
-                animatableProperty.SetKeyFrames(animationClip);
-            }
-        }
-
-        public void RemoveKeyFrames(string animatablePropertyName, AnimationClip animationClip)
-        {
-            IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
-
-            if (animatableProperty != null)
-            {
-                animatableProperty.RemoveKeyFrames(animationClip);
-            }
-        }
-
-        private IStateAnimatableProperty GetAnimatableProperty(string animatablePropertyName)
-        {
-            return StateAnimatableProperties.Find((prop) => prop.AnimatablePropertyName == animatablePropertyName);
         }
 
         internal void CreateAnimatablePropertyInstance(string animatablePropertyName, string stateName)

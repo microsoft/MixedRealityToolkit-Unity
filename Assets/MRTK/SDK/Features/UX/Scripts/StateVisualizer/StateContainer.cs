@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// Container class for an interactive state in the StateVisualizer component. Each state container maps to an 
+    /// Container class for an Interactive State in the StateVisualizer component. Each state container maps to an 
     /// Interactive State in an attached Interactive Element component.
     /// </summary>
     [Serializable]

@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using System;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// Base class for animatable shader properties. 
     /// </summary>
     public class ShaderStateAnimatableProperty : StateAnimatableProperty
     {

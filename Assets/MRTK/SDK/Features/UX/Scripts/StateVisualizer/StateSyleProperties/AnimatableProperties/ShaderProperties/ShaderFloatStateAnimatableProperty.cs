@@ -9,16 +9,16 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The ShaderFloat animatable property adds/sets keyframes for a defined shader property of type Float in an animation clip.
     /// </summary>
     public class ShaderFloatStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The float value for the defined shader property. ")]
         private float shaderPropertyFloatValue;
 
         /// <summary>
-        /// 
+        /// The float value for the defined shader property. 
         /// </summary>
         public float ShaderPropertyFloatValue
         {

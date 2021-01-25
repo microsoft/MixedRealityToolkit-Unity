@@ -8,21 +8,27 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.Graphs;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
+    /// <summary>
+    /// The State Visualizer component adds animations to an object based on the states defined in a linked Interactive Element component.
+    /// This component creates animation assets, places them in the MixedRealityToolkit.Generated folder and enables
+    /// simplified animation keyframe setting through adding animatable properties to a target game object.
+    /// To enable animation transitions between states, an Animator Controller asset is created and a default state machine
+    /// is generated with associated parameters and transitions.  This state machine can be viewed in Unity's Animator window.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     public class StateVisualizer : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("A list of containers that map to the states in the attached Interactive Element component. ")]
         private List<StateContainer> stateContainers = new List<StateContainer>();
 
         /// <summary>
-        /// The container for each state that stores the list of the state animatable properties.  
+        /// A list of containers that map to the states in the attached Interactive Element component. 
         /// </summary>
         public List<StateContainer> StateContainers
         {
@@ -31,11 +37,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The linked Interactive Element component for this State Visualizer." +
+            " The State Visualizer component depends on the presence of a component " +
+            " that derives from BaseInteractiveElement.")]
         private BaseInteractiveElement interactiveElement;
 
         /// <summary>
-        /// 
+        /// The linked Interactive Element component for this State Visualizer.
+        /// The State Visualizer component depends on the presence of a component 
+        /// that derives from BaseInteractiveElement. 
         /// </summary>
         public BaseInteractiveElement InteractiveElement
         {
@@ -44,11 +54,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The Animator for this State Visualizer component.  The State Visualizer component" +
+            " leverages the capabilities of the Unity animation system and requires the presence of " +
+            " an Animator component.")]
         private Animator animator;
 
         /// <summary>
-        /// 
+        /// The Animator for this State Visualizer component.  The State Visualizer component
+        /// leverages the capabilities of the Unity animation system and requires the presence of 
+        /// an Animator component.
         /// </summary>
         public Animator Animator
         {
@@ -56,12 +70,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => animator = value;
         }
 
-        // The states being tracked within an Interactive Element 
+        // The states within an Interactive Element 
         public List<InteractionState> States => InteractiveElement != null ? InteractiveElement.States : null;
 
         // The state manager within the Interactive Element
         private StateManager stateManager;
 
+        // The animator state machine 
         public AnimatorStateMachine RootStateMachine;
 
         public AnimatorController AnimatorController;
@@ -259,12 +274,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 foreach (InteractionState state in States)
                 {
-                    AddStateAnimatableContainer(state.Name);
+                    AddStateContainer(state.Name);
                 }
             }
         }
 
-        private void UpdateStateAnimatableContainers(List<InteractionState> interactionStates)
+        private void UpdateStateContainers(List<InteractionState> interactionStates)
         {
             if (interactionStates.Count != StateContainers.Count)
             {
@@ -273,43 +288,43 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     foreach (InteractionState state in interactionStates)
                     {
                         // Find the container that matches the state
-                        StateContainer animatableContainer = GetStateContainer(state.Name);
+                        StateContainer container = GetStateContainer(state.Name);
 
-                        if (animatableContainer == null)
+                        if (container == null)
                         {
-                            AddStateAnimatableContainer(state.Name);
+                            AddStateContainer(state.Name);
                         }
                     }
                 }
                 else if (interactionStates.Count < StateContainers.Count)
                 {
-                    foreach (StateContainer animatableContainer in StateContainers.ToList())
+                    foreach (StateContainer stateContainer in StateContainers.ToList())
                     {
-                        // Find the state in tracked states for this container
-                        InteractionState trackedState = interactionStates.Find((state) => (state.Name == animatableContainer.StateName));
+                        // Find the state in interactive element for this container
+                        InteractionState interactionState = interactionStates.Find((state) => (state.Name == stateContainer.StateName));
 
                         // Do not remove the default state
-                        if (trackedState == null)
+                        if (interactionState == null)
                         {
-                            RemoveStateAnimatableContainer(animatableContainer.StateName);
+                            RemoveStateContainer(stateContainer.StateName);
                         }
                     }
                 }
             }
         }
 
-        private void RemoveStateAnimatableContainer(string stateName)
+        private void RemoveStateContainer(string stateName)
         {
             StateContainer containerToRemove = StateContainers.Find((container) => container.StateName == stateName);
 
             StateContainers.Remove(containerToRemove);
         }
 
-        private void AddStateAnimatableContainer(string stateName)
+        private void AddStateContainer(string stateName)
         {
-            StateContainer stateAnimatableContainer = new StateContainer(stateName);
+            StateContainer stateContainer = new StateContainer(stateName);
 
-            StateContainers.Add(stateAnimatableContainer);
+            StateContainers.Add(stateContainer);
         }
 
         /// <summary>
@@ -317,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// </summary>
         internal void UpdateStateContainerStates()
         {
-            UpdateStateAnimatableContainers(InteractiveElement.States);
+            UpdateStateContainers(InteractiveElement.States);
 
             List<string> stateContainerNames = new List<string>();
             List<string> animatorStateNames = new List<string>();
@@ -328,15 +343,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             // Get animation state names
             Array.ForEach(RootStateMachine.states, (animatorState) => animatorStateNames.Add(animatorState.state.name));
 
+            // Add new animator state in the root state machine if a state container has been added
             var statesToAdd = stateContainerNames.Except(animatorStateNames);
-
             foreach (var state in statesToAdd)
             {
                 AddNewStateToStateMachine(state, animator.runtimeAnimatorController as AnimatorController);
             }
 
+            // Remove animator state in the root state machine if a state container has been removed
             var statesToRemove = animatorStateNames.Except(stateContainerNames);
-
             foreach (var stateAni in statesToRemove)
             {
                 RemoveAnimatorState(RootStateMachine, stateAni);

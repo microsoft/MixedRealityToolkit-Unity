@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
+    /// <summary>
+    /// The animatable properties of a game object.  Utilized in the StateVisualizer component. 
+    /// </summary>
     public enum AnimatableProperty 
     {
-        Scale = 0,
+        ScaleOffset = 0,
         Color,
         PositionOffset,
         ShaderFloat,

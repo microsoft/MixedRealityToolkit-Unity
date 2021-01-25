@@ -7,16 +7,16 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The PositionOffset animatable property adds/sets keyframes for the "localPosition" property in an animation clip.
     /// </summary>
     public class PositionOffsetStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The position offset added to the current position of the target object.")]
         private Vector3 positionOffset;
 
         /// <summary>
-        /// 
+        /// The position offset added to the current position of the target object.
         /// </summary>
         public Vector3 PositionOffset
         {

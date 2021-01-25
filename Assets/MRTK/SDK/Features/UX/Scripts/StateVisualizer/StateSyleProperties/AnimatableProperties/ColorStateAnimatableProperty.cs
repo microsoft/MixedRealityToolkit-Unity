@@ -1,23 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The Color animatable property adds/sets keyframes for the "material._Color" property in an animation clip.
     /// </summary>
     public class ColorStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Sets the last keyframe of the material._Color property to this Color in the animation clip" +
+            "for a state.  The color to transition to. ")]
         private Color color;
 
         /// <summary>
-        /// 
+        /// Sets the last keyframe of the "material._Color" property to this Color in the animation clip
+        /// for a state.  The color to transition to. 
         /// </summary>
         public Color Color
         {
@@ -32,51 +32,45 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         public override void SetKeyFrames(AnimationClip animationClip)
         {
-            if (Target != null)
+            if (Target != null && Target.GetComponent<MeshRenderer>() != null)
             {
-                string targetPath = GetTargetPath(Target);
-
                 float colorR = Color.r;
                 float colorG = Color.g;
                 float colorB = Color.b;
                 float colorA = Color.a;
 
-                if (Target.EnsureComponent<MeshRenderer>() != null)
-                {
-                    Color currentColor = Target.GetComponent<MeshRenderer>().sharedMaterial.color;
+                Color currentColor = Target.GetComponent<MeshRenderer>().sharedMaterial.color;
 
-                    AnimationCurve curveR = AnimationCurve.EaseInOut(0, currentColor.r, AnimationDuration, colorR);
-                    AnimationCurve curveG = AnimationCurve.EaseInOut(0, currentColor.g, AnimationDuration, colorG);
-                    AnimationCurve curveB = AnimationCurve.EaseInOut(0, currentColor.b, AnimationDuration, colorB);
-                    AnimationCurve curveA = AnimationCurve.EaseInOut(0, currentColor.a, AnimationDuration, colorA);
+                AnimationCurve curveR = AnimationCurve.EaseInOut(0, currentColor.r, AnimationDuration, colorR);
+                AnimationCurve curveG = AnimationCurve.EaseInOut(0, currentColor.g, AnimationDuration, colorG);
+                AnimationCurve curveB = AnimationCurve.EaseInOut(0, currentColor.b, AnimationDuration, colorB);
+                AnimationCurve curveA = AnimationCurve.EaseInOut(0, currentColor.a, AnimationDuration, colorA);
 
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.r", curveR);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.g", curveG);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.b", curveB);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.a", curveA);
-                }
-                else
-                {
-                    Debug.LogError("The target game object does not have a mesh renderer component attached. Attach a mesh renderer component to animate the Color property.");
-                }
+                SetColorAnimationCurve(animationClip, curveR, curveG, curveB, curveA);
+
+            }
+            else
+            {
+                Debug.LogError("The target game object does not have a mesh renderer component attached. Attach a mesh renderer component to animate the Color property.");
             }
         }
 
-
         public override void RemoveKeyFrames(AnimationClip animationClip)
         {
-            if (Target != null)
+            if (Target != null && Target.GetComponent<MeshRenderer>() != null)
             {
-                string targetPath = GetTargetPath(Target);
-
-                if (Target.GetComponent<MeshRenderer>() != null)
-                {
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.r", null);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.g", null);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.b", null);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.a", null);
-                }
+                SetColorAnimationCurve(animationClip, null, null, null, null); 
             }
+        }
+
+        private void SetColorAnimationCurve(AnimationClip animationClip, AnimationCurve curveR, AnimationCurve curveG, AnimationCurve curveB, AnimationCurve curveA)
+        {
+            string targetPath = GetTargetPath(Target);
+
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.r", curveR);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.g", curveG);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.b", curveB);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material._Color.a", curveA);
         }
     }
 }

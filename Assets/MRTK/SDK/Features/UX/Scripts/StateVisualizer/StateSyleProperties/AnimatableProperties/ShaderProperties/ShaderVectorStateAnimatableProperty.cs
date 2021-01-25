@@ -9,16 +9,16 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The ShaderVector animatable property adds/sets keyframes for a defined shader property of type Vector4 in an animation clip.
     /// </summary>
     public class ShaderVectorStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The Vector4 value for the defined shader property. ")]
         private Vector4 shaderPropertyVectorValue;
 
         /// <summary>
-        /// 
+        /// The Vector4 value for the defined shader property. 
         /// </summary>
         public Vector4 ShaderPropertyVectorValue
         {
@@ -35,8 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             if (Target != null)
             {
-                string targetPath = GetTargetPath(Target);
-
                 string propertyName = GetPropertyName(ShaderPropertyName);
 
                 if (propertyName != null)
@@ -48,10 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     AnimationCurve curveZ = AnimationCurve.EaseInOut(0, currentValue.z, AnimationDuration, ShaderPropertyVectorValue.z);
                     AnimationCurve curveW = AnimationCurve.EaseInOut(0, currentValue.w, AnimationDuration, ShaderPropertyVectorValue.w);
 
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".x", curveX);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".y", curveY);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".z", curveZ);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".w", curveW);
+                    SetVectorAnimationCurve(animationClip, propertyName, curveX, curveY, curveZ, curveW);
                 }
             }
         }
@@ -60,15 +55,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             if (Target != null)
             {
-                string targetPath = GetTargetPath(Target);
-
                 string propertyName = GetPropertyName(ShaderPropertyName);
 
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".x", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".y", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".z", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".x", null);
+                if (propertyName != null)
+                {
+                    SetVectorAnimationCurve(animationClip, propertyName, null, null, null, null);
+                }
             }
+        }
+
+        private void SetVectorAnimationCurve(AnimationClip animationClip, string propertyName, AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, AnimationCurve curveW)
+        {
+            string targetPath = GetTargetPath(Target);
+
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".x", curveX);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".y", curveY);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".z", curveZ);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".w", curveW);
         }
     }
 }

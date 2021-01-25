@@ -1,32 +1,31 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The ScaleOffset animatable property adds/sets keyframes for the "localScale" property in an animation clip.
     /// </summary>
-    public class ScaleStateAnimatableProperty : StateAnimatableProperty
+    public class ScaleOffsetStateAnimatableProperty : StateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
-        private Vector3 scale;
+        [Tooltip("The scale offset added to the current scale of the target object.")]
+        private Vector3 scaleoffset;
 
         /// <summary>
-        /// 
+        /// The scale offset added to the current scale of the target object.
         /// </summary>
-        public Vector3 Scale
+        public Vector3 ScaleOffset
         {
-            get => scale;
-            set => scale = value;
+            get => scaleoffset;
+            set => scaleoffset = value;
         }
 
-        public ScaleStateAnimatableProperty()
+        public ScaleOffsetStateAnimatableProperty()
         {
-            AnimatablePropertyName = "Scale";
+            AnimatablePropertyName = "ScaleOffset";
         }
 
         public override void SetKeyFrames(AnimationClip animationClip)
@@ -35,9 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             {
                 string targetPath = GetTargetPath(Target);
 
-                AnimationCurve curveX = AnimationCurve.EaseInOut(0, Target.transform.localScale.x, AnimationDuration, Target.transform.localScale.x + scale.x);
-                AnimationCurve curveY = AnimationCurve.EaseInOut(0, Target.transform.localScale.y, AnimationDuration, Target.transform.localScale.y + scale.y);
-                AnimationCurve curveZ = AnimationCurve.EaseInOut(0, Target.transform.localScale.z, AnimationDuration, Target.transform.localScale.z + scale.z);
+                AnimationCurve curveX = AnimationCurve.EaseInOut(0, Target.transform.localScale.x, AnimationDuration, Target.transform.localScale.x + ScaleOffset.x);
+                AnimationCurve curveY = AnimationCurve.EaseInOut(0, Target.transform.localScale.y, AnimationDuration, Target.transform.localScale.y + ScaleOffset.y);
+                AnimationCurve curveZ = AnimationCurve.EaseInOut(0, Target.transform.localScale.z, AnimationDuration, Target.transform.localScale.z + ScaleOffset.z);
 
                 animationClip.SetCurve(targetPath, typeof(Transform), "localScale.x", curveX);
                 animationClip.SetCurve(targetPath, typeof(Transform), "localScale.y", curveY);

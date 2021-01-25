@@ -1,24 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using System;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// 
+    /// The ShaderColor animatable property adds/sets keyframes for a defined shader property of type Color in an animation clip.
     /// </summary>
     public class ShaderColorStateAnimatableProperty : ShaderStateAnimatableProperty
     {
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("The color value of the given shader property. This color value refers to a shader property " +
+            " of type Color and not the main color of the material.")]
         private Color shaderPropertyColorValue;
 
         /// <summary>
-        /// 
+        /// The color value of the given shader property. This color value refers to a shader property 
+        /// of type Color and not the main color of the material.
         /// </summary>
         public Color ShaderPropertyColorValue
         {
@@ -35,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             if (Target != null)
             {
-                string targetPath = GetTargetPath(Target);
-
                 string propertyName = GetPropertyName(ShaderPropertyName);
 
                 if (propertyName != null)
@@ -48,10 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                     AnimationCurve curveB = AnimationCurve.EaseInOut(0, currentValue.b, AnimationDuration, ShaderPropertyColorValue.b);
                     AnimationCurve curveA = AnimationCurve.EaseInOut(0, currentValue.a, AnimationDuration, ShaderPropertyColorValue.a);
 
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".r", curveR);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".g", curveG);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".b", curveB);
-                    animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".a", curveA);
+                    SetColorAnimationCurve(animationClip, propertyName, curveR, curveG, curveB, curveA);
                 }
             }
         }
@@ -60,13 +54,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             if (Target != null)
             {
-                string targetPath = GetTargetPath(Target);
+                string propertyName = GetPropertyName(ShaderPropertyName);
 
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + GetPropertyName(ShaderPropertyName) + ".r", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + GetPropertyName(ShaderPropertyName) + ".g", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + GetPropertyName(ShaderPropertyName) + ".b", null);
-                animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + GetPropertyName(ShaderPropertyName) + ".a", null);
+                if (propertyName != null)
+                {
+                    SetColorAnimationCurve(animationClip, propertyName, null, null, null, null);
+                }
             }
+        }
+
+        private void SetColorAnimationCurve(AnimationClip animationClip, string propertyName, AnimationCurve curveR, AnimationCurve curveG, AnimationCurve curveB, AnimationCurve curveA)
+        {
+            string targetPath = GetTargetPath(Target);
+
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".r", curveR);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".g", curveG);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".b", curveB);
+            animationClip.SetCurve(targetPath, typeof(MeshRenderer), "material." + propertyName + ".a", curveA);
         }
     }
 }

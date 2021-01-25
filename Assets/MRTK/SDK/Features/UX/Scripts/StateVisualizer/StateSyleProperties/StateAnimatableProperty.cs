@@ -4,22 +4,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 {
     /// <summary>
-    /// The base class for state animatable property configurations.  A state animatable property configuration is 
-    /// a data container for visual aspects of a game object such as the material or color. 
+    /// The base class for state animatable properties. Based on the values defined in the animatable property, keyframes for a target game object are set in the animation clip linked to 
+    /// the animatable properties. 
     /// </summary>
     [Serializable]
     public class StateAnimatableProperty: IStateAnimatableProperty
     {
         [SerializeField, HideInInspector]
+        [Tooltip("The name of state animatable property.")]
         private string animatablePropertyName;
 
         /// <summary>
-        /// The name of the interaction state associated with this state animatable property configuration.
+        /// The name of state animatable property.
         /// </summary>
         public string AnimatablePropertyName
         {
@@ -28,10 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField, HideInInspector]
+        [Tooltip("The name of the interaction state associated with this state animatable property.")]
         private string stateName;
 
         /// <summary>
-        /// The name of the interaction state associated with this state animatable property configuration.
+        /// The name of the interaction state associated with this state animatable property.
         /// </summary>
         public string StateName
         {
@@ -40,10 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField, HideInInspector]
+        [Tooltip("The target game object to animate.")]
         private GameObject target;
 
         /// <summary>
-        /// 
+        /// The target game object to animate.  
         /// </summary>
         public GameObject Target
         {
@@ -52,10 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         [SerializeField]
+        [Tooltip("The duration of the animation in seconds.")]
         private float animationDuration = 0.5f;
 
         /// <summary>
-        ///
+        /// The duration of the animation in seconds.
         /// </summary>
         public float AnimationDuration
         {
@@ -63,9 +66,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             set => animationDuration = value;
         }
 
+        /// <summary>
+        /// Sets the keyframes in an animation clip based on the values of the animatable properties. 
+        /// </summary>
+        /// <param name="animationClip">The animation clip to add keyframes to</param>
         public virtual void SetKeyFrames(AnimationClip animationClip) { }
+
+        /// <summary>
+        /// Removes the keyframes in an animation clip. 
+        /// </summary>
+        /// <param name="animationClip">The animation clip for keyframe removal</param>
         public virtual void RemoveKeyFrames(AnimationClip animationClip) { }
 
+        // Find the path of the given target game object in its hierarchy
         protected string GetTargetPath(GameObject target)
         {
             List<string> objectPath = new List<string>();
