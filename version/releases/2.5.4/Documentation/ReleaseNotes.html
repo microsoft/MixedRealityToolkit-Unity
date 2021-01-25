@@ -103,6 +103,8 @@ ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or lat
 please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply a workaround.</p>
 </div>
 <h2 id="whats-new">What's new</h2>
+<h3 id="fixes-a-bug-with-oculus-integration-when-using-upm">Fixes a bug with Oculus Integration when using UPM</h3>
+<p>When using UPM, the OculusXRSDKDeviceManagerProfile would always have its <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9160">prefabs set to None on startup</a>. This release configures the Device Manager to point to a working set of prefabs on startup.</p>
 <h3 id="fixes-an-issue-with-openxr-via-upm">Fixes an issue with OpenXR via UPM</h3>
 <p>Fixes an issue where the OpenXR providers weren't added to the link.xml by default, causing new projects to fail to run on-device when using OpenXR and MRTK via Unity's Package Manager. Existing projects that are upgraded will still need this added manually.</p>
 <h2 id="what-was-new-in-253">What was new in 2.5.3</h2>
