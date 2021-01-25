@@ -182,12 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // We hit something
                     clearWorldLength = Result.Details.RayDistance;
-                    lineColor = IsSelectPressed ? LineColorSelected : LineColorValid;
+                    lineColor = IsSelectPressed || IsDragPressed ? LineColorSelected : LineColorValid;
                 }
                 else
                 {
                     clearWorldLength = DefaultPointerExtent;
-                    lineColor = IsSelectPressed ? LineColorSelected : LineColorNoTarget;
+                    lineColor = IsSelectPressed || IsDragPressed ? LineColorSelected : LineColorNoTarget;
                 }
 
                 if (IsFocusLocked)

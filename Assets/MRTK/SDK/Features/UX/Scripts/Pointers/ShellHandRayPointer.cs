@@ -39,6 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float endPointLerp = 0.66f;
 
         private bool wasSelectPressed = false;
+        private bool wasDragPressed = false;
 
         [Header("Obsolete Settings")]
 
@@ -100,11 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                if (wasSelectPressed != IsSelectPressed)
+                if (wasSelectPressed != IsSelectPressed || wasDragPressed != IsDragPressed)
                 {
                     wasSelectPressed = IsSelectPressed;
+                    wasDragPressed = IsDragPressed;
 
-                    var currentMaterial = IsSelectPressed ? lineMaterialSelected : lineMaterialNoTarget;
+                    var currentMaterial = IsSelectPressed || IsDragPressed ? lineMaterialSelected : lineMaterialNoTarget;
 
                     for (int i = 0; i < LineRenderers.Length; i++)
                     {
