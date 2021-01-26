@@ -115,8 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                    mixedRealityInputActionMapping.InputType,
                    mixedRealityInputActionMapping.InputAction,
                    legacyInput.KeyCode,
-                   legacyInput.AxisCodeX,
-                   legacyInput.AxisCodeY,
+                   legacyInput.AxisCodeX ?? string.Empty, // defaults to null in the struct, but Unity serializes as empty string
+                   legacyInput.AxisCodeY ?? string.Empty, // defaults to null in the struct, but Unity serializes as empty string
                    legacyInput.InvertXAxis,
                    legacyInput.InvertYAxis) { }
 
