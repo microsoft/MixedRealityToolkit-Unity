@@ -233,9 +233,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Creates and returns the path to a directory for the animation controller and animation clips assets. 
         /// </summary>
         /// <returns>Returns path to the animation controller and animation clip assets</returns>
-        private string CreateAnimationDirectoryPath(string path = "Assets/MixedRealityToolkit.Generated/")
+        private string CreateAnimationDirectoryPath()
         {
-            animationDirectoryPath = Path.Combine(path, "MRTK_Animations");
+            animationDirectoryPath = Path.Combine("Assets", "MixedRealityToolkit.Generated", "MRTK_Animations");
 
             // If the animation directory path does not exist, then create a new directory
             if (!Directory.Exists(animationDirectoryPath))
