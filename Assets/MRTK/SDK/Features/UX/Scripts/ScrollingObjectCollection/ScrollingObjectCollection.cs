@@ -597,7 +597,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     var oldContainer = transform.Find("Container");
                     scrollContainer = oldContainer.gameObject.AddComponent<ScrollingObjectCollectionContainer>();
-                    return scrollContainer;
                 }
 
                 return scrollContainer;
@@ -634,8 +633,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     clippingObject.transform.parent = transform;
                     clippingObject.transform.localRotation = Quaternion.identity;
                     clippingObject.transform.localPosition = Vector3.zero;
-
-                    return clippingObject;
                 }
 
                 return clippingObject;
@@ -658,8 +655,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     clipBox = ClippingObject.EnsureComponent<ClippingBox>();
                     clipBox.ClippingSide = ClippingPrimitive.Side.Outside;
-
-                    return clipBox;
                 }
 
                 return clipBox;
