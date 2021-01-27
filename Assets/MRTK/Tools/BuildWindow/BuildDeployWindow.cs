@@ -77,15 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
-        
+
         private const string WINDOWS_10_KITS_PATH_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows Kits\Installed Roots";
-        
+
         private const string WINDOWS_10_KITS_PATH_REGISTRY_KEY = "KitsRoot10";
-        
+
         private const string WINDOWS_10_KITS_PATH_POSTFIX = "Lib";
-        
+
         private const string WINDOWS_10_KITS_DEFAULT_PATH = @"C:\Program Files (x86)\Windows Kits\10\Lib";
-        
 
         #endregion Constants and Readonly Values
 
@@ -236,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment. 
+        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment.
         /// Saves state for duration of current Unity session
         /// </summary>
         private static bool UseRemoteTarget
@@ -421,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            // Generate C# Project References for debugging	
+            // Generate C# Project References for debugging
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
                 bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
@@ -550,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
 
-                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
+                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but
                 // existing versions of Unity don't have support for automatically adding the capability to the generated
                 // AppX manifest during the build. This option provides a mechanism for people using the
                 // MRTK build tools to auto-append this capability if desired, instead of having to manually
@@ -1408,7 +1407,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 #if UNITY_EDITOR_WIN
             // Windows 10 sdk might not be installed on C: drive.
             // Try to detect the installation path by checking the registry.
-            try 
+            try
             {
                 var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
                 var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
