@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// <summary>
         /// Request the observer to save the scene
         /// </summary>
-        public void SaveSave()
+        public void SaveScene()
         {
             observer.SaveScene(SavedSceneNamePrefix);
         }
