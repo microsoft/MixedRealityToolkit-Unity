@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.Android,
         "XR SDK Oculus Device Manager",
-        "Oculus/XRSDK/Profiles/DefaultOculusXRSDKDeviceManagerProfile.asset",
+        "Oculus/XRSDK/Profiles/OculusXRSDKDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers")]
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
@@ -347,4 +347,3 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 #endif
     }
 }
-
