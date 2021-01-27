@@ -17,13 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.Android,
-<<<<<<< HEAD
-        "XRSDK Oculus Device Manager")]
-=======
         "XR SDK Oculus Device Manager",
         "Oculus/XRSDK/Profiles/DefaultOculusXRSDKDeviceManagerProfile.asset",
         "MixedRealityToolkit.Providers")]
->>>>>>> 8fef1971e5... Updated XR SDK documentation (#9173)
     public class OculusXRSDKDeviceManager : XRSDKDeviceManager
     {
         /// <summary>

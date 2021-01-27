@@ -69,11 +69,7 @@ to "Controllers and Hands".
 
         ![OculusAddXRSDKDataProvider](../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png)
 
-<<<<<<< HEAD
-    - You can verify that the Oculus Controllers are detected by 
-=======
 1. The Oculus XR SDK Data Provider includes an OVR Camera Rig Prefab which automatically configures the project with an OVR Camera Rig and OVR Hands to properly route input. Manually adding an OVR Camera Rig to the scene will require manual configuration of settings and input.
->>>>>>> 8fef1971e5... Updated XR SDK documentation (#9173)
 
 ## Build and deploy your project to Oculus Quest
 1. Plug in your Oculus Quest via a USB 3.0 -> USB C cable
