@@ -94,33 +94,11 @@
 <p>XR SDK is Unity's <a href="https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/">new XR pipeline in Unity 2019.3 and beyond</a>. In Unity 2019, it provides an alternative to the existing XR pipeline. In Unity 2020, it will become the only XR pipeline in Unity.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>To get started with the Mixed Reality Toolkit, follow <a href="WelcomeToMRTK.html">the provided steps</a> to add MRTK to a project.</p>
-<h2 id="add-xr-sdk-to-a-unity-project">Add XR SDK to a Unity project</h2>
-<p>Windows Mixed Reality, Oculus, and OpenXR are supported on XR SDK.</p>
-<h3 id="required-in-unity">Required in Unity</h3>
-<h4 id="openxr-preview">OpenXR (Preview)</h4>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
-<p>Currently, it also only supports x64 and ARM64 builds.</p>
-</div>
-<ol>
-<li>Follow the <a href="https://aka.ms/openxr-unity-install">Using the Mixed Reality OpenXR Plugin for Unity</a> guide, including the steps for configuring XR Plugin Management and Optimization to install the OpenXR plug-in to your project.</li>
-<li>Ensure that the following have successfully installed:
-<ol>
-<li>XR Plugin Management</li>
-<li>OpenXR Plugin</li>
-<li>Mixed Reality OpenXR Plugin</li>
-</ol>
-</li>
-</ol>
-<div class="NOTE">
-<h5>Note</h5>
-<p>For the initial release of MRTK and OpenXR, only the HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be added in upcoming releases.</p>
-</div>
-<p><img src="Images/XRSDK/PluginManagementOpenXR.png" alt="Plugin management"></p>
+<h2 id="configuring-unity-for-the-xr-sdk-pipeline">Configuring Unity for the XR SDK pipeline</h2>
+<p>The XR SDK pipeline currently supports 3 platforms: Windows Mixed Reality, Oculus, and OpenXR. The sections below will cover the steps needed to configure XR SDK for each platform.</p>
 <h4 id="windows-mixed-reality">Windows Mixed Reality</h4>
 <ol>
-<li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following all successfully installed:
+<li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure that the following all successfully installed:
 <ol>
 <li>XR Plugin Management</li>
 <li>Windows XR Plugin</li>
@@ -135,7 +113,40 @@
 <li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plug-in Management and create a custom settings profile to change the defaults. If the list of settings are already there, no profile needs to be created.</li>
 </ol>
 <p><img src="Images/XRSDK/PluginManagement.png" alt="Plugin management"></p>
-<h3 id="required-in-mrtk">Required in MRTK</h3>
+<h4 id="oculus">Oculus</h4>
+<ol>
+<li>Follow the <a href="CrossPlatform/OculusQuestMRTK.html">How to configure Oculus Quest in MRTK using the XR SDK pipeline</a> guide to the end. The guide outlines the steps needed to configure both Unity and MRTK to use the XR SDK pipeline for the Oculus Quest.</li>
+</ol>
+<h4 id="openxr-preview">OpenXR (Preview)</h4>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>OpenXR in Unity is only supported on Unity 2020.2 and higher.</p>
+<p>Currently, it also only supports x64 and ARM64 builds.</p>
+</div>
+<ol>
+<li>Follow the <a href="https://aka.ms/openxr-unity-install">Using the Mixed Reality OpenXR Plugin for Unity</a> guide, including the steps for configuring XR Plugin Management and Optimization to install the OpenXR plug-in to your project. Ensure that the following have successfully installed:
+<ol>
+<li>XR Plugin Management</li>
+<li>OpenXR Plugin</li>
+<li>Mixed Reality OpenXR Plugin</li>
+</ol>
+</li>
+<li>Go to Edit &gt; Project Settings.</li>
+<li>Click on the XR Plug-in Management tab in the Project Settings window.</li>
+<li>Ensure that Initialize XR on Startup is checked.</li>
+<li>(<strong><em>Optional</em></strong>) If targeting HoloLens 2, make sure you're on the UWP platform and select Microsoft HoloLens Feature Set</li>
+</ol>
+<p><img src="Images/XRSDK/PluginManagementOpenXR.png" alt="Plugin management"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If you have a pre-existing project that is using MRTK from UPM, make sure that the following line is in the <strong>link.xml</strong> file located in the MixedRealityToolkit.Generated folder.</p>
+</div>
+<p><code>&lt;assembly fullname = &quot;Microsoft.MixedReality.Toolkit.Providers.OpenXR&quot; preserve=&quot;all&quot;/&gt;</code></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>For the initial release of MRTK and OpenXR, only the HoloLens 2 articulated hands and Windows Mixed Reality motion controllers are natively supported. Support for additional hardware will be added in upcoming releases.</p>
+</div>
+<h3 id="configuring-mrtk-for-the-xr-sdk-pipeline">Configuring MRTK for the XR SDK pipeline</h3>
 <p>If using OpenXR, choose &quot;DefaultOpenXRConfigurationProfile&quot; as the active profile or clone it to make customizations.</p>
 <p>If using other XR runtimes in the XR Plug-in Management configuration, like Windows Mixed Reality or Oculus, choose &quot;DefaultXRSDKConfigurationProfile&quot; as the active profile or clone it to make customizations.</p>
 <p>These profiles are set up with the correct systems and providers, where needed.</p>
