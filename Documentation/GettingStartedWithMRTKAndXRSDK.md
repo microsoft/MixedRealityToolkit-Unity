@@ -48,7 +48,7 @@ The XR SDK pipeline currently supports 3 platforms: Windows Mixed Reality, Oculu
 ![Plugin management](Images/XRSDK/PluginManagementOpenXR.png)
 
 > [!NOTE] 
-> If you have a pre-existing project that is using MRTK, make sure that the following line is in the **link.xml** file located in the MixedRealityToolkit.Generated folder.
+> If you have a pre-existing project that is using MRTK from UPM, make sure that the following line is in the **link.xml** file located in the MixedRealityToolkit.Generated folder.
    
 `<assembly fullname = "Microsoft.MixedReality.Toolkit.Providers.OpenXR" preserve="all"/>`
 
