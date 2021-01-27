@@ -57,14 +57,20 @@ namespace Microsoft.MixedReality.Toolkit
                     return false;
                 }
 
-                return ActiveProfile;
+                return ActiveProfile != null;
             }
         }
 
         /// <summary>
         /// Returns true if this is the active instance.
         /// </summary>
-        public bool IsActiveInstance => activeInstance == this;
+        public bool IsActiveInstance
+        {
+            get
+            {
+                return activeInstance == this;
+            }
+        }
 
         private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
 
@@ -93,11 +99,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
-            get => activeProfile;
+            get
+            {
+                return activeProfile;
+            }
             set
             {
                 // Behavior during a valid runtime profile switch
-                if (Application.isPlaying && activeProfile && value)
+                if (Application.isPlaying && activeProfile != null && value != null)
                 {
                     newProfile = value;
                 }
@@ -147,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             InitializeServiceLocator();
 
-            if (profile && Application.IsPlaying(profile))
+            if (profile != null && Application.IsPlaying(profile))
             {
                 EnableAllServices();
             }
@@ -155,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void RemoveCurrentProfile(MixedRealityToolkitConfigurationProfile profile)
         {
-            if (activeProfile)
+            if (activeProfile != null)
             {
                 // Services are only enabled when playing.
                 if (Application.IsPlaying(activeProfile))
@@ -167,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             activeProfile = profile;
 
-            if (profile)
+            if (profile != null)
             {
                 if (Application.IsPlaying(profile))
                 {
@@ -342,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit
             Type interfaceType = typeof(T);
             if (typeof(IMixedRealityDataProvider).IsAssignableFrom(interfaceType))
             {
-                Debug.LogWarning($"Unable to check a service of type {nameof(IMixedRealityDataProvider)}. Inquire with the MixedRealityService that registered the DataProvider type in question");
+                Debug.LogWarning($"Unable to check a service of type {typeof(IMixedRealityDataProvider).Name}. Inquire with the MixedRealityService that registered the DataProvider type in question");
                 return false;
             }
 
@@ -382,7 +391,7 @@ namespace Microsoft.MixedReality.Toolkit
             isInitializing = true;
 
             // If the Mixed Reality Toolkit is not configured, stop.
-            if (!ActiveProfile)
+            if (ActiveProfile == null)
             {
                 if (!Application.isPlaying)
                 {
@@ -619,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get
             {
-                if (activeInstance)
+                if (activeInstance != null)
                 {
                     return activeInstance;
                 }
@@ -709,7 +718,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 // Before any Update() of a service is performed check to see if we need to switch profile
                 // If so we instantiate and initialize the services associated with the new profile.
-                if (newProfile && IsProfileSwitching)
+                if (newProfile != null && IsProfileSwitching)
                 {
                     InitializeNewProfile(newProfile);
                     newProfile = null;
@@ -726,7 +735,7 @@ namespace Microsoft.MixedReality.Toolkit
                 LateUpdateAllServices();
                 // After LateUpdate()s of all services are finished check to see if we need to switch profile
                 // If so we destroy currently running services.
-                if (newProfile)
+                if (newProfile != null)
                 {
                     IsProfileSwitching = true;
                     RemoveCurrentProfile(newProfile);
@@ -753,11 +762,11 @@ namespace Microsoft.MixedReality.Toolkit
 
         private const string activeInstanceGameObjectName = "MixedRealityToolkit";
         private const string inactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
-        private static readonly List<MixedRealityToolkit> toolkitInstances = new List<MixedRealityToolkit>();
+        private static List<MixedRealityToolkit> toolkitInstances = new List<MixedRealityToolkit>();
 
         public static void SetActiveInstance(MixedRealityToolkit toolkitInstance)
         {
-            if (isApplicationQuitting)
+            if (MixedRealityToolkit.isApplicationQuitting)
             {   // Don't register instances while application is quitting
                 return;
             }
@@ -791,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit
                 toolkitInstances.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
             }
 
-            if (!activeInstance)
+            if (activeInstance == null)
             {
                 // If we don't have an active instance, either set this instance
                 // to be the active instance if requested, or get the first valid remaining instance
@@ -804,7 +813,7 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     for (int i = 0; i < toolkitInstances.Count; i++)
                     {
-                        if (toolkitInstances[i])
+                        if (toolkitInstances[i] != null)
                         {
                             activeInstance = toolkitInstances[i];
                             break;
@@ -819,7 +828,7 @@ namespace Microsoft.MixedReality.Toolkit
             // Update instance's Name so it's clear who is the active instance
             for (int i = toolkitInstances.Count - 1; i >= 0; i--)
             {
-                if (!toolkitInstances[i])
+                if (toolkitInstances[i] == null)
                 {
                     toolkitInstances.RemoveAt(i);
                 }
@@ -839,14 +848,14 @@ namespace Microsoft.MixedReality.Toolkit
             // Sort the list by instance ID so we get deterministic results when selecting our next active instance
             toolkitInstances.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
 
-            if (activeInstance == toolkitInstance)
+            if (MixedRealityToolkit.activeInstance == toolkitInstance)
             {   // If this is the active instance, we need to break it down
                 toolkitInstance.DestroyAllServices();
                 CoreServices.ResetCacheReferences();
 
                 // If this was the active instance, unregister the active instance
-                activeInstance = null;
-                if (isApplicationQuitting)
+                MixedRealityToolkit.activeInstance = null;
+                if (MixedRealityToolkit.isApplicationQuitting)
                 {   // Don't search for additional instances if we're quitting
                     return;
                 }
@@ -866,7 +875,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         public static void SetInstanceInactive(MixedRealityToolkit toolkitInstance)
         {
-            if (!toolkitInstance)
+            if (toolkitInstance == null)
             {   // Don't do anything.
                 return;
             }
@@ -884,7 +893,7 @@ namespace Microsoft.MixedReality.Toolkit
                 CoreServices.ResetCacheReferences();
 
                 // If this was the active instance, unregister the active instance
-                activeInstance = null;
+                MixedRealityToolkit.activeInstance = null;
             }
         }
 
@@ -1053,7 +1062,7 @@ namespace Microsoft.MixedReality.Toolkit
             using (LateUpdateAllServicesPerfMarker.Auto())
             {
                 // If the Mixed Reality Toolkit is not configured, stop.
-                if (!activeProfile) { return; }
+                if (activeProfile == null) { return; }
 
                 // If the Mixed Reality Toolkit is not initialized, stop.
                 if (!IsInitialized) { return; }
@@ -1235,6 +1244,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Retrieve the first service from the registry that meets the selected type and name
         /// </summary>
+        /// <param name="interfaceType">Interface type of the service being requested</param>
         /// <param name="serviceName">Name of the specific service</param>
         /// <param name="serviceInstance">return parameter of the function</param>
         private T GetServiceByName<T>(string serviceName) where T : IMixedRealityService
@@ -1245,13 +1255,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets all services by type and name.
         /// </summary>
-        /// <param name="interfaceType">Interface type of the service being requested</param>
         /// <param name="serviceName">The name of the service to search for. If the string is empty than any matching <see cref="interfaceType"/> will be added to the <see cref="services"/> list.</param>
         private IReadOnlyList<T> GetAllServicesByNameInternal<T>(Type interfaceType, string serviceName) where T : IMixedRealityService
         {
             List<T> services = new List<T>();
 
-            if (!CanGetService(interfaceType)) { return new List<T>(); }
+            if (!CanGetService(interfaceType)) { return new List<T>() as IReadOnlyList<T>; }
 
             bool isNullServiceName = string.IsNullOrEmpty(serviceName);
             var systems = MixedRealityServiceRegistry.GetAllServices();
@@ -1323,7 +1332,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (!typeof(IMixedRealityService).IsAssignableFrom(interfaceType))
             {
-                Debug.LogError($"{interfaceType.Name} does not implement {nameof(IMixedRealityService)}.");
+                Debug.LogError($"{interfaceType.Name} does not implement {typeof(IMixedRealityService).Name}.");
                 return false;
             }
 

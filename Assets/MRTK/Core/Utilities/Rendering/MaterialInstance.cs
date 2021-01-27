@@ -13,87 +13,23 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Rendering
 {
     /// <summary>
-    /// The MaterialInstance behavior aides in tracking instance material lifetime and automatically destroys instanced
-    /// materials for the user.
-    /// This utility component can be used as a replacement to
-    /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see> or
-    /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>. When
-    /// invoking Unity's Renderer.material(s), Unity
-    /// automatically instantiates new materials. It is the caller's responsibility to destroy the materials when a
-    /// material is no longer needed or the game object is
-    /// destroyed. The MaterialInstance behavior helps avoid material leaks and keeps material allocation paths consistent
-    /// during edit and run time.
+    /// The MaterialInstance behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. 
+    /// This utility component can be used as a replacement to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see> or 
+    /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>. When invoking Unity's Renderer.material(s), Unity 
+    /// automatically instantiates new materials. It is the caller's responsibility to destroy the materials when a material is no longer needed or the game object is 
+    /// destroyed. The MaterialInstance behavior helps avoid material leaks and keeps material allocation paths consistent during edit and run time.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/MaterialInstance.html")]
-    [ExecuteAlways]
-    [RequireComponent(typeof(Renderer))]
+    [ExecuteAlways, RequireComponent(typeof(Renderer))]
     [AddComponentMenu("Scripts/MRTK/Core/MaterialInstance")]
     public class MaterialInstance : MonoBehaviour
     {
-        private const string InstancePostfix = " (Instance)";
-
-        [SerializeField]
-        [HideInInspector]
-        private Material[] defaultMaterials;
-
-        private readonly HashSet<Object> _materialOwners = new HashSet<Object>();
-
-        private Renderer _cachedRenderer;
-
-        private Material[] _cachedSharedMaterials;
-        private bool _initialized;
-
-        private Material[] _instanceMaterials;
-        private bool _materialsInstanced;
-
         /// <summary>
-        /// Returns the first instantiated Material assigned to the renderer, similar to
-        /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>.
-        /// </summary>
-        public Material Material => AcquireMaterial();
-
-        /// <summary>
-        /// Returns all the instantiated materials of this object, similar to
-        /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>.
-        /// </summary>
-        public Material[] Materials => AcquireMaterials();
-
-        private Renderer CachedRenderer
-        {
-            get
-            {
-                if (_cachedRenderer)
-                {
-                    return _cachedRenderer;
-                }
-
-                _cachedRenderer = GetComponent<Renderer>();
-                _cachedSharedMaterials = _cachedRenderer.sharedMaterials;
-
-                return _cachedRenderer;
-            }
-        }
-
-        private Material[] CachedSharedMaterials
-        {
-            get => _cachedSharedMaterials;
-            set
-            {
-                _cachedSharedMaterials = value;
-                _cachedRenderer.sharedMaterials = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Returns the first instantiated Material assigned to the renderer, similar to
-        /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>.
-        /// If any owner is specified the instanced material(s) will not be released until all owners are released. When a
-        /// material
+        /// Returns the first instantiated Material assigned to the renderer, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>. 
+        /// If any owner is specified the instanced material(s) will not be released until all owners are released. When a material
         /// is no longer needed ReleaseMaterial should be called with the matching owner.
         /// </summary>
         /// <param name="owner">An optional owner to track instance ownership.</param>
-        /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <returns>The first instantiated Material.</returns>
         public Material AcquireMaterial(Object owner = null, bool instance = true)
         {
@@ -111,10 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         }
 
         /// <summary>
-        /// Returns all the instantiated materials of this object, similar to
-        /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>.
-        /// If any owner is specified the instanced material(s) will not be released until all owners are released. When a
-        /// material
+        /// Returns all the instantiated materials of this object, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>. 
+        /// If any owner is specified the instanced material(s) will not be released until all owners are released. When a material
         /// is no longer needed ReleaseMaterial should be called with the matching owner.
         /// </summary>
         /// <param name="owner">An optional owner to track instance ownership.</param>
@@ -140,55 +74,165 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// after acquire ownership with AcquireMaterial(s).
         /// </summary>
         /// <param name="owner">The same owner which originally acquire ownership via AcquireMaterial(s).</param>
+        /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <param name="autoDestroy">When ownership count hits zero should the MaterialInstance component be destroyed?</param>
         public void ReleaseMaterial(Object owner, bool autoDestroy = true)
         {
             _materialOwners.Remove(owner);
 
-            if (!autoDestroy || _materialOwners.Count != 0)
+            if (autoDestroy && _materialOwners.Count == 0)
             {
-                return;
+                DestroySafe(this);
+
+                // OnDestroy not called on inactive objects
+                if (!gameObject.activeInHierarchy)
+                {
+                    RestoreRenderer();
+                }
             }
+        }
+        
+        /// <summary>
+        /// Returns the first instantiated Material assigned to the renderer, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>.
+        /// </summary>
+        public Material Material => AcquireMaterial();
 
-            DestroySafe(this);
+        /// <summary>
+        /// Returns all the instantiated materials of this object, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>.
+        /// </summary>
+        public Material[] Materials => AcquireMaterials();
 
-            // OnDestroy not called on inactive objects
-            if (!gameObject.activeInHierarchy)
+        private Renderer CachedRenderer
+        {
+            get
             {
-                RestoreRenderer();
+                if (!_cachedRenderer)
+                {
+                    _cachedRenderer = GetComponent<Renderer>();
+                    _cachedSharedMaterials = _cachedRenderer.sharedMaterials;
+
+                    return _cachedRenderer;
+                }
+
+                return _cachedRenderer;
             }
         }
 
-        private void Initialize()
+        private Material[] CachedSharedMaterials
         {
-            if (_initialized || !CachedRenderer)
+            get => _cachedSharedMaterials;
+            set
             {
-                return;
+                _cachedSharedMaterials = value;
+                _cachedRenderer.sharedMaterials = value;
             }
+        }
+        
+        
+        private Renderer _cachedRenderer;
 
-            // Cache the default materials if ones do not already exist.
-            if (!HasValidMaterial(defaultMaterials))
+        [SerializeField]
+        [HideInInspector]
+        private Material[] defaultMaterials;
+        private Material[] _instanceMaterials;
+        private Material[] _cachedSharedMaterials;
+        private bool _initialized;
+        private bool _materialsInstanced;
+        private readonly HashSet<Object> _materialOwners = new HashSet<Object>();
+
+        private const string InstancePostfix = " (Instance)";
+        
+        #region MonoBehaviour Implementation
+
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        private void Update()
+        {
+            // If the materials get changed via outside of MaterialInstance.
+            var sharedMaterials = CachedSharedMaterials;
+
+            if (!MaterialsMatch(sharedMaterials, _instanceMaterials))
             {
-                defaultMaterials = CachedSharedMaterials;
+                // Re-create the material instances.
+                var newDefaultMaterials = new Material[sharedMaterials.Length];
+                var min = Math.Min(newDefaultMaterials.Length, defaultMaterials.Length);
+
+                // Copy the old defaults.
+                for (var i = 0; i < min; ++i)
+                {
+                    newDefaultMaterials[i] = defaultMaterials[i];
+                }
+
+                // Patch in the new defaults.
+                for (var i = 0; i < newDefaultMaterials.Length; ++i)
+                {
+                    var material = sharedMaterials[i];
+
+                    if (!IsInstanceMaterial(material))
+                    {
+                        newDefaultMaterials[i] = material;
+                    }
+                }
+
+                defaultMaterials = newDefaultMaterials;
+                CreateInstances();
+
+                // Notify owners of the change.
+                foreach (var owner in _materialOwners)
+                {
+                    (owner as IMaterialInstanceOwner)?.OnMaterialChanged(this);
+                }
             }
-            else if (!_materialsInstanced) // Restore the clone to its initial state.
+        }
+
+        private void OnDestroy()
+        {
+            RestoreRenderer();
+        }
+
+        private void RestoreRenderer()
+        {
+            if (CachedRenderer && defaultMaterials != null)
             {
                 CachedSharedMaterials = defaultMaterials;
             }
 
-            _initialized = true;
+            DestroyMaterials(_instanceMaterials);
+            _instanceMaterials = null;
+        }
+
+        #endregion MonoBehaviour Implementation
+
+
+        private void Initialize()
+        {
+            if (!_initialized && CachedRenderer)
+            {
+                // Cache the default materials if ones do not already exist.
+                if (!HasValidMaterial(defaultMaterials))
+                {
+                    defaultMaterials = CachedSharedMaterials;
+                }
+                else if (!_materialsInstanced) // Restore the clone to its initial state.
+                {
+                    CachedSharedMaterials = defaultMaterials;
+                }
+
+                _initialized = true;
+            }
         }
 
         private void AcquireInstances()
         {
-            if (!CachedRenderer)
+            if (CachedRenderer)
             {
-                return;
-            }
-
-            if (!MaterialsMatch(CachedSharedMaterials, _instanceMaterials))
-            {
-                CreateInstances();
+                if (!MaterialsMatch(CachedSharedMaterials, _instanceMaterials))
+                {
+                    CreateInstances();
+                }
             }
         }
 
@@ -235,17 +279,16 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             for (var i = 0; i < source.Length; ++i)
             {
-                if (!source[i])
-                    continue;
-
-                if (IsInstanceMaterial(source[i]))
+                if (source[i])
                 {
-                    Debug.LogWarning(
-                        $"A material ({source[i].name}) which is already instanced was instanced multiple times.");
-                }
+                    if (IsInstanceMaterial(source[i]))
+                    {
+                        Debug.LogWarning($"A material ({source[i].name}) which is already instanced was instanced multiple times.");
+                    }
 
-                output[i] = new Material(source[i]);
-                output[i].name = $"{output[i].name}{InstancePostfix}";
+                    output[i] = new Material(source[i]);
+                    output[i].name = $"{output[i].name}{InstancePostfix}";
+                }
             }
 
             return output;
@@ -253,14 +296,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private static void DestroyMaterials(Material[] materials)
         {
-            if (materials == null)
+            if (materials != null)
             {
-                return;
-            }
-
-            foreach (var material in materials)
-            {
-                DestroySafe(material);
+                foreach (var material in materials)
+                {
+                    DestroySafe(material);
+                }
             }
         }
 
@@ -271,15 +312,17 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private static bool HasValidMaterial(Material[] materials)
         {
-            if (materials == null)
+            if (materials != null)
             {
-                return false;
-            }
+                foreach (var material in materials)
+                {
+                    if (material)
+                    {
+                        return true;
+                    }
+                }
 
-            foreach (var material in materials)
-            {
-                if (material)
-                    return true;
+                return false;
             }
 
             return false;
@@ -287,94 +330,28 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private static void DestroySafe(Object toDestroy)
         {
-            if (!toDestroy)
+            if (toDestroy)
             {
-                return;
-            }
-
-            if (Application.isPlaying)
-            {
-                Destroy(toDestroy);
-            }
-            else
-            {
-#if UNITY_EDITOR
-                // Let Unity handle unload of unused assets if lifecycle is transitioning from editor to play mode
-                // Defering the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
-                if (!EditorApplication.isPlayingOrWillChangePlaymode)
-                    EditorApplication.delayCall += () =>
-                    {
-                        if (toDestroy != null)
-                            DestroyImmediate(toDestroy);
-                    };
-#endif
-            }
-        }
-
-        #region MonoBehaviour Implementation
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
-        private void Update()
-        {
-            // If the materials get changed via outside of MaterialInstance.
-            var sharedMaterials = CachedSharedMaterials;
-
-            if (MaterialsMatch(sharedMaterials, _instanceMaterials))
-            {
-                return;
-            }
-
-            // Re-create the material instances.
-            var newDefaultMaterials = new Material[sharedMaterials.Length];
-            var min = Math.Min(newDefaultMaterials.Length, defaultMaterials.Length);
-
-            // Copy the old defaults.
-            for (var i = 0; i < min; ++i)
-            {
-                newDefaultMaterials[i] = defaultMaterials[i];
-            }
-
-            // Patch in the new defaults.
-            for (var i = 0; i < newDefaultMaterials.Length; ++i)
-            {
-                var material = sharedMaterials[i];
-
-                if (!IsInstanceMaterial(material))
+                if (Application.isPlaying)
                 {
-                    newDefaultMaterials[i] = material;
+                    Destroy(toDestroy);
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    // Let Unity handle unload of unused assets if lifecycle is transitioning from editor to play mode
+                    // Defering the call during this transition would destroy reference only after play mode Awake, leading to possible broken material references on TMPro objects
+                    if (!EditorApplication.isPlayingOrWillChangePlaymode)
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (toDestroy != null)
+                                DestroyImmediate(toDestroy);
+                        };
+                    }
+#endif
                 }
             }
-
-            defaultMaterials = newDefaultMaterials;
-            CreateInstances();
-
-            // Notify owners of the change.
-            foreach (var owner in _materialOwners)
-            {
-                (owner as IMaterialInstanceOwner)?.OnMaterialChanged(this);
-            }
         }
-
-        private void OnDestroy()
-        {
-            RestoreRenderer();
-        }
-
-        private void RestoreRenderer()
-        {
-            if (CachedRenderer && defaultMaterials != null)
-            {
-                CachedSharedMaterials = defaultMaterials;
-            }
-
-            DestroyMaterials(_instanceMaterials);
-            _instanceMaterials = null;
-        }
-
-        #endregion MonoBehaviour Implementation
     }
 }

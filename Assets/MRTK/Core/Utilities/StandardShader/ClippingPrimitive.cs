@@ -65,12 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get => applyToSharedMaterial;
             set
             {
-                if (value == applyToSharedMaterial)
-                    return;
+                if (value != applyToSharedMaterial)
+                {
+                    if (_renderers.Count > 0)
+                    {
+                        throw new InvalidOperationException("Cannot change material applied to after renderers have been added.");
+                    }
 
-                if (_renderers.Count > 0)
-                    throw new InvalidOperationException("Cannot change material applied to after renderers have been added.");
-                applyToSharedMaterial = value;
+                    applyToSharedMaterial = value;
+                }
             }
         }
 
@@ -140,27 +143,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="renderer">The renderer to add.</param>
         public void AddRenderer(Renderer renderer)
         {
-            if (!renderer)
+            if (renderer)
             {
-                return;
+                if (_renderers.ContainsKey(renderer))
+                {
+                    return;
+                }
+
+                var materialInstance = renderer.EnsureComponent<MaterialInstance>();
+                if (!materialInstance)
+                {
+                    return;
+                }
+
+                _renderers.Add(renderer, materialInstance);
+
+                var materials = materialInstance.AcquireMaterials(this);
+                ToggleClippingFeature(materials, gameObject.activeInHierarchy);
+                IsDirty = true;
             }
-
-            if (_renderers.ContainsKey(renderer))
-            {
-                return;
-            }
-
-            var materialInstance = renderer.EnsureComponent<MaterialInstance>();
-            if (!materialInstance)
-            {
-                return;
-            }
-
-            _renderers.Add(renderer, materialInstance);
-
-            var materials = materialInstance.AcquireMaterials(this);
-            ToggleClippingFeature(materials, gameObject.activeInHierarchy);
-            IsDirty = true;
         }
 
         /// <summary>
@@ -168,23 +169,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public void RemoveRenderer(Renderer renderer)
         {
-            if (!renderer)
+            if (renderer)
             {
-                return;
+                _renderers.TryGetValue(renderer, out var materialInstance);
+                _renderers.Remove(renderer);
+
+                if (!materialInstance)
+                {
+                    return;
+                }
+
+                // There is no need to acquire new instances if ones do not already exist since we are 
+                // in the process of removing.
+                ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
+                materialInstance.ReleaseMaterial(this);
             }
-
-            _renderers.TryGetValue(renderer, out var materialInstance);
-            _renderers.Remove(renderer);
-
-            if (!materialInstance)
-            {
-                return;
-            }
-
-            // There is no need to acquire new instances if ones do not already exist since we are 
-            // in the process of removing.
-            ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
-            materialInstance.ReleaseMaterial(this);
         }
 
         /// <summary>
@@ -192,18 +191,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public void ClearRenderers()
         {
-            if (_renderers.Count <= 0)
+            if (_renderers.Count > 0)
             {
-                return;
-            }
+                renderersCache.AddRange(_renderers.Keys);
+                foreach (var renderer in renderersCache)
+                {
+                    RemoveRenderer(renderer);
+                }
 
-            renderersCache.AddRange(_renderers.Keys);
-            foreach (var renderer in renderersCache)
-            {
-                RemoveRenderer(renderer);
+                renderersCache.Clear();
             }
-            
-            renderersCache.Clear();
         }
 
         /// <summary>
@@ -356,58 +353,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void ToggleClippingFeature(bool keywordOn)
         {
-            if (_renderers.Count <= 0)
-                return;
-
-            foreach (var cachedRenderer in _renderers.Keys)
-            {
-
-                if (cachedRenderer)
+            if (_renderers.Count > 0)
+                foreach (var cachedRenderer in _renderers.Keys)
                 {
-                    ToggleClippingFeature(AcquireMaterials(cachedRenderer), keywordOn);
+                    if (cachedRenderer)
+                    {
+                        ToggleClippingFeature(AcquireMaterials(cachedRenderer), keywordOn);
+                    }
                 }
-            }
         }
 
         protected void ToggleClippingFeature(Material[] materials, bool keywordOn)
         {
-            if (materials == null)
-            {
-                return;
-            }
-
-            foreach (var material in materials)
-            {
-                ToggleClippingFeature(material, keywordOn);
-            }
+            if (materials != null)
+                foreach (var material in materials)
+                {
+                    ToggleClippingFeature(material, keywordOn);
+                }
         }
 
         protected void ToggleClippingFeature(Material material, bool keywordOn)
         {
-            if (!material)
+            if (material)
             {
-                return;
-            }
-
-            if (keywordOn)
-            {
-                material.EnableKeyword(Keyword);
-            }
-            else
-            {
-                material.DisableKeyword(Keyword);
+                if (keywordOn)
+                {
+                    material.EnableKeyword(Keyword);
+                }
+                else
+                {
+                    material.DisableKeyword(Keyword);
+                }
             }
         }
 
         private void CheckTransformChange()
         {
-            if (!transform.hasChanged)
+            if (transform.hasChanged)
             {
-                return;
+                IsDirty = true;
+                transform.hasChanged = false;
             }
-
-            IsDirty = true;
-            transform.hasChanged = false;
         }
     }
 }
