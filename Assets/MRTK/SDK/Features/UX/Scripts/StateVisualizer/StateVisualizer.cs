@@ -7,7 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+
+#if UNITY_EDITOR
 using UnityEditor.Animations;
+#endif
 using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
@@ -76,12 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         // The state manager within the Interactive Element
         private StateManager stateManager;
 
+#if UNITY_EDITOR
         // The animator state machine 
         public AnimatorStateMachine RootStateMachine;
 
-        public AnimatorController AnimatorController;
-
-        private string animationDirectoryPath;
+        // Editor animation controller
+        public AnimatorController EditorAnimatorController;
+#endif
 
         private void OnValidate()
         {
@@ -106,26 +110,26 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         private void Start()
         {
-            if (InteractiveElement == null)
-            {
-                InteractiveElement = gameObject.AddComponent<InteractiveElement>();
+            // If interactive element is null, then the component has not been initialized via inspector
+            if (InteractiveElement != null)
+            {                
+                stateManager = InteractiveElement.StateManager;
+
+                InitializeStateContainers();
+
+                stateManager.OnStateActivated.AddListener((state) =>
+                {
+                    Animator.SetTrigger("On" + state.Name);
+                });
             }
-
-            stateManager = InteractiveElement.StateManager;
-
-            InitializeStateContainers();
-
-            if (AnimatorController == null)
+            else
             {
-                InitializeAnimatorControllerAsset();
+                Debug.LogError("The State Visualizer currently must be initialized via inspector as the animation clips" +
+                    "for each state are added to an Editor Animation Controller.");
             }
-
-            stateManager.OnStateActivated.AddListener((state) =>
-            {
-                Animator.SetTrigger("On" + state.Name);
-            });
         }
 
+#if UNITY_EDITOR
         #region Animator State Methods
 
         /// <summary>
@@ -136,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             // Update Animation Clip References
             RootStateMachine = animatorController.layers[0].stateMachine;
-            AnimatorController = animatorController;
+            EditorAnimatorController = animatorController;
 
             foreach (var stateContainer in StateContainers)
             {
@@ -193,12 +197,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         private void AddAnimationClip(AnimatorState animatorState)
         {
+            string animationAssetPath = GetAnimationDirectoryPath();
+
             AnimationClip stateAnimationClip = new AnimationClip();
             stateAnimationClip.name = gameObject.name + "_" + animatorState.name + "Clip";
 
             string animationClipFileName = stateAnimationClip.name + ".anim";
 
-            AssetDatabase.CreateAsset(stateAnimationClip, animationDirectoryPath + "/" + animationClipFileName);
+            AssetDatabase.CreateAsset(stateAnimationClip, animationAssetPath + "/" + animationClipFileName);
 
             animatorState.motion = stateAnimationClip;
 
@@ -233,9 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         /// Creates and returns the path to a directory for the animation controller and animation clips assets. 
         /// </summary>
         /// <returns>Returns path to the animation controller and animation clip assets</returns>
-        private string CreateAnimationDirectoryPath()
+        private string GetAnimationDirectoryPath()
         {
-            animationDirectoryPath = Path.Combine("Assets", "MixedRealityToolkit.Generated", "MRTK_Animations");
+            string animationDirectoryPath = Path.Combine("Assets", "MixedRealityToolkit.Generated", "MRTK_Animations");
 
             // If the animation directory path does not exist, then create a new directory
             if (!Directory.Exists(animationDirectoryPath))
@@ -246,25 +252,27 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             return animationDirectoryPath;
         }
 
+
         // Create a new animator controller asset and add it to the MixedRealityToolkit.Generated folder. 
         // Then set up the state machine for the animator controller.
         internal void InitializeAnimatorControllerAsset()
         {
             // Create MRTK_Animation Directory if it does not exist
-            string animationAssetDirectory = CreateAnimationDirectoryPath();
+            string animationAssetDirectory = GetAnimationDirectoryPath();
             string animatorControllerName = gameObject.name + ".controller";
             string animationControllerPath = Path.Combine(animationAssetDirectory, animatorControllerName);
 
             // Create Animation Controller 
-            AnimatorController = AnimatorController.CreateAnimatorControllerAtPath(animationControllerPath);
+            EditorAnimatorController = AnimatorController.CreateAnimatorControllerAtPath(animationControllerPath);
 
             // Set the runtime animation controller 
-            gameObject.GetComponent<Animator>().runtimeAnimatorController = AnimatorController;
+            gameObject.GetComponent<Animator>().runtimeAnimatorController = EditorAnimatorController;
 
-            SetUpStateMachine(AnimatorController);
+            SetUpStateMachine(EditorAnimatorController);
         }
 
         #endregion
+#endif
 
         #region State Container Methods
 
@@ -327,6 +335,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             StateContainers.Add(stateContainer);
         }
 
+
+#if UNITY_EDITOR
         /// <summary>
         /// Update the state containers in the state visualizer to match the states in InteractiveElement.  Used in the StateVisualizerInspector.
         /// </summary>
@@ -357,8 +367,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
                 RemoveAnimatorState(RootStateMachine, stateAni);
             }
         }
-
+#endif
         #endregion
+
 
         #region Helper Methods
 
@@ -473,6 +484,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         }
 
         /// <summary>
+        /// Set the animation clip for a state.
+        /// </summary>
+        /// <param name="stateName">The name of the state</param>
+        /// <param name="animationClip">The animation clip to set</param>
+        public void SetAnimationClip(string stateName, AnimationClip animationClip)
+        {
+            StateContainer stateContainer = GetStateContainer(stateName);
+            stateContainer.AnimationClip = animationClip;
+        }
+
+
+#if UNITY_EDITOR
+        /// <summary>
         /// Set the AnimationTransitionDuration for a state.
         /// </summary>
         /// <param name="stateName">The name of the state</param>
@@ -489,16 +513,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             stateContainer.AnimationTransitionDuration = transitionDurationValue;
         }
 
-        /// <summary>
-        /// Set the animation clip for a state.
-        /// </summary>
-        /// <param name="stateName">The name of the state</param>
-        /// <param name="animationClip">The animation clip to set</param>
-        public void SetAnimationClip(string stateName, AnimationClip animationClip)
-        {
-            StateContainer stateContainer = GetStateContainer(stateName);
-            stateContainer.AnimationClip = animationClip;
-        }
 
         /// <summary>
         /// Get an animator state in the animator state machine by state name.
@@ -509,6 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
         {
             return Array.Find(RootStateMachine.states, (animatorState) => animatorState.state.name == animatorStateName).state;
         }
+#endif
 
         internal StateAnimatableProperty CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
         {

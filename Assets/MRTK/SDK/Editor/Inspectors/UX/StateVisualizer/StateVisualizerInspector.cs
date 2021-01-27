@@ -3,13 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -50,6 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             serializedObject.Update();
 
+            RenderExperimentalWarning();
+
             RenderInitialProperties();
 
             if (instance.GetComponent<Animator>().runtimeAnimatorController != null)
@@ -61,6 +58,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             serializedObject.ApplyModifiedProperties();
         }
+
+        private void RenderExperimentalWarning()
+        {
+            EditorGUILayout.Space();
+
+            EditorGUILayout.HelpBox("The State Visualizer is an experimental feature\n" +
+                                    "Parts of the MRTK appear to have a lot of value even if the details " +
+                                    "haven’t fully been fleshed out. For these types of features, we want " +
+                                    "the community to see them and get value out of them early. Because " +
+                                    "they are early in the cycle, we label them as experimental to indicate " +
+                                    "that they are still evolving, and subject to change over time.", MessageType.Warning);
+        }
+
 
         private void RenderInitialProperties()
         {
@@ -351,7 +361,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 RenderSetStateMachineButton();
-                RenderSyncStatesButton();
+
+                if (instance.EditorAnimatorController != null)
+                {
+                    RenderSyncStatesButton();
+                }
             }
         }
 

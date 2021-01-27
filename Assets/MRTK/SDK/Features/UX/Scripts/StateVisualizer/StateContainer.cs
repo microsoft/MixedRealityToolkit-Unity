@@ -5,7 +5,10 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if UNITY_EDITOR
 using UnityEditor.Animations;
+#endif
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Interaction
@@ -75,15 +78,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             get => animationClip;
             set
             {
+
+#if UNITY_EDITOR
                 if (animationClip != null)
                 {
                     SetAnimationClipInStateMachine(value);
                 }
+#endif
 
                 animationClip = value;
             }
         }
 
+#if UNITY_EDITOR
         [SerializeField]
         [Tooltip("The time in seconds for the animation transition between states.")]
         private float animationTransitionDuration = 0.25f;
@@ -103,21 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
 
         internal AnimatorStateMachine AnimatorStateMachine { get; set; }
 
-        internal StateAnimatableProperty CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
-        {
-            return AnimationTargets[animationTargetIndex].CreateAnimatablePropertyInstance(animatablePropertyName, stateName);
-        }
-
-        internal void SetKeyFrames(int animationTargetIndex)
-        {
-            AnimationTargets[animationTargetIndex].SetKeyFrames(AnimationClip);
-        }
-
-        internal void RemoveKeyFrames(int animationTargetIndex, string animatablePropertyName)
-        {
-            AnimationTargets[animationTargetIndex].RemoveKeyFrames(animatablePropertyName, AnimationClip);
-        }
-
+        // Set the animation transition duration in the editor animation state machine
         internal void SetAnimationTransitionDuration(string stateName)
         {
             AnimatorStateTransition[] transitions = AnimatorStateMachine.anyStateTransitions;
@@ -134,6 +127,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Interaction
             ChildAnimatorState animatorState = Array.Find(AnimatorStateMachine.states, (state) => state.state.name == StateName);
 
             animatorState.state.motion = clip;
+        }
+#endif
+
+        internal StateAnimatableProperty CreateAnimatablePropertyInstance(int animationTargetIndex, string animatablePropertyName, string stateName)
+        {
+            return AnimationTargets[animationTargetIndex].CreateAnimatablePropertyInstance(animatablePropertyName, stateName);
+        }
+
+        internal void SetKeyFrames(int animationTargetIndex)
+        {
+            AnimationTargets[animationTargetIndex].SetKeyFrames(AnimationClip);
+        }
+
+        internal void RemoveKeyFrames(int animationTargetIndex, string animatablePropertyName)
+        {
+            AnimationTargets[animationTargetIndex].RemoveKeyFrames(animatablePropertyName, AnimationClip);
         }
     }
 }
