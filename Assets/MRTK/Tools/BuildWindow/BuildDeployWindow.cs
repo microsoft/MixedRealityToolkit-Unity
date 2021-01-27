@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
 
-        private readonly GUIContent LiveCubeModelLabel = new GUIContent("Live Cube Model", "Location of .glb model to use as 3D Launcher");
+        private readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
 
         #endregion Labels
 
@@ -562,14 +562,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     // 3D Launcher Model
-                    string curLiveCubeModelLocation = BuildDeployPreferences.LiveCubeModelLocation;
-                    var curGlbModel = AssetDatabase.LoadAssetAtPath(curLiveCubeModelLocation, typeof(GameObject));
-                    EditorGUILayout.LabelField(LiveCubeModelLabel, GUILayout.Width(96));
+                    string curAppLauncherModelLocation = BuildDeployPreferences.AppLauncherModelLocation;
+                    var curGlbModel = AssetDatabase.LoadAssetAtPath(curAppLauncherModelLocation, typeof(GameObject));
+                    EditorGUILayout.LabelField(AppLauncherModelLabel, GUILayout.Width(96));
                     GameObject newGlbModel = (GameObject)EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false);
-                    string newLiveCubeModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
-                    if (newLiveCubeModelLocation != curLiveCubeModelLocation)
+                    string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
+                    if (newAppLauncherModelLocation != curAppLauncherModelLocation)
                     {
-                        BuildDeployPreferences.LiveCubeModelLocation = newLiveCubeModelLocation;
+                        BuildDeployPreferences.AppLauncherModelLocation = newAppLauncherModelLocation;
                     }
                 }
 

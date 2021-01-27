@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         // Constants
         private const string EDITOR_PREF_BUILD_DIR = "BuildDeployWindow_BuildDir";
         private const string EDITOR_PREF_INCREMENT_BUILD_VERSION = "BuildDeployWindow_IncrementBuildVersion";
-        private const string EDITOR_PREF_LIVE_CUBE_MODEL_LOCATION = "BuildDeployWindow_LiveCubeModelLocation";
+        private const string EDITOR_PREF_3D_APP_LAUNCHER_MODEL_LOCATION = "BuildDeployWindow_AppLauncherModelLocation";
 
         /// <summary>
         /// The Build Directory that the Mixed Reality Toolkit will build to.
@@ -59,10 +59,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             set => EditorPreferences.Set(EDITOR_PREF_INCREMENT_BUILD_VERSION, value);
         }
 
-        public static string LiveCubeModelLocation
+        /// <summary>
+        /// The location in Assets of the 3D app launcher model for an AppX build.
+        /// </summary>
+        /// <remarks>See <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
+        public static string AppLauncherModelLocation
         {
-            get => ProjectPreferences.Get(EDITOR_PREF_LIVE_CUBE_MODEL_LOCATION, string.Empty);
-            set => ProjectPreferences.Set(EDITOR_PREF_LIVE_CUBE_MODEL_LOCATION, value);
+            get => ProjectPreferences.Get(EDITOR_PREF_3D_APP_LAUNCHER_MODEL_LOCATION, string.Empty);
+            set => ProjectPreferences.Set(EDITOR_PREF_3D_APP_LAUNCHER_MODEL_LOCATION, value);
         }
     }
 }

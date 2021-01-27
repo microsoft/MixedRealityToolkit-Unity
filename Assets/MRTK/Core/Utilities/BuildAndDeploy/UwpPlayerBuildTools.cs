@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     /// </summary>
     public static class UwpPlayerBuildTools
     {
-        private const string LiveCubePath = @"Assets\LiveCubeModel.glb";
+        private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
 
         private static void ParseBuildCommandLine(ref UwpBuildInfo buildInfo)
         {
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void AddLiveCubeModelToProject(string filePath)
+        private static void AddAppLauncherModelToProject(string filePath)
         {
             var text = File.ReadAllText(filePath);
             var doc = new XmlDocument();
@@ -54,15 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var root = doc.DocumentElement;
 
             // Check to see if model has already been added
-            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{LiveCubePath}\"]");
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
             if (nodes.Count > 0)
             {
-                Debug.Log("Model Already Exists in Project File");
                 return;
             }
 
             var newNodeDoc = new XmlDocument();
-            newNodeDoc.LoadXml($"<None Include=\"{LiveCubePath}\">" +
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
                             "<DeploymentContent>true</DeploymentContent>" +
                             "</None>");
             var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
@@ -72,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             doc.Save(filePath);
         }
 
-        private static void AddLiveCubeModelToFilter(string filePath)
+        private static void AddAppLauncherModelToFilter(string filePath)
         {
             var text = File.ReadAllText(filePath);
             var doc = new XmlDocument();
@@ -80,15 +79,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var root = doc.DocumentElement;
 
             // Check to see if model has already been added
-            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{LiveCubePath}\"]");
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
             if (nodes.Count > 0)
             {
-                Debug.Log("Model Already Exists in Filter File");
                 return;
             }
 
             var newNodeDoc = new XmlDocument();
-            newNodeDoc.LoadXml($"<None Include=\"{LiveCubePath}\">" +
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
                             "<Filter>Assets</Filter>" +
                             "</None>");
             var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
@@ -111,9 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             XmlNodeList nodes = root.SelectNodes("//uap5:MixedRealityModel", nsmgr);
             foreach (XmlNode node in nodes)
             {
-                if (node.Attributes != null && node.Attributes["Path"].Value == LiveCubePath)
+                if (node.Attributes != null && node.Attributes["Path"].Value == AppLauncherPath)
                 {
-                    Debug.Log("Model Already Exists in Manifest File");
                     return;
                 }
             }
@@ -123,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             root.SetAttribute("IgnorableNamespaces", ignoredValue + " uap5");
 
             var newElement = doc.CreateElement("uap5", "MixedRealityModel", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
-            newElement.SetAttribute("Path", LiveCubePath);
+            newElement.SetAttribute("Path", AppLauncherPath);
             var list = doc.GetElementsByTagName("uap:DefaultTile");
             var items = list.Item(0);
             items.AppendChild(newElement);
@@ -177,13 +174,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
                     UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
 
-                    Debug.Log($"LiveCubeModelLocation: {BuildDeployPreferences.LiveCubeModelLocation}, Destination: {buildDirectory}");
-                    if (!String.IsNullOrEmpty(BuildDeployPreferences.LiveCubeModelLocation))
+                    if (!string.IsNullOrEmpty(BuildDeployPreferences.AppLauncherModelLocation))
                     {
-                        FileUtil.ReplaceFile(BuildDeployPreferences.LiveCubeModelLocation, $"{buildDirectory}/{PlayerSettings.productName}/{LiveCubePath}");
-                        AddLiveCubeModelToProject($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj");
-                        AddLiveCubeModelToFilter($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj.filters");
-                        UpdateManifest($"{buildDirectory}/{PlayerSettings.productName}/Package.appxmanifest");
+                        string appxPath = $"{buildDirectory}/{PlayerSettings.productName}";
+
+                        Debug.Log($"3D App Launcher: {BuildDeployPreferences.AppLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
+
+                        FileUtil.ReplaceFile(BuildDeployPreferences.AppLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
+                        AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
+                        AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
+                        UpdateManifest($"{appxPath}/Package.appxmanifest");
                     }
 
                     if (showDialog &&
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Build the Uwp Player.
+        /// Build the UWP Player.
         /// </summary>
         public static async Task<bool> BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
