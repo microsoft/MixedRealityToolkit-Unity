@@ -11,6 +11,10 @@
 
 ## What's new
 
+### Fixes a bug with Oculus Integration when using UPM
+
+When using UPM, the OculusXRSDKDeviceManagerProfile would always have its [prefabs set to None on startup](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/9160). This release configures the Device Manager to point to a working set of prefabs on startup.
+
 ### Fixes an issue with OpenXR via UPM
 
 Fixes an issue where the OpenXR providers weren't added to the link.xml by default, causing new projects to fail to run on-device when using OpenXR and MRTK via Unity's Package Manager. Existing projects that are upgraded will still need this added manually.
