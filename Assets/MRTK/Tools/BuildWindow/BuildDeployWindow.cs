@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -564,7 +561,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     // 3D Launcher Model
                     string curAppLauncherModelLocation = BuildDeployPreferences.AppLauncherModelLocation;
                     var curGlbModel = AssetDatabase.LoadAssetAtPath(curAppLauncherModelLocation, typeof(GameObject));
-                    EditorGUILayout.LabelField(AppLauncherModelLabel, GUILayout.Width(96));
+                    EditorGUILayout.LabelField(AppLauncherModelLabel);
                     GameObject newGlbModel = (GameObject)EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false);
                     string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
                     if (newAppLauncherModelLocation != curAppLauncherModelLocation)
