@@ -41,9 +41,9 @@ The scene demonstrates the following:
 
 Select the 'MixedRealityTookit' game object and check the inspector.
 
-![scene understanding location in heirarchy](../../Images/SceneUnderstanding/MRTKHierarchy.png)
+![scene understanding location in heirarchy](../../Documentation/Images/SceneUnderstanding/MRTKHierarchy.png)
 
-![mrkt location in inspector](../../Images/SceneUnderstanding/MRTKLocation.png)
+![mrkt location in inspector](../../Documentation/Images/SceneUnderstanding/MRTKLocation.png)
 
 These options will allow one to configure the `WindowsSceneUnderstandingObserver`.
 
@@ -59,7 +59,7 @@ The toggles on the panel in the scene change the behavior of scene understanding
 
 Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [SpatialAwarenessSceneObject](xref:Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SpatialAwarenessSceneObject), gathered neatly under a parent object.
 
-![demo controller options](../../Images/SceneUnderstanding/Controller.png)
+![demo controller options](../../Documentation/Images/SceneUnderstanding/Controller.png)
 
 ### Built app notes
 
@@ -69,9 +69,9 @@ Note, their are some pit falls in making queries to the observer. Misconfigurati
 
 Saved scene files can be accessed through the [device portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) at `User Folders/LocalAppData/[APP_NAME]/LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. These scene files can be used in editor by specifying them in the observer profile found in the inspector.
 
-![Device Portal location of bytes file](../../Images/SceneUnderstanding/BytesInDevicePortal.png)
+![Device Portal location of bytes file](../../Documentation/Images/SceneUnderstanding/BytesInDevicePortal.png)
 
-![Serialized scene bytes in observer](../../Images/SceneUnderstanding/BytesLocationInObserver.png)
+![Serialized scene bytes in observer](../../Documentation/Images/SceneUnderstanding/BytesLocationInObserver.png)
 
 ## See Also
 
