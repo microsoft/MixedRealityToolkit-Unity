@@ -40,7 +40,7 @@ MonoBehaviour:
   - Name: HandInteractionExamples
     Path: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
     Included: 1
-    BuildIndex: -1
+    BuildIndex: 0
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
   - Name: ClippingExamples
