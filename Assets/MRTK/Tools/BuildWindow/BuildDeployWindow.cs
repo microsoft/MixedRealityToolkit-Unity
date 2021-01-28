@@ -250,6 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private Vector2 buildSceneListScrollPosition;
         private Vector2 deployBuildListScrollPosition;
+        private Vector2 appxBuildOptionsScrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
         private Action[] tabRenders;
@@ -464,192 +465,197 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderAppxBuildView()
         {
-            // SDK and MS Build Version (and save setting, if it's changed)
-            // Note that this is the 'Target SDK Version' which is required to physically build the
-            // code on a build machine, not the minimum platform version.
-            string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
-
-            Version chosenSDKVersion = null;
-            for (var i = 0; i < windowsSdkVersions.Count; i++)
+            using (var scrollView = new EditorGUILayout.ScrollViewScope(appxBuildOptionsScrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
-                // windowsSdkVersions is sorted in ascending order, so we always take
-                // the highest SDK version that is above our minimum.
-                if (windowsSdkVersions[i] >= UwpBuildDeployPreferences.MIN_SDK_VERSION)
-                {
-                    chosenSDKVersion = windowsSdkVersions[i];
-                }
-            }
+                appxBuildOptionsScrollPosition = scrollView.scrollPosition;
 
-            EditorGUILayout.HelpBox($"Windows SDK Version: {currentSDKVersion}", MessageType.Info);
+                // SDK and MS Build Version (and save setting, if it's changed)
+                // Note that this is the 'Target SDK Version' which is required to physically build the
+                // code on a build machine, not the minimum platform version.
+                string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-            // Throw exception if user has no Windows 10 SDK installed
-            if (chosenSDKVersion == null)
-            {
-                if (IsValidSdkInstalled)
+                Version chosenSDKVersion = null;
+                for (var i = 0; i < windowsSdkVersions.Count; i++)
                 {
-                    Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.");
+                    // windowsSdkVersions is sorted in ascending order, so we always take
+                    // the highest SDK version that is above our minimum.
+                    if (windowsSdkVersions[i] >= UwpBuildDeployPreferences.MIN_SDK_VERSION)
+                    {
+                        chosenSDKVersion = windowsSdkVersions[i];
+                    }
                 }
 
-                EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.", MessageType.Error);
-                IsValidSdkInstalled = false;
-                return;
-            }
+                EditorGUILayout.HelpBox($"Windows SDK Version: {currentSDKVersion}", MessageType.Info);
 
-            IsValidSdkInstalled = true;
-
-            string newSDKVersion = chosenSDKVersion.ToString();
-            if (!newSDKVersion.Equals(currentSDKVersion))
-            {
-                EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
-            }
-
-            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
-            if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
-            {
-                // If the min platform version hasn't been specified, set it to the recommended value.
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
-            }
-            else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
-            {
-                // If the user has manually changed the minimum platform version in the 'Build Settings' window
-                // provide a warning that the generated application may not be deployable to older generation
-                // devices. We generally recommend setting to the lowest value and letting the app model's
-                // capability and versioning checks kick in for applications at runtime.
-                EditorGUILayout.HelpBox(
-                    "Minimum platform version is set to a different value from the recommended value: " +
-                        $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
-                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}",
-                    MessageType.Warning);
-            }
-
-            using (var c = new EditorGUI.ChangeCheckScope())
-            {
-                EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
-                var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
-                UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
-
-                // Build Platform
-                int currentPlatformIndex = Array.IndexOf(ARCHITECTURE_OPTIONS, EditorUserBuildSettings.wsaArchitecture);
-                int buildPlatformIndex = EditorGUILayout.Popup("Build Platform", currentPlatformIndex, ARCHITECTURE_OPTIONS, GUILayout.Width(HALF_WIDTH));
-
-                // Platform Toolset
-                int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
-                int newPlatformToolsetIndex = EditorGUILayout.Popup("Platform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
-
-                // Force rebuild
-                bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
-
-                // Multicore Appx Build
-                bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
-
-                EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
-
-                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but
-                // existing versions of Unity don't have support for automatically adding the capability to the generated
-                // AppX manifest during the build. This option provides a mechanism for people using the
-                // MRTK build tools to auto-append this capability if desired, instead of having to manually
-                // do this each time on their own.
-                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(GazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
-
-                // Enable Research Mode Capability
-                bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
-
-                MixedRealityBuildPreferences.DrawAppLauncherModelField();
-
-                if (c.changed)
+                // Throw exception if user has no Windows 10 SDK installed
+                if (chosenSDKVersion == null)
                 {
-                    UwpBuildDeployPreferences.PlatformToolset = PLATFORM_TOOLSET_VALUES[newPlatformToolsetIndex];
-                    EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
-                    UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
-                    UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
-                    UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
-                    UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
+                    if (IsValidSdkInstalled)
+                    {
+                        Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.");
+                    }
+
+                    EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.", MessageType.Error);
+                    IsValidSdkInstalled = false;
+                    return;
                 }
-            }
 
-            EditorGUILayout.LabelField("Versioning Options", EditorStyles.boldLabel);
+                IsValidSdkInstalled = true;
 
-            using (new EditorGUILayout.HorizontalScope())
-            {
+                string newSDKVersion = chosenSDKVersion.ToString();
+                if (!newSDKVersion.Equals(currentSDKVersion))
+                {
+                    EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
+                }
+
+                string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
+                if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
+                {
+                    // If the min platform version hasn't been specified, set it to the recommended value.
+                    EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
+                }
+                else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
+                {
+                    // If the user has manually changed the minimum platform version in the 'Build Settings' window
+                    // provide a warning that the generated application may not be deployable to older generation
+                    // devices. We generally recommend setting to the lowest value and letting the app model's
+                    // capability and versioning checks kick in for applications at runtime.
+                    EditorGUILayout.HelpBox(
+                        "Minimum platform version is set to a different value from the recommended value: " +
+                            $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
+                            $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}",
+                        MessageType.Warning);
+                }
+
                 using (var c = new EditorGUI.ChangeCheckScope())
                 {
-                    // Auto Increment version
-                    bool incrementVersion = EditorGUILayout.ToggleLeft(AutoIncrementLabel, BuildDeployPreferences.IncrementBuildVersion);
+                    EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
+                    var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
+                    UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
 
-                    EditorGUILayout.LabelField(VersionNumberLabel, GUILayout.Width(96));
-                    Vector3 newVersion = Vector3.zero;
+                    // Build Platform
+                    int currentPlatformIndex = Array.IndexOf(ARCHITECTURE_OPTIONS, EditorUserBuildSettings.wsaArchitecture);
+                    int buildPlatformIndex = EditorGUILayout.Popup("Build Platform", currentPlatformIndex, ARCHITECTURE_OPTIONS, GUILayout.Width(HALF_WIDTH));
 
-                    newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
-                    newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
-                    newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
+                    // Platform Toolset
+                    int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
+                    int newPlatformToolsetIndex = EditorGUILayout.Popup("Platform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
+
+                    // Force rebuild
+                    bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
+
+                    // Multicore Appx Build
+                    bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
+
+                    EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
+
+                    // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but
+                    // existing versions of Unity don't have support for automatically adding the capability to the generated
+                    // AppX manifest during the build. This option provides a mechanism for people using the
+                    // MRTK build tools to auto-append this capability if desired, instead of having to manually
+                    // do this each time on their own.
+                    bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(GazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
+
+                    // Enable Research Mode Capability
+                    bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+
+                    MixedRealityBuildPreferences.DrawAppLauncherModelField();
 
                     if (c.changed)
                     {
-                        BuildDeployPreferences.IncrementBuildVersion = incrementVersion;
-                        PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
+                        UwpBuildDeployPreferences.PlatformToolset = PLATFORM_TOOLSET_VALUES[newPlatformToolsetIndex];
+                        EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
+                        UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
+                        UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
+                        UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
+                        UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                     }
                 }
 
-                using (new EditorGUI.DisabledGroupScope(true))
+                EditorGUILayout.LabelField("Versioning Options", EditorStyles.boldLabel);
+
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
-                }
-            }
-
-            EditorGUILayout.Space();
-
-            if (appxCancellationTokenSource != null)
-            {
-                using (var progressBarRect = new EditorGUILayout.VerticalScope())
-                {
-                    appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
-
-                    EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
-                    GUILayout.Space(16);
-                    Repaint();
-                }
-            }
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUILayout.FlexibleSpace();
-
-                // Open AppX packages location
-                string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
-                string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
-
-                using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
-                {
-                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    using (var c = new EditorGUI.ChangeCheckScope())
                     {
-                        EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-                    }
-                }
+                        // Auto Increment version
+                        bool incrementVersion = EditorGUILayout.ToggleLeft(AutoIncrementLabel, BuildDeployPreferences.IncrementBuildVersion);
 
-                if (appxCancellationTokenSource == null)
-                {
-                    using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
-                    {
-                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                        EditorGUILayout.LabelField(VersionNumberLabel, GUILayout.Width(96));
+                        Vector3 newVersion = Vector3.zero;
+
+                        newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
+                        newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
+                        newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
+
+                        if (c.changed)
                         {
-                            // Check if solution exists
-                            string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-                            if (File.Exists(slnFilename))
+                            BuildDeployPreferences.IncrementBuildVersion = incrementVersion;
+                            PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
+                        }
+                    }
+
+                    using (new EditorGUI.DisabledGroupScope(true))
+                    {
+                        EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
+                    }
+                }
+
+                EditorGUILayout.Space();
+
+                if (appxCancellationTokenSource != null)
+                {
+                    using (var progressBarRect = new EditorGUILayout.VerticalScope())
+                    {
+                        appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+
+                        EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
+                        GUILayout.Space(16);
+                        Repaint();
+                    }
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+
+                    // Open AppX packages location
+                    string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+                    string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
+
+                    using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
+                    {
+                        if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                        {
+                            EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
+                        }
+                    }
+
+                    if (appxCancellationTokenSource == null)
+                    {
+                        using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
+                        {
+                            if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
                             {
-                                EditorApplication.delayCall += BuildAppx;
-                            }
-                            else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the Visual Studio solution. Would you like to build it?", "Yes, Build Unity", "No"))
-                            {
-                                EditorApplication.delayCall += () => BuildAll(install: false);
+                                // Check if solution exists
+                                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+                                if (File.Exists(slnFilename))
+                                {
+                                    EditorApplication.delayCall += BuildAppx;
+                                }
+                                else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the Visual Studio solution. Would you like to build it?", "Yes, Build Unity", "No"))
+                                {
+                                    EditorApplication.delayCall += () => BuildAll(install: false);
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
+                    else
                     {
-                        appxCancellationTokenSource.Cancel();
+                        if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
+                        {
+                            appxCancellationTokenSource.Cancel();
+                        }
                     }
                 }
             }
