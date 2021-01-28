@@ -10,11 +10,25 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    public enum SubsystemProfile
+    {
+        Camera,
+        Input,
+        Boundary,
+        Teleport,
+        SpatialAwareness,
+        Diagnostics,
+        SceneSystem,
+        Extensions,
+    }
+
     [CustomEditor(typeof(MixedRealityToolkitConfigurationProfile))]
     public class MixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
@@ -42,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessSystemProfile;
         // Diagnostic system properties
+        private SerializedProperty renderDepthBuffer;
         private SerializedProperty enableDiagnosticsSystem;
         private SerializedProperty enableVerboseLogging;
         private SerializedProperty diagnosticsSystemType;
@@ -54,23 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Additional registered components profile
         private SerializedProperty registeredServiceProvidersProfile;
 
-        // Editor settings
-        private SerializedProperty useServiceInspectors;
-        private SerializedProperty renderDepthBuffer;
-
         private Func<bool>[] renderProfileFuncs;
 
-        private static readonly string[] ProfileTabTitles = {
-            "Camera",
-            "Input",
-            "Boundary",
-            "Teleport",
-            "Spatial Awareness",
-            "Diagnostics",
-            "Scene System",
-            "Extensions",
-            "Editor",
-        };
+        private List<SubsystemProfile> enabledSubsystems;
+
+        //    "Spatial Awareness",
+        //    "Diagnostics",
+        //    "Scene System",
+        //    "Extensions",
+        //};
 
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
@@ -109,8 +116,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
             spatialAwarenessSystemProfile = serializedObject.FindProperty("spatialAwarenessSystemProfile");
             // Diagnostics system configuration
-            enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
+            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
             enableVerboseLogging = serializedObject.FindProperty("enableVerboseLogging");
+            enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
             diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
             diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
             // Scene system configuration
@@ -121,9 +129,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
 
-            // Editor settings
-            useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
-            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
+            // Getting the names of all active subsystems
+            RefreshEnabledSubsystemList();
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
@@ -135,22 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableCameraSystem);
-
                             const string service = "Camera System";
-                            if (enableCameraSystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.CameraSystemType, mrtkConfigProfile.CameraProfile != null);
-
-                                EditorGUILayout.PropertyField(cameraSystemType);
-
-                                changed |= RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
-
+                            changed |= RenderSubsystem(service, SubsystemProfile.Camera, cameraSystemType, cameraProfile, null, typeof(MixedRealityCameraProfile));
                             changed |= c.changed;
                         }
                         return changed;
@@ -159,31 +152,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableInputSystem);
-
                             const string service = "Input System";
-                            if (enableInputSystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.InputSystemType, mrtkConfigProfile.InputSystemProfile != null);
-
-                                EditorGUILayout.PropertyField(inputSystemType);
-
-                                changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
-
+                            changed |= RenderSubsystem(service, SubsystemProfile.Input, inputSystemType, inputSystemProfile, mrtkConfigProfile.InputSystemType, typeof(MixedRealityInputSystemProfile));
                             changed |= c.changed;
                         }
                         return changed;
                     },
                     () => {
+                        // Alert the user if the experience scale does not support boundary features.
                         var experienceScale = (ExperienceScale)targetExperienceScale.intValue;
                         if (experienceScale != ExperienceScale.Room)
                         {
-                            // Alert the user if the experience scale does not support boundary features.
                             GUILayout.Space(6f);
                             EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
                             GUILayout.Space(6f);
@@ -192,42 +171,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableBoundarySystem);
-
                             const string service = "Boundary System";
-                            if (enableBoundarySystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.BoundarySystemSystemType, mrtkConfigProfile.BoundaryVisualizationProfile != null);
-
-                                EditorGUILayout.PropertyField(boundarySystemType);
-
-                                changed |= RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
-
+                            changed |= RenderSubsystem(service, SubsystemProfile.Boundary, boundarySystemType, boundaryVisualizationProfile, mrtkConfigProfile.BoundarySystemSystemType, typeof(MixedRealityBoundaryVisualizationProfile));
                             changed |= c.changed;
                         }
                         return changed;
                     },
                     () => {
-                        const string service = "Teleport System";
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
+                            const string service = "Teleport System";
                             EditorGUILayout.PropertyField(enableTeleportSystem);
-                            if (enableTeleportSystem.boolValue)
-                            {
-                                 // Teleport System does not have a profile scriptableobject so auto to true
-                                CheckSystemConfiguration(service, mrtkConfigProfile.TeleportSystemSystemType,true);
-
-                                EditorGUILayout.PropertyField(teleportSystemType);
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
+                            
+                            // Teleport System does not have a profile scriptableobject so auto to true
+                            CheckSystemConfiguration(service, mrtkConfigProfile.TeleportSystemSystemType,true);
+                            EditorGUILayout.PropertyField(teleportSystemType);
 
                             return c.changed;
                         }
@@ -237,23 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
                             const string service = "Spatial Awareness System";
-                            EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
-
-                            if (enableSpatialAwarenessSystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.SpatialAwarenessSystemSystemType, mrtkConfigProfile.SpatialAwarenessSystemProfile != null);
-
-                                EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-
-                                EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-
-                                changed |= RenderProfile(spatialAwarenessSystemProfile, null, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
-                            }
-                            else
-                            {
-                                RenderSystemDisabled(service);
-                            }
-
+                            EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
+                            changed |= RenderSubsystem(service, SubsystemProfile.SpatialAwareness, spatialAwarenessSystemType, spatialAwarenessSystemProfile, null, typeof(MixedRealitySpatialAwarenessSystemProfile));
                             changed |= c.changed;
                         }
                         return changed;
@@ -264,23 +207,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableVerboseLogging);
-                            EditorGUILayout.PropertyField(enableDiagnosticsSystem);
-
-                            const string service = "Diagnostics System";
-                            if (enableDiagnosticsSystem.boolValue)
+                            EditorGUILayout.PropertyField(renderDepthBuffer);
+                            if (renderDepthBuffer.boolValue)
                             {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.DiagnosticsSystemSystemType, mrtkConfigProfile.DiagnosticsSystemProfile != null);
-
-                                EditorGUILayout.PropertyField(diagnosticsSystemType);
-
-                                changed |= RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
+                                CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
                             }
                             else
                             {
-                                RenderSystemDisabled(service);
+                                foreach (var dbr in FindObjectsOfType<DepthBufferRenderer>())
+                                {
+                                    UnityObjectExtensions.DestroyObject(dbr);
+                                }
                             }
+                            EditorGUILayout.PropertyField(enableVerboseLogging);
 
+                            const string service = "Diagnostics System";
+                            changed |= RenderSubsystem(service, SubsystemProfile.Diagnostics, diagnosticsSystemType, diagnosticsSystemProfile, null, typeof(MixedRealityDiagnosticsProfile));
                             changed |= c.changed;
                         }
                         return changed;
@@ -289,47 +231,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         bool changed = false;
                         using (var c = new EditorGUI.ChangeCheckScope())
                         {
-                            EditorGUILayout.PropertyField(enableSceneSystem);
                             const string service = "Scene System";
-                            if (enableSceneSystem.boolValue)
-                            {
-                                CheckSystemConfiguration(service, mrtkConfigProfile.SceneSystemSystemType, mrtkConfigProfile.SceneSystemProfile != null);
-
-                                EditorGUILayout.PropertyField(sceneSystemType);
-
-                                changed |= RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
-                            }
-
+                            changed |= RenderSubsystem(service, SubsystemProfile.SceneSystem, sceneSystemType, sceneSystemProfile, null, typeof(MixedRealitySceneSystemProfile));
                             changed |= c.changed;
                         }
                         return changed;
                     },
                     () => {
                         return RenderProfile(registeredServiceProvidersProfile, typeof(MixedRealityRegisteredServiceProvidersProfile), true, false);
-                    },
-                    () => {
-                        EditorGUILayout.PropertyField(useServiceInspectors);
-
-                        using (var c = new EditorGUI.ChangeCheckScope())
-                        {
-                            EditorGUILayout.PropertyField(renderDepthBuffer);
-                            if (c.changed)
-                            {
-                                if (renderDepthBuffer.boolValue)
-                                {
-                                    CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
-                                }
-                                else
-                                {
-                                    foreach (var dbr in FindObjectsOfType<DepthBufferRenderer>())
-                                    {
-                                        UnityObjectExtensions.DestroyObject(dbr);
-                                    }
-                                }
-                            }
-                        }
-                        return false;
-                    },
+                    }
                 };
             }
         }
@@ -412,12 +322,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             changed |= EditorGUI.EndChangeCheck();
 
             EditorGUILayout.BeginHorizontal();
-
+            EditorGUILayout.BeginVertical(GUILayout.Width(100));
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
             GUI.enabled = true; // Force enable so we can view profile defaults
 
             int prefsSelectedTab = SessionState.GetInt(SelectedTabPreferenceKey, 0);
-            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, GUILayout.MaxWidth(125));
+            string[] subsystemNames = enabledSubsystems.Select(x => x.ToString()).ToArray();
+            SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, subsystemNames, 1, GUILayout.MaxWidth(125));
             if (SelectedProfileTab != prefsSelectedTab)
             {
                 SessionState.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);
@@ -426,10 +337,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = isGUIEnabled;
             EditorGUILayout.EndVertical();
 
+            if (GUILayout.Button("Add MRTK System"))
+            {
+                MixedRealitySubsystemManagementWindow.OpenWindow(serializedObject, this);
+            }
+            EditorGUILayout.EndVertical();
+
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             using (new EditorGUI.IndentLevelScope())
             {
-                changed |= renderProfileFuncs[SelectedProfileTab]();
+                int selectedSubsystemIndex = (int)enabledSubsystems[SelectedProfileTab];
+                changed |= renderProfileFuncs[selectedSubsystemIndex]();
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
@@ -474,6 +392,159 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Space();
         }
 
+        public bool RenderSubsystem(string service,  SubsystemProfile subsystem, SerializedProperty subsystemTypeProperty, SerializedProperty subsystemProfile, System.Type subsystemType = null, System.Type profileType = null)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(subsystemTypeProperty);
+
+            // display the GenericMenu when pressing a button
+            if (GUILayout.Button(EditorGUIUtility.IconContent("_Menu"), EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+            {
+                // create the menu and add items to it
+                GenericMenu menu = new GenericMenu();
+                menu.AddItem(new GUIContent("Remove System"), true, () => RemoveSubsystem(subsystem));
+
+                // display the menu
+                menu.ShowAsContext();
+            }
+            EditorGUILayout.EndHorizontal();
+            bool subSystemRendered = RenderProfile(subsystemProfile, profileType, true, false, subsystemType);
+            CheckSystemConfiguration(service, subsystemType, subsystemProfile.objectReferenceValue != null);
+
+            return subSystemRendered;
+        }
+
+        public void RefreshEnabledSubsystemList()
+        {
+            enabledSubsystems = GetEnabledSubsystemList();
+        }
+
+        private List<SubsystemProfile> GetEnabledSubsystemList()
+        {
+            List<SubsystemProfile> subsystemList = new List<SubsystemProfile>();
+            if (enableCameraSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.Camera);
+            }
+            if (enableInputSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.Input);
+            }
+            if (enableBoundarySystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.Boundary);
+            }
+            if (enableTeleportSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.Teleport);
+            }
+            if (enableSpatialAwarenessSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.SpatialAwareness);
+            }
+            if (enableDiagnosticsSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.Diagnostics);
+            }
+            if (enableSceneSystem.boolValue)
+            {
+                subsystemList.Add(SubsystemProfile.SceneSystem);
+            }
+            subsystemList.Add(SubsystemProfile.Extensions);
+
+            return subsystemList;
+        }
+
+        public void AddSubsystem(SubsystemProfile subprofileType)
+        {
+            switch (subprofileType)
+            {
+                case SubsystemProfile.Camera:
+                    enableCameraSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.Input:
+                    enableInputSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.Boundary:
+                    enableBoundarySystem.boolValue = true;
+                    break;
+                case SubsystemProfile.Teleport:
+                    enableTeleportSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.SpatialAwareness:
+                    enableSpatialAwarenessSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.Diagnostics:
+                    enableDiagnosticsSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.SceneSystem:
+                    enableSceneSystem.boolValue = true;
+                    break;
+                case SubsystemProfile.Extensions:
+                    break;
+            }
+            serializedObject.ApplyModifiedProperties();
+            RefreshEnabledSubsystemList();
+            Repaint();
+        }
+
+        public void RemoveSubsystem(SubsystemProfile subprofileType)
+        {
+            switch (subprofileType)
+            {
+                case SubsystemProfile.Camera:
+                    enableCameraSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.Input:
+                    enableInputSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.Boundary:
+                    enableBoundarySystem.boolValue = false;
+                    break;
+                case SubsystemProfile.Teleport:
+                    enableTeleportSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.SpatialAwareness:
+                    enableSpatialAwarenessSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.Diagnostics:
+                    enableDiagnosticsSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.SceneSystem:
+                    enableSceneSystem.boolValue = false;
+                    break;
+                case SubsystemProfile.Extensions:
+                    break;
+            }
+            serializedObject.ApplyModifiedProperties();
+            RefreshEnabledSubsystemList();
+            Repaint();
+        }
+
+        public bool GetSubsystemStatus(SubsystemProfile subprofileType)
+        {
+            switch (subprofileType)
+            {
+                case SubsystemProfile.Camera:
+                    return enableCameraSystem.boolValue;
+                case SubsystemProfile.Input:
+                    return enableInputSystem.boolValue;
+                case SubsystemProfile.Boundary:
+                    return enableBoundarySystem.boolValue;
+                case SubsystemProfile.Teleport:
+                    return enableTeleportSystem.boolValue;
+                case SubsystemProfile.SpatialAwareness:
+                    return enableSpatialAwarenessSystem.boolValue;
+                case SubsystemProfile.Diagnostics:
+                    return enableDiagnosticsSystem.boolValue;
+                case SubsystemProfile.SceneSystem:
+                    return enableSceneSystem.boolValue;
+                case SubsystemProfile.Extensions:
+                    break;
+            }
+            return false;
+        }
+
         private static string GetExperienceDescription(ExperienceScale experienceScale)
         {
             switch (experienceScale)
@@ -492,5 +563,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             return null;
         }
+
     }
 }

@@ -46,7 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!profileCaches.TryGetValue(profileType, out profilesOfType))
             {
                 profilesOfType = ScriptableObjectExtensions.GetAllInstances(profileType);
-                profilesOfType = profilesOfType.Where(x => ((BaseMixedRealityProfile)x).IsCustomProfile).ToArray();
+                if(MixedRealityProjectPreferences.LockProfiles)
+                {
+                    profilesOfType = profilesOfType.Where(x => ((BaseMixedRealityProfile)x).IsCustomProfile).ToArray();
+                }
 
                 profileCaches.Add(profileType, profilesOfType);
             }

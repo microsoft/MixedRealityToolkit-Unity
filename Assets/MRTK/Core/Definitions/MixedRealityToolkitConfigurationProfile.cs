@@ -328,7 +328,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [Obsolete("Service inspectors will be removed in an upcoming release")]
-        [SerializeField]
         [Tooltip("Deprecated: If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
         private bool useServiceInspectors = false;
 
