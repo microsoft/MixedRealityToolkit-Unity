@@ -3,9 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -17,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     /// </summary>
     public static class UwpPlayerBuildTools
     {
+        private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
+
         private static void ParseBuildCommandLine(ref UwpBuildInfo buildInfo)
         {
             IBuildInfo iBuildInfo = buildInfo;
@@ -40,6 +44,88 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         break;
                 }
             }
+        }
+
+        private static void AddAppLauncherModelToProject(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
+            if (nodes.Count > 0)
+            {
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
+                            "<DeploymentContent>true</DeploymentContent>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(1);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void AddAppLauncherModelToFilter(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
+            if (nodes.Count > 0)
+            {
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
+                            "<Filter>Assets</Filter>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(0);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void UpdateManifest(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if the element exists already
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
+            nsmgr.AddNamespace("uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            XmlNodeList nodes = root.SelectNodes("//uap5:MixedRealityModel", nsmgr);
+            foreach (XmlNode node in nodes)
+            {
+                if (node.Attributes != null && node.Attributes["Path"].Value == AppLauncherPath)
+                {
+                    return;
+                }
+            }
+            root.SetAttribute("xmlns:uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+
+            var ignoredValue = root.GetAttribute("IgnorableNamespaces");
+            root.SetAttribute("IgnorableNamespaces", ignoredValue + " uap5");
+
+            var newElement = doc.CreateElement("uap5", "MixedRealityModel", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            newElement.SetAttribute("Path", AppLauncherPath);
+            var list = doc.GetElementsByTagName("uap:DefaultTile");
+            var items = list.Item(0);
+            items.AppendChild(newElement);
+
+            doc.Save(filePath);
         }
 
         /// <summary>
@@ -88,6 +174,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
                     UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
 
+                    if (!string.IsNullOrEmpty(BuildDeployPreferences.AppLauncherModelLocation))
+                    {
+                        string appxPath = $"{buildDirectory}/{PlayerSettings.productName}";
+
+                        Debug.Log($"3D App Launcher: {BuildDeployPreferences.AppLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
+
+                        FileUtil.ReplaceFile(BuildDeployPreferences.AppLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
+                        AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
+                        AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
+                        UpdateManifest($"{appxPath}/Package.appxmanifest");
+                    }
+
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
                     {
@@ -102,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Build the Uwp Player.
+        /// Build the UWP Player.
         /// </summary>
         public static async Task<bool> BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
