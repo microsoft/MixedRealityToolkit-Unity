@@ -3,16 +3,25 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
-    public static class MixedRealityBuildPreferences
+    public class MixedRealityBuildPreferences : IPostprocessBuildWithReport
     {
+        private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
         private static readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
         private static UnityEditor.Editor gameObjectEditor = null;
         private static GUIStyle appLauncherPreviewBackgroundColor = null;
+
+        // Arbitrary callback order, chosen to be larger so that it runs after other things that
+        // a developer may have already.
+        int IOrderedCallback.callbackOrder => 100;
 
         [SettingsProvider]
         private static SettingsProvider BuildPreferences()
@@ -72,6 +81,103 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     gameObjectEditor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(128, 128), appLauncherPreviewBackgroundColor);
                 }
             }
+        }
+
+        void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
+        {
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(BuildDeployPreferences.AppLauncherModelLocation))
+            {
+                string appxPath = $"{report.summary.outputPath}/{PlayerSettings.productName}";
+
+                Debug.Log($"3D App Launcher: {BuildDeployPreferences.AppLauncherModelLocation}, Destination: {appxPath}/{AppLauncherPath}");
+
+                FileUtil.ReplaceFile(BuildDeployPreferences.AppLauncherModelLocation, $"{appxPath}/{AppLauncherPath}");
+                AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
+                AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
+                UpdateManifest($"{appxPath}/Package.appxmanifest");
+            }
+        }
+
+        private static void AddAppLauncherModelToProject(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
+            if (nodes.Count > 0)
+            {
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
+                            "<DeploymentContent>true</DeploymentContent>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(1);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void AddAppLauncherModelToFilter(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{AppLauncherPath}\"]");
+            if (nodes.Count > 0)
+            {
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml($"<None Include=\"{AppLauncherPath}\">" +
+                            "<Filter>Assets</Filter>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(0);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void UpdateManifest(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if the element exists already
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
+            nsmgr.AddNamespace("uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            XmlNodeList nodes = root.SelectNodes("//uap5:MixedRealityModel", nsmgr);
+            foreach (XmlNode node in nodes)
+            {
+                if (node.Attributes != null && node.Attributes["Path"].Value == AppLauncherPath)
+                {
+                    return;
+                }
+            }
+            root.SetAttribute("xmlns:uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+
+            var ignoredValue = root.GetAttribute("IgnorableNamespaces");
+            root.SetAttribute("IgnorableNamespaces", ignoredValue + " uap5");
+
+            var newElement = doc.CreateElement("uap5", "MixedRealityModel", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            newElement.SetAttribute("Path", AppLauncherPath);
+            var list = doc.GetElementsByTagName("uap:DefaultTile");
+            var items = list.Item(0);
+            items.AppendChild(newElement);
+
+            doc.Save(filePath);
         }
     }
 }
