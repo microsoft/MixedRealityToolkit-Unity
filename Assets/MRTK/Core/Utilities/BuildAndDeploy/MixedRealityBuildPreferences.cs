@@ -12,6 +12,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
+    /// <summary>
+    /// Settings provider for build-specific settings, like the 3D app launcher model for Windows builds.
+    /// </summary>
     public class MixedRealityBuildPreferences : IPostprocessBuildWithReport
     {
         private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
@@ -42,6 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return provider;
         }
 
+        /// <summary>
+        /// Helper script for rendering an object field to set the 3D app launcher model in an editor window.
+        /// </summary>
+        /// <remarks>See <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
         public static void DrawAppLauncherModelField()
         {
             using (new EditorGUILayout.HorizontalScope())
