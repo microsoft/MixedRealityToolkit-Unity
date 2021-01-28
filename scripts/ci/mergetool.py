@@ -9,6 +9,8 @@
 import argparse
 import git
 from github import Github
+from github.PullRequest import PullRequest
+from github.Repository import Repository
 
 PULL_REQUEST_TITLE_TEMPLATE = "Branch synchronization: {0} --> {1}"
 PULL_REQUEST_DESCRIPTION = "This is a pull request initiated by an automated process to keep {0} and {1} in sync"
@@ -22,7 +24,7 @@ args_parser.add_argument('--label', type=str, required=True)
 args_parser.add_argument('--pat', type=str, required=True)
 args = args_parser.parse_args()
 
-def get_num_diffs(source_branch, destination_branch):
+def get_num_diffs(source_branch: str, destination_branch: str) -> int:
     repo = git.Repo(args.repo_path)
     repo.git.checkout(source_branch)
     repo.git.checkout(destination_branch)
@@ -30,7 +32,7 @@ def get_num_diffs(source_branch, destination_branch):
     destination_branch_head = repo.heads[args.destination_branch]
     return len(destination_branch_head.commit.diff(source_branch_head.commit))
 
-def get_existing_pull_request(github_repo, search_label):
+def get_existing_pull_request(github_repo: Repository, search_label: str) -> PullRequest:
     pull_requests = github_repo.get_pulls()
     for pull_request in pull_requests:
         for label in pull_request.labels:
@@ -38,7 +40,7 @@ def get_existing_pull_request(github_repo, search_label):
                 return pull_request
     return None
 
-def create_pull_request(github_repo, source_branch, destination_branch, label):
+def create_pull_request(github_repo: Repository, source_branch: str, destination_branch: str, label: str):
     print('Creating pull request...')
     pull_request = github_repo.create_pull(
         title=PULL_REQUEST_TITLE_TEMPLATE.format(source_branch, destination_branch),
