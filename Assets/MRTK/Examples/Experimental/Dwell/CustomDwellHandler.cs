@@ -16,15 +16,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             switch (CurrentDwellState)
             {
                 case DwellStateType.DwellCanceled:
-                    var customDwellProfile = dwellProfile as DwellProfileWithDecay;
-                    if (customDwellProfile != null && customDwellProfile.AllowDwellDecayOnCancel)
+                    if (dwellProfile is DwellProfileWithDecay profileWithDecay)
                     {
-                        FillTimer -= Time.deltaTime;
+                        FillTimer -= Time.deltaTime * (float)dwellProfile.TimeToCompleteDwell.TotalSeconds / profileWithDecay.TimeToAllowDwellDecay;
+                        if (FillTimer <= 0)
+                        {
+                            FillTimer = 0;
+                            CurrentDwellState = DwellStateType.None;
+                        }
                     }
-                    if (FillTimer <= 0)
+                    else
                     {
-                        FillTimer = 0;
-                        CurrentDwellState = DwellStateType.None;
+                        Debug.LogError("The assigned profile is not DwellProfileWithDecay!");
                     }
                     break;
                 default:
