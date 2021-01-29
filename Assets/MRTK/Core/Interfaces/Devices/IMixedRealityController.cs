@@ -40,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Indicates that this controller is currently providing position data.
         /// </summary>
         /// <remarks>
-        /// This value may change during usage for some controllers. As a best practice,
-        /// be sure to check this value before using position data.
+        /// <para>This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using position data.</para>
         /// </remarks>
         bool IsPositionAvailable { get; }
 
@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Indicates that this controller is currently providing rotation data.
         /// </summary>
         /// <remarks>
-        /// This value may change during usage for some controllers. As a best practice,
-        /// be sure to check this value before using rotation data.
+        /// <para>This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using rotation data.</para>
         /// </remarks>
         bool IsRotationAvailable { get; }
 

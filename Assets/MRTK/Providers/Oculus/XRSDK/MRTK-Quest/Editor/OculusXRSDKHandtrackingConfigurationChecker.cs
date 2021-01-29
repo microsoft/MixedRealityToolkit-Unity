@@ -43,9 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Editor
     /// Class that checks if the Oculus Integration Assets are present and configures the project if they are.
     /// </summary>
     /// <remarks>
-    /// Note that the checks that this class runs are fairly expensive and are only done manually by the user
+    /// <para>Note that the checks that this class runs are fairly expensive and are only done manually by the user
     /// as part of their setup steps described here:
-    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/OculusQuestMRTK.html
+    /// https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/OculusQuestMRTK.html </para>
     /// </remarks>
     public static class OculusXRSDKHandtrackingConfigurationChecker
     {
