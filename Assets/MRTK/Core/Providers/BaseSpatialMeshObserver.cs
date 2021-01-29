@@ -70,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             RecalculateNormals = profile.RecalculateNormals;
             TrianglesPerCubicMeter = profile.TrianglesPerCubicMeter;
             VisibleMaterial = profile.VisibleMaterial;
+
+            RuntimeSpatialMeshPrefab = profile.RuntimeSpatialMeshPrefab;
         }
 
         private static readonly ProfilerMarker ApplyUpdatedMeshDisplayOptionPerfMarker = new ProfilerMarker("[MRTK] BaseSpatialMeshObserver.ApplyUpdatedMeshDisplayOption");
@@ -330,6 +332,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     {
                         ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
                     }
+                }
+            }
+        }
+
+        private GameObject runtimeSpatialMeshPrefab = null;
+
+        /// <inheritdoc />
+        public GameObject RuntimeSpatialMeshPrefab
+        {
+            get { return runtimeSpatialMeshPrefab; }
+            set
+            {
+                if (value != runtimeSpatialMeshPrefab)
+                {
+                    runtimeSpatialMeshPrefab = value;
                 }
             }
         }
