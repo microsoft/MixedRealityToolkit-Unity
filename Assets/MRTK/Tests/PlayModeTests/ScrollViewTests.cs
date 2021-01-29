@@ -1141,17 +1141,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Completely visible objects should be active and have renderers clipped. Colliders should be enabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
-            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
+            Assert.IsTrue(renderer0.enabled, "Sphere 0 is not active");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
             // Barelly visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
-            Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
+            Assert.IsTrue(renderer1.enabled, "Sphere 1 is not active");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
 
             // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
             Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
-            Assert.IsFalse(contentItems[2].activeSelf, "Sphere 2 is active");
+            Assert.IsFalse(renderer2.enabled, "Sphere 2 is active");
 
             // Scrolling half item up
             yield return hand.MoveTo(preTouchPos);

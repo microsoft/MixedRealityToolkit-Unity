@@ -1651,9 +1651,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    if (!clippedRenderer.gameObject.activeSelf)
+                    if (!clippedRenderer.enabled)
                     {
-                        clippedRenderer.gameObject.SetActive(true);
+                        clippedRenderer.enabled = true;
                     }
 
                     renderersToUnclip.Add(clippedRenderer);
@@ -1674,18 +1674,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
                     || clippingThresholdBounds.Intersects(renderer.bounds)) 
                 {
-                    if (!renderer.gameObject.activeSelf)
+                    if (!renderer.enabled)
                     {
-                        renderer.gameObject.SetActive(true);
+                        renderer.enabled = true;
                     }
                 }
 
                 // Hidden renderer game objects should be inactive
                 else
                 {
-                    if (renderer.gameObject.activeSelf)
+                    if (renderer.enabled)
                     {
-                        renderer.gameObject.SetActive(false);
+                        renderer.enabled = false;
                     }
                 }
             }
