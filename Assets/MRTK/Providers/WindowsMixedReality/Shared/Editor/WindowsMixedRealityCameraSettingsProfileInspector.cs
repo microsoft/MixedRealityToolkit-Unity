@@ -46,7 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                     EditorGUILayout.LabelField("Mixed Reality Capture Settings (Experimental)", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
                 }
-                EditorGUILayout.HelpBox("Render from PV Camera is supported on Unity 2018.4.13f1 or newer and 2019.3.0f1 or newer. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
+                EditorGUILayout.HelpBox("Render from PV camera is supported in Unity 2018.4.13 and newer if using Unity 2018, and in Unity 2019.4.9f1 and newer if using Unity 2019. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
+                EditorGUILayout.HelpBox("This doesn't work on XR SDK when we shipped this MRTK release. See this page for the latest information: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/8707", MessageType.Info);
                 EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 EditorGUILayout.Space();
