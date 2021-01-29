@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// for a build to be successful.
         /// </summary>
         /// <remarks>
-        /// This controls the version of the Windows SDK that is build against on the local
+        /// <para>This controls the version of the Windows SDK that is build against on the local
         /// machine, NOT the version of the OS that must be present on the device that
         /// the built application is deployed to (this other aspect is controlled by
-        /// MIN_PLATFORM_VERSION)
+        /// MIN_PLATFORM_VERSION)</para>
         /// </remarks>
         public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
 
@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// is deployed to.
         /// </summary>
         /// <remarks>
-        /// This is intentionally set to a very low version, so that the application can be
-        /// deployed to variety of different devices which may be on older OS versions.
+        /// <para>This is intentionally set to a very low version, so that the application can be
+        /// deployed to variety of different devices which may be on older OS versions.</para>
         /// </remarks>
         public static Version MIN_PLATFORM_VERSION = new Version("10.0.10240.0");
 

@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// Whether to use photo/video camera rendering for Mixed Reality Capture on Windows.
         /// </summary>
         /// <remarks>
-        /// If true, the platform will provide an additional HolographicCamera to the app when a mixed reality capture photo or video is taken.
-        /// This HolographicCamera provides view matrices corresponding to the photo/video camera location, and it provides projection matrices using the photo/video camera field of view.
+        /// <para>If true, the platform will provide an additional HolographicCamera to the app when a mixed reality capture photo or video is taken.</para>
+        /// <para>This HolographicCamera provides view matrices corresponding to the photo/video camera location, and it provides projection matrices using the photo/video camera field of view.</para>
         /// </remarks>
         public bool RenderFromPVCameraForMixedRealityCapture => renderFromPVCameraForMixedRealityCapture;
 

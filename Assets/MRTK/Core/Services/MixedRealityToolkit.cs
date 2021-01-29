@@ -81,11 +81,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
         /// </summary>
         /// <remarks>
-        /// When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
+        /// <para>When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
         /// of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
-        /// first Update() of all services.
-        /// A noticable application hesitation may occur during this process. Also any scripts with high priority than this can enter its Update
-        /// before the new profiles are properly setup.
+        /// first Update() of all services.</para>
+        /// <para>A noticable application hesitation may occur during this process. Also any scripts with high priority than this can enter its Update
+        /// before the new profiles are properly setup.</para>
         /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
