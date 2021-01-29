@@ -66,6 +66,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private SelectionMode selectionMode;
 
+        [MenuItem("Mixed Reality Toolkit/Utilities/Asset Swap")]
+        public static void CreateAssetSwapCollection()
+        {
+            AssetSwapUtility utility = CreateInstance<AssetSwapUtility>();
+            AssetDatabase.CreateAsset(utility, AssetDatabase.GenerateUniqueAssetPath("Assets/AssetSwapCollection.asset"));
+            AssetDatabase.SaveAssets();
+
+            Selection.activeObject = utility;
+            EditorUtility.FocusProjectWindow();
+        }
+
         void OnEnable()
         {
             themeCount = serializedObject.FindProperty($"{nameof(AssetSwapUtility.Themes)}.Array.size");
