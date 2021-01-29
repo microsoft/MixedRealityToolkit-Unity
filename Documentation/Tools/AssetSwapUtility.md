@@ -1,4 +1,3 @@
-
 # Asset swap utility
 
 Find and replace is ubiquitous when working in text and content creation tools. When you need to swap many assets within a Unity scene this is where the `AssetSwapUtility` (xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility) [ScriptableObject](https://docs.unity3d.com/Manual/class-ScriptableObject.html) and editor can lend a hand.
