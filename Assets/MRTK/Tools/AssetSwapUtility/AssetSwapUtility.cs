@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private SelectionMode selectionMode;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Asset Swap")]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Create Asset Swap Collection")]
         public static void CreateAssetSwapCollection()
         {
             AssetSwapUtility utility = CreateInstance<AssetSwapUtility>();
