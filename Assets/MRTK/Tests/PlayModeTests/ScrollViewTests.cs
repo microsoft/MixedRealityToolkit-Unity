@@ -1139,19 +1139,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var collider1 = contentItems[1].GetComponent<Collider>();
             var collider2 = contentItems[2].GetComponent<Collider>();
 
-            // Completely visible objects should be active and have renderers clipped. Colliders should be enabled for interaction
+            // Completely visible objects should have renderers enabled and have renderers clipped. Colliders should be enabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
-            Assert.IsTrue(renderer0.enabled, "Sphere 0 is not active");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
             Assert.IsTrue(collider0.enabled, "Collider 0 is disabled");
 
-            // Barelly visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
+            // Barelly visible content should still have renderers enabled and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
-            Assert.IsTrue(renderer1.enabled, "Sphere 1 is not active");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
 
-            // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
+            // Hidden content should have renderers disabled and have renderers clipped. Collider state not important if scroll is not drag engaged
             Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
-            Assert.IsFalse(renderer2.enabled, "Sphere 2 is active");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
 
             // Scrolling half item up
             yield return hand.MoveTo(preTouchPos);
@@ -1161,18 +1162,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             clippedRenderers = scrollView.ClipBox.GetRenderersCopy().ToList();
 
-            // Partially visible objects should be active and have renderers clipped. Colliders should be disabled for interaction
+            // Partially visible objects should have renderers enabled  and have renderers clipped. Colliders should be disabled for interaction
             Assert.IsTrue(clippedRenderers.Contains(renderer0), "Renderer 0 is not being clipped");
-            Assert.IsTrue(contentItems[0].activeSelf, "Sphere 0 is not active");
+            Assert.IsTrue(renderer0.enabled, "Renderer 0 is disabled");
             Assert.IsFalse(collider0.enabled, "Collider 0 is enabled");
 
             Assert.IsTrue(clippedRenderers.Contains(renderer1), "Renderer 1 is not being clipped");
-            Assert.IsTrue(contentItems[1].activeSelf, "Sphere 1 is not active");
+            Assert.IsTrue(renderer1.enabled, "Renderer 1 is disabled");
             Assert.IsFalse(collider1.enabled, "Collider 1 is enabled");
 
-            // Hidden objects should be inactive and have renderers clipped. Collider state not important if scroll is not drag engaged
+            // Hidden objects should have renderers disabled and have renderers clipped. Collider state not important if scroll is not drag engaged
             Assert.IsTrue(clippedRenderers.Contains(renderer2), "Renderer 2 is not being clipped");
-            Assert.IsFalse(contentItems[2].activeSelf, "Sphere 2 is active");
+            Assert.IsFalse(renderer2.enabled, "Renderer 2 is enabled");
+            Assert.IsFalse(collider2.enabled, "Collider 2 is enabled");
 
             // Removing content from scroll content should also remove its renderers from the scroll clipping box
             scrollView.RemoveItem(contentItems[0]);
