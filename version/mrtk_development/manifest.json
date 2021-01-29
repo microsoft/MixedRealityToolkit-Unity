@@ -194,18 +194,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "../../Assets/MRTK/SDK/Experimental/PulseShader/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MRTK/SDK/Experimental/PulseShader/README.html",
-          "hash": "ah0T05GewTzfoa8UBteX9A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "../../Assets/MRTK/SDK/Experimental/StepSlider/README.md",
       "output": {
         ".html": {
@@ -630,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/ExperimentalFeatures.html",
-          "hash": "CQhpo4e3bdGEPQmNprWWrg=="
+          "hash": "i03N1Jz7FjPe4vrtcJ5QIQ=="
         }
       },
       "is_incremental": false,
@@ -8721,6 +8709,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "../../Documentation/README_PulseShader.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_PulseShader.html",
+          "hash": "seajR94NJ0uSy+qgybQXWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "../../Documentation/README_RiggedHandVisualizer.md",
       "output": {
         ".html": {
@@ -9205,7 +9205,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "zVdDncqw/NeHMYX9jow5lg=="
+          "hash": "zW6gn0EkQ3aNZE6twyfgEg=="
         }
       },
       "is_incremental": false,
@@ -13149,18 +13149,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.HandPulseLogic.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.HandPulseLogic.html",
-          "hash": "YL+fmqiUdoClwRssJepydg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.HideOnDevice.yml",
       "output": {
         ".html": {
@@ -13173,23 +13161,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.html",
-          "hash": "l6tI07TPTGNIwsAt9O6nNg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.html",
-          "hash": "N3pkFkYE3rBwSN72N6oHDA=="
+          "hash": "9BaPLQ4Fd+A/Ylfbs2a1XQ=="
         }
       },
       "is_incremental": false,
@@ -24885,6 +24861,54 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderHandMeshHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderHandMeshHandler.html",
+          "hash": "Lglv7bzgh5D/1wFBn23RGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderHandler.html",
+          "hash": "jtGpawOqNfOhM5SVv9X1Kw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderSpatialMeshHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PulseShader.PulseShaderSpatialMeshHandler.html",
+          "hash": "S7WzxH3e0LD3aHA4K3YM9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.PulseShader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PulseShader.html",
+          "hash": "cH2FakA6HPrCwJnmDmVRQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.yml",
       "output": {
         ".html": {
@@ -29809,7 +29833,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "pH78OGeNZGSFVPYvEL+H3A=="
+          "hash": "gwGxU97vBEay/mVjqMavhw=="
         }
       },
       "is_incremental": false,
@@ -29881,7 +29905,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1712,
+          "total_file_count": 1714,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
