@@ -506,5 +506,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         #endregion Helpers
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            if (SpatialAwarenessSystem == null || XRSubsystemHelpers.MeshSubsystem == null) { return; }
+
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                AddRuntimeSpatialMeshPrefabToHierarchy();
+            }
+        }
     }
 }
