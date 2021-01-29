@@ -352,5 +352,42 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         #endregion IMixedRealitySpatialMeshObserver Implementation
+
+        /// <summary>
+        /// Instantiates and appends a prefab to the Runtime (on device and not in editor) 
+        /// Spatial Awareness hierarchy. 
+        /// 
+        /// The default structure of the Spatial Awareness System:
+        /// 
+        /// Spatial Awareness System 
+        ///     Windows Mixed Reality Spatial Mesh Observer
+        ///         Spatial Mesh - ID
+        ///         Spatial Mesh - ID
+        ///         ...
+        /// 
+        /// If the Runtime Spatial Mesh Prefab field is not null, this method adds the prefab 
+        /// between the Spatial Awareness System and the Windows Mixed Reality Spatial Mesh Observer which results in this structure:
+        /// 
+        /// Spatial Awareness System 
+        ///         Runtime Spatial Mesh Prefab
+        ///             Windows Mixed Reality Spatial Mesh Observer
+        ///                 Spatial Mesh - ID
+        ///                 Spatial Mesh - ID
+        ///                 ...
+        /// </summary>
+        protected void AddRuntimeSpatialMeshPrefabToHierarchy()
+        {
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                GameObject spatialMeshPrefab = GameObject.Instantiate(RuntimeSpatialMeshPrefab, SpatialAwarenessSystem.SpatialAwarenessObjectParent.transform);
+
+                if (spatialMeshPrefab.transform.position != Vector3.zero)
+                {
+                    spatialMeshPrefab.transform.position = Vector3.zero;
+                }
+
+                ObservedObjectParent.transform.SetParent(spatialMeshPrefab.transform, false);
+            }
+        }
     }
 }
