@@ -144,15 +144,15 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ActiveProfile_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If changing the Active profile prior to the initialization (i.e. Awake()) of <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> is desired,
-call the static funtion <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_SetProfileBeforeInitialization_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile_">SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)</a> instead.
-When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
+  <div class="markdown level1 remarks"><p>If changing the Active profile prior to the initialization (i.e. Awake()) of <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> is desired, 
+call the static funtion <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_SetProfileBeforeInitialization_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile_">SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile)</a> instead.</p>
+<p>When setting the ActiveProfile during runtime, the destroy of the currently running services will happen after the last LateUpdate()
 of all services, and the instantiation and initialization of the services associated with the new profile will happen before the
-first Update() of all services.
-A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
-before the new profile is properly setup.
-You are strongly recommended to see
-<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a>
+first Update() of all services.</p>
+<p>A noticable application hesitation may occur during this process. Also any script with higher priority than this can enter its Update
+before the new profile is properly setup.</p>
+<p>You are strongly recommended to see 
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a> 
 for more information on profile switching.</p>
 </div>
   
@@ -1154,10 +1154,10 @@ public bool IsSystemRegistered&lt;T&gt;()
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ResetConfiguration_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This function should only be used by editor code in most cases.
-Do not call this function if resetting profile at runtime.
-Instead see
-<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a>
+  <div class="markdown level1 remarks"><p>This function should only be used by editor code in most cases.</p>
+<p>Do not call this function if resetting profile at runtime.
+Instead see 
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a> 
 for more information on profile switching at runtime.</p>
 </div>
   
@@ -1243,11 +1243,11 @@ for more information on profile switching at runtime.</p>
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityToolkit_SetProfileBeforeInitialization_Microsoft_MixedReality_Toolkit_MixedRealityToolkitConfigurationProfile__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If changing the Active profile after <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> has been initialized, modify <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ActiveProfile">ActiveProfile</a> of the active instance directly.
-This function requires the caller script to be executed earlier than the <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> script, which can be achieved by setting
-<a href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</a>.
-You are strongly recommended to see
-<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a>
+  <div class="markdown level1 remarks"><p>If changing the Active profile after <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> has been initialized, modify <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html#Microsoft_MixedReality_Toolkit_MixedRealityToolkit_ActiveProfile">ActiveProfile</a> of the active instance directly.</p>
+<p>This function requires the caller script to be executed earlier than the <a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html">MixedRealityToolkit</a> script, which can be achieved by setting 
+<a href="https://docs.unity3d.com/Manual/class-MonoManager.html">Script Execution Order settings</a>.</p>
+<p>You are strongly recommended to see 
+<a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#changing-profiles-at-runtime">here</a> 
 for more information on profile switching.</p>
 </div>
   
