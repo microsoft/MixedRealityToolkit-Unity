@@ -15,5 +15,5 @@ MonoBehaviour:
   dwellTriggerPointerType: 4
   dwellIntentDelay: 0
   dwellStartDelay: 0.5
-  timeToCompleteDwell: 4
+  timeToCompleteDwell: 2
   timeToAllowDwellResume: 0
