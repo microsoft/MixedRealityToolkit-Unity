@@ -1006,6 +1006,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/AssetSwapUtility/MRTK_AssetSwapUtility_Apply_AssetSwapCollection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/AssetSwapUtility/MRTK_AssetSwapUtility_Apply_AssetSwapCollection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/AssetSwapUtility/MRTK_AssetSwapUtility_Example_AssetSwapCollection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/AssetSwapUtility/MRTK_AssetSwapUtility_Example_AssetSwapCollection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/Boundary/BoundarySelectSystemType.png",
       "output": {
         "resource": {
@@ -9038,6 +9060,18 @@
         ".html": {
           "relative_path": "Documentation/TeleportSystem/Overview.html",
           "hash": "rVF4KhiS1gzIqGXgGGu3zQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../../Documentation/Tools/AssetSwapUtility.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/AssetSwapUtility.html",
+          "hash": "gW8omv5W4G6xE6zWGx/sGw=="
         }
       },
       "is_incremental": false,
@@ -25857,6 +25891,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility.Theme.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility.Theme.html",
+          "hash": "7gMWguyKa28P3yTiXj8B2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssetSwapUtility.html",
+          "hash": "JGuYKE3eqHUwNoaERuT3rg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.BaseCollectionInspector.yml",
       "output": {
         ".html": {
@@ -26665,7 +26723,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.html",
-          "hash": "d7Gzg/QHCxmsHocmeQJlxg=="
+          "hash": "T4y8ib5MDgjkWtve2zRJsQ=="
         }
       },
       "is_incremental": false,
@@ -29833,7 +29891,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "gwGxU97vBEay/mVjqMavhw=="
+          "hash": "JBl8EzqEkL3vqY/zqjk2UQ=="
         }
       },
       "is_incremental": false,
@@ -29899,13 +29957,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 168,
+          "total_file_count": 169,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1714,
+          "total_file_count": 1716,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
