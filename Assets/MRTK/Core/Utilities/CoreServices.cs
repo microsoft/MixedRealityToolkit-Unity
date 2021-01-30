@@ -38,10 +38,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private static IMixedRealityTeleportSystem teleportSystem;
 
-        // We do not want to keep a service around so use WeakReference
-        private static readonly Dictionary<Type, WeakReference<IMixedRealityService>> ServiceCache =
-            new Dictionary<Type, WeakReference<IMixedRealityService>>();
-
         /// <summary>
         /// Cached reference to the active instance of the boundary system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences()
@@ -188,15 +184,19 @@ namespace Microsoft.MixedReality.Toolkit
             return default;
         }
 
+        // We do not want to keep a service around so use WeakReference
+        private static readonly Dictionary<Type, WeakReference<IMixedRealityService>> ServiceCache =
+            new Dictionary<Type, WeakReference<IMixedRealityService>>();
+
         private static T GetService<T>() where T : IMixedRealityService
         {
             Type serviceType = typeof(T);
 
             // See if we already have a WeakReference entry for this service type
-            if (ServiceCache.TryGetValue(serviceType, out var weakService))
+            if (ServiceCache.TryGetValue(serviceType, out WeakReference<IMixedRealityService> weakService))
             {
                 // If our reference object is still alive, return it
-                if (weakService.TryGetTarget(out var svc))
+                if (weakService.TryGetTarget(out IMixedRealityService svc))
                 {
                     return (T)svc;
                 }
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit
             // This is the first request for the given service type. See if it is available and if so, add entry
             if (!MixedRealityServiceRegistry.TryGetService(out T service))
             {
-                return default;
+                return default(T);
             }
 
             ServiceCache.Add(serviceType, new WeakReference<IMixedRealityService>(service, false));

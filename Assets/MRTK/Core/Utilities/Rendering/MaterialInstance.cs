@@ -7,7 +7,6 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Rendering
@@ -35,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (owner != null)
             {
-                _materialOwners.Add(owner);
+                materialOwners.Add(owner);
             }
 
             if (instance)
@@ -43,7 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 AcquireInstances();
             }
 
-            return _instanceMaterials?.Length > 0 ? _instanceMaterials[0] : null;
+            if (instanceMaterials?.Length > 0)
+            {
+                return instanceMaterials[0];
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -58,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (owner != null)
             {
-                _materialOwners.Add(owner);
+                materialOwners.Add(owner);
             }
 
             if (instance)
@@ -66,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 AcquireInstances();
             }
 
-            return _instanceMaterials;
+            return instanceMaterials;
         }
 
         /// <summary>
@@ -78,9 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// <param name="autoDestroy">When ownership count hits zero should the MaterialInstance component be destroyed?</param>
         public void ReleaseMaterial(Object owner, bool autoDestroy = true)
         {
-            _materialOwners.Remove(owner);
+            materialOwners.Remove(owner);
 
-            if (autoDestroy && _materialOwners.Count == 0)
+            if (autoDestroy && materialOwners.Count == 0)
             {
                 DestroySafe(this);
 
@@ -91,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 }
             }
         }
-        
+
         /// <summary>
         /// Returns the first instantiated Material assigned to the renderer, similar to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see>.
         /// </summary>
@@ -106,42 +110,41 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             get
             {
-                if (!_cachedRenderer)
+                if (cachedRenderer == null)
                 {
-                    _cachedRenderer = GetComponent<Renderer>();
-                    _cachedSharedMaterials = _cachedRenderer.sharedMaterials;
+                    cachedRenderer = GetComponent<Renderer>();
+                    cachedSharedMaterials = cachedRenderer.sharedMaterials;
 
-                    return _cachedRenderer;
+                    return cachedRenderer;
                 }
 
-                return _cachedRenderer;
+                return cachedRenderer;
             }
         }
 
         private Material[] CachedSharedMaterials
         {
-            get => _cachedSharedMaterials;
+            get => cachedSharedMaterials;
             set
             {
-                _cachedSharedMaterials = value;
-                _cachedRenderer.sharedMaterials = value;
+                cachedSharedMaterials = value;
+                cachedRenderer.sharedMaterials = value;
             }
         }
-        
-        
-        private Renderer _cachedRenderer;
 
-        [SerializeField]
-        [HideInInspector]
-        private Material[] defaultMaterials;
-        private Material[] _instanceMaterials;
-        private Material[] _cachedSharedMaterials;
-        private bool _initialized;
-        private bool _materialsInstanced;
-        private readonly HashSet<Object> _materialOwners = new HashSet<Object>();
 
-        private const string InstancePostfix = " (Instance)";
-        
+        private Renderer cachedRenderer = null;
+
+        [SerializeField, HideInInspector]
+        private Material[] defaultMaterials = null;
+        private Material[] instanceMaterials = null;
+        private Material[] cachedSharedMaterials = null;
+        private bool initialized = false;
+        private bool materialsInstanced = false;
+        private readonly HashSet<Object> materialOwners = new HashSet<Object>();
+
+        private const string instancePostfix = " (Instance)";
+
         #region MonoBehaviour Implementation
 
         private void Awake()
@@ -154,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             // If the materials get changed via outside of MaterialInstance.
             var sharedMaterials = CachedSharedMaterials;
 
-            if (!MaterialsMatch(sharedMaterials, _instanceMaterials))
+            if (!MaterialsMatch(sharedMaterials, instanceMaterials))
             {
                 // Re-create the material instances.
                 var newDefaultMaterials = new Material[sharedMaterials.Length];
@@ -181,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 CreateInstances();
 
                 // Notify owners of the change.
-                foreach (var owner in _materialOwners)
+                foreach (var owner in materialOwners)
                 {
                     (owner as IMaterialInstanceOwner)?.OnMaterialChanged(this);
                 }
@@ -195,13 +198,13 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void RestoreRenderer()
         {
-            if (CachedRenderer && defaultMaterials != null)
+            if (CachedRenderer != null && defaultMaterials != null)
             {
                 CachedSharedMaterials = defaultMaterials;
             }
 
-            DestroyMaterials(_instanceMaterials);
-            _instanceMaterials = null;
+            DestroyMaterials(instanceMaterials);
+            instanceMaterials = null;
         }
 
         #endregion MonoBehaviour Implementation
@@ -209,27 +212,27 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void Initialize()
         {
-            if (!_initialized && CachedRenderer)
+            if (!initialized && CachedRenderer != null)
             {
                 // Cache the default materials if ones do not already exist.
                 if (!HasValidMaterial(defaultMaterials))
                 {
                     defaultMaterials = CachedSharedMaterials;
                 }
-                else if (!_materialsInstanced) // Restore the clone to its initial state.
+                else if (!materialsInstanced) // Restore the clone to its initial state.
                 {
                     CachedSharedMaterials = defaultMaterials;
                 }
 
-                _initialized = true;
+                initialized = true;
             }
         }
 
         private void AcquireInstances()
         {
-            if (CachedRenderer)
+            if (CachedRenderer != null)
             {
-                if (!MaterialsMatch(CachedSharedMaterials, _instanceMaterials))
+                if (!MaterialsMatch(CachedSharedMaterials, instanceMaterials))
                 {
                     CreateInstances();
                 }
@@ -241,15 +244,15 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             // Initialize must get called to set the defaultMaterials in case CreateInstances get's invoked before Awake.
             Initialize();
 
-            DestroyMaterials(_instanceMaterials);
-            _instanceMaterials = InstanceMaterials(defaultMaterials);
+            DestroyMaterials(instanceMaterials);
+            instanceMaterials = InstanceMaterials(defaultMaterials);
 
-            if (CachedRenderer && _instanceMaterials != null)
+            if (CachedRenderer != null && instanceMaterials != null)
             {
-                CachedSharedMaterials = _instanceMaterials;
+                CachedSharedMaterials = instanceMaterials;
             }
 
-            _materialsInstanced = true;
+            materialsInstanced = true;
         }
 
         private static bool MaterialsMatch(Material[] a, Material[] b)
@@ -259,10 +262,12 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 return false;
             }
 
-            for (var i = 0; i < a?.Length; ++i)
+            for (int i = 0; i < a?.Length; ++i)
             {
                 if (a[i] != b[i])
+                {
                     return false;
+                }
             }
 
             return true;
@@ -279,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             for (var i = 0; i < source.Length; ++i)
             {
-                if (source[i])
+                if (source[i] != null)
                 {
                     if (IsInstanceMaterial(source[i]))
                     {
@@ -287,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                     }
 
                     output[i] = new Material(source[i]);
-                    output[i].name = $"{output[i].name}{InstancePostfix}";
+                    output[i].name += instancePostfix;
                 }
             }
 
@@ -298,16 +303,16 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             if (materials != null)
             {
-                foreach (var material in materials)
+                for (var i = 0; i < materials.Length; ++i)
                 {
-                    DestroySafe(material);
+                    DestroySafe(materials[i]);
                 }
             }
         }
 
         private static bool IsInstanceMaterial(Material material)
         {
-            return material && material.name.Contains(InstancePostfix);
+            return ((material != null) && material.name.Contains(instancePostfix));
         }
 
         private static bool HasValidMaterial(Material[] materials)
@@ -316,13 +321,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             {
                 foreach (var material in materials)
                 {
-                    if (material)
+                    if (material != null)
                     {
                         return true;
                     }
                 }
-
-                return false;
             }
 
             return false;
@@ -330,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private static void DestroySafe(Object toDestroy)
         {
-            if (toDestroy)
+            if (toDestroy != null)
             {
                 if (Application.isPlaying)
                 {
@@ -346,7 +349,9 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                         EditorApplication.delayCall += () =>
                         {
                             if (toDestroy != null)
+                            {
                                 DestroyImmediate(toDestroy);
+                            }
                         };
                     }
 #endif

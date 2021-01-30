@@ -22,9 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// The renderer(s) that should be affected by the primitive. This collection is a copy of internal HashSet.
         /// </summary>
-        private readonly Dictionary<Renderer, MaterialInstance> _renderers =
+        private readonly Dictionary<Renderer, MaterialInstance> renderers =
             new Dictionary<Renderer, MaterialInstance>(InitialCollectionSize);
 
+        [Tooltip("The renderer(s) that should be affected by the primitive.")]
         [SerializeField]
         private List<Renderer> renderersCache = new List<Renderer>(InitialCollectionSize);
         
@@ -67,11 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (value != applyToSharedMaterial)
                 {
-                    if (_renderers.Count > 0)
+                    if (renderers.Count > 0)
                     {
                         throw new InvalidOperationException("Cannot change material applied to after renderers have been added.");
                     }
-
                     applyToSharedMaterial = value;
                 }
             }
@@ -116,9 +116,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private Material[] AcquireMaterials(Renderer renderer, bool instance = true)
         {
-            return applyToSharedMaterial
-                ? renderer.sharedMaterials
-                : renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this, instance);
+            if (applyToSharedMaterial)
+            {
+                return renderer.sharedMaterials;
+            }
+            else
+            {
+                return renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this, instance);
+            }
         }
 
         private bool isDirty;
@@ -143,24 +148,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="renderer">The renderer to add.</param>
         public void AddRenderer(Renderer renderer)
         {
-            if (renderer)
+            if (renderer != null)
             {
-                if (_renderers.ContainsKey(renderer))
+                if (!renderers.ContainsKey(renderer))
                 {
-                    return;
+                    var materialInstance = renderer.EnsureComponent<MaterialInstance>();
+                    if (!materialInstance)
+                    {
+                        return;
+                    }
+
+                    renderers.Add(renderer, materialInstance);
+
+                    var materials = materialInstance.AcquireMaterials(this);
+                    ToggleClippingFeature(materials, gameObject.activeInHierarchy);
+                    IsDirty = true;
                 }
-
-                var materialInstance = renderer.EnsureComponent<MaterialInstance>();
-                if (!materialInstance)
-                {
-                    return;
-                }
-
-                _renderers.Add(renderer, materialInstance);
-
-                var materials = materialInstance.AcquireMaterials(this);
-                ToggleClippingFeature(materials, gameObject.activeInHierarchy);
-                IsDirty = true;
             }
         }
 
@@ -169,31 +172,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public void RemoveRenderer(Renderer renderer)
         {
-            if (renderer)
+            if (renderer != null)
             {
-                _renderers.TryGetValue(renderer, out var materialInstance);
-                _renderers.Remove(renderer);
+                renderers.TryGetValue(renderer, out MaterialInstance materialInstance);
+                renderers.Remove(renderer);
 
-                if (!materialInstance)
+                if (materialInstance != null)
                 {
-                    return;
+                    // There is no need to acquire new instances if ones do not already exist since we are 
+                    // in the process of removing.
+                    ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
+                    materialInstance.ReleaseMaterial(this);
                 }
-
-                // There is no need to acquire new instances if ones do not already exist since we are 
-                // in the process of removing.
-                ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
-                materialInstance.ReleaseMaterial(this);
             }
         }
 
         /// <summary>
-        /// Removes all _renderers in the list of objects this clipping primitive clips.
+        /// Removes all renderers in the list of objects this clipping primitive clips.
         /// </summary>
         public void ClearRenderers()
         {
-            if (_renderers.Count > 0)
+            if (renderers.Count > 0)
             {
-                renderersCache.AddRange(_renderers.Keys);
+                renderersCache.AddRange(renderers.Keys);
                 foreach (var renderer in renderersCache)
                 {
                     RemoveRenderer(renderer);
@@ -204,12 +205,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Returns a copy of the current list of _renderers.
+        /// Returns a copy of the current list of renderers.
         /// </summary>
-        /// <returns>The current list of _renderers.</returns>
+        /// <returns>The current list of renderers.</returns>
         public IEnumerable<Renderer> GetRenderersCopy()
         {
-            return new List<Renderer>(_renderers.Keys);
+            return new List<Renderer>(renderers.Keys);
         }
 
         #region MonoBehaviour Implementation
@@ -244,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             UpdateRenderers();
             ToggleClippingFeature(false);
 
-            if (cameraMethods)
+            if (cameraMethods != null)
             {
                 cameraMethods.OnCameraPreRender -= OnCameraPreRender;
             }
@@ -289,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <inheritdoc />
         public void OnMaterialChanged(MaterialInstance materialInstance)
         {
-            if (materialInstance)
+            if (materialInstance != null)
             {
                 ToggleClippingFeature(materialInstance.AcquireMaterials(this), gameObject.activeInHierarchy);
             }
@@ -307,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected virtual void UpdateRenderers()
         {
-            if (_renderers.Count <= 0)
+            if (renderers.Count <= 0)
             {
                 return;
             }
@@ -320,10 +321,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             BeginUpdateShaderProperties();
 
-            renderersCache.AddRange(_renderers.Keys);
+            renderersCache.AddRange(renderers.Keys);
             foreach (var cachedRenderer in renderersCache)
             {
-                if (Application.isPlaying && !cachedRenderer)
+                if (Application.isPlaying && cachedRenderer == null)
                 {
                     RemoveRenderer(cachedRenderer);
                     continue;
@@ -341,22 +342,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             IsDirty = false;
         }
 
-        protected virtual void BeginUpdateShaderProperties()
-        {
-        }
-
+        protected virtual void BeginUpdateShaderProperties() { }
         protected abstract void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock);
-
-        protected virtual void EndUpdateShaderProperties()
-        {
-        }
+        protected virtual void EndUpdateShaderProperties() { }
 
         protected void ToggleClippingFeature(bool keywordOn)
         {
-            if (_renderers.Count > 0)
-                foreach (var cachedRenderer in _renderers.Keys)
+            if (renderers.Count > 0)
+                foreach (var cachedRenderer in renderers.Keys)
                 {
-                    if (cachedRenderer)
+                    if (cachedRenderer != null)
                     {
                         ToggleClippingFeature(AcquireMaterials(cachedRenderer), keywordOn);
                     }
@@ -366,15 +361,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected void ToggleClippingFeature(Material[] materials, bool keywordOn)
         {
             if (materials != null)
+            {
                 foreach (var material in materials)
                 {
                     ToggleClippingFeature(material, keywordOn);
                 }
+            }
         }
 
         protected void ToggleClippingFeature(Material material, bool keywordOn)
         {
-            if (material)
+            if (material != null)
             {
                 if (keywordOn)
                 {
