@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.Interaction;
+
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.TestTools;
+
+#if UNITY_2019_3_OR_NEWER
+using Microsoft.MixedReality.Toolkit.Experimental.Interaction;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
