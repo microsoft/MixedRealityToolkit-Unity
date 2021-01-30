@@ -15,8 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
     /// <summary>
     /// Helper class for determining if a Windows API contract is available.
     /// </summary>
-    /// <remarks> See https://docs.microsoft.com/uwp/extension-sdks/windows-universal-sdk
-    /// for a full list of contracts.</remarks>
+    /// <remarks>
+    /// <para>See https://docs.microsoft.com/uwp/extension-sdks/windows-universal-sdk
+    /// for a full list of contracts.</para>
+    /// </remarks>
     public static class WindowsApiChecker
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

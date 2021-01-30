@@ -25,7 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             "Windows.UI.Input.Spatial",
             "LeapMotion",
-            "LeapMotion.LeapCSharp"
+            "LeapMotion.LeapCSharp",
+#if UNITY_2019_3_OR_NEWER
+            "Oculus.VR",
+            "Oculus.VR.Editor",
+            "Unity.XR.Oculus",
+            "Unity.XR.WindowsMixedReality"
+#endif
         };
 
         /// <summary>
@@ -60,6 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Gets all the parsed DLLs for this Unity project.
         /// </summary>
         public IReadOnlyCollection<PluginAssemblyInfo> Plugins { get; }
+
+        /// <summary>
+        /// Starting from Unity 2019 some plugins are shipped with Unity in its source form. These plugins need to be handled specially.
+        /// </summary>
+        public static IReadOnlyDictionary<string, string> SpecialPluginNameMappingUnity2019 { get; } = new Dictionary<string, string>
+        {
+            { "Unity.ugui" , "UnityEngine.UI" },
+            { "Unity.ugui.Editor" , "UnityEditor.UI" }
+        };
 
         public UnityProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, string projectOutputPath)
         {
@@ -154,11 +169,22 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 }
             }
 
+            // Ignore test projects when generating docs with Unity 2019
+#if UNITY_2019_3_OR_NEWER
+            projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.EditModeTests");
+            projectsMap.Remove("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests");
+#endif
             return projectsMap;
         }
 
         private CSProjectInfo GetProjectInfo(Dictionary<string, CSProjectInfo> projectsMap, Dictionary<string, AssemblyDefinitionInfo> asmDefInfoMap, HashSet<string> builtInPackagesWithoutSource, string projectKey, string projectOutputPath)
         {
+#if UNITY_2019_3_OR_NEWER
+            if (SpecialPluginNameMappingUnity2019.TryGetValue(projectKey, out string pluginName))
+            {
+                projectKey = pluginName;
+            }
+#endif
             if (projectsMap.TryGetValue(projectKey, out CSProjectInfo value))
             {
                 return value;
@@ -210,6 +236,19 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 toReturn.AddDependency(GetProjectInfo(projectsMap, asmDefInfoMap, builtInPackagesWithoutSource, reference, projectOutputPath));
             }
 
+            // Manually add special plugin dependencies to the projects
+#if UNITY_2019_3_OR_NEWER
+            if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit"))
+            {
+                foreach (var plugin in SpecialPluginNameMappingUnity2019.Values)
+                {
+                    if (projectsMap.TryGetValue(plugin, out CSProjectInfo projectInfo))
+                    {
+                        toReturn.AddDependency(projectInfo);
+                    }
+                }
+            }
+#endif
             return toReturn;
         }
 

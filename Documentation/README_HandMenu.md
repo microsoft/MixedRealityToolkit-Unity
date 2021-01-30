@@ -32,6 +32,20 @@ Backplate's `ManipulationHandler` makes it grabbable and movable. **On Manipulat
 
 This example is similar to HandMenu_Large_WorldLock_On_GrabAndPull. The only difference is that the menu will be automatically world-locked on hand drop. This is done by simply not hiding the MenuContent on **OnLastHandLost()** event. Grab & pull behavior is same as HandMenu_Large_WorldLock_On_GrabAndPull example.
 
+## Accessibility: Voice command support
+To support the scenario when the user cannot use both hands, hand menu examples include voice command. To reveal the menu, say **"Show hand menu"**. The menu will stay within the FOV with tag-along behavior. You can continue interacting with buttons using **"Select"** keyword. 
+
+Once you are done with the menu, you can say **"Hide hand menu"** to close the menu.
+
+<br/><img src="Images/HandMenu/MRTK_HandMenu_VoiceCommand.png">
+
+`SpeechInputHandler.cs` script is used to enable voice command input. On "Show hand menu" keyword recognition, the example enables **Follow** solver and changes SolverHandler's tracked target type to **Head** to achieve tag-along behavior. The example disables HandConstraintPalmUp since the menu should stay within the user's FOV without hand detection for hands-free mode. For "Hide hand menu" keyword, **Follow** solver is disabled, SolverHandler's tracked target type to **Hand Joint**, and HandConstraintPalmUp is enabled.
+
+<br/><img src="Images/HandMenu/MRTK_HandMenu_VoiceCommand2.png" width="600">
+
+* Voice command keywords are defined in MRTK's Speech Input Profile. 
+
+
 ## Scripts
 
 The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.

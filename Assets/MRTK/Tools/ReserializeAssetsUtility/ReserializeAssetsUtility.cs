@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// Adds menu items to automate reserializing specific files in Unity.
     /// </summary>
     /// <remarks>
-    /// Reserialization can be needed between Unity versions or when the
-    /// underlying script or asset definitions are changed.
+    /// <para>Reserialization can be needed between Unity versions or when the
+    /// underlying script or asset definitions are changed.</para>
     /// </remarks>
     public class ReserializeUtility
     {

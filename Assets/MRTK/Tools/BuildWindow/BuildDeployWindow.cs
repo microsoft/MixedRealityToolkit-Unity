@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -78,6 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
 
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_PATH = @"SOFTWARE\Microsoft\Windows Kits\Installed Roots";
+
+        private const string WINDOWS_10_KITS_PATH_REGISTRY_KEY = "KitsRoot10";
+
+        private const string WINDOWS_10_KITS_PATH_POSTFIX = "Lib";
+
+        private const string WINDOWS_10_KITS_DEFAULT_PATH = @"C:\Program Files (x86)\Windows Kits\10\Lib";
+
         #endregion Constants and Readonly Values
 
         #region Labels
@@ -90,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UseCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
 
-        private readonly GUIContent gazeInputCapabilityLabel =
+        private readonly GUIContent GazeInputCapabilityLabel =
             new GUIContent("Gaze Input Capability",
                            "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
@@ -133,6 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent LaunchAppLabel = new GUIContent("Launch App", "Launch listed app on either currently selected device or all devices.");
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
+
+        private readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
 
         #endregion Labels
 
@@ -225,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment. 
+        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment.
         /// Saves state for duration of current Unity session
         /// </summary>
         private static bool UseRemoteTarget
@@ -410,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 
-            // Generate C# Project References for debugging	
+            // Generate C# Project References for debugging
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
                 bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
@@ -539,15 +546,29 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
 
-                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
+                // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but
                 // existing versions of Unity don't have support for automatically adding the capability to the generated
                 // AppX manifest during the build. This option provides a mechanism for people using the
                 // MRTK build tools to auto-append this capability if desired, instead of having to manually
                 // do this each time on their own.
-                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(gazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
+                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(GazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
 
                 // Enable Research Mode Capability
                 bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    // 3D Launcher Model
+                    string curAppLauncherModelLocation = BuildDeployPreferences.AppLauncherModelLocation;
+                    var curGlbModel = AssetDatabase.LoadAssetAtPath(curAppLauncherModelLocation, typeof(GameObject));
+                    EditorGUILayout.LabelField(AppLauncherModelLabel);
+                    GameObject newGlbModel = (GameObject)EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false);
+                    string newAppLauncherModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
+                    if (newAppLauncherModelLocation != curAppLauncherModelLocation)
+                    {
+                        BuildDeployPreferences.AppLauncherModelLocation = newAppLauncherModelLocation;
+                    }
+                }
 
                 if (c.changed)
                 {
@@ -1379,7 +1400,23 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void LoadWindowsSdkPaths()
         {
-            var windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
+            string win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+#if UNITY_EDITOR_WIN
+            // Windows 10 sdk might not be installed on C: drive.
+            // Try to detect the installation path by checking the registry.
+            try
+            {
+                var registryKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(WINDOWS_10_KITS_PATH_REGISTRY_PATH);
+                var registryValue = registryKey.GetValue(WINDOWS_10_KITS_PATH_REGISTRY_KEY) as string;
+                win10KitsPath = Path.Combine(registryValue, WINDOWS_10_KITS_PATH_POSTFIX);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Could not find the Windows 10 SDK installation path via registry. Reverting to default path. {e}");
+                win10KitsPath = WINDOWS_10_KITS_DEFAULT_PATH;
+            }
+#endif
+            var windowsSdkPaths = Directory.GetDirectories(win10KitsPath);
             for (int i = 0; i < windowsSdkPaths.Length; i++)
             {
                 windowsSdkVersions.Add(new Version(windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1)));

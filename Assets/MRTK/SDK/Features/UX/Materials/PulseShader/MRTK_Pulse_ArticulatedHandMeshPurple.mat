@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_Pulse_ArticulatedHandMeshPurple
   m_Shader: {fileID: 4800000, guid: aca12b5bed90b92448a88757df739294, type: 3}
-  m_ShaderKeywords: USE_ALBEDO_TEXTURE _AUTO_PULSE__ON _COLOR_MAP_ENABLE_ _PULSE_ENABLED__ON
+  m_ShaderKeywords: USE_ALBEDO_TEXTURE _COLOR_MAP_ENABLE_ _PULSE_ENABLED__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -61,7 +61,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - USE_ALBEDO_TEXTURE: 1
-    - _Auto_Pulse_: 1
+    - _Auto_Pulse_: 0
     - _BumpScale: 1
     - _Color_Center_: 0.4
     - _Color_Leading_Fuzz_: 1

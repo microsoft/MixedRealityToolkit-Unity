@@ -49,8 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// A surface that does not fit one of the defined surface types.
         /// </summary>
         /// <remarks>
-        /// Background should not be confused with Unknown. There is sufficient data to 
-        /// classify the surface and it has been found to not correspond to a defined type.
+        /// <para>Platforms, like floors, that can be used for placing objects requiring a horizontal surface.</para>
+        /// <para>Background should not be confused with Unknown. There is sufficient data to 
+        /// classify the surface and it has been found to not correspond to a defined type.</para>
         /// </remarks>
         Background = 1 << 29,
 

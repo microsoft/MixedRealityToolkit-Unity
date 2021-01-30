@@ -202,11 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Returns the current selection mode of the Interactable based on the number of Dimensions available
         /// </summary>
         /// <remarks>
-        /// Returns the following under the associated conditions:
-        /// SelectionModes.Invalid => Dimensions less than or equal to 0
-        /// SelectionModes.Button => Dimensions == 1
-        /// SelectionModes.Toggle => Dimensions == 2
-        /// SelectionModes.MultiDimension => Dimensions > 2
+        /// <para>Returns the following under the associated conditions:</para>
+        /// <para>SelectionModes.Invalid => Dimensions less than or equal to 0</para>
+        /// <para>SelectionModes.Button => Dimensions == 1</para>
+        /// <para>SelectionModes.Toggle => Dimensions == 2</para>
+        /// <para>SelectionModes.MultiDimension => Dimensions > 2</para>
         /// </remarks>
         public SelectionModes ButtonMode => ConvertToSelectionMode(NumOfDimensions);
 
@@ -1063,9 +1063,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T receiverT)
                 {
-                    return (T)InteractableEvents[i].Receiver;
+                    return receiverT;
                 }
             }
 
@@ -1081,9 +1081,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             List<T> result = new List<T>();
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T receiverT)
                 {
-                    result.Add((T)InteractableEvents[i].Receiver);
+                    result.Add(receiverT);
                 }
             }
             return result;

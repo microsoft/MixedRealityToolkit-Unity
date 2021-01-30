@@ -128,8 +128,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         public static T GetDataProvider<T>(IMixedRealityService service) where T : IMixedRealityDataProvider
         {
-            var dataProviderAccess = service as IMixedRealityDataProviderAccess;
-            if (dataProviderAccess != null)
+            if (service is IMixedRealityDataProviderAccess dataProviderAccess)
             {
                 return dataProviderAccess.GetDataProvider<T>();
             }
