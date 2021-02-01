@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
