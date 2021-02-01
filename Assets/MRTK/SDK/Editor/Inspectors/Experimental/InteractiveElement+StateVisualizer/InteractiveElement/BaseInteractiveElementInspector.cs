@@ -89,9 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 
         private void RenderSettings()
         {
-            // Draw a title for the Settings section 
-            InspectorUIUtility.DrawTitle(settingsLabel);
-
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(active);
 
             if (Application.isPlaying)
@@ -180,11 +178,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
                         EditorGUILayout.Space();
                     }
 
-                    // Do not draw a remove button for the default state
-                    if (!inPlayMode && stateName.stringValue != defaultStateName)
+                    // Do not draw a remove button during play mode
+                    if (!inPlayMode)
                     {
-                        // Do not draw a remove button for the Touch state or the PressedNear state if the current type is CompressableButton
-                        if (isCompressableButton && stateName.stringValue != touchStateName && stateName.stringValue != PressedNearStateName)
+                        if (CanDrawRemoveButton(stateName.stringValue))
                         {
                             // Draw a button with a '-' for state removal
                             if (InspectorUIUtility.SmallButton(RemoveStateButtonLabel))
@@ -472,5 +469,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
             }
         }
 
+        // Logic for determining if a remove button should be drawn next to a state
+        private bool CanDrawRemoveButton(string stateName)
+        {
+            if (stateName == defaultStateName)
+            {
+                // Do not draw a remove button for the Default state
+                return false;
+            }
+            else if (isCompressableButton)
+            {
+                // Do not draw a remove button for the Touch state or the PressedNear state if the current type is CompressableButton
+                if (stateName == touchStateName || stateName == PressedNearStateName)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
