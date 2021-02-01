@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
+using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using System;
 using System.Collections.Generic;
 using System.IO;
