@@ -457,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             for (int i = 0; i < PlayModeTestUtilities.ControllerMoveSteps; ++i)
             {
-                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.ControllerMoveSteps;
+                float scale = radiusStart + (radiusEnd - radiusStart) * (i + 1) / PlayModeTestUtilities.ControllerMoveSteps;
                 for (int j = 0; j < numTouchables; ++j)
                 {
                     Vector3 r = GetRandomPoint(j + 10);
