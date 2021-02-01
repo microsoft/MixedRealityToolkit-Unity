@@ -51,6 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             internal set => stateAnimatableProperties = value;
         }
 
+        /// <summary>
+        /// Set the keyframes on an AnimationClip.
+        /// </summary>
         public void SetKeyFrames(AnimationClip animationClip)
         {
             foreach (var animatableProperty in StateAnimatableProperties)
@@ -60,6 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             }
         }
 
+        /// <summary>
+        /// Remove keyframes for a given animatable property. 
+        /// </summary>
         public void RemoveKeyFrames(string animatablePropertyName, AnimationClip animationClip)
         {
             IStateAnimatableProperty animatableProperty = GetAnimatableProperty(animatablePropertyName);
@@ -77,31 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
 
         private bool IsTargetObjectValid(GameObject target)
         {
-            Transform startTransform = target.transform;
-            Transform initialTransform = target.transform;
-
-            // If this game object has the State Visualizer attached 
-            if (target.GetComponent<StateVisualizer>() != null)
-            {
-                return true;
-            }
-
-            // If the current object is a root and does not have a parent 
-            if (startTransform.parent != null)
-            {
-                // Traverse parents until the State Visualizer is found to determine if the current target is a valid child object
-                while (startTransform.parent != initialTransform)
-                {
-                    if (startTransform.GetComponent<StateVisualizer>() != null)
-                    {
-                        return true;
-                    }
-
-                    startTransform = startTransform.parent;
-                }
-            }
-
-            return false;
+            return target.transform.FindAncestorComponent<StateVisualizer>(true);
         }
 
         internal StateAnimatableProperty CreateAnimatablePropertyInstance(string animatablePropertyTypeName, string stateName)

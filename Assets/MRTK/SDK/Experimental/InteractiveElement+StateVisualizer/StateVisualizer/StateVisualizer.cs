@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             protected set => stateContainers = value;
         }
 
+        [Experimental]
         [SerializeField]
         [Tooltip("The linked Interactive Element component for this State Visualizer." +
             " The State Visualizer component depends on the presence of a component " +

@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
         IMixedRealityPointerHandler,
         IMixedRealitySpeechHandler
     {
+        [Experimental]
         [SerializeField]
         [Tooltip("Whether or not this interactive element will react to input and update internally. If true, the " +
             "object will react to input and update internally.  If false, the object will not update internally " +

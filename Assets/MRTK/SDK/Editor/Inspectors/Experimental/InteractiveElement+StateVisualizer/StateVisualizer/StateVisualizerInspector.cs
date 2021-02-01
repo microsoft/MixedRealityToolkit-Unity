@@ -44,8 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
 
             serializedObject.Update();
 
-            RenderExperimentalWarning();
-
             RenderInitialProperties();
 
             if (instance.GetComponent<Animator>().runtimeAnimatorController != null)
@@ -57,19 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
 
             serializedObject.ApplyModifiedProperties();
         }
-
-        private void RenderExperimentalWarning()
-        {
-            EditorGUILayout.Space();
-
-            EditorGUILayout.HelpBox("The State Visualizer is an experimental feature\n" +
-                                    "Parts of the MRTK appear to have a lot of value even if the details " +
-                                    "haven’t fully been fleshed out. For these types of features, we want " +
-                                    "the community to see them and get value out of them early. Because " +
-                                    "they are early in the cycle, we label them as experimental to indicate " +
-                                    "that they are still evolving, and subject to change over time.", MessageType.Warning);
-        }
-
 
         private void RenderInitialProperties()
         {
@@ -185,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
                                     
                                     if (animatableProperty != null)
                                     {
-                                        RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, k);
+                                        RemoveKeyFrames(stateContainerName.stringValue, animatablePropertyName.stringValue, j);
                                     }
                                 }
 
@@ -202,8 +187,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
 
                                 GameObject targetGameObject = targetObj.objectReferenceValue as GameObject;
 
-                                // Ensure the target game object is valid
-                                if (IsTargetObjectValid(targetGameObject))
+                                // Ensure the target game object has a State Visualizer attached or is a child of an
+                                // object with State Visualizer attached
+                                if (targetGameObject.transform.FindAncestorComponent<StateVisualizer>(true))
                                 {
                                     string animatablePropertiesFoldoutID = stateContainerName.stringValue + "AnimatableProperties" + "_" + targetGameObject.name + target.name;
 
@@ -366,36 +352,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
                     RenderSyncStatesButton();
                 }
             }
-        }
-
-        // A target game object is one that is itself or a child of the root
-        private bool IsTargetObjectValid(GameObject targetObj)
-        {
-            Transform startTransform = targetObj.transform;
-            Transform initialTransform = targetObj.transform;
-
-            // If this game object has the State Visualizer attached 
-            if (targetObj.GetComponent<StateVisualizer>() != null)
-            {
-                return true;
-            }
-
-            // If the current object is a root and does not have a parent 
-            if (startTransform.parent != null)
-            {
-                // Traverse parents until the State Visualizer is found to determine if the current target is a valid child object
-                while (startTransform.parent != initialTransform)
-                {
-                    if (startTransform.GetComponent<StateVisualizer>() != null)
-                    {
-                        return true;
-                    }
-
-                    startTransform = startTransform.parent;
-                }
-            }
-
-            return false;
         }
     }
 }
