@@ -4,7 +4,7 @@ Starting with version 2.5.0, using the [Mixed Reality Feature Tool](https://aka.
 
 ## Using the Mixed Reality Feature Tool
 
-As described in [Welcome to the Mixed Reality Feature Tool](https://aka.ms/MRFeatureToolDocs) you can download using [this link](https://aka.ms/MRFeatureTool).
+As described in [Welcome to the Mixed Reality Feature Tool](https://aka.ms/MRFeatureToolDocs) you can download the tool using [this link](https://aka.ms/MRFeatureTool).
 
 > [!IMPORTANT]
 > If the project's manifest has a `Microsoft Mixed Reality` entry in the `scopedRegistries` section, it is recommended that it be removed.
