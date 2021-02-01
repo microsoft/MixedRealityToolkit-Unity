@@ -375,13 +375,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         //   completed before GA: 
         //   https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5264 
 
-#if false
         /// <summary>
         /// Test scene query with stacked touchables.
         /// </summary>
         [UnityTest]
         public IEnumerator NearInteractionTouchableStack()
         {
+            // Ignoring this test for now, as it needs fixing
+            Assert.Ignore();
+
             int numTouchables = 10;
             var touchables = new NearInteractionTouchable[numTouchables];
             var catchers = new TouchEventCatcher[numTouchables];
@@ -391,10 +393,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 touchables[i] = CreateTouchable<NearInteractionTouchable>(0.15f);
                 touchables[i].SetLocalForward(touchNormal);
-                touchables[i].Bounds = new Vector2(0.5f, 0.5f);
+                touchables[i].SetBounds(new Vector2(0.5f, 0.5f));
                 touchables[i].transform.position = objectPosition + new Vector3(0.02f * r.x, 0.015f * r.y, 0.1f * i - 0.5f);
 
-                catchers[i] = CreateEventCatcher(touchables[i]);
+                catchers[i] = CreateTouchEventCatcher(touchables[i]);
             }
 
             yield return new WaitForFixedUpdate();
@@ -414,12 +416,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
 
-            foreach (var touchable in touchables)
+            foreach (NearInteractionTouchable touchable in touchables)
             {
-                UnityEngine.Object.Destroy(touchable.gameObject);
+                Object.Destroy(touchable.gameObject);
             }
         }
-#endif
 
         /// <summary>
         /// Test buffer saturation for the overlap query
