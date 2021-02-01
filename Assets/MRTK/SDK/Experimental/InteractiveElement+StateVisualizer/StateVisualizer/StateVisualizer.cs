@@ -142,14 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
         /// <param name="animatorController">The animation controller contained in the attached Animator component</param>
         public void SetUpStateMachine(AnimatorController animatorController)
         {
-            //RuntimeAnimatorController controller = new RuntimeAnimatorController();
-            //controller.
-
             // Update Animation Clip References
             RootStateMachine = animatorController.layers[0].stateMachine;
             EditorAnimatorController = animatorController;
-
-            //EditorAnimatorController.
 
             foreach (var stateContainer in StateContainers)
             {
