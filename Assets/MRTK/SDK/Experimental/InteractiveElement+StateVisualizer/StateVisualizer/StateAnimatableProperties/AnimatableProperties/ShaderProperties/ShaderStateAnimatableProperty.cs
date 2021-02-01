@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// Base class for animatable shader properties. 

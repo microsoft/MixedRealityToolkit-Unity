@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Linq;
-using System.Resources;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// Base class for interaction event configuration. An event configuration maps to a single Interaction State.

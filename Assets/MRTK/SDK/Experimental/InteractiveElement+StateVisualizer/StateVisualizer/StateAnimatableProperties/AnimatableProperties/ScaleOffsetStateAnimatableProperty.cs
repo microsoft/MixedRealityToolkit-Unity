@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// The ScaleOffset animatable property adds/sets keyframes for the "localScale" property in an animation clip.

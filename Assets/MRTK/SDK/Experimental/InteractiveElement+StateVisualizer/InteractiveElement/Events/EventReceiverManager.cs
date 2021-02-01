@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// Manages the events contained in states within an Interaction Element.

@@ -4,12 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// The internal event receiver for the events defined in the SpeechKeyword Interaction Event Configuration.

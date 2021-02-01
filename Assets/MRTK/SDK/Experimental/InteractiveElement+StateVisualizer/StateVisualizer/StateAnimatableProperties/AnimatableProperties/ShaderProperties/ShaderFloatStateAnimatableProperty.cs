@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// The ShaderFloat animatable property adds/sets keyframes for a defined shader property of type Float in an animation clip.

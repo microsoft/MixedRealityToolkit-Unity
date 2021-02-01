@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// The ShaderColor animatable property adds/sets keyframes for a defined shader property of type Color in an animation clip.

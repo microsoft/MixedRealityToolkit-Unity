@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// A container for a keyword and its associated Unity event. This container is utilized

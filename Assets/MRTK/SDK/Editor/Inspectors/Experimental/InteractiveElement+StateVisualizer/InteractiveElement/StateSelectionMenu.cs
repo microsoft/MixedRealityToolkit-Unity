@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 {
     /// <summary>
     /// The state selection menu for an Interactive Element. Utilized by the BaseInteractiveElementInspector class. 

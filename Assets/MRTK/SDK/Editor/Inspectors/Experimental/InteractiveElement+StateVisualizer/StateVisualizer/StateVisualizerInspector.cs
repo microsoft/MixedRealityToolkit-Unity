@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer.Editor
 {
     /// <summary>
     /// Custom inspector for the StateVisualizer component

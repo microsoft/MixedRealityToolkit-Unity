@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// The internal event receiver for the events defined in the Focus Interaction Event Configuration.

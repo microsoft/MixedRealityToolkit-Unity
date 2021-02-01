@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using UnityEditor;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 {
     /// <summary>
     /// Inspector for CompressableButton, includes the logic for the plane distance setting editor tool which allows for modification 

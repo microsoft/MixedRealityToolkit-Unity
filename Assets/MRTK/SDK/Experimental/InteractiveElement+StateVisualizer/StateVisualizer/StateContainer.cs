@@ -11,7 +11,7 @@ using UnityEditor.Animations;
 #endif
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// Container class for an Interactive State in the StateVisualizer component. Each state container maps to an 

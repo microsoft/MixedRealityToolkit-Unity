@@ -2,7 +2,6 @@
 // Licensed under the MIT License
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 {
     /// <summary>
     /// Custom inspector for the BaseInteractiveElement class. 

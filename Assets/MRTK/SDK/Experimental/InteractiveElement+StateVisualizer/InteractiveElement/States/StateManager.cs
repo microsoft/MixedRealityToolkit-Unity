@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// Manages the state values of Interaction States within BaseInteractiveElement's States list. This class contains helper

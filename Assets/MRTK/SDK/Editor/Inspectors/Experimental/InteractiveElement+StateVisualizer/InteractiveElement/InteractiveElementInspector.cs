@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Editor
 {
     /// <summary>
     /// Custom inspector for an InteractiveElement.

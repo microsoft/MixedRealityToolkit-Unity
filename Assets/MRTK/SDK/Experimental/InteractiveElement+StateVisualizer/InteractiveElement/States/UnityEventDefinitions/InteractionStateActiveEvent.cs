@@ -3,7 +3,7 @@
 
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// A Unity event with an Interaction State as event data.  The Interaction State represents the state that was activated or set on.

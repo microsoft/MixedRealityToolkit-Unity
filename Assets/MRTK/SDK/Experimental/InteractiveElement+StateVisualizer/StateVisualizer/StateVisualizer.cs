@@ -1,22 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License
 
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 #endif
 
-using UnityEngine;
-
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Experimental.Editor.Interactive")]
-namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 {
     /// <summary>
     /// The State Visualizer component adds animations to an object based on the states defined in a linked Interactive Element component.

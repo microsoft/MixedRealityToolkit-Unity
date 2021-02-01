@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Editor")]
-namespace Microsoft.MixedReality.Toolkit.UI.Interaction
+namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 {
     /// <summary>
     /// Base class for an Interactive Element.  Contains state management methods, event management and the state setting logic for 
