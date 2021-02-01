@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (children.Length == 0)
             {
-                Debug.LogWarning($"Near interactions are not enabled for {gameObject.name}. To enable near interactions, add a " +
+                Debug.Log($"Near interactions are not enabled for {gameObject.name}. To enable near interactions, add a " +
                     $"{nameof(NearInteractionGrabbable)} component to {gameObject.name} or to a child object of {gameObject.name} that contains a collider.");
             }
         }
