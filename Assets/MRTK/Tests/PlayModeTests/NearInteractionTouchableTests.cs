@@ -63,19 +63,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.AddComponent<NearInteractionTouchable>();
 
-            var touchable = testObject.AddComponent<NearInteractionTouchable>();
             // Wait for two frames to make sure we don't get null pointer exception.
             yield return null;
             yield return null;
 
-            GameObject.Destroy(testObject);
-            // Wait for a frame to give Unity a change to actually destroy the object
+            Object.Destroy(testObject);
+
+            // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }
 
         // Scale larger than bounds vector to test bounds checks
-        private float objectScale = 0.4f;
+        private const float ObjectScale = 0.4f;
         private Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
         private Vector3 objectPosition = new Vector3(0f, 0f, 1f);
         private Vector3 rightPosition = new Vector3(1f, 0f, 1f);
@@ -87,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private Material pokeMaterial;
 
         // 96 float triplets, random points inside a unit sphere
-        const int numRandomPoints = 96;
-        private static readonly float[] randomPoints = new float[]
+        private const int NumRandomPoints = 96;
+        private static readonly float[] RandomPoints = new float[]
         {
             0.235f,0.517f,-0.594f,0.783f,0.248f,-0.513f,0.242f,-0.805f,-0.405f,0.172f,-0.533f,-0.359f,-0.629f,0.133f,-0.091f,-0.385f,-0.109f,0.171f,-0.282f,-0.001f,0.837f,0.225f,-0.676f,0.581f,-0.923f,-0.137f,0.057f,0.682f,-0.355f,0.182f,-0.409f,-0.411f,0.402f,-0.762f,-0.089f,-0.400f,
             0.747f,-0.140f,-0.639f,-0.622f,0.128f,0.485f,-0.460f,-0.232f,0.475f,0.088f,0.645f,-0.257f,0.251f,-0.516f,-0.273f,0.794f,-0.394f,0.168f,0.733f,-0.297f,-0.234f,0.313f,0.460f,0.454f,0.102f,-0.445f,0.289f,0.236f,0.333f,-0.287f,0.560f,-0.715f,0.194f,0.161f,0.705f,0.303f,
@@ -102,8 +103,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static Vector3 GetRandomPoint(int i)
         {
-            int idx = i % numRandomPoints;
-            return new Vector3(randomPoints[3 * idx + 0], randomPoints[3 * idx + 1], randomPoints[3 * idx + 2]);
+            int idx = i % NumRandomPoints;
+            return new Vector3(RandomPoints[3 * idx + 0], RandomPoints[3 * idx + 1], RandomPoints[3 * idx + 2]);
         }
 
         private InputSimulationService inputSim;
@@ -166,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchablePointerEvents()
         {
-            var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
+            var touchable = CreateTouchable<NearInteractionTouchable>(ObjectScale);
             touchable.SetLocalForward(touchNormal);
             touchable.SetBounds(new Vector2(0.5f, 0.5f));
             touchable.EventsToReceive = TouchableEventType.Pointer;
@@ -216,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return testHand.Hide();
 
-            UnityEngine.Object.Destroy(touchable.gameObject);
+            Object.Destroy(touchable.gameObject);
         }
 
         /// <summary>
@@ -225,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableVariant()
         {
-            var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
+            var touchable = CreateTouchable<NearInteractionTouchable>(ObjectScale);
             touchable.SetLocalForward(touchNormal);
             touchable.SetBounds(new Vector2(0.5f, 0.5f));
 
@@ -268,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return testHand.Hide();
 
-            UnityEngine.Object.Destroy(touchable.gameObject);
+            Object.Destroy(touchable.gameObject);
         }
 
         /// <summary>
@@ -322,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(2, catcher.EventsCompleted);
             }
 
-            UnityEngine.Object.Destroy(touchable.gameObject);
+            Object.Destroy(touchable.gameObject);
         }
 
         private static void TestEvents(TouchEventCatcher[] catchers, int[] eventsStarted, int[] eventsCompleted)
@@ -374,13 +375,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         //   completed before GA: 
         //   https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5264 
 
-#if false
         /// <summary>
         /// Test scene query with stacked touchables.
         /// </summary>
         [UnityTest]
         public IEnumerator NearInteractionTouchableStack()
         {
+            // Ignoring this test for now, as it needs fixing
+            Assert.Ignore();
+
             int numTouchables = 10;
             var touchables = new NearInteractionTouchable[numTouchables];
             var catchers = new TouchEventCatcher[numTouchables];
@@ -390,10 +393,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 touchables[i] = CreateTouchable<NearInteractionTouchable>(0.15f);
                 touchables[i].SetLocalForward(touchNormal);
-                touchables[i].Bounds = new Vector2(0.5f, 0.5f);
+                touchables[i].SetBounds(new Vector2(0.5f, 0.5f));
                 touchables[i].transform.position = objectPosition + new Vector3(0.02f * r.x, 0.015f * r.y, 0.1f * i - 0.5f);
 
-                catchers[i] = CreateEventCatcher(touchables[i]);
+                catchers[i] = CreateTouchEventCatcher(touchables[i]);
             }
 
             yield return new WaitForFixedUpdate();
@@ -413,12 +416,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
 
-            foreach (var touchable in touchables)
+            foreach (NearInteractionTouchable touchable in touchables)
             {
-                UnityEngine.Object.Destroy(touchable.gameObject);
+                Object.Destroy(touchable.gameObject);
             }
         }
-#endif
 
         /// <summary>
         /// Test buffer saturation for the overlap query
@@ -427,7 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NearInteractionTouchableOverlapQuerySaturation()
         {
             // Use all the points
-            int numTouchables = numRandomPoints;
+            int numTouchables = NumRandomPoints;
             var touchables = new NearInteractionTouchable[numTouchables];
             var catchers = new TouchEventCatcher[numTouchables];
 
@@ -455,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             for (int i = 0; i < PlayModeTestUtilities.ControllerMoveSteps; ++i)
             {
-                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.ControllerMoveSteps;
+                float scale = radiusStart + (radiusEnd - radiusStart) * (i + 1) / PlayModeTestUtilities.ControllerMoveSteps;
                 for (int j = 0; j < numTouchables; ++j)
                 {
                     Vector3 r = GetRandomPoint(j + 10);
@@ -466,9 +468,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
 
-            foreach (var touchable in touchables)
+            foreach (NearInteractionTouchable touchable in touchables)
             {
-                UnityEngine.Object.Destroy(touchable.gameObject);
+                Object.Destroy(touchable.gameObject);
             }
         }
 
@@ -504,7 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(1, catcher.Click);
             }
 
-            UnityEngine.Object.Destroy(canvas.gameObject);
+            Object.Destroy(canvas.gameObject);
         }
 
         /// <summary>
@@ -548,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(2, catcher.Changed);
             }
 
-            UnityEngine.Object.Destroy(canvas.gameObject);
+            Object.Destroy(canvas.gameObject);
         }
 
         /// <summary>
@@ -573,16 +575,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var touchableRect = CreateTouchable<NearInteractionTouchable>(0.15f);
             touchableRect.SetLocalForward(touchNormal);
             touchableRect.SetBounds(new Vector2(0.5f, 0.5f));
-            var catcherRect = CreateTouchEventCatcher(touchableRect);
+            CreateTouchEventCatcher(touchableRect);
 
             var touchableVolume = CreateTouchable<NearInteractionTouchableVolume>(0.15f);
-            var catcherVolume = CreateTouchEventCatcher(touchableVolume);
+            CreateTouchEventCatcher(touchableVolume);
 
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
             var touchableUI = canvas.GetComponent<NearInteractionTouchableUnityUI>();
             var button = UnityUiUtilities.CreateButton(Color.gray, Color.blue, Color.green);
             button.transform.SetParent(touchableUI.transform, false);
-            var catcherUI = new UnityButtonEventCatcher(button);
+            // This constructor assigns an event handler, but the actual object isn't needed
+            _ = new UnityButtonEventCatcher(button);
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -600,9 +603,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestTouchableDistances(touchableVolume, 0.0075f, touchableVolume.gameObject);
             yield return TestTouchableDistances(touchableUI, 0.0f, button.gameObject);
 
-            UnityEngine.Object.Destroy(touchableRect.gameObject);
-            UnityEngine.Object.Destroy(touchableVolume.gameObject);
-            UnityEngine.Object.Destroy(touchableUI.gameObject);
+            Object.Destroy(touchableRect.gameObject);
+            Object.Destroy(touchableVolume.gameObject);
+            Object.Destroy(touchableUI.gameObject);
         }
 
         private IEnumerator TestTouchableDistances(BaseNearInteractionTouchable touchable, float colliderThickness, GameObject objectDownExpected)
@@ -613,9 +616,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(handedness, inputSim);
 
             PokePointer pokePointer = null;
-            var hand = HandJointUtils.FindHand(handedness);
+            IMixedRealityHand hand = HandJointUtils.FindHand(handedness);
             Assert.IsNotNull(hand);
-            foreach (var pointer in hand.InputSource.Pointers)
+            foreach (IMixedRealityPointer pointer in hand.InputSource.Pointers)
             {
                 pokePointer = pointer as PokePointer;
                 if (pokePointer)
@@ -699,7 +702,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = new Vector3(0, 0, 2f);
             cube.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-            BoxCollider boxCollider = cube.GetComponent<BoxCollider>();
 
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 1.5f));
