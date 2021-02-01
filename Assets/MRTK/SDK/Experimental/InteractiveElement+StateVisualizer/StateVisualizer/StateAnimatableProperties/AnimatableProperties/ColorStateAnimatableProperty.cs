@@ -25,11 +25,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             set => color = value;
         }
 
+        /// <summary>
+        /// Constructor for a Color Animatable Property. Sets the default AnimatablePropertyName.
+        /// </summary>
         public ColorStateAnimatableProperty()
         {
             AnimatablePropertyName = "Color";
         }
 
+        /// <inheritdoc/>
         public override void SetKeyFrames(AnimationClip animationClip)
         {
             if (Target != null && Target.GetComponent<MeshRenderer>() != null)
@@ -55,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             }
         }
 
+        /// <inheritdoc/>
         public override void RemoveKeyFrames(AnimationClip animationClip)
         {
             if (Target != null && Target.GetComponent<MeshRenderer>() != null)

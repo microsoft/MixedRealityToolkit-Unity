@@ -26,11 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             set => shaderPropertyFloatValue = value;
         }
 
+        /// <summary>
+        /// Constructor for a Shader Float Animatable Property. Sets the default AnimatablePropertyName.
+        /// </summary>
         public ShaderFloatStateAnimatableProperty()
         {
             AnimatablePropertyName = "ShaderFloat";
         }
 
+        /// <inheritdoc/>
         public override void SetKeyFrames(AnimationClip animationClip)
         {
             if (Target != null)
@@ -50,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             }
         }
 
+        /// <inheritdoc/>
         public override void RemoveKeyFrames(AnimationClip animationClip)
         {
             if (Target != null)

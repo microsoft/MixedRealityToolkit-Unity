@@ -24,11 +24,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             set => positionOffset = value;
         }
 
+        /// <summary>
+        /// Constructor for a Position Offset Animatable Property. Sets the default AnimatablePropertyName.
+        /// </summary>
         public PositionOffsetStateAnimatableProperty()
         {
             AnimatablePropertyName = "PositionOffset";
         }
 
+        /// <inheritdoc/>
         public override void SetKeyFrames(AnimationClip animationClip)
         {
             if (Target != null)
@@ -45,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Interaction
             }
         }
 
+        /// <inheritdoc/>
         public override void RemoveKeyFrames(AnimationClip animationClip)
         {
             if (Target != null)

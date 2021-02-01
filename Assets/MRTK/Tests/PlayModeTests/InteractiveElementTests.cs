@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 #if UNITY_2019_3_OR_NEWER
-using Microsoft.MixedReality.Toolkit.Experimental.Interaction;
+using Microsoft.MixedReality.Toolkit.UI.Interaction;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
