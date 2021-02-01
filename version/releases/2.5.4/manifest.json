@@ -6234,6 +6234,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Packaging/DiscoverFeatures.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/DiscoverFeatures.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/Packaging/MRTKExperimental.png",
       "output": {
         "resource": {
@@ -6282,6 +6293,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Packaging/MRTK_FoundationUPM.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Packaging/RemoveScopedRegistry.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/RemoveScopedRegistry.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/Packaging/RequiredDependencies.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Packaging/RequiredDependencies.png"
         }
       },
       "is_incremental": false,
@@ -9105,7 +9138,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/usingupm.html",
-          "hash": "llJUrpsuNI6LCjX4A3hkAA=="
+          "hash": "r60TF4t8/jrFzXe7H6E6Vg=="
         }
       },
       "is_incremental": false,
