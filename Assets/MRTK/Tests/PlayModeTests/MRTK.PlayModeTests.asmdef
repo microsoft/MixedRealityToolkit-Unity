@@ -15,16 +15,22 @@
         "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
         "Microsoft.MixedReality.Toolkit.Tests.Utilities",
         "Microsoft.MixedReality.Toolkit.Gltf",
-        "Microsoft.MixedReality.Toolkit.Services.InputAnimation"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": []
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

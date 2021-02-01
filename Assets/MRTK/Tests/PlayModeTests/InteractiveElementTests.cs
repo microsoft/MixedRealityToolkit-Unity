@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
+
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.TestTools;
+
+#if UNITY_2019_3_OR_NEWER
+using Microsoft.MixedReality.Toolkit.UI.Interaction;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -18,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class InteractiveElementTests : BasePlayModeTests
     {
+#if UNITY_2019_3_OR_NEWER
         private string focusStateName = CoreInteractionState.Focus.ToString();
         private string focusNearStateName = CoreInteractionState.FocusNear.ToString();
         private string focusFarStateName = CoreInteractionState.FocusFar.ToString();
@@ -126,32 +129,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return ShowHandWithObjectInFocus(leftHand);
 
             // Make sure the Focus state and Focus Far state are on
-            Assert.AreEqual(focusState.Value, 1);
-            Assert.AreEqual(focusFarState.Value, 1);
+            Assert.AreEqual(1, focusState.Value);
+            Assert.AreEqual(1, focusFarState.Value);
             Assert.True(onFocusFarOn);
 
             // Move the Hand out of focus 
             yield return MoveHandOutOfFocus(leftHand);
 
             // Make sure the Focus state and Focus Far state are off
-            Assert.AreEqual(focusState.Value, 0);
-            Assert.AreEqual(focusFarState.Value, 0);
+            Assert.AreEqual(0, focusState.Value);
+            Assert.AreEqual(0, focusFarState.Value);
             Assert.True(onFocusFarOff);
 
             // Move hand to a near focus position
             yield return leftHand.Move(new Vector3(0, 0.22f, 0.221f));
 
             // Make sure the Focus state and Focus Near state are on
-            Assert.AreEqual(focusState.Value, 1);
-            Assert.AreEqual(focusNearState.Value, 1);
+            Assert.AreEqual(1, focusState.Value);
+            Assert.AreEqual(1, focusNearState.Value);
             Assert.True(onFocusNearOn);
 
             // Move the Hand out of focus 
             yield return leftHand.Hide();
 
             // Make sure the Focus state and Focus Near state are off
-            Assert.AreEqual(focusState.Value, 0);
-            Assert.AreEqual(focusNearState.Value, 0);
+            Assert.AreEqual(0, focusState.Value);
+            Assert.AreEqual(0, focusNearState.Value);
             Assert.True(onFocusNearOff);
         }
 
@@ -380,20 +383,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(myNewState);
 
             // Make sure the value is 0/off initially
-            Assert.AreEqual(myNewState.Value, 0);
+            Assert.AreEqual(0, myNewState.Value);
 
             // Create a new hand and initialize it with an object in focus
             var leftHand = new TestHand(Handedness.Left);
             yield return ShowHandWithObjectInFocus(leftHand);
 
             // Make sure the value of MyNewState was changed when the object is in focus
-            Assert.AreEqual(myNewState.Value, 1);
+            Assert.AreEqual(1, myNewState.Value);
 
             // Move hand away from object to remove focus
             yield return MoveHandOutOfFocus(leftHand);
 
             // Make sure the value of MyNewState was changed when the object is no longer in focus
-            Assert.AreEqual(myNewState.Value, 0);
+            Assert.AreEqual(0, myNewState.Value);
         }
 
         /// <summary>
@@ -535,8 +538,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(interactiveElement.Active);
 
             // Make sure the Focus and Touch state are not on
-            Assert.AreEqual(touchState.Value, 0);
-            Assert.AreEqual(focusState.Value, 0);
+            Assert.AreEqual(0, touchState.Value);
+            Assert.AreEqual(0, focusState.Value);
 
             // Create a new hand and initialize it with an object in focus
             var leftHand = new TestHand(Handedness.Left);
@@ -546,8 +549,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandTouchObject(leftHand);
 
             // Make sure the values change when the hand is moved to touch the cube
-            Assert.AreEqual(touchState.Value, 1);
-            Assert.AreEqual(focusState.Value, 1);
+            Assert.AreEqual(1, touchState.Value);
+            Assert.AreEqual(1, focusState.Value);
             yield return null;
 
             yield return MoveHandOutOfFocus(leftHand);
@@ -562,13 +565,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandTouchObject(leftHand);
 
             // Make sure the values do not change when the hand is moved to touch the cube
-            Assert.AreEqual(touchState.Value, 0);
-            Assert.AreEqual(focusState.Value, 0);
+            Assert.AreEqual(0, touchState.Value);
+            Assert.AreEqual(0, focusState.Value);
             yield return null;
         }
 
 
-        #region Compressable Button
+#region Compressable Button
 
         /// <summary>
         /// Test the CompressableButtonCube prefab which contains the PressedNear state.
@@ -615,9 +618,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(touchState.Value, 0);
         }
 
-        #endregion
+#endregion
 
-        #region Interaction Tests Helpers
+#region Interaction Tests Helpers
 
         private InteractiveElement CreateInteractiveCube()
         {
@@ -662,5 +665,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #endregion
+#endif
     }
 }
+
