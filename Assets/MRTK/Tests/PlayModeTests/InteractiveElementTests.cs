@@ -642,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator MoveHandOutOfFocus(TestHand hand)
         {
-            yield return hand.Move(new Vector3(0, -0.3f, 0));
+            yield return hand.Move(new Vector3(0, -0.4f, 0));
         }
 
         private IEnumerator MoveHandTouchObject(TestHand hand)

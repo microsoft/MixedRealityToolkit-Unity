@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 1705872005380488662}
   - component: {fileID: 1705872005380488657}
   - component: {fileID: 1705872005380488656}
-  - component: {fileID: 1705872005380488660}
   - component: {fileID: 1705872005380488682}
-  - component: {fileID: 1705872005380488661}
+  - component: {fileID: -117387117481205282}
   m_Layer: 0
   m_Name: CompressableButtonCube
   m_TagString: Untagged
@@ -96,21 +95,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1705872005380488660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705872005380488659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 183e8dd8b58276c4a8f2b807059981b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventsToReceive: 0
-  debounceThreshold: 0.01
-  touchableCollider: {fileID: 1705872005380488656}
 --- !u!114 &1705872005380488682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +114,7 @@ MonoBehaviour:
   localCenter: {x: 0, y: 0, z: -0.5}
   bounds: {x: 1, y: 1}
   touchableCollider: {fileID: 1705872005380488656}
---- !u!114 &1705872005380488661
+--- !u!114 &-117387117481205282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,30 +134,30 @@ MonoBehaviour:
     interactionType: 4
     eventConfiguration:
       id: 0
-  - stateName: Focus
-    stateValue: 0
-    active: 0
-    interactionType: 3
-    eventConfiguration:
-      id: 1
   - stateName: Touch
     stateValue: 0
     active: 0
     interactionType: 1
     eventConfiguration:
-      id: 2
+      id: 1
   - stateName: PressedNear
     stateValue: 0
     active: 0
     interactionType: 1
     eventConfiguration:
+      id: 2
+  - stateName: Focus
+    stateValue: 0
+    active: 0
+    interactionType: 3
+    eventConfiguration:
       id: 3
   movingButtonVisuals: {fileID: 1705872005380488659}
   distanceSpaceMode: 0
-  startPushDistance: -0.09843373
-  maxPushDistance: 0.009303629
-  pressDistance: -0.036058128
-  releaseDistanceDelta: 0.03310579
+  startPushDistance: -0.09800756
+  maxPushDistance: -0.00089365244
+  pressDistance: -0.023745894
+  releaseDistanceDelta: 0.03132236
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
@@ -185,8 +169,8 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: StateEvents, ns: Microsoft.MixedReality.Toolkit.UI.Interaction,
-        asm: Microsoft.MixedReality.Toolkit.SDK}
+      type: {class: StateEvents, ns: Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement,
+        asm: Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive}
       data:
         stateName: Default
         OnStateOn:
@@ -196,19 +180,8 @@ MonoBehaviour:
           m_PersistentCalls:
             m_Calls: []
     00000001:
-      type: {class: FocusEvents, ns: Microsoft.MixedReality.Toolkit.UI.Interaction,
-        asm: Microsoft.MixedReality.Toolkit.SDK}
-      data:
-        stateName: Focus
-        OnFocusOn:
-          m_PersistentCalls:
-            m_Calls: []
-        OnFocusOff:
-          m_PersistentCalls:
-            m_Calls: []
-    00000002:
-      type: {class: TouchEvents, ns: Microsoft.MixedReality.Toolkit.UI.Interaction,
-        asm: Microsoft.MixedReality.Toolkit.SDK}
+      type: {class: TouchEvents, ns: Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement,
+        asm: Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive}
       data:
         stateName: Touch
         OnTouchStarted:
@@ -220,9 +193,9 @@ MonoBehaviour:
         OnTouchUpdated:
           m_PersistentCalls:
             m_Calls: []
-    00000003:
-      type: {class: PressedNearEvents, ns: Microsoft.MixedReality.Toolkit.UI.Interaction,
-        asm: Microsoft.MixedReality.Toolkit.SDK}
+    00000002:
+      type: {class: PressedNearEvents, ns: Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement,
+        asm: Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive}
       data:
         stateName: PressedNear
         OnButtonPressed:
@@ -232,5 +205,16 @@ MonoBehaviour:
           m_PersistentCalls:
             m_Calls: []
         OnButtonPressHold:
+          m_PersistentCalls:
+            m_Calls: []
+    00000003:
+      type: {class: FocusEvents, ns: Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement,
+        asm: Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive}
+      data:
+        stateName: Focus
+        OnFocusOn:
+          m_PersistentCalls:
+            m_Calls: []
+        OnFocusOff:
           m_PersistentCalls:
             m_Calls: []
