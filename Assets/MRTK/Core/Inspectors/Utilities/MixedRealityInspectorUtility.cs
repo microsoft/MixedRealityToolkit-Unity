@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -103,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
+                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             }
         }
 
