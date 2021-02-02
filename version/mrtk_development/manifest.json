@@ -21154,7 +21154,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.html",
-          "hash": "DS+kw86NtWIRhe6RKMvgbw=="
+          "hash": "0MVKSlEdNfLhs27NbA+Aag=="
         }
       },
       "is_incremental": false,
@@ -21298,7 +21298,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html",
-          "hash": "4OxFsLnTrksH077eJ3RcoA=="
+          "hash": "AeD66fVHeREwlWFzCQlszQ=="
         }
       },
       "is_incremental": false,
@@ -29554,7 +29554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKSpatialMeshObserver.html",
-          "hash": "Up/B5zzfrD+Fnvb7Pcc35w=="
+          "hash": "566RIsMS8Skt/C3aPtJ90A=="
         }
       },
       "is_incremental": false,
@@ -29818,7 +29818,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver.html",
-          "hash": "ZoL9sYN5+LQu7et72B86uQ=="
+          "hash": "VpYabIOs13Isulvc430iTA=="
         }
       },
       "is_incremental": false,
