@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -82,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         [Tooltip("Material to use when displaying the world mesh")]
         private Material defaultWorldMeshMaterial = null;
         /// <summary>
-        /// The material to be used when displaying understood planes.
+        /// The material to be used when displaying the world mesh.
         /// </summary>
         public Material DefaultWorldMeshMaterial => defaultWorldMeshMaterial;
 
