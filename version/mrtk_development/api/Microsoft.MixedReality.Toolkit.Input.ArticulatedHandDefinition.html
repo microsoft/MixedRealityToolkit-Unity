@@ -101,10 +101,27 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ArticulatedHandDefinition</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html">BaseInputSourceDefinition</a></div>
+    <div class="level2"><span class="xref">ArticulatedHandDefinition</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSourceDefinition.html">IMixedRealityInputSourceDefinition</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSourceDefinition_Handedness">BaseInputSourceDefinition.Handedness</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSourceDefinition_DefaultLeftHandedMappings">BaseInputSourceDefinition.DefaultLeftHandedMappings</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSourceDefinition_DefaultRightHandedMappings">BaseInputSourceDefinition.DefaultRightHandedMappings</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSourceDefinition_GetDefaultMappings_Handedness_">BaseInputSourceDefinition.GetDefaultMappings(Handedness)</a>
+    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
@@ -131,7 +148,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ArticulatedHandDefinition</code></pre>
+    <pre><code class="lang-csharp hljs">public class ArticulatedHandDefinition : BaseInputSourceDefinition, IMixedRealityInputSourceDefinition</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -139,7 +156,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.#ctor*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition__ctor_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.#ctor(Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Handedness)">ArticulatedHandDefinition(IMixedRealityInputSource, Handedness)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -158,62 +176,14 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
         <td><span class="parametername">source</span></td>
-        <td></td>
+        <td><p>The input source backing this definition instance. Used for raising events.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Handedness</span></td>
         <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_handedness" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.handedness">handedness</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly Handedness handedness</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_inputSource" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.inputSource">inputSource</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly IMixedRealityInputSource inputSource</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
-        <td></td>
+        <td><p>The handedness that this definition instance represents.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -228,7 +198,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityInteractionMapping[] DefaultInteractions { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Call GetDefaultMappings(Handedness) instead.&quot;)]
+public MixedRealityInteractionMapping[] DefaultInteractions { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -246,6 +217,37 @@
     </tbody>
   </table>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_DefaultInteractions_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A single interaction mapping works for both left and right articulated hands.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_DefaultMappings_" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.DefaultMappings*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_DefaultMappings" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.DefaultMappings">DefaultMappings</h4>
+  <div class="markdown level1 summary"><p>The articulated hands default interactions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override MixedRealityInputActionMapping[] DefaultMappings { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputActionMapping.html">MixedRealityInputActionMapping</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSourceDefinition.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSourceDefinition_DefaultMappings">BaseInputSourceDefinition.DefaultMappings</a></div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_DefaultMappings_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>A single interaction mapping works for both left and right articulated hands.</p>
 </div>
   
@@ -298,6 +300,32 @@ The pinch gesture exit will be registered for all values greater than the ExitPi
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_InputSource_" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.InputSource*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_ArticulatedHandDefinition_InputSource" data-uid="Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.InputSource">InputSource</h4>
+  <div class="markdown level1 summary"><p>The input source backing this definition instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IMixedRealityInputSource InputSource { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource.html">IMixedRealityInputSource</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -467,6 +495,10 @@ The pinch gesture exit will be registered for all values greater than the ExitPi
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSourceDefinition.html">IMixedRealityInputSourceDefinition</a>
+  </div>
 </article>
           </div>
           

@@ -147,13 +147,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController__ctor_Microsoft_MixedReality_Toolkit_TrackingState_Handedness_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_MixedRealityInteractionMapping___" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.#ctor(Microsoft.MixedReality.Toolkit.TrackingState,Handedness,Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.MixedRealityInteractionMapping[])">BaseController(TrackingState, Handedness, IMixedRealityInputSource, MixedRealityInteractionMapping[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController__ctor_Microsoft_MixedReality_Toolkit_TrackingState_Handedness_Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSource_Microsoft_MixedReality_Toolkit_Input_MixedRealityInteractionMapping___Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputSourceDefinition_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.#ctor(Microsoft.MixedReality.Toolkit.TrackingState,Handedness,Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource,Microsoft.MixedReality.Toolkit.Input.MixedRealityInteractionMapping[],Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSourceDefinition)">BaseController(TrackingState, Handedness, IMixedRealityInputSource, MixedRealityInteractionMapping[], IMixedRealityInputSourceDefinition)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null, IMixedRealityInputSourceDefinition definition = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -183,6 +183,11 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInteractionMapping.html">MixedRealityInteractionMapping</a>[]</td>
         <td><span class="parametername">interactions</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSourceDefinition.html">IMixedRealityInputSourceDefinition</a></td>
+        <td><span class="parametername">definition</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -270,7 +275,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_DefaultLeftHandedInteractions_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.DefaultLeftHandedInteractions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_DefaultLeftHandedInteractions" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.DefaultLeftHandedInteractions">DefaultLeftHandedInteractions</h4>
-  <div class="markdown level1 summary"><p>The Default Left Handed interactions for this controller.</p>
+  <div class="markdown level1 summary"><p>The default left-handed interactions for this controller.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -296,7 +301,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_DefaultRightHandedInteractions_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.DefaultRightHandedInteractions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_DefaultRightHandedInteractions" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.DefaultRightHandedInteractions">DefaultRightHandedInteractions</h4>
-  <div class="markdown level1 summary"><p>The Default Right Handed interactions for this controller.</p>
+  <div class="markdown level1 summary"><p>The default right-handed interactions for this controller.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -314,6 +319,32 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInteractionMapping.html">MixedRealityInteractionMapping</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseController_Definition_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Definition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseController_Definition" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseController.Definition">Definition</h4>
+  <div class="markdown level1 summary"><p>Represents the archetypal definition of what this controller supports and can perform.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IMixedRealityInputSourceDefinition Definition { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSourceDefinition.html">IMixedRealityInputSourceDefinition</a></td>
         <td></td>
       </tr>
     </tbody>
