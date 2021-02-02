@@ -92,18 +92,26 @@
 <h1 id="pulse-shader">Pulse shader</h1>
 
 <p><img src="https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif" alt="MRTK_SpatialMesh_Pulse"></p>
-<p><img src="https://user-images.githubusercontent.com/13754172/68262035-e4f7e600-fff6-11e9-9858-796afd1cabc5.gif" alt="MRTK_HandMesh_Pulse2">
-Use the pulse shader to animate a visual pulse effect over surface reconstruction, articulated hand mesh, or any other meshes.</p>
+<p>Use the pulse shader to animate a visual pulse effect over surface reconstruction, articulated hand mesh, or any other meshes.</p>
 <h2 id="shader-and-material">Shader and material</h2>
-<p><strong>MRTK_SurfaceReconstruction.mat</strong> and <strong>MRTK_ArticulatedHandMeshPulse.mat</strong> uses <strong>SR_Triangles</strong> shader. You can configure various options such as fill color, line color, and pulse color.</p>
-<h2 id="example-scene">Example scene</h2>
-<p>Open <strong>PulseShaderExamples.unity</strong> scene, and observe the pulsing effect on the spheres, surface reconstruction, and the articulated hand mesh.</p>
-<p>Use the SurfacePulse.cs script to animate the pulse effect on the assigned material, or turn on &quot;Auto Pulse&quot; in the material itself.</p>
+<p>Following materials use <strong>SR_Triangles</strong> shader. You can configure various options such as fill color, line color, and pulse color.</p>
+<ul>
+<li><strong>MRTK_Pulse_SpatialMeshBlue.mat</strong></li>
+<li><strong>MRTK_Pulse_SpatialMeshPurple.mat</strong></li>
+<li><strong>MRTK_Pulse_ArticulatedHandMeshBlue.mat</strong></li>
+<li><strong>MRTK_Pulse_ArticulatedHandMeshPurple.mat</strong></li>
+</ul>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>For surface reconstruction, ensure that MRTK_SurfaceReconstruction.mat is assigned under MRTK Settings -&gt; Spatial Awareness -&gt; Display Settings -&gt; Visible Material.</p>
-<p>For articulated hand, ensure that MRTK_ArticulatedHandMeshPulse.mat is assigned in ArticulatedHandMesh.prefab, which itself should be assigned in MRTK Settings -&gt; Input -&gt; Hand Tracking -&gt; Hand Mesh Prefab.</p>
+<p>For the spatial mesh example, ensure that MRTK_Pulse_ArticulatedHandMeshBlue.mat or MRTK_Pulse_ArticulatedHandMeshPurple.mat is assigned under MRTK Settings -&gt; Spatial Awareness -&gt; Display Settings -&gt; Visible Material.</p>
+<p>For the hand mesh example, ensure that MRTK_Pulse_SpatialMeshBlue.mat or MRTK_Pulse_SpatialMeshPurple.mat is assigned in ArticulatedHandMesh.prefab, which itself should be assigned in MRTK Settings -&gt; Input -&gt; Hand Tracking -&gt; Hand Mesh Prefab.</p>
 <h2 id="how-it-works">How it works</h2>
 <p>The hand mesh shader uses UVs to map the pulse along the hand mesh, and to fade out the wrist. The surface reconstruction shader uses the vertex positions to map the pulse.</p>
+<h2 id="spatial-mesh-example---pulseshaderspatialmeshexampleunity">Spatial Mesh Example - PulseShaderSpatialMeshExample.unity</h2>
+<p>Similar to HoloLens 2's shell experience, you can point and air-tap with hand ray to generate a pulsing effect on the spatial mesh. The example scene contains ExampleSpatialMesh object which is a test spatial mesh data for Unity's game mode. This object will be disabled and hidden on the device.</p>
+<p><strong>PulseShaderSpatialMeshHandler.cs</strong> script generates pulse effect on the assigned material, or turn on &quot;Auto Pulse&quot; in the material itself.</p>
+<h2 id="hand-mesh-example---pulseshaderhandmeshexampleunity">Hand Mesh Example - PulseShaderHandMeshExample.unity</h2>
+<p>This example scene demonstrates the hand mesh visualization using pulse shader. When a hand is detected by the HoloLens device, pulse animation will be triggered once. This visual feedback can increase the user's interaction confidence.</p>
+<p><strong>PulseShaderHandMeshHandler.cs</strong> script generates pulse effect on the assigned material. By default, 'Pulse On Hand Detected' is checked.</p>
 </article>
           </div>
           
