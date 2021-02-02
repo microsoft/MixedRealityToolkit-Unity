@@ -6,7 +6,7 @@ Use the pulse shader to animate a visual pulse effect over surface reconstructio
 
 ## Shader and material
 
-Following materials uses **SR_Triangles** shader. You can configure various options such as fill color, line color, and pulse color.
+Following materials use **SR_Triangles** shader. You can configure various options such as fill color, line color, and pulse color.
 
 - **MRTK_Pulse_SpatialMeshBlue.mat** 
 - **MRTK_Pulse_SpatialMeshPurple.mat** 
@@ -34,5 +34,4 @@ Similar to HoloLens 2's shell experience, you can point and air-tap with hand ra
 This example scene demonstrates the hand mesh visualization using pulse shader. When a hand is detected by the HoloLens device, pulse animation will be triggered once. This visual feedback can increase the user's interaction confidence. 
 
 **PulseShaderHandMeshHandler.cs** script generates pulse effect on the assigned material. By default, 'Pulse On Hand Detected' is checked.
-
 
