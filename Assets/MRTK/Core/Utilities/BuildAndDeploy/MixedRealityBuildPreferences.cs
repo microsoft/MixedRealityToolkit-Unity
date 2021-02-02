@@ -15,12 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     /// <summary>
     /// Settings provider for build-specific settings, like the 3D app launcher model for Windows builds.
     /// </summary>
-    public class MixedRealityBuildPreferences : IPostprocessBuildWithReport
+    public class MixedRealityBuildPreferences : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         private const string AppLauncherPath = @"Assets\AppLauncherModel.glb";
         private static readonly GUIContent AppLauncherModelLabel = new GUIContent("3D App Launcher Model", "Location of .glb model to use as a 3D App Launcher");
         private static UnityEditor.Editor gameObjectEditor = null;
         private static GUIStyle appLauncherPreviewBackgroundColor = null;
+        private static bool isBuilding = false;
 
         // Arbitrary callback order, chosen to be larger so that it runs after other things that
         // a developer may have already.
@@ -49,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Helper script for rendering an object field to set the 3D app launcher model in an editor window.
         /// </summary>
         /// <remarks>See <see href="https://docs.microsoft.com/en-us/windows/mixed-reality/distribute/3d-app-launcher-design-guidance">3D app launcher design guidance</see> for more information.</remarks>
-        public static void DrawAppLauncherModelField()
+        public static void DrawAppLauncherModelField(bool showInteractivePreview = true)
         {
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -72,7 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
                 }
 
-                if (newGlbModel != null && newGlbModel.Model != null)
+                // The preview GUI has a problem during the build, so we don't render it
+                if (newGlbModel != null && newGlbModel.Model != null && showInteractivePreview && !isBuilding)
                 {
                     if (gameObjectEditor == null || appLauncherChanged)
                     {
@@ -90,6 +92,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
+        void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report)
+        {
+            if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(BuildDeployPreferences.AppLauncherModelLocation))
+            {
+                isBuilding = true;
+                // Sets the editor to null. On a build, Unity reloads the object preview
+                // in a seemingly unexpected way, so it starts rendering a null texture.
+                // This refreshes the preview window instead.
+                gameObjectEditor = null;
+            }
+        }
+
         void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport report)
         {
             if (report.summary.platformGroup == BuildTargetGroup.WSA && !string.IsNullOrEmpty(BuildDeployPreferences.AppLauncherModelLocation))
@@ -102,6 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddAppLauncherModelToProject($"{appxPath}/{PlayerSettings.productName}.vcxproj");
                 AddAppLauncherModelToFilter($"{appxPath}/{PlayerSettings.productName}.vcxproj.filters");
                 UpdateManifest($"{appxPath}/Package.appxmanifest");
+
+                isBuilding = false;
             }
         }
 

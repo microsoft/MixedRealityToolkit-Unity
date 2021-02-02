@@ -559,7 +559,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     // Enable Research Mode Capability
                     bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
 
-                    MixedRealityBuildPreferences.DrawAppLauncherModelField();
+                    // Don't draw the preview while building (when appxCancellationTokenSource will be non-null),
+                    // since there's a null texture issue when Unity reloads the assets during a build
+                    MixedRealityBuildPreferences.DrawAppLauncherModelField(appxCancellationTokenSource == null);
 
                     if (c.changed)
                     {
@@ -626,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
                 {
-                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    if (GUILayout.Button("Open AppX Packages Location", GUILayout.Width(HALF_WIDTH)))
                     {
                         EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
                     }
@@ -636,7 +638,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
                     {
-                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                        if (GUILayout.Button("Build AppX", GUILayout.Width(HALF_WIDTH)))
                         {
                             // Check if solution exists
                             string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
