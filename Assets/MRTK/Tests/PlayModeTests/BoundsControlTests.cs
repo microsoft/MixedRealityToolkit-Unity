@@ -2507,6 +2507,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test creating an new instance of a scriptable configuration and setting it.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator SetVisualConfiguration()
+        {
+            BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
+
+            // Create new scriptable
+            BoxDisplayConfiguration boxDisplayConfiguration = ScriptableObject.CreateInstance<BoxDisplayConfiguration>();
+            yield return null;
+
+            // Set the material property of the new scriptable
+            boxDisplayConfiguration.BoxMaterial = testMaterial;
+            yield return null;
+
+            // Set new scriptable
+            boundsControl.BoxDisplayConfig = boxDisplayConfiguration;
+            yield return null;
+
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform boxVisual = rigRoot.transform.Find("box display");
+            Assert.IsNotNull(boxVisual, "box visual couldn't be found");
+
+            // Make sure the new scriptable visuals have been applied to the object
+            Assert.AreEqual(boxVisual.GetComponent<Renderer>().material.color, testMaterial.color);
+        }
+
+        /// <summary>
         /// Returns the AABB of the bounds control rig (corners, edges)
         /// that make up the bounds control by using the positions of the corners
         /// </summary>
