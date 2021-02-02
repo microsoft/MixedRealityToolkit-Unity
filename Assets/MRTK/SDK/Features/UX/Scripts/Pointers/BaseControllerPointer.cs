@@ -41,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("The action that will enable the raise the input drag event for this pointer.")]
-        protected MixedRealityInputAction dragAction = MixedRealityInputAction.None;
+        [Tooltip("The action that will enable the raise the input grab event for this pointer.")]
+        protected MixedRealityInputAction grabAction = MixedRealityInputAction.None;
 
         /// <summary>
-        /// True if drag is pressed right now
+        /// True if grab is pressed right now
         /// </summary>
-        protected bool IsDragPressed = false;
+        protected bool IsGrabPressed = false;
 
         [SerializeField]
         [Tooltip("Does the interaction require hold?")]
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void OnDisable()
         {
-            if (IsSelectPressed || IsDragPressed)
+            if (IsSelectPressed || IsGrabPressed)
             {
                 CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
             }
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IsHoldPressed = false;
             IsSelectPressed = false;
-            IsDragPressed = false;
+            IsGrabPressed = false;
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
 
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return true;
                 }
 
-                if (IsSelectPressed || IsDragPressed)
+                if (IsSelectPressed || IsGrabPressed)
                 {
                     return true;
                 }
@@ -403,11 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (OnPostSceneQueryPerfMarker.Auto())
             {
-                if (dragAction != MixedRealityInputAction.None && InputSourceParent.SourceType == InputSourceType.Controller)
+                if (grabAction != MixedRealityInputAction.None && InputSourceParent.SourceType == InputSourceType.Controller)
                 {
-                    if (IsDragPressed)
+                    if (IsGrabPressed)
                     {
-                        CoreServices.InputSystem.RaisePointerDragged(this, dragAction, Handedness);
+                        CoreServices.InputSystem.RaisePointerDragged(this, grabAction, Handedness);
                     }
                 }
                 else
@@ -504,13 +504,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
                     }
 
-                    if (IsDragPressed)
+                    if (IsGrabPressed)
                     {
-                        CoreServices.InputSystem.RaisePointerUp(this, dragAction, Handedness);
+                        CoreServices.InputSystem.RaisePointerUp(this, grabAction, Handedness);
                     }
 
                     IsSelectPressed = false;
-                    IsDragPressed = false;
+                    IsGrabPressed = false;
                 }
             }
         }
@@ -537,14 +537,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         IsHoldPressed = false;
                     }
 
-                    if (dragAction != MixedRealityInputAction.None &&
+                    if (grabAction != MixedRealityInputAction.None &&
                         eventData.InputSource.SourceType == InputSourceType.Controller &&
-                        eventData.MixedRealityInputAction == dragAction)
+                        eventData.MixedRealityInputAction == grabAction)
                     {
-                        IsDragPressed = false;
+                        IsGrabPressed = false;
 
-                        CoreServices.InputSystem.RaisePointerClicked(this, dragAction, 0, Handedness);
-                        CoreServices.InputSystem.RaisePointerUp(this, dragAction, Handedness);
+                        CoreServices.InputSystem.RaisePointerClicked(this, grabAction, 0, Handedness);
+                        CoreServices.InputSystem.RaisePointerUp(this, grabAction, Handedness);
                     }
 
                     if (eventData.MixedRealityInputAction == pointerAction)
@@ -576,15 +576,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         IsHoldPressed = true;
                     }
 
-                    if (dragAction != MixedRealityInputAction.None &&
+                    if (grabAction != MixedRealityInputAction.None &&
                         eventData.InputSource.SourceType == InputSourceType.Controller &&
-                        eventData.MixedRealityInputAction == dragAction)
+                        eventData.MixedRealityInputAction == grabAction)
                     {
-                        IsDragPressed = true;
+                        IsGrabPressed = true;
 
                         if (IsInteractionEnabled)
                         {
-                            CoreServices.InputSystem.RaisePointerDown(this, dragAction, Handedness);
+                            CoreServices.InputSystem.RaisePointerDown(this, grabAction, Handedness);
                         }
                     }
 

@@ -101,12 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return;
                 }
 
-                if (wasSelectPressed != IsSelectPressed || wasDragPressed != IsDragPressed)
+                if (wasSelectPressed != IsSelectPressed || wasDragPressed != IsGrabPressed)
                 {
                     wasSelectPressed = IsSelectPressed;
-                    wasDragPressed = IsDragPressed;
+                    wasDragPressed = IsGrabPressed;
 
-                    var currentMaterial = IsSelectPressed || IsDragPressed ? lineMaterialSelected : lineMaterialNoTarget;
+                    var currentMaterial = IsSelectPressed || IsGrabPressed ? lineMaterialSelected : lineMaterialNoTarget;
 
                     for (int i = 0; i < LineRenderers.Length; i++)
                     {
