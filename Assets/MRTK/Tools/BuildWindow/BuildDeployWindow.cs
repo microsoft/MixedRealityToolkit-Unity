@@ -571,91 +571,91 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                     }
                 }
+            }
 
-                EditorGUILayout.LabelField("Versioning Options", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Versioning Options", EditorStyles.boldLabel);
 
-                using (new EditorGUILayout.HorizontalScope())
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                using (var c = new EditorGUI.ChangeCheckScope())
                 {
-                    using (var c = new EditorGUI.ChangeCheckScope())
+                    // Auto Increment version
+                    bool incrementVersion = EditorGUILayout.ToggleLeft(AutoIncrementLabel, BuildDeployPreferences.IncrementBuildVersion);
+
+                    EditorGUILayout.LabelField(VersionNumberLabel, GUILayout.Width(96));
+                    Vector3 newVersion = Vector3.zero;
+
+                    newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
+                    newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
+                    newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
+
+                    if (c.changed)
                     {
-                        // Auto Increment version
-                        bool incrementVersion = EditorGUILayout.ToggleLeft(AutoIncrementLabel, BuildDeployPreferences.IncrementBuildVersion);
-
-                        EditorGUILayout.LabelField(VersionNumberLabel, GUILayout.Width(96));
-                        Vector3 newVersion = Vector3.zero;
-
-                        newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
-                        newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
-                        newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
-
-                        if (c.changed)
-                        {
-                            BuildDeployPreferences.IncrementBuildVersion = incrementVersion;
-                            PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
-                        }
-                    }
-
-                    using (new EditorGUI.DisabledGroupScope(true))
-                    {
-                        EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
+                        BuildDeployPreferences.IncrementBuildVersion = incrementVersion;
+                        PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
                     }
                 }
 
-                EditorGUILayout.Space();
-
-                if (appxCancellationTokenSource != null)
+                using (new EditorGUI.DisabledGroupScope(true))
                 {
-                    using (var progressBarRect = new EditorGUILayout.VerticalScope())
-                    {
-                        appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+                    EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
+                }
+            }
 
-                        EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
-                        GUILayout.Space(16);
-                        Repaint();
+            EditorGUILayout.Space();
+
+            if (appxCancellationTokenSource != null)
+            {
+                using (var progressBarRect = new EditorGUILayout.VerticalScope())
+                {
+                    appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+
+                    EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
+                    GUILayout.Space(16);
+                    Repaint();
+                }
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                // Open AppX packages location
+                string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+                string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
+
+                using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
+                {
+                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    {
+                        EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
                     }
                 }
 
-                using (new EditorGUILayout.HorizontalScope())
+                if (appxCancellationTokenSource == null)
                 {
-                    GUILayout.FlexibleSpace();
-
-                    // Open AppX packages location
-                    string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
-                    string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
-
-                    using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
+                    using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
                     {
-                        if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
                         {
-                            EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-                        }
-                    }
-
-                    if (appxCancellationTokenSource == null)
-                    {
-                        using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
-                        {
-                            if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                            // Check if solution exists
+                            string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+                            if (File.Exists(slnFilename))
                             {
-                                // Check if solution exists
-                                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-                                if (File.Exists(slnFilename))
-                                {
-                                    EditorApplication.delayCall += BuildAppx;
-                                }
-                                else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the Visual Studio solution. Would you like to build it?", "Yes, Build Unity", "No"))
-                                {
-                                    EditorApplication.delayCall += () => BuildAll(install: false);
-                                }
+                                EditorApplication.delayCall += BuildAppx;
+                            }
+                            else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the Visual Studio solution. Would you like to build it?", "Yes, Build Unity", "No"))
+                            {
+                                EditorApplication.delayCall += () => BuildAll(install: false);
                             }
                         }
                     }
-                    else
+                }
+                else
+                {
+                    if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
                     {
-                        if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
-                        {
-                            appxCancellationTokenSource.Cancel();
-                        }
+                        appxCancellationTokenSource.Cancel();
                     }
                 }
             }
