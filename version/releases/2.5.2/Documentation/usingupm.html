@@ -91,53 +91,25 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="mixed-reality-toolkit-and-unity-package-manager">Mixed Reality Toolkit and Unity Package Manager</h1>
 
-<p>Starting with version 2.5.0, the Microsoft Mixed Reality Toolkit is available using the Unity Package Manager (UPM), on Unity 2019.4 and newer.</p>
-<h2 id="installing-mixed-reality-features-using-the-unity-package-manager">Installing Mixed Reality features using the Unity Package Manager</h2>
-<p>The Unity Package Manager uses a <a href="https://docs.unity3d.com/Manual/upm-manifestPkg.html">manifest file</a> (manifest.json) to determine which packages to install and the registries (servers) from which they can be installed.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>Initial registration of the server and packages is a per-project, manual procedure, please read the following sections for detailed instructions.</p>
-<p>This process is required due to UPM's use of legacy npm search functionality (/-/all) that is not supported by Azure DevOps.</p>
-</div>
-<h3 id="registering-the-mixed-reality-component-server">Registering the Mixed Reality component server</h3>
-<p>For each project that will be using the Microsoft Mixed Reality Toolkit, the <code>manifest.json</code> file (in the Packages folder) will need to have the Mixed Reality scoped registry added. The following illustrate how to properly modify <code>manifest.json</code> to support Mixed Reality.</p>
-<ol>
-<li>Open <code>&lt;projectRoot&gt;/Packages/manifest.json</code> in a text editor, such as <a href="https://code.visualstudio.com/">Visual Studio Code</a>.</li>
-<li>At the top of the manifest file, add the Mixed Reality server to the scoped registry section and save the file.</li>
-</ol>
-<pre><code class="lang-json">{
-  &quot;scopedRegistries&quot;: [
-    {
-      &quot;name&quot;: &quot;Microsoft Mixed Reality&quot;,
-      &quot;url&quot;: &quot;https://pkgs.dev.azure.com/aipmr/MixedReality-Unity-Packages/_packaging/Unity-packages/npm/registry/&quot;,
-      &quot;scopes&quot;: [
-        &quot;com.microsoft.mixedreality&quot;,
-        &quot;com.microsoft.spatialaudio&quot;
-      ]
-    }
-  ],
-</code></pre>
-<h3 id="adding-mrtk-packages">Adding MRTK packages</h3>
-<p>Once the Microsoft Mixed Reality scoped registry has been added to the manifest, the MRTK packages can be specified.</p>
-<p>The <a href="Packaging/MRTK_Packages.html#unity-package-manager">Unity Package Manager</a> section of the <a href="Packaging/MRTK_Packages.html">Mixed Reality Toolkit package</a> article describes the available MRTK packages, their contents and the scenarios for their use.</p>
-<p>To add an MRTK package, modify the dependencies section of the <code>Packages/manifest.json</code> file. The following example illustrates adding the foundation, tools and examples packages, the standard assets package will be added automatically as a dependency of the foundation.</p>
-<pre><code class="lang-json">  &quot;dependencies&quot;: {
-    &quot;com.microsoft.mixedreality.toolkit.foundation&quot;: &quot;2.5.2&quot;,
-    &quot;com.microsoft.mixedreality.toolkit.tools&quot;: &quot;2.5.2&quot;,
-    &quot;com.microsoft.mixedreality.toolkit.examples&quot;: &quot;2.5.2&quot;,
-</code></pre>
+<p>Starting with version 2.5.0, using the <a href="https://aka.ms/MRFeatureToolDocs">Mixed Reality Feature Tool</a>, the Microsoft Mixed Reality Toolkit integrates with the Unity Package Manager (UPM) when using Unity 2019.4 and newer.</p>
+<h2 id="using-the-mixed-reality-feature-tool">Using the Mixed Reality Feature Tool</h2>
+<p>As described in <a href="https://aka.ms/MRFeatureToolDocs">Welcome to the Mixed Reality Feature Tool</a> you can download the tool using <a href="https://aka.ms/MRFeatureTool">this link</a>.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>There is a known compiler issue that impacts applications built for Microsoft HoloLens 2 using
-ARM64. This issue is fixed by updating Visual Studio 2019 to version 16.8 or later. If you are unable to update Visual Studio,
-please import the <code>com.microsoft.mixedreality.toolkit.tools</code> package to apply a workaround.</p>
+<p>If the project's manifest has a <code>Microsoft Mixed Reality</code> entry in the <code>scopedRegistries</code> section, it is recommended that it be removed.</p>
+<p>To remove a configured scoped registry, please to to <code>Edit</code> &gt; <code>Project Settings</code> &gt; <code>Package Manager</code>.</p>
+<p><img src="Images/Packaging/RemoveScopedRegistry.png" alt="Removing scoped registry"></p>
 </div>
+<p>MRTK packages appear under the <code>Mixed Reality Toolkit</code> heading when discovering features.</p>
+<p><img src="Images/Packaging/DiscoverFeatures.png" alt="Discover features"></p>
+<p>When selecting features, there is no need to be concerned with required dependencies, the tool will automatically download and integrate them into the project.</p>
+<p><img src="Images/Packaging/RequiredDependencies.png" alt="Required dependencies"></p>
 <h2 id="managing-mixed-reality-features-with-the-unity-package-manager">Managing Mixed Reality features with the Unity Package Manager</h2>
 <p>Once a Mixed Reality Toolkit package has been added to the package manifest, it can be managed using the Unity Package Manager user interface.</p>
 <p><img src="Images/Packaging/MRTK_FoundationUPM.png" alt="MRTK Foundation UPM Package"></p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>If a Mixed Reality Toolkit package is removed using the Unity Package Manager, it will have to be re-added using the <a href="#adding-mrtk-packages">previously described steps</a>.</p>
+<p>If a Mixed Reality Toolkit package is removed using the Unity Package Manager, it will have to be re-added using the <a href="#using-the-mixed-reality-feature-tool">previously described steps</a>.</p>
 </div>
 <h3 id="using-mixed-reality-toolkit-examples">Using Mixed Reality Toolkit examples</h3>
 <p>Unlike when using asset package (.unitypackage) files, <code>com.microsoft.mixedreality.toolkit.examples</code> and <code>com.microsoft.mixedreality.toolkit.handphysicsservice</code> do not automatically import the example scenes and assets.</p>
