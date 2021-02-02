@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // Dock it next to the Scene View.
             var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
-            window.titleContent = new GUIContent("Build Window", EditorGUIUtility.IconContent("Collab.Build").image);
+            window.titleContent = new GUIContent("Build Window", EditorGUIUtility.IconContent("CustomTool").image);
             window.Show();
         }
 
