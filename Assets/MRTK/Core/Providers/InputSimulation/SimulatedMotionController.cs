@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Whether the motion controller is currently being tracked
         /// </summary>
         public bool IsTracked => isTracked;
-        
+
         private SimulatedMotionControllerButtonState buttonState = new SimulatedMotionControllerButtonState();
         /// <summary>
         /// States of buttons on the motion controller
@@ -82,19 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SimulatedMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
-        }
-
-        private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
-
-        /// <summary>
-        /// The simulated motion controller's default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers. This is based on the Windows Mixed Reality controller.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public SimulatedMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new WindowsMixedRealityControllerDefinition(controllerHandedness))
+        { }
 
         internal void UpdateState(SimulatedMotionControllerData motionControllerData)
         {

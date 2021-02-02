@@ -14,8 +14,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         flags: MixedRealityControllerConfigurationFlags.UseCustomInteractionMappings)]
     public class GenericJoystickController : BaseController
     {
-        public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+        public GenericJoystickController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, null, inputSource, interactions)
+        { }
+
+        public GenericJoystickController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
         {
             // Update the spatial pointer rotation with the preconfigured offset angle
             if (PointerOffsetAngle != 0f && Interactions != null)
@@ -70,6 +83,50 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// The current pose of this controller.
         /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultInteractions => BuildInteractions(Definition?.GetDefaultMappings(ControllerHandedness), LegacyInputSupport);
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] LegacyInputSupport { get; } = null;
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => BuildInteractions(Definition?.GetDefaultMappings(Handedness.Left), LeftHandedLegacyInputSupport);
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] LeftHandedLegacyInputSupport { get; } = null;
+
+        /// <inheritdoc />
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => BuildInteractions(Definition?.GetDefaultMappings(Handedness.Right), RightHandedLegacyInputSupport);
+
+        protected virtual MixedRealityInteractionMappingLegacyInput[] RightHandedLegacyInputSupport { get; } = null;
+
+        private MixedRealityInteractionMapping[] BuildInteractions(System.Collections.Generic.IReadOnlyList<MixedRealityInputActionMapping> definitionInteractions, MixedRealityInteractionMappingLegacyInput[] legacyInputs)
+        {
+            if (definitionInteractions == null)
+            {
+                return null;
+            }
+
+            // If the legacy array is null, it may not have been overridden and thus isn't needed. Move on and build the array without it.
+            if (legacyInputs != null && definitionInteractions.Count != legacyInputs.Length)
+            {
+                Debug.LogWarning($"Legacy input mappings are being used, but an incorrect number of mappings were provided. Interaction count {definitionInteractions.Count}. Legacy count {legacyInputs.Length}.");
+                return null;
+            }
+
+            MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[definitionInteractions.Count];
+            for (int i = 0; i < definitionInteractions.Count; i++)
+            {
+                if (legacyInputs != null)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i], legacyInputs[i]);
+                }
+                else
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, definitionInteractions[i]);
+                }
+            }
+            return defaultInteractions;
+        }
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateController");
 

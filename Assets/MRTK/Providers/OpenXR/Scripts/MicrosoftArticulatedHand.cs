@@ -30,19 +30,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         /// Constructor.
         /// </summary>
         public MicrosoftArticulatedHand(TrackingState trackingState, Utilities.Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
+            : base(trackingState, controllerHandedness, inputSource, interactions, new ArticulatedHandDefinition(inputSource, controllerHandedness))
         {
-            handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
 #if MSFT_OPENXR
             handTracker = new HandTracker(controllerHandedness == Utilities.Handedness.Left ? MixedReality.OpenXR.Preview.Handedness.Left : MixedReality.OpenXR.Preview.Handedness.Right, HandPoseType.Tracked);
 #endif // MSFT_OPENXR
         }
 
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+        private ArticulatedHandDefinition handDefinition;
+        private ArticulatedHandDefinition HandDefinition => handDefinition ?? (handDefinition = Definition as ArticulatedHandDefinition);
 
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
-        protected readonly ArticulatedHandDefinition handDefinition;
 
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
@@ -65,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
         #endregion IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+        public override bool IsInPointingPose => HandDefinition.IsInPointingPose;
 
         private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityOpenXRArticulatedHand.UpdateController");
 
@@ -195,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                 switch (interactionMapping.InputType)
                 {
                     case DeviceInputType.IndexFinger:
-                        handDefinition?.UpdateCurrentIndexPose(interactionMapping);
+                        HandDefinition?.UpdateCurrentIndexPose(interactionMapping);
                         break;
                     case DeviceInputType.SpatialPointer:
                         if (inputDevice.TryGetFeatureValue(Input.CustomUsages.PointerPosition, out currentPointerPosition))
@@ -268,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.OpenXR
                     }
 #endif // MSFT_OPENXR
 
-                    handDefinition?.UpdateHandJoints(unityJointPoses);
+                    HandDefinition?.UpdateHandJoints(unityJointPoses);
                 }
             }
         }
