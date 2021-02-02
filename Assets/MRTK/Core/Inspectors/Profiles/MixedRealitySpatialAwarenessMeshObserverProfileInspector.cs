@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessMeshObserverProfile))]
     public class MixedRealitySpatialAwarenessMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
-    {
+    { 
+        private SerializedProperty runtimeSpatialMeshPrefab;
+
         // General settings
         private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
@@ -62,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             displayOption = serializedObject.FindProperty("displayOption");
             visibleMaterial = serializedObject.FindProperty("visibleMaterial");
             occlusionMaterial = serializedObject.FindProperty("occlusionMaterial");
+            runtimeSpatialMeshPrefab = serializedObject.FindProperty("runtimeSpatialMeshPrefab");
         }
 
         public override void OnInspectorGUI()
@@ -74,6 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
+
+                EditorGUILayout.PropertyField(runtimeSpatialMeshPrefab);
+                EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
                 {
