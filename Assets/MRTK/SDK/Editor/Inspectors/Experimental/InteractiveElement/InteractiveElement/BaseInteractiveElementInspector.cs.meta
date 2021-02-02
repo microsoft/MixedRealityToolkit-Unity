@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/MRTK/SDK/Editor/Inspectors/Experimental/InteractiveElement/InteractiveElement/BaseInteractiveElementInspector.cs.meta
 guid: 148be0af8a038624395b3f14c61609b0
+=======
+guid: f27a8e022ad5ed145b4dbb07f4c3c76a
+>>>>>>> mrtk_development:Assets/MRTK/Core/Interfaces/CameraSystem/IMixedRealityCameraProjectionOverrideProvider.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

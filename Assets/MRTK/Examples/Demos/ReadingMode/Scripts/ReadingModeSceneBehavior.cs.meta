@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/MRTK/SDK/Editor/Inspectors/Experimental/InteractiveElement/InteractiveElement/CompressableButtonInspector.cs.meta
+guid: 8460b214b88b4924ca4a99f312ebc57b
+=======
+guid: a68d3491f4b7cc8478681195687e3c4a
+>>>>>>> mrtk_development:Assets/MRTK/Examples/Demos/ReadingMode/Scripts/ReadingModeSceneBehavior.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
