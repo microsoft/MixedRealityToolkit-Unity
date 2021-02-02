@@ -15,7 +15,7 @@ Following materials use **SR_Triangles** shader. You can configure various optio
 
 ## Prerequisites
 
-For spatial mesh example, ensure that MRTK_Pulse_ArticulatedHandMeshBlue.mat or MRTK_Pulse_ArticulatedHandMeshPurple.mat is assigned under MRTK Settings -> Spatial Awareness -> Display Settings -> Visible Material.
+For the spatial mesh example, ensure that MRTK_Pulse_ArticulatedHandMeshBlue.mat or MRTK_Pulse_ArticulatedHandMeshPurple.mat is assigned under MRTK Settings -> Spatial Awareness -> Display Settings -> Visible Material.
 
 For hand mesh example, ensure that MRTK_Pulse_SpatialMeshBlue.mat or MRTK_Pulse_SpatialMeshPurple.mat is assigned in ArticulatedHandMesh.prefab, which itself should be assigned in MRTK Settings -> Input -> Hand Tracking -> Hand Mesh Prefab.
 
@@ -34,4 +34,3 @@ Similar to HoloLens 2's shell experience, you can point and air-tap with hand ra
 This example scene demonstrates the hand mesh visualization using pulse shader. When a hand is detected by the HoloLens device, pulse animation will be triggered once. This visual feedback can increase the user's interaction confidence. 
 
 **PulseShaderHandMeshHandler.cs** script generates pulse effect on the assigned material. By default, 'Pulse On Hand Detected' is checked.
-
