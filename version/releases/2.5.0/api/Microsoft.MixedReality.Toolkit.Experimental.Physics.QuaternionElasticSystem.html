@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class QuaternionElasticSystem
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.1.0">
+    <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href=".././Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,11 +73,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -188,7 +188,9 @@ initial value, velocity, extent, and elastic properties.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_ComputeIteration_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.ComputeIteration*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_ComputeIteration_Quaternion_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.ComputeIteration(Quaternion,System.Single)">ComputeIteration(Quaternion, Single)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Update the internal state of the damped harmonic oscillator,
+given the forcing/desired value, returning the new value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -212,7 +214,8 @@ initial value, velocity, extent, and elastic properties.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td><span class="parametername">deltaTime</span></td>
-        <td></td>
+        <td><p>Amount of time that has passed since the last update.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -227,7 +230,8 @@ initial value, velocity, extent, and elastic properties.</p>
     <tbody>
       <tr>
         <td><span class="xref">Quaternion</span></td>
-        <td></td>
+        <td><p>The new value of the system.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -235,7 +239,8 @@ initial value, velocity, extent, and elastic properties.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_GetCurrentValue_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.GetCurrentValue*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_GetCurrentValue" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.GetCurrentValue">GetCurrentValue()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Query the elastic system for the current instantaneous value</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -252,7 +257,8 @@ initial value, velocity, extent, and elastic properties.</p>
     <tbody>
       <tr>
         <td><span class="xref">Quaternion</span></td>
-        <td></td>
+        <td><p>Current value of the elastic system</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -260,7 +266,8 @@ initial value, velocity, extent, and elastic properties.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_GetCurrentVelocity_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.GetCurrentVelocity*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Physics_QuaternionElasticSystem_GetCurrentVelocity" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Physics.QuaternionElasticSystem.GetCurrentVelocity">GetCurrentVelocity()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Query the elastic system for the current instantaneous velocity</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -277,7 +284,8 @@ initial value, velocity, extent, and elastic properties.</p>
     <tbody>
       <tr>
         <td><span class="xref">Quaternion</span></td>
-        <td></td>
+        <td><p>Current value of the elastic system</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -295,7 +303,8 @@ initial value, velocity, extent, and elastic properties.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
