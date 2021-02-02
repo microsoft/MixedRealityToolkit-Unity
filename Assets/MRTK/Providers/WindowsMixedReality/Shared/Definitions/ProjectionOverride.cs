@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, leftProj);
             CameraCache.Main.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, rightProj);
 
-            HolographicFrame holographicFrame = WindowsMixedRealityUtilities.CurrentHolographicFrame;
+            HolographicFrame holographicFrame = WindowsMixedRealityUtilities.CurrentWindowsHolographicFrame;
             if (holographicFrame != null)
             {
                 HolographicFramePrediction prediction = holographicFrame.CurrentPrediction;
