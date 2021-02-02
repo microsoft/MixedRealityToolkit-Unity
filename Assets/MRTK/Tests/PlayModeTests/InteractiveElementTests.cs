@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 #if UNITY_2019_3_OR_NEWER
-using Microsoft.MixedReality.Toolkit.UI.Interaction;
+using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -642,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator MoveHandOutOfFocus(TestHand hand)
         {
-            yield return hand.Move(new Vector3(0, -0.3f, 0));
+            yield return hand.Move(new Vector3(0, -0.4f, 0));
         }
 
         private IEnumerator MoveHandTouchObject(TestHand hand)
