@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
                 }
 
-                if (newGlbModel != null)
+                if (newGlbModel != null && newGlbModel.Model != null)
                 {
                     if (gameObjectEditor == null || appLauncherChanged)
                     {
