@@ -1358,10 +1358,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BuildDeploy/WMR/BuildWindowManifestOptions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/BuildWindowManifestOptions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "../../Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../../Documentation/Images/BuildDeploy/WMR/ProjectBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/ProjectBuildSettings.png"
         }
       },
       "is_incremental": false,
@@ -8933,7 +8955,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "mkse06HInpH9L5kVOeD0IA=="
+          "hash": "E2m4br842FQPAPpVHe2Q7g=="
         }
       },
       "is_incremental": false,
@@ -9829,6 +9851,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Build.Editor.MixedRealityBuildPreferences.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Build.Editor.MixedRealityBuildPreferences.html",
+          "hash": "L/vJzBjtD/67v3Zqxf9xKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "../../obj/api/Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.yml",
       "output": {
         ".html": {
@@ -9893,7 +9927,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Build.Editor.html",
-          "hash": "ZGqcgjya0x1F/P60mFbigQ=="
+          "hash": "FcAzptj4++l6TDjYkkdfOg=="
         }
       },
       "is_incremental": false,
@@ -30293,7 +30327,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "nmZd4T9hf9YZYn4qSyziTQ=="
+          "hash": "NOPpY1KnVxwklqSU/KpTXw=="
         }
       },
       "is_incremental": false,
@@ -30365,7 +30399,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1743,
+          "total_file_count": 1744,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
