@@ -24,36 +24,38 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Value indicating whether or not this script has registered for spatial awareness events.
         /// </summary>
-        private bool isRegistered = false;
+        protected bool isRegistered = false;
 
-        private void Start()
+        protected virtual void Start()
         {
-            RegisterEventHandlers();
+            RegisterEventHandlers<SpatialAwarenessHandler, SpatialAwarenessMeshObject>();
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
-            RegisterEventHandlers();
+            RegisterEventHandlers<SpatialAwarenessHandler, SpatialAwarenessMeshObject>();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
-            UnregisterEventHandlers();
+            UnregisterEventHandlers<SpatialAwarenessHandler, SpatialAwarenessMeshObject>();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            UnregisterEventHandlers();
+            UnregisterEventHandlers<SpatialAwarenessHandler, SpatialAwarenessMeshObject>();
         }
 
         /// <summary>
         /// Registers for the spatial awareness system events.
         /// </summary>
-        private void RegisterEventHandlers()
+        protected virtual void RegisterEventHandlers<T, U>()
+            where T : IMixedRealitySpatialAwarenessObservationHandler<U>
+            where U: BaseSpatialAwarenessObject
         {
             if (!isRegistered && (CoreServices.SpatialAwarenessSystem != null))
             {
-                CoreServices.SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
+                CoreServices.SpatialAwarenessSystem.RegisterHandler<T>(this);
                 isRegistered = true;
             }
         }
@@ -61,11 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Unregisters from the spatial awareness system events.
         /// </summary>
-        private void UnregisterEventHandlers()
+        protected virtual void UnregisterEventHandlers<T, U>()
+            where T : IMixedRealitySpatialAwarenessObservationHandler<U>
+            where U : BaseSpatialAwarenessObject
         {
             if (isRegistered && (CoreServices.SpatialAwarenessSystem != null))
             {
-                CoreServices.SpatialAwarenessSystem.UnregisterHandler<SpatialAwarenessHandler>(this);
+                CoreServices.SpatialAwarenessSystem.UnregisterHandler<T>(this);
                 isRegistered = false;
             }
         }
@@ -73,32 +77,56 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <inheritdoc />
         public virtual void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            // A new mesh has been added.
-            Debug.Log($"Tracking mesh {eventData.Id}");
-            meshUpdateData.Add(eventData.Id, 0);
+            AddToData(eventData.Id);
         }
 
         /// <inheritdoc />
         public virtual void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            // A mesh has been updated. Find it and increment the update count.
-            if (meshUpdateData.TryGetValue(eventData.Id, out uint updateCount))
-            {
-                // Set the new update count.
-                meshUpdateData[eventData.Id] = ++updateCount;
-
-                Debug.Log($"Mesh {eventData.Id} has been updated {updateCount} times.");
-            }
+            UpdateData(eventData.Id);
         }
 
         /// <inheritdoc />
         public virtual void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> eventData)
         {
-            // A mesh has been removed. We no longer need to track the count of updates.
-            if (meshUpdateData.ContainsKey(eventData.Id))
+            RemoveFromData(eventData.Id);
+        }
+
+        /// <summary>
+        /// Records the mesh id when it is first added.
+        /// </summary>
+        protected void AddToData(int eventDataId)
+        {
+            // A new mesh has been added.
+            Debug.Log($"Tracking mesh {eventDataId}");
+            meshUpdateData.Add(eventDataId, 0);
+        }
+
+        /// <summary>
+        /// Increments the update count of the mesh with the id.
+        /// </summary>
+        protected void UpdateData(int eventDataId)
+        {
+            // A mesh has been updated. Find it and increment the update count.
+            if (meshUpdateData.TryGetValue(eventDataId, out uint updateCount))
             {
-                Debug.Log($"No longer tracking mesh {eventData.Id}.");
-                meshUpdateData.Remove(eventData.Id);
+                // Set the new update count.
+                meshUpdateData[eventDataId] = ++updateCount;
+
+                Debug.Log($"Mesh {eventDataId} has been updated {updateCount} times.");
+            }
+        }
+
+        /// <summary>
+        /// Removes the mesh id.
+        /// </summary>
+        protected void RemoveFromData(int eventDataId)
+        {
+            // A mesh has been removed. We no longer need to track the count of updates.
+            if (meshUpdateData.ContainsKey(eventDataId))
+            {
+                Debug.Log($"No longer tracking mesh {eventDataId}.");
+                meshUpdateData.Remove(eventDataId);
             }
         }
     }

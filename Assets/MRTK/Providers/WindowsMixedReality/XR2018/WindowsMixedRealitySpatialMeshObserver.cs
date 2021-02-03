@@ -125,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     break;
 
                 case SpatialAwarenessMeshLevelOfDetail.Fine:
+                case SpatialAwarenessMeshLevelOfDetail.Unlimited:
                     triangleDensity = 2000;
                     break;
 
