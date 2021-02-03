@@ -343,6 +343,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return newSprite != null;
         }
 
+
+        /// <summary>
+        /// Updates the cached sprite icon textures to the latest textures in spriteIcons
+        /// </summary>
         public void UpdateSpriteIconTextures()
         {
             if(spriteIcons != null)
