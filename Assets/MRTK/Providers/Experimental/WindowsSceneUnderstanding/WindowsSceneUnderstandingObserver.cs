@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// <inheritdoc/>
         public void SaveScene(string filenamePrefix)
         {
-#if WINDOWS_UWP
+#if WINDOWS_UWP && SCENE_UNDERSTANDING_PRESENT
             SaveToFile(filenamePrefix);
 #else // WINDOWS_UWP
             Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
