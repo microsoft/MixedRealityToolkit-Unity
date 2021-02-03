@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.XRSDK\" preserve=\"all\"/> \n" +
+            "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Providers.WindowsSceneUnderstanding\" preserve=\"all\"/> \n" +
             "  <!-- Extension services --> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.HandPhysics\" preserve=\"all\"/> \n" +
             "  <assembly fullname = \"Microsoft.MixedReality.Toolkit.Extensions.Tracking\" preserve=\"all\"/> \n" +

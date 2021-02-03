@@ -53,6 +53,12 @@ Added support for [reading mode](https://docs.microsoft.com/hololens/hololens2-d
 
   ![Windows Mixed Reality reading mode](Images/CameraSystem/WMRReadingMode.gif)
 
+### Support for 3D app launchers on UWP
+
+Adds the ability to set a [3D app launcher](https://docs.microsoft.com/windows/mixed-reality/distribute/3d-app-launcher-design-guidance) for UWP. This setting is exposed both in the MRTK Build Window and the MRTK Project Settings, under Build Settings. It's automatically written into the project during the build in Unity.
+
+  ![Build settings](Images/BuildDeploy/WMR/ProjectBuildSettings.png)
+
 ## Breaking changes
 
 ### Certain fields of imported GLTF objects are now capitalized

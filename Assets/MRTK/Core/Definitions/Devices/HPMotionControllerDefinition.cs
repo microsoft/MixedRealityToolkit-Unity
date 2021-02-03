@@ -5,51 +5,55 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class HPMotionControllerDefinition
+    public class HPMotionControllerDefinition : BaseInputSourceDefinition
     {
-        public HPMotionControllerDefinition(IMixedRealityInputSource source, Handedness handedness)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
+        public HPMotionControllerDefinition(Handedness handedness) : base(handedness)
         {
-            inputSource = source;
-            this.handedness = handedness;
+            if ((handedness != Handedness.Left) &&
+                (handedness != Handedness.Right))
+            {
+                throw new System.ArgumentException($"Unsupported Handedness ({handedness}). The OculusTouchControllerDefinition supports Left and Right.");
+            }
         }
 
-        protected readonly IMixedRealityInputSource inputSource;
-        protected readonly Handedness handedness;
-
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+        protected override MixedRealityInputActionMapping[] DefaultLeftHandedMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
-            new MixedRealityInteractionMapping(3, "Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
-            new MixedRealityInteractionMapping(4, "Grip Press", AxisType.SingleAxis, DeviceInputType.GripPress),
-            new MixedRealityInteractionMapping(5, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(6, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
-            new MixedRealityInteractionMapping(7, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(8, "Button.X Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
-            new MixedRealityInteractionMapping(9, "Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
-            new MixedRealityInteractionMapping(10, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(11, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
+            new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInputActionMapping("Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
+            new MixedRealityInputActionMapping("Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
+            new MixedRealityInputActionMapping("Grip Press", AxisType.SingleAxis, DeviceInputType.GripPress),
+            new MixedRealityInputActionMapping("Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInputActionMapping("Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
+            new MixedRealityInputActionMapping("Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInputActionMapping("Button.X Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInputActionMapping("Button.Y Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInputActionMapping("Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInputActionMapping("Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInputActionMapping("Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
         };
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
+        protected override MixedRealityInputActionMapping[] DefaultRightHandedMappings => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
-            new MixedRealityInteractionMapping(3, "Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
-            new MixedRealityInteractionMapping(4, "Grip Press", AxisType.SingleAxis, DeviceInputType.GripPress),
-            new MixedRealityInteractionMapping(5, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
-            new MixedRealityInteractionMapping(6, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
-            new MixedRealityInteractionMapping(7, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(8, "Button.A Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
-            new MixedRealityInteractionMapping(9, "Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
-            new MixedRealityInteractionMapping(10, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
-            new MixedRealityInteractionMapping(11, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
-            new MixedRealityInteractionMapping(12, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress)
+            new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInputActionMapping("Grip Position", AxisType.SingleAxis, DeviceInputType.Grip),
+            new MixedRealityInputActionMapping("Grip Touch", AxisType.Digital, DeviceInputType.GripTouch),
+            new MixedRealityInputActionMapping("Grip Press", AxisType.SingleAxis, DeviceInputType.GripPress),
+            new MixedRealityInputActionMapping("Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInputActionMapping("Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
+            new MixedRealityInputActionMapping("Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInputActionMapping("Button.A Press", AxisType.Digital, DeviceInputType.PrimaryButtonPress),
+            new MixedRealityInputActionMapping("Button.B Press", AxisType.Digital, DeviceInputType.SecondaryButtonPress),
+            new MixedRealityInputActionMapping("Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInputActionMapping("Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInputActionMapping("Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
         };
     }
 }

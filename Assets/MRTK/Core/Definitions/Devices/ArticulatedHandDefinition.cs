@@ -11,16 +11,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Defines the interactions and data that an articulated hand can provide.
     /// </summary>
-    public class ArticulatedHandDefinition
+    public class ArticulatedHandDefinition : BaseInputSourceDefinition
     {
-        public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="source">The input source backing this definition instance. Used for raising events.</param>
+        /// <param name="handedness">The handedness that this definition instance represents.</param>
+        public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(handedness)
         {
-            inputSource = source;
-            this.handedness = handedness;
+            InputSource = source;
         }
 
-        protected readonly IMixedRealityInputSource inputSource;
-        protected readonly Handedness handedness;
+        /// <summary>
+        /// The input source backing this definition instance.
+        /// </summary>
+        protected IMixedRealityInputSource InputSource { get; }
 
         private readonly float cursorBeamBackwardTolerance = 0.5f;
         private readonly float cursorBeamUpTolerance = 0.8f;
@@ -86,14 +92,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The articulated hands default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        public MixedRealityInteractionMapping[] DefaultInteractions => new[]
+        [System.Obsolete("Call GetDefaultMappings(Handedness) instead.")]
+        public MixedRealityInteractionMapping[] DefaultInteractions
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
-            new MixedRealityInteractionMapping(5, "Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick)
+            get
+            {
+                MixedRealityInteractionMapping[] defaultInteractions = new MixedRealityInteractionMapping[DefaultMappings.Length];
+                for (int i = 0; i < DefaultMappings.Length; i++)
+                {
+                    defaultInteractions[i] = new MixedRealityInteractionMapping((uint)i, DefaultMappings[i]);
+                }
+                return defaultInteractions;
+            }
+        }
+
+        /// <summary>
+        /// The articulated hands default interactions.
+        /// </summary>
+        /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
+        protected override MixedRealityInputActionMapping[] DefaultMappings => new[]
+        {
+            new MixedRealityInputActionMapping("Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInputActionMapping("Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInputActionMapping("Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInputActionMapping("Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInputActionMapping("Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger),
+            new MixedRealityInputActionMapping("Teleport Pose", AxisType.DualAxis, DeviceInputType.ThumbStick),
         };
 
         /// <summary>
@@ -198,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             using (UpdateHandJointsPerfMarker.Auto())
             {
                 unityJointPoses = jointPoses;
-                CoreServices.InputSystem?.RaiseHandJointsUpdated(inputSource, handedness, unityJointPoses);
+                CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, Handedness, unityJointPoses);
             }
         }
 
@@ -221,14 +245,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (interactionMapping.Changed)
                     {
                         // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePoseInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, Handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
                     }
                 }
             }
         }
 
         // Used to track the input that was last raised
-        private Vector2 previousStickInput = Vector2.zero;
         private bool previousReadyToTeleport = false;
 
         private IMixedRealityTeleportPointer teleportPointer;
@@ -243,9 +266,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
                 bool anyPointersLockedWithHand = false;
-                for (int i = 0; i < inputSource?.Pointers?.Length; i++)
+                for (int i = 0; i < InputSource?.Pointers?.Length; i++)
                 {
-                    IMixedRealityPointer mixedRealityPointer = inputSource.Pointers[i];
+                    IMixedRealityPointer mixedRealityPointer = InputSource.Pointers[i];
                     if (mixedRealityPointer.IsNull()) continue;
                     if (mixedRealityPointer is IMixedRealityNearPointer nearPointer)
                     {
@@ -261,9 +284,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // We close middle finger to signal spider-man gesture, and as being ready for teleport
-                isIndexGrabbing = HandPoseUtils.IsIndexGrabbing(handedness);
-                isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(handedness);
-                isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(handedness);
+                isIndexGrabbing = HandPoseUtils.IsIndexGrabbing(Handedness);
+                isMiddleGrabbing = HandPoseUtils.IsMiddleGrabbing(Handedness);
+                isThumbGrabbing = HandPoseUtils.IsThumbGrabbing(Handedness);
                 bool isReadyForTeleport = !anyPointersLockedWithHand && IsInTeleportPose;
 
                 // Tracks the input vector that should be sent out based on the gesture that is made
@@ -275,7 +298,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (teleportCanceled && teleportPointer != null)
                 {
                     CoreServices.TeleportSystem?.RaiseTeleportCanceled(teleportPointer, null);
-                    previousStickInput = stickInput;
                     previousReadyToTeleport = isReadyForTeleport;
                     return;
                 }
@@ -286,10 +308,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // If our value changed raise it
                 if (interactionMapping.Changed)
                 {
-                    CoreServices.InputSystem?.RaisePositionInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, stickInput);
+                    CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, Handedness, interactionMapping.MixedRealityInputAction, stickInput);
                 }
 
-                previousStickInput = stickInput;
                 previousReadyToTeleport = isReadyForTeleport;
             }
         }
