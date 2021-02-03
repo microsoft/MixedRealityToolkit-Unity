@@ -2514,6 +2514,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
 
+            // Make sure the material on the object has not been applied 
             Assert.AreNotEqual(GetBoxVisual(boundsControl).GetComponent<Renderer>().material.color, testMaterial.color);
 
             // Create new scriptable
@@ -2532,6 +2533,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(GetBoxVisual(boundsControl).GetComponent<Renderer>().material.color, testMaterial.color);
         }
 
+        // Returns the "box display" transform in the bounds control rig
         private Transform GetBoxVisual(BoundsControl boundsControl)
         {
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
