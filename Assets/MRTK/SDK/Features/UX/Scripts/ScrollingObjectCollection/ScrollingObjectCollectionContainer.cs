@@ -5,7 +5,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Container for all renderers and colliders used in the ScrollingObjectCollection.
-    /// It's main purpose is to find and cache those Components.
+    /// Its main purpose is to find and cache those Components.
     /// Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
     public class ScrollingObjectCollectionContainer : MonoBehaviour

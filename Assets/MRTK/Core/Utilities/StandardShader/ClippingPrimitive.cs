@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
         [SerializeField]
         private List<Renderer> renderersCache = new List<Renderer>(InitialCollectionSize);
-        
         public enum Side
         {
             Inside = 1,

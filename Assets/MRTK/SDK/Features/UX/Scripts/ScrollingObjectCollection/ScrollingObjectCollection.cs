@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// A scrollable frame where content scroll is triggered by manual controller click and drag or according to pagination settings.
     /// </summary>
-    ///<remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
+    /// <remarks>Executing also in edit mode to properly catch and mask any new content added to scroll container.</remarks>
     [ExecuteAlways]
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
     public class ScrollingObjectCollection : MonoBehaviour,
