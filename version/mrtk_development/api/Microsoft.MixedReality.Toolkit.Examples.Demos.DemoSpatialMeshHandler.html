@@ -114,8 +114,93 @@ of the IDs of each mesh and tracks the number of updates they have received.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler&lt;SpatialAwarenessMeshObject&gt;</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_isRegistered" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.isRegistered">isRegistered</h4>
+  <div class="markdown level1 summary"><p>Value indicating whether or not this script has registered for spatial awareness events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool isRegistered</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_AddToData_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.AddToData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_AddToData_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.AddToData(System.Int32)">AddToData(Int32)</h4>
+  <div class="markdown level1 summary"><p>Records the mesh id when it is first added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddToData(int eventDataId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">eventDataId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnDestroy_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnDestroy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnDestroy" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnDestroy">OnDestroy()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDestroy()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnDisable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnDisable">OnDisable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDisable()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
+  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_OnObservationAdded_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.OnObservationAdded*"></a>
@@ -193,6 +278,134 @@ of the IDs of each mesh and tracks the number of updates they have received.</p>
       <tr>
         <td><span class="xref">MixedRealitySpatialAwarenessEventData</span>&lt;<span class="xref">SpatialAwarenessMeshObject</span>&gt;</td>
         <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_RegisterEventHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.RegisterEventHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_RegisterEventHandlers__2" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.RegisterEventHandlers``2">RegisterEventHandlers&lt;T, U&gt;()</h4>
+  <div class="markdown level1 summary"><p>Registers for the spatial awareness system events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RegisterEventHandlers&lt;T, U&gt;()
+    where T : IMixedRealitySpatialAwarenessObservationHandler&lt;U&gt; where U : BaseSpatialAwarenessObject</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">U</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_RemoveFromData_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.RemoveFromData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_RemoveFromData_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.RemoveFromData(System.Int32)">RemoveFromData(Int32)</h4>
+  <div class="markdown level1 summary"><p>Removes the mesh id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RemoveFromData(int eventDataId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">eventDataId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_Start_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.Start*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_Start" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.Start">Start()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_UnregisterEventHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.UnregisterEventHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_UnregisterEventHandlers__2" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.UnregisterEventHandlers``2">UnregisterEventHandlers&lt;T, U&gt;()</h4>
+  <div class="markdown level1 summary"><p>Unregisters from the spatial awareness system events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void UnregisterEventHandlers&lt;T, U&gt;()
+    where T : IMixedRealitySpatialAwarenessObservationHandler&lt;U&gt; where U : BaseSpatialAwarenessObject</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">U</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_UpdateData_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.UpdateData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Examples_Demos_DemoSpatialMeshHandler_UpdateData_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Examples.Demos.DemoSpatialMeshHandler.UpdateData(System.Int32)">UpdateData(Int32)</h4>
+  <div class="markdown level1 summary"><p>Increments the update count of the mesh with the id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateData(int eventDataId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">eventDataId</span></td>
         <td></td>
       </tr>
     </tbody>
