@@ -6,7 +6,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
     /// <summary>
-    /// Example to demonstrate DwellHandler override
+    /// Example to demonstrate DwellHandler override when a custom profile is used
+    /// This example script works with the DwellProfileWithDecay custom profile.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/CustomDwellHandler")]
     public class CustomDwellHandler : DwellHandler
