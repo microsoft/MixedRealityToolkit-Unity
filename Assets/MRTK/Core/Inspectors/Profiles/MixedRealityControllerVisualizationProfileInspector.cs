@@ -222,14 +222,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var overrideModelPrefab = overrideModel.objectReferenceValue as GameObject;
 
                 var controllerUseDefaultModelOverride = controllerSetting.FindPropertyRelative("useDefaultModel");
-
-                EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(controllerUseDefaultModelOverride);
-
-                var defaultModelMaterial = controllerSetting.FindPropertyRelative("defaultModelMaterial");
-                EditorGUILayout.PropertyField(defaultModelMaterial);
-
-                EditorGUILayout.EndHorizontal();
+                if (controllerUseDefaultModelOverride.boolValue)
+                {
+                    var defaultModelMaterial = controllerSetting.FindPropertyRelative("defaultModelMaterial");
+                    EditorGUILayout.PropertyField(defaultModelMaterial);
+                }
 
                 if (controllerUseDefaultModelOverride.boolValue && overrideModelPrefab != null)
                 {
