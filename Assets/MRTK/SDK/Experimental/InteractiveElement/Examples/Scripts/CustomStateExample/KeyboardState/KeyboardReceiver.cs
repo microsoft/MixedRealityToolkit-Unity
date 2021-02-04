@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement.Example
         /// <summary>
         /// Example constructor for the Keyboard State
         /// </summary>
-        /// <param name="eventConfiguration"></param>
+        /// <param name="eventConfiguration">The event configuration for the Keyboard state</param>
         public KeyboardReceiver(BaseInteractionEventConfiguration eventConfiguration) : base(eventConfiguration) { }
 
         private KeyboardEvents KeyboardEventConfig => EventConfiguration as KeyboardEvents;
