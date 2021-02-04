@@ -159,7 +159,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 
             // Find the associated event receiver for the state if it has one
             var eventReceiverTypes = TypeCacheUtility.GetSubClasses<BaseEventReceiver>();
-            Type eventReceiver = eventReceiverTypes.Find((type) => type.Name.StartsWith(subStateName));
+
+            Type eventReceiver;
+
+            try
+            {
+                eventReceiver = eventReceiverTypes?.Find((type) => type.Name.StartsWith(subStateName));
+
+            }
+            catch
+            {
+                eventReceiver = null;
+            }
 
             if (eventReceiver != null)
             {
