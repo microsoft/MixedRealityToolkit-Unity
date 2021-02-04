@@ -192,7 +192,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     controllerList.DeleteArrayElementAtIndex(i);
                     EditorGUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
                     return;
                 }
 
