@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>How to configure Oculus Quest in MRTK using the XRSDK pipeline | Mixed Reality Toolkit Documentation </title>
+    <title>How to configure Oculus Quest in MRTK using the XR SDK pipeline | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="How to configure Oculus Quest in MRTK using the XRSDK pipeline | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="How to configure Oculus Quest in MRTK using the XR SDK pipeline | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../.././Documentation/Images/favicon.ico">
@@ -89,7 +89,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="how-to-configure-oculus-quest-in-mrtk-using-the-xrsdk-pipeline">How to configure Oculus Quest in MRTK using the XRSDK pipeline</h1>
+<h1 id="how-to-configure-oculus-quest-in-mrtk-using-the-xr-sdk-pipeline">How to configure Oculus Quest in MRTK using the XR SDK pipeline</h1>
 
 <p>A <a href="https://www.oculus.com/quest/">Oculus Quest</a> is required.</p>
 <p>MRTK's support for the Oculus Quest comes via two different sources, Unity's XR pipeline and the Oculus Integration Unity package. The <strong>Oculus XRSDK Data Provider</strong> enables the use
@@ -134,9 +134,9 @@ to &quot;Controllers and Hands&quot;.</p>
 <li>Create a new Unity scene or open a pre-existing scene like HandInteractionExamples</li>
 <li>Add MRTK to the scene by navigating to <strong>Mixed Reality Toolkit</strong> &gt; <strong>Add to Scene and Configure</strong></li>
 </ol>
-<h2 id="using-the-oculus-xrsdk-data-provider">Using the Oculus XRSDK Data Provider</h2>
+<h2 id="using-the-oculus-xr-sdk-data-provider">Using the Oculus XR SDK Data Provider</h2>
 <ol>
-<li>Configure your profile to use the <strong>Oculus XRSDK Data Provider</strong>
+<li><p>Configure your profile to use the <strong>Oculus XR SDK Data Provider</strong></p>
 <ul>
 <li><p>If not intending to modify the configuration profiles</p>
 <ul>
@@ -161,9 +161,9 @@ to &quot;Controllers and Hands&quot;.</p>
 </ul>
 <p><img src="../Images/CrossPlatform/OculusQuest/OculusAddDataXRSDKProvider.png" alt="OculusAddXRSDKDataProvider"></p>
 </li>
-<li><p>You can verify that the Oculus Controllers are detected by</p>
-</li>
 </ul>
+</li>
+<li><p>The Oculus XR SDK Data Provider includes an OVR Camera Rig Prefab which automatically configures the project with an OVR Camera Rig and OVR Hands to properly route input. Manually adding an OVR Camera Rig to the scene will require manual configuration of settings and input.</p>
 </li>
 </ol>
 <h2 id="build-and-deploy-your-project-to-oculus-quest">Build and deploy your project to Oculus Quest</h2>
