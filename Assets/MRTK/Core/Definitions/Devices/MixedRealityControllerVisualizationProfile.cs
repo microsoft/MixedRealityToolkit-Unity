@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.")]
+        [FormerlySerializedAs("defaultControllerModelMaterial")]
         private Material platformModelMaterial;
 
         /// <summary>
