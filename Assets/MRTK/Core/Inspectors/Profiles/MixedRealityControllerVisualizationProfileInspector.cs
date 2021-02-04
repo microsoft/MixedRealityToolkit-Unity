@@ -192,6 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     controllerList.DeleteArrayElementAtIndex(i);
                     EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
                     return;
                 }
 
@@ -212,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUI.BeginChangeCheck();
                 handednessValue = EditorGUILayout.IntPopup(new GUIContent(mixedRealityControllerHandedness.displayName, mixedRealityControllerHandedness.tooltip), handednessValue, HandednessSelections, null);
-
                 if (EditorGUI.EndChangeCheck())
                 {
                     mixedRealityControllerHandedness.intValue = handednessValue + 1;
@@ -223,13 +223,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 var controllerUseDefaultModelOverride = controllerSetting.FindPropertyRelative("useDefaultModel");
 
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.PropertyField(controllerUseDefaultModelOverride);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(controllerUseDefaultModelOverride);
 
-                    var defaultModelMaterial = controllerSetting.FindPropertyRelative("defaultModelMaterial");
-                    EditorGUILayout.PropertyField(defaultModelMaterial);
-                }
+                var defaultModelMaterial = controllerSetting.FindPropertyRelative("defaultModelMaterial");
+                EditorGUILayout.PropertyField(defaultModelMaterial);
+
+                EditorGUILayout.EndHorizontal();
 
                 if (controllerUseDefaultModelOverride.boolValue && overrideModelPrefab != null)
                 {
