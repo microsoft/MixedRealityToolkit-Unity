@@ -12,7 +12,7 @@ The `PlaneFinding.dll` is not included as part of the Mixed Reality Toolkit Foun
 
 Create a new Unity GameObject in your scene and attach the `SurfaceMeshesToPlanes.cs` script as a component.
 
-![Adding SurfaceMeshesToPlanes](../Images/SpatialAwareness/AddSurfaceMeshesScript.png)
+![SurfaceMeshesToPlanes](../Images/SpatialAwareness/SurfaceMeshesToPlanes.png)
 
 ## See Also
 
