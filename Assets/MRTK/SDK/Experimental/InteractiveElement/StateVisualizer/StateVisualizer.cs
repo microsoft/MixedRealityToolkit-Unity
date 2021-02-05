@@ -123,7 +123,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.StateVisualizer
 
                 stateManager.OnStateActivated.AddListener((state) =>
                 {
-                    Animator.SetTrigger("On" + state.Name);
+                    if (GetStateContainer(state.Name) != null)
+                    {
+                        Animator.SetTrigger("On" + state.Name);
+                    }
                 });
             }
             else

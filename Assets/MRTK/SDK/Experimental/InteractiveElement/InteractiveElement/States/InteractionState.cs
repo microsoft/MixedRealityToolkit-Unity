@@ -107,7 +107,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 
                 // Find matching event configuration by state name
                 var eventConfigTypes = TypeCacheUtility.GetSubClasses<BaseInteractionEventConfiguration>();
-                Type eventConfigType = eventConfigTypes.Find((type) => type.Name.StartsWith(subStateName));
+
+                Type eventConfigType;
+
+                try
+                {
+                    eventConfigType = eventConfigTypes?.Find((type) => type.Name.StartsWith(subStateName));
+
+                }
+                catch
+                {
+                    eventConfigType = null;
+                }
 
                 if (eventConfigType != null)
                 {
