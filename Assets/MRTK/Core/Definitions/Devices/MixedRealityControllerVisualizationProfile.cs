@@ -48,11 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.
         /// </summary>
-        public bool UseDefaultModels
+        public bool UsePlatformModels
         {
             get => usePlatformModels;
             private set => usePlatformModels = value;
         }
+
+        /// <summary>
+        /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.
+        /// </summary>
+        [Obsolete("Use UsePlatformModels instead.")]
+        public bool UseDefaultModels => usePlatformModels;
 
         [SerializeField]
         [Tooltip("The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.")]
@@ -66,6 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => platformModelMaterial;
             private set => platformModelMaterial = value;
         }
+
+        /// <summary>
+        /// The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.
+        /// </summary>
+        [Obsolete("Use PlatformModelMaterial instead.")]
+        public Material DefaultControllerModelMaterial => platformModelMaterial;
 
         [SerializeField]
         [Tooltip("Override Left Controller Model.")]
