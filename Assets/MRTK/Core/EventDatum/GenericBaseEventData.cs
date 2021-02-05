@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// the event instead of fields on BaseEventData.
         /// </summary>
         /// <remarks>
-        /// BaseEventData is only used because it's part of Unity's EventSystem dispatching,
-        /// so this code must subclass it in order to leverage EventSystem.ExecuteEvents
+        /// <para>BaseEventData is only used because it's part of Unity's EventSystem dispatching,
+        /// so this code must subclass it in order to leverage EventSystem.ExecuteEvents</para>
         /// </remarks>
         public new GameObject selectedObject { get; protected set; }
 

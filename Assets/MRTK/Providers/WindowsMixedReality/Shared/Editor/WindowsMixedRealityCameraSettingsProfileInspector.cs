@@ -17,12 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
         private SerializedProperty renderFromPVCameraForMixedRealityCapture;
         private SerializedProperty reprojectionMethod;
+        private SerializedProperty readingModeEnabled;
 
         private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
         private readonly GUIContent reprojectionMethodTitle = new GUIContent("HoloLens 2 Reprojection Method");
 
         private const string MRCDocURL = "https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
         private const string DepthReprojectionDocURL = "https://docs.microsoft.com/windows/mixed-reality/hologram-stability#reprojection";
+        private const string ReadingModeDocURL = "https://docs.microsoft.com/en-us/hololens/hololens2-display#what-improvements-are-coming-that-will-improve-hololens-2-image-quality";
 
         protected override void OnEnable()
         {
@@ -30,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
             renderFromPVCameraForMixedRealityCapture = serializedObject.FindProperty("renderFromPVCameraForMixedRealityCapture");
             reprojectionMethod = serializedObject.FindProperty("reprojectionMethod");
+            readingModeEnabled = serializedObject.FindProperty("readingModeEnabled");
         }
 
         public override void OnInspectorGUI()
@@ -57,6 +60,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                     InspectorUIUtility.RenderDocumentationButton(DepthReprojectionDocURL);
                 }
                 EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
+
+                EditorGUILayout.Space();
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Reading Mode Settings", EditorStyles.boldLabel);
+                    InspectorUIUtility.RenderDocumentationButton(ReadingModeDocURL);
+                }
+                EditorGUILayout.PropertyField(readingModeEnabled);
 
                 serializedObject.ApplyModifiedProperties();
             }

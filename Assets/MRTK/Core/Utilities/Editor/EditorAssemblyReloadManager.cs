@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Locks the Editor's ability to reload assemblies.<para/>
         /// </summary>
         /// <remarks>
-        /// This is useful for ensuring async tasks complete in the editor without having to worry if any script
-        /// changes that happen during the running task will cancel it when the editor re-compiles the assemblies.
+        /// <para>This is useful for ensuring async tasks complete in the editor without having to worry if any script
+        /// changes that happen during the running task will cancel it when the editor re-compiles the assemblies.</para>
         /// </remarks>
         public static bool LockReloadAssemblies
         {

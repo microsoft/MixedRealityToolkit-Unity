@@ -70,8 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Pressing a key or mouse button will define the binding and then immediately close the popup.
     /// </summary>
     /// <remarks>
-    /// The shift keys don't raise input events on their own, so this popup does not work for shift keys.
-    /// These have to be bound by selecting from the traditional dropdown list.
+    /// <para>The shift keys don't raise input events on their own, so this popup does not work for shift keys.
+    /// These have to be bound by selecting from the traditional dropdown list.</para>
     /// </remarks>
     public class KeyBindingPopupWindow : EditorWindow
     {
