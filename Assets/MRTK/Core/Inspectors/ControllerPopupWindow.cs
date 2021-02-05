@@ -254,6 +254,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
         }
 
+        public static void RepaintWindow()
+        {
+            if (window != null && window.thisWindow != null)
+            {
+                window.thisWindow.Repaint();
+            }
+        }
+
         private void Update()
         {
             if (editInputActionPositions)

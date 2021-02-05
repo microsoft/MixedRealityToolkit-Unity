@@ -357,6 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             controllerMapping.SetDefaultInteractionMapping(true);
             serializedObject.ApplyModifiedProperties();
+            ControllerPopupWindow.RepaintWindow();
         }
 
         private void AddController(SerializedProperty controllerList, Type controllerType)
