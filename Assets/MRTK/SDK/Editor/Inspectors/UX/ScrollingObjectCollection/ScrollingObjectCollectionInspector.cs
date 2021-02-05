@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty animationCurve;
         private SerializedProperty animationLength;
 
+        private SerializedProperty disableClippedGameobjects;
+        private SerializedProperty disableClippedRenderers;
+
         private SerializedProperty clickEvent;
         private SerializedProperty touchStartedEvent;
         private SerializedProperty touchEndedEvent;
@@ -73,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected const string ShowAdvancedPrefKey = "ScrollViewInspectorShowAdvanced";
         protected const string ShowEventsPrefKey = "ScrollViewInspectorShowEvents";
+        protected const string ShowPerformanceOptionsPrefKey = "ScrollViewInspectorShowPerformanceOptions";
         protected const string ShowDebugOptionsPrefKey = "ScrollViewInspectorShowDebugOptions";
 
         private bool ShowDebugPagination;
@@ -104,6 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bounceMultiplier = serializedObject.FindProperty("bounceMultiplier");
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
+
+            disableClippedGameobjects = serializedObject.FindProperty("disableClippedGameobjects");
+            disableClippedRenderers = serializedObject.FindProperty("disableClippedRenderers");
 
             clickEvent = serializedObject.FindProperty("OnClick");
             touchStartedEvent = serializedObject.FindProperty("OnTouchStarted");
@@ -258,6 +265,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     DrawVelocitySection();
                     EditorGUILayout.Space();
 
+                    DrawPeformanceSection();
+                    EditorGUILayout.Space();
+
                     DrawDebugSection();
                     EditorGUILayout.Space();
                 }
@@ -336,6 +346,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.PropertyField(velocityMultiplier);
                 EditorGUILayout.PropertyField(velocityDampen);
                 EditorGUILayout.PropertyField(bounceMultiplier);
+            }
+        }
+
+        private void DrawPeformanceSection()
+        {
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Performance Options", ShowPerformanceOptionsPrefKey, MixedRealityStylesUtility.BoldFoldoutStyle))
+            {
+                EditorGUILayout.PropertyField(disableClippedGameobjects);
+                EditorGUILayout.PropertyField(disableClippedRenderers);
             }
         }
 

@@ -846,6 +846,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region performance variables
+        [SerializeField]
         [Tooltip("Disables Gameobjects with Renderer components which are clipped by the clipping box.")]
         private bool disableClippedGameobjects = true;
 
@@ -858,10 +859,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { disableClippedGameobjects = value; }
         }
 
+        [SerializeField]
         [Tooltip("Disables the Renderer components of Gameobjects which are clipped by the clipping box.")]
         private bool disableClippedRenderers = false;
-
-        #endregion performance variables
 
         /// <summary>
         /// Disables the Renderer components of Gameobjects which are clipped by the clipping box.
@@ -871,6 +871,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return disableClippedRenderers; }
             set { disableClippedRenderers = value; }
         }
+
+        #endregion performance variables
 
         #region Setup methods
 
