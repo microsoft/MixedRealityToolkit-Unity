@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.")]
+        [FormerlySerializedAs("useDefaultModels")]
         private bool usePlatformModels = false;
 
         /// <summary>
@@ -62,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.")]
+        [FormerlySerializedAs("defaultControllerModelMaterial")]
         private Material platformModelMaterial;
 
         /// <summary>
