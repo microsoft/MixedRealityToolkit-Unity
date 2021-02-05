@@ -48,6 +48,22 @@ reprojectionUpdater.ReprojectionMethod = HolographicDepthReprojectionMethod.Auto
 
 This only needs to be updated once and the value is reused for all subsequent frames. If the method will be updated frequently, it's recommended to cache the result of `EnsureComponent` instead of calling it often.
 
+### Reading mode
+
+[Reading mode](https://docs.microsoft.com/hololens/hololens2-display#what-improvements-are-coming-that-will-improve-hololens-2-image-quality) reduces the system's field of view but eliminates a scaling of Unity's output. A pixel rendered by Unity will correspond to a projected pixel on HoloLens 2. Application authors should do tests with multiple individuals to be sure this is a tradeoff they want in their app.
+
+![Windows Mixed Reality reading mode](../Images/CameraSystem/WMRReadingMode.gif)
+
+To toggle reading mode at runtime, access like so:
+
+```c#
+var projectionOverrideProvider = CoreServices.GetCameraSystemDataProvider<IMixedRealityCameraProjectionOverrideProvider>();
+if (projectionOverrideProvider != null)
+{
+    projectionOverrideProvider.IsProjectionOverrideEnabled = true;
+}
+```
+
 ## See also
 
 - [Camera System Overview](CameraSystemOverview.md)

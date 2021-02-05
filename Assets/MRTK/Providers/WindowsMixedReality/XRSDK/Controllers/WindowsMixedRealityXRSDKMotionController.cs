@@ -21,16 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityXRSDKMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
-        }
+        public WindowsMixedRealityXRSDKMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
+        { }
 
-        private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public WindowsMixedRealityXRSDKMotionController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
 
         private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityXRSDKMotionController.UpdateButtonData");
 

@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <param name="uri">the path to the file to load</param>
         /// <returns>New <see cref="Schema.GltfObject"/> imported from uri.</returns>
         /// <remarks>
-        /// Must be called from the main thread.
-        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.
+        /// <para>Must be called from the main thread.
+        /// If the <see href="https://docs.unity3d.com/ScriptReference/Application-isPlaying.html">Application.isPlaying</see> is false, then this method will run synchronously.</para>
         /// </remarks>
         public static async Task<GltfObject> ImportGltfObjectFromPathAsync(string uri)
         {

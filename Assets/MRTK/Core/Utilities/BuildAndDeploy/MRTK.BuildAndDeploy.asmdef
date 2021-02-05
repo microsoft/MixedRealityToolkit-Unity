@@ -2,7 +2,8 @@
     "name": "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Gltf"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

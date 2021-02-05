@@ -302,8 +302,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Remove all keyframes from all animation curves with time values before the given cutoff time.
         /// </summary>
         /// <remarks>
-        /// If keyframes exists before the cutoff time then one preceding keyframe will be retained,
-        /// so that interpolation at the cutoff time yields the same result.
+        /// <para>If keyframes exists before the cutoff time then one preceding keyframe will be retained,
+        /// so that interpolation at the cutoff time yields the same result.</para>
         /// </remarks>
         [Obsolete("Cutoff is achieved in InputRecordingBuffer")]
         public void CutoffBeforeTime(float time)

@@ -15,3 +15,4 @@ MonoBehaviour:
   isCustomProfile: 0
   renderFromPVCameraForMixedRealityCapture: 0
   reprojectionMethod: 0
+  readingModeEnabled: 0

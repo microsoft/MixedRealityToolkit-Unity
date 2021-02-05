@@ -32,19 +32,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            controllerDefinition = new WindowsMixedRealityControllerDefinition(inputSource, controllerHandedness);
-        }
+        public WindowsMixedRealityController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : this(trackingState, controllerHandedness, new WindowsMixedRealityControllerDefinition(controllerHandedness), inputSource, interactions)
+        { }
 
-        private readonly WindowsMixedRealityControllerDefinition controllerDefinition;
-
-        /// <summary>
-        /// The Windows Mixed Reality Controller default interactions.
-        /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => controllerDefinition?.DefaultInteractions;
+        public WindowsMixedRealityController(
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSourceDefinition definition,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null)
+            : base(trackingState, controllerHandedness, inputSource, interactions, definition)
+        { }
 
 #if UNITY_WSA
         private bool controllerModelInitialized = false;
