@@ -119,6 +119,14 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Gets first matching <see cref="Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider"/> or extension thereof for CoreServices.CameraSystem
+        /// </summary>
+        public static T GetCameraSystemDataProvider<T>() where T : IMixedRealityCameraSettingsProvider
+        {
+            return GetDataProvider<T>(CameraSystem);
+        }
+
+        /// <summary>
         /// Gets first matching data provider of provided type T registered to the provided mixed reality service.
         /// </summary>
         /// <typeparam name="T">Type of data provider to return. Must implement and/or extend from <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider" /></typeparam>

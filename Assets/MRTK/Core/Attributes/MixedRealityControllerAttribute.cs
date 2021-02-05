@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Attach to a controller device class to make it show up in the controller mapping profile.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class MixedRealityControllerAttribute : Attribute
     {
         /// <summary>

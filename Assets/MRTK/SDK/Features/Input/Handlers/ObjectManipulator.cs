@@ -126,9 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Whether physics forces are used to move the object when performing near manipulations.
         /// </summary>
         /// <remarks>
-        /// Setting this to <c>false</c> will make the object feel more directly connected to the
+        /// <para>Setting this to <c>false</c> will make the object feel more directly connected to the
         /// users hand. Setting this to <c>true</c> will honor the mass and inertia of the object,
-        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.
+        /// but may feel as though the object is connected through a spring. The default is <c>false</c>.</para>
         /// </remarks>
         public bool UseForcesForNearManipulation
         {
@@ -418,6 +418,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (constraintsManager == null && EnableConstraints)
             {
                 constraintsManager = gameObject.EnsureComponent<ConstraintManager>();
+            }
+
+            // Get child objects with NearInteractionGrabbable attached
+            var children = GetComponentsInChildren<NearInteractionGrabbable>();
+
+            if (children.Length == 0)
+            {
+                Debug.Log($"Near interactions are not enabled for {gameObject.name}. To enable near interactions, add a " +
+                    $"{nameof(NearInteractionGrabbable)} component to {gameObject.name} or to a child object of {gameObject.name} that contains a collider.");
             }
         }
 
