@@ -335,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 // create the menu and add items to it
                                 GenericMenu menu = new GenericMenu();
 
-                                //Caching the index of this controller mapping for the anonymous fucntion
+                                // Caching the index of this controller mapping for the anonymous function
                                 int index = i;
                                 menu.AddItem(new GUIContent("Reset to default input actions"), false, () => ResetInputActions(ref thisProfile.MixedRealityControllerMappings[index]));
                                 menu.ShowAsContext();
