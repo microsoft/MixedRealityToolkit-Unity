@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -60,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used.")]
         [FormerlySerializedAs("useDefaultModel")]
-        private bool usePlatformModels = false;
+        private bool usePlatformModels;
 
         /// <summary>
         /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used.
