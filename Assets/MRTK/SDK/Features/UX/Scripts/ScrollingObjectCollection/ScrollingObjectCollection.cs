@@ -845,6 +845,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ToCellIndex // To selected cell
         }
 
+        #region performance variables
+        [Tooltip("Disables Gameobjects with Renderer components which are clipped by the clipping box.")]
+        private bool disableClippedGameobjects = true;
+
+        /// <summary>
+        /// Disables Gameobjects with Renderer components which are clipped by the clipping box.
+        /// </summary>
+        public bool DisableClippedGameobjects
+        {
+            get { return disableClippedGameobjects; }
+            set { disableClippedGameobjects = value; }
+        }
+
+        [Tooltip("Disables the Renderer components of Gameobjects which are clipped by the clipping box.")]
+        private bool disableClippedRenderers = false;
+
+        #endregion performance variables
+
+        /// <summary>
+        /// Disables the Renderer components of Gameobjects which are clipped by the clipping box.
+        /// </summary>
+        public bool DisableClippedRenderers
+        {
+            get { return disableClippedRenderers; }
+            set { disableClippedRenderers = value; }
+        }
+
         #region Setup methods
 
         /// <summary>
@@ -1651,9 +1678,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    if (!clippedRenderer.enabled)
+                    if(disableClippedGameobjects)
                     {
-                        clippedRenderer.enabled = true;
+                        if (!clippedRenderer.gameObject.activeSelf)
+                        {
+                            clippedRenderer.gameObject.SetActive(true);
+                        }
+                    }
+                    if(disableClippedRenderers)
+                    {
+                        if (!clippedRenderer.enabled)
+                        {
+                            clippedRenderer.enabled = true;
+                        }
                     }
 
                     renderersToUnclip.Add(clippedRenderer);
@@ -1674,18 +1711,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
                     || clippingThresholdBounds.Intersects(renderer.bounds)) 
                 {
-                    if (!renderer.enabled)
+                    if (disableClippedGameobjects)
                     {
-                        renderer.enabled = true;
+                        if (!renderer.gameObject.activeSelf)
+                        {
+                            renderer.gameObject.SetActive(true);
+                        }
+                    }
+                    if (disableClippedRenderers)
+                    {
+                        if (!renderer.enabled)
+                        {
+                            renderer.enabled = true;
+                        }
                     }
                 }
 
                 // Hidden renderer game objects should be inactive
                 else
                 {
-                    if (renderer.enabled)
+                    if (disableClippedGameobjects)
                     {
-                        renderer.enabled = false;
+                        if (renderer.gameObject.activeSelf)
+                        {
+                            renderer.gameObject.SetActive(false);
+                        }
+                    }
+                    if (disableClippedRenderers)
+                    {
+                        if (renderer.enabled)
+                        {
+                            renderer.enabled = false;
+                        }
                     }
                 }
             }
