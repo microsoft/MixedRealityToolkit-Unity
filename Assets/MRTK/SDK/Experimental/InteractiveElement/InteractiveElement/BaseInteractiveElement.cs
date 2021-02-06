@@ -2,10 +2,8 @@
 // Licensed under the MIT License
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -256,7 +254,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
 
         public T GetStateEvents<T>(string stateName) where T : BaseInteractionEventConfiguration
         {
-            return EventReceiverManager.GetEventConfiguration(stateName) as T;
+            InteractionState state = GetState(stateName);
+
+            if (state == null)
+            {
+                Debug.LogError($"The {stateName} state could not be found, check the spelling of the state name or add it using AddNewState()");
+                return null;
+            }
+
+            var stateEvents = GetState(stateName).EventConfiguration;
+
+            if (stateEvents == null)
+            {
+                Debug.LogError($"The event configuration for the {stateName} state is null");
+                return null;
+            }
+
+            // Log an error if the type defined does not match the type expected type of the event configuration
+            if (!(stateEvents is T))
+            {
+                Debug.LogError($"The {stateName} state's event configuration's type is not {typeof(T).Name}, the type should be ");
+                return null;
+            }
+
+            return stateEvents as T;
         }
 
         #endregion
