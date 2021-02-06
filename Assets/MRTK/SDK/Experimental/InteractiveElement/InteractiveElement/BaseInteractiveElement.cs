@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
             // Log an error if the type defined does not match the type expected type of the event configuration
             if (!(stateEvents is T))
             {
-                Debug.LogError($"The {stateName} state's event configuration's type is not {typeof(T).Name}, the type should be ");
+                Debug.LogError($"The {stateName} state's event configuration's type is not {typeof(T).Name}, re-check the type of the {stateName} state's event configuration.");
                 return null;
             }
 
