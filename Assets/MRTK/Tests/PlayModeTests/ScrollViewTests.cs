@@ -1211,7 +1211,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                                                                          Quaternion.identity,
                                                                          ScrollingObjectCollection.ScrollDirectionType.UpAndDown,
                                                                          ScrollingObjectCollection.VelocityType.FalloffPerFrame);
-            scrollView.DisableClippedGameobjects = false;
+            scrollView.DisableClippedGameObjects = false;
             scrollView.DisableClippedRenderers = true;
 
             scrollView.AddContent(objectCollection.gameObject);

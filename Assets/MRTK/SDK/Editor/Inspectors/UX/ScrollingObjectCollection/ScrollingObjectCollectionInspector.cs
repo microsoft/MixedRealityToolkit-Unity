@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty animationCurve;
         private SerializedProperty animationLength;
 
-        private SerializedProperty disableClippedGameobjects;
+        private SerializedProperty disableClippedGameObjects;
         private SerializedProperty disableClippedRenderers;
 
         private SerializedProperty clickEvent;
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
 
-            disableClippedGameobjects = serializedObject.FindProperty("disableClippedGameobjects");
+            disableClippedGameObjects = serializedObject.FindProperty("disableClippedGameObjects");
             disableClippedRenderers = serializedObject.FindProperty("disableClippedRenderers");
 
             clickEvent = serializedObject.FindProperty("OnClick");
@@ -353,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (InspectorUIUtility.DrawSectionFoldoutWithKey("Performance Options", ShowPerformanceOptionsPrefKey, MixedRealityStylesUtility.BoldFoldoutStyle))
             {
-                EditorGUILayout.PropertyField(disableClippedGameobjects);
+                EditorGUILayout.PropertyField(disableClippedGameObjects);
                 EditorGUILayout.PropertyField(disableClippedRenderers);
             }
         }

@@ -848,15 +848,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region performance variables
         [SerializeField]
         [Tooltip("Disables Gameobjects with Renderer components which are clipped by the clipping box.")]
-        private bool disableClippedGameobjects = true;
+        private bool disableClippedGameObjects = true;
 
         /// <summary>
-        /// Disables Gameobjects with Renderer components which are clipped by the clipping box.
+        /// Disables GameObjects with Renderer components which are clipped by the clipping box.
+        /// Improves performance significantly by reducing the number of GameObjects that need to be managed in engine.
         /// </summary>
-        public bool DisableClippedGameobjects
+        public bool DisableClippedGameObjects
         {
-            get { return disableClippedGameobjects; }
-            set { disableClippedGameobjects = value; }
+            get { return disableClippedGameObjects; }
+            set { disableClippedGameObjects = value; }
         }
 
         [SerializeField]
@@ -865,6 +866,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Disables the Renderer components of Gameobjects which are clipped by the clipping box.
+        /// Improves performance by reducing the number of renderers that need to be tracked, while still allowing the
+        /// GameObjects associated with those renders to continue updating. Less performant compared to using DisableClippedGameObjects
         /// </summary>
         public bool DisableClippedRenderers
         {
@@ -1680,7 +1683,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    if (disableClippedGameobjects)
+                    if (disableClippedGameObjects)
                     {
                         if (!clippedRenderer.gameObject.activeSelf)
                         {
@@ -1713,7 +1716,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     || clippingThresholdBounds.ContainsBounds(renderer.bounds) 
                     || clippingThresholdBounds.Intersects(renderer.bounds)) 
                 {
-                    if (disableClippedGameobjects)
+                    if (disableClippedGameObjects)
                     {
                         if (!renderer.gameObject.activeSelf)
                         {
@@ -1732,7 +1735,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Hidden renderer game objects should be inactive
                 else
                 {
-                    if (disableClippedGameobjects)
+                    if (disableClippedGameObjects)
                     {
                         if (renderer.gameObject.activeSelf)
                         {
