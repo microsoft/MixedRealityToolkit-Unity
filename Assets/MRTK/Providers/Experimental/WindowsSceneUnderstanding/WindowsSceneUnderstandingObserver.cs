@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             }
 
             AutoUpdate = profile.AutoUpdate;
-            UpdateOnceOnLoad = profile.UpdateOnceOnLoad;
+            UpdateOnceInitialized = profile.UpdateOnceInitialized;
             DefaultMaterial = profile.DefaultMaterial;
             DefaultWorldMeshMaterial = profile.DefaultWorldMeshMaterial;
             SurfaceTypes = profile.SurfaceTypes;
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             CreateGameObjects = profile.CreateGameObjects;
             UsePersistentObjects = profile.UsePersistentObjects;
             UpdateInterval = profile.UpdateInterval;
-            FirstUpdateDelay = profile.FirstUpdateDelay;
+            FirstAutoUpdateDelay = profile.FirstAutoUpdateDelay;
             ShouldLoadFromFile = profile.ShouldLoadFromFile;
             SerializedScene = profile.SerializedScene;
             WorldMeshLevelOfDetail = profile.WorldMeshLevelOfDetail;
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 Debug.LogError("Something went wrong getting scene observer access!");
             }
 
-            if (UpdateOnceOnLoad)
+            if (UpdateOnceInitialized)
             {
                 observerState = ObserverState.GetScene;
             }
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region IMixedRealityOnDemandObserver
 
         /// <inheritdoc/>
-        public float FirstUpdateDelay { get; set; }
+        public float FirstAutoUpdateDelay { get; set; }
 
         /// <inheritdoc/>
         public void UpdateOnDemand()
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         }
 
         /// <inheritdoc />
-        public bool UpdateOnceOnLoad { get; set; }
+        public bool UpdateOnceInitialized { get; set; }
 
 #endregion IMixedRealityOnDemandObserver
 
@@ -541,19 +541,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
                 }
             };
 
-            firstUpdateTimer = new System.Timers.Timer()
+            // If AutoUpdate we set up the timer to wait until we pass FirstAutoUpdateDelay before starting the first automatic update
+            if (AutoUpdate)
             {
-                Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
-                AutoReset = false
-            };
+                firstUpdateTimer = new System.Timers.Timer()
+                {
+                    Interval = Math.Max(FirstAutoUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
+                    AutoReset = false
+                };
 
-            // After an initial delay, start a load once or the auto update
-            firstUpdateTimer.Elapsed += (sender, e) =>
+                // After an initial delay, start a load once or the auto update
+                firstUpdateTimer.Elapsed += (sender, e) =>
+                {
+                    updateTimer.Start();
+                    observerState = ObserverState.GetScene;
+                };
+                firstUpdateTimer.Start();
+            }
+            // If AutoUpdate is false then can we start the update timer right away.
+            // Note we still want to start this timer in case the user set AutoUpdate to true later
+            else
             {
                 updateTimer.Start();
-            };
+            }
 
-            firstUpdateTimer.Start();
+            
         }
 
         /// <summary>

@@ -51,18 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
             }
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            if (PulseOnSelect)
-            {
-                // Add a PointerHandler to the parent object of the spatial mesh to listen for clicks on the mesh
-                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.AddComponent<PointerHandler>();
-                CoreServices.SpatialAwarenessSystem.SpatialAwarenessObjectParent.GetComponent<PointerHandler>().OnPointerClicked.AddListener(this.OnPointerClicked);
-            }
-        }
-
         protected override void Update()
         {
             if (OriginFollowCamera)
@@ -85,8 +73,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.PulseShader
 
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            Vector3 pulseAnimationOrigin = eventData.Pointer.Result.Details.Point;
-            TriggerAnimationOnSpatialMesh(pulseAnimationOrigin);
+            if (PulseOnSelect)
+            {
+                Vector3 pulseAnimationOrigin = eventData.Pointer.Result.Details.Point;
+                TriggerAnimationOnSpatialMesh(pulseAnimationOrigin);
+            }
         }
 
         #endregion
