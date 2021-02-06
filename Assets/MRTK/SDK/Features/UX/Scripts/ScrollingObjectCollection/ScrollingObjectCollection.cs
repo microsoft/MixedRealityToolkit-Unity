@@ -1680,7 +1680,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (clippedRenderer != null && !clippedRenderer.transform.IsChildOf(ScrollContainer.transform))
                 {
-                    if(disableClippedGameobjects)
+                    if (disableClippedGameobjects)
                     {
                         if (!clippedRenderer.gameObject.activeSelf)
                         {
