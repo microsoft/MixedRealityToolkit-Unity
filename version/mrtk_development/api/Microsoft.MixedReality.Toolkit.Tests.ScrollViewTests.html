@@ -246,13 +246,40 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_ScrollViewTests_ClipOnlyVisibleContent_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ScrollViewTests.ClipOnlyVisibleContent*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_ScrollViewTests_ClipOnlyVisibleContent" data-uid="Microsoft.MixedReality.Toolkit.Tests.ScrollViewTests.ClipOnlyVisibleContent">ClipOnlyVisibleContent()</h4>
-  <div class="markdown level1 summary"><p>Tests correct clipping logic for visible, partially visible and hidden content.
-Ensures best performance of the clipping primitive component by disabling renderers that are hidden.</p>
+  <div class="markdown level1 summary"><p>Tests correct clipping logic for visible, partially visible and hidden content with default performance settings (DisableClippedGameobject set to true).
+Ensures best performance of the clipping primitive component by disabling gameobjects that are hidden.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator ClipOnlyVisibleContent()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_ScrollViewTests_ClipOnlyVisibleRenderers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.ScrollViewTests.ClipOnlyVisibleRenderers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_ScrollViewTests_ClipOnlyVisibleRenderers" data-uid="Microsoft.MixedReality.Toolkit.Tests.ScrollViewTests.ClipOnlyVisibleRenderers">ClipOnlyVisibleRenderers()</h4>
+  <div class="markdown level1 summary"><p>Tests correct clipping logic for visible, partially visible and hidden content with DisableClippedRenderer set to true.
+Ensures best performance of the clipping primitive component by disabling renderers that are hidden, while not affecting the logic of other scripts attached to those objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator ClipOnlyVisibleRenderers()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

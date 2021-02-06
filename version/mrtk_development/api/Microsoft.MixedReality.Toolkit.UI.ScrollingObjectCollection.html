@@ -512,6 +512,61 @@ that is used for clipping items in and out of the list.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_DisableClippedGameObjects_" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.DisableClippedGameObjects*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_DisableClippedGameObjects" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.DisableClippedGameObjects">DisableClippedGameObjects</h4>
+  <div class="markdown level1 summary"><p>Disables GameObjects with Renderer components which are clipped by the clipping box.
+Improves performance significantly by reducing the number of GameObjects that need to be managed in engine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool DisableClippedGameObjects { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_DisableClippedRenderers_" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.DisableClippedRenderers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_DisableClippedRenderers" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.DisableClippedRenderers">DisableClippedRenderers</h4>
+  <div class="markdown level1 summary"><p>Disables the Renderer components of Gameobjects which are clipped by the clipping box.
+Improves performance by reducing the number of renderers that need to be tracked, while still allowing the
+GameObjects associated with those renders to continue updating. Less performant compared to using DisableClippedGameObjects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool DisableClippedRenderers { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_FirstHiddenCellIndex_" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.FirstHiddenCellIndex*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_ScrollingObjectCollection_FirstHiddenCellIndex" data-uid="Microsoft.MixedReality.Toolkit.UI.ScrollingObjectCollection.FirstHiddenCellIndex">FirstHiddenCellIndex</h4>
   <div class="markdown level1 summary"><p>Index of the first hidden cell.</p>
