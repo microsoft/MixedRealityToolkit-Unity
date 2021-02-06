@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This class demonstrates clearing spatial observations.
+    /// This class selectively displays the instructions for plane finding in the spatial awareness demo.
     /// </summary>
     public class ShowPlaneFindingInstructions : MonoBehaviour
     {

@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     }
 
     /// <summary>
-    /// SurfaceMeshesToPlanes will find and create planes based on the meshes returned by the SpatialMappingManager's Observer.
+    /// SurfaceMeshesToPlanes will find and create planes based on the meshes by a spatial awareness mesh observer.
     /// </summary>
     public class SurfaceMeshesToPlanes : MonoBehaviour
     {
@@ -401,11 +401,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         private SpatialAwarenessSurfaceTypes GetPlaneType(BoundedPlane plane, GameObject gameObject)
         {
             SpatialAwarenessSurfaceTypes PlaneType;
-            var SurfaceNormal = plane.Plane.normal;
+            var surfaceNormal = plane.Plane.normal;
 
             // Determine what type of plane this is.
             // Use the upNormalThreshold to help determine if we have a horizontal or vertical surface.
-            if (SurfaceNormal.y >= UpNormalThreshold)
+            if (surfaceNormal.y >= UpNormalThreshold)
             {
                 // If we have a horizontal surface with a normal pointing up, classify it as a floor.
                 PlaneType = SpatialAwarenessSurfaceTypes.Floor;
@@ -416,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
                 }
             }
-            else if (SurfaceNormal.y <= -(UpNormalThreshold))
+            else if (surfaceNormal.y <= -(UpNormalThreshold))
             {
                 // If we have a horizontal surface with a normal pointing down, classify it as a ceiling.
                 PlaneType = SpatialAwarenessSurfaceTypes.Ceiling;
@@ -427,7 +427,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
                 }
             }
-            else if (Mathf.Abs(SurfaceNormal.y) <= (1 - UpNormalThreshold))
+            else if (Mathf.Abs(surfaceNormal.y) <= (1 - UpNormalThreshold))
             {
                 // If the plane is vertical, then classify it as a wall.
                 PlaneType = SpatialAwarenessSurfaceTypes.Wall;
