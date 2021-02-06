@@ -1687,7 +1687,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             clippedRenderer.gameObject.SetActive(true);
                         }
                     }
-                    if(disableClippedRenderers)
+                    if (disableClippedRenderers)
                     {
                         if (!clippedRenderer.enabled)
                         {
