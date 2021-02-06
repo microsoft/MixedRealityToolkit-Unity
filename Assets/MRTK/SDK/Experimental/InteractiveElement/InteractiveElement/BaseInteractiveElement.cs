@@ -252,6 +252,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
             }
         }
 
+        /// <summary>
+        /// Get the events associated with a state given the type and the state name.
+        /// 
+        /// If the state to retrieve is a CoreInteractionState:
+        /// The type name of a state's event configuration is the state name + "Events".  For example, Touch state's event configuration is 
+        /// named TouchEvents.  The Focus state's event configuration is named FocusEvents.
+        /// 
+        /// If the state is not a CoreInteractionState:
+        /// The type is most likely StateEvents.  The StateEvents type is the default type of a new state that 
+        /// is not a core state.
+        /// </summary>
+        /// <typeparam name="T">The type of the event configuration for the state</typeparam>
+        /// <param name="stateName">The name of the state</param>
+        /// <returns>The event configuration of a state</returns>
         public T GetStateEvents<T>(string stateName) where T : BaseInteractionEventConfiguration
         {
             InteractionState state = GetState(stateName);
