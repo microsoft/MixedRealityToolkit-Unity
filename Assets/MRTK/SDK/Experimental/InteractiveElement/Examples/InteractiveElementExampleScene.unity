@@ -1264,12 +1264,13 @@ PrefabInstance:
         entry point to the MRTK input system. The State Visualizer is an animation
         component that depends on Interactive Element.  \n\nVisual feedback on the
         active states of an object can be observed in the inspector.  Active states
-        will light up with a light blue."
+        will light up with a light blue.\n\nThe Interactive Element + State Visualizer
+        components are only supported by Unity 2019.3 and above."
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 11
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1279,17 +1280,17 @@ PrefabInstance:
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 60
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 65
+      value: 81
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 394
+      value: 495
       objectReference: {fileID: 0}
     - target: {fileID: 2113875699234556495, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -1299,12 +1300,12 @@ PrefabInstance:
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5257052
+      value: 0.61171055
       objectReference: {fileID: 0}
     - target: {fileID: 2652140712778390387, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.205
+      value: -0.251
       objectReference: {fileID: 0}
     - target: {fileID: 3378234012929652230, guid: 18470d71939382448be2ecd06efa9662,
         type: 3}
@@ -2249,7 +2250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 269c32eca970e224fb89739ee0435ebc, type: 2}
+  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
 --- !u!4 &1749137389
 Transform:
   m_ObjectHideFlags: 0
