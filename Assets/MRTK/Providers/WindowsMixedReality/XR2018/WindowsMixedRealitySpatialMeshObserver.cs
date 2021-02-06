@@ -176,6 +176,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                     UnityEditor.PlayerSettings.WSACapability.SpatialPerception,
                     this.GetType());
 #endif
+            // If we aren't using a HoloLens or there isn't an XR device present, return.
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
+
+            if (RuntimeSpatialMeshPrefab != null)
+            {
+                AddRuntimeSpatialMeshPrefabToHierarchy();
+            }
         }
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.Update");
@@ -713,6 +720,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 }
             }
         }
+
 #endif // UNITY_WSA
 
         #endregion Helpers

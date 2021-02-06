@@ -145,6 +145,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
+#if WINDOWS_UWP
+        /// <summary>
+        /// Access the underlying native current holographic frame.
+        /// </summary>
+        /// <remarks>
+        /// <para>Changing the state of the native objects received via this API may cause unpredictable
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.</para>
+        /// </remarks>
+        internal static global::Windows.Graphics.Holographic.HolographicFrame CurrentWindowsHolographicFrame
+        {
+            get
+            {
+                if (UtilitiesProvider == null || UtilitiesProvider.IHolographicFramePtr == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                return Marshal.GetObjectForIUnknown(UtilitiesProvider.IHolographicFramePtr) as global::Windows.Graphics.Holographic.HolographicFrame;
+            }
+        }
+#endif // WINDOWS_UWP
+
         [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {

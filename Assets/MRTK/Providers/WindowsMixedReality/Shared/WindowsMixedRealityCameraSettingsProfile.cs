@@ -35,5 +35,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         /// <remarks>AutoPlanar requires the DotNetWinRT adapter. DepthReprojection is the default if the adapter isn't present.</remarks>
         public HolographicDepthReprojectionMethod ReprojectionMethod => reprojectionMethod;
+
+        [SerializeField]
+        [Tooltip("Override the camera's projection matrices for a smaller field of view, but rendered content will have more detail.")]
+        private bool readingModeEnabled = false;
+
+        /// <summary>
+        /// Override the camera's projection matrices for a smaller field of view,
+        /// but rendered content will have more detail. See <see href="https://docs.microsoft.com/en-us/hololens/hololens2-display">Reading Mode</see> documentation.
+        /// While this will work on all Windows Mixed Reality platforms, this
+        /// is primarily useful on HoloLens 2 hardware.
+        /// If holograms are not stable, change the Stereo Rendering Mode from
+        /// "Single Pass Instanced" to "Multi Pass" to work around a bug in Unity.
+        /// </summary>
+        public bool ReadingModeEnabled => readingModeEnabled;
     }
 }

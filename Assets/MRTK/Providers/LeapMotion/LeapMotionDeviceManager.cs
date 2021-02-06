@@ -234,8 +234,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 var leapHand = new LeapMotionArticulatedHand(TrackingState.Tracked, handedness, inputSource);
 
                 // Set pinch thresholds
-                leapHand.handDefinition.EnterPinchDistance = enterPinchDistance;
-                leapHand.handDefinition.ExitPinchDistance = exitPinchDistance;
+                leapHand.HandDefinition.EnterPinchDistance = enterPinchDistance;
+                leapHand.HandDefinition.ExitPinchDistance = exitPinchDistance;
 
                 // Set the leap attachment hand to the corresponding handedness
                 if (handedness == Handedness.Left)

@@ -18,17 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         {
             MixedRealityControllerMapping[] testMappingsChanged = new MixedRealityControllerMapping[]
             {
-            new MixedRealityControllerMapping(typeof(ViveWandController),
-                Microsoft.MixedReality.Toolkit.Utilities.Handedness.Left),
-            new MixedRealityControllerMapping(typeof(ViveWandController),
-                Microsoft.MixedReality.Toolkit.Utilities.Handedness.Right)
+                new MixedRealityControllerMapping(typeof(ViveWandController), Utilities.Handedness.Left),
+                new MixedRealityControllerMapping(typeof(ViveWandController), Utilities.Handedness.Right)
             };
 
             testMappingsChanged[0].SetDefaultInteractionMapping();
             testMappingsChanged[1].SetDefaultInteractionMapping();
 
             testMappingsChanged[0].Interactions[1] = new MixedRealityInteractionMapping(1, "Fake mapping",
-                Microsoft.MixedReality.Toolkit.Utilities.AxisType.Digital, DeviceInputType.ButtonNearTouch);
+                Utilities.AxisType.Digital, DeviceInputType.ButtonNearTouch);
 
             bool wereMappingsUpdated = false;
 
