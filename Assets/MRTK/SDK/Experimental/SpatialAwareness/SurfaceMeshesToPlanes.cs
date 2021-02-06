@@ -172,12 +172,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// EventHandler which is triggered when the MakePlanesRoutine is finished.
         /// </summary>
         public event EventHandler MakePlanesComplete;
-        
+
+        /// <summary>
+        /// Indicates whether or not the project contains the required components for SurfaceMeshesToPlanes
+        /// to enable plane creation.
+        /// </summary>
+        /// <remarks>
+        /// For SurfaceMeshesToPlanes to create planes, the Mixed Reality Toolkit Plane Finding package
+        /// must be imported.
+        /// </remarks>
+        public static bool CanCreatePlanes =>
+#if PLANE_FINDING_PRESENT
+            true;
+#else
+            false;
+#endif // PLANE_FINDING_PRESENT
+
+
 #endif // PLANE_FINDING_PRESENT
 
 #endregion
 
-#region Private Properties
+        #region Private Properties
 
         private float floorYPosition;
         private float ceilingYPosition;
@@ -240,8 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             }
             planesParent.transform.position = Vector3.zero;
             planesParent.transform.rotation = Quaternion.identity;
-
-            MakePlanes();
         }
 
         private void OnDestroy()
