@@ -3,11 +3,11 @@
 
 <#
 .SYNOPSIS
-    This script generates a list of changed files in a given pull request and outputs
+    This script generates a list of changed files in the locally checked out branch and outputs
     that list to a file.
 .DESCRIPTION
     Generates a file containing a list of all modified files (added/modified) in
-    the given pull request. The output file contains a list that is newline delimited, for
+    the checked out branch. The output file contains a list that is newline delimited, for
     example:
 
     Assets/MixedRealityToolkit.SDK/AssemblyInfo.cs
@@ -19,17 +19,14 @@
 
     Note that this script assumes that the local git repo doesn't already contain the
     target branch (e.g. mrtk_development). This is what happens by default on Azure DevOps
-    pipeline integrations with Github pull requests.
+    pipeline integrations with GitHub pull requests.
 
     In particular, this will checkout (via this command:
     git fetch --force --tags --prune --progress --no-recurse-submodules origin $(System.PullRequest.TargetBranch))
 .EXAMPLE
-    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
+    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
 #>
 param(
-    # The ID of the pull request. (e.g. 1234)
-    [string]$PullRequestId,
-
     # The target branch that the pull request will merge into (e.g. mrtk_development)
     [string]$TargetBranch,
 
@@ -45,9 +42,9 @@ param(
 
 # The pull request ID might not be present (i.e. this is an adhoc build being spun up)
 # and the target branch might not be set in which case there's nothing to validate.
-if ([string]::IsNullOrEmpty($PullRequestId) -or [string]::IsNullOrEmpty($TargetBranch))
+if ([string]::IsNullOrWhiteSpace($TargetBranch))
 {
-    Write-Warning "PullRequestId or TargetBranch aren't specified, skipping."
+    Write-Warning "TargetBranch isn't specified, skipping."
     exit 0;
 }
 
