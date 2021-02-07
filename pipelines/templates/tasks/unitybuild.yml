@@ -1,13 +1,35 @@
 # [Template] Compile MRTK inside Unity.
 
-parameters: 
-  Arch: ''  # x86|arm
-  Platform: ''  # UWP|Standalone
-  UnityArgs: 'none' # [optional] additional args passed to Unity
-  ScriptingBackend: 'default'  # [optional] default|.NET
-  PublishArtifacts: false
-  PackagingDir: 'Win32'
-  UnityVersion: ""
+parameters:
+- name: Arch
+  type: string
+  values:
+    - x86
+    - x64
+    - arm
+    - arm64
+- name: Platform
+  type: string
+  values:
+    - UWP
+    - Standalone
+- name: UnityArgs # [optional] additional args passed to Unity
+  type: string
+  default: none
+- name: ScriptingBackend # [optional]
+  type: string
+  default: default
+  values:
+    - default
+    - .NET
+- name: PublishArtifacts
+  type: boolean
+  default: false
+- name: PackagingDir
+  type: string
+  default: Win32
+- name: UnityVersion
+  type: string
 
 steps:
 - powershell: |
