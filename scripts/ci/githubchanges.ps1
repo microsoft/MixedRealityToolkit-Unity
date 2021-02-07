@@ -31,19 +31,18 @@ param(
     [string]$TargetBranch,
 
     # The output filename (e.g. c:\path\to\output.txt)
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$OutputFile,
 
     # The root folder of the repo (e.g. c:\repo)
     # This primarily used to filter out files that were deleted.
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$RepoRoot
 )
 
 # The pull request ID might not be present (i.e. this is an adhoc build being spun up)
 # and the target branch might not be set in which case there's nothing to validate.
-if ([string]::IsNullOrWhiteSpace($TargetBranch))
-{
+if ([string]::IsNullOrWhiteSpace($TargetBranch)) {
     Write-Warning "TargetBranch isn't specified, skipping."
     exit 0;
 }
@@ -67,7 +66,7 @@ git --git-dir=$gitDir --work-tree=$RepoRoot fetch --depth=1 --force --tags --pru
 
 # The set of changed files is the diff between the target branch and the pull request
 # branch that was checked out locally.
-$changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only ..origin/$TargetBranch 2>&1)
+$changedFiles = $(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only ..origin/$TargetBranch 2>&1)
 
 foreach ($changedFile in $changedFiles) {
     $joinedPath = Join-Path -Path $RepoRoot -ChildPath $changedFile
