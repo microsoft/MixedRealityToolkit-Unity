@@ -66,18 +66,11 @@ $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 # both branches to exist in order to make this happen.
 # Uses a shallow fetch (i.e. depth=1) because only the latest commit from the target branch is
 # needed to do the diff.
-git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
+git --git-dir=$gitDir --work-tree=$RepoRoot fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
 # The set of changed files is the diff between the target branch and the pull request
-# branch that was checked out locally. Note that the format of the pull request branch
-# (i.e. "pull/$PullRequestId/merge") is based on the format that Azure DevOps does for its
-# local checkout of the pull request code.
-# WARNING: This is a loose dependency on Azure DevOps git checkout mechanism - if this errors out
-# we'd likely need to another fetch. Something like:
-#
-# git fetch origin pull/$PullRequestId/head:local_branch
-# $changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only local_branch origin/$TargetBranch 2>&1)
-$changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch 2>&1)
+# branch that was checked out locally.
+$changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only ..origin/$TargetBranch 2>&1)
 
 foreach ($changedFile in $changedFiles) {
     $joinedPath = Join-Path -Path $RepoRoot -ChildPath $changedFile
