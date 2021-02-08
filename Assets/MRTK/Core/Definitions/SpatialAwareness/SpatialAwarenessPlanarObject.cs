@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
@@ -11,6 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The BoxCollider associated with this plane's GameObject.
         /// </summary>
         public BoxCollider Collider { get; set; }
+
+        private SpatialAwarenessSurfaceTypes planeType = SpatialAwarenessSurfaceTypes.Unknown;
+
+        /// <summary>
+        /// The type of surface (ex: wall) represented by this object. 
+        /// </summary>
+        public SpatialAwarenessSurfaceTypes PlaneType
+        {
+            get => planeType;
+            set => planeType = value;
+        }
 
         /// <summary>
         /// Constructor.
@@ -23,7 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <returns>
         /// SpatialAwarenessPlanarObject containing the fields that describe the plane.
         /// </returns>
-        public static SpatialAwarenessPlanarObject CreateSpatialObject(Vector3 size, int layer, string name, int planeId)
+        public static SpatialAwarenessPlanarObject CreateSpatialObject(
+            Vector3 size, 
+            int layer, 
+            string name, 
+            int planeId)
         {
             SpatialAwarenessPlanarObject newMesh = new SpatialAwarenessPlanarObject();
 

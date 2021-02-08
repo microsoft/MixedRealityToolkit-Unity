@@ -15,12 +15,6 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness.Processing;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
-    struct PlaneWithType
-    {
-        public GameObject Plane;
-        public SpatialAwarenessSurfaceTypes Type;
-    }
-
     /// <summary>
     /// SurfaceMeshesToPlanes will find and create planes based on the meshes by a spatial awareness mesh observer.
     /// </summary>
@@ -197,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         private float floorYPosition;
         private float ceilingYPosition;
-        private List<PlaneWithType> activePlanes;
+        private List<SpatialAwarenessPlanarObject> activePlanes;
         private bool makingPlanes = false;
         private CancellationTokenSource tokenSource;
 
@@ -218,11 +212,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             List<GameObject> typePlanes = new List<GameObject>();
 
-            foreach (PlaneWithType planeWithType in activePlanes)
+            foreach (SpatialAwarenessPlanarObject planes in activePlanes)
             {
-                if ((planeTypes & planeWithType.Type) == planeWithType.Type)
+                if ((planeTypes & planes.PlaneType) == planes.PlaneType)
                 {
-                    typePlanes.Add(planeWithType.Plane);
+                    typePlanes.Add(planes.GameObject);
                 }
             }
 
@@ -248,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         private void Start()
         {
-            activePlanes = new List<PlaneWithType>();
+            activePlanes = new List<SpatialAwarenessPlanarObject>();
 
             if (planesParent == null)
             {
@@ -341,18 +335,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 ConfigurePlaneGameObject(destinationPlane, boundedPlane);
 
-                var planeWithType = new PlaneWithType();
-                planeWithType.Plane = destinationPlane;
-                planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
-                SetPlaneVisibility(planeWithType);
+                var planeObject = new SpatialAwarenessPlanarObject();
+                planeObject.GameObject = destinationPlane;
+                planeObject.PlaneType = GetPlaneType(boundedPlane, destinationPlane);
+                SetPlaneVisibility(planeObject);
 
-                if ((destroyPlanesMask & planeWithType.Type) == planeWithType.Type)
+                if ((destroyPlanesMask & planeObject.PlaneType) == planeObject.PlaneType)
                 {
                     DestroyImmediate(destinationPlane);
                 }
                 else
                 {
-                    activePlanes.Add(planeWithType);
+                    activePlanes.Add(planeObject);
                 }
             }
 
@@ -449,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             // Remove any previously existing planes, as they may no longer be valid.
             for (int index = 0; index < activePlanes.Count; index++)
             {
-                Destroy(activePlanes[index].Plane);
+                Destroy(activePlanes[index].GameObject);
             }
         }
 
@@ -476,9 +470,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// <summary>
         /// Sets visibility of planes based on their type.
         /// </summary>
-        private void SetPlaneVisibility(PlaneWithType pt)
+        private void SetPlaneVisibility(SpatialAwarenessPlanarObject plane)
         {
-            pt.Plane.SetActive((drawPlanesMask & pt.Type) == pt.Type);
+            plane.GameObject.SetActive((drawPlanesMask & plane.PlaneType) == plane.PlaneType);
         }
 #endif // PLANE_FINDING_PRESENT
         
