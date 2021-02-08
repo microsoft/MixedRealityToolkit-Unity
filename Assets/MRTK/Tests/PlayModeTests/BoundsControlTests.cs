@@ -1281,7 +1281,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialHandPosition = new Vector3(0, 0, 0f);
             // this is specific to scale handles
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
             var frontRightCornerPos = scaleHandle.position; // front right corner is corner 
             Assert.IsNotNull(proximityScaledVisual, "Couldn't get visual gameobject for scale handle");
             Assert.IsTrue(proximityScaledVisual.name == "visuals", "scale visual has unexpected name");
@@ -1339,7 +1339,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ScaleHandlesConfiguration scaleHandleConfig = boundsControl.ScaleHandlesConfig;
             Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
             Transform scaleHandle = boundsControl.gameObject.transform.Find("rigRoot/corner_3");
-            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            Transform proximityScaledVisual = (scaleHandle.GetChild(0) != null) ? scaleHandle.GetChild(0).GetChild(0) : null;
             var frontRightCornerPos = scaleHandle.position;
             // check far scale applied
             ProximityEffectConfiguration proximityConfig = boundsControl.HandleProximityEffectConfig;

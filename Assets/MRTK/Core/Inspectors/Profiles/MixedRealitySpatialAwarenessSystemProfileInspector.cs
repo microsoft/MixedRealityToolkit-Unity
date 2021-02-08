@@ -73,7 +73,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            var configurations = (target as MixedRealitySpatialAwarenessSystemProfile)?.ObserverConfigurations;
+            var profile = target as MixedRealitySpatialAwarenessSystemProfile;
+            var configurations = (profile != null) ? profile.ObserverConfigurations : null;
             if (configurations != null && index >= 0 && index < configurations.Length)
             {
                 return configurations[index];
