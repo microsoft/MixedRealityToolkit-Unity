@@ -15,10 +15,16 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness.Processing;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
-    struct PlaneWithType
+    internal readonly struct PlaneWithType
     {
-        public GameObject Plane;
-        public SpatialAwarenessSurfaceTypes Type;
+        public PlaneWithType(GameObject plane, SpatialAwarenessSurfaceTypes type = SpatialAwarenessSurfaceTypes.Unknown)
+        {
+            Plane = plane;
+            Type = type;
+        }
+
+        public GameObject Plane { get; }
+        public SpatialAwarenessSurfaceTypes Type { get; }
     }
 
     /// <summary>
@@ -334,9 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 ConfigurePlaneGameObject(destinationPlane, boundedPlane);
 
-                var planeWithType = new PlaneWithType();
-                planeWithType.Plane = destinationPlane;
-                planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
+                var planeWithType = new PlaneWithType(destinationPlane, GetPlaneType(boundedPlane, destinationPlane));
                 SetPlaneVisibility(planeWithType);
 
                 if ((destroyPlanesMask & planeWithType.Type) == planeWithType.Type)
