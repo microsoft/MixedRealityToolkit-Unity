@@ -95,7 +95,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Experimental_Dwell_CustomDwellHandler" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Dwell.CustomDwellHandler" class="text-break">Class CustomDwellHandler
   </h1>
-  <div class="markdown level0 summary"><p>Example to demonstrate DwellHandler override</p>
+  <div class="markdown level0 summary"><p>Example to demonstrate DwellHandler override when a custom profile is used
+This example script works with the DwellProfileWithDecay custom profile.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -106,7 +107,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IMixedRealityFocusHandler</span></div>
+    <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -126,20 +127,20 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_FillTimer">DwellHandler.FillTimer</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_OnFocusEnter_FocusEventData_">DwellHandler.OnFocusEnter(FocusEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_OnFocusExit_FocusEventData_">DwellHandler.OnFocusExit(FocusEventData)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_OnFocusChanged_FocusEventData_">DwellHandler.OnFocusChanged(FocusEventData)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_CancelDwell">DwellHandler.CancelDwell()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_OnBeforeFocusChange_FocusEventData_">DwellHandler.OnBeforeFocusChange(FocusEventData)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.html">Microsoft.MixedReality.Toolkit.Experimental.Dwell</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Experimental_Dwell_CustomDwellHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CustomDwellHandler : DwellHandler, IMixedRealityFocusHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class CustomDwellHandler : DwellHandler, IMixedRealityFocusChangedHandler</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -157,7 +158,7 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html#Microsoft_MixedReality_Toolkit_Experimental_Dwell_DwellHandler_UpdateFillTimer">DwellHandler.UpdateFillTimer()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IMixedRealityFocusHandler</span>
+      <span class="xref">IMixedRealityFocusChangedHandler</span>
   </div>
 </article>
           </div>
