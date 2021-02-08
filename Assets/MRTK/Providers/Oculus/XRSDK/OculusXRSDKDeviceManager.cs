@@ -5,9 +5,14 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+#if OCULUSINTEGRATION_PRESENT
+using Unity.XR.Oculus;
+#endif
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Management;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Oculus.Input
 {
@@ -162,6 +167,9 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         private void SetupInput()
         {
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
+                return;
+
             cameraRig = GameObject.FindObjectOfType<OVRCameraRig>();
             if (cameraRig == null)
             {
