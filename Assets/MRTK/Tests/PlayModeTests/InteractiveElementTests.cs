@@ -8,6 +8,8 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
+using System;
+using System.Linq;
 
 #if UNITY_2019_3_OR_NEWER
 using Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement;
@@ -305,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// 
+        /// Test the events of the ToggleOn and ToggleOff states
         /// </summary>
         [UnityTest]
         public IEnumerator TestToggleEvents()
@@ -345,6 +347,55 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.Click();
 
             Assert.True(onToggleOff);
+        }
+
+        /// <summary>
+        /// Test adding and removing states
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAddAndRemoveAllStates()
+        {
+            // Create an interactive cube 
+            InteractiveElement interactiveElement = CreateInteractiveCube();
+            yield return null;
+
+            string[] coreStates = Enum.GetNames(typeof(CoreInteractionState)).ToArray();
+
+            foreach (string coreStateName in coreStates)
+            {
+                // The Default and Focus states are present by default
+                if (coreStateName != defaultStateName && coreStateName != focusStateName)
+                {
+                    interactiveElement.AddNewState(coreStateName);
+                    yield return null;
+                }
+            }
+
+            foreach (string coreStateName in coreStates)
+            {
+                Assert.IsNotNull(interactiveElement.GetState(coreStateName), $"The {coreStateName} state is null after it was added.");
+                yield return null;
+            }
+
+            foreach (string coreStateName in coreStates)
+            {
+                if (coreStateName != defaultStateName)
+                {
+                    interactiveElement.RemoveState(coreStateName);
+                    yield return null;
+                }
+            }
+
+            foreach (string coreStateName in coreStates)
+            {
+                if (coreStateName != defaultStateName)
+                {
+                    Assert.IsNull(interactiveElement.GetState(coreStateName), $"The {coreStateName} state is not null after it was removed.");
+                    yield return null;
+                }
+            }
+
+            yield return null;
         }
 
         /// <summary>
@@ -658,8 +709,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Instantiate a prefab that has CompressableButton attached
         private CompressableButton InstantiateCompressablePrefab(string path)
         {
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
-            GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
+            UnityEngine.Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
+            GameObject result = UnityEngine.Object.Instantiate(interactablePrefab) as GameObject;
 
             return result.GetComponent<CompressableButton>();
         }

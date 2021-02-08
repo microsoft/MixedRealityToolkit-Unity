@@ -2,10 +2,8 @@
 // Licensed under the MIT License
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -254,9 +252,46 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.InteractiveElement
             }
         }
 
+        /// <summary>
+        /// Get the events associated with a state given the type and the state name.
+        /// 
+        /// If the state to retrieve is a CoreInteractionState:
+        /// The type name of a state's event configuration is the state name + "Events".  For example, Touch state's event configuration is 
+        /// named TouchEvents.  The Focus state's event configuration is named FocusEvents.
+        /// 
+        /// If the state is not a CoreInteractionState:
+        /// The type is most likely StateEvents.  The StateEvents type is the default type of a new state that 
+        /// is not a core state.
+        /// </summary>
+        /// <typeparam name="T">The type of the event configuration for the state</typeparam>
+        /// <param name="stateName">The name of the state</param>
+        /// <returns>The event configuration of a state</returns>
         public T GetStateEvents<T>(string stateName) where T : BaseInteractionEventConfiguration
         {
-            return EventReceiverManager.GetEventConfiguration(stateName) as T;
+            InteractionState state = GetState(stateName);
+
+            if (state == null)
+            {
+                Debug.LogError($"The {stateName} state could not be found, check the spelling of the state name or add it using AddNewState()");
+                return null;
+            }
+
+            var stateEvents = GetState(stateName).EventConfiguration;
+
+            if (stateEvents == null)
+            {
+                Debug.LogError($"The event configuration for the {stateName} state is null");
+                return null;
+            }
+
+            // Log an error if the type defined does not match the type expected type of the event configuration
+            if (!(stateEvents is T))
+            {
+                Debug.LogError($"The {stateName} state's event configuration's type is not {typeof(T).Name}, re-check the type of the {stateName} state's event configuration.");
+                return null;
+            }
+
+            return stateEvents as T;
         }
 
         #endregion
