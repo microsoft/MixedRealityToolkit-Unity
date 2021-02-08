@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Currently tracked hand or motion controller if applicable
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values Left, Right, or None
         /// </remarks>
         public Handedness CurrentTrackedHandedness => currentTrackedHandedness;
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Controller side to favor and pick first if TrackedHandedness is set to both
         /// </summary>
-        /// /// <remarks>
+        /// <remarks>
         /// Only possible values, Left or Right
         /// </remarks>
         public Handedness PreferredTrackedHandedness

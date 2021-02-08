@@ -19,11 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// configuration.
         /// </summary>
         /// <remarks>
-        /// These preferences can be used by the pointer mediator to determine runtime
+        /// <para>These preferences can be used by the pointer mediator to determine runtime
         /// preferences set by the caller (for example, the caller could request to turn
         /// off all hand rays). It's possible that some of these preferences may not be
         /// honored (for example, current input system is set up to not have hand rays
-        /// at all, and a request comes in to turn on/off hand rays).
+        /// at all, and a request comes in to turn on/off hand rays).</para>
         /// </remarks>
         void SetPointerPreferences(IPointerPreferences pointerPreferences);
     }

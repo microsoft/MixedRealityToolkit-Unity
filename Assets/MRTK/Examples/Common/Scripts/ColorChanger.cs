@@ -37,6 +37,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
             }
         }
+        
+        /// <summary>
+        /// Decrements to the previous material in the input list of materials and applies it to the renderer.
+        /// </summary>
+        public void Decrement()
+        {
+            if (mats != null && mats.Length > 0)
+            {
+                cur = (cur - 1 + mats.Length) % mats.Length;
+                if (rend != null)
+                {
+                    rend.material = mats[cur];
+                }
+            }
+        }
 
         /// <summary>
         /// Sets a random color on the renderer's material.

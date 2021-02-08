@@ -69,8 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// consists of. 
         /// </summary>
         /// <remarks>
-        /// Wireframe refers to the thin linkage between the handles. When the handles are invisible
-        /// the wireframe looks like an outline box around an object.
+        /// <para>Wireframe refers to the thin linkage between the handles. When the handles are invisible
+        /// the wireframe looks like an outline box around an object.</para>
         /// </remarks> 
         public enum WireframeType
         {

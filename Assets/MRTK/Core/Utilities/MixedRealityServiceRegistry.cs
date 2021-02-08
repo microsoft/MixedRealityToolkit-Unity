@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit
     /// Static class that represents the Mixed Reality Toolkit service registry.
     /// </summary>
     /// <remarks>
-    /// The service registry is used to enable discovery of and access to active Mixed Reality Toolkit services at
-    /// runtime without requiring direct code reference to a singleton style component.
+    /// <para>The service registry is used to enable discovery of and access to active Mixed Reality Toolkit services at
+    /// runtime without requiring direct code reference to a singleton style component.</para>
     /// </remarks>
     public static class MixedRealityServiceRegistry
     {
@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// A cache used to power <seealso cref="GetAllServices(IMixedRealityServiceRegistrar)"/>
         /// </summary>
         /// <remarks>
-        /// Lists are sorted in ascending priority order (i.e. services with a smaller priority
-        /// value are first in the list).
+        /// <para>Lists are sorted in ascending priority order (i.e. services with a smaller priority
+        /// value are first in the list).</para>
         /// </remarks>
         private static Dictionary<IMixedRealityServiceRegistrar, List<IMixedRealityService>> allServicesByRegistrar =
             new Dictionary<IMixedRealityServiceRegistrar, List<IMixedRealityService>>();
@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// A cache used to power <seealso cref="GetAllServices"/>
         /// </summary>
         /// <remarks>
-        /// The list is sorted in ascending priority order (i.e. services with a smaller priority
-        /// value are first in the list).
+        /// <para>The list is sorted in ascending priority order (i.e. services with a smaller priority
+        /// value are first in the list).</para>
         /// </remarks>
         private static List<IMixedRealityService> allServices = new List<IMixedRealityService>();
 

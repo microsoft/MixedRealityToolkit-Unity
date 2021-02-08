@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// (MixedRealityKeyboard) or Unity's TouchScreenKeyboard API depending on the platform.
     /// </summary>
     /// <remarks>
-    /// Note that like Unity's TouchScreenKeyboard API, this script only supports WSA, iOS,
-    /// and Android.
+    /// <para>Note that like Unity's TouchScreenKeyboard API, this script only supports WSA, iOS,
+    /// and Android.</para>
     /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Examples/SystemKeyboardExample")]
     public class SystemKeyboardExample : MonoBehaviour

@@ -20,16 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, sourceHandedness, inputSource, interactions)
-        {
-        }
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => DefaultInteractions;
-
-        /// <inheritdoc />
-        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
+        protected BaseWindowsMixedRealitySource(
+            TrackingState trackingState,
+            Handedness sourceHandedness,
+            IMixedRealityInputSource inputSource = null,
+            MixedRealityInteractionMapping[] interactions = null,
+            IMixedRealityInputSourceDefinition definition = null)
+            : base(trackingState, sourceHandedness, inputSource, interactions, definition)
+        { }
 
 #if UNITY_WSA
         /// <summary>
@@ -367,10 +365,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Gets whether or not 'select' has been pressed.
         /// </summary>
         /// <remarks>
-        /// This includes a workaround to fix air-tap gestures in HoloLens 1 remoting, to work around the following Unity issue:
-        /// https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold
-        /// Bug was discovered May 2018 and still exists as of May 2019 in version 2018.3.11f1. This workaround is scoped to only
-        /// cases where remoting is active.
+        /// <para>This includes a workaround to fix air-tap gestures in HoloLens 1 remoting, to work around the following Unity issue:
+        /// https://issuetracker.unity3d.com/issues/hololens-interactionsourcestate-dot-selectpressed-is-false-when-air-tap-and-hold </para>
+        /// <para>Bug was discovered May 2018 and still exists as of May 2019 in version 2018.3.11f1. This workaround is scoped to only
+        /// cases where remoting is active.</para>
         /// </remarks>
         private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
         {
