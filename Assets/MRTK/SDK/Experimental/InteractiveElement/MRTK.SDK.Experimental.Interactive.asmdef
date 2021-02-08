@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive",
+    "references": [
+        "GUID:8b7cc3e86d77403b8b984c08cbaeaf8f",
+        "GUID:a7a4c34601384f9389d5c4207f3c6331",
+        "GUID:7404ed9ad29ad3844ac3a261c8d45b60"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
