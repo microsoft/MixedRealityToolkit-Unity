@@ -29,8 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             handRayButton.IsToggled = PointerUtils.GetPointerBehavior<ShellHandRayPointer>(Handedness.Any, InputSourceType.Hand) != PointerBehavior.AlwaysOff;
 
             MixedRealityHandTrackingProfile handProfile = null;
-            if ((CoreServices.InputSystem != null) &&
-                (CoreServices.InputSystem.InputSystemProfile != null))
+            if (CoreServices.InputSystem?.InputSystemProfile != null)
             {
                 handProfile = CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile;
             }

@@ -34,8 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             MixedRealityHandTrackingProfile handTrackingProfile = null;
 
-            if ((CoreServices.InputSystem != null) &&
-                (CoreServices.InputSystem.InputSystemProfile != null))
+            if (CoreServices.InputSystem?.InputSystemProfile != null)
             {
                 handTrackingProfile = CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile;
             }
