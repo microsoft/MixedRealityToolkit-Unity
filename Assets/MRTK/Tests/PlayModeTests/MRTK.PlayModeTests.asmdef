@@ -15,7 +15,8 @@
         "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
         "Microsoft.MixedReality.Toolkit.Tests.Utilities",
         "Microsoft.MixedReality.Toolkit.Gltf",
-        "Microsoft.MixedReality.Toolkit.Services.InputAnimation"
+        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+        "Microsoft.MixedReality.Toolkit.SDK.Experimental.Interactive"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
