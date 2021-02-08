@@ -20,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     /// </summary>
     public class SurfaceMeshesToPlanes : MonoBehaviour
     {
-#region Public properties
+        #region Public properties
+
         [SerializeField]
         [Tooltip("Empty game object used to contain all planes created by the SurfaceToPlanes class")]
         private GameObject planesParent;
@@ -155,17 +156,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             set => destroyPlanesMask = value;
         }
 
+#if PLANE_FINDING_PRESENT
         /// <summary>
         /// Delegate which is called when the MakePlanesCompleted event is triggered.
         /// </summary>
         public delegate void EventHandler(object source, EventArgs args);
 
-#if PLANE_FINDING_PRESENT
-
         /// <summary>
         /// EventHandler which is triggered when the MakePlanesRoutine is finished.
         /// </summary>
         public event EventHandler MakePlanesComplete;
+#endif // PLANE_FINDING_PRESENT
 
         /// <summary>
         /// Indicates whether or not the project contains the required components for SurfaceMeshesToPlanes
@@ -182,26 +183,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             false;
 #endif // PLANE_FINDING_PRESENT
 
-
-#endif // PLANE_FINDING_PRESENT
-
-#endregion
+        #endregion
 
         #region Private Properties
 
+<<<<<<< HEAD
         private float floorYPosition;
         private float ceilingYPosition;
         private List<SpatialAwarenessPlanarObject> activePlanes;
+=======
+        private List<PlaneWithType> activePlanes;
+>>>>>>> f1c4669f8bc72ac3f1797896faabdf7c876a7712
         private bool makingPlanes = false;
         private CancellationTokenSource tokenSource;
 
 #if PLANE_FINDING_PRESENT
-        private float snapToGravityThreshold = 5.0f;
+        private float floorYPosition;
+        private float ceilingYPosition;
+        private const float SnapToGravityThreshold = 5.0f;
 #endif // PLANE_FINDING_PRESENT
 
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// Gets all active planes of the specified type(s).
@@ -236,9 +240,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             }
         }
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
 
         private void Start()
         {
@@ -268,7 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             await new WaitForUpdate();
 
 #if PLANE_FINDING_PRESENT
-
             List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
             List<MeshFilter> filters = new List<MeshFilter>();
 
@@ -299,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
             await new WaitForBackgroundThread();
             {
-                planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);
+                planes = PlaneFinding.FindPlanes(meshData, SnapToGravityThreshold, MinArea);
             }
 
             await new WaitForUpdate();
@@ -309,11 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             ClassifyAndCreatePlanes(planes);
 
             // We are done creating planes, trigger an event.
-            EventHandler handler = MakePlanesComplete;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            MakePlanesComplete?.Invoke(this, EventArgs.Empty);
 #endif // PLANE_FINDING_PRESENT
             makingPlanes = false;
         }
@@ -335,10 +334,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 ConfigurePlaneGameObject(destinationPlane, boundedPlane);
 
+<<<<<<< HEAD
                 var planeObject = new SpatialAwarenessPlanarObject();
                 planeObject.GameObject = destinationPlane;
                 planeObject.PlaneType = GetPlaneType(boundedPlane, destinationPlane);
                 SetPlaneVisibility(planeObject);
+=======
+                var planeWithType = new PlaneWithType(destinationPlane, GetPlaneType(boundedPlane, destinationPlane));
+                SetPlaneVisibility(planeWithType);
+>>>>>>> f1c4669f8bc72ac3f1797896faabdf7c876a7712
 
                 if ((destroyPlanesMask & planeObject.PlaneType) == planeObject.PlaneType)
                 {
@@ -387,7 +391,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 }
             }
         }
-
 
         /// <summary>
         /// Classifies the surface as a floor, wall, ceiling, table, etc.
@@ -475,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             plane.GameObject.SetActive((drawPlanesMask & plane.PlaneType) == plane.PlaneType);
         }
 #endif // PLANE_FINDING_PRESENT
-        
-#endregion
+
+        #endregion
     }
 }
