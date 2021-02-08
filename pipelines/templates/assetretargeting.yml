@@ -11,8 +11,7 @@ steps:
   displayName: Install unitysetup.powershell
 
 - powershell: |
-    $outDir = "$(Build.ArtifactStagingDirectory)\build"
-    $logFile = New-Item -Path "$outDir\build\retargeting_log.log" -ItemType File -Force
+    $logFile = New-Item -Path "$(Build.ArtifactStagingDirectory)\build\retargeting_log.log" -ItemType File -Force
 
     $method = "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
     # Uses unitysetup.powershell
@@ -22,14 +21,13 @@ steps:
     Write-Output '           Unity Build Player Finished               '
     Write-Output '====================================================='
 
-    $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\retargeting_log.log'
-    If (Test-Path $unityLogFileName)
+    If (Test-Path $logFile)
     {
        Write-Output '====================================================='
        Write-Output '           Begin Unity Player Log                    '
        Write-Output '====================================================='
 
-       Get-Content $unityLogFileName
+       Get-Content $logFile
 
        Write-Output '====================================================='
        Write-Output '           End Unity Player Log                      '

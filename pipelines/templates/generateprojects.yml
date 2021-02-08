@@ -11,10 +11,22 @@ steps:
   displayName: Install unitysetup.powershell
 
 - powershell: |
-    $outDir = "$(Build.ArtifactStagingDirectory)\build"
-    $logFile = New-Item -Path "$outDir\build\projectgeneration_log.log" -ItemType File -Force
+    $logFile = New-Item -Path "$(Build.ArtifactStagingDirectory)\build\projectgeneration_log.log" -ItemType File -Force
 
     $method = "Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.GenerateSDKProjects"
     # Uses unitysetup.powershell
     Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+
+    If (Test-Path $logFile)
+    {
+       Write-Output '====================================================='
+       Write-Output '           Begin Unity Player Log                    '
+       Write-Output '====================================================='
+
+       Get-Content $logFile
+
+       Write-Output '====================================================='
+       Write-Output '           End Unity Player Log                      '
+       Write-Output '====================================================='
+    }
   displayName: 'Generate SDK Projects'
