@@ -322,4 +322,3 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 #endif
     }
 }
-
