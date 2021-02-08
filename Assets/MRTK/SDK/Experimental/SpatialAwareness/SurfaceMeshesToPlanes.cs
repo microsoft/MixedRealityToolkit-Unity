@@ -187,13 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         #region Private Properties
 
-<<<<<<< HEAD
-        private float floorYPosition;
-        private float ceilingYPosition;
         private List<SpatialAwarenessPlanarObject> activePlanes;
-=======
-        private List<PlaneWithType> activePlanes;
->>>>>>> f1c4669f8bc72ac3f1797896faabdf7c876a7712
         private bool makingPlanes = false;
         private CancellationTokenSource tokenSource;
 
@@ -334,15 +328,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 ConfigurePlaneGameObject(destinationPlane, boundedPlane);
 
-<<<<<<< HEAD
                 var planeObject = new SpatialAwarenessPlanarObject();
                 planeObject.GameObject = destinationPlane;
                 planeObject.PlaneType = GetPlaneType(boundedPlane, destinationPlane);
                 SetPlaneVisibility(planeObject);
-=======
-                var planeWithType = new PlaneWithType(destinationPlane, GetPlaneType(boundedPlane, destinationPlane));
-                SetPlaneVisibility(planeWithType);
->>>>>>> f1c4669f8bc72ac3f1797896faabdf7c876a7712
 
                 if ((destroyPlanesMask & planeObject.PlaneType) == planeObject.PlaneType)
                 {
