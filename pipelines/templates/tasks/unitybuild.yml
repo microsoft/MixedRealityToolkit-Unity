@@ -51,7 +51,7 @@ steps:
     $buildTarget = "StandaloneWindows"
     If ("${{ parameters.Platform }}" -eq "UWP")
     {
-        $buildTarget = WSAPlayer
+        $buildTarget = "WSAPlayer"
         $extraArgs += "-buildAppx"
     }
     ElseIf ("${{ parameters.Platform }}" -eq "Standalone" -and "${{ parameters.Arch }}" -eq "x64")
