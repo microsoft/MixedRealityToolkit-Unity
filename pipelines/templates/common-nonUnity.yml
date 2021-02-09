@@ -1,0 +1,14 @@
+# [Template] Common non-Unity-based validation tasks shared between CI builds and PR validation.
+
+parameters:
+  publishPackagesToFeed: true
+
+steps:
+  - template: validation.yml
+
+  - template: tasks/versionmetadata.yml
+
+  - template: tasks/pack-upm.yml
+
+  - ${{ if eq(parameters.publishPackagesToFeed, true) }}:
+    - template: tasks/publish-upm.yml
