@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
             foreach (SpatialAwarenessPlanarObject planes in activePlanes)
             {
-                if ((planeTypes & planes.PlaneType) == planes.PlaneType)
+                if ((planeTypes & planes.SurfaceType) == planes.SurfaceType)
                 {
                     typePlanes.Add(planes.GameObject);
                 }
@@ -325,15 +325,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 BoundedPlane boundedPlane = planes[index];
 
                 // Instantiate a cube, which will have the same bounds as our BoundedPlane object.
-                GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                ConfigurePlaneGameObject(destinationPlane, boundedPlane);
+                GameObject destinationPlane = CreatePlaneGameObject(boundedPlane);
 
-                var planeObject = new SpatialAwarenessPlanarObject();
-                planeObject.GameObject = destinationPlane;
-                planeObject.PlaneType = GetPlaneType(boundedPlane);
+                var planeObject = SpatialAwarenessPlanarObject.CreateSpatialObject(
+                    destinationPlane,
+                    PhysicsLayer,
+                    $"SurfacePlane {index}",
+                    index,
+                    GetPlaneType(boundedPlane));
                 SetPlaneVisibility(planeObject);
 
-                if ((destroyPlanesMask & planeObject.PlaneType) == planeObject.PlaneType)
+                if ((destroyPlanesMask & planeObject.SurfaceType) == planeObject.SurfaceType)
                 {
                     DestroyImmediate(destinationPlane);
                 }
@@ -442,21 +444,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// <summary>
         /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
         /// </summary>
-        private void ConfigurePlaneGameObject(GameObject gameObject, BoundedPlane plane)
+        private GameObject CreatePlaneGameObject(BoundedPlane plane)
         {
-            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
-            gameObject.transform.position = plane.Bounds.Center;
-            gameObject.transform.rotation = plane.Bounds.Rotation;
-            Vector3 extents = plane.Bounds.Extents * 2;
-            gameObject.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
+            GameObject surfacePlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-            var renderer = gameObject.GetComponent<Renderer>();
+            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
+            surfacePlane.transform.position = plane.Bounds.Center;
+            surfacePlane.transform.rotation = plane.Bounds.Rotation;
+            Vector3 extents = plane.Bounds.Extents * 2;
+            surfacePlane.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
+
+            var renderer = surfacePlane.GetComponent<Renderer>();
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             if (DefaultMaterial != null)
                 renderer.material = DefaultMaterial;
 
-            gameObject.transform.parent = PlanesParent.transform;
-            gameObject.layer = PhysicsLayer;
+            surfacePlane.transform.parent = PlanesParent.transform;
+
+            return surfacePlane;
         }
 
         /// <summary>
@@ -464,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// </summary>
         private void SetPlaneVisibility(SpatialAwarenessPlanarObject plane)
         {
-            plane.GameObject.SetActive((drawPlanesMask & plane.PlaneType) == plane.PlaneType);
+            plane.GameObject.SetActive((drawPlanesMask & plane.SurfaceType) == plane.SurfaceType);
         }
 #endif // PLANE_FINDING_PRESENT
 

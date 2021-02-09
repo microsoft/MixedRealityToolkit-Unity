@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// The type of surface (ex: wall) represented by this object. 
         /// </summary>
-        public SpatialAwarenessSurfaceTypes PlaneType
+        public SpatialAwarenessSurfaceTypes SurfaceType
         {
             get => planeType;
             set => planeType = value;
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpatialAwarenessPlanarObject() : base() { }
+        private SpatialAwarenessPlanarObject() : base() { }
 
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessPlanarObject"/>.
@@ -36,24 +36,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// SpatialAwarenessPlanarObject containing the fields that describe the plane.
         /// </returns>
         public static SpatialAwarenessPlanarObject CreateSpatialObject(
-            Vector3 size, 
+            GameObject planeObject,
             int layer, 
             string name, 
-            int planeId)
+            int planeId,
+            SpatialAwarenessSurfaceTypes surfaceType = SpatialAwarenessSurfaceTypes.Unknown)
         {
-            SpatialAwarenessPlanarObject newMesh = new SpatialAwarenessPlanarObject();
+            SpatialAwarenessPlanarObject newPlane = new SpatialAwarenessPlanarObject();
+            newPlane.SurfaceType = surfaceType;
 
-            newMesh.Id = planeId;
-            newMesh.GameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            newMesh.GameObject.name = name;
-            newMesh.GameObject.layer = layer;
-            newMesh.GameObject.transform.localScale = size;
+            newPlane.Id = planeId;
+            newPlane.GameObject = planeObject;
+            newPlane.GameObject.name = name;
+            newPlane.GameObject.layer = layer;
 
-            newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
-            newMesh.Renderer = newMesh.GameObject.GetComponent<MeshRenderer>();
-            newMesh.Collider = newMesh.GameObject.GetComponent<BoxCollider>();
+            newPlane.Filter = newPlane.GameObject.GetComponent<MeshFilter>();
+            newPlane.Renderer = newPlane.GameObject.GetComponent<MeshRenderer>();
+            newPlane.Collider = newPlane.GameObject.GetComponent<BoxCollider>();
 
-            return newMesh;
+            return newPlane;
         }
     }
 }
