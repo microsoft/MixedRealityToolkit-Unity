@@ -429,12 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         private void ClearAndUpdateObserver()
         {
-            foreach (GameObject gameObject in instantiatedPrefabs)
-            {
-                Destroy(gameObject);
-            }
-            instantiatedPrefabs.Clear();
-            observer.ClearObservations();
+            ClearScene();
             observer.UpdateOnDemand();
         }
 
