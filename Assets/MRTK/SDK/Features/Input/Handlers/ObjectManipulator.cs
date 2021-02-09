@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")]
     [RequireComponent(typeof(ConstraintManager))]
-    public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
+    public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler, IMixedRealitySourcePoseHandler
     {
         #region Public Enums
 
@@ -396,6 +396,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
+
+        private Quaternion LeftHandRotation;
+        private Quaternion RightHandRotation;
 
         #endregion Private Properties
 
@@ -993,17 +996,65 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-            for (int i = 0; i < (pointer.Controller?.Interactions?.Length ?? 0); i++)
-            {
-                if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
-                {
-                    rotation = pointer.Controller.Interactions[i].RotationData;
-                    return true;
-                }
-            }
             rotation = Quaternion.identity;
-            return false;
+            switch (pointer.Controller.ControllerHandedness)
+            {
+                case Handedness.Left:
+                    rotation = LeftHandRotation;
+                    break;
+                case Handedness.Right:
+                    rotation = RightHandRotation;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         }
+
+        #endregion
+
+        #region Source Pose Handler Implementation
+        /// <summary>
+        /// Raised when the source pose tracking state is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData) { }
+
+        /// <summary>
+        /// Raised when the source position is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData) { }
+
+        /// <summary>
+        /// Raised when the source position is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Vector3> eventData) { }
+
+        /// <summary>
+        /// Raised when the source rotation is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<Quaternion> eventData) { }
+
+        /// <summary>
+        /// Raised when the source pose is changed.
+        /// </summary>
+        public void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
+        {
+            switch (eventData.Controller.ControllerHandedness)
+            {
+                case Handedness.Left:
+                    LeftHandRotation = eventData.SourceData.Rotation;
+                    break;
+                case Handedness.Right:
+                    RightHandRotation = eventData.SourceData.Rotation;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData) { }
+
+        public void OnSourceLost(SourceStateEventData eventData) { }
 
         #endregion
     }
