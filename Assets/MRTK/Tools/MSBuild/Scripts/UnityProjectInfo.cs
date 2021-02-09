@@ -30,7 +30,17 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             "Oculus.VR",
             "Oculus.VR.Editor",
             "Unity.XR.Oculus",
-            "Unity.XR.WindowsMixedReality"
+            "Unity.XR.WindowsMixedReality",
+#if UNITY_2020_2_OR_NEWER
+            "Microsoft.MixedReality.OpenXR",
+            "Unity.XR.OpenXR",
+            "Unity.RenderPipelines.Core.Runtime",
+            "Unity.RenderPipelines.Lightweight.Runtime",
+            "Unity.RenderPipelines.Universal.Runtime",
+            "Unity.InputSystem",
+            "Microsoft.MixedReality.Toolkit.Services.BoundarySystem",
+            "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality"
+#endif
 #endif
         };
 
@@ -238,14 +248,31 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             // Manually add special plugin dependencies to the projects
 #if UNITY_2019_3_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
+            if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit") || toReturn.Name.StartsWith("Unity.TextMeshPro"))
+#else
             if (toReturn.Name.StartsWith("Microsoft.MixedReality.Toolkit"))
+#endif
             {
-                foreach (var plugin in SpecialPluginNameMappingUnity2019.Values)
+                string[] plugins = SpecialPluginNameMappingUnity2019.Values.OrderByDescending(p => p).ToArray();
+                foreach (var plugin in plugins)
                 {
                     if (projectsMap.TryGetValue(plugin, out CSProjectInfo projectInfo))
                     {
                         toReturn.AddDependency(projectInfo);
                     }
+#if UNITY_2020_2_OR_NEWER
+                    else
+                    {
+                        CSProjectInfo newProjInfo = new CSProjectInfo(this, asmDefInfoMap[plugin], projectOutputPath);
+                        if (plugin == plugins[1])
+                        {
+                            newProjInfo.AddDependency(projectsMap[plugins[0]]);
+                        }
+                        projectsMap.Add(plugin, newProjInfo);
+                        toReturn.AddDependency(newProjInfo);
+                    }
+#endif
                 }
             }
 #endif
