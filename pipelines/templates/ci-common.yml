@@ -1,9 +1,9 @@
-# CI build for developer builds.
+# [Template] CI build for developer builds.
+
 parameters:
   packagingEnabled: true
   packagePublishing: true
   UnityVersion: ""
-  MRTKVersion: ""
 
 steps:
 - template: common.yml
@@ -11,8 +11,6 @@ steps:
     buildUWPDotNet: false
     UnityVersion: ${{ parameters.UnityVersion }}
 - template: tasks/versionmetadata.yml
-  parameters:
-    MRTKVersion: ${{ parameters.MRTKVersion }}
 - template: compilemsbuild.yml
   parameters:
     UnityVersion: ${{ parameters.UnityVersion }}
