@@ -397,8 +397,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
-        private Quaternion LeftHandRotation;
-        private Quaternion RightHandRotation;
+        private Quaternion leftHandRotation;
+        private Quaternion rightHandRotation;
 
         #endregion Private Properties
 
@@ -1000,10 +1000,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (pointer.Controller.ControllerHandedness)
             {
                 case Handedness.Left:
-                    rotation = LeftHandRotation;
+                    rotation = leftHandRotation;
                     break;
                 case Handedness.Right:
-                    rotation = RightHandRotation;
+                    rotation = rightHandRotation;
                     break;
                 default:
                     return false;
@@ -1042,10 +1042,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (eventData.Controller.ControllerHandedness)
             {
                 case Handedness.Left:
-                    LeftHandRotation = eventData.SourceData.Rotation;
+                    leftHandRotation = eventData.SourceData.Rotation;
                     break;
                 case Handedness.Right:
-                    RightHandRotation = eventData.SourceData.Rotation;
+                    rightHandRotation = eventData.SourceData.Rotation;
                     break;
                 default:
                     break;
