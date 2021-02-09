@@ -6,7 +6,6 @@ parameters:
   MRTKVersion: ""
 
 steps:
-- template: validation.yml
 - template: common.yml
   parameters:
     buildUWPDotNet: false
