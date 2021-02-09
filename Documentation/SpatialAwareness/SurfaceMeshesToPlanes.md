@@ -14,6 +14,11 @@ Create a new Unity GameObject in your scene and attach the `SurfaceMeshesToPlane
 
 ![SurfaceMeshesToPlanes](../Images/SpatialAwareness/SurfaceMeshesToPlanes.png)
 
+## Example
+
+To see an example of using `SurfaceMeshesToPlanes`, the Spatial Awareness demo scene (`Examples`/`Demos`/`SpatialAwareness`/`Scenes`/`SpatialAwarenessDemo.unity`) has added a voice command to display planes from the spatial mesh.
+
+To enable the plane finding feature of the demo, please import the Mixed Reality Toolkit Plane Finding package, using the Mixed Reality Feature Tool. Once imported, the demo will enable the **Make Planes** voice command.
 ## See Also
 
 - [Spatial awareness](SpatialAwarenessGettingStarted.md)
