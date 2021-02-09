@@ -262,8 +262,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (UpdateCurrentTeleportPosePerfMarker.Auto())
             {
-                MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
-
                 // Check if we're focus locked or near something interactive to avoid teleporting unintentionally.
                 bool anyPointersLockedWithHand = false;
                 for (int i = 0; i < InputSource?.Pointers?.Length; i++)
