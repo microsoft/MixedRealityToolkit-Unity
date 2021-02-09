@@ -139,7 +139,7 @@ steps:
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
 - task: PowerShell@2
-  displayName: 'Validate build logs'
+  displayName: Validate build logs
   inputs:
     targetType: filePath
     filePath: ./scripts/ci/validatebuildlog.ps1
@@ -148,7 +148,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   enabled: ${{ parameters.PublishArtifacts }}
-  displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
+  displayName: Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}
   inputs:
     ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
     # The final location of the generated package depends on the type of scripting backend it's built against.
