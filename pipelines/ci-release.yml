@@ -65,27 +65,27 @@ jobs:
 
   # Create pre-release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/tasks/nuget-pack.yml
+    - template: templates/tasks/pack-nuget.yml
       parameters:
         version: '$(MRTKVersion)-$(Build.BuildNumber)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/tasks/nuget-pack.yml
+    - template: templates/tasks/pack-nuget.yml
       parameters:
         version: '$(MRTKVersion)-$(Build.BuildNumber).$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
 
   # Create release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/tasks/nuget-pack.yml
+    - template: templates/tasks/pack-nuget.yml
       parameters:
         version: '$(MRTKVersion)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\release'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/tasks/nuget-pack.yml
+    - template: templates/tasks/pack-nuget.yml
       parameters:
         version: '$(MRTKVersion)-$(MRTKReleaseTag)'
-        packDestination: '$(Build.SourcesDirectory)\artifacts\release'        
+        packDestination: '$(Build.SourcesDirectory)\artifacts\release'
 
   - template: templates/tasks/signing.yml
     parameters:
@@ -100,7 +100,7 @@ jobs:
       targetType: filePath
       filePath: '$(ToolsDir)\signCheck.ps1'
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
-  
+
   - powershell: |
       Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*" -Exclude "*.Utilities.*"
     displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"
