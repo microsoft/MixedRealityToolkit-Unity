@@ -1,4 +1,5 @@
 # [Template] Validation tasks that don't require Unity.
+
 parameters:
   # If true, validation scripts will only be run on the set of changed files
   # associated with a given pull request. Note that this is only valid to use
