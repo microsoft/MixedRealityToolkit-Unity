@@ -24,5 +24,6 @@ steps:
   - template: tasks/pack-upm.yml
   - template: tasks/pack-nuget.yml
   - ${{ if eq(parameters.packagePublishing, true) }}:
-    - template: tasks/publish-packages.yml
+    - template: tasks/publish-upm.yml
+    - template: tasks/publish-nuget.yml
 - template: end.yml
