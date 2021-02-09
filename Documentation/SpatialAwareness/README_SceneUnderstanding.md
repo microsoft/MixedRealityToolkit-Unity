@@ -17,14 +17,10 @@ When asked, the [`WindowsSceneUnderstandingObserver`](xref:Microsoft.MixedRealit
 ## Setup
 
 1. Ensure the platform is set to UWP in build settings.
-1. Install Dot Net WinRT package through [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity).
-<br/><img src="../Images/SceneUnderstanding/SU_NuGet_DotNetWinRT.png" width="600"><br/>
-1. Acquire the SceneUnderstanding package through NuGet for Unity that contains the binaries required for the feature
-<br/><img src="../Images/SceneUnderstanding/SU_NuGet_SU.png" width="600"><br/>
+1. Ensure dotnetwinrt is installed.
+1. Acquire the SceneUnderstanding package that contains the binaries required for the feature
 1. In the menu bar click Mixed Reality Toolkit -> Utilities -> Windows Mixed Reality -> Check Configuration (this operation may take a while)
 1. In the menu bar click Mixed Reality Toolkit -> Utilities -> Scene Understanding -> Check Configuration (this operation may take a while)
-
-
 
 ## Using Scene Understanding
 
@@ -45,8 +41,9 @@ The scene demonstrates the following:
 
 Select the 'MixedRealityTookit' game object and check the inspector.
 
-<img src="../Images/SceneUnderstanding/MRTKHierarchy.png" width="300"><br/>
-<img src="../Images/SceneUnderstanding/MRTKLocation.png" width="600"><br/>
+![scene understanding location in heirarchy](../../Documentation/Images/SceneUnderstanding/MRTKHierarchy.png)
+
+![mrkt location in inspector](../../Documentation/Images/SceneUnderstanding/MRTKLocation.png)
 
 These options will allow one to configure the `WindowsSceneUnderstandingObserver`.
 
@@ -62,7 +59,7 @@ The toggles on the panel in the scene change the behavior of scene understanding
 
 Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [SpatialAwarenessSceneObject](xref:Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness.SpatialAwarenessSceneObject), gathered neatly under a parent object.
 
-<img src="../Images/SceneUnderstanding/Controller.png" width="600"><br/>
+![demo controller options](../../Documentation/Images/SceneUnderstanding/Controller.png)
 
 ### Built app notes
 
@@ -72,9 +69,9 @@ Note, their are some pit falls in making queries to the observer. Misconfigurati
 
 Saved scene files can be accessed through the [device portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) at `User Folders/LocalAppData/[APP_NAME]/LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. These scene files can be used in editor by specifying them in the observer profile found in the inspector.
 
-<img src="../Images/SceneUnderstanding/BytesInDevicePortal.png" width="800" alt="Device Portal location of bytes file"><br/>
+![Device Portal location of bytes file](../../Documentation/Images/SceneUnderstanding/BytesInDevicePortal.png)
 
-<img src="../Images/SceneUnderstanding/BytesLocationInObserver.png" width="600" alt="Serialized scene bytes in observer"><br/>
+![Serialized scene bytes in observer](../../Documentation/Images/SceneUnderstanding/BytesLocationInObserver.png)
 
 ## See Also
 
