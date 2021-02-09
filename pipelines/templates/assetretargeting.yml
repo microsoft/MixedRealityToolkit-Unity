@@ -15,36 +15,35 @@ steps:
 
     $method = "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
     # Uses unitysetup.powershell
-    Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
-
-    Write-Output '====================================================='
-    Write-Output '           Unity Build Player Finished               '
-    Write-Output '====================================================='
-
-    If (Test-Path $logFile)
-    {
-       Write-Output '====================================================='
-       Write-Output '           Begin Unity Player Log                    '
-       Write-Output '====================================================='
-
-       Get-Content $logFile
-
-       Write-Output '====================================================='
-       Write-Output '           End Unity Player Log                      '
-       Write-Output '====================================================='
+    try {
+      Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -AdditionalArguments "-NoGraphics -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
     }
-    Else
-    {
-       Write-Output 'Unity Player Log missing!'
+    finally {
+      if (Test-Path $logFile)
+      {
+        Write-Output '====================================================='
+        Write-Output '           Begin Unity Player Log                    '
+        Write-Output '====================================================='
+
+        Get-Content $logFile
+
+        Write-Output '====================================================='
+        Write-Output '           End Unity Player Log                      '
+        Write-Output '====================================================='
+      }
+      else
+      {
+        Write-Output 'Unity Player Log missing!'
+      }
+
+      Write-Output '====================================================='
+      Write-Output '           Begin Retargeted Directory                '
+      Write-Output '====================================================='
+
+      cmd /r dir /s/b NuGet
+
+      Write-Output '====================================================='
+      Write-Output '           End Retargeted Directory                  '
+      Write-Output '====================================================='
     }
-
-    Write-Output '====================================================='
-    Write-Output '           Begin Retargeted Directory                '
-    Write-Output '====================================================='
-
-    cmd /r dir /s/b NuGet
-
-    Write-Output '====================================================='
-    Write-Output '           End Retargeted Directory                  '
-    Write-Output '====================================================='
   displayName: 'Run Asset Retargeting'
