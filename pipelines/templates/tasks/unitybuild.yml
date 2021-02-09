@@ -49,88 +49,91 @@ steps:
 
     $extraArgs = ""
     $buildTarget = "StandaloneWindows"
-    If ("${{ parameters.Platform }}" -eq "UWP")
+    if ("${{ parameters.Platform }}" -eq "UWP")
     {
         $buildTarget = "WSAPlayer"
         $extraArgs += "-buildAppx"
     }
-    ElseIf ("${{ parameters.Platform }}" -eq "Standalone" -and "${{ parameters.Arch }}" -eq "x64")
+    elseif ("${{ parameters.Platform }}" -eq "Standalone" -and "${{ parameters.Arch }}" -eq "x64")
     {
         $buildTarget += "64"
     }
 
-    If ("${{ parameters.UnityArgs }}" -ne "none")
+    if ("${{ parameters.UnityArgs }}" -ne "none")
     {
         $extraArgs += " ${{ parameters.UnityArgs }}"
     }
 
-    If ("${{ parameters.ScriptingBackend }}" -eq ".NET")
+    if ("${{ parameters.ScriptingBackend }}" -eq ".NET")
     {
         $extraArgs += " -scriptingBackend 2"
     }
 
     $method = "Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild"
     # Uses unitysetup.powershell
-    Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -BuildTarget $buildTarget -OutputPath "$outDir" -AdditionalArguments "$extraArgs -sceneList $sceneList -${{ parameters.Arch }} -logDirectory $logDirectory -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
-
-    Write-Output '====================================================='
-    Write-Output '           Unity Build Player Finished               '
-    Write-Output '====================================================='
-
-    If (Test-Path $logFile.FullName)
-    {
-       Write-Output '====================================================='
-       Write-Output '           Begin Unity Player Log                    '
-       Write-Output '====================================================='
-
-       Get-Content $logFile.FullName
-
-       Write-Output '====================================================='
-       Write-Output '           End Unity Player Log                      '
-       Write-Output '====================================================='
+    try {
+        Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -BuildTarget $buildTarget -OutputPath "$outDir" -AdditionalArguments "$extraArgs -sceneList $sceneList -${{ parameters.Arch }} -logDirectory $logDirectory -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
     }
-    Else
-    {
-       Write-Output 'Unity Player Log Missing!'
-    }
+    finally {
+        Write-Output '====================================================='
+        Write-Output '           Unity Build Player Finished               '
+        Write-Output '====================================================='
 
-    # The NuGet and AppX logs are only relevant for UWP builds.
-    If ("${{ parameters.Platform }}" -eq "UWP")
-    {
-        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
-        If (Test-Path $nugetRestoreLogFileName)
+        if (Test-Path $logFile.FullName)
         {
             Write-Output '====================================================='
-            Write-Output '           Begin NuGet Restore Log                   '
+            Write-Output '           Begin Unity Player Log                    '
             Write-Output '====================================================='
 
-            Get-Content $nugetRestoreLogFileName
+            Get-Content $logFile.FullName
 
             Write-Output '====================================================='
-            Write-Output '           End NuGet Restore Log                     '
+            Write-Output '           End Unity Player Log                      '
             Write-Output '====================================================='
         }
-        Else
+        else
         {
-            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
+            Write-Output 'Unity Player Log Missing!'
         }
 
-        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
-        If (Test-Path $appxBuildLogFileName)
+        # The NuGet and AppX logs are only relevant for UWP builds.
+        if ("${{ parameters.Platform }}" -eq "UWP")
         {
-            Write-Output '====================================================='
-            Write-Output '           Begin AppX Build Log                      '
-            Write-Output '====================================================='
+            $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
+            if (Test-Path $nugetRestoreLogFileName)
+            {
+                Write-Output '====================================================='
+                Write-Output '           Begin NuGet Restore Log                   '
+                Write-Output '====================================================='
 
-            Get-Content $appxBuildLogFileName
+                Get-Content $nugetRestoreLogFileName
 
-            Write-Output '====================================================='
-            Write-Output '           End AppX Build Log                        '
-            Write-Output '====================================================='
-        }
-        Else
-        {
-            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+                Write-Output '====================================================='
+                Write-Output '           End NuGet Restore Log                     '
+                Write-Output '====================================================='
+            }
+            else
+            {
+                Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
+            }
+
+            $appxBuildLogFileName = "$logDirectory\buildAppx.log"
+            if (Test-Path $appxBuildLogFileName)
+            {
+                Write-Output '====================================================='
+                Write-Output '           Begin AppX Build Log                      '
+                Write-Output '====================================================='
+
+                Get-Content $appxBuildLogFileName
+
+                Write-Output '====================================================='
+                Write-Output '           End AppX Build Log                        '
+                Write-Output '====================================================='
+            }
+            else
+            {
+                Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+            }
         }
     }
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
