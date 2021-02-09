@@ -997,7 +997,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
             rotation = Quaternion.identity;
-            switch (pointer.Controller.ControllerHandedness)
+            switch (pointer.Controller?.ControllerHandedness)
             {
                 case Handedness.Left:
                     rotation = leftHandRotation;
@@ -1039,7 +1039,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
         {
-            switch (eventData.Controller.ControllerHandedness)
+            switch (eventData.Controller?.ControllerHandedness)
             {
                 case Handedness.Left:
                     leftHandRotation = eventData.SourceData.Rotation;
