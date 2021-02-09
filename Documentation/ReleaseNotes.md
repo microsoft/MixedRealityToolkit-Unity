@@ -79,7 +79,6 @@ Support for MSBuild for Unity has been removed as of the 2.5.2 release, to align
 
 There's currently a known issue with Holographic Remoting and OpenXR, where hand joints aren't consistently available.
 Additionally, the eye tracking sample scenes aren't currently compatible, though eye tracking *does* work.
-Lastly, there's an additional issue where some OpenXR APIs return DllNotFound exceptions if they're called in the editor before an XR session is established.
 
 ### Some Mixed Reality Toolkit Standard Shader features require the Foundation package
 
