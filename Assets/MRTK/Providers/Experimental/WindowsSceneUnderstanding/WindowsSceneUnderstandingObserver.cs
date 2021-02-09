@@ -564,8 +564,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
             {
                 updateTimer.Start();
             }
-
-            
         }
 
         /// <summary>

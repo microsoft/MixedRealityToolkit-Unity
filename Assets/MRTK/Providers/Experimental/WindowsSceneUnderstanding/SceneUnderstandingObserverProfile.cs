@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
 {
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         #region IMixedRealityOnDemandObserver settings
 
         [SerializeField]
+        [FormerlySerializedAs("updateOnceOnLoad")]
         [Tooltip("Whether the observer updates once after initialization (regardless whether AutoUpdate is true).")]
         private bool updateOnceInitialized = false;
         /// <summary>
@@ -138,6 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         public bool InferRegions => inferRegions;
 
         [SerializeField]
+        [FormerlySerializedAs("firstUpdateDelay")]
         [Tooltip("Delay in seconds before the observer starts to update automatically for the first time after initialization")]
         private float firstAutoUpdateDelay = 1.0f;
         /// <summary>
