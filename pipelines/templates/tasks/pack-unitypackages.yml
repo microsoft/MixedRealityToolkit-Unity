@@ -1,4 +1,5 @@
 # [Template] Builds and publishes .unitypackages
+
 parameters:
   version: '$(MRTKVersion)-$(Build.BuildNumber)'
   UnityVersion: ""
@@ -16,6 +17,7 @@ steps:
       -LogDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\logs
       -PackageVersion ${{ parameters.version }}
       -Verbose
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish .unitypackages'
   inputs:
