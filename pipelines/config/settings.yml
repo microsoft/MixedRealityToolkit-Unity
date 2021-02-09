@@ -11,7 +11,7 @@ variables:
   # match (see scripts/packaging/versionmetadata.ps1)
   # ProjectSettings/ProjectSettings.asset:  bundleVersion: x.x.x
   # ProjectSettings/ProjectSettings.asset:  metroPackageVersion: x.x.x.0
-  MRTKVersion: 2.6.0
+  MRTKVersion: 2.7.0
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
   ToolsRepoName: mixedrealitytoolkit.build
   ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)
