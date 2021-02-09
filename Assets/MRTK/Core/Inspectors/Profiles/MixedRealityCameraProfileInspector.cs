@@ -154,7 +154,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            var configurations = (target as MixedRealityCameraProfile)?.SettingsConfigurations;
+            var profile = target as MixedRealityCameraProfile;
+            var configurations = (profile != null) ? profile.SettingsConfigurations : null;
             if (configurations != null && index >= 0 && index < configurations.Length)
             {
                 return configurations[index];

@@ -1253,7 +1253,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Transform expectedTransform = null;
             if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
             {
-                expectedTransform = PointerUtils.GetPointer<LinePointer>(hand)?.transform;
+                LinePointer pointer = PointerUtils.GetPointer<LinePointer>(hand);
+                expectedTransform = (pointer != null) ? pointer.transform : null;
             }
             else
             {
