@@ -16,7 +16,27 @@ steps:
     $logFile = New-Item -Path .\editmode-test-run.log -ItemType File -Force
 
     # Uses unitysetup.powershell
-    Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform EditMode -EditorTestsResultFile ".\test-editmode-default.xml" -BatchMode -Wait -LogFile "$($logFile.FullName)" -BuildTarget StandaloneWindows64 -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    try {
+        Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform EditMode -EditorTestsResultFile ".\test-editmode-default.xml" -BatchMode -Wait -LogFile "$($logFile.FullName)" -BuildTarget StandaloneWindows64 -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    }
+    finally {
+        if (Test-Path $logFile.FullName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin Unity Player Log                    '
+            Write-Output '====================================================='
+
+            Get-Content $logFile.FullName
+
+            Write-Output '====================================================='
+            Write-Output '           End Unity Player Log                      '
+            Write-Output '====================================================='
+        }
+        else
+        {
+            Write-Output 'Unity Player Log Missing!'
+        }
+    }
   displayName: 'Run EditMode tests'
 
 - powershell: |
@@ -25,7 +45,27 @@ steps:
     $logFile = New-Item -Path .\playmode-test-run.log -ItemType File -Force
 
     # Uses unitysetup.powershell
-    Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -EditorTestsResultFile ".\test-playmode-default.xml" -BatchMode -Wait -LogFile "$($logFile.FullName)" -BuildTarget StandaloneWindows64 -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    try {
+        Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -RunTests -TestPlatform PlayMode -EditorTestsResultFile ".\test-playmode-default.xml" -BatchMode -Wait -LogFile "$($logFile.FullName)" -BuildTarget StandaloneWindows64 -AdditionalArguments "-CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    }
+    finally {
+        if (Test-Path $logFile.FullName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin Unity Player Log                    '
+            Write-Output '====================================================='
+
+            Get-Content $logFile.FullName
+
+            Write-Output '====================================================='
+            Write-Output '           End Unity Player Log                      '
+            Write-Output '====================================================='
+        }
+        else
+        {
+            Write-Output 'Unity Player Log Missing!'
+        }
+    }
   displayName: 'Run PlayMode tests'
 
 - task: PublishTestResults@2
