@@ -13,10 +13,10 @@ trigger: none
 parameters:
 - name: sourceBranch
   type: string
-  default: mrtk_development
+  default: prerelease/2.6.0_stabilization
 - name: destinationBranch
   type: string
-  default: feature/interactive_element
+  default: mrtk_development
 
 pool:
   vmImage: 'windows-latest'
