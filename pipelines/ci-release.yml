@@ -65,24 +65,24 @@ jobs:
 
   # Create pre-release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/package.yml
+    - template: templates/tasks/nuget-pack.yml
       parameters:
         version: '$(MRTKVersion)-$(Build.BuildNumber)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/package.yml
+    - template: templates/tasks/nuget-pack.yml
       parameters:
         version: '$(MRTKVersion)-$(Build.BuildNumber).$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
 
   # Create release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/package.yml
+    - template: templates/tasks/nuget-pack.yml
       parameters:
         version: '$(MRTKVersion)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\release'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
-    - template: templates/package.yml
+    - template: templates/tasks/nuget-pack.yml
       parameters:
         version: '$(MRTKVersion)-$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\release'        
