@@ -83,38 +83,6 @@ function AddVersionTxt {
 .SYNOPSIS
     Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
     have an .asmdef file.
-#>
-function AddVersionTxt {
-    [CmdletBinding()]
-    param(
-        [string]$Directory,
-        [string]$Version
-    )
-    process {
-        $locations = @(
-            "Assets/MRTK/Core",
-            "Assets/MRTK/Examples",
-            "Assets/MRTK/Extensions",
-            "Assets/MRTK/Providers",
-            "Assets/MRTK/SDK",
-            "Assets/MRTK/Services",
-            "Assets/MRTK/Tests",
-            "Assets/MRTK/Tools"
-        )
-
-        $content = "Microsoft Mixed Reality Toolkit $Version"
-        foreach ($location in $locations) {
-            $filename = Join-Path -Path $location -ChildPath "Version.txt"
-            Set-Content -Path $filename -Value $content
-            Write-Host "Added Version.txt at $filename"
-        }
-    }
-}
-
-<#
-.SYNOPSIS
-    Adds AssemblyInfo.cs files to all locations within the Assets/ folder that
-    have an .asmdef file.
 
     If AssemblyInfo.cs already exists, this will instead just add the version
     information to the file.
