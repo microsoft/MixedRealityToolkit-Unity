@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
