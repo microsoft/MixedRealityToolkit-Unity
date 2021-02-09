@@ -20,7 +20,6 @@ jobs:
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2019Version)
-      MRTKVersion: $(MRTKVersion)
 
 - job: DailyUnity2018Validation
   timeoutInMinutes: 120
@@ -35,4 +34,3 @@ jobs:
     parameters:
       packagingEnabled: false
       UnityVersion: $(Unity2018Version)
-      MRTKVersion: $(MRTKVersion)
