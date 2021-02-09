@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
                 var planeObject = new SpatialAwarenessPlanarObject();
                 planeObject.GameObject = destinationPlane;
-                planeObject.PlaneType = GetPlaneType(boundedPlane, destinationPlane);
+                planeObject.PlaneType = GetPlaneType(boundedPlane);
                 SetPlaneVisibility(planeObject);
 
                 if ((destroyPlanesMask & planeObject.PlaneType) == planeObject.PlaneType)
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// <summary>
         /// Classifies the surface as a floor, wall, ceiling, table, etc.
         /// </summary>
-        private SpatialAwarenessSurfaceTypes GetPlaneType(BoundedPlane plane, GameObject gameObject)
+        private SpatialAwarenessSurfaceTypes GetPlaneType(BoundedPlane plane)
         {
             SpatialAwarenessSurfaceTypes PlaneType;
             var surfaceNormal = plane.Plane.normal;
@@ -396,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 // If we have a horizontal surface with a normal pointing up, classify it as a floor.
                 PlaneType = SpatialAwarenessSurfaceTypes.Floor;
 
-                if (gameObject.transform.position.y > (floorYPosition + FloorBuffer))
+                if (plane.Bounds.Center.y > (floorYPosition + FloorBuffer))
                 {
                     // If the plane is too high to be considered part of the floor, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 // If we have a horizontal surface with a normal pointing down, classify it as a ceiling.
                 PlaneType = SpatialAwarenessSurfaceTypes.Ceiling;
 
-                if (gameObject.transform.position.y < (ceilingYPosition - CeilingBuffer))
+                if (plane.Bounds.Center.y < (ceilingYPosition - CeilingBuffer))
                 {
                     // If the plane is not high enough to be considered part of the ceiling, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
