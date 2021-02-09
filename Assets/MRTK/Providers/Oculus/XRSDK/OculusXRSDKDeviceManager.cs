@@ -144,6 +144,9 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
         public override void Enable()
         {
             base.Enable();
+            
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
+                return;
 
             SetupInput();
             ConfigurePerformancePreferences();
@@ -167,9 +170,6 @@ The tool can be found under <i>Mixed Reality Toolkit > Utilities > Oculus > Inte
 
         private void SetupInput()
         {
-            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is OculusLoader loader && loader.displaySubsystem != null))
-                return;
-
             cameraRig = GameObject.FindObjectOfType<OVRCameraRig>();
             if (cameraRig == null)
             {

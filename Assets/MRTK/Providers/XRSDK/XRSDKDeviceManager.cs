@@ -161,6 +161,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 SupportedControllerType currentControllerType = GetCurrentControllerType(inputDevice);
                 Type controllerType = GetControllerType(currentControllerType);
+
+                if (controllerType == null)
+                    return null;
+
                 InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 
                 IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);

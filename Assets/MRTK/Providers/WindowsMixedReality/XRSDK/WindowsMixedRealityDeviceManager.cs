@@ -6,9 +6,14 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Management;
+#if XR_PLUGIN_WINDOWSMR
+using UnityEngine.XR.WindowsMR;
+#endif
 using Unity.Profiling;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 
@@ -61,6 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         public override void Enable()
         {
             base.Enable();
+
+#if XR_PLUGIN_WINDOWSMR
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+                return null;
+#endif
 
             if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
@@ -160,6 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
+#if XR_PLUGIN_WINDOWSMR
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+                return null;
+#endif
+
             using (GetOrAddControllerPerfMarker.Auto())
             {
                 GenericXRSDKController detectedController = base.GetOrAddController(inputDevice);
@@ -234,6 +249,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
+#if XR_PLUGIN_WINDOWSMR
+            if (!XRGeneralSettings.Instance.Manager.loaders.Any(l => l is WindowsMRLoader loader && loader.displaySubsystem != null))
+                return null;
+#endif
             switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:
