@@ -9,6 +9,6 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: templates/tasks/upmpackages.yml
+  - template: templates/tasks/pack-upm.yml
     parameters:
       excludeBuildNumber: 1
