@@ -33,12 +33,10 @@ parameters:
 
 steps:
 - powershell: |
-    # Some machines require that the protocol be explicitly set to Tls12
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Install-Module UnitySetup -Scope CurrentUser -Force
-  displayName: Install unitysetup.powershell
+    $UnityPath = ${Env:${{ parameters.UnityVersion }}}
+    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
+    $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
-- powershell: |
     # The build output goes to a unique combination of Platform + Arch + ScriptingBackend to ensure that
     # each build will have a fresh destination folder.
     $outDir = "$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}"
@@ -48,15 +46,18 @@ steps:
     $sceneList = "Assets\MRTK\Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
 
     $extraArgs = ""
-    $buildTarget = "StandaloneWindows"
     if ("${{ parameters.Platform }}" -eq "UWP")
     {
-        $buildTarget = "WSAPlayer"
-        $extraArgs += "-buildAppx"
+        $extraArgs += '-buildTarget WSAPlayer -buildAppx'
     }
-    elseif ("${{ parameters.Platform }}" -eq "Standalone" -and "${{ parameters.Arch }}" -eq "x64")
+    elseif ("${{ parameters.Platform }}" -eq "Standalone")
     {
-        $buildTarget += "64"
+        $extraArgs += "-buildTarget StandaloneWindows"
+
+        if ("${{ parameters.Arch }}" -eq "x64")
+        {
+            $extraArgs += "64"
+        }
     }
 
     if ("${{ parameters.UnityArgs }}" -ne "none")
@@ -69,77 +70,90 @@ steps:
         $extraArgs += " -scriptingBackend 2"
     }
 
-    $method = "Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild"
-    # Uses unitysetup.powershell
-    try {
-        Start-UnityEditor -Project "$(Get-Location)" -Version ${{ parameters.UnityVersion }} -ExecuteMethod $method -BatchMode -Quit -Wait -LogFile "$($logFile.FullName)" -BuildTarget $buildTarget -OutputPath "$outDir" -AdditionalArguments "$extraArgs -sceneList $sceneList -${{ parameters.Arch }} -logDirectory $logDirectory -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01}"
+    $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress ${Env:COG-UnityCache-WUS2-01} -logDirectory $logDirectory" -PassThru
+    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+
+    while (-not $proc.HasExited -and $ljob.HasMoreData)
+    {
+        Receive-Job $ljob
+        Start-Sleep -Milliseconds 200
     }
-    finally {
+    Receive-Job $ljob
+
+    Stop-Job $ljob
+
+    Remove-Job $ljob
+    Stop-Process $proc
+
+    Write-Output '====================================================='
+    Write-Output '           Unity Build Player Finished               '
+    Write-Output '====================================================='
+
+    if (Test-Path $logFile.FullName)
+    {
         Write-Output '====================================================='
-        Write-Output '           Unity Build Player Finished               '
+        Write-Output '           Begin Unity Player Log                    '
         Write-Output '====================================================='
 
-        if (Test-Path $logFile.FullName)
+        Get-Content $logFile.FullName
+
+        Write-Output '====================================================='
+        Write-Output '           End Unity Player Log                      '
+        Write-Output '====================================================='
+    }
+    else
+    {
+        Write-Output 'Unity Player Log Missing!'
+    }
+
+    # The NuGet and AppX logs are only relevant for UWP builds.
+    if ("${{ parameters.Platform }}" -eq "UWP")
+    {
+        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
+        if (Test-Path $nugetRestoreLogFileName)
         {
             Write-Output '====================================================='
-            Write-Output '           Begin Unity Player Log                    '
+            Write-Output '           Begin NuGet Restore Log                   '
             Write-Output '====================================================='
 
-            Get-Content $logFile.FullName
+            Get-Content $nugetRestoreLogFileName
 
             Write-Output '====================================================='
-            Write-Output '           End Unity Player Log                      '
+            Write-Output '           End NuGet Restore Log                     '
             Write-Output '====================================================='
         }
         else
         {
-            Write-Output 'Unity Player Log Missing!'
+            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
         }
 
-        # The NuGet and AppX logs are only relevant for UWP builds.
-        if ("${{ parameters.Platform }}" -eq "UWP")
+        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
+        if (Test-Path $appxBuildLogFileName)
         {
-            $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
-            if (Test-Path $nugetRestoreLogFileName)
-            {
-                Write-Output '====================================================='
-                Write-Output '           Begin NuGet Restore Log                   '
-                Write-Output '====================================================='
+            Write-Output '====================================================='
+            Write-Output '           Begin AppX Build Log                      '
+            Write-Output '====================================================='
 
-                Get-Content $nugetRestoreLogFileName
+            Get-Content $appxBuildLogFileName
 
-                Write-Output '====================================================='
-                Write-Output '           End NuGet Restore Log                     '
-                Write-Output '====================================================='
-            }
-            else
-            {
-                Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
-            }
-
-            $appxBuildLogFileName = "$logDirectory\buildAppx.log"
-            if (Test-Path $appxBuildLogFileName)
-            {
-                Write-Output '====================================================='
-                Write-Output '           Begin AppX Build Log                      '
-                Write-Output '====================================================='
-
-                Get-Content $appxBuildLogFileName
-
-                Write-Output '====================================================='
-                Write-Output '           End AppX Build Log                        '
-                Write-Output '====================================================='
-            }
-            else
-            {
-                Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
-            }
+            Write-Output '====================================================='
+            Write-Output '           End AppX Build Log                        '
+            Write-Output '====================================================='
         }
+        else
+        {
+            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+        }
+    }
+
+    if ($proc.ExitCode -ne 0)
+    {
+        exit $proc.ExitCode
     }
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
 - task: PowerShell@2
-  displayName: 'Validate build logs'
+  displayName: Validate build logs
   inputs:
     targetType: filePath
     filePath: ./scripts/ci/validatebuildlog.ps1
@@ -148,7 +162,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   enabled: ${{ parameters.PublishArtifacts }}
-  displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
+  displayName: Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}
   inputs:
     ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
     # The final location of the generated package depends on the type of scripting backend it's built against.
