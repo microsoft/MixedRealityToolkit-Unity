@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsSceneUnderstanding.Experimental
         /// Whether the observer updates its observations automatically on interval.
         /// </summary>
         /// <remarks>
-        /// When false, call <see cref="IMixedRealityOnDemandObserver.UpdateOnDemand()"/> to manually update an observer when needed.
+        /// When false, call UpdateOnDemand() to manually update an observer when needed.
         /// </remarks>
         public bool AutoUpdate => autoUpdate;
 
