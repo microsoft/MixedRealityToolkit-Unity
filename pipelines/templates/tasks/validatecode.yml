@@ -2,8 +2,7 @@ parameters:
   # If true, validation scripts will only be run on the set of changed files
   # associated with a given pull request. Note that this is only valid to use
   # for pull request validation, since this functionality requires a pull request
-  # ID in order to determine the two commits to diff. Only relevant if validateCode
-  # is true.
+  # ID in order to determine the two commits to diff.
   scopedValidation: false
   # The file containing the list of changes, used if scopedValidation is true.  
   changesFile: ''

@@ -1,10 +1,17 @@
 # [Template] Common non-Unity-based validation tasks shared between CI builds and PR validation.
 
 parameters:
-  publishPackagesToFeed: true
+  # If true, validation scripts will only be run on the set of changed files
+  # associated with a given pull request. Note that this is only valid to use
+  # for pull request validation, since this functionality requires a pull request
+  # ID in order to determine the two commits to diff.
+  scopedValidation: false
+  publishPackagesToFeed: false
 
 steps:
   - template: validation.yml
+    parameters:
+      scopedValidation: ${{ parameters.scopedValidation }}
 
   - template: tasks/versionmetadata.yml
 
