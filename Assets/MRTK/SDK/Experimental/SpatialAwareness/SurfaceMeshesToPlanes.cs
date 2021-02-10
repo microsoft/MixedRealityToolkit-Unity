@@ -324,20 +324,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             {
                 BoundedPlane boundedPlane = planes[index];
 
-                // Instantiate a cube, which will have the same bounds as our BoundedPlane object.
-                GameObject destinationPlane = CreatePlaneGameObject(boundedPlane);
-
                 var planeObject = SpatialAwarenessPlanarObject.CreateSpatialObject(
-                    destinationPlane,
+                    boundedPlane.Bounds.Center,
+                    boundedPlane.Bounds.Extents,
+                    boundedPlane.Bounds.Rotation,
+                    PlaneThickness,
+                    DefaultMaterial,
                     PhysicsLayer,
                     $"SurfacePlane {index}",
                     index,
                     GetPlaneType(boundedPlane));
+                planeObject.GameObject.transform.parent = PlanesParent.transform;
+
                 SetPlaneVisibility(planeObject);
 
                 if ((destroyPlanesMask & planeObject.SurfaceType) == planeObject.SurfaceType)
                 {
-                    DestroyImmediate(destinationPlane);
+                    DestroyImmediate(planeObject.GameObject);
                 }
                 else
                 {
@@ -439,29 +442,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             {
                 Destroy(activePlanes[index].GameObject);
             }
-        }
-
-        /// <summary>
-        /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
-        /// </summary>
-        private GameObject CreatePlaneGameObject(BoundedPlane plane)
-        {
-            GameObject surfacePlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
-            surfacePlane.transform.position = plane.Bounds.Center;
-            surfacePlane.transform.rotation = plane.Bounds.Rotation;
-            Vector3 extents = plane.Bounds.Extents * 2;
-            surfacePlane.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
-
-            var renderer = surfacePlane.GetComponent<Renderer>();
-            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            if (DefaultMaterial != null)
-                renderer.material = DefaultMaterial;
-
-            surfacePlane.transform.parent = PlanesParent.transform;
-
-            return surfacePlane;
         }
 
         /// <summary>

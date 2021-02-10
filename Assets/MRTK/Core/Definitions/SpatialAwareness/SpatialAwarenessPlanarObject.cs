@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public SpatialAwarenessSurfaceTypes SurfaceType
         {
             get => planeType;
-            set => planeType = value;
+            private set => planeType = value;
         }
 
         /// <summary>
@@ -35,22 +35,35 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// SpatialAwarenessPlanarObject containing the fields that describe the plane.
         /// </returns>
         public static SpatialAwarenessPlanarObject CreateSpatialObject(
-            GameObject planeObject,
+            Vector3 center,
+            Vector3 extents,
+            Quaternion rotation,
+            float planeThickness,
+            Material material,
             int layer, 
             string name, 
             int planeId,
             SpatialAwarenessSurfaceTypes surfaceType = SpatialAwarenessSurfaceTypes.Unknown)
         {
             SpatialAwarenessPlanarObject newPlane = new SpatialAwarenessPlanarObject();
-            newPlane.SurfaceType = surfaceType;
 
             newPlane.Id = planeId;
-            newPlane.GameObject = planeObject;
-            newPlane.GameObject.name = name;
-            newPlane.GameObject.layer = layer;
+            newPlane.SurfaceType = surfaceType;
 
+            Vector3 size = extents * 2;
+
+            GameObject planeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            planeObject.transform.position = center;
+            planeObject.transform.rotation = rotation;
+            planeObject.transform.localScale = new Vector3(size.x, size.y, planeThickness);
+            planeObject.name = name;
+            planeObject.layer = layer;
+
+            newPlane.GameObject = planeObject;
             newPlane.Filter = newPlane.GameObject.GetComponent<MeshFilter>();
             newPlane.Renderer = newPlane.GameObject.GetComponent<MeshRenderer>();
+            newPlane.Renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            newPlane.Renderer.material = material;
             newPlane.Collider = newPlane.GameObject.GetComponent<BoxCollider>();
 
             return newPlane;
