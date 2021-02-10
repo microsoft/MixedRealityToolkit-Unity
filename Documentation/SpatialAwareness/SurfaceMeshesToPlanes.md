@@ -1,6 +1,6 @@
 # SurfaceMeshesToPlanes
 
-`SurfaceMeshesToPlanes.cs` is a new script that enables  simple plane finding applications in MRTK. This script processes mesh data from the Spatial Awareness system and builds planes for Floors, Ceilings, Walls and Platforms in a scene. This script is fully compatible with HoloLens 1 and 2.
+`SurfaceMeshesToPlanes.cs` is a new script that enables simple plane finding applications in MRTK. This script processes mesh data from the Spatial Awareness system and builds planes for Floors, Ceilings, Walls and Platforms in a scene. This script is fully compatible with HoloLens 1 and 2.
 
 ## Import PlaneFinding package
 
