@@ -11,29 +11,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     public interface IMixedRealityOnDemandObserver : IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the observer can autoupdate on interval.
+        /// Whether the observer updates its observations automatically on interval.
         /// </summary>
         /// <remarks>
-        /// When false, calling UpdateOnDemand() is the ONLY way to update an observer.
+        /// When false, call <see cref="UpdateOnDemand()"/> to manually update an observer when needed.
         /// </remarks>
         bool AutoUpdate { get; set; }
 
         /// <summary>
-        /// Observer will update once after initialization then require manual update thereafter. Uses <see cref="FirstUpdateDelay"/> to determine when.
+        /// Whether the observer updates once after initialization (regardless whether <see cref="AutoUpdate"/> is true).
         /// </summary>
-        bool UpdateOnceOnLoad { get; set; }
+        bool UpdateOnceInitialized { get; set; }
 
         /// <summary>
-        /// Delay in seconds before the observer will update automatically, once.
-        /// </summary>
-        float FirstUpdateDelay { get; set; }
-
-        /// <summary>
-        /// Tells the observer to run a cycle
+        /// Delay in seconds before the observer starts to update automatically for the first time after initialization
         /// </summary>
         /// <remarks>
-        /// regardless of AutoUpdate, calling this method will force the observer to update.
-        /// When AutoUpdate is false, this is the ONLY way to update an observer.
+        /// Only applies when <see cref="AutoUpdate"/> is set to true.
+        /// </remarks>
+        float FirstAutoUpdateDelay { get; set; }
+
+        /// <summary>
+        /// Tells the observer to update the observations.
+        /// </summary>
+        /// <remarks>
+        /// Regardless of <see cref="AutoUpdate"/>, calling this method will force the observer to update.
         /// </remarks>
         void UpdateOnDemand();
     }

@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Examples.Demos;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
@@ -57,6 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         
         private IMixedRealitySceneUnderstandingObserver observer;
 
+        private List<GameObject> instantiatedPrefabs;
+
         #endregion Private Fields
 
         #region MonoBehaviour Functions
@@ -71,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 return;
             }
             InitToggleButtonState();
+            instantiatedPrefabs = new List<GameObject>();
         }
 
         protected override void OnEnable()
@@ -100,15 +104,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             AddToData(eventData.Id);
 
-            if (InstantiatePrefabs)
+            if (InstantiatePrefabs && eventData.SpatialObject.Quads.Count > 0)
             {
                 var prefab = Instantiate(InstantiatedPrefab);
                 prefab.transform.SetPositionAndRotation(eventData.SpatialObject.Position, eventData.SpatialObject.Rotation);
-
+                float sx = eventData.SpatialObject.Quads[0].Extents.x;
+                float sy = eventData.SpatialObject.Quads[0].Extents.y;
+                prefab.transform.localScale = new Vector3(sx, sy, .1f);
                 if (InstantiatedParent)
                 {
                     prefab.transform.SetParent(InstantiatedParent);
                 }
+                instantiatedPrefabs.Add(prefab);
             }
             else
             {
@@ -157,6 +164,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void ClearScene()
         {
+            foreach (GameObject gameObject in instantiatedPrefabs)
+            {
+                Destroy(gameObject);
+            }
+            instantiatedPrefabs.Clear();
             observer.ClearObservations();
         }
 
@@ -184,8 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                     quadsToggle.IsToggled = true;
                 }
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -200,8 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observer.RequestMeshData = false;
                 meshesToggle.IsToggled = false;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -216,8 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observer.RequestPlaneData = false;
                 quadsToggle.IsToggled = false;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -235,8 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -254,8 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -273,8 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -292,8 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -303,8 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void ToggleInferRegions()
         {
             observer.InferRegions = !observer.InferRegions;
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -329,8 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observer.RequestMeshData = true;
                 meshesToggle.GetComponent<Interactable>().IsToggled = true;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -348,8 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         /// <summary>
@@ -367,8 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             {
                 observer.SurfaceTypes |= surfaceType;
             }
-            observer.ClearObservations();
-            observer.UpdateOnDemand();
+            ClearAndUpdateObserver();
         }
 
         #endregion UI Functions
@@ -424,6 +425,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 default:
                     return new Color32(220, 50, 47, 255); // red
             }
+        }
+
+        private void ClearAndUpdateObserver()
+        {
+            ClearScene();
+            observer.UpdateOnDemand();
         }
 
         #endregion Helper Functions
