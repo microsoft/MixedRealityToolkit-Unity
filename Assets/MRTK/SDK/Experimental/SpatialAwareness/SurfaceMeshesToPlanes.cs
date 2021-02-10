@@ -324,18 +324,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             {
                 BoundedPlane boundedPlane = planes[index];
 
+                Vector3 size = boundedPlane.Bounds.Extents * 2;
+                size.z = PlaneThickness;
+
                 var planeObject = SpatialAwarenessPlanarObject.CreateSpatialObject(
                     boundedPlane.Bounds.Center,
-                    boundedPlane.Bounds.Extents,
+                    size,
                     boundedPlane.Bounds.Rotation,
                     PhysicsLayer,
                     $"SurfacePlane {index}",
                     index,
                     GetPlaneType(boundedPlane));
-                planeObject.GameObject.transform.localScale = new Vector3(
-                    planeObject.GameObject.transform.localScale.x,
-                    planeObject.GameObject.transform.localScale.y,
-                    PlaneThickness);
                 
                 planeObject.GameObject.transform.parent = PlanesParent.transform;
                 if (DefaultMaterial != null)

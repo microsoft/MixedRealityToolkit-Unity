@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </returns>
         public static SpatialAwarenessPlanarObject CreateSpatialObject(
             Vector3 center,
-            Vector3 extents,
+            Vector3 size,
             Quaternion rotation,
             int layer, 
             string name, 
@@ -48,12 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             newPlane.Id = planeId;
             newPlane.SurfaceType = surfaceType;
 
-            Vector3 size = extents * 2;
 
             GameObject planeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             planeObject.transform.position = center;
             planeObject.transform.rotation = rotation;
-            planeObject.transform.localScale = new Vector3(size.x, size.y, 0.01f);
+            planeObject.transform.localScale = size;
             planeObject.name = name;
             planeObject.layer = layer;
 
