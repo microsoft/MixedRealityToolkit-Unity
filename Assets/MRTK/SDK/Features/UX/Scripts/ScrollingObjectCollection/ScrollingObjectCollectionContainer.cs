@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Its main purpose is to find and cache those Components.
     /// Thanks to that we don't have to run GetComponentsInChildren every frame. 
     /// </summary>
+    [ExecuteAlways]
     public class ScrollingObjectCollectionContainer : MonoBehaviour
     {
         [SerializeField]
@@ -30,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get => transform.localPosition;
             set => transform.localPosition = value;
+        }
+
+        private void Awake()
+        {
+            OnTransformChildrenChanged();
         }
 
         private GameObject[] Children

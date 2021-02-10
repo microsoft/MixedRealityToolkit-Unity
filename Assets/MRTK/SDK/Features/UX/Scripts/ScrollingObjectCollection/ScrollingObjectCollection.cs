@@ -613,14 +613,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (scrollContainer == null)
                 {
-                    scrollContainer = gameObject.GetComponentInChildren<ScrollingObjectCollectionContainer>();
-                    if (scrollContainer)
-                    {
-                        return scrollContainer;
-                    }
-
                     Transform oldContainer = transform.Find("Container");
-                    scrollContainer = oldContainer.gameObject.AddComponent<ScrollingObjectCollectionContainer>();
+
+                    if (oldContainer != null)
+                    {
+                        scrollContainer = oldContainer.gameObject.EnsureComponent<ScrollingObjectCollectionContainer>();
+                        Debug.LogWarning(name + " ScrollingObjectCollection found an existing Container gameObject, using it for the list");
+                    }
+                    else
+                    {
+                        GameObject scrollContainerGameObject = new GameObject();
+                        scrollContainerGameObject.name = "Container";
+                        scrollContainerGameObject.transform.parent = transform;
+                        scrollContainerGameObject.transform.localPosition = Vector3.zero;
+                        scrollContainerGameObject.transform.localRotation = Quaternion.identity;
+                        scrollContainer = scrollContainerGameObject.gameObject.AddComponent<ScrollingObjectCollectionContainer>();
+                    }
                 }
 
                 return scrollContainer;
