@@ -328,14 +328,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                     boundedPlane.Bounds.Center,
                     boundedPlane.Bounds.Extents,
                     boundedPlane.Bounds.Rotation,
-                    PlaneThickness,
-                    DefaultMaterial,
                     PhysicsLayer,
                     $"SurfacePlane {index}",
                     index,
                     GetPlaneType(boundedPlane));
+                planeObject.GameObject.transform.localScale = new Vector3(
+                    planeObject.GameObject.transform.localScale.x,
+                    planeObject.GameObject.transform.localScale.y,
+                    PlaneThickness);
+                
                 planeObject.GameObject.transform.parent = PlanesParent.transform;
-
+                if (DefaultMaterial != null)
+                {
+                    planeObject.Renderer.material = DefaultMaterial;
+                }
                 SetPlaneVisibility(planeObject);
 
                 if ((destroyPlanesMask & planeObject.SurfaceType) == planeObject.SurfaceType)

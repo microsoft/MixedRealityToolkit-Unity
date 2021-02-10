@@ -38,8 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             Vector3 center,
             Vector3 extents,
             Quaternion rotation,
-            float planeThickness,
-            Material material,
             int layer, 
             string name, 
             int planeId,
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             GameObject planeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             planeObject.transform.position = center;
             planeObject.transform.rotation = rotation;
-            planeObject.transform.localScale = new Vector3(size.x, size.y, planeThickness);
+            planeObject.transform.localScale = new Vector3(size.x, size.y, 0.01f);
             planeObject.name = name;
             planeObject.layer = layer;
 
@@ -63,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             newPlane.Filter = newPlane.GameObject.GetComponent<MeshFilter>();
             newPlane.Renderer = newPlane.GameObject.GetComponent<MeshRenderer>();
             newPlane.Renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            newPlane.Renderer.material = material;
             newPlane.Collider = newPlane.GameObject.GetComponent<BoxCollider>();
 
             return newPlane;
